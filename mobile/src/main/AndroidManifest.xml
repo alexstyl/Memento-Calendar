@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.alexstyl.specialdates"
+  android:installLocation="auto">
+
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.READ_CONTACTS" />
+  <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+  <!-- EXTERNAL_STORAGE FOR RINGTONES-->
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+  <uses-permission android:name="com.android.vending.BILLING" />
+
+  <!-- VIBRATE FOR NOTIFICATION-->
+  <uses-permission android:name="android.permission.VIBRATE" />
+
+  <application
+    android:name="com.alexstyl.specialdates.MementoApp"
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/localised_app_name">
+    <!-- Activities -->
+    <activity
+      android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:exported="true"
+      android:launchMode="singleTop">
+
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <activity
+      android:name=".datedetails.DateDetailsActivity"
+      android:exported="true"
+      android:parentActivityName=".ui.activity.MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activity.MainActivity" />
+    </activity>
+
+    <activity
+      android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
+      android:exported="false"
+      android:label="@string/action_settings"
+      android:parentActivityName=".ui.activity.MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activity.MainActivity" />
+    </activity>
+
+    <activity
+      android:name="com.alexstyl.specialdates.about.AboutActivity"
+      android:exported="false"
+      android:label="@string/about"
+      android:parentActivityName=".ui.activity.MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+    </activity>
+
+    <activity
+      android:name="com.alexstyl.specialdates.search.SearchActivity"
+      android:exported="false"
+      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:windowSoftInputMode="stateVisible|adjustResize">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+    </activity>
+
+
+    <activity
+      android:name=".support.SupportTranslateDialog"
+      android:exported="false"
+      android:label="@string/translate_the_app_title"
+      android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+
+    <activity
+      android:name=".support.SupportDonateDialog"
+      android:exported="false"
+      android:theme="@style/Theme.Dayslight.DialogNoTitle" />
+
+    <activity
+      android:name=".settings.DailyReminderActivity"
+      android:exported="true"
+      android:label="@string/daily_reminder">
+      <intent-filter>
+        <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
+      </intent-filter>
+    </activity>
+
+    <activity
+      android:name="com.alexstyl.specialdates.addevent.AddBirthdayActivity"
+      android:excludeFromRecents="true"
+      android:exported="false"
+      android:label="@string/title_add_birthday"
+      android:noHistory="true"
+      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:theme="@style/Theme.Dayslight.DialogNoTitle">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+    </activity>
+
+
+    <activity
+      android:name="com.alexstyl.specialdates.support.RateDialog"
+      android:label="@string/support_app"
+      android:noHistory="true"
+      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:theme="@style/Theme.Dayslight.DialogNoTitle">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+    </activity>
+
+    <activity
+      android:name="com.alexstyl.specialdates.widgetprovider.UpcomingWidgetConfigureActivity"
+      android:label="@string/Configure_widget"
+      android:noHistory="true">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+      </intent-filter>
+    </activity>
+
+    <!-- Services -->
+    <service
+      android:name="com.alexstyl.specialdates.service.DailyReminderIntentService"
+      android:exported="false"
+      android:label="@string/service_dailyreminder" />
+
+    <!-- Receivers -->
+    <receiver
+      android:name="com.alexstyl.specialdates.receiver.EventReceiver"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="android.intent.action.LOCALE_CHANGED" />
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.TIME_SET" />
+      </intent-filter>
+    </receiver>
+
+
+    <receiver
+      android:name="com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider"
+      android:exported="false"
+      android:label="@string/label_widget_textonly">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/widget_info_simple" />
+    </receiver>
+
+    <provider
+      android:name=".events.PeopleEventsContentProvider"
+      android:authorities="com.alexstyl.specialdates.peopleeventsprovider"
+      android:exported="false"
+      android:grantUriPermissions="true"
+      android:label="Events Provider" />
+
+    <meta-data
+      android:name="io.fabric.ApiKey"
+      android:value="${crashlyticsApiKey}" />
+  </application>
+
+</manifest>

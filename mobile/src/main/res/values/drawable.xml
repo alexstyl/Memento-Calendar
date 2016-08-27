@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <item name="selectable_back" type="drawable">@drawable/selectable_background_dayslight</item>
+    <item name="selectable_back_no_bounds" type="drawable">@drawable/selectable_background_dayslight</item>
+
+</resources>

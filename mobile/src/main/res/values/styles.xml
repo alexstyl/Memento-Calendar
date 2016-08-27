@@ -1,0 +1,159 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+  <style name="TextAppearance.BloodCherry.AvatarNumber"
+    parent="@android:style/TextAppearance.Large">
+    <item name="android:textSize">@dimen/title_textsize</item>
+    <item name="android:background">@color/avatar_number</item>
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+
+  <style name="TextAppearance.BloodCherry.NumberPickerTitle"
+    parent="@android:style/TextAppearance.Medium">
+
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="TextAppearance.BloodCherry.NumberPickerSummary"
+    parent="@android:style/TextAppearance.Small"></style>
+
+
+  <style name="Theme.Daysspecial.DialogWhenLarge"
+    parent="@style/Theme.AppCompat.Light.DialogWhenLarge" />
+
+
+  <style name="TextAppearance.BloodCherry.TextView.OnRed.Medium"
+    parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/font_on_red</item>
+
+  </style>
+
+  <style name="TextAppearance.BloodCherry.TextView.OnRed.Small"
+    parent="@android:style/TextAppearance.Small">
+    <item name="android:textColor">@color/font_on_red</item>
+  </style>
+
+  <style name="TextAppearance.BloodCherry.TextView.OnRed.Large"
+    parent="@android:style/TextAppearance.Large">
+    <item name="android:textColor">@color/font_on_red</item>
+  </style>
+
+  <style name="TextAppearance.BloodCherry.TextView.Medium"
+    parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/card_text</item>
+  </style>
+
+
+  <style name="TextAppearance.BloodCherry.TextView.Large"
+    parent="@android:style/TextAppearance.Large">
+    <item name="android:textColor">@color/card_text</item>
+  </style>
+
+  <style name="PromptAnimationBottom">
+    <item name="android:windowEnterAnimation">@anim/slide_in_from_below</item>
+    <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+  </style>
+
+  <style name="PromptAnimationTop">
+    <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+    <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+  </style>
+
+  <style name="DialogTheme"
+    parent="Theme.Dayslight.DialogNoTitle" />
+
+
+  <style name="CardAction">
+    <item name="android:background">@drawable/selectable_background_dayslight</item>
+    <item name="android:textSize">@dimen/card_text_size_action</item>
+
+  </style>
+
+
+  <style name="CardViewStyle">
+    <item name="android:foreground">@drawable/selectable_background_dayslight</item>
+  </style>
+
+  <style name="CardViewStyle.Blue"
+    parent="CardViewStyle" />
+
+  <style name="CardViewStyle.Red"
+    parent="CardViewStyle" />
+
+
+  <style name="SelectableBackground">
+    <item name="android:background">@drawable/selectable_background_dayslight</item>
+  </style>
+
+
+  <style name="TouchTarget">
+    <item name="android:minHeight">@dimen/touch_target</item>
+    <item name="android:background">@drawable/selectable_background_dayslight</item>
+  </style>
+
+  <style name="TextAppearance.RateMeText"
+    parent="TextAppearance.AppCompat.Medium.Inverse" />
+
+  <style name="DaysLight.RatingBar"
+    parent="android:Widget.RatingBar" />
+
+  <style name="DayCircle"
+    parent="TextAppearance.AppCompat.Inverse">
+
+  </style>
+
+  <style name="DayCircle.Day"
+    parent="TextAppearance.AppCompat.Small" />
+
+  <style name="DayCircle.Date"
+    parent="TextAppearance.AppCompat.Large" />
+
+  <style name="TextAppearance.InitialsView"
+    parent="TextAppearance.AppCompat">
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">@dimen/initials_textSize</item>
+  </style>
+
+  <style name="Theme.Dayslight.DialogNoTitle"
+    parent="Theme.AppCompat.Light.Dialog.Alert">
+    <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="TextAppearance.ContactDisplayName"
+    parent="TextAppearance.AppCompat.Large.Inverse">
+    <item name="android:textSize">28sp</item>
+  </style>
+
+  <style name="Widget.CardContent"
+    parent="android:Widget">
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+    <item name="android:paddingTop">24dp</item>
+    <item name="android:paddingBottom">24dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+
+  <style name="BirthdayPicker.Picker">
+    <item name="android:layout_margin">8dp</item>
+  </style>
+
+  <style name="Upcoming.MonthHeader">
+    <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+    <item name="android:fontFamily">sans-serif-condensed</item>
+  </style>
+
+  <style name="Widget.Memento.Toolbar"
+    parent="Widget.AppCompat.Toolbar">
+    <item name="android:theme">?attr/toolbarTheme</item>
+  </style>
+
+  <style name="Divider">
+    <item name="android:layout_height">@dimen/horizontal_divider_height</item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="None" />
+</resources>

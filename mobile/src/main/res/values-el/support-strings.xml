@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="support_title">Σου αρέσει η εφαρμογή;</string>
+  <string name="support_app_description">Θα το εκτιμούσα αν προσφέρεις λίγα λεπτά από τον χρόνος σου για να βαθμολογήσεις την εφαρμογή. Είναι ένας τρόπος που με παροτρύνει να βελτιώνω την εφαρμογή</string>
+  <string name="support_app_description_short">Υποστήριξε την εφαρμογή βαθμολογώντας την</string>
+
+  <string name="support_app_rate_button">@string/rate</string>
+  <string name="support_app_cancel_button">Όχι, ευχαριστώ</string>
+  <string name="support_thanks_for_rating">Ευχαριστώ για την υποστήριξη!</string>
+</resources>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="?attr/dialogPreferredPadding"
+    android:paddingRight="?attr/dialogPreferredPadding"
+    android:paddingTop="@dimen/abc_dialog_padding_top_material">
+
+    <TextView
+        android:id="@android:id/message"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_donation_amount" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="@dimen/abc_dialog_padding_top_material"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/donate_1"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="2.5E" />
+
+        <Button
+            android:id="@+id/donate_2"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="5E" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/donate_3"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="10 E" />
+
+        <Button
+            android:id="@+id/donate_4"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="25 E" />
+
+        <Button
+            android:id="@+id/donate_5"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="5"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="50 E" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto/android">
+
+  <item
+    android:id="@+id/action_today"
+    android:enabled="false"
+    android:icon="@drawable/ic_action_today"
+    android:orderInCategory="100"
+    android:title="@string/today"
+    app:showAsAction="always" />
+
+  <item
+    android:id="@+id/action_search"
+    android:icon="@drawable/ic_action_search"
+    android:orderInCategory="100"
+    android:title="@string/search"
+    app:showAsAction="always" />
+
+</menu>

@@ -1,0 +1,36 @@
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/card_content_padding">
+
+
+    <ImageView
+      android:id="@+id/event_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/event_row_height"
+      android:src="@drawable/ic_face_black_24dp" />
+
+    <LinearLayout
+      android:id="@+id/event_dates_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@id/event_icon"
+      android:layout_marginLeft="@dimen/padding"
+      android:layout_toRightOf="@id/event_icon"
+      android:divider="?android:attr/dividerVertical"
+      android:orientation="vertical"
+      android:showDividers="middle">
+
+
+      <!--<include layout="@layout/row_contact_event" />-->
+      <!--<include layout="@layout/row_contact_event" />-->
+      <!--<include layout="@layout/row_contact_event" />-->
+
+    </LinearLayout>
+
+  </RelativeLayout>
+</com.alexstyl.specialdates.ui.MementoCardView>

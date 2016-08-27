@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="isGreekLocaleSelected">false</bool>
+    <bool name="preHolo">true</bool>
+    <bool name="hasHolo">false</bool>
+    <bool name="isLargeScreen">false</bool>
+    <bool name="isNamedaySupported">false</bool>
+    <bool name="isBankholidaysSupported">false</bool>
+
+</resources>

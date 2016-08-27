@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+  <style name="Theme.Memento.Light"
+    parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    <item name="android:windowBackground">@color/light_grey</item>
+    <item name="android:windowLightStatusBar"
+      tools:targetApi="m">?attr/useDarkIcons
+    </item>
+  </style>
+
+  <style name="Theme.Memento.Dark"
+    parent="@style/Theme.AppCompat.NoActionBar">
+    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+  </style>
+
+
+  <style name="Theme.Memento.Light.DarkToolbar">
+    <item name="useDarkIcons">false</item>
+    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+  </style>
+
+  <style name="Theme.Memento.Dark.DarkToolbar">
+    <item name="useDarkIcons">false</item>
+    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+  </style>
+
+  <style name="Theme.Memento.Light.LightToolbar">
+    <item name="useDarkIcons">true</item>
+    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+  </style>
+
+  <style name="Widget.Memento.Toolbar.Light"
+    parent="ThemeOverlay.AppCompat.ActionBar">
+    <item name="colorControlNormal">#000</item>
+    <item name="titleTextColor">#000</item>
+  </style>
+
+  <style name="Widget.Memento.Toolbar.Dark"
+    parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+  <style name="ActionBar.Transparent.Dayslight"
+    parent="@style/Widget.AppCompat.Light.ActionBar">
+    <item name="background">@drawable/ab_transparent_dayslight</item>
+    <item name="progressBarStyle">@style/ProgressBar.Dayslight</item>
+  </style>
+
+  <style name="PopupMenu.Dayslight"
+    parent="@style/Widget.AppCompat.Light.PopupMenu">
+    <item name="android:popupBackground">@drawable/menu_dropdown_panel_dayslight</item>
+  </style>
+
+  <style name="DropDownListView.Dayslight"
+    parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+    <item name="android:listSelector">@drawable/selectable_background_dayslight</item>
+  </style>
+
+  <style name="ActionBarTabStyle.Dayslight"
+    parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+    <item name="android:background">@drawable/tab_indicator_ab_dayslight</item>
+  </style>
+
+  <style name="DropDownNav.Dayslight"
+    parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+    <item name="android:background">@drawable/spinner_background_ab_dayslight</item>
+    <item name="android:popupBackground">@drawable/menu_dropdown_panel_dayslight</item>
+    <item name="android:dropDownSelector">@drawable/selectable_background_dayslight</item>
+  </style>
+
+  <style name="ProgressBar.Dayslight"
+    parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+    <item name="android:progressDrawable">@drawable/progress_horizontal_dayslight</item>
+  </style>
+
+
+  <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+  <style name="Theme.Dayslight.Widget"
+    parent="@style/Theme.AppCompat">
+    <item name="popupMenuStyle">@style/PopupMenu.Dayslight</item>
+    <item name="dropDownListViewStyle">@style/DropDownListView.Dayslight</item>
+  </style>
+
+  <style name="ProgressBarDaysLight"
+    parent="android:Widget.ProgressBar.Horizontal">
+    <item name="android:progressDrawable">@drawable/dayslight_progress_horizontal_holo_light
+    </item>
+    <item name="android:indeterminateDrawable">
+      @drawable/dayslight_progress_indeterminate_horizontal_holo_light
+    </item>
+    <item name="android:minHeight">16dip</item>
+    <item name="android:maxHeight">16dip</item>
+  </style>
+
+</resources>

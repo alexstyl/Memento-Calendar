@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="@dimen/padding_upcoming_vertical"
+  android:gravity="center_vertical"
+  android:orientation="horizontal">
+
+  <com.alexstyl.specialdates.ui.widget.DayMarker
+    android:id="@+id/daycircle"
+    android:layout_width="@dimen/size_daymarker"
+    android:layout_height="@dimen/size_daymarker"
+    android:layout_gravity="center_vertical"
+    android:layout_marginRight="@dimen/upcoming_spacing_indicator"
+    android:elevation="4dp" />
+
+
+  <com.alexstyl.specialdates.ui.MementoCardView
+    style="@style/CardViewStyle.Red"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:id="@+id/card_back"
+      style="@style/Upcoming.TodayBackground"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:minHeight="@dimen/size_daymarker"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@android:id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/card_content_padding"
+        android:layout_marginTop="@dimen/card_content_padding"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:paddingLeft="@dimen/card_content_padding"
+        android:paddingRight="@dimen/card_content_padding"
+        android:textColor="@color/card_text"
+        android:textSize="16sp"
+        tools:text="Alexandros, Takis, Mpampis etc" />
+
+
+      <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_grey" />
+
+      <com.alexstyl.specialdates.ui.widget.AvatarLayout
+        android:id="@+id/avatars"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mini_avatar_size"
+        android:layout_margin="@dimen/padding_tight"
+        android:gravity="right"
+        tools:visiblity="visible" />
+    </LinearLayout>
+
+  </com.alexstyl.specialdates.ui.MementoCardView>
+</LinearLayout>

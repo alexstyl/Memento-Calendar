@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:padding="@dimen/widget_margin">
+
+  <RelativeLayout
+    android:id="@+id/upcoming_widget_background"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/avatar_size"
+    android:background="@drawable/card_no_paddings"
+    android:padding="@dimen/padding_tight">
+
+    <TextView
+      android:id="@android:id/text1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:text="@string/today_widget_empty"
+      android:textColor="@color/card_text"
+      android:textSize="18sp" />
+  </RelativeLayout>
+
+</FrameLayout>

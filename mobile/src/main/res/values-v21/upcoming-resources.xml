@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Upcoming.ShowMore"
+    parent="Upcoming.EventItem">
+    <item name="android:background">@drawable/selectable_background_dayslight</item>
+  </style>
+
+</resources>

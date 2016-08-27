@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <dimen name="horizontal_divider_height">1dp</dimen>
+  <color name="divider_grey">#33333333</color>
+
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="TextAppearance.BloodCherry.TextView.OnRed.Medium"
+    parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/font_on_red</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+  <style name="TextAppearance.BloodCherry.TextView.OnRed.Small"
+    parent="@android:style/TextAppearance.Small">
+    <item name="android:textColor">@color/font_on_red</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+  <style name="TextAppearance.BloodCherry.TextView.OnRed.Large"
+    parent="@android:style/TextAppearance.Large">
+    <item name="android:textColor">@color/font_on_red</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+
+  <style name="TextAppearance.BloodCherry.TextView.Medium"
+    parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/card_text</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+
+  <style name="TextAppearance.BloodCherry.TextView.Large"
+    parent="@android:style/TextAppearance.Large">
+    <item name="android:textColor">@color/card_text</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+
+  <style name="DayCircle.Day"
+    parent="TextAppearance.AppCompat.Small">
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+  <style name="TextAppearance.InitialsView"
+    parent="TextAppearance.AppCompat">
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">@dimen/initials_textSize</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
+
+
+</resources>

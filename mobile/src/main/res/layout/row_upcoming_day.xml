@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/upcoming_events_background"
+  style="@style/CardViewStyle"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginBottom="@dimen/upcoming_vertical_bottom_padding_between_each_card"
+  android:layout_marginTop="@dimen/upcoming_vertical_top_padding_between_each_card"
+  android:orientation="vertical"
+  tools:showIn="@layout/activity_main">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/upcoming_events_title"
+      style="@style/Upcoming.DateTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fontFamily="sans-serif-condensed"
+      tools:text="Monday, 13 January" />
+
+    <com.alexstyl.specialdates.ui.HorizontalDivider style="@style/Divider" />
+
+    <com.alexstyl.specialdates.upcoming.ui.UpcomingEventsView
+      android:id="@+id/upcoming_events_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/upcoming_event_padding_vertical" />
+  </LinearLayout>
+
+</com.alexstyl.specialdates.ui.MementoCardView>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+  tools:ignore="MissingTranslation">
+  <string name="key_debug_refresh_widget"
+    translatable="false">key_debug_refresh_widget</string>
+  <string name="key_debug_daily_reminder"
+    translatable="false">key_debug_daily_reminder</string>
+
+
+  <string name="key_debug_start_calendar"
+    translatable="false">key_debug_start_calendar</string>
+  <string name="key_debug_animation_playground"
+    translatable="false">key_debug_animation_playground</string>
+</resources>

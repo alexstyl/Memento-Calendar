@@ -1,0 +1,26 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="CardViewStyle">
+    <item name="android:foreground">@drawable/neutral_ripple</item>
+  </style>
+
+  <style name="CardViewStyle.Red">
+    <item name="android:foreground">@drawable/red_ripple</item>
+  </style>
+
+  <style name="CardViewStyle.Blue">
+    <item name="android:foreground">@drawable/blue_ripple</item>
+  </style>
+
+
+  <style name="SelectableBackground">
+    <item name="android:background">?android:selectableItemBackground</item>
+  </style>
+
+
+  <style name="TouchTarget">
+    <item name="android:background">@drawable/neutral_ripple</item>
+  </style>
+
+
+</resources>

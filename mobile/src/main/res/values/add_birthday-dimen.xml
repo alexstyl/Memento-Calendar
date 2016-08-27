@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="add_birthday_row_height">64dp</dimen>
+  <dimen name="add_birthday_row_width">64dp</dimen>
+
+  <dimen name="add_birthday_avatar_starting_width">0dp</dimen>
+  <dimen name="add_birthday_avatar_starting_height">0dp</dimen>
+
+  <dimen name="add_birthday_avatar_actual_width">48dp</dimen>
+  <dimen name="add_birthday_avatar_actual_height">48dp</dimen>
+
+  <dimen name="add_birthday_image_height">58dp</dimen>
+  <dimen name="add_birthday_image_width">58dp</dimen>
+
+</resources>

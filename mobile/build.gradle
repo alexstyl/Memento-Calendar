@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.21.5'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    defaultConfig {
+        applicationId 'com.alexstyl.specialdates'
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 55
+        versionName '3.6'
+
+        manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
+        buildConfigField 'String', 'API_KEY_VENDING', '\"' + androidVendingKey + "\""
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url 'http://dl.bintray.com/novoda/maven'
+    }
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+dependencies {
+
+    compile fileTree(dir: 'libs', exclude: 'android-support-v4.jar', include: ['*.jar'])
+    compile project(':numberpicker')
+    compile 'com.android.support:support-annotations:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'net.danlew:android.joda:2.8.0'
+    compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
+        exclude module: 'support-v4'
+    }
+    compile 'com.novoda:notils:2.2.15'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.novoda:simple-chrome-custom-tabs:0.1.3'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    debugCompile 'com.facebook.stetho:stetho:1.3.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'joda-time:joda-time:2.3'
+
+    androidTestCompile 'junit:junit:4.12'
+}

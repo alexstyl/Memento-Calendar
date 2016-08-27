@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+
+  <ImageView
+    android:id="@+id/upcoming_widget_wallpaper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    tools:background="@android:color/black" />
+
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.alexstyl.specialdates.ui.widget.MementoToolbar
+      android:id="@+id/memento_toolbar"
+      style="@style/Widget.Memento.Toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+
+    <com.alexstyl.specialdates.widgetprovider.UpcomingWidgetPreviewLayout
+      android:id="@+id/upcoming_widget_preview"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="100" />
+
+    <com.alexstyl.specialdates.widgetprovider.UpcomingWidgetConfigurationPanel
+      android:id="@+id/upcoming_widget_configure_panel"
+      android:layout_width="match_parent"
+      android:layout_height="240dp"
+      android:layout_gravity="center"
+      android:background="@drawable/card"
+      android:padding="@dimen/upcoming_widget_preview_horizontal_padding" />
+
+  </LinearLayout>
+
+</FrameLayout>

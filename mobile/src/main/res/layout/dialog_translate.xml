@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/url_link"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clickable="false"
+  android:focusable="false"
+  android:orientation="vertical"
+  android:paddingTop="@dimen/abc_dialog_padding_top_material">
+
+
+  <TextView
+    android:id="@android:id/message"
+    style="@style/TextAppearance.AppCompat.Subhead"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="?attr/dialogPreferredPadding"
+    android:paddingRight="?attr/dialogPreferredPadding"
+    android:paddingTop="@dimen/abc_dialog_padding_top_material"
+    android:text="@string/translate_the_app_message" />
+
+
+  <View
+    android:id="@+id/textSpacerNoButtons"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/abc_dialog_padding_top_material"
+    android:visibility="gone" />
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/abc_dialog_padding_top_material"
+    android:background="?attr/colorAccent"
+    android:clickable="true"
+    android:enabled="true"
+    android:focusable="true"
+    android:fontFamily="sans-serif-condensed"
+    android:gravity="center"
+    android:longClickable="true"
+    android:paddingBottom="@dimen/abc_dialog_padding_top_material"
+    android:paddingTop="@dimen/abc_dialog_padding_top_material"
+    android:text="@string/link_translate_short"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textColor="@android:color/white" />
+
+  <FrameLayout
+    style="?attr/buttonBarStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="8dp">
+
+    <Button
+      android:id="@+id/button_ok"
+      style="@style/Widget.AppCompat.Button.Borderless.Colored"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="end"
+      android:text="@android:string/ok" />
+
+    <Button
+      android:id="@+id/button_copy"
+      style="@style/Widget.AppCompat.Button.Borderless.Colored"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start"
+      android:text="@android:string/copyUrl" />
+  </FrameLayout>
+
+</LinearLayout>

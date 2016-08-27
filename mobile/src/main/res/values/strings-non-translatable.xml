@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+  tools:ignore="MissingTranslation">
+  <string name="app_name">@string/localised_app_name</string>
+  <string name="Memento_Calendar">Memento Calendar</string>
+  <string name="email">email</string>
+  <string name="email_start">Email</string>
+    <string name="lorem_infinite">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas lectus odio, nec cursus orci gravida vitae. Phasellus mauris libero, mollis nec dignissim ac, vestibulum ut felis. Nam vestibulum enim sit amet sem fringilla sollicitudin. Sed mattis ornare elit, et porta lacus lobortis quis. Integer sit amet venenatis nulla. Nam auctor tortor eu nulla lobortis, eu bibendum lorem rhoncus. Sed eget mi fringilla, scelerisque leo id, molestie purus. In hac habitasse platea dictumst. Pellentesque rhoncus nec eros at tristique. Praesent metus ante, tristique sed luctus ac, accumsan vitae massa. Ut ut nisi justo. Sed sit amet semper erat. In convallis vulputate dui, quis luctus lectus elementum et.
+
+Suspendisse ut congue dui. Duis finibus dui sed odio hendrerit pretium ut at nisl. Vestibulum eu pulvinar ex. Nullam ut erat id neque venenatis posuere sit amet at nulla. Pellentesque sodales ornare tellus, ac dictum sapien consequat eu. Mauris commodo lorem eget lorem viverra dictum. Ut ultricies sit amet erat vitae porttitor. Aliquam erat volutpat. Sed nec elit et velit scelerisque vehicula. Quisque semper odio quis tempor posuere. Nunc a urna nisl. Mauris porta elit vitae risus semper sagittis. Morbi tristique, magna quis aliquam tristique, metus nisi vehicula libero, et fermentum metus justo non nisi.
+
+Maecenas ut urna malesuada, lobortis dui non, rhoncus lorem. Sed dictum enim tellus, sollicitudin tempor enim luctus nec. Quisque auctor ligula a nisi mollis elementum. Suspendisse lacinia, mi in luctus pharetra, ex neque placerat nulla, vel sagittis augue lectus scelerisque velit. Nullam lacinia, eros ac interdum ultricies, neque elit pellentesque tellus, iaculis efficitur tortor velit sit amet felis. Aenean dui risus, iaculis vel diam eu, faucibus condimentum sem. Etiam rutrum nunc nec diam condimentum vestibulum. Cras sodales pretium ante, eu aliquet libero pellentesque non. Nam sed iaculis ante, sit amet laoreet risus. Sed ligula justo, rhoncus vel metus.</string>
+
+  <string name="link_translate_short">goo.gl/GxZd6M</string>
+
+  <plurals name="plural_birthday">
+    <item quantity="one">@string/birthday</item>
+    <item quantity="other">@string/birthdays</item>
+  </plurals>
+  <plurals name="plural_nameday">
+    <item quantity="one">@string/nameday</item>
+    <item quantity="other">@string/namedays</item>
+  </plurals>
+
+  <plurals name="todays_nameday">
+    <item quantity="one">@string/celebrates_one_namedays</item>
+    <item quantity="other">@string/todays_namedays</item>
+  </plurals>
+
+</resources>

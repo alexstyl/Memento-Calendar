@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/upcoming_widget_preview_transparecy_label" />
+
+    <SeekBar
+      android:id="@+id/upcoming_widget_opacity"
+      style="@style/UpcomingWidget.Seekbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="18dp" />
+  </LinearLayout>
+
+  <CheckBox
+    android:id="@+id/upcoming_widget_dark_theme"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="18dp"
+    android:text="@string/upcoming_widget_dark_theme_label" />
+
+
+</merge>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/CardViewStyle"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <LinearLayout
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/card_content_padding"
+    android:paddingLeft="@dimen/card_content_padding"
+    android:paddingRight="@dimen/card_content_padding"
+    android:paddingTop="@dimen/card_content_padding">
+
+    <TextView
+      android:id="@+id/name_celebrating"
+      style="@style/Card.Header"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="Αλέκος" />
+
+    <TextView
+      style="@style/Card.Subtitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/padding_tight"
+      android:text="@string/search_namedays_on"
+      android:textColor="@color/nameday_blue" />
+
+    <LinearLayout
+      android:id="@+id/dates"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:divider="@drawable/abc_list_divider_mtrl_alpha"
+      android:orientation="vertical"
+      android:showDividers="middle" />
+
+  </LinearLayout>
+
+
+</com.alexstyl.specialdates.ui.MementoCardView>

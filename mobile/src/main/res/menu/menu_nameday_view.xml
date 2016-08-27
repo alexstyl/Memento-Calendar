@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto/android">
+
+  <item
+    android:id="@+id/action_share"
+    android:enabled="true"
+    android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+    android:orderInCategory="100"
+    android:title="@string/share"
+    app:showAsAction="always" />
+
+</menu>
