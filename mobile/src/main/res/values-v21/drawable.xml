@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="selectable_back" type="drawable">@drawable/neutral_ripple</item>
+    <item name="selectable_back_no_bounds" type="drawable">@drawable/neutral_ripple_no_mask</item>
+</resources>
+
+
+

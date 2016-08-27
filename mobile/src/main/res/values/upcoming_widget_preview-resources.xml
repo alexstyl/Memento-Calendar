@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="upcoming_widget_preview_vertical_margin">80dp</dimen>
+  <dimen name="upcoming_widget_preview_horizontal_padding">24dp</dimen>
+
+  <string name="upcoming_widget_configure_save">@string/Done</string>
+  <string name="upcoming_widget_preview_transparecy_label">@string/Transparency</string>
+  <string name="upcoming_widget_dark_theme_label">@string/Dark_themeQ</string>
+  <string name="upcoming_widget_configure_subtitle">@string/Contact_names</string>
+
+
+  <color name="upcoming_widget_light_textcolor">@color/card_text</color>
+  <color name="upcoming_widget_light_background">#FFFFFFFF</color>
+  <color name="upcoming_widget_dark_textcolor">@android:color/white</color>
+  <color name="upcoming_widget_dark_background">#FF424242</color>
+
+
+  <style name="UpcomingWidget" />
+
+  <style name="UpcomingWidget.Seekbar">
+    <item name="android:max">4</item>
+  </style>
+</resources>

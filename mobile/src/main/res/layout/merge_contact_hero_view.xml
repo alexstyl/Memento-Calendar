@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <FrameLayout
+    android:id="@+id/contact_hero_avatar_holder"
+    android:layout_width="@dimen/add_birthday_image_width"
+    android:layout_height="@dimen/add_birthday_image_height">
+
+    <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:src="@drawable/ic_person_black_24dp" />
+
+    <com.alexstyl.specialdates.ui.widget.ColorImageView
+      android:id="@+id/contacthero_avatar"
+      android:layout_width="@dimen/add_birthday_avatar_starting_width"
+      android:layout_height="@dimen/add_birthday_avatar_starting_height"
+      android:layout_gravity="center"
+      app:isCircle="true"
+      tools:src="@mipmap/ic_launcher" />
+
+  </FrameLayout>
+
+
+  <com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView
+    android:id="@+id/contacthero_name_suggestion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/padding"
+    style="@style/Widget.AppCompat.EditText"
+    android:hint="@string/addbirthday_autocomplete_hint"
+    android:inputType="textPersonName"
+    android:maxLines="1" />
+</merge>
+

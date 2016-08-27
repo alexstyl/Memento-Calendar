@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="?attr/selectableItemBackground"
+    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:text="30 February" />

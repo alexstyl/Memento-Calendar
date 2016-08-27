@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+  tools:ignore="MissingTranslation">
+  <string name="no_contacts_text">@string/No_contacts_with_events_found_Tap_the_plus_to_add_some</string>
+</resources>

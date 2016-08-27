@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.widget.ColorImageView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Upcoming.Avatar"
+    android:layout_width="@dimen/mini_avatar_size"
+    android:layout_height="@dimen/mini_avatar_size"
+    android:layout_marginLeft="@dimen/padding_tight"
+    android:layout_marginStart="@dimen/padding_tight" />
+

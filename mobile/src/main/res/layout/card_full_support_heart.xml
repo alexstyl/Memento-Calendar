@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/parent"
+  style="@style/CardViewStyle"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_contact_avatar_size"
+    android:orientation="horizontal">
+
+    <FrameLayout
+      style="@style/Support.HeartView.Container"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/card_contact_avatar_size"
+      android:layout_weight="2">
+
+      <ImageView
+        android:id="@+id/support_card_heroimage"
+        style="@style/Support.HeartView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="5"
+      android:orientation="vertical"
+      android:paddingLeft="@dimen/card_content_padding"
+      android:paddingRight="@dimen/card_content_padding">
+
+      <TextView
+        android:id="@+id/support_card_title"
+        style="@style/Card.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/card_content_padding"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="@string/support_title" />
+
+      <TextView
+        android:id="@+id/support_card_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_tight"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/support_app_description_short"
+        android:textSize="@dimen/card_text_size_body" />
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+
+</com.alexstyl.specialdates.ui.MementoCardView>
+

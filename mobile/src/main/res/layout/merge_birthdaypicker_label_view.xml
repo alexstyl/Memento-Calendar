@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <ImageView
+    android:layout_width="@dimen/add_birthday_image_width"
+    android:layout_height="@dimen/add_birthday_image_height"
+    android:scaleType="center"
+    android:src="@drawable/ic_cake_black_24dp" />
+
+  <TextView
+    android:id="@+id/birthdaypicker_label"
+    style="@style/Widget.AppCompat.EditText"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/padding"
+    android:clickable="false"
+    android:drawableRight="@drawable/spinner_ab_default_dayslight"
+    android:focusable="false"
+    android:hint="@string/birthday"
+    android:visibility="visible"
+    tools:text="No birthday set" />
+</merge>
+

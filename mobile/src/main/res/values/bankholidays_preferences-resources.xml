@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="bankholidays_preferences_title">@string/Display_Bankholidays</string>
+  <string name="bankholidays_preferences_language_title">@string/Bankholidays_Country</string>
+  <string name="bankholidays_preferences_only_greek_supported_message">@string/Bankholidays_are_currently_supported_only_for_Greek</string>
+</resources>

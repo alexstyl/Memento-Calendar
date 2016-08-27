@@ -1,0 +1,79 @@
+<resources>
+
+  <!-- Default screen margins, per the Android Design guidelines. -->
+  <dimen name="activity_horizontal_margin">8dp</dimen>
+  <dimen name="activity_vertical_margin">8dp</dimen>
+  <dimen name="padding">16dp</dimen>
+  <dimen name="padding_tight">8dp</dimen>
+
+  <dimen name="title_textsize">22sp</dimen>
+  <dimen name="row_textsize">18sp</dimen>
+
+  <dimen name="avatar_size">64dp</dimen>
+  <dimen name="avatar_size_min">32dp</dimen>
+
+
+  <item name="landscape_weight"
+    format="float"
+    type="dimen">1
+  </item>
+
+  <dimen name="contactdetail_height">250dp</dimen>
+  <dimen name="widgetHeight">48dp</dimen>
+  <dimen name="widget_margin">8dp</dimen>
+
+  <dimen name="margin_top_empty_view">24dp</dimen>
+
+
+  <dimen name="navigation_min_height">52dp</dimen>
+  <dimen name="navigation_image_margin">12dp</dimen>
+  <dimen name="navigation_horizontal_padding">16dp</dimen>
+  <dimen name="navigation_label_textSize">22sp</dimen>
+  <dimen name="navigation_min_end_padding">56dp</dimen>
+
+
+  <dimen name="list_padding_horizontal">16dp</dimen>
+  <dimen name="circle_avatar_size">60dp</dimen>
+
+
+  <dimen name="mab_height">56dp</dimen>
+  <dimen name="touch_target">48dp</dimen>
+  <dimen name="dialog_button_paddingHorizontal">16dp</dimen>
+  <dimen name="dialog_button_minHeight">36dp</dimen>
+
+  <dimen name="dialog_button_content_paddingTop">24dp</dimen>
+  <dimen name="touch_target_small">36dp</dimen>
+
+  <dimen name="initials_textSize">24sp</dimen>
+
+  <dimen name="about_header">14sp</dimen>
+  <dimen name="about_body">14sp</dimen>
+  <dimen name="about_footer">14sp</dimen>
+  <dimen name="paragraph">36sp</dimen>
+
+
+  <dimen name="small_avatar_radius">48dp</dimen>
+  <dimen name="material_icon_padding">16dp</dimen>
+  <dimen name="event_row_height">32dp</dimen>
+  <dimen name="widget_block_x1">40dp</dimen>
+  <dimen name="widget_block_x2">110dp</dimen>
+  <dimen name="widget_block_x3">180dp</dimen>
+  <dimen name="widget_block_x4">250dp</dimen>
+
+
+  <dimen name="mini_avatar_size">24dp</dimen>
+  <dimen name="avatar_placeholder_height">38dp</dimen>
+  <dimen name="size_daymarker">56dp</dimen>
+  <dimen name="fab_margin">16dp</dimen>
+
+  <dimen name="padding_month_header_vertical">38dp</dimen>
+  <dimen name="padding_upcoming_vertical">18dp</dimen>
+
+
+  <!-- design -->
+  <dimen name="detail_backdrop_height">360dp</dimen>
+
+
+  <dimen name="list_item_avatar_size">40dp</dimen>
+  <dimen name="fab_size_normal">48dp</dimen>
+</resources>

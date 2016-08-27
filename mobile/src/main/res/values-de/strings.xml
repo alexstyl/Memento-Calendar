@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
+  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Geburtstage Memento</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="birthday">Geburtstag</string>
+    <string name="birthdays">Geburtstage</string>
+    <string name="namedays">Namenstage</string>
+    <string name="nameday">Namenstag</string>
+    <string name="contacts_birthday">"%s hat Geburtstag!"</string>
+    <string name="contacts_nameday">"Es ist %s's Namenstag!"</string>
+    <string name="namedays_no_names">Keine Namenstage für heute</string>
+    <string name="birthday_no_birthday">Keiner Ihrer Konatkte hat heute Geburtstag</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="disable">Deaktivieren</string>
+    <string name="enable">Aktivieren</string>
+    <string name="today_celebrates_one">%1$s</string>
+    <string name="today_celebrates_two">%1$s und %2$s</string>
+    <string name="today_celebrates_many">%1$s und %2$d weitere</string>
+    <string name="about">Über</string>
+    <string name="service_dailyreminder">Tägliche Erinnerung</string>
+    <string name="display_namedays">Namenstage anzeigen</string>
+    <string name="display_namedays_on">Namenstage werden für alle Ihre Kontakte angezeigt</string>
+    <string name="display_namedays_off">Namenstage werden nicht angezeigt</string>
+    <string name="contact_dev">Den Entwickler kontaktieren</string>
+    <string name="contact_dev_summary">Haben Sie einen Bug gefunden? Oder Sie haben einen Vorschlag? Lassen Sie es uns wissen!</string>
+    <string name="choose">Wähle</string>
+    <string name="number">Nummer</string>
+    <string name="has_nameday_on">Namenstag am %s</string>
+    <string name="has_birthday_on">Geburtstag am %s</string>
+    <string name="has_birthday_on_age">Wird %1$d am %2$s</string>
+    <string name="action_call">Anrufen</string>
+    <string name="action_text">SMS schreiben</string>
+    <string name="action_send_mail">Email schreiben</string>
+    <string name="no_app_found">Es wurde keine Anwendung zum Durchführen dieser Aktion gefunden</string>
+    <string name="send_mail_via">Email schreiben via</string>
+    <string name="daily_reminder">Tägliche Erinnerung</string>
+    <string name="daily_reminder_summary">"Tägliche Erinnerung für jedes Ereignis"</string>
+    <string name="ringtone">Klingelton</string>
+    <string name="vibrate">"Vibration"</string>
+    <string name="daily_reminder_time_summary">Jeden Tag um %s</string>
+    <string name="set_time">Zeit festlegen</string>
+    <string name="set">Fertig</string>
+    <string name="ringtone_silent">Lautlos</string>
+    <string name="turns_age">Wird %1$d</string>
+    <!-- The name for contacts with empty Display name-->
+    <string name="message">Nachricht</string>
+    <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
+</resources>

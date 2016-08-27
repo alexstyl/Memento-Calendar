@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:showIn="@layout/row_upcoming_day">
+
+  <android.support.v7.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.alexstyl.specialdates.upcoming.ui.TitledTextView
+      android:id="@+id/upcoming_events_bankholidays"
+      style="@style/Upcoming.EventItem"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/upcoming_event_padding_vertical"
+      android:minHeight="48dp"
+      app:eventTitle="@string/upcoming_events_bankholidays_title"
+      app:eventTitleColor="@color/bankholiday_green" />
+
+    <com.alexstyl.specialdates.upcoming.ui.TitledTextView
+      android:id="@+id/upcoming_events_namedays"
+      style="@style/Upcoming.EventItem"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/upcoming_event_padding_vertical"
+      android:clickable="false"
+      android:minHeight="48dp"
+      app:eventTitle="@string/upcoming_events_namedays_title"
+      app:eventTitleColor="@color/nameday_blue" />
+
+    <com.alexstyl.specialdates.upcoming.ui.ContactEventView
+      android:id="@+id/upcoming_events_contact_one"
+      style="@style/Upcoming.ShowMore"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/upcoming_event_padding_vertical"
+      android:minHeight="48dp"
+      android:paddingLeft="@dimen/upcoming_event_padding_horizontal"
+      android:paddingRight="@dimen/upcoming_event_padding_horizontal" />
+
+    <com.alexstyl.specialdates.upcoming.ui.ContactEventView
+      android:id="@+id/upcoming_events_contact_two"
+      style="@style/Upcoming.ShowMore"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/upcoming_event_padding_vertical"
+      android:minHeight="48dp" />
+
+    <com.alexstyl.specialdates.ui.HorizontalDivider
+      android:id="@+id/upcoming_events_contact_to_more_divider"
+      style="@style/Divider" />
+
+    <Button
+      android:id="@+id/upcoming_events_show_more"
+      style="@style/Upcoming.ShowMore"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="@dimen/upcoming_event_padding_horizontal"
+      android:paddingRight="@dimen/upcoming_event_padding_horizontal"
+      tools:text="+1 more" />
+
+  </android.support.v7.widget.LinearLayoutCompat>
+</merge>

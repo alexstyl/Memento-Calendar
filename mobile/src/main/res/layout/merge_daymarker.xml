@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="@dimen/size_daymarker"
+  android:layout_height="@dimen/size_daymarker"
+  android:gravity="center"
+  android:orientation="vertical">
+
+
+  <TextView
+    android:id="@+id/daycircle_dayofweek"
+    style="@style/DayCircle.Day"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:includeFontPadding="false"
+    tools:text="ΠΑΡ"
+    tools:textColor="@color/past_date_grey" />
+
+  <TextView
+    android:id="@+id/daycircle_dateofmonth"
+    style="@style/DayCircle.Date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:includeFontPadding="false"
+    tools:text="24"
+    tools:textColor="@color/past_date_grey" />
+
+</LinearLayout>

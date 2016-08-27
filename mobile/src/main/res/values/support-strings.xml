@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="support_title">Like the app?</string>
+  <string name="support_app_description">I would really appreciate it if you can spend some minutes of your time to review the app. It means a lot to me and it motivates me to keep improving the app</string>
+  <string name="support_app_description_short">Got some minutes to rate the app?</string>
+
+  <string name="support_app_rate_button">@string/rate</string>
+  <string name="support_app_cancel_button">No, thanks</string>
+  <string name="support_thanks_for_rating">Thank you for supporting the app!</string>
+</resources>

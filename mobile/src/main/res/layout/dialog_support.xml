@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="?attr/dialogPreferredPadding"
+    android:paddingRight="?attr/dialogPreferredPadding"
+    android:paddingTop="@dimen/abc_dialog_padding_top_material">
+
+    <TextView
+        android:id="@android:id/message"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/support_message" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/abc_dialog_padding_top_material"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:scrollbars="none" />
+
+</LinearLayout>

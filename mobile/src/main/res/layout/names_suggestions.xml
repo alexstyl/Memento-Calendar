@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/nameday_suggestions"
+  android:layout_width="match_parent"
+  android:layout_height="38dp"
+  android:layout_gravity="top"
+
+  android:background="@drawable/background_suggestions"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:paddingBottom="4dp"
+  android:paddingLeft="@dimen/card_padding_from_screen"
+  android:paddingRight="@dimen/card_padding_from_screen"
+  android:paddingTop="4dp" />

@@ -1,0 +1,6 @@
+<resources>
+
+    <dimen name="card_padding_horizontal">24dp</dimen>
+    <dimen name="card_spacing_between">16dp</dimen>
+
+</resources>

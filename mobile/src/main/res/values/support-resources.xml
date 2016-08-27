@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Support" />
+
+  <style name="Support.HeartView">
+    <item name="android:scaleType">center</item>
+    <item name="android:src">@drawable/ic_favorite_border_white_48dp</item>
+  </style>
+
+  <style name="Support.HeartView.Container">
+    <item name="android:background">@color/primary_red</item>
+  </style>
+
+</resources>

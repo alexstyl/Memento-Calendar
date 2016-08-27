@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/CardViewStyle"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginLeft="1dp"
+  android:layout_marginRight="1dp"
+  android:addStatesFromChildren="true"
+  android:clipChildren="false"
+  app:cardBackgroundColor="?attr/colorAccent">
+
+  <TextView
+    android:id="@android:id/text1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center_horizontal"
+    android:minHeight="48dp"
+    android:minWidth="88dp"
+    android:textColor="@color/main_white"
+    tools:text="Alex" />
+
+</com.alexstyl.specialdates.ui.MementoCardView>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+  <declare-styleable name="ColorImageView">
+    <attr name="isCircle"
+      format="boolean" />
+    <attr name="letterSize"
+      format="dimension" />
+  </declare-styleable>
+  <declare-styleable name="CompactCardView">
+    <attr name="android:src" />
+    <attr name="backgroundHeroColor"
+      format="reference" />
+    <attr name="primaryText"
+      format="string" />
+    <attr name="secondaryText"
+      format="string" />
+  </declare-styleable>
+
+  <declare-styleable name="ForegroundLinearLayout">
+    <attr name="android:foreground" />
+    <attr name="android:foregroundInsidePadding" />
+    <attr name="android:foregroundGravity" />
+  </declare-styleable>
+
+  <declare-styleable name="ForegroundImageView">
+    <attr name="android:foreground" />
+  </declare-styleable>
+
+  <declare-styleable name="TitledTextView">
+    <attr name="eventTitleColor"
+      format="color" />
+    <attr name="eventTitle"
+      format="string" />
+  </declare-styleable>
+
+  <declare-styleable name="MementoCardView">
+    <attr name="cardBackgroundColor"
+      format="color" />
+  </declare-styleable>
+
+</resources>

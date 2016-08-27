@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/anchor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_tight">
+
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_contact_picture" />
+
+        <AutoCompleteTextView
+            android:id="@+id/autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|left"
+            android:layout_marginLeft="@dimen/padding_tight"
+            android:layout_marginRight="@dimen/padding_tight"
+            android:dropDownAnchor="@id/anchor"
+            android:dropDownWidth="wrap_content"
+            android:singleLine="true"
+            tools:text="Alex Styl" />
+
+    </LinearLayout>
+
+    <com.alexstyl.specialdates.ui.widget.NowLayout
+        android:id="@+id/events"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/card_padding_from_screen"
+        android:paddingRight="@dimen/card_padding_from_screen" />
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <CheckBoxPreference
+    android:key="@string/key_daily_reminder"
+    android:title="@string/enable" />
+
+  <RingtonePreference
+    android:key="@string/key_daily_reminder_ringtone"
+    android:ringtoneType="notification"
+    android:title="@string/ringtone" />
+
+  <CheckBoxPreference
+    android:defaultValue="false"
+    android:key="@string/key_daily_reminder_vibrate_enabled"
+    android:title="@string/vibrate" />
+
+  <com.alexstyl.specialdates.ui.widget.TimePreference
+    android:defaultValue="8:00"
+    android:key="@string/key_daily_reminder_time"
+    android:summary="@string/daily_reminder_time_summary"
+    android:title="@string/set_time" />
+
+</PreferenceScreen>

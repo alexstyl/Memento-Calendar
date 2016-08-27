@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/CardViewStyle"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="8dp">
+
+  <LinearLayout
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/card_content_padding"
+    android:paddingLeft="@dimen/card_content_padding"
+    android:paddingRight="@dimen/card_content_padding"
+    android:paddingTop="@dimen/card_content_padding">
+
+    <TextView
+      android:id="@+id/label_more"
+      style="@style/Card"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="@string/show_more"
+      android:textColor="@color/nameday_blue"
+      android:textSize="@dimen/card_text_size_body" />
+
+    <ProgressBar
+      android:id="@+id/progress"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center" />
+
+  </LinearLayout>
+
+
+</com.alexstyl.specialdates.ui.MementoCardView>

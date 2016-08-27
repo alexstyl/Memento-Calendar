@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/parent"
+  style="@style/CardViewStyle"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/card_spacing">
+
+    <FrameLayout
+      android:id="@+id/support_card_heroimage_container"
+      style="@style/Support.HeartView.Container"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/card_contact_avatar_size">
+
+      <ImageView
+        android:id="@+id/support_card_heroimage"
+        style="@style/Support.HeartView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_contact_avatar_size"
+        android:layout_gravity="center" />
+    </FrameLayout>
+
+
+    <TextView
+      android:id="@+id/support_card_description"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/card_spacing"
+      android:layout_marginRight="@dimen/card_spacing"
+      android:layout_marginTop="@dimen/card_spacing"
+      android:fontFamily="sans-serif-light"
+      android:text="@string/support_app_description_short"
+      android:textSize="@dimen/card_text_size_body_smaller" />
+
+  </LinearLayout>
+
+</com.alexstyl.specialdates.ui.MementoCardView>

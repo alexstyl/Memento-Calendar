@@ -1,0 +1,5 @@
+<resources>
+
+    <item name="landscape_weight" format="float" type="dimen">0.8</item>
+
+</resources>

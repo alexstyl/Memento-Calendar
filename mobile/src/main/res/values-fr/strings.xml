@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
+  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Fêtes Memento</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="tomorrow">Demain</string>
+    <string name="birthday">Anniversaire</string>
+    <string name="birthdays">Anniversaires</string>
+    <string name="namedays">Fêtes</string>
+    <string name="nameday">Fête</string>
+    <string name="contacts_birthday">"C'est l'anniversaire de %s!"</string>
+    <string name="contacts_nameday">"C'est la fête de %s!"</string>
+    <string name="namedays_no_names">Pas de fête aujourd\'hui</string>
+    <string name="birthday_no_birthday">Pas de contact ayant son anniversaire aujourd\'hui</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="disable">Désactivation</string>
+    <string name="enable">Activation</string>
+    <string name="today_celebrates_one">%1$s</string>
+    <string name="today_celebrates_two">%1$s et %2$s</string>
+    <string name="today_celebrates_many">%1$s et %2$d encore</string>
+    <string name="about">À propos</string>
+    <string name="service_dailyreminder">Service de rappel quotidien</string>
+    <string name="display_namedays">Apparition des fêtes</string>
+    <string name="display_namedays_on">Les fêtes se montreront pour tous les contacts</string>
+    <string name="display_namedays_off">Les fêtes ne se montreront pas</string>
+    <string name="contact_dev">Communiquez avec le programmateur</string>
+    <string name="contact_dev_summary">Est-ce qu\'il y a des problèmes? Est-ce que vous avez des suggestions concernant l\' application? Touchez ici</string>
+    <string name="choose">Choisissez</string>
+    <string name="number">un numéro de téléphone</string>
+    <string name="has_nameday_on">Sa fête est %s</string>
+    <string name="has_birthday_on">Son anniversaire est %s</string>
+    <string name="has_birthday_on_age">Aura %1$d ans %2$s</string>
+    <string name="action_call">Appel</string>
+    <string name="action_text">Envoi un message</string>
+    <string name="action_send_mail">Envoi un courriel</string>
+    <string name="no_app_found">Pas d\' application existante afin que cette action se termine</string>
+    <string name="send_mail_via">Envoi un courriel via</string>
+    <string name="daily_reminder">Rappel quotidien</string>
+    <string name="daily_reminder_summary">"Rappelle-moi les fêtes et les anniversaires de chaque jour"</string>
+    <string name="ringtone">Son</string>
+    <string name="vibrate">"Vibrer au rappel"</string>
+    <string name="daily_reminder_time_summary">Chaque jour à %s</string>
+    <string name="set_time">Réglage de l\'heure</string>
+    <string name="set">Fin</string>
+    <string name="ringtone_silent">Silencieux</string>
+    <string name="contacts_today">Contacts qui fêtent aujourd\'hui</string>
+    <string name="no_contacts_to_wish">Pas de contacts ayant sα fête ou son anniversaire aujourd\'hui</string>
+    <string name="turns_age">Aura %1$d</string>
+    <string name="share_text">Voyez %1$s - Une application moderne pour les anniversaires et les fêtes des contacts pour Android!Téléchargez-la à %2$s</string>
+    <string name="share_via">Partagez via</string>
+    <string name="licences">Licences</string>
+    <string name="about_dev">Développée et dessinée par Alex Styl</string>
+    <string name="about_special_thanks">"Remerciements spéciaux\n
+        \nAndreas Sfakianakis pour son travail à la librairie de Greeklish
+        \nKosta Stoupas pour la traduction en allemand
+        \nAggela Stylianidou pour la traduction en français"</string>
+    <string name="about_thanks_special_someone">"et *%s* qui utilisez et supportez l'application! :)"</string>
+    <string name="about_contact">Est-se qu\' il y a des problèmes concernant l\' application? Est-ce que vous avez des suggestions concernant l\' application? Envoyez un courriel à %s</string>
+    <string name="you">"Vous"</string>
+    <string name="thanks_for_support">Merci de supporter l\'application</string>
+    <!-- The name for contacts with empty Display name-->
+    <string name="title_add_birthday">Ajouter anniversaire</string>
+    <string name="search">Rechercher</string>
+    <string name="and">et</string>
+    <string name="no_sound">Silencieux</string>
+    <string name="share">Partager</string>
+    <string name="support_app">Supporter l\'application</string>
+    <string name="fb_go_to_fanpage">Ouvrir Facebook</string>
+    <string name="rate_rate_ask">Comment évalueriez-vous l\'application?</string>
+    <string name="rate_1_stars">"C\'est un peu horrible"</string>
+    <string name="rate_2_stars">"Je ne l'aime pas"</string>
+    <string name="rate_3_stars">"C'est ok"</string>
+    <string name="rate_4_stars">"C'est bien"</string>
+    <string name="rate_5_stars">"Je l'adore!"</string>
+    <string name="rate">Evaluer</string>
+    <string name="message">Message</string>
+    <string name="no_results_found">Aucun résultat trouvé</string>
+    <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
+</resources>

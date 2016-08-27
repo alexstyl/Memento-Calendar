@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:focusable="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingLeft="@dimen/card_content_padding"
+      android:paddingRight="@dimen/card_content_padding"
+      android:paddingTop="@dimen/card_content_padding">
+
+      <TextView
+        style="@style/Card.Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/namedays" />
+
+      <TextView
+        android:id="@+id/namedaycard_names"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_content_padding"
+        android:layout_marginTop="@dimen/card_content_padding"
+        tools:text="@string/namedays_no_names"
+        android:textAppearance="@style/Card" />
+    </LinearLayout>
+
+    <com.alexstyl.specialdates.ui.HorizontalDivider style="@style/Divider" />
+
+    <Button
+      android:id="@+id/namedays_card_share"
+      style="@style/TouchTarget"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/share"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
+  </LinearLayout>
+</merge>

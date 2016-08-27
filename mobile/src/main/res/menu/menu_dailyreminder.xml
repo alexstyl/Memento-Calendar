@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto/android">
+
+    <item
+        android:title="ActionViewSwitch"
+        android:id="@+id/master_switch"
+        app:actionLayout="@layout/preference_labeled_switch"
+        app:showAsAction="always"
+        />
+
+</menu>
