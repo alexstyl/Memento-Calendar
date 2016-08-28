@@ -20,7 +20,6 @@ import java.util.Locale;
 
 import net.simonvt.numberpicker.NumberPicker;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class BirthdayDatePicker extends LinearLayout {
 
     private MonthLabels labels;
@@ -128,13 +127,6 @@ public class BirthdayDatePicker extends LinearLayout {
         } else {
             return new Birthday(dayOfMonth, month);
         }
-    }
-
-    public void resetDisplayingDate() {
-        dayPicker.setValue(today.getDayOfMonth());
-        monthPicker.setValue(today.getMonth());
-        yearPicker.setValue(today.getYear());
-        includesYearCheckbox.setChecked(true);
     }
 
     private boolean isDisplayingYear() {

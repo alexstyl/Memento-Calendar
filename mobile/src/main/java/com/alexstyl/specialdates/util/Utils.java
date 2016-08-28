@@ -54,18 +54,8 @@ import org.json.JSONObject;
  */
 public class Utils {
 
-    public static final long NANO_IN_MILLIS = 1000000;
-
     // Prevents instantiation.
     private Utils() {
-    }
-
-    /**
-     * Uses static final constants to detect if the device's platform version is
-     * Gingerbread or later.
-     */
-    public static boolean hasGingerbread() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
     }
 
     /**
@@ -74,14 +64,6 @@ public class Utils {
      */
     public static boolean hasHoneycomb() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-    }
-
-    /**
-     * Uses static final constants to detect if the device's platform version is
-     * Honeycomb MR1 or later.
-     */
-    public static boolean hasHoneycombMR1() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
     }
 
     /**
@@ -128,7 +110,7 @@ public class Utils {
     }
 
     public static boolean hasMarshmallow() {
-        return Build.VERSION.SDK_INT >= 23; //TODO replace
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
     /**

@@ -30,7 +30,4 @@ class ContactCache<T extends Contact> {
         cache.evictAll();
     }
 
-    public boolean containsContactWith(long contactID) {
-        return cache.get(contactID) != null;
-    }
 }
