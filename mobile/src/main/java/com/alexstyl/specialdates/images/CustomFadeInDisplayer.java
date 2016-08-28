@@ -25,11 +25,6 @@ public class CustomFadeInDisplayer implements BitmapDisplayer {
         this.transparent = new ColorDrawable(resources.getColor(android.R.color.transparent));
     }
 
-    private CustomFadeInDisplayer() {
-        mResources = null;
-        this.transparent = null;
-    }
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {

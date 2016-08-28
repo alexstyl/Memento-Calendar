@@ -43,8 +43,4 @@ class GoToTodayEnabler {
         return ViewCompat.canScrollVertically(recyclerView, ViewCompat.LAYOUT_DIRECTION_LTR);
     }
 
-    public interface Listener {
-
-        void onGoToTodayUpdated();
-    }
 }
