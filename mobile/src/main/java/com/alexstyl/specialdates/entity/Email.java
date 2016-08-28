@@ -4,7 +4,6 @@ package com.alexstyl.specialdates.entity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.util.Utils;
 
 public class Email extends DataType {

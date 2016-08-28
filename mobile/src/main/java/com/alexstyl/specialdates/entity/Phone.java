@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.provider.Telephony;
 import android.telephony.PhoneNumberUtils;
 
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.util.Utils;
 
 public class Phone extends DataType {

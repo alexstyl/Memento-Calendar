@@ -30,7 +30,6 @@ import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
@@ -55,8 +54,6 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private ProgressBar progress;
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
     private Navigator navigator;
-
-    private NamedayPreferences namedayPreferences;
 
     public static Fragment newInstance(int year, int month, int dayofMonth) {
         Fragment fragment = new DateDetailsFragment();
@@ -148,7 +145,6 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        namedayPreferences = NamedayPreferences.newInstance(getActivity());
         navigator = new Navigator(getActivity());
     }
 

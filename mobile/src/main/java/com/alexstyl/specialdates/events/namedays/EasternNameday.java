@@ -14,10 +14,6 @@ public class EasternNameday {
         this.celebratingNames = celebratingNames;
     }
 
-    public EasternNameday(ArrayList<String> celebratingNames) {
-        this.celebratingNames = celebratingNames;
-    }
-
     public List<String> getNamesCelebrating() {
         return new ArrayList<>(celebratingNames);
     }

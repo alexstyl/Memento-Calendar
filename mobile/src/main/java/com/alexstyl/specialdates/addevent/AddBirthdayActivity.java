@@ -20,12 +20,9 @@ import java.util.ArrayList;
 
 public class AddBirthdayActivity extends ThemedActivity {
 
-    private static final String EMPTY = "";
-
     private ContactHeroView contactHeroView;
     private BirthdayLabelView birthdayLabel;
     private BirthdayFormPresenter presenter;
-
     private Button addButton;
     private Button dismissButton;
 
@@ -123,17 +120,9 @@ public class AddBirthdayActivity extends ThemedActivity {
 
         @Override
         public void onUserChangedContactName(String newText) {
-//            if (newText.length() == 0 || refersToADifferentContact(newText)) {
-//            }
             presenter.presentNoContact();
-            // enable
         }
 
-        private boolean refersToADifferentContact(String inputText) {
-            Contact selectedContact = presenter.getSelectedContact();
-            String selectedName = selectedContact == null ? EMPTY : selectedContact.toString();
-            return !selectedName.equals(inputText);
-        }
     };
 
     private BirthdayPickerDialog.OnBirthdaySelectedListener birthdaySelectedListener = new BirthdayPickerDialog.OnBirthdaySelectedListener() {

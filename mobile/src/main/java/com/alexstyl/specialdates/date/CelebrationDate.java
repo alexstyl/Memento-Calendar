@@ -3,13 +3,10 @@ package com.alexstyl.specialdates.date;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.ContactEvents;
 import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-
-import java.util.List;
 
 /**
  * A date that contains celebrations. A CelebrationDate can contain namedays, and contacts celebrating
@@ -43,10 +40,6 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
 
     public int getYear() {
         return date.getYear();
-    }
-
-    public List<Contact> getContacts() {
-        return events.getContacts();
     }
 
     public int getContactCount() {
