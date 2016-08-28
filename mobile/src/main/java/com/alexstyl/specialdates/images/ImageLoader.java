@@ -46,7 +46,7 @@ public class ImageLoader {
         loader = UniversalImageLoader.newInstance();
     }
 
-    public static ImageLoader createWidgetThumbnailLoader(Resources resources) {
+    public static ImageLoader createWidgetThumbnailLoader() {
         DisplayImageOptions options = UniversalImageLoader.buildWidgetImageOptions();
         return new ImageLoader(options);
     }
