@@ -59,10 +59,6 @@ class DeviceContactFactory {
         return contact;
     }
 
-    private long getContactIdFrom(Cursor cursor) {
-        return cursor.getLong(ContactsQuery.ID);
-    }
-
     private boolean isInvalid(Cursor cursor) {
         return cursor == null || cursor.isClosed();
     }

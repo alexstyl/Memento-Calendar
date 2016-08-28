@@ -22,7 +22,7 @@ public class WidgetImageLoader {
 
     public static WidgetImageLoader newInstance(Resources resources, final AppWidgetManager appWidgetManager) {
         int size = resources.getDimensionPixelSize(R.dimen.widget_avatar_size);
-        ImageLoader imageLoader = ImageLoader.createWidgetThumbnailLoader(resources);
+        ImageLoader imageLoader = ImageLoader.createWidgetThumbnailLoader();
         return new WidgetImageLoader(appWidgetManager, imageLoader, size);
     }
 

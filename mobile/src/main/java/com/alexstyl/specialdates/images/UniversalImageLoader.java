@@ -31,7 +31,7 @@ public class UniversalImageLoader {
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
-    public static DisplayImageOptions buildWidgetImageOptions(Resources resources) {
+    public static DisplayImageOptions buildWidgetImageOptions() {
         DisplayImageOptions.createSimple();
         return new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
