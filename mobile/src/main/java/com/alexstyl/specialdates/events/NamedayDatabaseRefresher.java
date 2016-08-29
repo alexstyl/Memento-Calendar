@@ -19,7 +19,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.util.Utils;
 
 import java.util.ArrayList;

@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;

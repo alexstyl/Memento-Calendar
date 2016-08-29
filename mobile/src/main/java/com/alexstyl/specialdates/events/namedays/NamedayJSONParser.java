@@ -2,9 +2,6 @@ package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.namedays.CharacterNode;
-import com.alexstyl.specialdates.namedays.Node;
-import com.alexstyl.specialdates.namedays.SoundNode;
 import com.novoda.notils.exception.DeveloperError;
 
 import org.joda.time.IllegalFieldValueException;

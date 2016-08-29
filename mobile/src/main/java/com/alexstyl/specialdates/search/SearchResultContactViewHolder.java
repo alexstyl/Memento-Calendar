@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
 class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
