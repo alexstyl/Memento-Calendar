@@ -1,8 +1,6 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.namedays.NameCelebrations;
-import com.alexstyl.specialdates.namedays.Node;
 
 import java.util.ArrayList;
 

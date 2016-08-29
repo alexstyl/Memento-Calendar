@@ -24,7 +24,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 
