@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.namedays;
+package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.gsc.Index;
 import com.alexstyl.gsc.Sound;

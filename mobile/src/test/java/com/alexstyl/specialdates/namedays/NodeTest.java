@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.namedays;
 
 import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.Node;
 
 import org.junit.Test;
 

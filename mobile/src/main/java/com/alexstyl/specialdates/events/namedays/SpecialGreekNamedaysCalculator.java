@@ -5,8 +5,6 @@ import android.content.Context;
 import com.alexstyl.specialdates.MementoApp;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.namedays.Node;
-import com.alexstyl.specialdates.namedays.SoundNode;
 
 import java.util.Calendar;
 import java.util.List;
