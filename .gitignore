@@ -43,5 +43,3 @@ captures/
 # Mac
 .DS_Store
 
-# Private API Keys
-/secret.gradle
