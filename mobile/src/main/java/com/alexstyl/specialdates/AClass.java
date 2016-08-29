@@ -3,6 +3,6 @@ package com.alexstyl.specialdates;
 public class AClass {
 
     void someRandomFuncton() {
-        // do nothing for now
+        throw new UnsupportedOperationException("This method is not supposed to be called");
     }
 }
