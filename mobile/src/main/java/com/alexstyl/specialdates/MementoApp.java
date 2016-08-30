@@ -15,6 +15,11 @@ import net.danlew.android.joda.JodaTimeAndroid;
 public class MementoApp extends Application {
 
     private static final String TAG = "Memento";
+
+    public static final String DEV_EMAIL = "alexstyl.dev@gmail.com";
+
+    public static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";
+
     private static Context context;
 
     public static String getVersionName(Context context) {
@@ -29,10 +34,6 @@ public class MementoApp extends Application {
         }
         return versionName;
     }
-
-    public static final String DEV_EMAIL = "alexstyl.dev@gmail.com";
-
-    public static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";
 
     public static Context getAppContext() {
         return context;
