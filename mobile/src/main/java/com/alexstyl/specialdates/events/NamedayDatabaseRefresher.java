@@ -129,7 +129,6 @@ class NamedayDatabaseRefresher {
     private List<ContactEvent> loadSpecialNamedays() {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
-
         if (isInvalidCursor(cursor)) {
             return namedayEvents;
         }
