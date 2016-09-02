@@ -77,6 +77,9 @@ class NamedayDatabaseRefresher {
     private List<ContactEvent> loadDeviceStaticNamedays() {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
+        if (isInvalidCursor(cursor)) {
+            return namedayEvents;
+        }
 
         Set<Long> contactIDs = new HashSet<>();
 
@@ -126,6 +129,9 @@ class NamedayDatabaseRefresher {
     private List<ContactEvent> loadSpecialNamedays() {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
+        if (isInvalidCursor(cursor)) {
+            return namedayEvents;
+        }
 
         Set<Long> contactIDs = new HashSet<>();
 
@@ -162,6 +168,10 @@ class NamedayDatabaseRefresher {
 
         cursor.close();
         return namedayEvents;
+    }
+
+    private boolean isInvalidCursor(Cursor cursor) {
+        return cursor == null;
     }
 
     private String getDisplayName(Cursor cursor) {
