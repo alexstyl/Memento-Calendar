@@ -69,7 +69,7 @@ public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>>
             try {
                 Contact contact = buildContactFrom(cursor);
                 EventType eventType = PeopleEvents.getEventType(cursor);
-                ContactEvent contactEvent = ContactEvent.newInstance(eventType, date, contact);
+                ContactEvent contactEvent = new ContactEvent(eventType, date, contact);
 
                 result.add(contactEvent);
             } catch (ContactNotFoundException e) {
