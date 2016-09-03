@@ -12,8 +12,8 @@ import com.alexstyl.specialdates.CaseSensitiveComparator;
 import com.alexstyl.specialdates.SoundWordComparator;
 import com.alexstyl.specialdates.WordComparator;
 import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.events.namedays.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 

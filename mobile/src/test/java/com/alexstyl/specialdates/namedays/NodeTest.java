@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.namedays;
 
 import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.Node;
+import com.alexstyl.specialdates.events.namedays.calendar.Node;
 
 import org.junit.Test;
 

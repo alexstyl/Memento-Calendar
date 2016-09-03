@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.events.namedays.EasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
 public class BankholidayCalendar {
 
