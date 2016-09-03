@@ -1,13 +1,10 @@
 package com.alexstyl.specialdates.events.namedays.calendar;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
-import com.alexstyl.specialdates.events.namedays.calendar.CharacterNode;
-import com.alexstyl.specialdates.events.namedays.calendar.Node;
-import com.alexstyl.specialdates.events.namedays.calendar.SoundNode;
 import com.novoda.notils.exception.DeveloperError;
 
 import org.joda.time.IllegalFieldValueException;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;

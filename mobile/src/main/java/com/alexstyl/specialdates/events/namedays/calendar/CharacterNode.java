@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates.events.namedays.calendar;
 
 import com.alexstyl.gsc.Index;
-import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.events.namedays.Dates;
+import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
 import java.text.Collator;

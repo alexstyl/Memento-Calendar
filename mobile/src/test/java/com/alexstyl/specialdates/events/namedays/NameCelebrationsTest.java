@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.events.AnnualEvent;
+import com.alexstyl.specialdates.date.AnnualEvent;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

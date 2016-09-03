@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Birthday;
-import com.alexstyl.specialdates.events.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 

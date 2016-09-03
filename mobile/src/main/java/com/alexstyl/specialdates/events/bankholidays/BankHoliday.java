@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.bankholidays;
 
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 public class BankHoliday implements Comparable<BankHoliday> {
 

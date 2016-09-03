@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;

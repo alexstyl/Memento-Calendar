@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar;
 
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.SpecialNamedaysStrategy;
 
 import org.json.JSONArray;
 

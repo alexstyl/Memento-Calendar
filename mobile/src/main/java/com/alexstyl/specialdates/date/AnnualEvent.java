@@ -1,6 +1,4 @@
-package com.alexstyl.specialdates.events;
-
-import com.alexstyl.specialdates.date.Date;
+package com.alexstyl.specialdates.date;
 
 public class AnnualEvent implements Date {
 

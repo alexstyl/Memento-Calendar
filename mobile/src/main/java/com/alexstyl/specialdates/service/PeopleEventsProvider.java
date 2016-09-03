@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
 import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.PeopleEventsContract;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;

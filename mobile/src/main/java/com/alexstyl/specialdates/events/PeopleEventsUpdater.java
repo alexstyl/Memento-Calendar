@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
 import com.alexstyl.specialdates.util.ContactsObserver;
