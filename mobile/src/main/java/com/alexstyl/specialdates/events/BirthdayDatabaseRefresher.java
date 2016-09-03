@@ -20,12 +20,15 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.util.DateParser;
 import com.alexstyl.specialdates.util.Utils;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class BirthdayDatabaseRefresher {
+
+    @SuppressWarnings("unchecked")
+    private static final List<Contact> NO_CONTACTS = Collections.EMPTY_LIST;
 
     private final ContentResolver contentResolver;
     private final DateParser dateParser;
@@ -60,7 +63,7 @@ class BirthdayDatabaseRefresher {
     private List<Contact> loadBirtdaysFromDisk() {
         Cursor cursor = Query.query(contentResolver);
         if (isInvalid(cursor)) {
-            throw new DeveloperError("Cursor was invalid");
+            return NO_CONTACTS;
         }
         List<Contact> contacts = new ArrayList<>();
         try {
