@@ -60,14 +60,14 @@ public class NamedayDatabaseRefresher {
         this.eventMarshaller = eventMarshaller;
     }
 
-    public void refreshNamedays() {
+    public void refreshNamedaysIfEnabled() {
         perister.deleteAllNamedays();
         if (namedaysEnabled()) {
-            initialiseNamedaysIfEnabled();
+            initialiseNamedays();
         }
     }
 
-    private void initialiseNamedaysIfEnabled() {
+    private void initialiseNamedays() {
         List<ContactEvent> namedays = loadDeviceStaticNamedays();
         storeNamedaysToDisk(namedays);
 
