@@ -5,14 +5,14 @@ import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BankHolidayRepositoryTest {
 
     private static final DayDate GREEK_INDEPENDENCE_DAY = DayDate.newInstance(25, DayDate.MARCH, 1990);
@@ -23,7 +23,6 @@ public class BankHolidayRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         repository = new BankHolidayRepository(calculator);
         when(calculator.calculateEasterForYear(1990)).thenReturn(DayDate.newInstance(1, 1, 1990));
         when(calculator.calculateEasterForYear(1991)).thenReturn(DayDate.newInstance(1, 1, 1991));

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.alexstyl.specialdates.CaseSensitiveComparator;
 import com.alexstyl.specialdates.SoundWordComparator;
 import com.alexstyl.specialdates.WordComparator;
 import com.alexstyl.specialdates.date.DayDate;
@@ -34,7 +33,7 @@ public class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder>
         if (locale.isComparedBySounds()) {
             compatator = new SoundWordComparator();
         } else {
-            compatator = new CaseSensitiveComparator();
+            compatator = new CaseInsensitiveComparator();
         }
         int year = DayDate.today().getYear();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, year);

@@ -1,12 +1,14 @@
-package com.alexstyl.specialdates;
+package com.alexstyl.specialdates.search;
+
+import com.alexstyl.specialdates.WordComparator;
 
 import java.text.Collator;
 
-public class CaseSensitiveComparator implements WordComparator {
+class CaseInsensitiveComparator implements WordComparator {
 
     private final Collator collator = Collator.getInstance();
 
-    public CaseSensitiveComparator() {
+    public CaseInsensitiveComparator() {
         this.collator.setStrength(Collator.PRIMARY);
     }
 
