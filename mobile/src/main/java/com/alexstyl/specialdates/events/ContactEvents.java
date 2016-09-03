@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.DayDate;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.util;
 
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 import java.util.Locale;
 

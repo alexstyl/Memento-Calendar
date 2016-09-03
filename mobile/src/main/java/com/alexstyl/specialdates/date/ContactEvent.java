@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.date;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.EventType;
 
 /**

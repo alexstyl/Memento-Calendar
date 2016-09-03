@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events.namedays;
+package com.alexstyl.specialdates.events.namedays.calendar;
 
 import android.support.annotation.NonNull;
 

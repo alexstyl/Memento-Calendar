@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.events;
 
+import com.alexstyl.specialdates.date.DayDate;
+
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;

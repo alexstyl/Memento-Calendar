@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.date;
 
 public class DateProvider {
 
@@ -10,7 +10,7 @@ public class DateProvider {
 
         int day = Integer.valueOf(text.substring(dayToMonth + 1, text.length()));
         int month = Integer.valueOf(text.substring(monthToYear + 1, dayToMonth));
-        // need to chek if we have year
+        // need to check if we have year
 
         if (text.startsWith(SEPARATOR)) {
             return DayDate.newInstance(day, month);

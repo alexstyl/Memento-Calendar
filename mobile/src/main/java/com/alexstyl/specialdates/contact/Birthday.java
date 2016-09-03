@@ -1,9 +1,9 @@
 package com.alexstyl.specialdates.contact;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.AnnualEvent;
-import com.alexstyl.specialdates.events.DateDisplayStringCreator;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.AnnualEvent;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.DayDate;
 
 public class Birthday {
 

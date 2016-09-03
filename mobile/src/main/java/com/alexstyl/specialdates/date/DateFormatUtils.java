@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.R;
 import java.util.Calendar;
 
 /**
- * @deprecated Use {@link com.alexstyl.specialdates.events.DateDisplayStringCreator} instead
+ * @deprecated Use {@link DateDisplayStringCreator} instead
  */
 @Deprecated
 public class DateFormatUtils {

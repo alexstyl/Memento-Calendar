@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.DeviceContact;
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.util.DateParser;
 import com.alexstyl.specialdates.util.Utils;

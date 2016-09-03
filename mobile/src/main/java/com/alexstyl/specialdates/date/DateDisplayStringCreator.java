@@ -1,11 +1,10 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.date;
 
 import android.content.Context;
 import android.text.format.DateUtils;
 
 import com.alexstyl.specialdates.MementoApp;
 import com.alexstyl.specialdates.contact.Birthday;
-import com.alexstyl.specialdates.date.Date;
 
 public final class DateDisplayStringCreator {
 
