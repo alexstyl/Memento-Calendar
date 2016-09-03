@@ -1,16 +1,15 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates;
 
 import android.content.Context;
 import android.net.Uri;
 import android.view.View;
 
-import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 
 import java.util.List;
 
-class TestContact extends Contact {
+public class TestContact extends Contact {
 
     public TestContact(long id, DisplayName displayName) {
         super(id, displayName);
