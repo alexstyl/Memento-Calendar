@@ -1,10 +1,12 @@
-package com.alexstyl.specialdates.events.namedays;
+package com.alexstyl.specialdates.events.namedays.calendar;
 
 import android.content.Context;
 
 import com.alexstyl.specialdates.MementoApp;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.events.namedays.NamedayBundle;
+import com.alexstyl.specialdates.events.namedays.NamedaysList;
 
 import java.util.Calendar;
 import java.util.List;

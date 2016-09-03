@@ -1,7 +1,8 @@
-package com.alexstyl.specialdates.events.namedays;
+package com.alexstyl.specialdates.events.namedays.calendar;
 
 import android.content.Context;
 
+import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.exception.DeveloperError;
 
