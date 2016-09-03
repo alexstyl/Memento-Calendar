@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvide
 import com.alexstyl.specialdates.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,8 @@ import java.util.Set;
 public class NamedayDatabaseRefresher {
 
     private static final Optional<Contact> NO_CONTACT = Optional.absent();
+    @SuppressWarnings("unchecked")
+    private static final List<ContactEvent> NO_EVENTS = Collections.EMPTY_LIST;
 
     private final ContentResolver contentResolver;
     private final ContactProvider contactProvider;
@@ -79,12 +82,12 @@ public class NamedayDatabaseRefresher {
     }
 
     private List<ContactEvent> loadDeviceStaticNamedays() {
-        List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
         if (isInvalidCursor(cursor)) {
-            return namedayEvents;
+            return NO_EVENTS;
         }
 
+        List<ContactEvent> namedayEvents = new ArrayList<>();
         Set<Long> contactIDs = new HashSet<>();
 
         while (cursor.moveToNext()) {
@@ -125,12 +128,12 @@ public class NamedayDatabaseRefresher {
     }
 
     private List<ContactEvent> loadSpecialNamedays() {
-        List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
         if (isInvalidCursor(cursor)) {
-            return namedayEvents;
+            return NO_EVENTS;
         }
 
+        List<ContactEvent> namedayEvents = new ArrayList<>();
         Set<Long> contactIDs = new HashSet<>();
 
         while (cursor.moveToNext()) {
