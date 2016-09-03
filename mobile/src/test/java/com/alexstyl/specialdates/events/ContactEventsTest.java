@@ -16,10 +16,10 @@ public class ContactEventsTest {
 
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
     private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"));
-    private final ContactEvent EVENT_ONE = ContactEvent.newInstance(EventType.BIRTHDAY, DayDate.newInstance(1, 1, 1990), CONTACT_ONE);
+    private final ContactEvent EVENT_ONE = new ContactEvent(EventType.BIRTHDAY, DayDate.newInstance(1, 1, 1990), CONTACT_ONE);
 
     private final TestContact CONTACT_TWO = new TestContact(2, DisplayName.from("George Peterson"));
-    private final ContactEvent EVENT_TWO = ContactEvent.newInstance(EventType.BIRTHDAY, DayDate.newInstance(1, 1, 1970), CONTACT_TWO);
+    private final ContactEvent EVENT_TWO = new ContactEvent(EventType.BIRTHDAY, DayDate.newInstance(1, 1, 1970), CONTACT_TWO);
 
     @Test
     public void testTheSameDateIsReturned() throws Exception {
