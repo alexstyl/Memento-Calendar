@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.date.DayDate;
@@ -46,12 +47,13 @@ public class DateDetailsActivity extends ThemedActivity {
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
 
-        displayingDate = getCalendarFromIntent(getIntent());
-        if (displayingDate == null) {
+        Optional<DayDate> receivedDate = getCalendarFromIntent(getIntent());
+        if (!receivedDate.isPresent()) {
             finish();
             ErrorTracker.track(new RuntimeException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
             return;
         }
+        this.displayingDate = receivedDate.get();
 
         if (getIntent().hasExtra(EXTRA_SOURCE)) {
             int intExtra = getIntent().getIntExtra(EXTRA_SOURCE, -1);
@@ -76,17 +78,16 @@ public class DateDetailsActivity extends ThemedActivity {
 
     }
 
-    private DayDate getCalendarFromIntent(Intent intent) {
-        if (intent.getExtras().containsKey(EXTRA_DAY)) {
+    private Optional<DayDate> getCalendarFromIntent(Intent intent) {
+        if (intent.hasExtra(EXTRA_DAY)) {
             Bundle extras = intent.getExtras();
-
             int year = extras.getInt(EXTRA_YEAR);
             int month = extras.getInt(EXTRA_MONTH);
             int dayOfMonth = extras.getInt(EXTRA_DAY);
 
-            return DayDate.newInstance(dayOfMonth, month, year);
+            return new Optional<>(DayDate.newInstance(dayOfMonth, month, year));
         }
-        return null;
+        return Optional.absent();
 
     }
 
