@@ -13,10 +13,6 @@ public class PeopleEventsPersister {
 
     private final EventSQLiteOpenHelper helper;
 
-    public static PeopleEventsPersister newInstance(EventSQLiteOpenHelper helper) {
-        return new PeopleEventsPersister(helper);
-    }
-
     public PeopleEventsPersister(EventSQLiteOpenHelper helper) {
         this.helper = helper;
     }
