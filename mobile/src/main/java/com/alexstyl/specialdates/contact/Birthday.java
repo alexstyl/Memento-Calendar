@@ -41,7 +41,7 @@ public class Birthday {
 
     @Override
     public String toString() {
-        return DateDisplayStringCreator.getInstance().stringOf(date);
+        return DateDisplayStringCreator.getInstance().fullyFormattedBirthday(this);
     }
 
     @Override

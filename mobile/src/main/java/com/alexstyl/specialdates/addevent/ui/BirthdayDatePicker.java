@@ -109,11 +109,13 @@ public class BirthdayDatePicker extends LinearLayout {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
             yearPicker.setValue(dateToDisplay.getYear());
+            yearPicker.setVisibility(VISIBLE);
             includesYearCheckbox.setChecked(true);
         } else {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
             yearPicker.setValue(DayDate.today().getYear());
+            yearPicker.setVisibility(GONE);
             includesYearCheckbox.setChecked(false);
         }
     }
