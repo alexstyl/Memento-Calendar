@@ -35,7 +35,7 @@ class BirthdayDatabaseRefresher {
     static BirthdayDatabaseRefresher newInstance(Context context) {
         ContentResolver cr = context.getContentResolver();
         DateParser dateParser = new DateParser();
-        PeopleEventsPersister persister = PeopleEventsPersister.newInstance(new EventSQLiteOpenHelper(context));
+        PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         BirthdayContentValuesMarshaller marshaller = new BirthdayContentValuesMarshaller();
         return new BirthdayDatabaseRefresher(cr, dateParser, persister, marshaller);
     }

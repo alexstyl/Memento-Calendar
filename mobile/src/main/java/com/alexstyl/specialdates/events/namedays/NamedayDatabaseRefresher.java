@@ -43,7 +43,7 @@ public class NamedayDatabaseRefresher {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactProvider contactProvider = ContactProvider.get(context);
         ContentValuesMarshaller marshaller = new ContentValuesMarshaller();
-        PeopleEventsPersister persister = PeopleEventsPersister.newInstance(new EventSQLiteOpenHelper(context));
+        PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller);
     }
 
