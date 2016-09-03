@@ -69,7 +69,7 @@ public class PeopleEventsProvider {
                 Contact contact = contactProvider.getOrCreateContact(contactId);
                 EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
 
-                ContactEvent event = ContactEvent.newInstance(eventType, date, contact);
+                ContactEvent event = new ContactEvent(eventType, date, contact);
                 contactEvents.add(event);
             } catch (Exception e) {
                 ErrorTracker.track(e);
@@ -193,7 +193,7 @@ public class PeopleEventsProvider {
         DayDate date = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
         EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
 
-        return ContactEvent.newInstance(eventType, date, contact);
+        return new ContactEvent(eventType, date, contact);
     }
 
     private void throwIfInvalid(Cursor cursor) {

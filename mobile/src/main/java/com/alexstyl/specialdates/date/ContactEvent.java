@@ -12,11 +12,7 @@ public class ContactEvent {
     private final Contact contact;
     private final EventType eventType;
 
-    public static ContactEvent newInstance(EventType eventType, DayDate date, Contact contact) {
-        return new ContactEvent(eventType, date, contact);
-    }
-
-    ContactEvent(EventType eventType, DayDate date, Contact contact) {
+    public ContactEvent(EventType eventType, DayDate date, Contact contact) {
         this.eventType = eventType;
         this.date = date;
         this.contact = contact;
