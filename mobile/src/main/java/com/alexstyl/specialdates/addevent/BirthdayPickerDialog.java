@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker;
 import com.alexstyl.specialdates.contact.Birthday;
@@ -18,7 +20,6 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.exception.DeveloperError;
 
 public class BirthdayPickerDialog extends MementoDialog {
 
@@ -29,7 +30,7 @@ public class BirthdayPickerDialog extends MementoDialog {
     private OnBirthdaySelectedListener listener;
     private BirthdayDatePicker datePicker;
 
-    private Birthday initialBirthday;
+    private Optional<Birthday> initialBirthday;
 
     public static BirthdayPickerDialog createDialogFor(Birthday birthday, OnBirthdaySelectedListener listener) {
         Bundle args = new Bundle();
@@ -52,18 +53,22 @@ public class BirthdayPickerDialog extends MementoDialog {
         initialBirthday = extractBirthday(getArguments());
     }
 
-    private Birthday extractBirthday(Bundle arguments) {
+    private Optional<Birthday> extractBirthday(Bundle arguments) {
         if (arguments == null || !arguments.containsKey(KEY_DATE)) {
-            DayDate today = DayDate.today();
-            return Birthday.on(today);
+            return Optional.absent();
         } else {
             String birthday = arguments.getString(KEY_DATE);
-            try {
-                DayDate parsedDate = parser.parse(birthday);
-                return Birthday.on(parsedDate);
-            } catch (DateParseException e) {
-                throw new DeveloperError("Invalid birthday to display [" + birthday + "]");
-            }
+            return extractFrom(birthday);
+        }
+    }
+
+    private Optional<Birthday> extractFrom(String birthday) {
+        try {
+            DayDate parsedDate = parser.parse(birthday);
+            return new Optional<>(Birthday.on(parsedDate));
+        } catch (DateParseException e) {
+            ErrorTracker.track(e);
+            return Optional.absent();
         }
     }
 
@@ -72,7 +77,9 @@ public class BirthdayPickerDialog extends MementoDialog {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getThemedContext()).inflate(R.layout.dialog_birthday_picker, null, false);
         datePicker = Views.findById(view, R.id.dialog_birthday_picker);
-        datePicker.setDisplayingDate(initialBirthday);
+        if (initialBirthday.isPresent()) {
+            datePicker.setDisplayingDate(initialBirthday.get());
+        }
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.birthday_picker_dialog_title)
