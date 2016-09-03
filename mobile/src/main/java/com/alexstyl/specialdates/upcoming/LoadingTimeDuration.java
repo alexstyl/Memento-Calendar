@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 import java.io.Serializable;
 

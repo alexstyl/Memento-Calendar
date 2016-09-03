@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;

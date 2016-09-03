@@ -5,7 +5,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.MonthOfYear;

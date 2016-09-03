@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.alexstyl.specialdates.date.DateProvider;
+import com.alexstyl.specialdates.date.DayDate;
+
 public class PeopleEventsContract {
 
     public static final String AUTHORITY = "com.alexstyl.specialdates.peopleeventsprovider";

@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R;
 
 public class EventPreferences {
 
-    private EasyPreferences preferences;
+    private final EasyPreferences preferences;
 
     public EventPreferences(Context context) {
         preferences = EasyPreferences.createForPrivatePreferences(context, R.string.pref_events);

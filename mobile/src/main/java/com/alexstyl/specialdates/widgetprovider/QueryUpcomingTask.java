@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.widgetprovider;
 import android.os.AsyncTask;
 
 import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 
 public abstract class QueryUpcomingTask extends AsyncTask<Void, Void, ContactEvents> {

@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
-import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.events.namedays.EasterCalculator;
+import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
 import org.junit.Before;
 import org.junit.Test;

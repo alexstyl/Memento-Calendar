@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Birthday;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.caster.Views;

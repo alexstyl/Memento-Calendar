@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.events.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 public class ShareNamedaysIntentCreator {
