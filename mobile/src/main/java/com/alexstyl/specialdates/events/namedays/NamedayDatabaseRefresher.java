@@ -116,7 +116,7 @@ public class NamedayDatabaseRefresher {
                     if (namedays.contains(nameday)) {
                         continue;
                     }
-                    ContactEvent event = ContactEvent.newInstance(EventType.NAMEDAY, date, contact.get());
+                    ContactEvent event = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(event);
                     namedays.add(nameday);
                 }
@@ -160,7 +160,7 @@ public class NamedayDatabaseRefresher {
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
                     DayDate date = nameDays.getDate(i);
-                    ContactEvent nameday = ContactEvent.newInstance(EventType.NAMEDAY, date, contact.get());
+                    ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(nameday);
                 }
             }

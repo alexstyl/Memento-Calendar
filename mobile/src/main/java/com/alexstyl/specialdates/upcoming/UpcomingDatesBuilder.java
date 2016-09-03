@@ -78,14 +78,17 @@ public class UpcomingDatesBuilder {
         return this;
     }
 
+    private static final List<CelebrationDate> NO_CELEBRATIONS = Collections.emptyList();
+
     public List<CelebrationDate> build() {
-        List<CelebrationDate> celebrationDates = new ArrayList<>();
         if (noEventsArePresent()) {
-            return celebrationDates;
+            return NO_CELEBRATIONS;
         }
+
+        List<CelebrationDate> celebrationDates = new ArrayList<>();
         DayDate indexDate = earliestDate.get();
         DayDate lastDate = latestDate.get();
-        while (indexDate.isBefore(lastDate)) {
+        while (indexDate.compareTo(lastDate) <= 0) {
             List<ContactEvent> contactEvent = contactEvents.get(indexDate);
             if (contactEvent == null) {
                 contactEvent = NO_CONTACT_EVENTS;
