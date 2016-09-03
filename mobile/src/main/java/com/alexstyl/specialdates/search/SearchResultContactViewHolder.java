@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;

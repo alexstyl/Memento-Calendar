@@ -7,7 +7,7 @@ import android.provider.ContactsContract;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.util.DateParser;
 
 class DeviceContactFactory {

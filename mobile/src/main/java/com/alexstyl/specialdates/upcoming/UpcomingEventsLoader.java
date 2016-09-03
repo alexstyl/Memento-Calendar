@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;

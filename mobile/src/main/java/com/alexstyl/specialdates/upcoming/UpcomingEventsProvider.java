@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import android.support.v4.app.FragmentActivity;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 import java.util.ArrayList;
 import java.util.List;

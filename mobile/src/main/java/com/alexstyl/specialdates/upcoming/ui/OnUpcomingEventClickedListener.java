@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming.ui;
 import android.view.View;
 
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 public interface OnUpcomingEventClickedListener {
     void onCardPressed(DayDate date);

@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.namedays;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -14,12 +14,13 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.ContentValuesMarshaller;
+import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.util.Utils;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-class NamedayDatabaseRefresher {
+public class NamedayDatabaseRefresher {
 
     private final ContentResolver contentResolver;
     private final ContactProvider contactProvider;
@@ -36,7 +37,7 @@ class NamedayDatabaseRefresher {
     private final PeopleEventsPersister perister;
     private final ContentValuesMarshaller eventMarshaller;
 
-    static NamedayDatabaseRefresher newInstance(Context context) {
+    public static NamedayDatabaseRefresher newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);

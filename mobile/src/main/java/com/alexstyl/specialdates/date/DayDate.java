@@ -1,8 +1,6 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.date;
 
 import android.support.annotation.NonNull;
-
-import com.alexstyl.specialdates.date.Date;
 
 import java.util.Calendar;
 

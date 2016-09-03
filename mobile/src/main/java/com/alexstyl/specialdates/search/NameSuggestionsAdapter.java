@@ -11,7 +11,7 @@ import android.widget.Filterable;
 import com.alexstyl.specialdates.CaseSensitiveComparator;
 import com.alexstyl.specialdates.SoundWordComparator;
 import com.alexstyl.specialdates.WordComparator;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;

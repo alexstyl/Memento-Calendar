@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.caster.Views;

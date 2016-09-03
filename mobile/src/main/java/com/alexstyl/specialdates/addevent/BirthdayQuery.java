@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.util.DateParser;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.exception.DeveloperError;
