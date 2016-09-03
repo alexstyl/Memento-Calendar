@@ -40,7 +40,7 @@ class PeopleEventsUpdater {
         boolean isFirstRun = isFirstTimeRunning();
         if (isFirstRun) {
             birthdayDatabaseRefresher.refreshBirthdays();
-            namedayDatabaseRefresher.refreshNamedays();
+            namedayDatabaseRefresher.refreshNamedaysIfEnabled();
             eventPreferences.markEventsAsInitialised();
         } else {
             updateEventsIfSettingsChanged();
@@ -62,7 +62,7 @@ class PeopleEventsUpdater {
             birthdayDatabaseRefresher.refreshBirthdays();
         }
         if (wereContactsUpdated || wereNamedaysSettingsUpdated) {
-            namedayDatabaseRefresher.refreshNamedays();
+            namedayDatabaseRefresher.refreshNamedaysIfEnabled();
         }
         resetMonitorFlags();
     }

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
@@ -24,11 +25,16 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvide
 import com.alexstyl.specialdates.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class NamedayDatabaseRefresher {
+
+    private static final Optional<Contact> NO_CONTACT = Optional.absent();
+    @SuppressWarnings("unchecked")
+    private static final List<ContactEvent> NO_EVENTS = Collections.EMPTY_LIST;
 
     private final ContentResolver contentResolver;
     private final ContactProvider contactProvider;
@@ -43,7 +49,7 @@ public class NamedayDatabaseRefresher {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactProvider contactProvider = ContactProvider.get(context);
         ContentValuesMarshaller marshaller = new ContentValuesMarshaller();
-        PeopleEventsPersister persister = PeopleEventsPersister.newInstance(new EventSQLiteOpenHelper(context));
+        PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller);
     }
 
@@ -60,14 +66,14 @@ public class NamedayDatabaseRefresher {
         this.eventMarshaller = eventMarshaller;
     }
 
-    public void refreshNamedays() {
+    public void refreshNamedaysIfEnabled() {
         perister.deleteAllNamedays();
         if (namedaysEnabled()) {
-            initialiseNamedaysIfEnabled();
+            initialiseNamedays();
         }
     }
 
-    private void initialiseNamedaysIfEnabled() {
+    private void initialiseNamedays() {
         List<ContactEvent> namedays = loadDeviceStaticNamedays();
         storeNamedaysToDisk(namedays);
 
@@ -76,12 +82,12 @@ public class NamedayDatabaseRefresher {
     }
 
     private List<ContactEvent> loadDeviceStaticNamedays() {
-        List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
         if (isInvalidCursor(cursor)) {
-            return namedayEvents;
+            return NO_EVENTS;
         }
 
+        List<ContactEvent> namedayEvents = new ArrayList<>();
         Set<Long> contactIDs = new HashSet<>();
 
         while (cursor.moveToNext()) {
@@ -91,23 +97,17 @@ public class NamedayDatabaseRefresher {
                 continue;
             }
             contactIDs.add(id);
+            Optional<Contact> contact = getDeviceContactWithId(id);
+            if (!contact.isPresent()) {
+                continue;
+            }
 
             DisplayName displayName = DisplayName.from(getDisplayName(cursor));
-
-            Contact contact = null;
-
             HashSet<Nameday> namedays = new HashSet<>();
             for (String firstName : displayName.getFirstNames()) {
                 NameCelebrations nameDays = getNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {
                     continue;
-                }
-                if (contact == null) {
-                    try {
-                        contact = contactProvider.getOrCreateContact(id);
-                    } catch (ContactNotFoundException e) {
-                        throwForDeviceContactNotfound(e);
-                    }
                 }
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
@@ -116,7 +116,7 @@ public class NamedayDatabaseRefresher {
                     if (namedays.contains(nameday)) {
                         continue;
                     }
-                    ContactEvent event = ContactEvent.newInstance(EventType.NAMEDAY, date, contact);
+                    ContactEvent event = ContactEvent.newInstance(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(event);
                     namedays.add(nameday);
                 }
@@ -128,12 +128,12 @@ public class NamedayDatabaseRefresher {
     }
 
     private List<ContactEvent> loadSpecialNamedays() {
-        List<ContactEvent> namedayEvents = new ArrayList<>();
         Cursor cursor = DeviceContactsQuery.query(contentResolver);
         if (isInvalidCursor(cursor)) {
-            return namedayEvents;
+            return NO_EVENTS;
         }
 
+        List<ContactEvent> namedayEvents = new ArrayList<>();
         Set<Long> contactIDs = new HashSet<>();
 
         while (cursor.moveToNext()) {
@@ -144,6 +144,11 @@ public class NamedayDatabaseRefresher {
             }
             contactIDs.add(id);
 
+            Optional<Contact> contact = getDeviceContactWithId(id);
+            if (!contact.isPresent()) {
+                continue;
+            }
+
             DisplayName displayName = DisplayName.from(getDisplayName(cursor));
 
             for (String firstName : displayName.getFirstNames()) {
@@ -151,17 +156,11 @@ public class NamedayDatabaseRefresher {
                 if (nameDays.containsNoDate()) {
                     continue;
                 }
-                Contact contact = null;
-                try {
-                    contact = contactProvider.getOrCreateContact(id);
-                } catch (ContactNotFoundException e) {
-                    throwForDeviceContactNotfound(e);
-                }
 
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
                     DayDate date = nameDays.getDate(i);
-                    ContactEvent nameday = ContactEvent.newInstance(EventType.NAMEDAY, date, contact);
+                    ContactEvent nameday = ContactEvent.newInstance(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(nameday);
                 }
             }
@@ -169,6 +168,15 @@ public class NamedayDatabaseRefresher {
 
         cursor.close();
         return namedayEvents;
+    }
+
+    private Optional<Contact> getDeviceContactWithId(long id) {
+        try {
+            Contact contact = contactProvider.getOrCreateContact(id);
+            return new Optional<>(contact);
+        } catch (ContactNotFoundException e) {
+            return NO_CONTACT;
+        }
     }
 
     private boolean isInvalidCursor(Cursor cursor) {
@@ -276,7 +284,4 @@ public class NamedayDatabaseRefresher {
 
     }
 
-    private void throwForDeviceContactNotfound(ContactNotFoundException e) {
-        throw new RuntimeException("Failed to get device contact from fresh ID - " + e.getMessage());
-    }
 }
