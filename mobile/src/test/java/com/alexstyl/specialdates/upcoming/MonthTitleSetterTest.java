@@ -4,12 +4,13 @@ import android.app.Activity;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class MonthTitleSetterTest {
 
     @Mock
@@ -19,11 +20,9 @@ public class MonthTitleSetterTest {
 
     @Before
     public void setup() {
-        initMocks(this);
         MonthLabels monthLabels = new MonthLabels(new String[]{"1", "2", "3", "4", "5", "6"});
         monthTitleSetter = new MonthTitleSetter(mockActivity, monthLabels);
     }
-
 
     @Test
     public void givenTheIndexOfASpecificMonth_whenUpdatingMonth_thenTheTitleIsProperlySet() {
