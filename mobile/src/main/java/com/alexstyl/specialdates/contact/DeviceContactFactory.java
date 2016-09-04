@@ -75,7 +75,7 @@ class DeviceContactFactory {
         String birthday = cursor.getString(ContactsQuery.BIRTHDAY);
         try {
             DayDate parse = dateParser.parse(birthday);
-            return new Birthday(parse.getDayOfMonth(), parse.getMonth(), parse.getYear());
+            return Birthday.on(parse);
         } catch (DateParseException e) {
             ErrorTracker.track(e);
         }
