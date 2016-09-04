@@ -31,6 +31,4 @@ fi
     GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
   fi
 
-  # Back to parent directory.
-  cd -
 done
