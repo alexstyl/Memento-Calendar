@@ -108,11 +108,11 @@ public class AddBirthdayActivity extends ThemedActivity {
     }
 
     private AnalyticsEvent birthdayCreationSuccess() {
-        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).withData("success", "true");
+        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).asSuccess(true);
     }
 
     private AnalyticsEvent birthdayCreationFailed() {
-        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).withData("success", "false");
+        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).asSuccess(false);
     }
 
     private final BirthdayLabelView.OnEditListener onBirthdayLabelClicked = new BirthdayLabelView.OnEditListener() {

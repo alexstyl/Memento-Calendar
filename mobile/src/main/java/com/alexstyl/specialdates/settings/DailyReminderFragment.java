@@ -48,7 +48,7 @@ public class DailyReminderFragment extends MyPreferenceFragment {
                 boolean isChecked = (boolean) newValue;
                 MainPreferenceActivity.setDailyReminder(context, isChecked);
                 AnalyticsEvent event = new AnalyticsEvent(AnalyticsEvent.Events.DAILY_REMINDER)
-                        .withData("enabled", isChecked);
+                        .setEnabled(isChecked);
                 analytics.track(event);
                 if (isChecked) {
                     DailyReminderIntentService.rescheduleAlarm(context);
