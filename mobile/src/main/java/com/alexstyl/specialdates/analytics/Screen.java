@@ -7,7 +7,8 @@ public enum Screen {
     ADD_BIRTHDAY("add birthday"),
     SEARCH("search"),
     SETTINGS("settings"),
-    DATE_DETAILS("date details");
+    DATE_DETAILS("date details"),
+    DONATE("donate");
 
     private final Bundle data;
 

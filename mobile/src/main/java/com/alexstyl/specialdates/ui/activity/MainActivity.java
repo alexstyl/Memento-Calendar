@@ -101,6 +101,7 @@ public class MainActivity extends ThemedActivity {
     }
 
     private void openDonateDialog() {
+        analytics.trackScreen(Screen.DONATE);
         SupportDonateDialog.displayDialog(this);
     }
 
