@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="search_hint">@string/Search_for_contacts_or_namedays</string>
+  <color name="search_hint_color">#808080</color>
+</resources>

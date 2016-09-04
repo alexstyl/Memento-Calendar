@@ -156,4 +156,5 @@
     <string name="Display_Bankholidays">Display Bankholidays</string>
     <string name="Bankholidays_Country">Bankholidays Country</string>
     <string name="Bankholidays_are_currently_supported_only_for_Greek">Bankholidays are currently supported only for Greek</string>
+    <string name="Search_for_contacts_or_namedays">Search for contacts or namedays</string>
 </resources>

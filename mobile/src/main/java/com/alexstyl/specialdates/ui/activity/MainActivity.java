@@ -13,12 +13,12 @@ import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.SupportDonateDialog;
 import com.alexstyl.specialdates.ui.ThemeReapplier;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.util.Notifier;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
@@ -30,7 +30,6 @@ import com.novoda.notils.caster.Views;
 public class MainActivity extends ThemedActivity {
 
     private Notifier notifier;
-    private UpcomingEventsFragment upcomingEventsFragment;
     private AskForSupport askForSupport;
     private ThemeReapplier reapplier;
     private Analytics analytics;
@@ -52,7 +51,7 @@ public class MainActivity extends ThemedActivity {
         FloatingActionButton floatingActionButton = Views.findById(this, R.id.fab_add);
         floatingActionButton.setOnClickListener(startAddBirthdayOnClick);
         askForSupport = new AskForSupport(this);
-        upcomingEventsFragment = (UpcomingEventsFragment) getSupportFragmentManager().findFragmentById(R.id.upcoming);
+        setTitle(null);
     }
 
     @Override
@@ -116,7 +115,9 @@ public class MainActivity extends ThemedActivity {
 
     @Override
     public boolean onSearchRequested() {
-        return upcomingEventsFragment.onSearchRequested();
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+        return true;
     }
 
     @Override
