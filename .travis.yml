@@ -16,6 +16,7 @@ android:
     - android-23
     - extra-android-support
     - extra-android-m2repository
+    - extra-google-google_play_services
 
 script:
   # The project currently contains no android tests.
