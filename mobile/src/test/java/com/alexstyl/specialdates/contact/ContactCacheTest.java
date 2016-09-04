@@ -12,13 +12,12 @@ public class ContactCacheTest {
     private static final int CACHE_SIZE = 1024 * 5;
 
     private static final DisplayName ANY_DISPLAY_NAME = DisplayName.from("Alex Styl");
-    private static String ANY_LOOKUP_KEY = "any_lookup_key";
 
-    private ContactCache contactCache;
+    private ContactCache<Contact> contactCache;
 
     @Before
     public void createEmptyCache() {
-        contactCache = new ContactCache(CACHE_SIZE);
+        contactCache = new ContactCache<>(CACHE_SIZE);
     }
 
     @Test
@@ -29,17 +28,6 @@ public class ContactCacheTest {
 
         assertThat(contactCache.size()).isEqualTo(1);
     }
-
-//    @Test
-//    public void givenOneContactIsRemoved_thenSizeIsDecreasedByOne() {
-//        Contact anyContact = anyContact();
-//
-//        contactCache.addContact(anyContact);
-//        contactCache.removeContact(anyContact);
-//
-//        assertThat(contactCache.size()).isEqualTo(0);
-//
-//    }
 
     @Test
     public void givenOneContactIsAdded_thenSameContactIsReturned() {
@@ -54,10 +42,8 @@ public class ContactCacheTest {
 
     }
 
-
-
     private static Contact anyContact() {
-        return new DeviceContact(5, ANY_DISPLAY_NAME, ANY_LOOKUP_KEY);
+        return new DeviceContact(5, ANY_DISPLAY_NAME, "any_lookup_key");
     }
 
 }
