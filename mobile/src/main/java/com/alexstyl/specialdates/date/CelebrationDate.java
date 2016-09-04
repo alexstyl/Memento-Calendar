@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 

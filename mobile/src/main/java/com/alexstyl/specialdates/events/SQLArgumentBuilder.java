@@ -1,15 +1,13 @@
 package com.alexstyl.specialdates.events;
 
-
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 
 import java.util.Locale;
 
-public class SQLArgumentBuilder {
+class SQLArgumentBuilder {
 
     private static final String date = PeopleEventsContract.PeopleEvents.DATE;
-
 
     public String dateBetween(LoadingTimeDuration duration) {
         return dateFrom(duration.getFrom()) + " AND " + dateTo(duration.getTo());

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.novoda.notils.caster.Views;

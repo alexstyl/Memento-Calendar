@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.novoda.notils.exception.DeveloperError;
 
@@ -29,7 +29,7 @@ public enum MementoTheme {
     }
 
     private static String withThemeName(@StringRes int themNameResId) {
-        return MementoApp.getAppContext().getString(themNameResId);
+        return MementoApplication.getAppContext().getString(themNameResId);
     }
 
     private final String themeName;

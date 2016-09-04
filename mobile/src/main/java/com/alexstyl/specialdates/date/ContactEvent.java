@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.date;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.DayDate;
 import com.alexstyl.specialdates.events.EventType;
 
 /**
@@ -13,11 +12,7 @@ public class ContactEvent {
     private final Contact contact;
     private final EventType eventType;
 
-    public static ContactEvent newInstance(EventType eventType, DayDate date, Contact contact) {
-        return new ContactEvent(eventType, date, contact);
-    }
-
-    ContactEvent(EventType eventType, DayDate date, Contact contact) {
+    public ContactEvent(EventType eventType, DayDate date, Contact contact) {
         this.eventType = eventType;
         this.date = date;
         this.contact = contact;

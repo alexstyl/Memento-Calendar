@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract;

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 
 public class LogoView extends RelativeLayout {
@@ -19,7 +19,7 @@ public class LogoView extends RelativeLayout {
             return;
         }
         TextView appversionView = (TextView) findViewById(R.id.app_version);
-        String appVersion = MementoApp.getVersionName(getContext());
+        String appVersion = MementoApplication.getVersionName(getContext());
         appversionView.setText(appVersion);
     }
 
