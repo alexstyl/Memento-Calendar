@@ -14,13 +14,14 @@
     <ImageView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginRight="32dp"
+      android:layout_marginRight="@dimen/card_padding_from_screen"
       android:src="@drawable/ic_action_search" />
 
     <TextView
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
+      android:lines="1"
       android:text="@string/search_hint"
       android:textColor="@color/search_hint_color" />
   </LinearLayout>
