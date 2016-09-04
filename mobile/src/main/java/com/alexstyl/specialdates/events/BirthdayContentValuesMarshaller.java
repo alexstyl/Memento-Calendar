@@ -27,7 +27,7 @@ class BirthdayContentValuesMarshaller implements Marshaller<List<Contact>> {
         values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
 
         Birthday birthday = contact.getBirthday();
-        values.put(PeopleEventsContract.PeopleEvents.DATE, birthday.toString());
+        values.put(PeopleEventsContract.PeopleEvents.DATE, birthday.toShortDate());
 
         values.put(PeopleEventsContract.PeopleEvents.SOURCE, ContactSource.DEVICE);
         values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, PeopleEventsContract.PeopleEvents.TYPE_BIRTHDAY);

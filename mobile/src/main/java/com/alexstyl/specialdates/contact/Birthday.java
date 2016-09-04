@@ -1,14 +1,14 @@
 package com.alexstyl.specialdates.contact;
 
-import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DayDate;
 
-public class Birthday {
+public class Birthday implements ShortDate {
 
     private final AnnualEvent date;
-    private final int yearOfBirth;
+    private final Optional<Integer> yearOfBirth;
 
     public static Birthday on(DayDate date) {
         return new Birthday(date.getDayOfMonth(), date.getMonth(), date.getYear());
@@ -20,7 +20,7 @@ public class Birthday {
 
     public Birthday(int dayOfMonth, int month, int year) {
         this.date = new AnnualEvent(dayOfMonth, month);
-        this.yearOfBirth = year;
+        this.yearOfBirth = new Optional<>(year);
     }
 
     public int getDayOfMonth() {
@@ -32,16 +32,25 @@ public class Birthday {
     }
 
     public int getYear() {
-        return yearOfBirth;
+        return yearOfBirth.get();
     }
 
     public boolean includesYear() {
-        return yearOfBirth != Date.NO_YEAR;
+        return yearOfBirth.isPresent();
     }
 
     @Override
     public String toString() {
         return DateDisplayStringCreator.getInstance().fullyFormattedBirthday(this);
+    }
+
+    @Override
+    public String toShortDate() {
+        return DateDisplayStringCreator.getInstance().stringOf(date);
+    }
+
+    public int getAgeOnYear(int year) {
+        return year - yearOfBirth.get();
     }
 
     @Override
@@ -55,18 +64,17 @@ public class Birthday {
 
         Birthday birthday = (Birthday) o;
 
-        return yearOfBirth == birthday.yearOfBirth
-                && date != null ? date.equals(birthday.date) : birthday.date == null;
+        if (!date.equals(birthday.date)) {
+            return false;
+        }
+        return yearOfBirth.equals(birthday.yearOfBirth);
+
     }
 
     @Override
     public int hashCode() {
-        int result = date != null ? date.hashCode() : 0;
-        result = 31 * result + yearOfBirth;
+        int result = date.hashCode();
+        result = 31 * result + yearOfBirth.hashCode();
         return result;
-    }
-
-    public int getAgeOnYear(int year) {
-        return year - yearOfBirth;
     }
 }

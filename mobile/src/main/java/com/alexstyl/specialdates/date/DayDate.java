@@ -2,11 +2,13 @@ package com.alexstyl.specialdates.date;
 
 import android.support.annotation.NonNull;
 
+import com.alexstyl.specialdates.contact.ShortDate;
+
 import java.util.Calendar;
 
 import org.joda.time.LocalDate;
 
-public class DayDate implements Comparable<Date>, Date {
+public class DayDate implements Comparable<Date>, Date, ShortDate {
 
     public static final int NO_YEAR = -1;
 
@@ -192,5 +194,10 @@ public class DayDate implements Comparable<Date>, Date {
         int otherDayOfYear = otherEvent.localDate.dayOfYear().get();
         int daysOfYearsDifference = (getYear() - otherEvent.getYear()) * 365;
         return (otherDayOfYear - dayOfYear) - daysOfYearsDifference;
+    }
+
+    @Override
+    public String toShortDate() {
+        return DateDisplayStringCreator.getInstance().stringOf(this);
     }
 }
