@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsEvent;
 import com.alexstyl.specialdates.billing.util.IabHelper;
 import com.alexstyl.specialdates.billing.util.IabResult;
 import com.alexstyl.specialdates.billing.util.Inventory;
@@ -29,7 +32,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
 
     private static final String TAG = "Donate";
 
-    private IabHelper mHelper;
+    private IabHelper iabHelper;
     static final String ITEM_TEST = "android.test.purchased";
 
     static final String ITEM_DONATE_1 = "com.alexstyl.specialdates.support_1";
@@ -57,7 +60,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
                 Purchase donationPurchase = inventory.getPurchase(token);
                 if (donationPurchase != null /*&& verifyDeveloperPayload(gasPurchase)*/) {
                     android.util.Log.d(TAG, "We have token. Consuming it.");
-                    mHelper.consumeAsync(inventory.getPurchase(token), null);
+                    iabHelper.consumeAsync(inventory.getPurchase(token), null);
                 }
             }
             // IAB is fully set up.
@@ -70,7 +73,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.donate);
-
+        analytics = Analytics.get(this);
         mTokens = new HashMap<>();
         if (BuildConfig.DEBUG) {
             mTokens.put("1", ITEM_TEST);
@@ -103,16 +106,18 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
         if (isBillingAvailable(this)) {
             initialiseBilling();
         } else {
-            Log.e(TAG, "Billing is not available");
+            ErrorTracker.track(new RuntimeException("Billing is not available"));
             finish();
         }
     }
+
+    private Analytics analytics;
 
     private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
             // if we were disposed of in the meantime, quit.
-            if (mHelper == null) {
+            if (iabHelper == null) {
                 return;
             }
 
@@ -122,7 +127,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
             }
 
             if (!result.isSuccess()) {
-                Log.e(TAG, "Error! " + result.getMessage());
+                ErrorTracker.track(new RuntimeException("onIabPurchaseFinished error:  " + result.getMessage()));
                 return;
             }
 
@@ -130,31 +135,38 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
             Log.d(TAG, "Bought " + purchase.getSku());
 
             // consume it so that the user can buy a donation again
-            mHelper.consumeAsync(purchase, null);
+            iabHelper.consumeAsync(purchase, null);
             Toast.makeText(SupportDonateDialog.this, R.string.thanks_for_support, Toast.LENGTH_SHORT).show();
+
+            analytics.track(successfulDonationEvent());
             finish();
             Log.d(TAG, "Purchase successful!");
         }
+
     };
 
+    private AnalyticsEvent successfulDonationEvent() {
+        return new AnalyticsEvent(AnalyticsEvent.Events.DONATION).asSuccess(true);
+    }
+
     private void initialiseBilling() {
-        if (mHelper != null) {
+        if (iabHelper != null) {
             return;
         }
-        mHelper = new IabHelper(this, BuildConfig.API_KEY_VENDING);
+        iabHelper = new IabHelper(this, BuildConfig.API_KEY_VENDING);
 
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+        iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
 
             public void onIabSetupFinished(IabResult result) {
-                if (mHelper == null) {
+                if (iabHelper == null) {
                     return;
                 }
                 if (!result.isSuccess()) {
+                    ErrorTracker.track(new RuntimeException("Problem setting up in-app billing: " + result.getMessage()));
                     // Oh noes, there was a problem.
-                    Log.e(TAG, "Problem setting up in-app billing: " + result.getMessage());
                     return;
                 }
-                mHelper.queryInventoryAsync(mGotInventoryListener);
+                iabHelper.queryInventoryAsync(mGotInventoryListener);
 
             }
         });
@@ -175,24 +187,19 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
         } else {
             String index = String.valueOf(v.getTag());
             token = mTokens.get(index);
-//            if (token == null) {
-//                Log.e(TAG, "got index " + index);
-//                return;
-//            }
         }
 
         if (mBillingServiceReady) {
-            mHelper.launchPurchaseFlow(this, token, REQUEST_CODE_TEST, mPurchaseFinishedListener);
+            iabHelper.launchPurchaseFlow(this, token, REQUEST_CODE_TEST, mPurchaseFinishedListener);
         } else {
-            Log.w(TAG, "Tried to buy but billing was not ready");
+            ErrorTracker.track(new RuntimeException("Tried to buy but billing was not ready"));
         }
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (mHelper == null || !mHelper.handleActivityResult(requestCode, resultCode, data)) {
+        if (iabHelper == null || !iabHelper.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -200,9 +207,9 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mHelper != null) {
-            mHelper.dispose();
-            mHelper = null;
+        if (iabHelper != null) {
+            iabHelper.dispose();
+            iabHelper = null;
         }
     }
 
