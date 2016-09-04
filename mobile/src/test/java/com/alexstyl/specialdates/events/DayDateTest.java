@@ -59,23 +59,35 @@ public class DayDateTest {
     }
 
     @Test
-    public void testOneDayAhead() throws Exception {
+    public void testOneDayAhead() {
         DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
         DayDate secondDayOfYear = DayDate.newInstance(2, 1, 1990);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(1);
     }
 
     @Test
-    public void testOneYearAhead() throws Exception {
+    public void testOneYearAhead() {
         DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
         DayDate secondDayOfYear = DayDate.newInstance(1, 1, 1991);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(365);
     }
 
     @Test
-    public void testTwoYearAhead() throws Exception {
+    public void testTwoYearAhead() {
         DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
         DayDate secondDayOfYear = DayDate.newInstance(1, 1, 1992);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(365 * 2);
+    }
+
+    @Test
+    public void toShortDateWithYear() {
+        DayDate dayDate = DayDate.newInstance(1, 1, 1990);
+        assertThat(dayDate.toShortDate()).isEqualTo("1990-01-01");
+    }
+
+    @Test
+    public void toShortDateWithNoYear() {
+        DayDate dayDate = DayDate.newInstance(1, 1);
+        assertThat(dayDate.toShortDate()).isEqualTo("--01-01");
     }
 }
