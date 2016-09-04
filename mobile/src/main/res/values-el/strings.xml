@@ -39,7 +39,7 @@
     <string name="daily_reminder">Καθημερινή Υπενθύμιση</string>
     <string name="daily_reminder_summary">"Θύμιζέ μου τις γιορτές και τα γενέθλια της κάθε ημέρας"</string>
     <string name="ringtone">Ήχος</string>
-    <string name="vibrate">"Δόνηση"</string>
+    <string name="vibrate">Δόνηση</string>
     <string name="daily_reminder_time_summary">Κάθε μέρα στις %s</string>
     <string name="set_time">Ρύθμιση Ώρας</string>
     <string name="set">Τέλος</string>
@@ -62,9 +62,9 @@
         \nAndreas Sfakianakis για την βιβλιοθήκη για τους Greeklish χαρακτήρες
         \nKosta Stoupas για την Γερμανική μετάφραση
         \nAggela Stylianidou για την Γαλλική μετάφραση"</string>
-    <string name="about_thanks_special_someone">"και *%s* που χρησιμοποιείται και υποστηρίζεται την εφαρμογή! :)"</string>
+    <string name="about_thanks_special_someone">και *%s* που χρησιμοποιείται και υποστηρίζεται την εφαρμογή! :)</string>
     <string name="about_contact">Κάτι πάει στραβά με την εφαρμογή; Θέλετε κάτι νέο να προστεθεί; Στείλτε e-mail στο %s</string>
-    <string name="you">"Εσάς"</string>
+    <string name="you">Εσάς</string>
     <string name="switch_on">Ενεργό</string>
     <string name="switch_off">Ανενεργό</string>
     <string name="thanks_for_support">Σας ευχαριστώ για την υποστήριξη</string>
@@ -87,9 +87,11 @@
     <string name="search">Αναζήτηση</string>
     <string name="and">και</string>
     <string name="Greek">Ελληνικά</string>
-    <string name="Slovak">Σλοβανικά (Slovenčina)</string>
-    <string name="Russian">Ρώσικα (русский)</string>
-    <string name="Hungarian">Ουγκαρικά</string>
+    <string name="Czech">Τσέχικα</string>
+    <string name="Slovak">Σλοβάκικα</string>
+    <string name="Russian">Ρώσικα</string>
+    <string name="Latvian">Λατβικά</string>
+    <string name="Hungarian">Ουγγρικά</string>
     <string name="nameday_language_title">Γλώσσα Εορτολογίου</string>
     <string name="no_sound">Αθόρυβο</string>
     <string name="label_widget_namedays">"Γιορτές - Ονομαστικές Εορτές"</string>
@@ -124,11 +126,12 @@
     <string name="support_message">Ελπίζω να σας αρέσει η εφαρμογή και να σας είναι χρήσιμη. Αν θέλετε να υποστηρίξετε την εφαρμογή, μπορείτε να επιλέξετε κάτι από τα παρακάτω</string>
     <string name="translate">Μεταφράστε την εφαρμογή</string>
     <string name="translate_the_app_title">Μετάφραση την εφαρμογή</string>
-    <string name="translate_the_app_message">Επισκεφθείτε το παρακάτω url από τον υπολογιστή σας</string>
+    <string name="translate_the_app_message">Επισκεφθείτε το url απο τον browser του υπολογιστή σας</string>
     <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
     <string name="copy_link">Αντιγραφή</string>
     <string name="copied_to_clipboard">Το URL αντιγράφθηκε στο πρόχειρο</string>
     <string name="select_donation_amount">Επιλέξτε το ποσό που θα θέλατε να προσφέρετε</string>
+    <string name="go_to_wall">Άνοιγμα Τοίχου</string>
     <string name="view_contact">Προβολή επαφής</string>
     <string name="no_birthday_set">Δεν έχει οριστεί ημερομηνία γενεθλίων</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Δεν βρέθηκαν επαφές με εορτές. Πατήστε το '+' για προσθήκη"</string>
@@ -137,12 +140,12 @@
     <string name="Birthday_date">Ημερομηνία γενεθλίων</string>
     <string name="Contact_name">Όνομα επαφής</string>
     <string name="Themes">Θέματα</string>
+    <string name="romanian">Ρωμάνικα</string>
     <string name="Configure_widget">Ρύθμιση Γρ. Στοιχείου</string>
     <string name="Done">Αποθήκευση</string>
     <string name="Transparency">Διαφάνεια</string>
     <string name="Dark_themeQ">Σκοτεινό θέμα;</string>
     <string name="Contact_names">Ονόματα επαφών</string>
-
     <string name="Bank_holiday">Αργία</string>
     <string name="Bank_holidays">Αργίες</string>
     <string name="Display_Bankholidays">Προβολή αργίων</string>
