@@ -2,7 +2,7 @@
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
   as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Memento Calendar</string>
+    <string name="localised_app_name">Memento Namedays</string>
     <string name="today">Dnes</string>
     <string name="tomorrow">Zítra</string>
     <string name="birthday">Datum narození</string>
@@ -36,10 +36,10 @@
     <string name="action_send_mail">Poslat e-mail</string>
     <string name="no_app_found">Pro provedení této akce nebyla nalezena zádná aplikace</string>
     <string name="send_mail_via">Poslat emailem</string>
-    <string name="daily_reminder">Denního připomínání</string>
+    <string name="daily_reminder">Denní připomínání</string>
     <string name="daily_reminder_summary">"Připomínat každodenní události"</string>
     <string name="ringtone">Vyzváněcí tón</string>
-    <string name="vibrate">"Vibrace"</string>
+    <string name="vibrate">Vibrace</string>
     <string name="daily_reminder_time_summary">Každý den v %s</string>
     <string name="set_time">Čas připomínky</string>
     <string name="set">Nastavit</string>
@@ -65,9 +65,9 @@ Kosta Stoupas - německý překlad
 Aggele Stylianidou - francouzský překlad
 Gian Maria Calzolari - italský překlad
 Andrejs Kotovs - lotyšský překlad"</string>
-    <string name="about_thanks_special_someone">"a *%s* za používání a podporu aplikace"</string>
+    <string name="about_thanks_special_someone">a *%s* za používání a podporu aplikace</string>
     <string name="about_contact">Chyba v aplikaci? Máš nějaký podnět? Pošli email na %s</string>
-    <string name="you">"Ty"</string>
+    <string name="you">Ty</string>
     <string name="switch_on">Zapnout</string>
     <string name="switch_off">Vypnout</string>
     <string name="thanks_for_support">Děkuji za podporu aplikace</string>
@@ -89,11 +89,12 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="title_add_birthday">Přidat narozeniny</string>
     <string name="search">Hledat</string>
     <string name="and">a</string>
-    <string name="Greek">Řecko</string>
-    <string name="Slovak">Slovensko</string>
-    <string name="Russian">Rusko</string>
-    <string name="Latvian">Lotyšsko</string>
-    <string name="Hungarian">Maďarsko</string>
+    <string name="Greek">řecký</string>
+    <string name="Czech">český</string>
+    <string name="Slovak">slovenský</string>
+    <string name="Russian">ruský</string>
+    <string name="Latvian">lotyšský</string>
+    <string name="Hungarian">maďarský</string>
     <string name="nameday_language_title">Kalendář svátků</string>
     <string name="no_sound">Tichý</string>
     <string name="label_widget_namedays">"Připomínač svátků"</string>
@@ -108,7 +109,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="rate_5_stars">"MILUJI ji!"</string>
     <string name="rate">Hodnotit</string>
     <string name="message">Zpráva</string>
-    <string name="contact_turns_age">%1$s obrací %2$d</string>
+    <string name="contact_turns_age">%1$s slaví %2$d</string>
     <string name="no_results_found">Žádné výsledky nenalezeny</string>
     <string name="contact_celebration_count">Dnes slaví %d konkakty</string>
     <string name="todays_namedays">Dnešní svátky</string>
@@ -148,4 +149,6 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="Transparency">Průhlednost</string>
     <string name="Dark_themeQ">Tmavý motiv</string>
     <string name="Contact_names">Kontaktní jména</string>
+    <string name="Bank_holiday">státní svátek</string>
+    <string name="Bank_holidays">státní svátky</string>
 </resources>

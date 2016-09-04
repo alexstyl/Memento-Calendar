@@ -11,6 +11,8 @@ import android.view.View;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.SupportDonateDialog;
@@ -31,12 +33,17 @@ public class MainActivity extends ThemedActivity {
     private UpcomingEventsFragment upcomingEventsFragment;
     private AskForSupport askForSupport;
     private ThemeReapplier reapplier;
+    private Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         reapplier = new ThemeReapplier(this);
+
+        analytics = Analytics.get(this);
+        analytics.trackScreen(Screen.HOME);
+
         Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
 

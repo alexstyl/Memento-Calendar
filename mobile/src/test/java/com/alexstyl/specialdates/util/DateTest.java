@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.util;
 
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 import org.junit.Test;
 

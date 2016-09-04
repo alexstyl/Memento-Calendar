@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 import java.text.Collator;
 import java.util.ArrayList;

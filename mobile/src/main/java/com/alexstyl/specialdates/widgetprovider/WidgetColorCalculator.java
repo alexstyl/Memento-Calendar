@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.widgetprovider;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 
 public class WidgetColorCalculator {
 

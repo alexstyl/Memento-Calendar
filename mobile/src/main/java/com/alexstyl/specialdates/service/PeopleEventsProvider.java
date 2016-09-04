@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
 import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.PeopleEventsContract;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
@@ -69,7 +69,7 @@ public class PeopleEventsProvider {
                 Contact contact = contactProvider.getOrCreateContact(contactId);
                 EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
 
-                ContactEvent event = ContactEvent.newInstance(eventType, date, contact);
+                ContactEvent event = new ContactEvent(eventType, date, contact);
                 contactEvents.add(event);
             } catch (Exception e) {
                 ErrorTracker.track(e);
@@ -111,7 +111,7 @@ public class PeopleEventsProvider {
 
     private String[] thePassing(DayDate date) {
         return new String[]{
-                date.toString()
+                date.toShortDate()
         };
     }
 
@@ -124,7 +124,7 @@ public class PeopleEventsProvider {
     }
 
     private String[] getSelectArgs(DayDate date) {
-        return new String[]{date.toString()};
+        return new String[]{date.toShortDate()};
     }
 
     private String getSelection() {
@@ -160,8 +160,8 @@ public class PeopleEventsProvider {
     private Cursor queryPeopleEvents(DayDate startingDate, DayDate endingDate) {
         String select = PeopleEventsContract.PeopleEvents.DATE + " >= ? AND " + PeopleEventsContract.PeopleEvents.DATE + " <=?";
         String[] selectArgs = new String[]{
-                startingDate.toString(),
-                endingDate.toString()
+                startingDate.toShortDate(),
+                endingDate.toShortDate()
         };
 
         Cursor cursor = resolver.query(
@@ -193,7 +193,7 @@ public class PeopleEventsProvider {
         DayDate date = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
         EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
 
-        return ContactEvent.newInstance(eventType, date, contact);
+        return new ContactEvent(eventType, date, contact);
     }
 
     private void throwIfInvalid(Cursor cursor) {

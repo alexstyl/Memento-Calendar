@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoFragment;

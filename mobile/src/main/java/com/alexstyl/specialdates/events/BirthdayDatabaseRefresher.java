@@ -16,15 +16,19 @@ import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.DeviceContact;
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.util.DateParser;
 import com.alexstyl.specialdates.util.Utils;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class BirthdayDatabaseRefresher {
+
+    @SuppressWarnings("unchecked")
+    private static final List<Contact> NO_CONTACTS = Collections.EMPTY_LIST;
 
     private final ContentResolver contentResolver;
     private final DateParser dateParser;
@@ -34,7 +38,7 @@ class BirthdayDatabaseRefresher {
     static BirthdayDatabaseRefresher newInstance(Context context) {
         ContentResolver cr = context.getContentResolver();
         DateParser dateParser = new DateParser();
-        PeopleEventsPersister persister = PeopleEventsPersister.newInstance(new EventSQLiteOpenHelper(context));
+        PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         BirthdayContentValuesMarshaller marshaller = new BirthdayContentValuesMarshaller();
         return new BirthdayDatabaseRefresher(cr, dateParser, persister, marshaller);
     }
@@ -59,7 +63,7 @@ class BirthdayDatabaseRefresher {
     private List<Contact> loadBirtdaysFromDisk() {
         Cursor cursor = Query.query(contentResolver);
         if (isInvalid(cursor)) {
-            throw new DeveloperError("Cursor was invalid");
+            return NO_CONTACTS;
         }
         List<Contact> contacts = new ArrayList<>();
         try {

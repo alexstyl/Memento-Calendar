@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.DayDate;
-import com.alexstyl.specialdates.events.namedays.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.NamedayCalendarProvider;
+import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;

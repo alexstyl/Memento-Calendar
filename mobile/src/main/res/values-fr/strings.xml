@@ -2,7 +2,7 @@
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
   as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Fêtes Memento</string>
+    <string name="localised_app_name">Memento Fêtes</string>
     <string name="today">Aujourd\'hui</string>
     <string name="tomorrow">Demain</string>
     <string name="birthday">Anniversaire</string>
@@ -39,7 +39,7 @@
     <string name="daily_reminder">Rappel quotidien</string>
     <string name="daily_reminder_summary">"Rappelle-moi les fêtes et les anniversaires de chaque jour"</string>
     <string name="ringtone">Son</string>
-    <string name="vibrate">"Vibrer au rappel"</string>
+    <string name="vibrate">Vibrer au rappel</string>
     <string name="daily_reminder_time_summary">Chaque jour à %s</string>
     <string name="set_time">Réglage de l\'heure</string>
     <string name="set">Fin</string>
@@ -55,9 +55,9 @@
         \nAndreas Sfakianakis pour son travail à la librairie de Greeklish
         \nKosta Stoupas pour la traduction en allemand
         \nAggela Stylianidou pour la traduction en français"</string>
-    <string name="about_thanks_special_someone">"et *%s* qui utilisez et supportez l'application! :)"</string>
+    <string name="about_thanks_special_someone">et *%s* qui utilisez et supportez l\'application! :)</string>
     <string name="about_contact">Est-se qu\' il y a des problèmes concernant l\' application? Est-ce que vous avez des suggestions concernant l\' application? Envoyez un courriel à %s</string>
-    <string name="you">"Vous"</string>
+    <string name="you">Vous</string>
     <string name="thanks_for_support">Merci de supporter l\'application</string>
     <!-- The name for contacts with empty Display name-->
     <string name="title_add_birthday">Ajouter anniversaire</string>

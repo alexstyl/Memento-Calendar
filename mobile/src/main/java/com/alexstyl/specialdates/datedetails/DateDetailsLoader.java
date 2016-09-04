@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
@@ -69,7 +69,7 @@ public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>>
             try {
                 Contact contact = buildContactFrom(cursor);
                 EventType eventType = PeopleEvents.getEventType(cursor);
-                ContactEvent contactEvent = ContactEvent.newInstance(eventType, date, contact);
+                ContactEvent contactEvent = new ContactEvent(eventType, date, contact);
 
                 result.add(contactEvent);
             } catch (ContactNotFoundException e) {
@@ -85,7 +85,7 @@ public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>>
         return getContentProvider().query(
                 PeopleEvents.CONTENT_URI,
                 null,
-                PeopleEvents.DATE + " = ?", new String[]{date.toString()},
+                PeopleEvents.DATE + " = ?", new String[]{date.toShortDate()},
                 PeopleEvents.SORT_ORDER_DEFAULT
         );
     }

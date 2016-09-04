@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.DayDate;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.util.DateParser;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.exception.DeveloperError;
@@ -78,7 +78,7 @@ public class BirthdayQuery {
 
         public boolean replaceBirthdays(BirthdayEntry oldBirthday, Birthday birthday) {
             ContentValues contentValues = new ContentValues(1);
-            contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday.toString());
+            contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday.toShortDate());
 
             String where = ContactsContract.CommonDataKinds.Event._ID + " = " + oldBirthday.getEntryID();
             int update = contentResolver.update(ContactsContract.Data.CONTENT_URI, contentValues, where, null);
