@@ -43,3 +43,6 @@ captures/
 # Mac
 .DS_Store
 
+# secrets
+secret.gradle
+/mobile/google-services.json
