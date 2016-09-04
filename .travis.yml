@@ -21,3 +21,7 @@ script:
   # The project currently contains no android tests.
   # By default Travis-ci executes './gradlew build connectedCheck' which checks for connected devices
   - ./gradlew build
+
+
+after_success:
+  - firebase deploy --email ${FIREBASE_USERNAME} --password ${FIREBASE_PASSWORD}
