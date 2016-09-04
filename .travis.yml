@@ -27,4 +27,4 @@ licenses:
     - 'google-gdk-license-.+'
 
 script:
-  - ./build.sh
+  - ./gradlew build
