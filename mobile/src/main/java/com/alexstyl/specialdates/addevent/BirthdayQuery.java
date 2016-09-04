@@ -78,7 +78,7 @@ public class BirthdayQuery {
 
         public boolean replaceBirthdays(BirthdayEntry oldBirthday, Birthday birthday) {
             ContentValues contentValues = new ContentValues(1);
-            contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday.toString());
+            contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday.toShortDate());
 
             String where = ContactsContract.CommonDataKinds.Event._ID + " = " + oldBirthday.getEntryID();
             int update = contentResolver.update(ContactsContract.Data.CONTENT_URI, contentValues, where, null);
