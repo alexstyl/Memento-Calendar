@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.ContactHeroView;
 import com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsEvent;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.theming.MementoTheme;
@@ -23,20 +25,21 @@ public class AddBirthdayActivity extends ThemedActivity {
     private ContactHeroView contactHeroView;
     private BirthdayLabelView birthdayLabel;
     private BirthdayFormPresenter presenter;
-    private Button addButton;
-    private Button dismissButton;
+    private Analytics analytics;
+    private boolean eventCreated;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        analytics = Analytics.get(this);
         MementoTheme theme = Themer.get().getCurrentTheme();
         setContentView(R.layout.activity_add_birthday, theme);
 
         contactHeroView = Views.findById(this, R.id.addbirthday_hero);
         birthdayLabel = Views.findById(this, R.id.addbirthday_datepicker);
-        addButton = Views.findById(this, R.id.addbirthday_add_button);
-        dismissButton = Views.findById(this, R.id.addbirthday_dismiss_button);
+        Button addButton = Views.findById(this, R.id.addbirthday_add_button);
+        Button dismissButton = Views.findById(this, R.id.addbirthday_dismiss_button);
 
         contactHeroView.setListener(listener);
         birthdayLabel.setOnEditListener(onBirthdayLabelClicked);
@@ -65,7 +68,7 @@ public class AddBirthdayActivity extends ThemedActivity {
                 new ContactPersister(context(), getContentResolver())
                         .addBirthdayToExistingContact(presenter.getDisplayingBirthday(), presenter.getSelectedContact());
             }
-            onSuccess();
+            finishSuccessfully();
         }
 
         private AccountData getAccountToStoreContact() {
@@ -78,11 +81,37 @@ public class AddBirthdayActivity extends ThemedActivity {
             }
         }
 
-        private void onSuccess() {
-            setResult(RESULT_OK);
-            finish();
-        }
     };
+
+    private void finishSuccessfully() {
+        eventCreated = true;
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        trackEventCreation();
+    }
+
+    private void trackEventCreation() {
+        AnalyticsEvent analyticsEvent;
+        if (eventCreated) {
+            analyticsEvent = birthdayCreationSuccess();
+        } else {
+            analyticsEvent = birthdayCreationFailed();
+        }
+        analytics.track(analyticsEvent);
+    }
+
+    private AnalyticsEvent birthdayCreationSuccess() {
+        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).withData("success", "true");
+    }
+
+    private AnalyticsEvent birthdayCreationFailed() {
+        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).withData("success", "false");
+    }
 
     private final BirthdayLabelView.OnEditListener onBirthdayLabelClicked = new BirthdayLabelView.OnEditListener() {
         @Override
