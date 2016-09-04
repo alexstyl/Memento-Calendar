@@ -18,7 +18,7 @@ fi
   # Copy mock google-services file if necessary
   if [ ! -f ./mobile/google-services.json ]; then
     echo "Using mock google-services.json"
-    cp ../mock-google-services.json ./mobile/google-services.json
+    cp ./mock-google-services.json ./mobile/google-services.json
   fi
 
   # Build
