@@ -28,7 +28,7 @@ fi
   else
     # On a pull request, just build debug which is much faster and catches
     # obvious errors.
-    GRADLE_OPTS=$OPTS ./gradlew clean :app:assembleDebug
+    GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
   fi
 
   # Back to parent directory.
