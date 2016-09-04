@@ -14,17 +14,19 @@ android:
     - tools
     - build-tools-23.0.2
     - android-23
+    - platform-tools
+    - extra-google-google_play_services
     - extra-android-support
     - extra-android-m2repository
-    - extra-google-google_play_services
-    - extra-google-m2repository  
-
+    - extra-google-m2repository
+    - addon-google_apis-google-23
 
 script:
   # The project currently contains no android tests.
   # By default Travis-ci executes './gradlew build connectedCheck' which checks for connected devices
   - ./gradlew build
 
-
-after_success:
-  - firebase deploy --email ${FIREBASE_USERNAME} --password ${FIREBASE_PASSWORD}
+licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
