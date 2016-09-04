@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.date;
 import android.content.Context;
 import android.text.format.DateUtils;
 
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.contact.Birthday;
 
 public final class DateDisplayStringCreator {
@@ -61,7 +61,7 @@ public final class DateDisplayStringCreator {
 
     public String fullyFormattedBirthday(Birthday birthday) {
         DayDate dayDate = DayDate.newInstance(birthday.getDayOfMonth(), birthday.getMonth(), birthday.getYear());
-        Context appContext = MementoApp.getAppContext();
+        Context appContext = MementoApplication.getAppContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 
@@ -76,7 +76,7 @@ public final class DateDisplayStringCreator {
 
     public String fullyFormattedDate(Date date) {
         DayDate dayDate = DayDate.newInstance(date.getDayOfMonth(), date.getMonth(), date.getYear());
-        Context appContext = MementoApp.getAppContext();
+        Context appContext = MementoApplication.getAppContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 

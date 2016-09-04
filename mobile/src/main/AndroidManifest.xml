@@ -19,7 +19,7 @@
   <uses-permission android:name="android.permission.VIBRATE" />
 
   <application
-    android:name="com.alexstyl.specialdates.MementoApp"
+    android:name="com.alexstyl.specialdates.MementoApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/localised_app_name">
