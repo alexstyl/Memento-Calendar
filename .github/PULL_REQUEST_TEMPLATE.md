@@ -1,6 +1,6 @@
 #### Description
 
-_Give a brief explanation of what is the problem/feature you are working on and what this PR contains
+_Give a brief explanation of what is the problem/feature you are working on and what this PR contains_
 
 ##### Test(s) added
 
