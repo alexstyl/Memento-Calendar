@@ -15,14 +15,14 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginRight="32dp"
-      android:src="@drawable/ic_search_black_24dp" />
+      android:src="@drawable/ic_action_search" />
 
     <TextView
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:text="Search for stuff"
-      android:textColor="@android:color/black" />
+      android:text="@string/search_hint"
+      android:textColor="@color/search_hint_color" />
   </LinearLayout>
 
 
