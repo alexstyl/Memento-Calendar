@@ -25,8 +25,15 @@ public class AnalyticsEvent {
         return this;
     }
 
+    public AnalyticsEvent withData(String key, boolean value) {
+        this.bundle.remove(key);
+        this.bundle.putBoolean(key, value);
+        return this;
+    }
+
     public enum Events {
-        ADD_BIRTHDAY("add_birthday");
+        ADD_BIRTHDAY("add birthday"),
+        DAILY_REMINDER("daily reminder");
 
         private final String name;
 
