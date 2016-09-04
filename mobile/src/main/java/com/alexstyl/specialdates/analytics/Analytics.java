@@ -25,4 +25,7 @@ public class Analytics {
         firebaseAnalytics.logEvent(event.getName(), event.data());
     }
 
+    public void trackScreen(Screen screen) {
+        firebaseAnalytics.logEvent("screen_view", screen.getData());
+    }
 }

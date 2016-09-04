@@ -10,6 +10,7 @@ import com.alexstyl.specialdates.addevent.ui.ContactHeroView;
 import com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsEvent;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.theming.MementoTheme;
@@ -33,6 +34,7 @@ public class AddBirthdayActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
 
         analytics = Analytics.get(this);
+        analytics.trackScreen(Screen.ADD_BIRTHDAY);
         MementoTheme theme = Themer.get().getCurrentTheme();
         setContentView(R.layout.activity_add_birthday, theme);
 
