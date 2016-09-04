@@ -85,7 +85,7 @@ public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>>
         return getContentProvider().query(
                 PeopleEvents.CONTENT_URI,
                 null,
-                PeopleEvents.DATE + " = ?", new String[]{date.toString()},
+                PeopleEvents.DATE + " = ?", new String[]{date.toShortDate()},
                 PeopleEvents.SORT_ORDER_DEFAULT
         );
     }
