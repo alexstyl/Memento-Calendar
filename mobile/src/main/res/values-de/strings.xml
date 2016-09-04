@@ -2,7 +2,7 @@
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
   as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Geburtstage Memento</string>
+    <string name="localised_app_name">Memento Geburtstage</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
     <string name="birthday">Geburtstag</string>
@@ -39,7 +39,7 @@
     <string name="daily_reminder">Tägliche Erinnerung</string>
     <string name="daily_reminder_summary">"Tägliche Erinnerung für jedes Ereignis"</string>
     <string name="ringtone">Klingelton</string>
-    <string name="vibrate">"Vibration"</string>
+    <string name="vibrate">Vibration</string>
     <string name="daily_reminder_time_summary">Jeden Tag um %s</string>
     <string name="set_time">Zeit festlegen</string>
     <string name="set">Fertig</string>

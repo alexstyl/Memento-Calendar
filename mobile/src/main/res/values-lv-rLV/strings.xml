@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-    as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Memento Calendar</string>
+  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Memento Namedays</string>
     <string name="today">Šodiena</string>
     <string name="tomorrow">Rītdien</string>
     <string name="birthday">Dzimšanas diena</string>
