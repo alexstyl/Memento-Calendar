@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.theming;
 
 import com.alexstyl.specialdates.EasyPreferences;
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 
 public class ThemingPreferences {
@@ -10,7 +10,7 @@ public class ThemingPreferences {
     private final EasyPreferences preferences;
 
     public ThemingPreferences() {
-        this.preferences = EasyPreferences.createForDefaultPreferences(MementoApp.getAppContext());
+        this.preferences = EasyPreferences.createForDefaultPreferences(MementoApplication.getAppContext());
     }
 
     public MementoTheme getSelectedTheme() {

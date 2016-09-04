@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.namedays.calendar;
 
 import android.content.Context;
 
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
@@ -18,7 +18,7 @@ public class SpecialGreekNamedaysCalculator {
 
     public SpecialGreekNamedaysCalculator(List<EasternNameday> easternNamedays) {
         this.easternNamedays = easternNamedays;
-        this.context = MementoApp.getAppContext();
+        this.context = MementoApplication.getAppContext();
     }
 
     public NamedayBundle calculateForEasterDate(DayDate easter) {

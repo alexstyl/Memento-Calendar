@@ -36,7 +36,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.PayPal;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
@@ -143,8 +143,8 @@ public class Utils {
     }
 
     public static Intent getSupportEmailIntent(Context context) {
-        String subject = context.getString(R.string.app_name) + " " + MementoApp.getVersionName(context);
-        return getEmailIntent(MementoApp.DEV_EMAIL, subject, Utils.getDeviceDetailsInfo());
+        String subject = context.getString(R.string.app_name) + " " + MementoApplication.getVersionName(context);
+        return getEmailIntent(MementoApplication.DEV_EMAIL, subject, Utils.getDeviceDetailsInfo());
 
     }
 
@@ -235,7 +235,7 @@ public class Utils {
                     @Override
                     public void onStartAction(Context context) throws ActivityNotFoundException {
                         String appName = context.getString(R.string.app_name);
-                        String shareText = String.format(context.getString(R.string.share_text), appName, MementoApp.MARKET_LINK_SHORT);
+                        String shareText = String.format(context.getString(R.string.share_text), appName, MementoApplication.MARKET_LINK_SHORT);
 
                         Intent intent2 = new Intent(Intent.ACTION_SEND);
                         intent2.setType("text/plain");

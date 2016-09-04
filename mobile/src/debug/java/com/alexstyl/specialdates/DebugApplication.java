@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates;
 
-public class DebugApplication extends MementoApp {
+public class DebugApplication extends MementoApplication {
 
     @Override
     protected void initialiseDependencies() {

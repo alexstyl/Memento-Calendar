@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events;
 import android.content.Context;
 import android.os.Handler;
 
-import com.alexstyl.specialdates.MementoApp;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
@@ -56,7 +56,7 @@ class PeopleEventsUpdater {
         boolean wereNamedaysSettingsUpdated = namedayMonitor.dataWasUpdated();
 
         if (wereNamedaysSettingsUpdated) {
-            namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(MementoApp.getAppContext());
+            namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(MementoApplication.getAppContext());
         }
         if (wereContactsUpdated) {
             birthdayDatabaseRefresher.refreshBirthdays();
