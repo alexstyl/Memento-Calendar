@@ -19,8 +19,8 @@ android {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 55
-        versionName '3.6'
+        versionCode 56
+        versionName '3.7'
 
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
         buildConfigField 'String', 'API_KEY_VENDING', '\"' + androidVendingKey + "\""
