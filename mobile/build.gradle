@@ -15,6 +15,16 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
 
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+        }
+    }
+
+
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
@@ -25,6 +35,7 @@ android {
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
         buildConfigField 'String', 'API_KEY_VENDING', '\"' + androidVendingKey + "\""
     }
+
     buildTypes {
         release {
             minifyEnabled true
