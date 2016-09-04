@@ -29,4 +29,3 @@ fi
     # obvious errors.
     GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
   fi
-done
