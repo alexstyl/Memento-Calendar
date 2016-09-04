@@ -3,7 +3,6 @@
 # Exit on error
 set -e
 
-
 # Limit memory usage
 OPTS='-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
@@ -30,5 +29,4 @@ fi
     # obvious errors.
     GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
   fi
-
 done
