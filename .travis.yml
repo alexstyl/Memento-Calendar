@@ -21,11 +21,6 @@ android:
     - extra-google-m2repository
     - addon-google_apis-google-23
 
-script:
-  # The project currently contains no android tests.
-  # By default Travis-ci executes './gradlew build connectedCheck' which checks for connected devices
-  - ./gradlew build
-
 licenses:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'

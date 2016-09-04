@@ -14,18 +14,18 @@ else
   TRAVIS_PULL_REQUEST=false
 fi
 
-  # Copy mock google-services file if necessary
-  if [ ! -f ./mobile/google-services.json ]; then
-    echo "Using mock google-services.json"
-    cp ./mock-google-services.json ./mobile/google-services.json
-  fi
+# Copy mock google-services file if necessary
+if [ ! -f ./mobile/google-services.json ]; then
+  echo "Using mock google-services.json"
+  cp ./mock-google-services.json ./mobile/google-services.json
+fi
 
-  # Build
-  if [ $TRAVIS_PULL_REQUEST = false ] ; then
-    # For a merged commit, build all configurations.
-    GRADLE_OPTS=$OPTS ./gradlew clean build
-  else
-    # On a pull request, just build debug which is much faster and catches
-    # obvious errors.
-    GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
-  fi
+# Build
+if [ $TRAVIS_PULL_REQUEST = false ] ; then
+  # For a merged commit, build all configurations.
+  GRADLE_OPTS=$OPTS ./gradlew clean build
+else
+  # On a pull request, just build debug which is much faster and catches
+  # obvious errors.
+  GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
+fi
