@@ -33,8 +33,8 @@ public class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
     }
 
     @Override
-    protected void onAbandon() {
-        super.onAbandon();
+    protected void onUnregisterObserver() {
+        super.onUnregisterObserver();
         observer.unregister();
     }
 
