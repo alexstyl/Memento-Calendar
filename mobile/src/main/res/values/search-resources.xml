@@ -6,5 +6,6 @@
   <style name="Search.Theme"
     parent="Theme.Memento.BloodyCherry"></style>
 
-  <string name="search_transition_name">search_transition_name</string>
+  <string name="search_transition_name"
+    translatable="false">search_transition_name</string>
 </resources>
