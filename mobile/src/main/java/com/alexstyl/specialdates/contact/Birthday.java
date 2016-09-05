@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.contact;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.AnnualEvent;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DayDate;
 
@@ -11,16 +12,27 @@ public class Birthday implements ShortDate {
     private final Optional<Integer> yearOfBirth;
 
     public static Birthday on(DayDate date) {
-        return new Birthday(date.getDayOfMonth(), date.getMonth(), date.getYear());
+        if (date.getYear() == Date.NO_YEAR) {
+            return new Birthday(date.getDayOfMonth(), date.getMonth(), Optional.<Integer>absent());
+        } else {
+            return new Birthday(date.getDayOfMonth(), date.getMonth(), new Optional<>(date.getYear()));
+        }
     }
 
-    public Birthday(int day, int month) {
-        this(day, month, DayDate.NO_YEAR);
+    public static Birthday on(int dayOfMonth, int month) {
+        return new Birthday(dayOfMonth, month, Optional.<Integer>absent());
     }
 
-    public Birthday(int dayOfMonth, int month, int year) {
+    public static Birthday on(int dayOfMonth, int month, int year) {
+        if (year <= Date.NO_YEAR) {
+            throw new IllegalArgumentException("A birthday cannot have negative year");
+        }
+        return new Birthday(dayOfMonth, month, new Optional<>(year));
+    }
+
+    private Birthday(int dayOfMonth, int month, Optional<Integer> year) {
         this.date = new AnnualEvent(dayOfMonth, month);
-        this.yearOfBirth = new Optional<>(year);
+        this.yearOfBirth = year;
     }
 
     public int getDayOfMonth() {
