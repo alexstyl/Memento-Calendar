@@ -1,6 +1,9 @@
 package com.alexstyl.specialdates.ui.activity;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +23,7 @@ import com.alexstyl.specialdates.support.SupportDonateDialog;
 import com.alexstyl.specialdates.ui.ThemeReapplier;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.util.Notifier;
+import com.alexstyl.specialdates.util.Utils;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
 
@@ -33,6 +37,7 @@ public class MainActivity extends ThemedActivity {
     private AskForSupport askForSupport;
     private ThemeReapplier reapplier;
     private Analytics analytics;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,8 @@ public class MainActivity extends ThemedActivity {
         analytics = Analytics.get(this);
         analytics.trackScreen(Screen.HOME);
 
-        Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
+        toolbar = Views.findById(this, R.id.memento_toolbar);
+        toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
         notifier = Notifier.newInstance(this);
@@ -113,11 +119,38 @@ public class MainActivity extends ThemedActivity {
         startActivity(new Intent(this, MainPreferenceActivity.class));
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onSearchRequested() {
+        navigateToSearch();
+        return true;
+    }
+
+    private final View.OnClickListener onToolbarClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            navigateToSearchWithAnimation();
+        }
+
+    };
+
+    private void navigateToSearchWithAnimation() {
+        if (Utils.hasLollipop()) {
+            Intent i = new Intent(this, SearchActivity.class);
+
+            View sharedView = toolbar;
+            String transitionName = getString(R.string.search_transition_name);
+
+            ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, sharedView, transitionName);
+            startActivity(i, transitionActivityOptions.toBundle());
+        } else {
+            navigateToSearch();
+        }
+    }
+
+    private void navigateToSearch() {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
-        return true;
     }
 
     @Override

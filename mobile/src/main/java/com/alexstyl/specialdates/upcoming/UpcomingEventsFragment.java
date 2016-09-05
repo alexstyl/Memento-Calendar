@@ -79,6 +79,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         new FabPaddingSetter().setBottomPaddingTo(upcomingEventsListView);
+        upcomingEventsListView.setHasFixedSize(true);
     }
 
     @Override

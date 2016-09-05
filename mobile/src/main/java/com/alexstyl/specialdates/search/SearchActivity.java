@@ -1,18 +1,17 @@
 package com.alexstyl.specialdates.search;
 
-import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Context;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,9 +28,13 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
+import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.caster.Views;
+
+import java.util.List;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -56,6 +59,7 @@ public class SearchActivity extends MementoActivity {
     private NameSuggestionsAdapter namesAdapter;
     private boolean displayNamedays;
     private String searchQuery;
+    private View searchToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,7 @@ public class SearchActivity extends MementoActivity {
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);
         }
-
+        searchToolbar = Views.findById(this, R.id.search_bar);
         searchField = Views.findById(this, R.id.text_search_query);
         setupSearchField();
         ImageButton closeButton = Views.findById(this, R.id.btn_close);
@@ -266,9 +270,26 @@ public class SearchActivity extends MementoActivity {
     };
 
     private final View.OnClickListener onCloseButtonClickListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
-            finish();
+            if (Utils.hasLollipop()) {
+                Intent i = new Intent(context(), MainActivity.class);
+
+                View sharedView = searchToolbar;
+                String transitionName = getString(R.string.search_transition_name);
+
+                setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                        finish();
+                    }
+                });
+                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(SearchActivity.this, sharedView, transitionName);
+                startActivity(i, transitionActivityOptions.toBundle());
+            }
+
+//            finish();
         }
     };
 
