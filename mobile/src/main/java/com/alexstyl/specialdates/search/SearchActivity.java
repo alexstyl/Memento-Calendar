@@ -26,6 +26,7 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
@@ -53,20 +54,18 @@ public class SearchActivity extends MementoActivity {
     private NameSuggestionsAdapter namesAdapter;
     private boolean displayNamedays;
     private String searchQuery;
-    private View searchToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        Themer.get().initialiseActivity(this);
         Analytics.get(this).trackScreen(Screen.SEARCH);
 
         displayNamedays = shouldIncludeNamedays();
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);
         }
-        searchToolbar = Views.findById(this, R.id.search_bar);
         searchField = Views.findById(this, R.id.text_search_query);
         setupSearchField();
         ImageButton closeButton = Views.findById(this, R.id.btn_close);
