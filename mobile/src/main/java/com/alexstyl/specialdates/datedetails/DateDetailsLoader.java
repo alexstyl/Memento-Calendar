@@ -55,8 +55,8 @@ public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>>
     }
 
     @Override
-    protected void onAbandon() {
-        super.onAbandon();
+    protected void onUnregisterObserver() {
+        super.onUnregisterObserver();
         contactsObserver.unregister();
     }
 
