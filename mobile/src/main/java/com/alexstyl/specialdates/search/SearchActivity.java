@@ -26,7 +26,9 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.theming.Themer;
+import com.alexstyl.specialdates.theming.ViewTinter;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
@@ -60,7 +62,8 @@ public class SearchActivity extends MementoActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Themer.get().initialiseActivity(this);
+        Themer themer = Themer.get();
+        themer.initialiseActivity(this);
         Analytics.get(this).trackScreen(Screen.SEARCH);
 
         displayNamedays = shouldIncludeNamedays();
@@ -69,7 +72,9 @@ public class SearchActivity extends MementoActivity {
         }
         searchField = Views.findById(this, R.id.text_search_query);
         setupSearchField();
-        ImageButton closeButton = Views.findById(this, R.id.btn_close);
+        ImageButton closeButton = Views.findById(this, R.id.search_toolbar_back);
+        tintButtonToAccentColor(closeButton);
+
         clearButton = Views.findById(this, R.id.btn_clear);
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
@@ -103,6 +108,12 @@ public class SearchActivity extends MementoActivity {
             namesSuggestionsView.setVisibility(View.GONE);
         }
 
+    }
+
+    private void tintButtonToAccentColor(ImageButton closeButton) {
+        AttributeExtractor extractor = new AttributeExtractor();
+        ViewTinter viewTinter = new ViewTinter(extractor);
+        viewTinter.tintToAccentColor(closeButton);
     }
 
     @Override
