@@ -30,6 +30,7 @@ import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.meta.AndroidUtils;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -266,6 +267,7 @@ public class SearchActivity extends MementoActivity {
 
         @Override
         public void onClick(View v) {
+            AndroidUtils.requestHideKeyboard(context(), v);
             ActivityCompat.finishAfterTransition(SearchActivity.this);
         }
     };
