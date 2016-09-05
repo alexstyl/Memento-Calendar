@@ -3,7 +3,8 @@
   android:id="@+id/memento_toolbar"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:background="@drawable/card_no_paddings">
+  android:background="@drawable/card_no_paddings"
+  android:transitionName="@string/search_transition_name">
 
   <LinearLayout
     android:layout_width="wrap_content"

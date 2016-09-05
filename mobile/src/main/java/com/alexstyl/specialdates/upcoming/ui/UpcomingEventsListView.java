@@ -19,12 +19,9 @@ public class UpcomingEventsListView extends RecyclerView {
     private UpcomingEventsAdapter adapter;
     private ScrollingLinearLayoutManager layoutManager;
 
-    private OnUpcomingEventClickedListener listener;
-
     public UpcomingEventsListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        setHasFixedSize(true);
         layoutManager = new ScrollingLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false, 600);
         setLayoutManager(layoutManager);
 
@@ -41,8 +38,7 @@ public class UpcomingEventsListView extends RecyclerView {
     }
 
     public void updateWith(List<CelebrationDate> dates, OnUpcomingEventClickedListener listener) {
-        this.listener = listener;
-        this.adapter.setUpcomingEvents(dates, listener);
+        adapter.setUpcomingEvents(dates, listener);
     }
 
     public void scrollToToday(final boolean smoothScroll) {

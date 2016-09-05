@@ -2,4 +2,9 @@
 <resources>
   <string name="search_hint">@string/Search_for_contacts_or_namedays</string>
   <color name="search_hint_color">#808080</color>
+
+  <style name="Search.Theme"
+    parent="Theme.Memento.BloodyCherry"></style>
+
+  <string name="search_transition_name">search_transition_name</string>
 </resources>

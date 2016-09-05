@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+  <style name="Search.Theme"
+    parent="Theme.Memento.BloodyCherry">
+    <item name="android:windowContentTransitions">true</item>
+
+    specify enter and exit transitions
+    <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
+    <!--<item name="android:windowExitTransition">@transition/explode</item>-->
+
+    <!-- specify shared element transitions -->
+    <item name="android:windowSharedElementEnterTransition">@transition/changebounds</item>
+    <item name="android:windowSharedElementExitTransition">@transition/changebounds</item>
+  </style>
+
+
+  <integer name="anim_duration_long">250</integer>
+
+
+</resources>
