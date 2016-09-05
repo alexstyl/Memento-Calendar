@@ -38,6 +38,7 @@ public class MainActivity extends ThemedActivity {
     private ThemeReapplier reapplier;
     private Analytics analytics;
     private Toolbar toolbar;
+    private FloatingActionButton addBirthdayFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,8 @@ public class MainActivity extends ThemedActivity {
 
         notifier = Notifier.newInstance(this);
 
-        FloatingActionButton floatingActionButton = Views.findById(this, R.id.fab_add);
-        floatingActionButton.setOnClickListener(startAddBirthdayOnClick);
+        addBirthdayFAB = Views.findById(this, R.id.fab_add);
+        addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
         askForSupport = new AskForSupport(this);
         setTitle(null);
     }
@@ -68,6 +69,7 @@ public class MainActivity extends ThemedActivity {
         } else if (askForSupport.shouldAskForRating()) {
             askForSupport.askForRatingFromUser(this);
         }
+        addBirthdayFAB.show();
     }
 
     @Override
@@ -135,6 +137,7 @@ public class MainActivity extends ThemedActivity {
     };
 
     private void navigateToSearchWithAnimation() {
+        addBirthdayFAB.hide();
         if (Utils.hasLollipop()) {
             Intent i = new Intent(this, SearchActivity.class);
 
