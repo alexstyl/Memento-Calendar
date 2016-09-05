@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/search_fragment"
-  android:name="com.alexstyl.specialdates.search.DeviceSearchFragment"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/fragment_layout"
   android:layout_width="match_parent"
-  android:layout_height="match_parent" />
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+
+  <include
+    android:id="@+id/search_bar"
+    layout="@layout/searchbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/nameday_suggestions"
+    android:layout_width="match_parent"
+    android:layout_height="38dp"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="top"
+
+    android:background="@drawable/background_suggestions"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingBottom="4dp"
+    android:paddingLeft="@dimen/card_padding_from_screen"
+    android:paddingRight="@dimen/card_padding_from_screen"
+    android:paddingTop="4dp" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@android:id/list"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_above="@id/nameday_suggestions"
+    android:layout_alignWithParentIfMissing="true"
+    android:layout_below="@id/search_bar"
+    android:paddingLeft="@dimen/card_padding_from_screen"
+    android:paddingRight="@dimen/card_padding_from_screen" />
+
+</RelativeLayout>
