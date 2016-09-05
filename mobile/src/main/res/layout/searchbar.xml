@@ -19,13 +19,13 @@
       android:orientation="horizontal">
 
       <ImageButton
-        android:id="@+id/btn_close"
+        android:id="@+id/search_toolbar_back"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:background="@drawable/selectable_back_no_bounds"
         android:paddingBottom="@dimen/abc_action_bar_icon_vertical_padding_material"
         android:paddingTop="@dimen/abc_action_bar_icon_vertical_padding_material"
-        android:src="@drawable/ic_action_arrow_dark_back" />
+        android:src="@drawable/ic_action_navigation_arrow_back" />
 
       <EditText
         android:id="@+id/text_search_query"
