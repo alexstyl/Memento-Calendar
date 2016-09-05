@@ -125,9 +125,9 @@ public class BirthdayDatePicker extends LinearLayout {
         int month = getMonth();
         if (isDisplayingYear()) {
             int year = getYear();
-            return new Birthday(dayOfMonth, month, year);
+            return Birthday.on(dayOfMonth, month, year);
         } else {
-            return new Birthday(dayOfMonth, month);
+            return Birthday.on(dayOfMonth, month);
         }
     }
 
