@@ -1,11 +1,9 @@
 package com.alexstyl.specialdates.search;
 
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,13 +26,9 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
-import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.caster.Views;
-
-import java.util.List;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -273,23 +267,7 @@ public class SearchActivity extends MementoActivity {
 
         @Override
         public void onClick(View v) {
-            if (Utils.hasLollipop()) {
-                Intent i = new Intent(context(), MainActivity.class);
-
-                View sharedView = searchToolbar;
-                String transitionName = getString(R.string.search_transition_name);
-
-                setExitSharedElementCallback(new SharedElementCallback() {
-                    @Override
-                    public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                        finish();
-                    }
-                });
-                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(SearchActivity.this, sharedView, transitionName);
-                startActivity(i, transitionActivityOptions.toBundle());
-            }
-
-//            finish();
+            ActivityCompat.finishAfterTransition(SearchActivity.this);
         }
     };
 
