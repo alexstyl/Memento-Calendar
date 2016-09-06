@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsEvent;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.billing.util.IabHelper;
 import com.alexstyl.specialdates.billing.util.IabResult;
 import com.alexstyl.specialdates.billing.util.Inventory;
@@ -30,36 +32,41 @@ import java.util.List;
  */
 public class SupportDonateDialog extends MementoActivity implements View.OnClickListener {
 
-    private static final String TAG = "Donate";
+    private static final String ITEM_TEST = "android.test.purchased";
+
+    private static final String ITEM_DONATE_1 = "com.alexstyl.specialdates.support_1";
+    private static final String ITEM_DONATE_2 = "com.alexstyl.specialdates.support_2";
+    private static final String ITEM_DONATE_3 = "com.alexstyl.specialdates.support_3";
+    private static final String ITEM_DONATE_4 = "com.alexstyl.specialdates.support_4";
+    private static final String ITEM_DONATE_5 = "com.alexstyl.specialdates.support_5";
+
+    private static final ActionWithParameters DONATION_SUCCED = new ActionWithParameters(Action.DONATION, "success", true);
+    private static final ActionWithParameters DONATION_FAILED = new ActionWithParameters(Action.DONATION, "success", false);
+    private static final ActionWithParameters DONATION_CANCELED = new ActionWithParameters(Action.DONATION, "success", "canceled");
+
+    private static final int REQUEST_CODE_TEST = 10001;
 
     private IabHelper iabHelper;
-    static final String ITEM_TEST = "android.test.purchased";
-
-    static final String ITEM_DONATE_1 = "com.alexstyl.specialdates.support_1";
-    static final String ITEM_DONATE_2 = "com.alexstyl.specialdates.support_2";
-    static final String ITEM_DONATE_3 = "com.alexstyl.specialdates.support_3";
-    static final String ITEM_DONATE_4 = "com.alexstyl.specialdates.support_4";
-    static final String ITEM_DONATE_5 = "com.alexstyl.specialdates.support_5";
-
-    private int REQUEST_CODE_TEST = 10001;
     private boolean mBillingServiceReady;
+
     private HashMap<String, String> mTokens = new HashMap<>();
+    private Analytics analytics;
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result,
                                              Inventory inventory) {
-            android.util.Log.d(TAG, "Query inventory finished.");
+            Log.d("Query inventory finished.");
             if (result.isFailure()) {
-                Log.e(TAG, "Failed to query inventory: " + result);
+                Log.e("Failed to query inventory: " + result);
                 return;
             }
 
-            android.util.Log.d(TAG, "Query inventory was successful.");
+            Log.d("Query inventory was successful.");
 
             for (String token : mTokens.values()) {
                 Purchase donationPurchase = inventory.getPurchase(token);
-                if (donationPurchase != null /*&& verifyDeveloperPayload(gasPurchase)*/) {
-                    android.util.Log.d(TAG, "We have token. Consuming it.");
+                if (donationPurchase != null) {
+                    Log.d("We have token. Consuming it.");
                     iabHelper.consumeAsync(inventory.getPurchase(token), null);
                 }
             }
@@ -73,7 +80,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.donate);
-        analytics = Analytics.get(this);
+        analytics = Firebase.get(this);
         mTokens = new HashMap<>();
         if (BuildConfig.DEBUG) {
             mTokens.put("1", ITEM_TEST);
@@ -111,8 +118,6 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
         }
     }
 
-    private Analytics analytics;
-
     private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
@@ -123,31 +128,29 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
 
             // Don't complain if cancelling
             if (result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED) {
+                analytics.trackAction(DONATION_CANCELED);
                 return;
             }
 
             if (!result.isSuccess()) {
+                analytics.trackAction(DONATION_FAILED);
                 ErrorTracker.track(new RuntimeException("onIabPurchaseFinished error:  " + result.getMessage()));
                 return;
             }
 
             // Purchase was success! Update accordingly
-            Log.d(TAG, "Bought " + purchase.getSku());
+            Log.d("Bought " + purchase.getSku());
 
             // consume it so that the user can buy a donation again
             iabHelper.consumeAsync(purchase, null);
             Toast.makeText(SupportDonateDialog.this, R.string.thanks_for_support, Toast.LENGTH_SHORT).show();
 
-            analytics.track(successfulDonationEvent());
+            analytics.trackAction(DONATION_SUCCED);
             finish();
-            Log.d(TAG, "Purchase successful!");
+            Log.d("Purchase successful!");
         }
 
     };
-
-    private AnalyticsEvent successfulDonationEvent() {
-        return new AnalyticsEvent(AnalyticsEvent.Events.DONATION).asSuccess(true);
-    }
 
     private void initialiseBilling() {
         if (iabHelper != null) {
