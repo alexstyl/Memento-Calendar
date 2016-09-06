@@ -12,10 +12,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Action;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
@@ -27,26 +32,25 @@ import java.util.List;
 
 public class UpcomingEventsFragment extends MementoFragment {
 
+    private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
+
     private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
     private TextView emptyView;
-
     private SettingsMonitor monitor;
     private MonthTitleSetter titleSetter;
-
     private UpcomingEventsProvider upcomingEventsProvider;
-
     private boolean mustScrollToPosition = true;
     private GoToTodayEnabler goToTodayEnabler;
-
     private Themer themer;
+    private Analytics firebase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         themer = Themer.get();
-
+        firebase = Firebase.get(getActivity());
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
         titleSetter = MonthTitleSetter.createSetterFor(getActivity());
@@ -73,7 +77,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_today:
-                upcomingEventsListView.scrollToToday(true);
+                onGoToTodayRequested();
                 return true;
             case R.id.action_search: {
                 onSearchRequested();
@@ -83,6 +87,11 @@ public class UpcomingEventsFragment extends MementoFragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onGoToTodayRequested() {
+        Firebase.get(getActivity()).trackAction(Action.GO_TO_TODAY);
+        upcomingEventsListView.scrollToToday(true);
     }
 
     @Override
@@ -147,13 +156,16 @@ public class UpcomingEventsFragment extends MementoFragment {
     }
 
     private final UpcomingEventsListView.Listener listClickListener = new UpcomingEventsListView.Listener() {
+
         @Override
         public void onContactEventPressed(View view, ContactEvent contact) {
+            firebase.trackAction(action);
             contact.getContact().displayQuickInfo(getActivity(), view);
         }
 
         @Override
         public void onCardPressed(DayDate date) {
+            firebase.trackScreen(Screen.DATE_DETAILS);
             Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
             startActivity(intent);
         }
@@ -165,6 +177,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     };
 
     public boolean onSearchRequested() {
+        Firebase.get(getActivity()).trackScreen(Screen.SEARCH);
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         startActivity(intent);
         return true;

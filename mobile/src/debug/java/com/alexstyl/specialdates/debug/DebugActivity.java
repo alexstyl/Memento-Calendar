@@ -85,6 +85,11 @@ public class DebugActivity extends MementoPreferenceActivity {
                     startActivity(intent);
 
                 }
+
+                @Override
+                public String getName() {
+                    return "date debug";
+                }
             };
             Utils.openIntentSafely(getActivity(), i);
         }
