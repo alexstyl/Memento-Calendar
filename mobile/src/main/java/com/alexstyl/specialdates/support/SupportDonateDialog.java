@@ -40,12 +40,17 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
     private static final String ITEM_DONATE_4 = "com.alexstyl.specialdates.support_4";
     private static final String ITEM_DONATE_5 = "com.alexstyl.specialdates.support_5";
 
+    private static final ActionWithParameters DONATION_SUCCED = new ActionWithParameters(Action.DONATION, "success", true);
+    private static final ActionWithParameters DONATION_FAILED = new ActionWithParameters(Action.DONATION, "success", false);
+    private static final ActionWithParameters DONATION_CANCELED = new ActionWithParameters(Action.DONATION, "success", "canceled");
+
     private static final int REQUEST_CODE_TEST = 10001;
 
     private IabHelper iabHelper;
-
     private boolean mBillingServiceReady;
-    private HashMap<String, String> mTokens = new HashMap<>();
+
+    private final HashMap<String, String> mTokens = new HashMap<>();
+    private Analytics analytics;
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result,
@@ -60,7 +65,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
 
             for (String token : mTokens.values()) {
                 Purchase donationPurchase = inventory.getPurchase(token);
-                if (donationPurchase != null /*&& verifyDeveloperPayload(gasPurchase)*/) {
+                if (donationPurchase != null) {
                     Log.d("We have token. Consuming it.");
                     iabHelper.consumeAsync(inventory.getPurchase(token), null);
                 }
@@ -113,8 +118,6 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
         }
     }
 
-    private Analytics analytics;
-
     private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
@@ -125,10 +128,12 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
 
             // Don't complain if cancelling
             if (result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED) {
+                analytics.trackAction(DONATION_CANCELED);
                 return;
             }
 
             if (!result.isSuccess()) {
+                analytics.trackAction(DONATION_FAILED);
                 ErrorTracker.track(new RuntimeException("onIabPurchaseFinished error:  " + result.getMessage()));
                 return;
             }
@@ -140,16 +145,12 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
             iabHelper.consumeAsync(purchase, null);
             Toast.makeText(SupportDonateDialog.this, R.string.thanks_for_support, Toast.LENGTH_SHORT).show();
 
-            analytics.trackAction(successfulDonationEvent());
+            analytics.trackAction(DONATION_SUCCED);
             finish();
             Log.d("Purchase successful!");
         }
 
     };
-
-    private ActionWithParameters successfulDonationEvent() {
-        return new ActionWithParameters(Action.DONATION, "success", true);
-    }
 
     private void initialiseBilling() {
         if (iabHelper != null) {
