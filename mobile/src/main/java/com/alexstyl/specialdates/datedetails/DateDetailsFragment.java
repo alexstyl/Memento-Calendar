@@ -25,6 +25,9 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -34,12 +37,15 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
+import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
 
 public class DateDetailsFragment extends MementoFragment implements LoaderManager.LoaderCallbacks<List<ContactEvent>> {
+
+    private static final AnalyticsAction CONTACT_INTERACT_EXTERNAL = new AnalyticsAction(Action.INTERACT_CONTACT, "source", "external");
 
     public static final String KEY_DISPLAYING_YEAR = BuildConfig.APPLICATION_ID + ".displaying_year";
     public static final String KEY_DISPLAYING_MONTH = BuildConfig.APPLICATION_ID + ".displaying_month";
@@ -49,10 +55,10 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private static final int LOADER_ID_EVENTS = 503;
 
     private static final int SPAN_SIZE = 1;
-
     private DayDate date;
     private ProgressBar progress;
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
+
     private Navigator navigator;
 
     public static Fragment newInstance(int year, int month, int dayofMonth) {
@@ -69,11 +75,13 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private GridLayoutManager layoutManager;
 
     private DateDetailsAdapter adapter;
+    private Analytics analytics;
 
     private final ContactCardListener contactCardListener = new ContactCardListener() {
 
         @Override
         public void onCardClicked(View v, Contact contact) {
+            analytics.trackAction(CONTACT_INTERACT_EXTERNAL);
             contact.displayQuickInfo(getActivity(), v);
         }
 
@@ -123,6 +131,8 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
                 );
             }
             action.fire(getActivity());
+            AnalyticsAction analyticsAction = new AnalyticsAction(Action.INTERACT_CONTACT, "source", action.getAction().getName());
+            analytics.trackAction(analyticsAction);
         }
 
     };
@@ -146,6 +156,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         navigator = new Navigator(getActivity());
+        analytics = Firebase.get(getActivity());
     }
 
     @Override

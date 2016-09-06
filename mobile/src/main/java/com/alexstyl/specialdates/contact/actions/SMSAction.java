@@ -43,4 +43,9 @@ public class SMSAction implements IntentAction {
 
     }
 
+    @Override
+    public String getName() {
+        return "SMS";
+    }
+
 }

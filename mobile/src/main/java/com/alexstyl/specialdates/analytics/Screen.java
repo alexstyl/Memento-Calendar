@@ -1,23 +1,26 @@
 package com.alexstyl.specialdates.analytics;
 
-import android.os.Bundle;
-
 public enum Screen {
     HOME("home"),
     ADD_BIRTHDAY("add birthday"),
     SEARCH("search"),
     SETTINGS("settings"),
     DATE_DETAILS("date details"),
-    DONATE("donate");
+    DONATE("donate"),
+    ABOUT("about");
 
-    private final Bundle data;
+    private final String screenName;
 
     Screen(String screenName) {
-        data = new Bundle(1);
-        data.putString("screen", screenName);
+        this.screenName = screenName;
     }
 
-    public Bundle getData() {
-        return data;
+    public String screenName() {
+        return screenName;
+    }
+
+    @Override
+    public String toString() {
+        return screenName;
     }
 }
