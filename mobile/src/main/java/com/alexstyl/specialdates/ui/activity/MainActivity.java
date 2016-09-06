@@ -107,13 +107,13 @@ public class MainActivity extends ThemedActivity {
     }
 
     private void openAboutScreen() {
-        Firebase.get(this).trackScreen(Screen.ABOUT);
+        analytics.trackScreen(Screen.ABOUT);
         startActivity(new Intent(this, AboutActivity.class));
 
     }
 
     private void openSettings() {
-        Firebase.get(this).trackScreen(Screen.SETTINGS);
+        analytics.trackScreen(Screen.SETTINGS);
         startActivity(new Intent(this, MainPreferenceActivity.class));
     }
 

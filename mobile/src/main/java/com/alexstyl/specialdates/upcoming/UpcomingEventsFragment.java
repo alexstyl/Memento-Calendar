@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
@@ -32,7 +32,7 @@ import java.util.List;
 
 public class UpcomingEventsFragment extends MementoFragment {
 
-    private static final AnalyticsAction action = new AnalyticsAction(Action.INTERACT_CONTACT, "source", "external");
+    private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
 
     private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
@@ -77,7 +77,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_today:
-                upcomingEventsListView.scrollToToday(true);
+                onGoToTodayRequested();
                 return true;
             case R.id.action_search: {
                 onSearchRequested();
@@ -87,6 +87,11 @@ public class UpcomingEventsFragment extends MementoFragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onGoToTodayRequested() {
+        Firebase.get(getActivity()).trackAction(Action.GO_TO_TODAY);
+        upcomingEventsListView.scrollToToday(true);
     }
 
     @Override
