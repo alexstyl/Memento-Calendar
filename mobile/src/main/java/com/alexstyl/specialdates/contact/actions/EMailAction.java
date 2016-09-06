@@ -43,4 +43,9 @@ public class EMailAction implements IntentAction {
 
     }
 
+    @Override
+    public String getName() {
+        return "email";
+    }
+
 }

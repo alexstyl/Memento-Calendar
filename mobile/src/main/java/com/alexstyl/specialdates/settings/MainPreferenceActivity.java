@@ -11,8 +11,6 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
@@ -29,8 +27,6 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
         super.onCreate(savedInstanceState);
         Themer.get().initialiseActivity(this);
         setContentView(R.layout.activity_settings);
-
-        Analytics.get(this).trackScreen(Screen.SETTINGS);
 
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);

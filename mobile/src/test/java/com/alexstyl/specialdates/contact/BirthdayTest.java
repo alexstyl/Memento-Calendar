@@ -11,13 +11,30 @@ public class BirthdayTest {
 
     @Test
     public void shortNameWithYear() {
-        Birthday aBirthday = new Birthday(1, 2, 1990);
+        Birthday aBirthday = Birthday.on(1, 2, 1990);
         assertThat(aBirthday.toShortDate()).isEqualTo("--02-01");
     }
 
     @Test
     public void shortNameWithNoYear() {
-        Birthday aBirthday = new Birthday(1, 2);
+        Birthday aBirthday = Birthday.on(1, 2);
         assertThat(aBirthday.toShortDate()).isEqualTo("--02-01");
+    }
+
+    @Test
+    public void whenNoYearIsPresent_ItDoesNotIncludeYear() {
+        Birthday birthday = Birthday.on(1, 2);
+        assertThat(birthday.includesYear()).isFalse();
+    }
+
+    @Test
+    public void whenYearIsPresent_ItDoesIncludeYear() {
+        Birthday birthday = Birthday.on(1, 2, 1990);
+        assertThat(birthday.includesYear()).isTrue();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidYearInPassed_thenExceptionIsThrown() {
+        Birthday.on(1, 2, -1);
     }
 }

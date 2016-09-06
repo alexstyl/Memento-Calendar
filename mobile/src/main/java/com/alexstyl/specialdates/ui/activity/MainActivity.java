@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -41,7 +42,7 @@ public class MainActivity extends ThemedActivity {
         setContentView(R.layout.activity_main);
         reapplier = new ThemeReapplier(this);
 
-        analytics = Analytics.get(this);
+        analytics = Firebase.get(this);
         analytics.trackScreen(Screen.HOME);
 
         Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -101,15 +102,18 @@ public class MainActivity extends ThemedActivity {
     }
 
     private void openDonateDialog() {
+        analytics.trackScreen(Screen.DONATE);
         SupportDonateDialog.displayDialog(this);
     }
 
     private void openAboutScreen() {
+        analytics.trackScreen(Screen.ABOUT);
         startActivity(new Intent(this, AboutActivity.class));
 
     }
 
     private void openSettings() {
+        analytics.trackScreen(Screen.SETTINGS);
         startActivity(new Intent(this, MainPreferenceActivity.class));
     }
 
