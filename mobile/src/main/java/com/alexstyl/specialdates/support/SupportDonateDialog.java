@@ -49,7 +49,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
     private IabHelper iabHelper;
     private boolean mBillingServiceReady;
 
-    private final HashMap<String, String> mTokens = new HashMap<>();
+    private HashMap<String, String> mTokens = new HashMap<>();
     private Analytics analytics;
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
