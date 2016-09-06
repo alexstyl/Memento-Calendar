@@ -23,7 +23,7 @@ public class Firebase implements Analytics {
         return INSTANCE;
     }
 
-    public Firebase(FirebaseAnalytics firebaseAnalytics) {
+    private Firebase(FirebaseAnalytics firebaseAnalytics) {
         this.firebaseAnalytics = firebaseAnalytics;
     }
 
