@@ -28,7 +28,14 @@ public class Firebase implements Analytics {
     }
 
     @Override
-    public void trackAction(AnalyticsAction action) {
+    public void trackAction(Action goToToday) {
+        String actionName = goToToday.getName();
+        firebaseAnalytics.logEvent(actionName, NO_DATA);
+        Log.d("Tracking event:" + actionName);
+    }
+
+    @Override
+    public void trackAction(ActionWithParameters action) {
         String formattedAction = format(action);
         firebaseAnalytics.logEvent(formattedAction, NO_DATA);
         Log.d("Tracking event:" + formattedAction);
@@ -40,7 +47,7 @@ public class Firebase implements Analytics {
         Log.d("Tracking screen_view:" + screen);
     }
 
-    private String format(AnalyticsAction action) {
+    private String format(ActionWithParameters action) {
         return String.format(Locale.US, "%s:%s:%s", action.getName(), action.getLabel(), action.getValue());
     }
 }

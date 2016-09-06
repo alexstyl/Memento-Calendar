@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.addevent.ui.ContactHeroView;
 import com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Birthday;
@@ -100,21 +100,21 @@ public class AddBirthdayActivity extends ThemedActivity {
     }
 
     private void trackEventCreation() {
-        AnalyticsAction analyticsAction;
+        ActionWithParameters actionWithParameters;
         if (eventCreated) {
-            analyticsAction = birthdayCreationSuccess();
+            actionWithParameters = birthdayCreationSuccess();
         } else {
-            analyticsAction = birthdayCreationFailed();
+            actionWithParameters = birthdayCreationFailed();
         }
-        analytics.trackAction(analyticsAction);
+        analytics.trackAction(actionWithParameters);
     }
 
-    private AnalyticsAction birthdayCreationSuccess() {
-        return new AnalyticsAction(Action.ADD_BIRTHDAY, "success", "true");
+    private ActionWithParameters birthdayCreationSuccess() {
+        return new ActionWithParameters(Action.ADD_BIRTHDAY, "success", "true");
     }
 
-    private AnalyticsAction birthdayCreationFailed() {
-        return new AnalyticsAction(Action.ADD_BIRTHDAY, "success", "false");
+    private ActionWithParameters birthdayCreationFailed() {
+        return new ActionWithParameters(Action.ADD_BIRTHDAY, "success", "false");
     }
 
     private final BirthdayLabelView.OnEditListener onBirthdayLabelClicked = new BirthdayLabelView.OnEditListener() {

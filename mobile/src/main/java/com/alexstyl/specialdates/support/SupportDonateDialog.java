@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.billing.util.IabHelper;
 import com.alexstyl.specialdates.billing.util.IabResult;
@@ -147,8 +147,8 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
 
     };
 
-    private AnalyticsAction successfulDonationEvent() {
-        return new AnalyticsAction(Action.DONATION, "success", true);
+    private ActionWithParameters successfulDonationEvent() {
+        return new ActionWithParameters(Action.DONATION, "success", true);
     }
 
     private void initialiseBilling() {

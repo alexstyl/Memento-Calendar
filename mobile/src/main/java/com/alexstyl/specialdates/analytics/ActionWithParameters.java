@@ -1,18 +1,18 @@
 package com.alexstyl.specialdates.analytics;
 
-public final class AnalyticsAction {
+public final class ActionWithParameters {
 
     private final Action actionName;
     private final String label;
     private final String value;
 
-    public AnalyticsAction(Action actionName, String label, String value) {
+    public ActionWithParameters(Action actionName, String label, String value) {
         this.actionName = actionName;
         this.label = label;
         this.value = value;
     }
 
-    public AnalyticsAction(Action action, String label, boolean value) {
+    public ActionWithParameters(Action action, String label, boolean value) {
         this.actionName = action;
         this.label = label;
         this.value = value ? "true" : "false";

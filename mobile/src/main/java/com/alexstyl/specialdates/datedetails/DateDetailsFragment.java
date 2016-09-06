@@ -26,7 +26,7 @@ import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -45,7 +45,7 @@ import java.util.List;
 
 public class DateDetailsFragment extends MementoFragment implements LoaderManager.LoaderCallbacks<List<ContactEvent>> {
 
-    private static final AnalyticsAction CONTACT_INTERACT_EXTERNAL = new AnalyticsAction(Action.INTERACT_CONTACT, "source", "external");
+    private static final ActionWithParameters CONTACT_INTERACT_EXTERNAL = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
 
     public static final String KEY_DISPLAYING_YEAR = BuildConfig.APPLICATION_ID + ".displaying_year";
     public static final String KEY_DISPLAYING_MONTH = BuildConfig.APPLICATION_ID + ".displaying_month";
@@ -131,8 +131,8 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
                 );
             }
             action.fire(getActivity());
-            AnalyticsAction analyticsAction = new AnalyticsAction(Action.INTERACT_CONTACT, "source", action.getAction().getName());
-            analytics.trackAction(analyticsAction);
+            ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getName());
+            analytics.trackAction(actionWithParameters);
         }
 
     };
