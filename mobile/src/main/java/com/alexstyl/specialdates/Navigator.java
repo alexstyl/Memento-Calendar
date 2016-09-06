@@ -76,6 +76,11 @@ public class Navigator {
                 Intent intent = Utils.getSupportEmailIntent(context);
                 context.startActivity(intent);
             }
+
+            @Override
+            public String getName() {
+                return "email support";
+            }
         });
     }
 }

@@ -15,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsEvent;
+import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
 import com.alexstyl.specialdates.util.Utils;
@@ -34,7 +36,7 @@ public class DailyReminderFragment extends MyPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = Analytics.get(getActivity());
+        analytics = Firebase.get(getActivity());
         setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
 
@@ -47,9 +49,8 @@ public class DailyReminderFragment extends MyPreferenceFragment {
                 Context context = getActivity();
                 boolean isChecked = (boolean) newValue;
                 MainPreferenceActivity.setDailyReminder(context, isChecked);
-                AnalyticsEvent event = new AnalyticsEvent(AnalyticsEvent.Events.DAILY_REMINDER)
-                        .setEnabled(isChecked);
-                analytics.track(event);
+                AnalyticsAction event = new AnalyticsAction(Action.DAILY_REMINDER, "enabled", isChecked);
+                analytics.trackAction(event);
                 if (isChecked) {
                     DailyReminderIntentService.rescheduleAlarm(context);
                 } else {

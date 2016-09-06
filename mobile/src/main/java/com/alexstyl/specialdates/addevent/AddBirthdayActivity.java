@@ -8,8 +8,10 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.ContactHeroView;
 import com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView;
+import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsEvent;
+import com.alexstyl.specialdates.analytics.AnalyticsAction;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
@@ -33,7 +35,7 @@ public class AddBirthdayActivity extends ThemedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        analytics = Analytics.get(this);
+        analytics = Firebase.get(this);
         analytics.trackScreen(Screen.ADD_BIRTHDAY);
         MementoTheme theme = Themer.get().getCurrentTheme();
         setContentView(R.layout.activity_add_birthday, theme);
@@ -98,21 +100,21 @@ public class AddBirthdayActivity extends ThemedActivity {
     }
 
     private void trackEventCreation() {
-        AnalyticsEvent analyticsEvent;
+        AnalyticsAction analyticsAction;
         if (eventCreated) {
-            analyticsEvent = birthdayCreationSuccess();
+            analyticsAction = birthdayCreationSuccess();
         } else {
-            analyticsEvent = birthdayCreationFailed();
+            analyticsAction = birthdayCreationFailed();
         }
-        analytics.track(analyticsEvent);
+        analytics.trackAction(analyticsAction);
     }
 
-    private AnalyticsEvent birthdayCreationSuccess() {
-        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).asSuccess(true);
+    private AnalyticsAction birthdayCreationSuccess() {
+        return new AnalyticsAction(Action.ADD_BIRTHDAY, "success", "true");
     }
 
-    private AnalyticsEvent birthdayCreationFailed() {
-        return new AnalyticsEvent(AnalyticsEvent.Events.ADD_BIRTHDAY).asSuccess(false);
+    private AnalyticsAction birthdayCreationFailed() {
+        return new AnalyticsAction(Action.ADD_BIRTHDAY, "success", "false");
     }
 
     private final BirthdayLabelView.OnEditListener onBirthdayLabelClicked = new BirthdayLabelView.OnEditListener() {
