@@ -46,8 +46,8 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
     }
 
     @Override
-    protected void onAbandon() {
-        super.onAbandon();
+    protected void onUnregisterObserver() {
+        super.onUnregisterObserver();
         contactsObserver.unregister();
     }
 

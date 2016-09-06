@@ -67,7 +67,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         UpcomingWidgetPreferences preferences = new UpcomingWidgetPreferences(context);
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
-        float opacity = preferences.getOppacityLevel(); //TODO
+        float opacity = preferences.getOppacityLevel();
         int selectedTextColor = context.getResources().getColor(selectedVariant.getTextColor());
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);

@@ -95,7 +95,7 @@ class BirthdayDatabaseRefresher {
 
     private Birthday birthdayOn(String bday) throws DateParseException {
         DayDate parsedDate = dateParser.parse(bday);
-        return new Birthday(parsedDate.getDayOfMonth(), parsedDate.getMonth(), parsedDate.getYear());
+        return Birthday.on(parsedDate);
     }
 
     private boolean isInvalid(Cursor cursor) {
