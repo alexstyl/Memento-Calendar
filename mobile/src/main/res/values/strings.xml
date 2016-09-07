@@ -19,7 +19,7 @@
     <string name="today_celebrates_one">%1$s</string>
     <string name="today_celebrates_two">%1$s and %2$s</string>
     <string name="today_celebrates_many">%1$s and %2$d others</string>
-    <string name="age_today">%1$s  %2$d today</string>
+    <string name="age_today">%1$s   %2$d today</string>
     <string name="about">About</string>
     <string name="service_dailyreminder">Daily Reminder Service</string>
     <string name="display_namedays">Display Name Days</string>

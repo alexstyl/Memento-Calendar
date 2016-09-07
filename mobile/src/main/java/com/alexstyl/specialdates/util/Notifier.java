@@ -101,6 +101,7 @@ public class Notifier {
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setAutoCancel(true)
                 .setContentIntent(intent)
+                .setNumber(events.getContactCount())
                 .setColor(context.getResources().getColor(R.color.main_red));
 
         // if event.getContacts() > 1 then use InboxStyle, otherwise the BigTextStyle like here:
@@ -126,7 +127,7 @@ public class Notifier {
                 String lineFormat = context.getString(R.string.age_today);
                 int lineParamStartPos = lineFormat.indexOf("%1$s");
                 if (lineParamStartPos < 0) {
-                    throw new InvalidParameterException("Something's wrong with your string! LINT could have caught that.");
+                    throw new InvalidParameterException();
                 }
                 String lineFormatted = context.getString(R.string.age_today, name, age);
 
@@ -136,6 +137,7 @@ public class Notifier {
             }
 
             builder.setStyle(inboxStyle);
+            builder.setContentText(TextUtils.join(", ", events.getContacts()));
         }
 
         if (supportsPublicNotifications()) {
