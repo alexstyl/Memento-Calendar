@@ -48,6 +48,6 @@ public class Firebase implements Analytics {
     }
 
     private String format(ActionWithParameters action) {
-        return String.format(Locale.US, "%s:%s:%s", action.getName(), action.getLabel(), action.getValue());
+        return String.format(Locale.US, "%s_%s_%s", action.getName(), action.getLabel(), action.getValue());
     }
 }
