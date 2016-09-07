@@ -47,7 +47,7 @@ public class Firebase implements Analytics {
         Log.d("Tracking screen_view:" + screen);
     }
 
-    private String format(ActionWithParameters action) {
+    static String format(ActionWithParameters action) {
         return String.format(Locale.US, "%s_%s_%s", action.getName(), action.getLabel(), action.getValue());
     }
 }

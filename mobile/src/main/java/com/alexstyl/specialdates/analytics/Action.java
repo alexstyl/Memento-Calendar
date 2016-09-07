@@ -1,12 +1,12 @@
 package com.alexstyl.specialdates.analytics;
 
 public enum Action {
-    ADD_BIRTHDAY("add_birthday"),
-    DAILY_REMINDER("daily_reminder"),
+    ADD_BIRTHDAY("add_bday"),
+    DAILY_REMINDER("reminder"),
     DONATION("donate"),
-    INTERACT_CONTACT("interact_contact"),
-    SELECT_THEME("select_theme"),
-    GO_TO_TODAY("go_to_today");
+    INTERACT_CONTACT("contact"),
+    SELECT_THEME("theme"),
+    GO_TO_TODAY("gotoday");
 
     private final String name;
 
