@@ -16,10 +16,9 @@ import android.view.MenuItem;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
-import com.alexstyl.specialdates.receiver.EventReceiver;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
 import com.alexstyl.specialdates.util.Utils;
@@ -53,12 +52,6 @@ public class DailyReminderFragment extends MyPreferenceFragment {
                 ActionWithParameters event = new ActionWithParameters(Action.DAILY_REMINDER, "enabled", isChecked);
                 analytics.trackAction(event);
                 if (isChecked) {
-
-                    // TODO DEBUG
-                    Intent myIntent = new Intent(context, EventReceiver.class);
-                    myIntent.setAction(EventReceiver.ACTION_START_DAILYREMINDER);
-                    context.sendBroadcast(myIntent);
-
                     DailyReminderIntentService.rescheduleAlarm(context);
                 } else {
                     DailyReminderIntentService.cancelAlarm(context);
