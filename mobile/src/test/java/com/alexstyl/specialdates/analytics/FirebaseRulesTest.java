@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static junit.framework.Assert.fail;
 
@@ -13,7 +15,8 @@ import static junit.framework.Assert.fail;
  *
  * @see <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event">FirebaseAnalytics.Event documentation</a>
  */
-public class FirebaseRulesTest extends MementoTest {
+@RunWith(MockitoJUnitRunner.class)
+public class FirebaseRulesTest {
 
     private final static int MAX_EVENT_NAME_CHAR_COUNT = 32;
     private final static int MAX_EVENTS_COUNT = 500;
