@@ -16,7 +16,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
@@ -29,6 +32,7 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.novoda.notils.logger.simple.Log;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public class Notifier {
@@ -89,18 +93,50 @@ public class Notifier {
                 );
 
         String title = NaturalLanguageUtils.joinContacts(context, events.getContacts(), 3);
-        String fullText = TextUtils.join(", ", events.getContacts());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_contact_event)
                 .setContentTitle(title)
                 .setLargeIcon(largeIcon)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(fullText))
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setAutoCancel(true)
-                .setContentText(fullText)
                 .setContentIntent(intent)
                 .setColor(context.getResources().getColor(R.color.main_red));
+
+        // if event.getContacts() > 1 then use InboxStyle, otherwise the BigTextStyle like here:
+        if (events.getContacts().size() == 1) {
+            int age = events.getContacts().get(0).getBirthday().getAgeOnYear(events.getDate().getYear());
+            String msg = context.getString(R.string.turns_age, age);
+
+            NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
+            bigTextStyle.setBigContentTitle(title);
+            builder.setContentText(msg);
+
+            builder.setStyle(bigTextStyle);
+
+        } else if (events.getContacts().size() > 1) {
+            final NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+
+            inboxStyle.setBigContentTitle(title);
+            for (Contact contact : events.getContacts()) {
+
+                String name = contact.getDisplayName().toString();
+                int age = contact.getBirthday().getAgeOnYear(events.getDate().getYear());
+
+                String lineFormat = context.getString(R.string.age_today);
+                int lineParamStartPos = lineFormat.indexOf("%1$s");
+                if (lineParamStartPos < 0) {
+                    throw new InvalidParameterException("Something's wrong with your string! LINT could have caught that.");
+                }
+                String lineFormatted = context.getString(R.string.age_today, name, age);
+
+                Spannable sb = new SpannableString(lineFormatted);
+                sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), lineParamStartPos, lineParamStartPos + name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                inboxStyle.addLine(sb);
+            }
+
+            builder.setStyle(inboxStyle);
+        }
 
         if (supportsPublicNotifications()) {
             String publicTitle = context.getString(R.string.contact_celebration_count, contactCount);
