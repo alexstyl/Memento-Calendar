@@ -14,15 +14,22 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -89,18 +96,47 @@ public class Notifier {
                 );
 
         String title = NaturalLanguageUtils.joinContacts(context, events.getContacts(), 3);
-        String fullText = TextUtils.join(", ", events.getContacts());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_contact_event)
                 .setContentTitle(title)
                 .setLargeIcon(largeIcon)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(fullText))
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setAutoCancel(true)
-                .setContentText(fullText)
                 .setContentIntent(intent)
+                .setNumber(events.size())
                 .setColor(context.getResources().getColor(R.color.main_red));
+
+        if (events.size() == 1) {
+            ContactEvent event = events.getEvent(0);
+            String msg = getLabelFor(event);
+
+            NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
+            bigTextStyle.setBigContentTitle(title);
+            builder.setContentText(msg);
+
+            builder.setStyle(bigTextStyle);
+
+        } else if (events.getContacts().size() > 1) {
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            inboxStyle.setBigContentTitle(title);
+
+            for (int i = 0; i < events.size(); ++i) {
+
+                ContactEvent event = events.getEvent(i);
+                Contact contact = event.getContact();
+                String name = contact.getDisplayName().toString();
+
+                String lineFormatted = name + "   " + getLabelFor(event);
+
+                Spannable sb = new SpannableString(lineFormatted);
+                sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                inboxStyle.addLine(sb);
+            }
+
+            builder.setStyle(inboxStyle);
+            builder.setContentText(TextUtils.join(", ", events.getContacts()));
+        }
 
         if (supportsPublicNotifications()) {
             String publicTitle = context.getString(R.string.contact_celebration_count, contactCount);
@@ -113,8 +149,6 @@ public class Notifier {
 
             builder.setPublicVersion(publicNotification.build());
         }
-
-        builder.setNumber(contactCount);
 
         for (Contact contact : events.getContacts()) {
             Uri uri = contact.getLookupUri();
@@ -135,6 +169,27 @@ public class Notifier {
         NotificationManager mngr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mngr.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, notification);
 
+    }
+
+    /**
+     * TODO duplicated from {@link com.alexstyl.specialdates.upcoming.ui.ContactEventView#getLabelFor(ContactEvent)}
+     *
+     * @deprecated
+     */
+    private String getLabelFor(ContactEvent event) {
+        Resources resources = context.getResources();
+
+        EventType eventType = event.getType();
+        if (eventType == EventType.BIRTHDAY) {
+            Birthday birthday = event.getContact().getBirthday();
+            if (birthday.includesYear()) {
+                int age = birthday.getAgeOnYear(event.getYear());
+                if (age > 0) {
+                    return resources.getString(R.string.turns_age, age);
+                }
+            }
+        }
+        return resources.getString(eventType.nameRes());
     }
 
     public static Bitmap getCircleBitmap(Bitmap bitmap) {

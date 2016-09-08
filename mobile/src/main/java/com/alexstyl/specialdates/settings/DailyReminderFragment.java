@@ -16,8 +16,8 @@ import android.view.MenuItem;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
