@@ -14,6 +14,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.Spannable;
@@ -23,16 +24,17 @@ import android.text.style.StyleSpan;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.novoda.notils.logger.simple.Log;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 public class Notifier {
@@ -101,13 +103,20 @@ public class Notifier {
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setAutoCancel(true)
                 .setContentIntent(intent)
-                .setNumber(events.getContactCount())
+                .setNumber(events.size())
                 .setColor(context.getResources().getColor(R.color.main_red));
 
-        // if event.getContacts() > 1 then use InboxStyle, otherwise the BigTextStyle like here:
-        if (events.getContacts().size() == 1) {
-            int age = events.getContacts().get(0).getBirthday().getAgeOnYear(events.getDate().getYear());
-            String msg = context.getString(R.string.turns_age, age);
+        if (events.size() == 1) {
+            ContactEvent event = events.getEvent(0);
+            String msg = "";
+
+            if (EventType.BIRTHDAY.equals(event.getType())) {
+                int age = event.getContact().getBirthday().getAgeOnYear(event.getYear());
+                msg = context.getString(R.string.turns_age, age);
+
+            } else if (EventType.NAMEDAY.equals(event.getType())) {
+                msg = context.getString(R.string.nameday);
+            }
 
             NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
             bigTextStyle.setBigContentTitle(title);
@@ -116,23 +125,29 @@ public class Notifier {
             builder.setStyle(bigTextStyle);
 
         } else if (events.getContacts().size() > 1) {
-            final NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
             inboxStyle.setBigContentTitle(title);
-            for (Contact contact : events.getContacts()) {
 
+            for (int i = 0; i < events.size(); ++i) {
+
+                ContactEvent event = events.getEvent(i);
+                Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
-                int age = contact.getBirthday().getAgeOnYear(events.getDate().getYear());
 
-                String lineFormat = context.getString(R.string.age_today);
-                int lineParamStartPos = lineFormat.indexOf("%1$s");
-                if (lineParamStartPos < 0) {
-                    throw new InvalidParameterException();
+                String lineFormatted = name;
+
+                if (EventType.BIRTHDAY.equals(event.getType())) {
+                    int age = contact.getBirthday().getAgeOnYear(events.getDate().getYear());
+
+                    lineFormatted += "   " + context.getString(R.string.turns_age, age);
+
+                } else if (EventType.NAMEDAY.equals(event.getType())) {
+                    lineFormatted += "   " + context.getString(R.string.nameday);
+
                 }
-                String lineFormatted = context.getString(R.string.age_today, name, age);
 
                 Spannable sb = new SpannableString(lineFormatted);
-                sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), lineParamStartPos, lineParamStartPos + name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 inboxStyle.addLine(sb);
             }
 
@@ -151,8 +166,6 @@ public class Notifier {
 
             builder.setPublicVersion(publicNotification.build());
         }
-
-        builder.setNumber(contactCount);
 
         for (Contact contact : events.getContacts()) {
             Uri uri = contact.getLookupUri();
