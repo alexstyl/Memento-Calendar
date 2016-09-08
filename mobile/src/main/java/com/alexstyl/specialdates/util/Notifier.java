@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -134,17 +135,7 @@ public class Notifier {
                 Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
 
-                String lineFormatted = name;
-
-                if (EventType.BIRTHDAY.equals(event.getType())) {
-                    int age = contact.getBirthday().getAgeOnYear(events.getDate().getYear());
-
-                    lineFormatted += "   " + context.getString(R.string.turns_age, age);
-
-                } else if (EventType.NAMEDAY.equals(event.getType())) {
-                    lineFormatted += "   " + context.getString(R.string.nameday);
-
-                }
+                String lineFormatted = name + "   " + getLabelFor(event);
 
                 Spannable sb = new SpannableString(lineFormatted);
                 sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -186,6 +177,27 @@ public class Notifier {
         NotificationManager mngr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mngr.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, notification);
 
+    }
+
+    /**
+     * TODO duplicated from {@link com.alexstyl.specialdates.upcoming.ui.ContactEventView#getLabelFor(ContactEvent)}
+     *
+     * @deprecated
+     */
+    private String getLabelFor(ContactEvent event) {
+        Resources resources = context.getResources();
+
+        EventType eventType = event.getType();
+        if (eventType == EventType.BIRTHDAY) {
+            Birthday birthday = event.getContact().getBirthday();
+            if (birthday.includesYear()) {
+                int age = birthday.getAgeOnYear(event.getYear());
+                if (age > 0) {
+                    return resources.getString(R.string.turns_age, age);
+                }
+            }
+        }
+        return resources.getString(eventType.nameRes());
     }
 
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
