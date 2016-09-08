@@ -109,15 +109,7 @@ public class Notifier {
 
         if (events.size() == 1) {
             ContactEvent event = events.getEvent(0);
-            String msg = "";
-
-            if (EventType.BIRTHDAY.equals(event.getType())) {
-                int age = event.getContact().getBirthday().getAgeOnYear(event.getYear());
-                msg = context.getString(R.string.turns_age, age);
-
-            } else if (EventType.NAMEDAY.equals(event.getType())) {
-                msg = context.getString(R.string.nameday);
-            }
+            String msg = getLabelFor(event);
 
             NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
             bigTextStyle.setBigContentTitle(title);
