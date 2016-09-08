@@ -4,20 +4,31 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
 import com.alexstyl.specialdates.R;
-import com.novoda.notils.exception.DeveloperError;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public enum EventType {
     BIRTHDAY(EventColumns.TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red),
     NAMEDAY(EventColumns.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue);
 
+    private static final Map<Integer, EventType> map;
+
+    static {
+        map = new HashMap<>();
+        for (EventType eventType : values()) {
+            map.put(eventType.id, eventType);
+        }
+    }
+
     private final int id;
     private final int eventNameRes;
     private final int eventColorRes;
 
-    EventType(int id, @StringRes int eventNameRes, @ColorRes int eventColorRes) {
+    EventType(@EventTypeId int id, @StringRes int nameResId, @ColorRes int colorResId) {
         this.id = id;
-        this.eventNameRes = eventNameRes;
-        this.eventColorRes = eventColorRes;
+        this.eventNameRes = nameResId;
+        this.eventColorRes = colorResId;
     }
 
     @StringRes
@@ -30,12 +41,10 @@ public enum EventType {
         return eventColorRes;
     }
 
-    public static EventType fromId(int eventTypeId) {
-        for (EventType eventType : values()) {
-            if (eventType.id == eventTypeId) {
-                return eventType;
-            }
+    public static EventType fromId(@EventTypeId int eventTypeId) {
+        if (map.containsKey(eventTypeId)) {
+            return map.get(eventTypeId);
         }
-        throw new DeveloperError("No event type with id " + eventTypeId);
+        throw new IllegalArgumentException("No event type with id " + eventTypeId);
     }
 }
