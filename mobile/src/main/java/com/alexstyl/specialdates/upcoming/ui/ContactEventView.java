@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.EventType;
@@ -50,23 +49,9 @@ public class ContactEventView extends LinearLayout {
 
     private void displayEventFor(ContactEvent event) {
         EventType eventType = event.getType();
-        String eventLabel = getLabelFor(event);
+        String eventLabel = event.getLabel(resources);
         eventTypeView.setText(eventLabel);
-        eventTypeView.setTextColor(getResources().getColor(eventType.getColorRes()));
-    }
-
-    private String getLabelFor(ContactEvent event) {
-        EventType eventType = event.getType();
-        if (eventType == EventType.BIRTHDAY) {
-            Birthday birthday = event.getContact().getBirthday();
-            if (birthday.includesYear()) {
-                int age = birthday.getAgeOnYear(event.getYear());
-                if (age > 0) {
-                    return resources.getString(R.string.turns_age, age);
-                }
-            }
-        }
-        return resources.getString(eventType.nameRes());
+        eventTypeView.setTextColor(resources.getColor(eventType.getColorRes()));
     }
 
     public void setNameTypeface(Typeface typeface) {

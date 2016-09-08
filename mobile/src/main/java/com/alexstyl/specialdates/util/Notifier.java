@@ -23,15 +23,12 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.novoda.notils.logger.simple.Log;
@@ -47,19 +44,18 @@ public class Notifier {
     private static final String TAG = "Notifier";
 
     private final Context context;
+    private final Resources resources;
     private final ImageLoader imageLoader;
-    private final NamedayPreferences namedayPreferences;
 
     public static Notifier newInstance(Context context) {
         Resources resources = context.getResources();
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        return new Notifier(context, imageLoader, namedayPreferences);
+        return new Notifier(context, resources, imageLoader);
     }
 
-    public Notifier(Context context, ImageLoader imageLoader, NamedayPreferences namedayPreferences) {
+    public Notifier(Context context, Resources resources, ImageLoader imageLoader) {
+        this.resources = resources;
         this.imageLoader = imageLoader;
-        this.namedayPreferences = namedayPreferences;
         this.context = context.getApplicationContext();
     }
 
@@ -70,14 +66,13 @@ public class Notifier {
      */
     public void forDailyReminder(ContactEvents events) {
         Bitmap largeIcon = null;
-        Resources res = context.getResources();
         Date date = events.getDate();
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
             // Large Icons were introduced in Honeycomb
             // and we are only displaying one if it is one contact
-            int size = res.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+            int size = resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
             Contact displayingContact = events.getContacts().iterator().next();
             largeIcon = loadImageAsync(displayingContact, size, size);
             if (Utils.hasLollipop() && largeIcon != null) {
@@ -109,7 +104,7 @@ public class Notifier {
 
         if (events.size() == 1) {
             ContactEvent event = events.getEvent(0);
-            String msg = getLabelFor(event);
+            String msg = event.getLabel(resources);
 
             NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
             bigTextStyle.setBigContentTitle(title);
@@ -127,7 +122,7 @@ public class Notifier {
                 Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
 
-                String lineFormatted = name + "   " + getLabelFor(event);
+                String lineFormatted = name + "   " + event.getLabel(resources);
 
                 Spannable sb = new SpannableString(lineFormatted);
                 sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -145,7 +140,7 @@ public class Notifier {
                     .setAutoCancel(true)
                     .setContentIntent(intent)
                     .setContentTitle(publicTitle)
-                    .setColor(context.getResources().getColor(R.color.main_red));
+                    .setColor(resources.getColor(R.color.main_red));
 
             builder.setPublicVersion(publicNotification.build());
         }
@@ -169,27 +164,6 @@ public class Notifier {
         NotificationManager mngr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mngr.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, notification);
 
-    }
-
-    /**
-     * TODO duplicated from {@link com.alexstyl.specialdates.upcoming.ui.ContactEventView#getLabelFor(ContactEvent)}
-     *
-     * @deprecated
-     */
-    private String getLabelFor(ContactEvent event) {
-        Resources resources = context.getResources();
-
-        EventType eventType = event.getType();
-        if (eventType == EventType.BIRTHDAY) {
-            Birthday birthday = event.getContact().getBirthday();
-            if (birthday.includesYear()) {
-                int age = birthday.getAgeOnYear(event.getYear());
-                if (age > 0) {
-                    return resources.getString(R.string.turns_age, age);
-                }
-            }
-        }
-        return resources.getString(eventType.nameRes());
     }
 
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
@@ -243,11 +217,11 @@ public class Notifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_namedays)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(fullsubtitle))
-                .setContentTitle(context.getResources().getQuantityString(R.plurals.todays_nameday, names.size()))
+                .setContentTitle(resources.getQuantityString(R.plurals.todays_nameday, names.size()))
                 .setContentText(subtitle)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setColor(context.getResources().getColor(R.color.nameday_blue))
+                .setColor(resources.getColor(R.color.nameday_blue))
                 .setContentIntent(intent);
         if (names.size() > 1) {
             mBuilder.setNumber(names.size());
@@ -280,7 +254,7 @@ public class Notifier {
                 .setContentText(subtitle)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setColor(context.getResources().getColor(R.color.bankholiday_green))
+                .setColor(resources.getColor(R.color.bankholiday_green))
                 .setContentIntent(intent);
         NotificationManager mngr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mngr.notify(NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS, builder.build());
