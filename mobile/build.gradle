@@ -12,8 +12,8 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 24
+    buildToolsVersion '24.0.2'
 
 
     applicationVariants.all { variant ->
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 24
         versionCode 57
         versionName '3.8'
 
@@ -67,12 +67,13 @@ repositories {
 
 dependencies {
 
+
     compile fileTree(dir: 'libs', exclude: 'android-support-v4.jar', include: ['*.jar'])
     compile project(':numberpicker')
-    compile 'com.android.support:support-annotations:23.3.0'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:support-annotations:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'net.danlew:android.joda:2.8.0'
     compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
         exclude module: 'support-v4'
