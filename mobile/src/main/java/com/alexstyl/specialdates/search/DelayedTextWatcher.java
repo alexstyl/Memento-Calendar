@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.search;
 
 import android.os.Handler;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 
 public class DelayedTextWatcher implements TextWatcher {
@@ -23,13 +22,13 @@ public class DelayedTextWatcher implements TextWatcher {
         this.handler = handler;
     }
 
-    private Runnable timeEndRunnable = new Runnable() {
+    private final Runnable timeEndRunnable = new Runnable() {
         @Override
         public void run() {
-            if (TextUtils.isEmpty(text)) {
-                textWatchTextUpdatedCallback.onEmptyTextEntered();
-            } else {
+            if (text.length() > 0) {
                 textWatchTextUpdatedCallback.onTextConfirmed(text);
+            } else {
+                textWatchTextUpdatedCallback.onEmptyTextConfirmed();
             }
         }
     };
@@ -55,7 +54,7 @@ public class DelayedTextWatcher implements TextWatcher {
     public interface TextUpdatedCallback {
         void onTextChanged(String text);
 
-        void onEmptyTextEntered();
+        void onEmptyTextConfirmed();
 
         void onTextConfirmed(String text);
     }

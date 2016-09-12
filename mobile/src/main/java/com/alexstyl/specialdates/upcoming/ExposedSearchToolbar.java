@@ -11,7 +11,7 @@ public class ExposedSearchToolbar extends Toolbar {
     public ExposedSearchToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        setBackgroundColor(context.getResources().getColor(android.R.color.white));
+        setBackgroundResource(R.drawable.card_no_paddings);
         setNavigationIcon(R.drawable.ic_action_search);
     }
 

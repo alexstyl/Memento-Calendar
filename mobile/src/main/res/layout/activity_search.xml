@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:clipChildren="false"
-  android:focusable="true"
-  android:focusableInTouchMode="true">
+  android:layout_height="match_parent">
 
   <com.alexstyl.specialdates.search.SearchBar
     android:id="@+id/search_searchbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
-
-  <!--<include-->
-  <!--android:id="@+id/search_bar"-->
-  <!--layout="@layout/searchbar"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:layout_alignParentTop="true" />-->
+    android:layout_height="@dimen/toolbar_semi_expanded_height" />
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/nameday_suggestions"
