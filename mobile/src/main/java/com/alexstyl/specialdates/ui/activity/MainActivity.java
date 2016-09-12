@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.about.AboutActivity;
@@ -18,13 +21,18 @@ import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.SupportDonateDialog;
+import com.alexstyl.specialdates.transition.FadeInTransition;
+import com.alexstyl.specialdates.transition.FadeOutTransition;
+import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ThemeReapplier;
+import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.upcoming.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
 import com.alexstyl.specialdates.util.Utils;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.meta.AndroidUtils;
 
 /*
  * The activity was first launched with MainActivity being in package.ui.activity
@@ -40,6 +48,7 @@ public class MainActivity extends ThemedActivity {
     private FloatingActionButton addBirthdayFAB;
 
     private int toolbarMargin;
+    private ViewFader viewFader = new ViewFader();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +82,18 @@ public class MainActivity extends ThemedActivity {
         } else if (askForSupport.shouldAskForRating()) {
             askForSupport.askForRatingFromUser(this);
         }
-        addBirthdayFAB.show();
+        fadeToolbarIn();
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void fadeToolbarIn() {
+        if (Utils.hasLollipop()) {
+            TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
+            layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
+            viewFader.showContent(toolbar);
+            toolbar.setLayoutParams(layoutParams);
+        }
     }
 
     private void startAddBirthdayActivity() {
@@ -135,24 +150,34 @@ public class MainActivity extends ThemedActivity {
     private final View.OnClickListener onToolbarClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            navigateToSearchWithAnimation();
+            AndroidUtils.toggleKeyboard(v.getContext());
+            transitionToSearch();
         }
 
     };
 
-    private void navigateToSearchWithAnimation() {
-        addBirthdayFAB.hide();
+    private void transitionToSearch() {
         if (Utils.hasLollipop()) {
-//            Intent i = new Intent(this, SearchActivity.class);
-//
-//            View sharedView = toolbar;
-//            String transitionName = getString(R.string.search_transition_name);
-//
-//            ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, sharedView, transitionName);
-//            startActivity(i, transitionActivityOptions.toBundle());
+            Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
+            TransitionManager.beginDelayedTransition(toolbar, transition);
+            FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
+            frameLP.setMargins(0, 0, 0, 0);
+            toolbar.setLayoutParams(frameLP);
+            viewFader.hideContentOf(toolbar);
         } else {
             navigateToSearch();
         }
+    }
+
+    private Transition.TransitionListener navigateToSearchWhenDone() {
+        return new SimpleTransitionListener() {
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        };
     }
 
     private void navigateToSearch() {
