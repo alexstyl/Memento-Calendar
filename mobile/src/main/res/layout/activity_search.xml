@@ -6,7 +6,8 @@
   <com.alexstyl.specialdates.search.SearchBar
     android:id="@+id/search_searchbar"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_semi_expanded_height" />
+    android:layout_height="@dimen/toolbar_semi_expanded_height"
+    android:gravity="top" />
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/nameday_suggestions"
