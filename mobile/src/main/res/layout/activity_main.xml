@@ -8,11 +8,16 @@
   <FrameLayout
     android:id="@+id/toolbar_holder"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
-    android:padding="@dimen/padding_tight">
+    android:layout_height="@dimen/toolbar_semi_expanded_height"
+    android:background="?attr/colorPrimary">
 
-    <include layout="@layout/toolbar_search" />
+    <com.alexstyl.specialdates.upcoming.ExposedSearchToolbar
+      android:id="@+id/memento_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/padding_tight"
+      app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
   </FrameLayout>
 
   <LinearLayout
