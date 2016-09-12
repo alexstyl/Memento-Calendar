@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.search;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -9,13 +8,13 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -34,6 +33,8 @@ import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
+
+import static android.view.View.*;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -99,10 +100,10 @@ public class SearchActivity extends MementoActivity {
             namesSuggestionsView.setLayoutManager(namedayManager);
             namesSuggestionsView.setAdapter(namesAdapter);
 
-//            searchbar.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-//            searchbar.setOnFocusChangeListener(onFocusChangeListener);
+            searchbar.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+            searchbar.setOnFocusChangeListener(onFocusChangeListener);
         } else {
-            namesSuggestionsView.setVisibility(View.GONE);
+            namesSuggestionsView.setVisibility(GONE);
         }
 
         if (savedInstanceState == null) {
@@ -216,16 +217,14 @@ public class SearchActivity extends MementoActivity {
     }
 
     private void setupSearchField() {
-//        searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
+        searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
     }
 
     private void onNameSet(String name) {
         // setting the text to the EditText will trigger the search for the name
+        AndroidUtils.requestHideKeyboard(this, searchbar);
         searchbar.setText(name);
         namesAdapter.clearNames();
-
-        InputMethodManager imm = (InputMethodManager) context().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchbar.getWindowToken(), 0);
         searchbar.clearFocus();
     }
 
@@ -251,13 +250,13 @@ public class SearchActivity extends MementoActivity {
 
     };
 
-    private final View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
+    private final OnFocusChangeListener onFocusChangeListener = new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                namesSuggestionsView.setVisibility(View.VISIBLE);
+                namesSuggestionsView.setVisibility(VISIBLE);
             } else {
-                namesSuggestionsView.setVisibility(View.GONE);
+                namesSuggestionsView.setVisibility(GONE);
             }
         }
     };
