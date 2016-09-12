@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   tools:showIn="@layout/activity_search">
 
-  <EditText
+  <com.alexstyl.specialdates.search.MyEditText
     android:id="@+id/toolbar_search_edittext"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

@@ -9,21 +9,21 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.theming.ViewTinter;
+import com.novoda.notils.caster.Views;
 
 public class SearchBar extends Toolbar {
 
-    private EditText editText;
+    private MyEditText editText;
 
     public SearchBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.merge_searchbar, this);
-        editText = (EditText) findViewById(R.id.toolbar_search_edittext);
+        editText = Views.findById(this, R.id.toolbar_search_edittext);
         setBackgroundResource(R.drawable.card_no_paddings);
         addTintedUpNavigation();
 
@@ -57,6 +57,10 @@ public class SearchBar extends Toolbar {
             return false;
         }
     };
+
+    public void setOnBackKeyPressedListener(OnBackKeyPressedListener listener) {
+        editText.setOnBackKeyPressedListener(listener);
+    }
 
     public void setText(String text) {
         editText.setText(text);

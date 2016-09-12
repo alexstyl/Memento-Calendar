@@ -91,6 +91,8 @@ public class SearchActivity extends MementoActivity {
         resultView.setLayoutManager(mLayoutManager);
         resultView.setAdapter(adapter);
 
+        searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
+
         if (displayNamedays) {
             // we are loading namedays as well
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
@@ -319,6 +321,19 @@ public class SearchActivity extends MementoActivity {
         public void onLoaderReset(Loader<SearchResults> loader) {
             if (loader.getId() == ID_CONTACTS) {
                 adapter.notifyIsLoadingMore();
+            }
+        }
+    };
+
+    private final OnBackKeyPressedListener onBackKeyPressedListener = new OnBackKeyPressedListener() {
+        @Override
+        public boolean onBackButtonPressed() {
+            if (searchbar.hasText()) {
+                // do nothing
+                return false;
+            } else {
+                finish();
+                return true;
             }
         }
     };
