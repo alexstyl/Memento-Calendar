@@ -1,22 +1,21 @@
 package com.alexstyl.specialdates.search;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -26,9 +25,11 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.theming.Themer;
-import com.alexstyl.specialdates.theming.ViewTinter;
+import com.alexstyl.specialdates.transition.FadeInTransition;
+import com.alexstyl.specialdates.transition.FadeOutTransition;
+import com.alexstyl.specialdates.transition.SimpleTransitionListener;
+import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
@@ -49,14 +50,15 @@ public class SearchActivity extends MementoActivity {
     private static final int INITAL_COUNT = 5;
 
     private int searchCounter = INITAL_COUNT;
-    private EditText searchField;
-    private ImageButton clearButton;
+    private SearchBar searchbar;
     private RecyclerView resultView;
     private RecyclerView namesSuggestionsView;
     private SearchResultAdapter adapter;
     private NameSuggestionsAdapter namesAdapter;
     private boolean displayNamedays;
     private String searchQuery;
+
+    private ViewFader fader = new ViewFader();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,23 +67,18 @@ public class SearchActivity extends MementoActivity {
         Themer themer = Themer.get();
         themer.initialiseActivity(this);
         Analytics.get(this).trackScreen(Screen.SEARCH);
+        searchbar = Views.findById(this, R.id.search_searchbar);
+        setSupportActionBar(searchbar);
 
         displayNamedays = shouldIncludeNamedays();
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);
         }
-        searchField = Views.findById(this, R.id.text_search_query);
         setupSearchField();
-        ImageButton closeButton = Views.findById(this, R.id.search_toolbar_back);
-        tintButtonToAccentColor(closeButton);
 
-        clearButton = Views.findById(this, R.id.btn_clear);
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
-
-        closeButton.setOnClickListener(onCloseButtonClickListener);
-        clearButton.setOnClickListener(onClearButtonClickedListener);
 
         adapter = SearchResultAdapter.newInstance(context(), displayNamedays);
         adapter.setSearchResultClickListener(listener);
@@ -102,34 +99,87 @@ public class SearchActivity extends MementoActivity {
             namesSuggestionsView.setLayoutManager(namedayManager);
             namesSuggestionsView.setAdapter(namesAdapter);
 
-            searchField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            searchField.setOnFocusChangeListener(onFocusChangeListener);
+//            searchbar.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+//            searchbar.setOnFocusChangeListener(onFocusChangeListener);
         } else {
             namesSuggestionsView.setVisibility(View.GONE);
         }
 
-    }
+        if (savedInstanceState == null) {
+            fader.hideContentOf(searchbar);
+            ViewTreeObserver viewTreeObserver = searchbar.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    searchbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    animateShowSearch();
+                }
 
-    private void tintButtonToAccentColor(ImageButton closeButton) {
-        AttributeExtractor extractor = new AttributeExtractor();
-        ViewTinter viewTinter = new ViewTinter(extractor);
-        viewTinter.tintToAccentColor(closeButton);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (TextUtils.isEmpty(searchQuery)) {
-            hideClearButton();
-        } else {
-            showClearButton();
+                @TargetApi(Build.VERSION_CODES.KITKAT)
+                private void animateShowSearch() {
+                    TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition());
+                    fader.showContent(searchbar);
+                }
+            });
         }
+
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        searchField.requestFocus();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem clearMenuItem = menu.findItem(R.id.action_clear);
+        clearMenuItem.setVisible(searchbar.hasText());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_clear:
+                onClearPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        AndroidUtils.requestHideKeyboard(this, searchbar);
+        exitTransitionWithAction(new Runnable() {
+            @Override
+            public void run() {
+                SearchActivity.super.finish();
+                overridePendingTransition(0, 0);
+            }
+        });
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void exitTransitionWithAction(final Runnable endingAction) {
+        Transition transition = FadeOutTransition.withAction(new SimpleTransitionListener() {
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                endingAction.run();
+            }
+        });
+
+        TransitionManager.beginDelayedTransition(searchbar, transition);
+        fader.hideContentOf(searchbar);
+    }
+
+    private void onClearPressed() {
+        searchbar.clearText();
+        AndroidUtils.toggleKeyboard(this);
     }
 
     @Override
@@ -150,14 +200,6 @@ public class SearchActivity extends MementoActivity {
         }
     }
 
-    private void hideClearButton() {
-        clearButton.setVisibility(View.GONE);
-    }
-
-    private void showClearButton() {
-        clearButton.setVisibility(View.VISIBLE);
-    }
-
     private void resetSearchCounter() {
         searchCounter = INITAL_COUNT;
     }
@@ -174,20 +216,17 @@ public class SearchActivity extends MementoActivity {
     }
 
     private void setupSearchField() {
-        searchField.addTextChangedListener(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
-        searchField.setOnEditorActionListener(onSearchFieldActionListener);
+//        searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
     }
 
     private void onNameSet(String name) {
         // setting the text to the EditText will trigger the search for the name
-        searchField.setText(name);
+        searchbar.setText(name);
         namesAdapter.clearNames();
 
-        InputMethodManager imm = (InputMethodManager) context()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
-        searchField.clearFocus();
-
+        InputMethodManager imm = (InputMethodManager) context().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchbar.getWindowToken(), 0);
+        searchbar.clearFocus();
     }
 
     private final NameSuggestionsAdapter.OnNameSelectedListener onNameSelectedListener = new NameSuggestionsAdapter.OnNameSelectedListener() {
@@ -247,39 +286,18 @@ public class SearchActivity extends MementoActivity {
             searchQuery = text;
             updateNameSuggestions(text);
             resetSearchCounter();
+            invalidateOptionsMenu();
         }
 
         @Override
-        public void onEmptyTextEntered() {
+        public void onEmptyTextConfirmed() {
             clearResults();
-            hideClearButton();
+            invalidateOptionsMenu();
         }
 
         @Override
         public void onTextConfirmed(String text) {
             startSearching();
-            showClearButton();
-        }
-    };
-
-    private final View.OnClickListener onClearButtonClickedListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            searchField.setText(null);
-            searchField.requestFocus();
-            InputMethodManager imm = (InputMethodManager) context()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
-
-        }
-    };
-
-    private final View.OnClickListener onCloseButtonClickListener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            AndroidUtils.requestHideKeyboard(context(), v);
-            ActivityCompat.finishAfterTransition(SearchActivity.this);
         }
     };
 
@@ -303,20 +321,6 @@ public class SearchActivity extends MementoActivity {
             if (loader.getId() == ID_CONTACTS) {
                 adapter.notifyIsLoadingMore();
             }
-        }
-    };
-
-    private final TextView.OnEditorActionListener onSearchFieldActionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                InputMethodManager imm = (InputMethodManager) context()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
-                resultView.requestFocus();
-                return true;
-            }
-            return false;
         }
     };
 

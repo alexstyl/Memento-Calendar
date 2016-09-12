@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates.theming;
 
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.widget.ImageButton;
 
 public class ViewTinter {
     private final AttributeExtractor extractor;
@@ -11,10 +11,9 @@ public class ViewTinter {
         this.extractor = extractor;
     }
 
-    public void tintToAccentColor(ImageButton closeButton) {
-        int accentColor = extractor.extractAccentColorFrom(closeButton.getContext());
-        Drawable mutate = closeButton.getDrawable().mutate();
+    public Drawable createAccentTintedDrawable(Drawable mutate, Context context) {
+        int accentColor = extractor.extractAccentColorFrom(context);
         mutate.setColorFilter(accentColor, PorterDuff.Mode.SRC_IN);
-        closeButton.setImageDrawable(mutate);
+        return mutate;
     }
 }
