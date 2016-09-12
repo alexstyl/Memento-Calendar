@@ -25,7 +25,11 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
@@ -36,7 +40,7 @@ import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
-import static android.view.View.*;
+import static android.view.View.GONE;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -58,7 +62,6 @@ public class SearchActivity extends MementoActivity {
     private RecyclerView namesSuggestionsView;
     private SearchResultAdapter adapter;
     private NameSuggestionsAdapter namesAdapter;
-    private boolean displayNamedays;
     private String searchQuery;
 
     private ViewFader fader = new ViewFader();
@@ -71,20 +74,27 @@ public class SearchActivity extends MementoActivity {
         Themer themer = Themer.get();
         themer.initialiseActivity(this);
         Analytics.get(this).trackScreen(Screen.SEARCH);
+
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
         content = Views.findById(this, R.id.search_content);
-        displayNamedays = shouldIncludeNamedays();
-        if (savedInstanceState != null) {
-            searchQuery = savedInstanceState.getString(KEY_QUERY);
-        }
-        setupSearchField();
-
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
 
-        adapter = SearchResultAdapter.newInstance(context(), displayNamedays);
+        if (savedInstanceState != null) {
+            searchQuery = savedInstanceState.getString(KEY_QUERY);
+        }
+
+
+        setupSearchField();
+
+        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
+        int year = DayDate.today().getYear();
+        NamedayLocale locale = NamedayPreferences.newInstance(this).getSelectedLanguage();
+        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this).loadNamedayCalendarForLocale(locale, year);
+
+        adapter = new SearchResultAdapter(imageLoader, namedayCalendar);
         adapter.setSearchResultClickListener(listener);
 
         resultView.setHasFixedSize(true);
@@ -96,7 +106,8 @@ public class SearchActivity extends MementoActivity {
 
         searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
 
-        if (displayNamedays) {
+        NamedayPreferences preferences = NamedayPreferences.newInstance(this);
+        if (preferences.isEnabled()) {
             // we are loading namedays as well
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
             namesAdapter = NameSuggestionsAdapter.newInstance(context());
@@ -106,7 +117,7 @@ public class SearchActivity extends MementoActivity {
             namesSuggestionsView.setAdapter(namesAdapter);
 
             searchbar.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            searchbar.setOnFocusChangeListener(onFocusChangeListener);
+            searchbar.setOnFocusChangeListener(new ToggleVisibilityOnFocus(namesSuggestionsView));
         } else {
             namesSuggestionsView.setVisibility(GONE);
         }
@@ -203,24 +214,15 @@ public class SearchActivity extends MementoActivity {
 
     private void clearResults() {
         adapter.clearResults();
-        if (displayNamedays) {
-            namesAdapter.clearNames();
-        }
+        namesAdapter.clearNames();
     }
 
     private void resetSearchCounter() {
         searchCounter = INITAL_COUNT;
     }
 
-    private boolean shouldIncludeNamedays() {
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context());
-        return namedayPreferences.isEnabled();
-    }
-
     private void updateNameSuggestions(String text) {
-        if (displayNamedays) {
-            namesAdapter.getFilter().filter(text);
-        }
+        namesAdapter.getFilter().filter(text);
     }
 
     private void setupSearchField() {
@@ -255,17 +257,6 @@ public class SearchActivity extends MementoActivity {
             DateDetailsActivity.startActivity(context(), month, day, dayDate.getYear());
         }
 
-    };
-
-    private final OnFocusChangeListener onFocusChangeListener = new OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                namesSuggestionsView.setVisibility(VISIBLE);
-            } else {
-                namesSuggestionsView.setVisibility(GONE);
-            }
-        }
     };
 
     private final LoaderManager.LoaderCallbacks<NameCelebrations> namedayLoaderCallbacks = new LoaderManager.LoaderCallbacks<NameCelebrations>() {
