@@ -4,7 +4,6 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@drawable/card_no_paddings"
-  android:transitionName="@string/search_transition_name"
   tools:targetApi="lollipop">
 
   <LinearLayout
