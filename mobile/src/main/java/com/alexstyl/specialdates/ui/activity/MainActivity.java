@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.alexstyl.specialdates.R;
@@ -34,6 +36,8 @@ import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
+import static android.view.View.*;
+
 /*
  * The activity was first launched with MainActivity being in package.ui.activity
   * For that reason, it needs to stay here so that we don't remove ourselves from the user's desktop
@@ -46,6 +50,7 @@ public class MainActivity extends ThemedActivity {
     private Analytics analytics;
     private ExposedSearchToolbar toolbar;
     private FloatingActionButton addBirthdayFAB;
+    private ViewGroup content;
 
     private int toolbarMargin;
     private ViewFader viewFader = new ViewFader();
@@ -63,11 +68,12 @@ public class MainActivity extends ThemedActivity {
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
+        content = Views.findById(this, R.id.main_content);
         toolbarMargin = getResources().getDimensionPixelSize(R.dimen.padding_tight);
 
         notifier = Notifier.newInstance(this);
 
-        addBirthdayFAB = Views.findById(this, R.id.fab_add);
+        addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
         addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
         askForSupport = new AskForSupport(this);
 
@@ -82,17 +88,21 @@ public class MainActivity extends ThemedActivity {
         } else if (askForSupport.shouldAskForRating()) {
             askForSupport.askForRatingFromUser(this);
         }
-        fadeToolbarIn();
+        fadeContentIn();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void fadeToolbarIn() {
+    private void fadeContentIn() {
         if (Utils.hasLollipop()) {
+            addBirthdayFAB.show();
             TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
             layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
             viewFader.showContent(toolbar);
             toolbar.setLayoutParams(layoutParams);
+
+            TransitionManager.beginDelayedTransition(content, new Fade(Fade.IN));
+            content.setVisibility(VISIBLE);
         }
     }
 
@@ -147,7 +157,7 @@ public class MainActivity extends ThemedActivity {
         return true;
     }
 
-    private final View.OnClickListener onToolbarClickListener = new View.OnClickListener() {
+    private final OnClickListener onToolbarClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             AndroidUtils.toggleKeyboard(v.getContext());
@@ -158,12 +168,17 @@ public class MainActivity extends ThemedActivity {
 
     private void transitionToSearch() {
         if (Utils.hasLollipop()) {
+            addBirthdayFAB.hide();
+
             Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
             TransitionManager.beginDelayedTransition(toolbar, transition);
             FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
             frameLP.setMargins(0, 0, 0, 0);
             toolbar.setLayoutParams(frameLP);
             viewFader.hideContentOf(toolbar);
+
+            TransitionManager.beginDelayedTransition(content, new Fade(Fade.OUT));
+            content.setVisibility(GONE);
         } else {
             navigateToSearch();
         }
@@ -199,7 +214,7 @@ public class MainActivity extends ThemedActivity {
         }
     }
 
-    private final View.OnClickListener startAddBirthdayOnClick = new View.OnClickListener() {
+    private final OnClickListener startAddBirthdayOnClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
             startAddBirthdayActivity();
