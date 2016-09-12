@@ -9,11 +9,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.alexstyl.specialdates.R;
@@ -60,6 +62,7 @@ public class SearchActivity extends MementoActivity {
     private String searchQuery;
 
     private ViewFader fader = new ViewFader();
+    private ViewGroup content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class SearchActivity extends MementoActivity {
         Analytics.get(this).trackScreen(Screen.SEARCH);
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
-
+        content = Views.findById(this, R.id.search_content);
         displayNamedays = shouldIncludeNamedays();
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);
@@ -178,6 +181,8 @@ public class SearchActivity extends MementoActivity {
 
         TransitionManager.beginDelayedTransition(searchbar, transition);
         fader.hideContentOf(searchbar);
+
+        TransitionManager.beginDelayedTransition(content, new Fade(Fade.OUT));
     }
 
     private void onClearPressed() {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:orientation="vertical">
 
   <com.alexstyl.specialdates.search.SearchBar
     android:id="@+id/search_searchbar"
@@ -9,29 +10,30 @@
     android:layout_height="@dimen/toolbar_semi_expanded_height"
     android:gravity="top" />
 
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/nameday_suggestions"
+  <LinearLayout
+    android:id="@+id/search_content"
     android:layout_width="match_parent"
-    android:layout_height="38dp"
-    android:layout_alignParentBottom="true"
-    android:layout_gravity="top"
-
-    android:background="@drawable/background_suggestions"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:paddingBottom="4dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/card_padding_from_screen"
-    android:paddingRight="@dimen/card_padding_from_screen"
-    android:paddingTop="4dp" />
+    android:paddingRight="@dimen/card_padding_from_screen">
 
-  <android.support.v7.widget.RecyclerView
-    android:id="@android:id/list"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_above="@id/nameday_suggestions"
-    android:layout_alignWithParentIfMissing="true"
-    android:layout_below="@id/search_searchbar"
-    android:paddingLeft="@dimen/card_padding_from_screen"
-    android:paddingRight="@dimen/card_padding_from_screen" />
+    <android.support.v7.widget.RecyclerView
+      android:id="@android:id/list"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
 
-</RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/nameday_suggestions"
+      android:layout_width="match_parent"
+      android:layout_height="38dp"
+      android:layout_gravity="top"
+      android:background="@drawable/background_suggestions"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:paddingBottom="4dp"
+      android:paddingTop="4dp" />
+  </LinearLayout>
+
+</LinearLayout>
