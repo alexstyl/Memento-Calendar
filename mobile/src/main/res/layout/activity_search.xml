@@ -8,6 +8,7 @@
     android:id="@+id/search_searchbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_semi_expanded_height"
+    android:elevation="@dimen/toolbar_elevation"
     android:gravity="top" />
 
   <LinearLayout

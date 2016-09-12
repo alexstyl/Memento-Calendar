@@ -11,7 +11,7 @@ public class ExposedSearchToolbar extends Toolbar {
     public ExposedSearchToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        setBackgroundResource(R.drawable.card_no_paddings);
+        setBackgroundResource(R.drawable.card_noshadow);
         setNavigationIcon(R.drawable.ic_action_search);
     }
 

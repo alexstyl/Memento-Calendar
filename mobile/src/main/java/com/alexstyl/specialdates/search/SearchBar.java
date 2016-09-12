@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.search;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +25,7 @@ public class SearchBar extends Toolbar {
         super(context, attrs);
         inflate(getContext(), R.layout.merge_searchbar, this);
         editText = Views.findById(this, R.id.toolbar_search_edittext);
-        setBackgroundResource(R.drawable.card_no_paddings);
+        setBackgroundColor(Color.WHITE);
         addTintedUpNavigation();
 
         editText.setOnEditorActionListener(onEditorActionListener);
