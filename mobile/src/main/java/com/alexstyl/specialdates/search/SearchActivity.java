@@ -70,9 +70,9 @@ public class SearchActivity extends MementoActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
         Themer themer = Themer.get();
         themer.initialiseActivity(this);
+        setContentView(R.layout.activity_search);
         Analytics.get(this).trackScreen(Screen.SEARCH);
 
         searchbar = Views.findById(this, R.id.search_searchbar);
