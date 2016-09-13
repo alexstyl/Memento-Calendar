@@ -12,14 +12,14 @@ cache:
 android:
   components:
     - tools
-    - build-tools-23.0.2
-    - android-23
+    - build-tools-24.0.2
+    - android-24
     - platform-tools
     - extra-google-google_play_services
     - extra-android-support
     - extra-android-m2repository
     - extra-google-m2repository
-    - addon-google_apis-google-23
+    - addon-google_apis-google-24
 
 licenses:
     - 'android-sdk-preview-license-52d11cd2'
