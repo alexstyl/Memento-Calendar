@@ -1,12 +1,9 @@
 package com.alexstyl.specialdates.transition;
 
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.transition.Transition;
+import android.support.transition.Transition;
 
-import static android.transition.Transition.*;
+import static android.support.transition.Transition.TransitionListener;
 
-@TargetApi(Build.VERSION_CODES.KITKAT)
 public class SimpleTransitionListener implements TransitionListener {
     @Override
     public void onTransitionStart(Transition transition) {
