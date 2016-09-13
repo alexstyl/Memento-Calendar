@@ -22,3 +22,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    androidVersionCode = 57
+    androidVersionName = '3.8'
+}
