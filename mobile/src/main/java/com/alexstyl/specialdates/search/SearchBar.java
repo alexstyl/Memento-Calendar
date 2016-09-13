@@ -19,7 +19,7 @@ import com.novoda.notils.caster.Views;
 
 public class SearchBar extends Toolbar {
 
-    private MyEditText editText;
+    private BackKeyEditText editText;
 
     public SearchBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -73,5 +73,9 @@ public class SearchBar extends Toolbar {
 
     public boolean hasText() {
         return editText.length() > 0;
+    }
+
+    public void setHint(String hint) {
+        editText.setHint(hint);
     }
 }

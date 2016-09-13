@@ -106,6 +106,8 @@ public class SearchActivity extends MementoActivity {
         searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
 
         NamedayPreferences preferences = NamedayPreferences.newInstance(this);
+        setupSearchbarHint(preferences);
+
         if (preferences.isEnabled()) {
             // we are loading namedays as well
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
@@ -139,6 +141,11 @@ public class SearchActivity extends MementoActivity {
             });
         }
 
+    }
+
+    private void setupSearchbarHint(NamedayPreferences preferences) {
+        SearchHintCreator searchHintCreator = new SearchHintCreator(getResources(), preferences);
+        searchbar.setHint(searchHintCreator.createHint());
     }
 
     @Override
