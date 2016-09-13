@@ -16,15 +16,10 @@
 
 package com.alexstyl.specialdates.util;
 
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
@@ -34,17 +29,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.PayPal;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,22 +48,6 @@ public class Utils {
 
     // Prevents instantiation.
     private Utils() {
-    }
-
-    /**
-     * Uses static final constants to detect if the device's platform version is
-     * Honeycomb or later.
-     */
-    public static boolean hasHoneycomb() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-    }
-
-    /**
-     * Uses static final constants to detect if the device's platform version is
-     * ICS or later.
-     */
-    public static boolean hasICS() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     }
 
     public static boolean hasJellyBean() {
@@ -95,10 +71,6 @@ public class Utils {
 
     public static boolean hasKitKat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-    }
-
-    public static boolean isRunningKitKat() {
-        return Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
     }
 
     /**
@@ -164,50 +136,9 @@ public class Utils {
         return android.os.Build.VERSION.RELEASE;
     }
 
-    /**
-     * Returns whether the device has
-     *
-     * @param context The context to use
-     * @return
-     */
-    @SuppressLint("NewApi")
     public static boolean hasVibrator(Context context) {
         Vibrator vibr = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (!hasHoneycomb()) {
-            return vibr != null;
-        }
         return vibr.hasVibrator();
-    }
-
-    /**
-     * Checks if the device is currently connected to the webz!
-     *
-     * @param context The context to use
-     * @return Whether the device is online or not... duh
-     */
-    public static boolean isOnline(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            // There are no active networks.
-            return false;
-        }
-        return ni.isConnectedOrConnecting();
-    }
-
-    /**
-     * Returns the height of the navigation bars height
-     *
-     * @param context
-     * @return
-     */
-    final public static int getNavigationBarHeight(Context context) {
-        Resources resources = context.getResources();
-        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            return resources.getDimensionPixelSize(resourceId);
-        }
-        return 0;
     }
 
     /**
@@ -247,26 +178,10 @@ public class Utils {
     }
 
     /**
-     * Checks if the running device has any installed applications that can handle the given intent
-     *
-     * @param context
-     * @param intent
-     * @return
-     */
-    public static boolean isCallable(Context context, Intent intent) {
-        List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(
-                intent,
-                PackageManager.MATCH_DEFAULT_ONLY
-        );
-        return list.size() > 0;
-    }
-
-    /**
      * Returns a JSON value from the raw folder, of the given resID
      *
      * @param context The context to use
      * @param resID   The resource ID of the JSON file
-     * @return
      * @throws android.content.res.Resources.NotFoundException if the resource is not a JSON
      */
     public static JSONObject getJSON(@NonNull Context context, @RawRes int resID) {
@@ -289,38 +204,6 @@ public class Utils {
         } catch (JSONException e) {
             throw new Resources.NotFoundException(e.getMessage());
         }
-    }
-
-    /**
-     * Compares whether one is equal with at least one of the others
-     *
-     * @param one
-     * @param others
-     * @return
-     */
-    public static boolean equalsTo(Object one, Object... others) {
-        for (Object other : others) {
-            if (one.equals(other)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean openPayPalDonation(Context context) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(PayPal.URL_DONATIONS));
-            context.startActivity(intent);
-            return true;
-        } catch (ActivityNotFoundException e) {
-            if (BuildConfig.DEBUG) {
-                // do nothing if we there is no browser installed
-                Toast.makeText(context, "Exception thrown!", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        }
-        return false;
     }
 
 }

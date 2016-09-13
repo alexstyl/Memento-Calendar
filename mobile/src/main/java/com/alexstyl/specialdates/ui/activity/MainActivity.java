@@ -91,7 +91,6 @@ public class MainActivity extends ThemedActivity {
         fadeContentIn();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fadeContentIn() {
         if (Utils.hasLollipop()) {
             addBirthdayFAB.show();
@@ -150,7 +149,6 @@ public class MainActivity extends ThemedActivity {
         startActivity(new Intent(this, MainPreferenceActivity.class));
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onSearchRequested() {
         navigateToSearch();
