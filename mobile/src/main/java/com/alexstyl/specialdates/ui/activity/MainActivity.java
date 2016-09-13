@@ -1,8 +1,6 @@
 package com.alexstyl.specialdates.ui.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Fade;
@@ -31,7 +29,6 @@ import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.upcoming.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
-import com.alexstyl.specialdates.util.Utils;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
@@ -92,7 +89,7 @@ public class MainActivity extends ThemedActivity {
     }
 
     private void fadeContentIn() {
-        if (Utils.hasLollipop()) {
+        if (supportsTransitions()) {
             addBirthdayFAB.show();
             TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
@@ -165,7 +162,7 @@ public class MainActivity extends ThemedActivity {
     };
 
     private void transitionToSearch() {
-        if (Utils.hasLollipop()) {
+        if (supportsTransitions()) {
             addBirthdayFAB.hide();
 
             Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());

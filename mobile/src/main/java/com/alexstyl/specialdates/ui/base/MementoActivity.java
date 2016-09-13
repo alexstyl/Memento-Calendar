@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.exception.DeveloperError;
 
 public class MementoActivity extends AppCompatActivity {
@@ -59,6 +60,10 @@ public class MementoActivity extends AppCompatActivity {
 
     protected Context context() {
         return this;
+    }
+
+    protected boolean supportsTransitions() {
+        return Utils.hasKitKat();
     }
 
 }

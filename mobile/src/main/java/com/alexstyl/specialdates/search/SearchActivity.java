@@ -170,14 +170,18 @@ public class SearchActivity extends MementoActivity {
 
     @Override
     public void finish() {
-        AndroidUtils.requestHideKeyboard(this, searchbar);
-        exitTransitionWithAction(new Runnable() {
-            @Override
-            public void run() {
-                SearchActivity.super.finish();
-                overridePendingTransition(0, 0);
-            }
-        });
+        if (supportsTransitions()) {
+            AndroidUtils.requestHideKeyboard(this, searchbar);
+            exitTransitionWithAction(new Runnable() {
+                @Override
+                public void run() {
+                    SearchActivity.super.finish();
+                    overridePendingTransition(0, 0);
+                }
+            });
+        } else {
+            super.finish();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
