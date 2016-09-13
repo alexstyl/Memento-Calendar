@@ -74,6 +74,7 @@ dependencies {
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:transition:24.2.0'
     compile 'net.danlew:android.joda:2.8.0'
     compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
         exclude module: 'support-v4'

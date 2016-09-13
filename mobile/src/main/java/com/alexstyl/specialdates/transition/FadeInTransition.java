@@ -1,11 +1,8 @@
 package com.alexstyl.specialdates.transition;
 
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.transition.AutoTransition;
-import android.transition.Transition;
+import android.support.transition.AutoTransition;
+import android.support.transition.Transition;
 
-@TargetApi(Build.VERSION_CODES.KITKAT)
 public class FadeInTransition extends AutoTransition {
 
     private static final int FADE_IN_DURATION = 200;
