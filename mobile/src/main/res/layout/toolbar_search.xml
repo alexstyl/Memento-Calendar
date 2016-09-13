@@ -14,7 +14,7 @@
     android:drawablePadding="@dimen/card_padding_from_screen"
     android:gravity="center_vertical"
     android:lines="1"
-    android:text="@string/search_hint"
+    android:text="@string/search_hint_contacts"
     android:textColor="@color/search_hint_color" />
 
 </android.support.v7.widget.Toolbar>
