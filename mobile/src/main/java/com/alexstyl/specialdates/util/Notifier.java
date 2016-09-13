@@ -168,7 +168,7 @@ public class Notifier {
     }
 
     private boolean shouldDisplayContactImage(int contactCount) {
-        return Utils.hasHoneycomb() && contactCount == 1;
+        return contactCount == 1;
     }
 
     public void forNamedays(List<String> names, Date date) {

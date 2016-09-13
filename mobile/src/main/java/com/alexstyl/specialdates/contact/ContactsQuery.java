@@ -7,20 +7,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.util.Utils;
-
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 class ContactsQuery {
     public final static Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
 
-    public static String COL_DISPLAY_NAME = Utils.hasHoneycomb() ? ContactsContract.Contacts.DISPLAY_NAME_PRIMARY //3
-            : ContactsContract.Contacts.DISPLAY_NAME;
+    public static String COL_DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
     public static String COL_LOOKUP = ContactsContract.Contacts.LOOKUP_KEY;
 
     @SuppressLint("InlinedApi")
-    public final static String SORT_ORDER = Utils.hasHoneycomb() ?
-            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY : ContactsContract.Contacts.DISPLAY_NAME;
+    public final static String SORT_ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
     @SuppressLint("InlinedApi")
     public static final String[] PROJECTION = {
