@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
@@ -37,8 +36,7 @@ public class MainActivity extends ThemedActivity {
 
     private Notifier notifier;
     private AskForSupport askForSupport;
-    private ThemeMonitor reapplier;
-    private Analytics analytics;
+    private ThemeMonitor themeMonitor;
 
     private Navigator navigator;
 
@@ -48,11 +46,12 @@ public class MainActivity extends ThemedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        reapplier = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        navigator = new Navigator(this, analytics);
 
-        analytics = Firebase.get(this);
+        themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
+        Firebase analytics = Firebase.get(this);
         analytics.trackScreen(Screen.HOME);
+
+        navigator = new Navigator(this, analytics);
 
         ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
@@ -74,7 +73,7 @@ public class MainActivity extends ThemedActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (reapplier.hasThemeChanged()) {
+        if (themeMonitor.hasThemeChanged()) {
             reapplyTheme();
         } else if (askForSupport.shouldAskForRating()) {
             askForSupport.askForRatingFromUser(this);
