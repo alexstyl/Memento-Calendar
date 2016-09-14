@@ -27,6 +27,7 @@ public final class SearchTransitioner {
     private final ViewFader viewFader;
 
     private final int toolbarMargin;
+    private boolean transitioning;
 
     public SearchTransitioner(Activity activity,
                               Navigator navigator,
@@ -38,18 +39,18 @@ public final class SearchTransitioner {
         this.activityContent = activityContent;
         this.toolbar = toolbar;
         this.viewFader = viewFader;
-
         this.toolbarMargin = activity.getResources().getDimensionPixelSize(R.dimen.padding_tight);
     }
 
     public void transitionToSearch() {
+        if (transitioning) {
+            return;
+        }
         if (supportsTransitions()) {
 
             Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
             TransitionManager.beginDelayedTransition(toolbar, transition);
-            FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
-            frameLP.setMargins(0, 0, 0, 0);
-            toolbar.setLayoutParams(frameLP);
+            expandToolbar();
             viewFader.hideContentOf(toolbar);
 
             TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.OUT));
@@ -59,10 +60,23 @@ public final class SearchTransitioner {
         }
     }
 
+    private void expandToolbar() {
+        FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
+        frameLP.setMargins(0, 0, 0, 0);
+        toolbar.setLayoutParams(frameLP);
+    }
+
     private Transition.TransitionListener navigateToSearchWhenDone() {
         return new SimpleTransitionListener() {
+
+            @Override
+            public void onTransitionStart(Transition transition) {
+                transitioning = true;
+            }
+
             @Override
             public void onTransitionEnd(Transition transition) {
+                transitioning = false;
                 navigator.toSearch();
                 activity.overridePendingTransition(0, 0);
             }
