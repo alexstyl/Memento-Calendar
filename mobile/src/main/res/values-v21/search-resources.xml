@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Search.Theme"
+    parent="Theme.Memento.BloodyCherry">
+    <item name="android:windowContentTransitions">true</item>
+
+    <item name="android:windowEnterTransition">@android:transition/fade</item>
+    <item name="android:windowExitTransition">@android:transition/fade</item>
+
+
+    <item name="android:windowSharedElementEnterTransition">@transition/fade_and_changebounds</item>
+    <item name="android:windowSharedElementExitTransition">@transition/fade_and_changebounds</item>
+  </style>
+
+</resources>
