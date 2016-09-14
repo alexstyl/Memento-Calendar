@@ -173,6 +173,11 @@ public class Utils {
                         intent2.putExtra(Intent.EXTRA_TEXT, shareText);
                         context.startActivity(Intent.createChooser(intent2, context.getString(R.string.share_via)));
                     }
+
+                    @Override
+                    public String getName() {
+                        return "share";
+                    }
                 }
         );
     }

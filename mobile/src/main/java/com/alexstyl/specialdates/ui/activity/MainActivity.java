@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchActivity;
@@ -60,7 +61,7 @@ public class MainActivity extends ThemedActivity {
         setContentView(R.layout.activity_main);
         reapplier = new ThemeReapplier(this);
 
-        analytics = Analytics.get(this);
+        analytics = Firebase.get(this);
         analytics.trackScreen(Screen.HOME);
 
         toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -141,11 +142,13 @@ public class MainActivity extends ThemedActivity {
     }
 
     private void openAboutScreen() {
+        analytics.trackScreen(Screen.ABOUT);
         startActivity(new Intent(this, AboutActivity.class));
 
     }
 
     private void openSettings() {
+        analytics.trackScreen(Screen.SETTINGS);
         startActivity(new Intent(this, MainPreferenceActivity.class));
     }
 

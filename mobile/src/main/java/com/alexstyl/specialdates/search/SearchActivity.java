@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.search;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
@@ -19,7 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DayDate;
@@ -74,8 +72,7 @@ public class SearchActivity extends MementoActivity {
         Themer themer = Themer.get();
         themer.initialiseActivity(this);
         setContentView(R.layout.activity_search);
-        Analytics.get(this).trackScreen(Screen.SEARCH);
-
+        Firebase.get(this).trackScreen(Screen.SEARCH);
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
         content = Views.findById(this, R.id.search_content);
@@ -134,7 +131,6 @@ public class SearchActivity extends MementoActivity {
                     animateShowSearch();
                 }
 
-                @TargetApi(Build.VERSION_CODES.KITKAT)
                 private void animateShowSearch() {
                     TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition());
                     fader.showContent(searchbar);
@@ -192,7 +188,6 @@ public class SearchActivity extends MementoActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void exitTransitionWithAction(final Runnable endingAction) {
         Transition transition = FadeOutTransition.withAction(new SimpleTransitionListener() {
             @Override

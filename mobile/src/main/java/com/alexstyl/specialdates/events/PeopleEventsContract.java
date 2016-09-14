@@ -35,7 +35,7 @@ public class PeopleEventsContract {
 
         public static EventType getEventType(Cursor cursor) {
             int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEvents.EVENT_TYPE);
-            int anInt = cursor.getInt(eventTypeIndex);
+            @EventTypeId int anInt = cursor.getInt(eventTypeIndex);
             return EventType.fromId(anInt);
         }
 
