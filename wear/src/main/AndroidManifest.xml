@@ -19,6 +19,26 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <service
+      android:name=".ContactEventsProviderService"
+      android:icon="@drawable/ic_complication_contact_event"
+      android:label="@string/complications_provider_contact_events">
+
+      <intent-filter>
+        <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+        android:value="SHORT_TEXT,LONG_TEXT" />
+
+      <meta-data
+        android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+        android:value="3600" />
+
+    </service>
+
   </application>
 
 </manifest>
