@@ -24,7 +24,8 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
     private ListPreference namedayLanguageListPreferences;
     private NamedayPreferences namedaysPreferences;
-    private ThemingPreferences themingPreferences = new ThemingPreferences();
+    private ThemingPreferences themingPreferences;
+
     private Preference appThemePreference;
 
     private MainPreferenceActivity activity;
@@ -42,6 +43,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_main);
         analytics = Firebase.get(getActivity());
+        themingPreferences = ThemingPreferences.newInstance(getActivity());
         Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
         bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

@@ -24,7 +24,7 @@ public class MementoToolbar extends Toolbar {
         if (isInEditMode()) {
             return;
         }
-        themer = Themer.get();
+        themer = Themer.get(context);
 
         int toolbarColor = fetchAccentColor(context);
         float toolbarElevation = getToolbarElevation();
@@ -50,7 +50,7 @@ public class MementoToolbar extends Toolbar {
 
     public void displayAsUp() {
         if (themer.isActivityUsingDarkIcons(getContext())) {
-            setNavigationIcon(R.drawable.ic_action_arrow_dark_back);
+            setNavigationIcon(R.drawable.ic_action_left_semitransparent);
         } else {
             setNavigationIcon(R.drawable.ic_action_arrow_light_back);
         }

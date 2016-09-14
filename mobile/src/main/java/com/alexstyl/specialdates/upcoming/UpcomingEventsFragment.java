@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
@@ -22,8 +22,8 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
-import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
+import com.alexstyl.specialdates.upcoming.ui.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsListView;
 import com.alexstyl.specialdates.views.FabPaddingSetter;
 import com.novoda.notils.caster.Views;
@@ -38,22 +38,18 @@ public class UpcomingEventsFragment extends MementoFragment {
     private ProgressBar progressBar;
     private TextView emptyView;
     private SettingsMonitor monitor;
-    private MonthTitleSetter titleSetter;
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
     private GoToTodayEnabler goToTodayEnabler;
-    private Themer themer;
     private Analytics firebase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        themer = Themer.get();
         firebase = Firebase.get(getActivity());
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
-        titleSetter = MonthTitleSetter.createSetterFor(getActivity());
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
     }
@@ -61,16 +57,8 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (isUsingDarkIcons()) {
-            inflater.inflate(R.menu.menu_upcoming_dark, menu);
-        } else {
-            inflater.inflate(R.menu.menu_upcoming_light, menu);
-        }
+        inflater.inflate(R.menu.menu_upcoming_dark, menu);
         goToTodayEnabler.reattachTo(menu);
-    }
-
-    private boolean isUsingDarkIcons() {
-        return themer.isActivityUsingDarkIcons(getActivity());
     }
 
     @Override
@@ -79,10 +67,6 @@ public class UpcomingEventsFragment extends MementoFragment {
             case R.id.action_today:
                 onGoToTodayRequested();
                 return true;
-            case R.id.action_search: {
-                onSearchRequested();
-                return true;
-            }
             default:
                 break;
         }
@@ -106,6 +90,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         new FabPaddingSetter().setBottomPaddingTo(upcomingEventsListView);
+        upcomingEventsListView.setHasFixedSize(true);
     }
 
     @Override
@@ -155,8 +140,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         emptyView.setVisibility(View.GONE);
     }
 
-    private final UpcomingEventsListView.Listener listClickListener = new UpcomingEventsListView.Listener() {
-
+    private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
         @Override
         public void onContactEventPressed(View view, ContactEvent contact) {
             firebase.trackAction(action);
@@ -168,11 +152,6 @@ public class UpcomingEventsFragment extends MementoFragment {
             firebase.trackScreen(Screen.DATE_DETAILS);
             Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
             startActivity(intent);
-        }
-
-        @Override
-        public void onDifferentMonthScrolled(int month) {
-            titleSetter.updateWithMonth(month);
         }
     };
 
