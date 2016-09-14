@@ -5,4 +5,6 @@ import android.content.Context;
 
 public interface IntentAction {
     void onStartAction(Context context) throws ActivityNotFoundException;
+
+    String getName();
 }

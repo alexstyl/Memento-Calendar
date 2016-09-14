@@ -7,6 +7,9 @@ import android.preference.Preference;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Action;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.theming.MementoTheme;
@@ -26,6 +29,8 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
     private MainPreferenceActivity activity;
 
+    private Firebase analytics;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -36,7 +41,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_main);
-
+        analytics = Firebase.get(getActivity());
         Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
         bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -130,6 +135,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
         @Override
         public void onThemeSelected(MementoTheme theme) {
+            analytics.trackAction(new ActionWithParameters(Action.SELECT_THEME, "theme name", theme.getThemeName()));
             themingPreferences.setSelectedTheme(theme);
             activity.reapplyTheme();
         }

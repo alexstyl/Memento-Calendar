@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class ContactEventsTest {
+public class ContactActionTest {
 
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
     private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"));
