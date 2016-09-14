@@ -155,7 +155,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigator = new Navigator(getActivity());
+        navigator = new Navigator(getActivity(), analytics);
         analytics = Firebase.get(getActivity());
     }
 

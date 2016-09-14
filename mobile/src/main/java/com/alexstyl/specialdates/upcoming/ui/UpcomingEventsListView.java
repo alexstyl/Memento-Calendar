@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
-import com.alexstyl.specialdates.upcoming.MonthSectionScrollListener;
 
 import java.util.List;
 
@@ -20,12 +19,9 @@ public class UpcomingEventsListView extends RecyclerView {
     private UpcomingEventsAdapter adapter;
     private ScrollingLinearLayoutManager layoutManager;
 
-    private Listener listener;
-
     public UpcomingEventsListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        setHasFixedSize(true);
         layoutManager = new ScrollingLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false, 600);
         setLayoutManager(layoutManager);
 
@@ -39,19 +35,10 @@ public class UpcomingEventsListView extends RecyclerView {
         setAdapter(adapter);
 
         addOnScrollListener(PauseImageLoadingScrollListener.newInstance(imageLoader));
-
-        final MonthSectionScrollListener monthSectionScrollListener = new MonthSectionScrollListener(adapter, layoutManager) {
-            @Override
-            protected void onDifferentMonthScrolled(int month) {
-                listener.onDifferentMonthScrolled(month);
-            }
-        };
-        addOnScrollListener(monthSectionScrollListener);
     }
 
-    public void updateWith(List<CelebrationDate> dates, Listener listener) {
-        this.listener = listener;
-        this.adapter.setUpcomingEvents(dates, listener);
+    public void updateWith(List<CelebrationDate> dates, OnUpcomingEventClickedListener listener) {
+        adapter.setUpcomingEvents(dates, listener);
     }
 
     public void scrollToToday(final boolean smoothScroll) {
@@ -120,7 +107,4 @@ public class UpcomingEventsListView extends RecyclerView {
         return adapter.getItemCount() > 0;
     }
 
-    public interface Listener extends OnUpcomingEventClickedListener {
-        void onDifferentMonthScrolled(int month);
-    }
 }

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.util.Utils;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import java.io.FileNotFoundException;
@@ -33,11 +32,7 @@ public class ImageDownloader extends BaseImageDownloader {
         Uri uri = Uri.parse(imageUri);
 
         if (imageUri.startsWith("content://com.android.contacts/")) {
-            if (Utils.hasICS()) {
-                return ContactsContract.Contacts.openContactPhotoInputStream(res, uri, true);
-            } else {
-                return ContactsContract.Contacts.openContactPhotoInputStream(res, uri);
-            }
+            return ContactsContract.Contacts.openContactPhotoInputStream(res, uri, true);
         }
 
         return res.openInputStream(uri);

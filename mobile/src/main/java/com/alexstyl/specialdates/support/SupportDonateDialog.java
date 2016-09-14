@@ -216,8 +216,4 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
         }
     }
 
-    public static void displayDialog(Context context) {
-        Intent intent = new Intent(context, SupportDonateDialog.class);
-        context.startActivity(intent);
-    }
 }
