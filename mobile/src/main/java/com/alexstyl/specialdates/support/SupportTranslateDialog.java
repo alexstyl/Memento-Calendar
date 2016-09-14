@@ -16,7 +16,7 @@ public class SupportTranslateDialog extends ThemedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.dialog_translate, Themer.get().getCurrentTheme());
+        setContentView(R.layout.dialog_translate, Themer.get(this).getCurrentTheme());
         Views.findById(this, android.R.id.content).setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         Views.findById(this, R.id.button_ok).setOnClickListener(new View.OnClickListener() {
