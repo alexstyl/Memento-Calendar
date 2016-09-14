@@ -8,6 +8,7 @@ import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
+import com.alexstyl.specialdates.wear.WearSyncService;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 
 /**
@@ -38,6 +39,7 @@ public class EventReceiver extends BroadcastReceiver {
     private void onLocaleChanged(Context context) {
         ErrorTracker.onLocaleChanged();
         TodayWidgetProvider.updateWidgets(context);
+        WearSyncService.startService(context);
     }
 
     private void onBootCompleted(Context context) {
@@ -45,11 +47,13 @@ public class EventReceiver extends BroadcastReceiver {
             DailyReminderIntentService.rescheduleAlarm(context);
         }
         TodayWidgetProvider.updateWidgets(context);
+        WearSyncService.startService(context);
     }
 
     private void onStartDailyReminder(Context context) {
         if (MainPreferenceActivity.isDailyReminderSet(context)) {
             DailyReminderIntentService.startService(context);
+            WearSyncService.startService(context);
         }
     }
 
