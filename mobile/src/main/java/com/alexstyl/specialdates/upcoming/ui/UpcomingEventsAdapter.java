@@ -118,7 +118,7 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return integer == null ? -1 : integer;
     }
 
-    public void setUpcomingEvents(List<CelebrationDate> upcomingEvents, UpcomingEventsListView.Listener listener) {
+    public void setUpcomingEvents(List<CelebrationDate> upcomingEvents, OnUpcomingEventClickedListener listener) {
         this.listener = listener;
         if (this.celebrationDates == upcomingEvents) {
             return;

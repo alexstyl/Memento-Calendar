@@ -15,7 +15,6 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.util.DateParser;
-import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.exception.DeveloperError;
 
 public class BirthdayQuery {
@@ -127,8 +126,7 @@ public class BirthdayQuery {
         }
 
         private static final Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
-        private static final String COL_DISPLAY_NAME = Utils.hasHoneycomb() ? ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
-                : ContactsContract.Contacts.DISPLAY_NAME;
+        private static final String COL_DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
         public static final String WHERE =
                 "(" + ContactsContract.Data.MIMETYPE + " = ? AND " +
