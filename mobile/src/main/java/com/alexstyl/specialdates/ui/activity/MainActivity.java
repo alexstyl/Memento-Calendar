@@ -130,7 +130,7 @@ public class MainActivity extends ThemedActivity {
         @Override
         public void onClick(View v) {
             AndroidUtils.toggleKeyboard(v.getContext());
-            searchTransitioner.transitionToSearch();
+            onSearchRequested();
         }
 
     };
