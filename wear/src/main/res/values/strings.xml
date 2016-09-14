@@ -1,3 +1,4 @@
 <resources>
-  <string name="hello_world">Hello Wear World!</string>
+  <string name="empty_events">No contacts events found</string>
+  <string name="complications_provider_contact_events">Contact Events</string>
 </resources>

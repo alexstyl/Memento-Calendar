@@ -10,12 +10,12 @@
     android:label="@string/localised_app_name"
     android:supportsRtl="true"
     android:theme="@android:style/Theme.DeviceDefault">
+
     <activity
-      android:name=".MainActivity"
+      android:name=".ContactEventsActivity"
       android:label="@string/localised_app_name">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
