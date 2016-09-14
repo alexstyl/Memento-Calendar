@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
@@ -22,7 +22,6 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
-import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.ui.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsListView;
@@ -42,14 +41,12 @@ public class UpcomingEventsFragment extends MementoFragment {
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
     private GoToTodayEnabler goToTodayEnabler;
-    private Themer themer;
     private Analytics firebase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        themer = Themer.get();
         firebase = Firebase.get(getActivity());
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();

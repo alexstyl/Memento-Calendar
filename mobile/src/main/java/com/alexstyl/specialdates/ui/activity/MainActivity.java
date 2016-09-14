@@ -1,42 +1,33 @@
 package com.alexstyl.specialdates.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.transition.Fade;
-import android.support.transition.Transition;
-import android.support.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
+import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.about.AboutActivity;
-import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.search.SearchHintCreator;
-import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.SupportDonateDialog;
-import com.alexstyl.specialdates.transition.FadeInTransition;
-import com.alexstyl.specialdates.transition.FadeOutTransition;
-import com.alexstyl.specialdates.transition.SimpleTransitionListener;
-import com.alexstyl.specialdates.ui.ThemeReapplier;
+import com.alexstyl.specialdates.theming.ThemingPreferences;
+import com.alexstyl.specialdates.ui.ThemeMonitor;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.upcoming.ExposedSearchToolbar;
+import com.alexstyl.specialdates.upcoming.SearchTransitioner;
 import com.alexstyl.specialdates.util.Notifier;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
-import static android.view.View.*;
+import static android.view.View.OnClickListener;
 
 /*
  * The activity was first launched with MainActivity being in package.ui.activity
@@ -46,34 +37,33 @@ public class MainActivity extends ThemedActivity {
 
     private Notifier notifier;
     private AskForSupport askForSupport;
-    private ThemeReapplier reapplier;
+    private ThemeMonitor reapplier;
     private Analytics analytics;
-    private ExposedSearchToolbar toolbar;
-    private FloatingActionButton addBirthdayFAB;
-    private ViewGroup content;
 
-    private int toolbarMargin;
-    private ViewFader viewFader = new ViewFader();
+    private Navigator navigator;
+
+    private SearchTransitioner searchTransitioner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        reapplier = new ThemeReapplier(this);
+        reapplier = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
+        navigator = new Navigator(this, analytics);
 
         analytics = Firebase.get(this);
         analytics.trackScreen(Screen.HOME);
 
-        toolbar = Views.findById(this, R.id.memento_toolbar);
+        ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
-        content = Views.findById(this, R.id.main_content);
-        toolbarMargin = getResources().getDimensionPixelSize(R.dimen.padding_tight);
+        ViewGroup activityContent = Views.findById(this, R.id.main_content);
+        searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
 
         notifier = Notifier.newInstance(this);
 
-        addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
+        FloatingActionButton addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
         addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
         askForSupport = new AskForSupport(this);
 
@@ -89,26 +79,7 @@ public class MainActivity extends ThemedActivity {
         } else if (askForSupport.shouldAskForRating()) {
             askForSupport.askForRatingFromUser(this);
         }
-        fadeContentIn();
-    }
-
-    private void fadeContentIn() {
-        if (supportsTransitions()) {
-            addBirthdayFAB.show();
-            TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
-            layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
-            viewFader.showContent(toolbar);
-            toolbar.setLayoutParams(layoutParams);
-
-            TransitionManager.beginDelayedTransition(content, new Fade(Fade.IN));
-            content.setVisibility(VISIBLE);
-        }
-    }
-
-    private void startAddBirthdayActivity() {
-        Intent intent = new Intent(this, AddBirthdayActivity.class);
-        startActivity(intent);
+        searchTransitioner.onActivityResumed();
     }
 
     @Override
@@ -124,81 +95,22 @@ public class MainActivity extends ThemedActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                openSettings();
+                navigator.toSettings();
                 break;
             case R.id.action_about:
-                openAboutScreen();
+                navigator.toAbout();
                 break;
             case R.id.action_donate:
-                openDonateDialog();
+                navigator.toDonateDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void openDonateDialog() {
-        analytics.trackScreen(Screen.DONATE);
-        SupportDonateDialog.displayDialog(this);
-    }
-
-    private void openAboutScreen() {
-        analytics.trackScreen(Screen.ABOUT);
-        startActivity(new Intent(this, AboutActivity.class));
-
-    }
-
-    private void openSettings() {
-        analytics.trackScreen(Screen.SETTINGS);
-        startActivity(new Intent(this, MainPreferenceActivity.class));
-    }
-
     @Override
     public boolean onSearchRequested() {
-        navigateToSearch();
+        searchTransitioner.transitionToSearch();
         return true;
-    }
-
-    private final OnClickListener onToolbarClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            AndroidUtils.toggleKeyboard(v.getContext());
-            transitionToSearch();
-        }
-
-    };
-
-    private void transitionToSearch() {
-        if (supportsTransitions()) {
-            addBirthdayFAB.hide();
-
-            Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
-            TransitionManager.beginDelayedTransition(toolbar, transition);
-            FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
-            frameLP.setMargins(0, 0, 0, 0);
-            toolbar.setLayoutParams(frameLP);
-            viewFader.hideContentOf(toolbar);
-
-            TransitionManager.beginDelayedTransition(content, new Fade(Fade.OUT));
-            content.setVisibility(GONE);
-        } else {
-            navigateToSearch();
-        }
-    }
-
-    private Transition.TransitionListener navigateToSearchWhenDone() {
-        return new SimpleTransitionListener() {
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        };
-    }
-
-    private void navigateToSearch() {
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -215,10 +127,19 @@ public class MainActivity extends ThemedActivity {
         }
     }
 
+    private final OnClickListener onToolbarClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AndroidUtils.toggleKeyboard(v.getContext());
+            searchTransitioner.transitionToSearch();
+        }
+
+    };
+
     private final OnClickListener startAddBirthdayOnClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            startAddBirthdayActivity();
+            navigator.toAddBirthday();
         }
     };
 }

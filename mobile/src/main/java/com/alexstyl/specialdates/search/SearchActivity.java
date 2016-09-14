@@ -69,7 +69,7 @@ public class SearchActivity extends MementoActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Themer themer = Themer.get();
+        Themer themer = Themer.get(this);
         themer.initialiseActivity(this);
         setContentView(R.layout.activity_search);
         Firebase.get(this).trackScreen(Screen.SEARCH);

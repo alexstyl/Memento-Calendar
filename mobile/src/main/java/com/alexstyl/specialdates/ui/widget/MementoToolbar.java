@@ -24,7 +24,7 @@ public class MementoToolbar extends Toolbar {
         if (isInEditMode()) {
             return;
         }
-        themer = Themer.get();
+        themer = Themer.get(context);
 
         int toolbarColor = fetchAccentColor(context);
         float toolbarElevation = getToolbarElevation();
