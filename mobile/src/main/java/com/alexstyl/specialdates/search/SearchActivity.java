@@ -66,6 +66,7 @@ public class SearchActivity extends MementoActivity {
 
     private ViewFader fader = new ViewFader();
     private ViewGroup content;
+    private NamedayPreferences namedayPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,10 +106,10 @@ public class SearchActivity extends MementoActivity {
 
         searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
 
-        NamedayPreferences preferences = NamedayPreferences.newInstance(this);
-        setupSearchbarHint(preferences);
+        namedayPreferences = NamedayPreferences.newInstance(this);
+        setupSearchbarHint(namedayPreferences);
 
-        if (preferences.isEnabled()) {
+        if (namedayPreferences.isEnabled()) {
             // we are loading namedays as well
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
             namesAdapter = NameSuggestionsAdapter.newInstance(context());
@@ -224,7 +225,9 @@ public class SearchActivity extends MementoActivity {
 
     private void clearResults() {
         adapter.clearResults();
-        namesAdapter.clearNames();
+        if (namedayPreferences.isEnabled()) {
+            namesAdapter.clearNames();
+        }
     }
 
     private void resetSearchCounter() {
@@ -232,7 +235,9 @@ public class SearchActivity extends MementoActivity {
     }
 
     private void updateNameSuggestions(String text) {
-        namesAdapter.getFilter().filter(text);
+        if (namedayPreferences.isEnabled()) {
+            namesAdapter.getFilter().filter(text);
+        }
     }
 
     private void setupSearchField() {
@@ -243,8 +248,10 @@ public class SearchActivity extends MementoActivity {
         // setting the text to the EditText will trigger the search for the name
         AndroidUtils.requestHideKeyboard(this, searchbar);
         searchbar.setText(name);
-        namesAdapter.clearNames();
         searchbar.clearFocus();
+        if (namedayPreferences.isEnabled()) {
+            namesAdapter.clearNames();
+        }
     }
 
     private final NameSuggestionsAdapter.OnNameSelectedListener onNameSelectedListener = new NameSuggestionsAdapter.OnNameSelectedListener() {
