@@ -26,6 +26,7 @@
     <!-- Activities -->
     <activity
       android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:windowSoftInputMode="adjustPan"
       android:exported="true"
       android:launchMode="singleTop">
 
@@ -67,6 +68,7 @@
     <activity
       android:name="com.alexstyl.specialdates.search.SearchActivity"
       android:exported="false"
+      android:theme="@style/Search.Theme"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
       android:windowSoftInputMode="stateVisible|adjustResize">
       <meta-data
