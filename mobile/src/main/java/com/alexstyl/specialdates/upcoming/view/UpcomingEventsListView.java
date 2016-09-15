@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming.ui;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,6 +11,8 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
+import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsAdapter;
+import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsViewHolder;
 
 import java.util.List;
 
