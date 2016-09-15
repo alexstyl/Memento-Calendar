@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
+
+    defaultConfig {
+        applicationId "com.alexstyl.specialdates"
+        minSdkVersion 21
+        targetSdkVersion 24
+        versionCode androidVersionCode
+        versionName androidVersionName
+    }
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':common')
+    compile 'com.google.android.support:wearable:2.0.0-alpha2'
+    compile 'com.google.android.gms:play-services-wearable:9.4.0'
+}
