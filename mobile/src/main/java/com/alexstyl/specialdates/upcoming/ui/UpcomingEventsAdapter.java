@@ -9,6 +9,7 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.MonthOfYear;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
