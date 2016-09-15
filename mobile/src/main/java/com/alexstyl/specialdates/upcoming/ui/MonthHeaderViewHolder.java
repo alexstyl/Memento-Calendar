@@ -15,7 +15,8 @@ public class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
     private final TextView header;
 
     public static MonthHeaderViewHolder createFor(ViewGroup parent, MonthLabels monthLabels) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_header_month, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.row_header_month, parent, false);
         return new MonthHeaderViewHolder(view, monthLabels);
     }
 
