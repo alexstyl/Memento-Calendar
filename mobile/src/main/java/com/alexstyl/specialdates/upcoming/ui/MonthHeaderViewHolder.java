@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.MonthOfYear;
 
-public class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
+public final class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
     private final MonthLabels monthLabels;
     private final TextView header;
 
