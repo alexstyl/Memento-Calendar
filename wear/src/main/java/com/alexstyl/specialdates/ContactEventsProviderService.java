@@ -23,12 +23,16 @@ import com.google.android.gms.wearable.Wearable;
 import com.novoda.notils.string.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ContactEventsProviderService extends ComplicationProviderService {
 
     private static final String TAG = ContactEventsProviderService.class.getSimpleName();
     private static final int CONTACT_EVENTS_ACTIVITY_REQUEST_CODE = 100;
     private static final int FLAGS = 0;
+    private static final int NO_DATE_AVAILABLE = -1;
+    private static final String NO_DATE_PLACEHOLDER = "-";
 
     private WearCommunicationService wearCommunicationService;
 
@@ -41,7 +45,7 @@ public class ContactEventsProviderService extends ComplicationProviderService {
                 wearCommunicationService.loadDataItems(new WearCommunicationService.Callback() {
                     @Override
                     public void onDataItemsLoaded(DataItem item) {
-                        ComplicationData complicationData = getComplicationDataFrom(item, dataType);
+                        ComplicationData complicationData = createComplicationData(item, dataType);
 
                         if (complicationData != null) {
                             complicationManager.updateComplicationData(complicationId, complicationData);
@@ -50,7 +54,8 @@ public class ContactEventsProviderService extends ComplicationProviderService {
 
                     @Override
                     public void onNoDataItemsAvailable() {
-                        // TODO update empty complication data
+                        ComplicationData emptyComplicationData = createComplicationData(dataType, NO_DATE_AVAILABLE, Collections.<String>emptyList());
+                        complicationManager.updateComplicationData(complicationId, emptyComplicationData);
                     }
                 });
             }
@@ -71,12 +76,19 @@ public class ContactEventsProviderService extends ComplicationProviderService {
         googleApiClient.connect();
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private ComplicationData getComplicationDataFrom(DataItem item, int dataType) {
+    private ComplicationData createComplicationData(DataItem item, int dataType) {
         DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
         long date = dataMap.getLong(SharedConstants.KEY_DATE);
         ArrayList<String> namesList = dataMap.getStringArrayList(SharedConstants.KEY_CONTACTS_NAMES);
 
+        ComplicationData complicationData = createComplicationData(dataType, date, namesList);
+
+        return complicationData;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Nullable
+    private ComplicationData createComplicationData(int dataType, long date, List<String> namesList) {
         ComplicationData complicationData = null;
         switch (dataType) {
             case ComplicationData.TYPE_SHORT_TEXT:
@@ -97,11 +109,13 @@ public class ContactEventsProviderService extends ComplicationProviderService {
             default:
                 Log.w(TAG, "Unexpected complication type " + dataType);
         }
-
         return complicationData;
     }
 
     private CharSequence formatShortDate(long date) {
+        if (date == NO_DATE_AVAILABLE) {
+            return NO_DATE_PLACEHOLDER;
+        }
         return DateUtils.getRelativeTimeSpanString(
                 date,
                 System.currentTimeMillis(),
@@ -111,6 +125,9 @@ public class ContactEventsProviderService extends ComplicationProviderService {
     }
 
     private CharSequence formatLongDate(long date) {
+        if (date == NO_DATE_AVAILABLE) {
+            return NO_DATE_PLACEHOLDER;
+        }
         return DateUtils.getRelativeTimeSpanString(
                 date,
                 System.currentTimeMillis(),
