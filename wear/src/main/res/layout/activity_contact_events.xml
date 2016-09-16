@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context="com.alexstyl.specialdates.ContactEventsActivity"
+  tools:deviceIds="wear_round">
+
+  <LinearLayout
+    android:id="@+id/event_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/date_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawablePadding="8dp"
+      android:drawableTop="@drawable/ic_complication_contact_event"
+      android:fontFamily="sans-serif"
+      android:gravity="center"
+      android:textStyle="italic" />
+
+    <TextView
+      android:id="@+id/names_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:fontFamily="sans-serif"
+      android:gravity="center"
+      android:lineSpacingMultiplier="1.2" />
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/empty_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:text="@string/empty_events"
+    android:visibility="gone" />
+
+</RelativeLayout>

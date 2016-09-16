@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.wear.SharedConstants;
@@ -30,15 +32,22 @@ public class ContactEventsActivity extends Activity {
 
     private static final String TAG = ContactEventsActivity.class.getSimpleName();
 
-    private TextView textView;
+    private TextView dateText;
+    private TextView namesText;
+    private TextView emptyText;
+    private LinearLayout eventContainer;
+
     private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_contact_events);
 
-        textView = (TextView) findViewById(R.id.text);
+        dateText = (TextView) findViewById(R.id.date_text);
+        namesText = (TextView) findViewById(R.id.names_text);
+        emptyText = (TextView) findViewById(R.id.empty_text);
+        eventContainer = (LinearLayout) findViewById(R.id.event_container);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -53,17 +62,7 @@ public class ContactEventsActivity extends Activity {
         public void onConnected(@Nullable Bundle bundle) {
             Wearable.DataApi.addListener(googleApiClient, dataListener);
             WearCommunicationService wearCommunicationService = new WearCommunicationService(googleApiClient);
-            wearCommunicationService.loadDataItems(new WearCommunicationService.Callback() {
-                @Override
-                public void onDataItemsLoaded(DataItem item) {
-                    displayDataItem(item);
-                }
-
-                @Override
-                public void onNoDataItemsAvailable() {
-                    showEmptyItems();
-                }
-            });
+            wearCommunicationService.loadDataItems(itemsLoadedCallback);
         }
 
         @Override
@@ -71,10 +70,6 @@ public class ContactEventsActivity extends Activity {
             Log.d(TAG, "connectionSuspended: " + i);
         }
     };
-
-    private void showEmptyItems() {
-        textView.setText(R.string.empty_events);
-    }
 
     private final GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
         @Override
@@ -90,6 +85,23 @@ public class ContactEventsActivity extends Activity {
             errorDialog.show();
         }
     };
+
+    private WearCommunicationService.Callback itemsLoadedCallback = new WearCommunicationService.Callback() {
+        @Override
+        public void onDataItemsLoaded(DataItem item) {
+            displayDataItem(item);
+        }
+
+        @Override
+        public void onNoDataItemsAvailable() {
+            showEmptyItems();
+        }
+    };
+
+    private void showEmptyItems() {
+        eventContainer.setVisibility(View.GONE);
+        emptyText.setVisibility(View.VISIBLE);
+    }
 
     private final DataApi.DataListener dataListener = new DataApi.DataListener() {
         @Override
@@ -115,7 +127,10 @@ public class ContactEventsActivity extends Activity {
         CharSequence dateString = formatDate(date);
         ArrayList<String> namesList = dataMap.getStringArrayList(SharedConstants.KEY_CONTACTS_NAMES);
 
-        textView.setText(dateString + "\n" + StringUtils.join(namesList, ", "));
+        dateText.setText(dateString);
+        namesText.setText(StringUtils.join(namesList, "\n"));
+        emptyText.setVisibility(View.GONE);
+        eventContainer.setVisibility(View.VISIBLE);
     }
 
     private CharSequence formatDate(long date) {
