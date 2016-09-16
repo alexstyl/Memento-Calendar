@@ -10,15 +10,46 @@
     android:label="@string/localised_app_name"
     android:supportsRtl="true"
     android:theme="@android:style/Theme.DeviceDefault">
+
     <activity
-      android:name=".MainActivity"
+      android:name=".ContactEventsActivity"
       android:label="@string/localised_app_name">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <service
+      android:name=".ContactEventsProviderService"
+      android:icon="@drawable/ic_complication_contact_event"
+      android:label="@string/contact_events_complication_provider_label">
+
+      <intent-filter>
+        <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+        android:value="SHORT_TEXT,LONG_TEXT" />
+
+      <meta-data
+        android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+        android:value="0" />
+
+    </service>
+
+    <service android:name=".DataChangedListenerService">
+      <intent-filter>
+        <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+
+        <data
+          android:host="*"
+          android:pathPrefix="/next-contact-events"
+          android:scheme="wear" />
+      </intent-filter>
+    </service>
+
   </application>
 
 </manifest>
