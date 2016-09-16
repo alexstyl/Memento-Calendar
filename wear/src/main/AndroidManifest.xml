@@ -35,8 +35,19 @@
 
       <meta-data
         android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
-        android:value="3600" />
+        android:value="0" />
 
+    </service>
+
+    <service android:name=".DataChangedListenerService">
+      <intent-filter>
+        <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+
+        <data
+          android:host="*"
+          android:pathPrefix="/next-contact-events"
+          android:scheme="wear" />
+      </intent-filter>
     </service>
 
   </application>
