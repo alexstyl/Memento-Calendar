@@ -8,10 +8,13 @@
 
   <style name="ContactEvents.Label">
     <item name="android:fontFamily">sans-serif</item>
+    <item name="android:gravity">center</item>
   </style>
 
   <style name="ContactEvents.Label.Date">
     <item name="android:textStyle">italic</item>
+    <item name="android:drawableTop">@drawable/ic_complication_contact_event</item>
+    <item name="android:drawablePadding">8dp</item>
   </style>
 
   <style name="ContactEvents.Label.Names">
