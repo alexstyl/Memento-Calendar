@@ -30,7 +30,6 @@ public class ContactEventsProviderService extends ComplicationProviderService {
 
     private static final String TAG = ContactEventsProviderService.class.getSimpleName();
     private static final int CONTACT_EVENTS_ACTIVITY_REQUEST_CODE = 100;
-    private static final int FLAGS = 0;
     private static final int NO_DATE_AVAILABLE = -1;
     private static final String NO_DATE_PLACEHOLDER = "-";
 
@@ -138,7 +137,7 @@ public class ContactEventsProviderService extends ComplicationProviderService {
 
     private PendingIntent createContactEventsActivityIntent() {
         Intent intent = new Intent(this, ContactEventsActivity.class);
-        return PendingIntent.getActivity(this, CONTACT_EVENTS_ACTIVITY_REQUEST_CODE, intent, FLAGS);
+        return PendingIntent.getActivity(this, CONTACT_EVENTS_ACTIVITY_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }
