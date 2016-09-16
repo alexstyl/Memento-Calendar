@@ -7,7 +7,7 @@
   tools:deviceIds="wear_round">
 
   <LinearLayout
-    android:id="@+id/event_container"
+    android:id="@+id/contact_events_event_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
@@ -15,7 +15,7 @@
     android:orientation="vertical">
 
     <TextView
-      android:id="@+id/date_text"
+      android:id="@+id/contact_events_date_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:drawablePadding="8dp"
@@ -25,7 +25,7 @@
       android:textStyle="italic" />
 
     <TextView
-      android:id="@+id/names_text"
+      android:id="@+id/contact_events_names_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
@@ -35,7 +35,7 @@
   </LinearLayout>
 
   <TextView
-    android:id="@+id/empty_text"
+    android:id="@+id/contact_events_empty_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
