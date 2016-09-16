@@ -106,7 +106,8 @@ public class ContactEventsProviderService extends ComplicationProviderService {
                 date,
                 System.currentTimeMillis(),
                 DateUtils.DAY_IN_MILLIS,
-                DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL);
+                DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL
+        );
     }
 
     private CharSequence formatLongDate(long date) {
@@ -114,7 +115,8 @@ public class ContactEventsProviderService extends ComplicationProviderService {
                 date,
                 System.currentTimeMillis(),
                 DateUtils.DAY_IN_MILLIS,
-                0);
+                0
+        );
     }
 
     private PendingIntent createContactEventsActivityIntent() {
