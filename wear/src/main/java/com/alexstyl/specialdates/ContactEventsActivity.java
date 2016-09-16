@@ -44,10 +44,10 @@ public class ContactEventsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_events);
 
-        dateText = (TextView) findViewById(R.id.date_text);
-        namesText = (TextView) findViewById(R.id.names_text);
-        emptyText = (TextView) findViewById(R.id.empty_text);
-        eventContainer = (LinearLayout) findViewById(R.id.event_container);
+        dateText = (TextView) findViewById(R.id.contact_events_date_text);
+        namesText = (TextView) findViewById(R.id.contact_events_names_text);
+        emptyText = (TextView) findViewById(R.id.contact_events_empty_text);
+        eventContainer = (LinearLayout) findViewById(R.id.contact_events_event_container);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
