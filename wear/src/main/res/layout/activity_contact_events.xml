@@ -16,22 +16,20 @@
 
     <TextView
       android:id="@+id/contact_events_date_text"
+      style="@style/ContactEvents.Label.Date"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:drawablePadding="8dp"
       android:drawableTop="@drawable/ic_complication_contact_event"
-      android:fontFamily="sans-serif"
-      android:gravity="center"
-      android:textStyle="italic" />
+      android:gravity="center" />
 
     <TextView
       android:id="@+id/contact_events_names_text"
+      style="@style/ContactEvents.Label.Names"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
-      android:fontFamily="sans-serif"
-      android:gravity="center"
-      android:lineSpacingMultiplier="1.2" />
+      android:gravity="center" />
   </LinearLayout>
 
   <TextView
@@ -40,7 +38,7 @@
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:gravity="center"
-    android:text="@string/empty_events"
+    android:text="@string/contact_events_empty"
     android:visibility="gone" />
 
 </RelativeLayout>

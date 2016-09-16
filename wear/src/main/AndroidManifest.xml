@@ -23,7 +23,7 @@
     <service
       android:name=".ContactEventsProviderService"
       android:icon="@drawable/ic_complication_contact_event"
-      android:label="@string/complications_provider_contact_events">
+      android:label="@string/contact_events_complication_provider_label">
 
       <intent-filter>
         <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />

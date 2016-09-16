@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="contact_events_empty">@string/No_contacts_events_found</string>
+  <string name="contact_events_complication_provider_label">@string/Contact_events</string>
+
+  <style name="ContactEvents" />
+
+  <style name="ContactEvents.Label">
+    <item name="android:fontFamily">sans-serif</item>
+  </style>
+
+  <style name="ContactEvents.Label.Date">
+    <item name="android:textStyle">italic</item>
+  </style>
+
+  <style name="ContactEvents.Label.Names">
+    <item name="android:lineSpacingMultiplier">1.2</item>
+  </style>
+
+</resources>
