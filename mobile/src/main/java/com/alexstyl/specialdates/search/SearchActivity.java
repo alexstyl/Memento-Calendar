@@ -30,12 +30,11 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
-import com.alexstyl.specialdates.ui.base.MementoActivity;
+import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.ContactPermissionRequest;
 import com.novoda.notils.caster.Views;
@@ -43,7 +42,7 @@ import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 
 import static android.view.View.GONE;
-import static com.alexstyl.specialdates.upcoming.ContactPermissionRequest.*;
+import static com.alexstyl.specialdates.upcoming.ContactPermissionRequest.PermissionCallbacks;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -52,7 +51,7 @@ import static com.alexstyl.specialdates.upcoming.ContactPermissionRequest.*;
  * suggestion bar on top of the keyboard is going to be given to the user with names.
  * <p>Created by alexstyl on 20/04/15.</p>
  */
-public class SearchActivity extends MementoActivity {
+public class SearchActivity extends ThemedActivity {
 
     private static final String KEY_QUERY = "alexstyl:key_query";
     private static final int ID_CONTACTS = 31;
@@ -75,8 +74,6 @@ public class SearchActivity extends MementoActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Themer themer = Themer.get(this);
-        themer.initialiseActivity(this);
         setContentView(R.layout.activity_search);
         Firebase.get(this).trackScreen(Screen.SEARCH);
         searchbar = Views.findById(this, R.id.search_searchbar);
