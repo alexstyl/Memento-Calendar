@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.debug;
+package com.alexstyl.specialdates.dailyreminder;
 
 import android.content.Context;
 import android.support.v4.util.Pair;

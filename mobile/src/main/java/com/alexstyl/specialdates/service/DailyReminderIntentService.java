@@ -9,7 +9,7 @@ import android.content.Intent;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.debug.DailyReminderDebugPreferences;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.events.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
