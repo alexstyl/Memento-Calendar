@@ -1,14 +1,20 @@
 package com.alexstyl.specialdates.settings;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -20,16 +26,19 @@ import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
+import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
 import com.alexstyl.specialdates.util.Utils;
 
 import java.util.Calendar;
 
-public class DailyReminderFragment extends MyPreferenceFragment {
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
+public class DailyReminderFragment extends MementoPreferenceFragment {
+
+    private static final int EXTERNAL_STORAGE_REQUEST_CODE = 15;
     private CheckBoxPreference enablePreference;
-    private Preference ringtonePreference;
-    private Preference vibratePreference;
+    private RingtonePreference ringtonePreference;
     private TimePreference timePreference;
     private Analytics analytics;
 
@@ -40,9 +49,7 @@ public class DailyReminderFragment extends MyPreferenceFragment {
         setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
 
-        // the switch is controlled by the activity
-
-        enablePreference = (CheckBoxPreference) findPreference(getString(R.string.key_daily_reminder));
+        enablePreference = findPreference(R.string.key_daily_reminder);
         enablePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -61,7 +68,24 @@ public class DailyReminderFragment extends MyPreferenceFragment {
 
         });
 
-        ringtonePreference = findPreference(getString(R.string.key_daily_reminder_ringtone));
+        ringtonePreference = findPreference(R.string.key_daily_reminder_ringtone);
+        ringtonePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (isExternalStoragePermissionPressent()) {
+                    // the permission exists. Let the system handle the event
+                    return false;
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_REQUEST_CODE);
+                    return true;
+                }
+            }
+
+            public boolean isExternalStoragePermissionPressent() {
+                return ActivityCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            }
+        });
         ringtonePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
             @Override
@@ -71,7 +95,7 @@ public class DailyReminderFragment extends MyPreferenceFragment {
             }
         });
 
-        timePreference = (TimePreference) findPreference(getString(R.string.key_daily_reminder_time));
+        timePreference = findPreference(R.string.key_daily_reminder_time);
         timePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
             @Override
@@ -84,14 +108,16 @@ public class DailyReminderFragment extends MyPreferenceFragment {
             }
         });
 
-        vibratePreference = findPreference(getString(R.string.key_daily_reminder_vibrate_enabled));
+        hideVibratorSettingIfNotPresent();
+    }
 
+    private void hideVibratorSettingIfNotPresent() {
+        Preference vibratePreference = findPreference(getString(R.string.key_daily_reminder_vibrate_enabled));
         if (!Utils.hasVibrator(getActivity())) {
             // hide the vibrator preference if the device doesn't support
             // vibration
             getPreferenceScreen().removePreference(vibratePreference);
         }
-
     }
 
     @Override
@@ -150,6 +176,14 @@ public class DailyReminderFragment extends MyPreferenceFragment {
             return DateFormat.format(DEFAULT_FORMAT_12_HOUR, cal);
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EXTERNAL_STORAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            ringtonePreference.onClick();
+        }
     }
 
     private void updateRingtoneSummary(String uri) {
