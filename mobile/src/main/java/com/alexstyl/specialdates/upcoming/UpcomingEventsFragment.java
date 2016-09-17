@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
+import com.alexstyl.specialdates.upcoming.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
 import com.alexstyl.specialdates.views.FabPaddingSetter;
@@ -105,7 +106,7 @@ public class UpcomingEventsFragment extends MementoFragment {
 
         @Override
         public void onPermissionDenied() {
-            getActivity().finish();
+            getActivity().finishAffinity();
         }
     };
 
