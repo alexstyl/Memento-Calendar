@@ -12,7 +12,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 public class ContactPermissionRequest {
 
-    private static final int CONTACT_REQUEST = 1990;
+    public static final int CONTACT_REQUEST = 1990;
 
     private final Context context;
     private final Navigator navigator;
