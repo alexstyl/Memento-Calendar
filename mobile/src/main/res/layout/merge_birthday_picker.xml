@@ -10,19 +10,19 @@
     android:layout_gravity="center_horizontal"
     android:orientation="horizontal">
 
-    <net.simonvt.numberpicker.NumberPicker
+    <NumberPicker
       android:id="@+id/day_picker"
       style="@style/BirthdayPicker.Picker"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content" />
 
-    <net.simonvt.numberpicker.NumberPicker
+    <NumberPicker
       android:id="@+id/month_picker"
       style="@style/BirthdayPicker.Picker"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content" />
 
-    <net.simonvt.numberpicker.NumberPicker
+    <NumberPicker
       android:id="@+id/year_picker"
       style="@style/BirthdayPicker.Picker"
       android:layout_width="wrap_content"
