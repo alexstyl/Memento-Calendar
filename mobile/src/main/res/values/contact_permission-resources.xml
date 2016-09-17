@@ -8,8 +8,7 @@
 
   <dimen name="contact_permission_arrow_horizontal_margin">12dp</dimen>
 
-  <style name="ContactPermission"
-    parent="CardAction">
+  <style name="ContactPermission.GrantPermission" parent="CardAction">
 
   </style>
 </resources>

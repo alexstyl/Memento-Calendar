@@ -28,6 +28,13 @@ public class ContactPermissionActivity extends ThemedActivity {
         grantButton.setOnClickListener(onGrantPermissionButtonClicked);
     }
 
+    private final View.OnClickListener onGrantPermissionButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            requestContactPermission();
+        }
+    };
+
     private void requestContactPermission() {
         requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT_PERMISSION);
     }
@@ -40,11 +47,4 @@ public class ContactPermissionActivity extends ThemedActivity {
             finish();
         }
     }
-
-    private final View.OnClickListener onGrantPermissionButtonClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            requestContactPermission();
-        }
-    };
 }
