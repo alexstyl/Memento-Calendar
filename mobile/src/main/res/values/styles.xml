@@ -116,7 +116,6 @@
 
   <style name="Theme.Dayslight.DialogNoTitle"
     parent="Theme.AppCompat.Light.Dialog.Alert">
-    <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
     <item name="android:windowNoTitle">true</item>
     <item name="windowNoTitle">true</item>
   </style>
