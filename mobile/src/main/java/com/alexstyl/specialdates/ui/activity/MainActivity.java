@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +9,8 @@ import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
@@ -50,7 +49,7 @@ public class MainActivity extends ThemedActivity {
         setContentView(R.layout.activity_main);
 
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        Firebase analytics = Firebase.get(this);
+        Analytics analytics  = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
         navigator = new Navigator(this, analytics);
