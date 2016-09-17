@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
-public final class PermissionChecker {
+public class PermissionChecker {
     private final Context context;
 
     public PermissionChecker(Context context) {
