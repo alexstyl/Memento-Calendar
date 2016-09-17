@@ -12,7 +12,7 @@
   <color name="upcoming_widget_light_textcolor">@color/card_text</color>
   <color name="upcoming_widget_light_background">#FFFFFFFF</color>
   <color name="upcoming_widget_dark_textcolor">@android:color/white</color>
-  <color name="upcoming_widget_dark_background">#FF424242</color>
+  <color name="upcoming_widget_dark_background">@android:color/black</color>
 
 
   <style name="UpcomingWidget" />
