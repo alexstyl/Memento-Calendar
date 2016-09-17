@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.ui.CheatsSheat;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
@@ -42,7 +42,7 @@ public class AboutActivity extends ThemedActivity {
 
         SimpleChromeCustomTabs.initialize(this);
 
-        navigator = new Navigator(this, Firebase.get(this));
+        navigator = new Navigator(this, AnalyticsProvider.getAnalytics(this));
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
 
         setSupportActionBar(toolbar);

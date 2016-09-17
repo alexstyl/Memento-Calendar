@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -25,7 +25,7 @@ public class RateDialog extends MementoActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_dialog);
         askForSupport = new AskForSupport(context());
-        navigator = new Navigator(this, Firebase.get(this));
+        navigator = new Navigator(this, AnalyticsProvider.getAnalytics(this));
         Views.findById(this, R.id.support_rate_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
