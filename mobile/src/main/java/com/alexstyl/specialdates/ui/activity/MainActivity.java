@@ -1,7 +1,9 @@
 package com.alexstyl.specialdates.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +67,6 @@ public class MainActivity extends ThemedActivity {
         FloatingActionButton addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
         addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
         askForSupport = new AskForSupport(this);
-
         SearchHintCreator hintCreator = new SearchHintCreator(getResources(), NamedayPreferences.newInstance(this));
         setTitle(hintCreator.createHint());
     }

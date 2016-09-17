@@ -61,7 +61,7 @@ public final class DateDisplayStringCreator {
 
     public String fullyFormattedBirthday(Birthday birthday) {
         DayDate dayDate = DayDate.newInstance(birthday.getDayOfMonth(), birthday.getMonth(), birthday.getYear());
-        Context appContext = MementoApplication.getAppContext();
+        Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 
@@ -76,7 +76,7 @@ public final class DateDisplayStringCreator {
 
     public String fullyFormattedDate(Date date) {
         DayDate dayDate = DayDate.newInstance(date.getDayOfMonth(), date.getMonth(), date.getYear());
-        Context appContext = MementoApplication.getAppContext();
+        Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 

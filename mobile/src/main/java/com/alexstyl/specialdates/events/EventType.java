@@ -12,11 +12,17 @@ public enum EventType {
     BIRTHDAY(EventColumns.TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red),
     NAMEDAY(EventColumns.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue);
 
-    private static final Map<Integer, EventType> map;
-
     private final int eventTypeId;
     private final int eventNameRes;
     private final int eventColorRes;
+
+    EventType(@EventTypeId int eventTypeId, @StringRes int nameResId, @ColorRes int colorResId) {
+        this.eventTypeId = eventTypeId;
+        this.eventNameRes = nameResId;
+        this.eventColorRes = colorResId;
+    }
+
+    private static final Map<Integer, EventType> map;
 
     static {
         map = new HashMap<>();
@@ -30,12 +36,6 @@ public enum EventType {
             return map.get(eventTypeId);
         }
         throw new IllegalArgumentException("No event type with eventTypeId " + eventTypeId);
-    }
-
-    EventType(@EventTypeId int eventTypeId, @StringRes int nameResId, @ColorRes int colorResId) {
-        this.eventTypeId = eventTypeId;
-        this.eventNameRes = nameResId;
-        this.eventColorRes = colorResId;
     }
 
     @StringRes

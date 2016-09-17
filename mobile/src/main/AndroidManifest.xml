@@ -26,9 +26,9 @@
     <!-- Activities -->
     <activity
       android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
-      android:windowSoftInputMode="adjustPan"
       android:exported="true"
-      android:launchMode="singleTop">
+      android:launchMode="singleTop"
+      android:windowSoftInputMode="adjustPan">
 
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -68,8 +68,8 @@
     <activity
       android:name="com.alexstyl.specialdates.search.SearchActivity"
       android:exported="false"
-      android:theme="@style/Search.Theme"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:theme="@style/Search.Theme"
       android:windowSoftInputMode="stateVisible|adjustResize">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
@@ -131,6 +131,8 @@
       </intent-filter>
     </activity>
 
+
+    <activity android:name=".permissions.ContactPermissionActivity" />
     <!-- Services -->
     <service
       android:name="com.alexstyl.specialdates.service.DailyReminderIntentService"

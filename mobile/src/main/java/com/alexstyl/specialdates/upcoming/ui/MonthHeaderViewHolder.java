@@ -10,12 +10,13 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.MonthOfYear;
 
-public class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
+public final class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
     private final MonthLabels monthLabels;
     private final TextView header;
 
     public static MonthHeaderViewHolder createFor(ViewGroup parent, MonthLabels monthLabels) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_header_month, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.row_header_month, parent, false);
         return new MonthHeaderViewHolder(view, monthLabels);
     }
 
