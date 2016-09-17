@@ -31,19 +31,20 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
-import com.alexstyl.specialdates.upcoming.ContactPermissionRequest;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 
 import static android.view.View.GONE;
-import static com.alexstyl.specialdates.upcoming.ContactPermissionRequest.PermissionCallbacks;
+import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -84,7 +85,9 @@ public class SearchActivity extends ThemedActivity {
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
-        permissions = new ContactPermissionRequest(this, new Navigator(this, analytics), permissionCallbacks);
+        PermissionChecker checker = new PermissionChecker(this);
+        Navigator navigator = new Navigator(this, analytics);
+        permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
 
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);
