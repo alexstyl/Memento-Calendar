@@ -9,7 +9,15 @@
     <item name="android:windowLightStatusBar"
       tools:targetApi="m">?attr/useDarkIcons
     </item>
+    <item name="primaryTextColor">@android:color/black</item>
+    <item name="primaryTextColorInverse">@android:color/white</item>
   </style>
+
+
+  <attr name="primaryTextColor"
+    format="reference|color" />
+  <attr name="primaryTextColorInverse"
+    format="reference|color" />
 
   <style name="Theme.Memento.Dark"
     parent="@style/Theme.AppCompat.NoActionBar">
@@ -20,6 +28,8 @@
   <style name="Theme.Memento.Light.DarkToolbar">
     <item name="useDarkIcons">false</item>
     <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <item name="primaryTextColor">@android:color/white</item>
+    <item name="primaryTextColorInverse">@android:color/black</item>
   </style>
 
   <style name="Theme.Memento.Dark.DarkToolbar">

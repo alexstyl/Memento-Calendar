@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="contact_permission_message_request">Memento requires your permission to read your contacts in order to display when they celebrate.</string>
+  <string name="contact_permission_fact">Fact: Some people give free cake to those who wish them Happy Birthday. Use Memento to keep track of potential cake givers.</string>
+  <string name="contact_permission_button_label">Grant permission</string>
+
+
+  <dimen name="contact_permission_arrow_horizontal_margin">12dp</dimen>
+
+  <style name="ContactPermission.GrantPermission" parent="CardAction">
+
+  </style>
+</resources>

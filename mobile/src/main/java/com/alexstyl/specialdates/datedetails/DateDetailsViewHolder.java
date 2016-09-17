@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
@@ -54,22 +52,8 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
     private void updateEventLabel(ContactEvent event) {
         eventLabel.setTextColor(resources.getColor(event.getType().getColorRes()));
         eventLabel.setVisibility(View.VISIBLE);
-        String label = getLabelFor(event);
+        String label = event.getLabel(resources);
         eventLabel.setText(label);
-    }
-
-    private String getLabelFor(ContactEvent event) {
-        EventType eventType = event.getType();
-        if (eventType == EventType.BIRTHDAY) {
-            Birthday birthday = event.getContact().getBirthday();
-            if (birthday.includesYear()) {
-                int age = birthday.getAgeOnYear(event.getYear());
-                if (age > 0) {
-                    return resources.getString(R.string.turns_age, age);
-                }
-            }
-        }
-        return resources.getString(eventType.nameRes());
     }
 
     abstract void clearActions();

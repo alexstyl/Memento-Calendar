@@ -22,7 +22,6 @@ import com.alexstyl.specialdates.events.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
-import com.alexstyl.specialdates.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -230,14 +229,12 @@ public class NamedayDatabaseRefresher {
         };
 
         @SuppressLint("InlinedApi")
-        public final static String SORT_ORDER =
-                Utils.hasHoneycomb() ? ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
-                        : ContactsContract.Contacts.DISPLAY_NAME;
+        public final static String SORT_ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
         @SuppressLint("InlinedApi")
         public static final String[] PROJECTION = {
                 ContactsContract.Data.CONTACT_ID,
-                Utils.hasHoneycomb() ? ContactsContract.Contacts.DISPLAY_NAME_PRIMARY : ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
         };
 
         public static final int ID = 0;

@@ -1,28 +1,33 @@
 package com.alexstyl.specialdates.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.about.AboutActivity;
-import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.settings.MainPreferenceActivity;
+import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.SupportDonateDialog;
-import com.alexstyl.specialdates.ui.ThemeReapplier;
+import com.alexstyl.specialdates.theming.ThemingPreferences;
+import com.alexstyl.specialdates.ui.ThemeMonitor;
+import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
+import com.alexstyl.specialdates.upcoming.ExposedSearchToolbar;
+import com.alexstyl.specialdates.upcoming.SearchTransitioner;
 import com.alexstyl.specialdates.util.Notifier;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.meta.AndroidUtils;
+
+import static android.view.View.OnClickListener;
 
 /*
  * The activity was first launched with MainActivity being in package.ui.activity
@@ -31,49 +36,49 @@ import com.novoda.notils.caster.Views;
 public class MainActivity extends ThemedActivity {
 
     private Notifier notifier;
-    private UpcomingEventsFragment upcomingEventsFragment;
     private AskForSupport askForSupport;
-    private ThemeReapplier reapplier;
-    private Analytics analytics;
+    private ThemeMonitor themeMonitor;
+
+    private Navigator navigator;
+
+    private SearchTransitioner searchTransitioner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        reapplier = new ThemeReapplier(this);
 
-        analytics = Firebase.get(this);
+        themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
+        Analytics analytics  = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
+        navigator = new Navigator(this, analytics);
+
+        ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
+        toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
+
+        ViewGroup activityContent = Views.findById(this, R.id.main_content);
+        searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
 
         notifier = Notifier.newInstance(this);
 
-        FloatingActionButton floatingActionButton = Views.findById(this, R.id.fab_add);
-        floatingActionButton.setOnClickListener(startAddBirthdayOnClick);
+        FloatingActionButton addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
+        addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
         askForSupport = new AskForSupport(this);
-        upcomingEventsFragment = (UpcomingEventsFragment) getSupportFragmentManager().findFragmentById(R.id.upcoming);
+        SearchHintCreator hintCreator = new SearchHintCreator(getResources(), NamedayPreferences.newInstance(this));
+        setTitle(hintCreator.createHint());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (reapplier.hasThemeChanged()) {
+        if (themeMonitor.hasThemeChanged()) {
             reapplyTheme();
         } else if (askForSupport.shouldAskForRating()) {
             askForSupport.askForRatingFromUser(this);
         }
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-    }
-
-    private void startAddBirthdayActivity() {
-        Intent intent = new Intent(this, AddBirthdayActivity.class);
-        startActivity(intent);
+        searchTransitioner.onActivityResumed();
     }
 
     @Override
@@ -89,37 +94,22 @@ public class MainActivity extends ThemedActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                openSettings();
+                navigator.toSettings();
                 break;
             case R.id.action_about:
-                openAboutScreen();
+                navigator.toAbout();
                 break;
             case R.id.action_donate:
-                openDonateDialog();
+                navigator.toDonateDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void openDonateDialog() {
-        analytics.trackScreen(Screen.DONATE);
-        SupportDonateDialog.displayDialog(this);
-    }
-
-    private void openAboutScreen() {
-        analytics.trackScreen(Screen.ABOUT);
-        startActivity(new Intent(this, AboutActivity.class));
-
-    }
-
-    private void openSettings() {
-        analytics.trackScreen(Screen.SETTINGS);
-        startActivity(new Intent(this, MainPreferenceActivity.class));
-    }
-
     @Override
     public boolean onSearchRequested() {
-        return upcomingEventsFragment.onSearchRequested();
+        searchTransitioner.transitionToSearch();
+        return true;
     }
 
     @Override
@@ -136,10 +126,19 @@ public class MainActivity extends ThemedActivity {
         }
     }
 
-    private final View.OnClickListener startAddBirthdayOnClick = new View.OnClickListener() {
+    private final OnClickListener onToolbarClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            startAddBirthdayActivity();
+            AndroidUtils.toggleKeyboard(v.getContext());
+            onSearchRequested();
+        }
+
+    };
+
+    private final OnClickListener startAddBirthdayOnClick = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            navigator.toAddBirthday();
         }
     };
 }

@@ -15,13 +15,4 @@
     android:key="@string/key_debug_start_calendar"
     android:title="Start Calendar Intent" />
 
-  <Preference
-    android:key="@string/key_debug_animation_playground"
-    android:title="Animation Playground">
-    <intent
-      android:action="android.intent.action.VIEW"
-      android:targetClass="com.alexstyl.specialdates.birthdaycard.AnimationPlayground"
-      android:targetPackage="com.alexstyl.specialdates" />
-  </Preference>
-
 </PreferenceScreen>

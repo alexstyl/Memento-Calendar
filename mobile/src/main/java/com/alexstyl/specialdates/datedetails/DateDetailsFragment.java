@@ -27,7 +27,7 @@ import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -39,6 +39,7 @@ import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
+import com.alexstyl.specialdates.upcoming.ContactPermissionRequest;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
 
     private Navigator navigator;
+    private ContactPermissionRequest permissions;
 
     public static Fragment newInstance(int year, int month, int dayofMonth) {
         Fragment fragment = new DateDetailsFragment();
@@ -149,15 +151,38 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(LOADER_ID_EVENTS, null, this);
+        if (permissions.permissionIsPresent()) {
+            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, this);
+        } else {
+            permissions.requestForPermission();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigator = new Navigator(getActivity());
-        analytics = Firebase.get(getActivity());
+        analytics = AnalyticsProvider.getAnalytics(getActivity());
+        navigator = new Navigator(getActivity(), analytics);
+        permissions = new ContactPermissionRequest(getActivity(), navigator, permissionCallbacks);
     }
+
+    private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
+        @Override
+        public void onPermissionGranted() {
+            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, DateDetailsFragment.this);
+        }
+
+        @Override
+        public void onPermissionDenied() {
+            getActivity().finishAffinity();
+        }
+    };
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
