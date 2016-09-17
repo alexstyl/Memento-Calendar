@@ -1,11 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +33,6 @@ import java.util.List;
 public class UpcomingEventsFragment extends MementoFragment {
 
     private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
-    private static final int CONTACT_REQUEST = 1990;
 
     private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
@@ -48,6 +43,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     private GoToTodayEnabler goToTodayEnabler;
     private Analytics firebase;
     private Navigator navigator;
+    private ContactPermissionRequest permissions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +55,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         monitor.initialise();
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
+        permissions = new ContactPermissionRequest(getActivity(), navigator, callbacks);
     }
 
     @Override
@@ -100,31 +97,23 @@ public class UpcomingEventsFragment extends MementoFragment {
         upcomingEventsListView.scrollToToday(true);
     }
 
+    private final PermissionCallbacks callbacks = new PermissionCallbacks() {
+        @Override
+        public void onPermissionGranted() {
+            startLoadingData();
+        }
+
+        @Override
+        public void onPermissionDenied() {
+            getActivity().finish();
+        }
+    };
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            showLoading();
-            refreshData();
-        } else {
-            navigator.toContactPermissionRequired(CONTACT_REQUEST);
-        }
-    }
-
-    private void refreshData() {
-        upcomingEventsProvider.reloadData();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CONTACT_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                showLoading();
-                refreshData();
-            } else {
-                getActivity().finish();
-            }
+        if (permissions.permissionIsPresent()) {
+            startLoadingData();
         }
     }
 
@@ -132,15 +121,36 @@ public class UpcomingEventsFragment extends MementoFragment {
     public void onResume() {
         super.onResume();
         checkIfUserSettingsChanged();
+        if (permissions.permissionIsPresent()) {
+            showData();
+        } else {
+            permissions.requestForPermission();
+        }
     }
 
     private void checkIfUserSettingsChanged() {
         if (monitor.dataWasUpdated()) {
             mustScrollToPosition = true;
-            showLoading();
-            refreshData();
+            startLoadingData();
             monitor.refreshData();
         }
+    }
+
+    private void startLoadingData() {
+        showLoading();
+        upcomingEventsProvider.reloadData();
+    }
+
+    private void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+        upcomingEventsListView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
     }
 
     private void hideLoading() {
@@ -156,12 +166,6 @@ public class UpcomingEventsFragment extends MementoFragment {
             upcomingEventsListView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-        upcomingEventsListView.setVisibility(View.GONE);
-        emptyView.setVisibility(View.GONE);
     }
 
     private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
