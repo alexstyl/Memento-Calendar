@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Firebase;
 import com.alexstyl.specialdates.analytics.Screen;
@@ -35,10 +37,13 @@ import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
+import com.alexstyl.specialdates.upcoming.ContactPermissionRequest;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 
 import static android.view.View.GONE;
+import static com.alexstyl.specialdates.upcoming.ContactPermissionRequest.*;
 
 /**
  * A fragment in which the user can search for namedays and their contact's birthdays.
@@ -65,6 +70,7 @@ public class SearchActivity extends MementoActivity {
     private ViewFader fader = new ViewFader();
     private ViewGroup content;
     private NamedayPreferences namedayPreferences;
+    private ContactPermissionRequest permissions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,7 @@ public class SearchActivity extends MementoActivity {
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
+        permissions = new ContactPermissionRequest(this, new Navigator(this, Firebase.get(this)), permissionCallbacks);
 
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);
@@ -138,6 +145,16 @@ public class SearchActivity extends MementoActivity {
             });
         }
 
+        if (!permissions.permissionIsPresent()) {
+            Log.d("requesting permission");
+            permissions.requestForPermission();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setupSearchbarHint(NamedayPreferences preferences) {
@@ -343,6 +360,25 @@ public class SearchActivity extends MementoActivity {
                 finish();
                 return true;
             }
+        }
+    };
+
+    private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
+        @Override
+        public void onPermissionGranted() {
+            // do nothing.
+            Log.d("permission granted");
+        }
+
+        @Override
+        public void onPermissionDenied() {
+            Log.d("permission denied");
+            namesSuggestionsView.post(new Runnable() {
+                @Override
+                public void run() {
+                    finishAffinity();
+                }
+            });
         }
     };
 

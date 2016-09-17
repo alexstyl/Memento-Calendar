@@ -42,10 +42,10 @@ public class ContactPermissionRequest {
         }
     }
 
+    public interface PermissionCallbacks {
+        void onPermissionGranted();
+
+        void onPermissionDenied();
+    }
 }
 
-interface PermissionCallbacks {
-    void onPermissionGranted();
-
-    void onPermissionDenied();
-}
