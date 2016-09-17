@@ -1,10 +1,7 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.permissions;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
 
 import com.alexstyl.specialdates.Navigator;
 
@@ -14,18 +11,18 @@ public class ContactPermissionRequest {
 
     public static final int CONTACT_REQUEST = 1990;
 
-    private final Context context;
     private final Navigator navigator;
     private final PermissionCallbacks callbacks;
+    private final PermissionChecker checker;
 
-    public ContactPermissionRequest(Context context, Navigator navigator, PermissionCallbacks callbacks) {
-        this.context = context;
+    public ContactPermissionRequest(Navigator navigator, PermissionChecker checker, PermissionCallbacks callbacks) {
         this.navigator = navigator;
+        this.checker = checker;
         this.callbacks = callbacks;
     }
 
     public boolean permissionIsPresent() {
-        return ActivityCompat.checkSelfPermission(context, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        return checker.hasPermission(READ_CONTACTS);
     }
 
     public void requestForPermission() {
