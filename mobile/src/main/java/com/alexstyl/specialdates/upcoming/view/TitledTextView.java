@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming.ui;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

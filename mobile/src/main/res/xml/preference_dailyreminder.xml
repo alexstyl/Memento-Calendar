@@ -5,7 +5,7 @@
     android:key="@string/key_daily_reminder"
     android:title="@string/enable" />
 
-  <RingtonePreference
+  <com.alexstyl.specialdates.settings.RingtonePreference
     android:key="@string/key_daily_reminder_ringtone"
     android:ringtoneType="notification"
     android:title="@string/ringtone" />
