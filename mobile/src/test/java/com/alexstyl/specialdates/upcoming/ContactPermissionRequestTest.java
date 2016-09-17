@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.alexstyl.specialdates.Navigator;
-import com.alexstyl.specialdates.upcoming.ContactPermissionRequest.PermissionCallbacks;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class ContactPermissionRequestTest {
 
     @Before
     public void setUp() {
-        permissions = new ContactPermissionRequest(mockContext, mockNavigator, mockCallback);
+        permissions = new ContactPermissionRequest(mockNavigator, checker, mockCallback);
         Mockito.doNothing().when(mockNavigator).toContactPermissionRequired(CODE);
     }
 

@@ -9,6 +9,15 @@
     <Preference
       android:key="@string/key_debug_daily_reminder"
       android:title="Trigger Daily Reminder" />
+
+    <CheckBoxPreference
+      android:key="@string/key_debug_daily_reminder_date_enable"
+      android:title="Fake date" />
+
+    <Preference
+      android:dependency="@string/key_debug_daily_reminder_date_enable"
+      android:key="@string/key_debug_daily_reminder_date"
+      android:title="Daily Reminder Date" />
   </PreferenceScreen>
 
   <PreferenceScreen

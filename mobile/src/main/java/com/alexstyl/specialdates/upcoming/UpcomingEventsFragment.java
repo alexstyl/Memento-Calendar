@@ -22,8 +22,10 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.alexstyl.specialdates.upcoming.ContactPermissionRequest.PermissionCallbacks;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
 import com.alexstyl.specialdates.views.FabPaddingSetter;
@@ -56,7 +58,8 @@ public class UpcomingEventsFragment extends MementoFragment {
         monitor.initialise();
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
-        permissions = new ContactPermissionRequest(getActivity(), navigator, callbacks);
+        PermissionChecker checker = new PermissionChecker(getActivity());
+        permissions = new ContactPermissionRequest(navigator, checker, callbacks);
     }
 
     @Override
