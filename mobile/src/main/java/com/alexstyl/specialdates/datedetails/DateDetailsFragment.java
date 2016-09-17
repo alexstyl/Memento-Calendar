@@ -34,12 +34,13 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
-import com.alexstyl.specialdates.upcoming.ContactPermissionRequest;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
@@ -101,14 +102,12 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
                 i++;
             }
 
-            popup.setOnMenuItemClickListener(
-                    new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            return actions.get(menuItem.getItemId()).fire(getActivity());
-                        }
-                    }
-            );
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    return actions.get(menuItem.getItemId()).fire(getActivity());
+                }
+            });
 
             popup.show();
         }
@@ -119,18 +118,16 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
             // display the Loading progress
             if (action.hasSlowStart()) {
                 Handler handler = new Handler();
-                handler.postDelayed(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (isVisible() && isResumed()) {
-                                    // if after a second the activity is still showing, show the loading dialog
-                                    ProgressFragmentDialog dialog = ProgressFragmentDialog.newInstance(getString(R.string.loading), true);
-                                    dialog.show(getFragmentManager(), FM_TAG_ACTIONS);
-                                }
-                            }
-                        }, DateUtils.SECOND_IN_MILLIS
-                );
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isVisible() && isResumed()) {
+                            // if after a second the activity is still showing, show the loading dialog
+                            ProgressFragmentDialog dialog = ProgressFragmentDialog.newInstance(getString(R.string.loading), true);
+                            dialog.show(getFragmentManager(), FM_TAG_ACTIONS);
+                        }
+                    }
+                }, DateUtils.SECOND_IN_MILLIS);
             }
             action.fire(getActivity());
             ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getName());
@@ -169,7 +166,8 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
         super.onCreate(savedInstanceState);
         analytics = AnalyticsProvider.getAnalytics(getActivity());
         navigator = new Navigator(getActivity(), analytics);
-        permissions = new ContactPermissionRequest(getActivity(), navigator, permissionCallbacks);
+        PermissionChecker checker = new PermissionChecker(getActivity());
+        permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
     }
 
     private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
