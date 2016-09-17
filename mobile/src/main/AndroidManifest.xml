@@ -69,7 +69,6 @@
       android:name="com.alexstyl.specialdates.search.SearchActivity"
       android:exported="false"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
-      android:theme="@style/Search.Theme"
       android:windowSoftInputMode="stateVisible|adjustResize">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
