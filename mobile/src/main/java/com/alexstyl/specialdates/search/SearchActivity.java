@@ -19,7 +19,8 @@ import android.view.ViewTreeObserver;
 
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DayDate;
@@ -75,14 +76,15 @@ public class SearchActivity extends ThemedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Firebase.get(this).trackScreen(Screen.SEARCH);
+        Analytics analytics = AnalyticsProvider.getAnalytics(this);
+        analytics.trackScreen(Screen.SEARCH);
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
         content = Views.findById(this, R.id.search_content);
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
-        permissions = new ContactPermissionRequest(this, new Navigator(this, Firebase.get(this)), permissionCallbacks);
+        permissions = new ContactPermissionRequest(this, new Navigator(this, analytics), permissionCallbacks);
 
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_QUERY);

@@ -24,7 +24,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
@@ -45,7 +45,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = Firebase.get(getActivity());
+        analytics = AnalyticsProvider.getAnalytics(getActivity());
         setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
 
