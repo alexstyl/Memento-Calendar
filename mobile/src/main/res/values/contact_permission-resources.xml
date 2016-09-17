@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="contact_permission_message_request">Memento requires your permission to read your contacts in order to display when they celebrate. High chances you get cake if you share your wishes with them!</string>
+  <style name="ContactPermission"
+    parent="CardAction">
+
+  </style>
+</resources>

@@ -65,7 +65,9 @@
 
   <style name="CardAction">
     <item name="android:background">@drawable/selectable_background_dayslight</item>
+
     <item name="android:textSize">@dimen/card_text_size_action</item>
+    <item name="android:textColor">?attr/colorAccent</item>
 
   </style>
 

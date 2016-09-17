@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
+import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.support.SupportDonateDialog;
@@ -20,10 +22,10 @@ public class Navigator {
 
     public static final Uri GOOGLE_PLUS_COMMUNITY = Uri.parse("https://plus.google.com/u/0/communities/112144353599130693487");
 
-    private final Context context;
+    private final Activity context;
     private final Analytics analytics;
 
-    public Navigator(Context context, Analytics analytics) {
+    public Navigator(Activity context, Analytics analytics) {
         this.context = context;
         this.analytics = analytics;
     }
@@ -119,5 +121,11 @@ public class Navigator {
         Intent intent = new Intent(context, MainPreferenceActivity.class);
         context.startActivity(intent);
         analytics.trackScreen(Screen.SETTINGS);
+    }
+
+    public void toContactPermissionRequired(int requestCode) {
+        Intent intent = new Intent(context, ContactPermissionActivity.class);
+        context.startActivityForResult(intent, requestCode);
+        analytics.trackScreen(Screen.CONTACT_PERMISSION_REQUESTED);
     }
 }

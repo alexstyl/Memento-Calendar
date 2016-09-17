@@ -33,12 +33,4 @@
     android:text="@string/no_contacts_text"
     tools:visibility="gone" />
 
-  <com.alexstyl.specialdates.upcoming.view.PermissionRequiredView
-    android:layout_width="match_parent"
-    android:id="@+id/upcoming_permission_needed"
-    android:layout_height="match_parent"
-    android:background="?attr/colorSecondary"
-    android:visibility="gone"
-    tools:visibility="visible" />
-
 </FrameLayout>

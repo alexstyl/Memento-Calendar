@@ -1,10 +1,10 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
@@ -27,7 +28,6 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
-import com.alexstyl.specialdates.upcoming.view.PermissionRequiredView;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
 import com.alexstyl.specialdates.views.FabPaddingSetter;
 import com.novoda.notils.caster.Views;
@@ -37,7 +37,7 @@ import java.util.List;
 public class UpcomingEventsFragment extends MementoFragment {
 
     private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
-    private static final int REQUEST_CONTACT_PERMISSION = 5;
+    private static final int CONTACT_REQUEST = 1990;
 
     private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
@@ -45,16 +45,16 @@ public class UpcomingEventsFragment extends MementoFragment {
     private SettingsMonitor monitor;
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
-    private PermissionRequiredView permissionView;
     private GoToTodayEnabler goToTodayEnabler;
-
     private Analytics firebase;
+    private Navigator navigator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         firebase = Firebase.get(getActivity());
+        navigator = new Navigator(getActivity(), Firebase.get(getActivity()));
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
@@ -67,7 +67,6 @@ public class UpcomingEventsFragment extends MementoFragment {
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
         upcomingEventsListView = Views.findById(view, R.id.upcoming_eventslist);
         emptyView = Views.findById(view, R.id.upcoming_events_emptyview);
-        permissionView = Views.findById(view, R.id.upcoming_permission_needed);
         return view;
     }
 
@@ -75,12 +74,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         new FabPaddingSetter().setBottomPaddingTo(upcomingEventsListView);
         upcomingEventsListView.setHasFixedSize(true);
-        permissionView.setOnGrantButtonPressedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestForContactPermission();
-            }
-        });
     }
 
     @Override
@@ -114,29 +107,25 @@ public class UpcomingEventsFragment extends MementoFragment {
             showLoading();
             refreshData();
         } else {
-            // hide permission background + ask for permission
-            requestForContactPermission();
-        }
-    }
-
-    private void requestForContactPermission() {
-        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT_PERMISSION);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CONTACT_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            permissionView.setVisibility(View.GONE);
-            showLoading();
-            refreshData();
-        } else {
-            permissionView.setVisibility(View.VISIBLE);
+            navigator.toContactPermissionRequired(CONTACT_REQUEST);
         }
     }
 
     private void refreshData() {
         upcomingEventsProvider.reloadData();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CONTACT_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                showLoading();
+                refreshData();
+            } else {
+                getActivity().finish();
+            }
+        }
     }
 
     @Override
