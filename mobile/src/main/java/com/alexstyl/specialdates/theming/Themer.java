@@ -14,9 +14,10 @@ public class Themer {
 
     private static Themer INSTANCE;
 
-    public static Themer get() {
+    public static Themer get(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new Themer(new ThemingPreferences(), new AttributeExtractor());
+            ThemingPreferences preferences = ThemingPreferences.newInstance(context);
+            INSTANCE = new Themer(preferences, new AttributeExtractor());
         }
         return INSTANCE;
     }

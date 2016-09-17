@@ -16,6 +16,15 @@
   <style name="Upcoming"
     parent="None" />
 
+  <style name="Upcoming.Toolbar"
+    parent="None" />
+
+  <style name="Upcoming.Toolbar.TitleText"
+    parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">#a0000000</item>
+  </style>
+
   <style name="Upcoming.DateTitle">
     <item name="android:paddingTop">24dp</item>
     <item name="android:paddingBottom">16dp</item>

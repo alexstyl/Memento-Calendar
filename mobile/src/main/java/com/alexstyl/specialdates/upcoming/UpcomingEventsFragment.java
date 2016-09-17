@@ -11,20 +11,21 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.search.SearchActivity;
-import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsListView;
+import com.alexstyl.specialdates.upcoming.ContactPermissionRequest.PermissionCallbacks;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
+import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
 import com.alexstyl.specialdates.views.FabPaddingSetter;
 import com.novoda.notils.caster.Views;
 
@@ -38,60 +39,24 @@ public class UpcomingEventsFragment extends MementoFragment {
     private ProgressBar progressBar;
     private TextView emptyView;
     private SettingsMonitor monitor;
-    private MonthTitleSetter titleSetter;
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
     private GoToTodayEnabler goToTodayEnabler;
-    private Themer themer;
-    private Analytics firebase;
+    private Analytics analytics;
+    private Navigator navigator;
+    private ContactPermissionRequest permissions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        themer = Themer.get();
-        firebase = Firebase.get(getActivity());
+        analytics = AnalyticsProvider.getAnalytics(getActivity());
+        navigator = new Navigator(getActivity(), analytics);
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
-        titleSetter = MonthTitleSetter.createSetterFor(getActivity());
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        if (isUsingDarkIcons()) {
-            inflater.inflate(R.menu.menu_upcoming_dark, menu);
-        } else {
-            inflater.inflate(R.menu.menu_upcoming_light, menu);
-        }
-        goToTodayEnabler.reattachTo(menu);
-    }
-
-    private boolean isUsingDarkIcons() {
-        return themer.isActivityUsingDarkIcons(getActivity());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_today:
-                onGoToTodayRequested();
-                return true;
-            case R.id.action_search: {
-                onSearchRequested();
-                return true;
-            }
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void onGoToTodayRequested() {
-        Firebase.get(getActivity()).trackAction(Action.GO_TO_TODAY);
-        upcomingEventsListView.scrollToToday(true);
+        permissions = new ContactPermissionRequest(getActivity(), navigator, callbacks);
     }
 
     @Override
@@ -106,32 +71,87 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         new FabPaddingSetter().setBottomPaddingTo(upcomingEventsListView);
+        upcomingEventsListView.setHasFixedSize(true);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_upcoming_dark, menu);
+        goToTodayEnabler.reattachTo(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_today:
+                onGoToTodayRequested();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void onGoToTodayRequested() {
+        analytics.trackAction(Action.GO_TO_TODAY);
+        upcomingEventsListView.scrollToToday(true);
+    }
+
+    private final PermissionCallbacks callbacks = new PermissionCallbacks() {
+        @Override
+        public void onPermissionGranted() {
+            startLoadingData();
+        }
+
+        @Override
+        public void onPermissionDenied() {
+            getActivity().finishAffinity();
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showLoading();
-        refreshData();
-    }
-
-    private void refreshData() {
-        upcomingEventsProvider.reloadData();
+        if (permissions.permissionIsPresent()) {
+            startLoadingData();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         checkIfUserSettingsChanged();
+        if (permissions.permissionIsPresent()) {
+            showData();
+        } else {
+            permissions.requestForPermission();
+        }
     }
 
     private void checkIfUserSettingsChanged() {
         if (monitor.dataWasUpdated()) {
             mustScrollToPosition = true;
-            showLoading();
-            refreshData();
+            startLoadingData();
             monitor.refreshData();
         }
+    }
+
+    private void startLoadingData() {
+        showLoading();
+        upcomingEventsProvider.reloadData();
+    }
+
+    private void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+        upcomingEventsListView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
     }
 
     private void hideLoading() {
@@ -149,39 +169,20 @@ public class UpcomingEventsFragment extends MementoFragment {
         }
     }
 
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-        upcomingEventsListView.setVisibility(View.GONE);
-        emptyView.setVisibility(View.GONE);
-    }
-
-    private final UpcomingEventsListView.Listener listClickListener = new UpcomingEventsListView.Listener() {
-
+    private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
         @Override
         public void onContactEventPressed(View view, ContactEvent contact) {
-            firebase.trackAction(action);
+            analytics.trackAction(action);
             contact.getContact().displayQuickInfo(getActivity(), view);
         }
 
         @Override
         public void onCardPressed(DayDate date) {
-            firebase.trackScreen(Screen.DATE_DETAILS);
+            analytics.trackScreen(Screen.DATE_DETAILS);
             Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
             startActivity(intent);
         }
-
-        @Override
-        public void onDifferentMonthScrolled(int month) {
-            titleSetter.updateWithMonth(month);
-        }
     };
-
-    public boolean onSearchRequested() {
-        Firebase.get(getActivity()).trackScreen(Screen.SEARCH);
-        Intent intent = new Intent(getActivity(), SearchActivity.class);
-        startActivity(intent);
-        return true;
-    }
 
     private final UpcomingEventsProvider.LoadingListener onEventsLoadedListener = new UpcomingEventsProvider.LoadingListener() {
         @Override

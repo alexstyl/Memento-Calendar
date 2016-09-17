@@ -2,19 +2,30 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:gravity="center_horizontal">
+  android:layout_height="match_parent">
 
-  <com.alexstyl.specialdates.ui.widget.MementoToolbar
-    android:id="@+id/memento_toolbar"
-    style="@style/Widget.Memento.Toolbar"
+  <FrameLayout
+    android:id="@+id/toolbar_holder"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="@dimen/toolbar_semi_expanded_height"
+    android:background="?attr/colorPrimary"
+    android:elevation="@dimen/toolbar_elevation">
+
+    <com.alexstyl.specialdates.upcoming.ExposedSearchToolbar
+      android:id="@+id/memento_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/padding_tight"
+      app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
+
+  </FrameLayout>
 
   <LinearLayout
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/memento_toolbar"
+    android:layout_below="@id/toolbar_holder"
     android:baselineAligned="false"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
@@ -30,7 +41,7 @@
   </LinearLayout>
 
   <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_add"
+    android:id="@+id/main_birthday_add_fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"

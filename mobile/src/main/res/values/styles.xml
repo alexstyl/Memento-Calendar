@@ -66,6 +66,7 @@
   <style name="CardAction">
     <item name="android:background">@drawable/selectable_background_dayslight</item>
     <item name="android:textSize">@dimen/card_text_size_action</item>
+    <item name="android:textColor">?attr/colorAccent</item>
 
   </style>
 
@@ -116,7 +117,6 @@
 
   <style name="Theme.Dayslight.DialogNoTitle"
     parent="Theme.AppCompat.Light.Dialog.Alert">
-    <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
     <item name="android:windowNoTitle">true</item>
     <item name="windowNoTitle">true</item>
   </style>

@@ -15,8 +15,14 @@ public enum MementoTheme {
     EGGPLANT_GREEN(withThemeName(R.string.theme_Eggplant), R.style.Theme_Memento_Eggplant),
     MONOCHROME(withThemeName(R.string.theme_Monochrome), R.style.Theme_Memento_Monochrome),
     SYSTEMO(withThemeName(R.string.theme_Systemo), R.style.Theme_Memento_Systemo),
-    AMBER(withThemeName(R.string.theme_Amber), R.style.Theme_Memento_Amber),
-    ;
+    AMBER(withThemeName(R.string.theme_Amber), R.style.Theme_Memento_Amber);
+    private final String themeName;
+    @StyleRes
+    private final int styleResId;
+
+    private static String withThemeName(@StringRes int themNameResId) {
+        return MementoApplication.getContext().getString(themNameResId);
+    }
 
     public static MementoTheme fromName(@NonNull String themeName) {
         for (MementoTheme mementoTheme : values()) {
@@ -27,14 +33,6 @@ public enum MementoTheme {
 
         throw new DeveloperError("No theme exists with the name [%s]", themeName);
     }
-
-    private static String withThemeName(@StringRes int themNameResId) {
-        return MementoApplication.getAppContext().getString(themNameResId);
-    }
-
-    private final String themeName;
-    @StyleRes
-    private final int styleResId;
 
     MementoTheme(@NonNull String themeName, @StyleRes int styleResId) {
         this.themeName = themeName;
