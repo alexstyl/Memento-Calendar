@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -42,7 +42,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
     private GoToTodayEnabler goToTodayEnabler;
-    private Analytics firebase;
+    private Analytics analytics;
     private Navigator navigator;
     private ContactPermissionRequest permissions;
 
@@ -50,8 +50,8 @@ public class UpcomingEventsFragment extends MementoFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        firebase = Firebase.get(getActivity());
-        navigator = new Navigator(getActivity(), Firebase.get(getActivity()));
+        analytics = AnalyticsProvider.getAnalytics(getActivity());
+        navigator = new Navigator(getActivity(), analytics);
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
@@ -94,7 +94,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     }
 
     private void onGoToTodayRequested() {
-        Firebase.get(getActivity()).trackAction(Action.GO_TO_TODAY);
+        analytics.trackAction(Action.GO_TO_TODAY);
         upcomingEventsListView.scrollToToday(true);
     }
 
@@ -172,13 +172,13 @@ public class UpcomingEventsFragment extends MementoFragment {
     private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
         @Override
         public void onContactEventPressed(View view, ContactEvent contact) {
-            firebase.trackAction(action);
+            analytics.trackAction(action);
             contact.getContact().displayQuickInfo(getActivity(), view);
         }
 
         @Override
         public void onCardPressed(DayDate date) {
-            firebase.trackScreen(Screen.DATE_DETAILS);
+            analytics.trackScreen(Screen.DATE_DETAILS);
             Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
             startActivity(intent);
         }

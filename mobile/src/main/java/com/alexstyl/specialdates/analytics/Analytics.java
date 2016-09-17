@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.analytics;
 
 public interface Analytics {
-    void trackAction(Action goToToday);
+    void trackAction(Action action);
 
     void trackAction(ActionWithParameters event);
 

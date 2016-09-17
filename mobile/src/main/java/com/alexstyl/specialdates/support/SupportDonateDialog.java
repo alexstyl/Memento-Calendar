@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.billing.util.IabHelper;
 import com.alexstyl.specialdates.billing.util.IabResult;
 import com.alexstyl.specialdates.billing.util.Inventory;
@@ -80,7 +80,7 @@ public class SupportDonateDialog extends MementoActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.donate);
-        analytics = Firebase.get(this);
+        analytics = AnalyticsProvider.getAnalytics(this);
         mTokens = new HashMap<>();
         if (BuildConfig.DEBUG) {
             mTokens.put("1", ITEM_TEST);

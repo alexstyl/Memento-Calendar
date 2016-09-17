@@ -27,7 +27,7 @@ import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -167,7 +167,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = Firebase.get(getActivity());
+        analytics = AnalyticsProvider.getAnalytics(getActivity());
         navigator = new Navigator(getActivity(), analytics);
         permissions = new ContactPermissionRequest(getActivity(), navigator, permissionCallbacks);
     }
