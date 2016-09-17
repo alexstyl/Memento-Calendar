@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="?attr/colorSecondary">
@@ -57,12 +56,11 @@
       android:gravity="center"
       android:text="@string/contact_permission_fact"
       android:textColor="?android:attr/textColorPrimaryInverse" />
-
   </LinearLayout>
 
   <Button
     android:id="@+id/contact_permission_grant_button"
-    style="@style/ContactPermission"
+    style="@style/ContactPermission.GrantPermission"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
