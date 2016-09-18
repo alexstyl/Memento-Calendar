@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
     <string name="localised_app_name">Γιορτές Memento</string>
     <string name="today">Σήμερα</string>
     <string name="tomorrow">Αύριο</string>
@@ -148,7 +148,13 @@
     <string name="Contact_names">Ονόματα επαφών</string>
     <string name="Bank_holiday">Αργία</string>
     <string name="Bank_holidays">Αργίες</string>
+    <string name="GoogleP_community">Κοινότητα Google+</string>
     <string name="Display_Bankholidays">Προβολή αργίων</string>
     <string name="Bankholidays_Country">Χώρα αργίων</string>
     <string name="Bankholidays_are_currently_supported_only_for_Greek">Οι αργίες υποστηρίζονται μόνο για την Ελλάδα αυτή τη στιγμή</string>
+    <string name="Search_for_contacts">Αναζήτηση επαφών</string>
+    <string name="Search_for_contacts_or_namedays">Αναζήτηση επαφών ή εορτών</string>
+    <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">Το Memento χρειάζεται την άδειά σας για να διαβάσει τις επαφές σας προκειμένου να μπορεί να σας πει πότε γιορτάζουν.</string>
+    <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Μερικοί άνθρωποι δίνουν δωρεάν γλυκό σε όποιον τους πει Χρόνια Πολλά. Χρησιμοποιήστε το Memento για να είσαστε ενήμεροι για το ποιοι γιορτάζουν.</string>
+    <string name="Grant_permission">Δώστε άδεια</string>
 </resources>

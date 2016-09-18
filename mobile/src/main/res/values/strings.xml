@@ -157,6 +157,10 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Display_Bankholidays">Display Bankholidays</string>
   <string name="Bankholidays_Country">Bankholidays Country</string>
   <string name="Bankholidays_are_currently_supported_only_for_Greek">Bankholidays are currently supported only for Greek</string>
+  <string name="Clear">Clear</string>
   <string name="Search_for_contacts">Search for contacts</string>
   <string name="Search_for_contacts_or_namedays">Search for contacts or namedays</string>
+  <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">Memento requires your permission to read your contacts in order to display when they celebrate.</string>
+  <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Fact: Some people give free cake to those who wish them Happy Birthday. Use Memento to keep track of potential cake givers.</string>
+  <string name="Grant_permission">Grant permission</string>
 </resources>

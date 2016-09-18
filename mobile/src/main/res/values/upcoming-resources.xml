@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="upcoming_events_bankholidays_title">@string/Bank_holiday</string>
+  <string name="upcoming_events_namedays_title">@string/namedays</string>
+  <string name="plus_x_more">+%d more</string>
+
   <dimen name="upcoming_vertical_top_padding_between_each_card">8dp</dimen>
   <dimen name="upcoming_vertical_bottom_padding_between_each_card">@dimen/upcoming_vertical_top_padding_between_each_card</dimen>
 
@@ -11,7 +15,6 @@
 
   <dimen name="upcoming_contact_event_avatar_width">42dp</dimen>
   <dimen name="upcoming_contact_event_avatar_height">@dimen/upcoming_contact_event_avatar_width</dimen>
-  <string name="plus_x_more">+%d more</string>
 
   <style name="Upcoming"
     parent="None" />
