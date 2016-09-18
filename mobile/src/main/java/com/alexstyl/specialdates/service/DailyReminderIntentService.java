@@ -1,43 +1,46 @@
 package com.alexstyl.specialdates.service;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
+import com.alexstyl.specialdates.events.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidays;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.receiver.EventReceiver;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.util.Notifier;
+import com.novoda.notils.logger.simple.Log;
 
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Finds all contacts that celebrate the day, and creates a status bar
- * notification to notify the user
- *
- * @author Alex
+ * A service that looks up all events on the specified date and notifies the user about it
+ * <p>NOTE: The DailyReminder service will display</p>
  */
 public class DailyReminderIntentService extends IntentService {
 
     private static final int REQUEST_CODE = 0;
-    private PeopleEventsProvider provider;
     private NamedayPreferences namedayPreferences;
     private NamedayCalendarProvider namedayCalendarProvider;
 
     private BankHolidaysPreferences bankHolidaysPreferences;
+    private PermissionChecker checker;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -51,18 +54,26 @@ public class DailyReminderIntentService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        rescheduleAlarm(this);
-        provider = PeopleEventsProvider.newInstance(this);
+    public void onCreate() {
+        super.onCreate();
         notifier = Notifier.newInstance(this);
         namedayPreferences = NamedayPreferences.newInstance(this);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this);
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
+        checker = new PermissionChecker(this);
+    }
 
-        DayDate today = DayDate.today();
-        ContactEvents celebrationDate = provider.getCelebrationDateFor(today);
-        if (containsAnyContactEvents(celebrationDate)) {
-            notifier.forDailyReminder(celebrationDate);
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        rescheduleAlarm(this);
+        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
+        DayDate today = getDayDateToDisplay();
+
+        if (hasContactPermission()) {
+            ContactEvents celebrationDate = provider.getCelebrationDateFor(today);
+            if (containsAnyContactEvents(celebrationDate)) {
+                notifier.forDailyReminder(celebrationDate);
+            }
         }
         if (namedaysAreEnabledForAllCases()) {
             notifyForNamedaysFor(today);
@@ -70,7 +81,22 @@ public class DailyReminderIntentService extends IntentService {
         if (bankholidaysAreEnabled()) {
             notifyForBankholidaysFor(today);
         }
+    }
 
+    private boolean hasContactPermission() {
+        return checker.hasPermission(Manifest.permission.READ_CONTACTS);
+    }
+
+    private DayDate getDayDateToDisplay() {
+        if (BuildConfig.DEBUG) {
+            DailyReminderDebugPreferences preferences = DailyReminderDebugPreferences.newInstance(this);
+            if (preferences.isFakeDateEnabled()) {
+                DayDate selectedDate = preferences.getSelectedDate();
+                Log.d("Using DEBUG date to display: " + selectedDate);
+                return selectedDate;
+            }
+        }
+        return DayDate.today();
     }
 
     private boolean containsAnyContactEvents(ContactEvents celebrationDate) {

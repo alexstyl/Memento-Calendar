@@ -1,51 +1,32 @@
 package com.alexstyl.specialdates.search;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<Contact> contacts = new ArrayList<>();
 
     private NamedayCard namedayCard = new NamedayCard();
 
     private boolean isLoadingMore;
-    private final boolean namedayEnabled;
     private boolean canLoadMore = false;
     private final ImageLoader imageLoader;
     private final NamedayCalendar namedayCalendar;
     private String searchQuery;
 
-    public static SearchResultAdapter newInstance(Context context, boolean loadNamedays) {
-        Resources resources = context.getResources();
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
-
-        int year = DayDate.today().getYear();
-        NamedayLocale locale = NamedayPreferences.newInstance(context).getSelectedLanguage();
-        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(context)
-                .loadNamedayCalendarForLocale(locale, year);
-        return new SearchResultAdapter(loadNamedays, imageLoader, namedayCalendar);
-    }
-
-    private SearchResultAdapter(boolean loadNamedays, ImageLoader imageLoader, NamedayCalendar namedayCalendar) {
-        this.namedayEnabled = loadNamedays;
+    SearchResultAdapter(ImageLoader imageLoader, NamedayCalendar namedayCalendar) {
         this.imageLoader = imageLoader;
         this.namedayCalendar = namedayCalendar;
     }
@@ -141,7 +122,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == VIEWTYPE_CONTACTVIEW) {
-            return SearchResultContactViewHolder.createFor(parent, namedayCalendar, imageLoader, namedayEnabled);
+            return SearchResultContactViewHolder.createFor(parent, namedayCalendar, imageLoader);
         }
         if (viewType == VIEWTYPE_NAMEDAYS_VIEW) {
             return SearchResultNamedayViewHolder.createFor(parent);

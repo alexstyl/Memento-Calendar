@@ -9,10 +9,9 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.ContactHeroView;
 import com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView;
 import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
-import com.alexstyl.specialdates.analytics.Firebase;
-import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.theming.MementoTheme;
@@ -35,9 +34,8 @@ public class AddBirthdayActivity extends ThemedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        analytics = Firebase.get(this);
-        analytics.trackScreen(Screen.ADD_BIRTHDAY);
-        MementoTheme theme = Themer.get().getCurrentTheme();
+        analytics = AnalyticsProvider.getAnalytics(this);
+        MementoTheme theme = Themer.get(this).getCurrentTheme();
         setContentView(R.layout.activity_add_birthday, theme);
 
         contactHeroView = Views.findById(this, R.id.addbirthday_hero);

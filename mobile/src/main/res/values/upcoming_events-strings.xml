@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="upcoming_events_bankholidays_title">@string/Bank_holiday</string>
-  <string name="upcoming_events_namedays_title">@string/namedays</string>
-</resources>

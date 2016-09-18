@@ -25,22 +25,19 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     private final TextView nameday;
 
     private final ImageLoader imageLoader;
-    private boolean namedayEnabled;
 
     public static SearchResultContactViewHolder createFor(ViewGroup parent,
                                                           NamedayCalendar namedayCalendar,
-                                                          ImageLoader imageLoader,
-                                                          boolean namedayEnabled) {
+                                                          ImageLoader imageLoader) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_search_result_contact, parent, false);
-        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader, namedayEnabled);
+        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader);
     }
 
-    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader, boolean namedayEnabled) {
+    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader) {
         super(convertView);
         this.namedayCalendar = namedayCalendar;
         this.imageLoader = imageLoader;
-        this.namedayEnabled = namedayEnabled;
         this.displayName = (TextView) convertView.findViewById(R.id.contact_name);
         this.birthday = (TextView) convertView.findViewById(R.id.birthday_label);
         this.nameday = (TextView) convertView.findViewById(R.id.nameday_label);
@@ -59,15 +56,12 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         bindNamedays(contact);
 
         itemView.setOnClickListener(
-                new View.OnClickListener()
-
-                {
+                new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mListener.onContactClicked(v, contact);
                     }
                 }
-
         );
     }
 
@@ -122,7 +116,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     }
 
     private boolean noEventsToDisplay(NameCelebrations namedays) {
-        return !namedayEnabled || namedays.containsNoDate();
+        return namedays.containsNoDate();
     }
 
     private Context getContext() {

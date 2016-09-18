@@ -25,7 +25,7 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Themer.get().initialiseActivity(this);
+        Themer.get(this).initialiseActivity(this);
         setContentView(R.layout.activity_settings);
 
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);

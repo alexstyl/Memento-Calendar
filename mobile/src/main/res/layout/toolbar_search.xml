@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/memento_toolbar"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/card_no_paddings"
+  tools:targetApi="lollipop">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/ic_action_search"
+    android:drawablePadding="@dimen/card_padding_from_screen"
+    android:gravity="center_vertical"
+    android:lines="1"
+    android:text="@string/search_hint_contacts"
+    android:textColor="@color/search_hint_color" />
+
+</android.support.v7.widget.Toolbar>
