@@ -15,6 +15,10 @@
   <!-- VIBRATE FOR NOTIFICATION-->
   <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.BLUETOOTH" />
+  
+  <uses-feature
+    android:name="android.hardware.bluetooth"
+    android:required="false" />
 
   <application
     android:name="com.alexstyl.specialdates.MementoApplication"
