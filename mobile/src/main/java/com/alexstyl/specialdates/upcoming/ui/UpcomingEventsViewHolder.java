@@ -18,6 +18,8 @@ import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
+import com.alexstyl.specialdates.upcoming.view.UpcomingEventsView;
 import com.novoda.notils.caster.Views;
 
 public class UpcomingEventsViewHolder extends RecyclerView.ViewHolder {

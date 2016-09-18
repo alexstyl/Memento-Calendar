@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Birthday;
@@ -18,19 +19,17 @@ import com.novoda.notils.caster.Views;
 
 import java.util.Locale;
 
-import net.simonvt.numberpicker.NumberPicker;
-
 public class BirthdayDatePicker extends LinearLayout {
 
-    private MonthLabels labels;
+    private final MonthLabels labels;
 
-    private NumberPicker dayPicker;
-    private NumberPicker monthPicker;
-    private NumberPicker yearPicker;
+    private final NumberPicker dayPicker;
+    private final NumberPicker monthPicker;
+    private final NumberPicker yearPicker;
 
-    private CheckedTextView includesYearCheckbox;
+    private final CheckedTextView includesYearCheckbox;
 
-    private DayDate today;
+    private final DayDate today;
 
     public BirthdayDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);

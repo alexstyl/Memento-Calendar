@@ -18,7 +18,7 @@ public class SpecialGreekNamedaysCalculator {
 
     public SpecialGreekNamedaysCalculator(List<EasternNameday> easternNamedays) {
         this.easternNamedays = easternNamedays;
-        this.context = MementoApplication.getAppContext();
+        this.context = MementoApplication.getContext();
     }
 
     public NamedayBundle calculateForEasterDate(DayDate easter) {

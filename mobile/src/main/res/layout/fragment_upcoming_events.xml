@@ -12,7 +12,7 @@
     android:layout_gravity="center"
     android:visibility="gone" />
 
-  <com.alexstyl.specialdates.upcoming.ui.UpcomingEventsListView
+  <com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView
     android:id="@+id/upcoming_eventslist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,6 +32,5 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:text="@string/no_contacts_text"
     tools:visibility="gone" />
-
 
 </FrameLayout>
