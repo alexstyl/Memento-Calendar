@@ -9,19 +9,19 @@
     <Preference
       android:key="@string/key_debug_daily_reminder"
       android:title="Trigger Daily Reminder" />
+
+    <CheckBoxPreference
+      android:key="@string/key_debug_daily_reminder_date_enable"
+      android:title="Fake date" />
+
+    <Preference
+      android:dependency="@string/key_debug_daily_reminder_date_enable"
+      android:key="@string/key_debug_daily_reminder_date"
+      android:title="Daily Reminder Date" />
   </PreferenceScreen>
 
   <PreferenceScreen
     android:key="@string/key_debug_start_calendar"
     android:title="Start Calendar Intent" />
-
-  <Preference
-    android:key="@string/key_debug_animation_playground"
-    android:title="Animation Playground">
-    <intent
-      android:action="android.intent.action.VIEW"
-      android:targetClass="com.alexstyl.specialdates.birthdaycard.AnimationPlayground"
-      android:targetPackage="com.alexstyl.specialdates" />
-  </Preference>
 
 </PreferenceScreen>

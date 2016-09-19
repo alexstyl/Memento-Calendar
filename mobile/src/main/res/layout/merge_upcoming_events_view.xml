@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.alexstyl.specialdates.upcoming.ui.TitledTextView
+    <com.alexstyl.specialdates.upcoming.view.TitledTextView
       android:id="@+id/upcoming_events_bankholidays"
       style="@style/Upcoming.EventItem"
       android:layout_width="match_parent"
@@ -19,7 +19,7 @@
       app:eventTitle="@string/upcoming_events_bankholidays_title"
       app:eventTitleColor="@color/bankholiday_green" />
 
-    <com.alexstyl.specialdates.upcoming.ui.TitledTextView
+    <com.alexstyl.specialdates.upcoming.view.TitledTextView
       android:id="@+id/upcoming_events_namedays"
       style="@style/Upcoming.EventItem"
       android:layout_width="match_parent"
@@ -30,7 +30,7 @@
       app:eventTitle="@string/upcoming_events_namedays_title"
       app:eventTitleColor="@color/nameday_blue" />
 
-    <com.alexstyl.specialdates.upcoming.ui.ContactEventView
+    <com.alexstyl.specialdates.upcoming.view.ContactEventView
       android:id="@+id/upcoming_events_contact_one"
       style="@style/Upcoming.ShowMore"
       android:layout_width="match_parent"
@@ -40,7 +40,7 @@
       android:paddingLeft="@dimen/upcoming_event_padding_horizontal"
       android:paddingRight="@dimen/upcoming_event_padding_horizontal" />
 
-    <com.alexstyl.specialdates.upcoming.ui.ContactEventView
+    <com.alexstyl.specialdates.upcoming.view.ContactEventView
       android:id="@+id/upcoming_events_contact_two"
       style="@style/Upcoming.ShowMore"
       android:layout_width="match_parent"

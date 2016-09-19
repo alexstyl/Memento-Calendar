@@ -122,7 +122,7 @@ public class Notifier {
                 Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
 
-                String lineFormatted = name + "   " + event.getLabel(resources);
+                String lineFormatted = name + "\t\t" + event.getLabel(resources);
 
                 Spannable sb = new SpannableString(lineFormatted);
                 sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -197,7 +197,7 @@ public class Notifier {
     }
 
     private boolean shouldDisplayContactImage(int contactCount) {
-        return Utils.hasHoneycomb() && contactCount == 1;
+        return contactCount == 1;
     }
 
     public void forNamedays(List<String> names, Date date) {

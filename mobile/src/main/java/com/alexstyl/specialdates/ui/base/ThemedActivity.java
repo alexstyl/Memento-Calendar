@@ -13,7 +13,7 @@ public class ThemedActivity extends MementoActivity {
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
-        Themer.get().initialiseActivity(this);
+        Themer.get(this).initialiseActivity(this);
         super.setContentView(layoutResID);
     }
 

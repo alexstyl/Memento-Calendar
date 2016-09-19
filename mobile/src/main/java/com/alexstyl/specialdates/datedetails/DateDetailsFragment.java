@@ -27,18 +27,20 @@ import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
-import com.alexstyl.specialdates.analytics.Firebase;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
@@ -60,6 +62,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
 
     private Navigator navigator;
+    private ContactPermissionRequest permissions;
 
     public static Fragment newInstance(int year, int month, int dayofMonth) {
         Fragment fragment = new DateDetailsFragment();
@@ -99,14 +102,12 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
                 i++;
             }
 
-            popup.setOnMenuItemClickListener(
-                    new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            return actions.get(menuItem.getItemId()).fire(getActivity());
-                        }
-                    }
-            );
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    return actions.get(menuItem.getItemId()).fire(getActivity());
+                }
+            });
 
             popup.show();
         }
@@ -117,18 +118,16 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
             // display the Loading progress
             if (action.hasSlowStart()) {
                 Handler handler = new Handler();
-                handler.postDelayed(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (isVisible() && isResumed()) {
-                                    // if after a second the activity is still showing, show the loading dialog
-                                    ProgressFragmentDialog dialog = ProgressFragmentDialog.newInstance(getString(R.string.loading), true);
-                                    dialog.show(getFragmentManager(), FM_TAG_ACTIONS);
-                                }
-                            }
-                        }, DateUtils.SECOND_IN_MILLIS
-                );
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isVisible() && isResumed()) {
+                            // if after a second the activity is still showing, show the loading dialog
+                            ProgressFragmentDialog dialog = ProgressFragmentDialog.newInstance(getString(R.string.loading), true);
+                            dialog.show(getFragmentManager(), FM_TAG_ACTIONS);
+                        }
+                    }
+                }, DateUtils.SECOND_IN_MILLIS);
             }
             action.fire(getActivity());
             ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getName());
@@ -149,15 +148,39 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(LOADER_ID_EVENTS, null, this);
+        if (permissions.permissionIsPresent()) {
+            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, this);
+        } else {
+            permissions.requestForPermission();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigator = new Navigator(getActivity());
-        analytics = Firebase.get(getActivity());
+        analytics = AnalyticsProvider.getAnalytics(getActivity());
+        navigator = new Navigator(getActivity(), analytics);
+        PermissionChecker checker = new PermissionChecker(getActivity());
+        permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
     }
+
+    private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
+        @Override
+        public void onPermissionGranted() {
+            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, DateDetailsFragment.this);
+        }
+
+        @Override
+        public void onPermissionDenied() {
+            getActivity().finishAffinity();
+        }
+    };
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

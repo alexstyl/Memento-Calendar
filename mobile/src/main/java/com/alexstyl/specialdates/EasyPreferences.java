@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
 import android.support.annotation.StringRes;
+import android.support.v4.util.Pair;
 
 public class EasyPreferences {
 
@@ -85,4 +86,12 @@ public class EasyPreferences {
         prefs.edit().putFloat(key(key), value).apply();
     }
 
+    public void setIntegers(Pair<Integer, Integer> firstPair, Pair<Integer, Integer>... otherPairs) {
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putInt(key(firstPair.first), firstPair.second);
+        for (Pair<Integer, Integer> pair : otherPairs) {
+            edit.putInt(key(pair.first), pair.second);
+        }
+        edit.apply();
+    }
 }

@@ -1,13 +1,14 @@
 package com.alexstyl.specialdates.analytics;
 
 public enum Screen {
-    HOME("home"),
+    HOME("upcoming"),
     ADD_BIRTHDAY("add birthday"),
     SEARCH("search"),
     SETTINGS("settings"),
     DATE_DETAILS("date details"),
     DONATE("donate"),
-    ABOUT("about");
+    ABOUT("about"),
+    CONTACT_PERMISSION_REQUESTED("contact permission");
 
     private final String screenName;
 
