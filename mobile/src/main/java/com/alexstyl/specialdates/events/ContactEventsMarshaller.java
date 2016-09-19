@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.Marshaller;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
 
@@ -32,7 +33,18 @@ public class ContactEventsMarshaller implements Marshaller<List<ContactEvent>> {
         String date = DateDisplayStringCreator.getInstance().stringOf(event.getDate());
         values.put(PeopleEventsContract.PeopleEvents.DATE, date);
 
-        values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, PeopleEventsContract.PeopleEvents.TYPE_NAMEDAY);
+        values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, getTypeFor(event));
         return values;
     }
+
+    private int getTypeFor(ContactEvent event) {
+        switch (event.getType()) {
+            case BIRTHDAY:
+                return EventColumns.TYPE_BIRTHDAY;
+            case NAMEDAY:
+                return EventColumns.TYPE_NAMEDAY;
+        }
+        throw new DeveloperError(event.getType() + " has no EventColumn reference");
+    }
+
 }
