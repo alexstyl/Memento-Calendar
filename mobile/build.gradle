@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
@@ -48,6 +49,9 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 
 }
 
@@ -89,4 +93,5 @@ dependencies {
     testCompile 'joda-time:joda-time:2.3'
 
     androidTestCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
