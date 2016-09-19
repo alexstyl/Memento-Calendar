@@ -24,4 +24,10 @@
     android:key="@string/key_debug_start_calendar"
     android:title="Start Calendar Intent" />
 
+  <PreferenceCategory android:title="Wear">
+    <Preference android:title="Trigger WearSyncService"
+      android:key="@string/key_debug_trigger_wear_service"/>
+
+  </PreferenceCategory>
+
 </PreferenceScreen>
