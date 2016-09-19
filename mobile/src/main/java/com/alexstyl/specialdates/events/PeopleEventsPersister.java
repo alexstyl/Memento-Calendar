@@ -32,26 +32,19 @@ public class PeopleEventsPersister {
     }
 
     public void insertDynamicEvents(ContentValues[] values) {
-        SQLiteDatabase database = helper.getWritableDatabase();
-        try {
-            database.beginTransaction();
-            for (ContentValues value : values) {
-                database.insert(DynamicEvents.TABLE_NAME, null, value);
-            }
-            database.setTransactionSuccessful();
-        } catch (SQLException ex) {
-            ErrorTracker.track(ex);
-        } finally {
-            database.endTransaction();
-        }
+        insertEventsInTable(values, DynamicEvents.TABLE_NAME);
     }
 
     public void insertAnnualEvents(ContentValues[] values) {
+        insertEventsInTable(values, AnnualEvents.TABLE_NAME);
+    }
+
+    private void insertEventsInTable(ContentValues[] values, String tableName) {
         SQLiteDatabase database = helper.getWritableDatabase();
         try {
             database.beginTransaction();
             for (ContentValues value : values) {
-                database.insert(AnnualEvents.TABLE_NAME, null, value);
+                database.insert(tableName, null, value);
             }
             database.setTransactionSuccessful();
         } catch (SQLException ex) {

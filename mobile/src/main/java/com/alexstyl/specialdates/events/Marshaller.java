@@ -1,7 +1,7 @@
-package com.alexstyl.specialdates;
+package com.alexstyl.specialdates.events;
 
 import android.content.ContentValues;
 
-public interface Marshaller<T> {
+interface Marshaller<T> {
     ContentValues[] marshall(T item);
 }
