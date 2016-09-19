@@ -2,4 +2,7 @@
 <resources>
   <dimen name="toolbar_elevation">4dp</dimen>
   <dimen name="toolbar_minHeight">56dp</dimen>
+  <dimen name="toolbar_semi_expanded_height">64dp</dimen>
+
+
 </resources>

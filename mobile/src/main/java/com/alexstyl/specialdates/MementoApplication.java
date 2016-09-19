@@ -13,7 +13,6 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
-    private static final String TAG = "Memento";
     private static Context context;
 
     public static String getVersionName(Context context) {
@@ -33,7 +32,7 @@ public class MementoApplication extends Application {
 
     public static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";
 
-    public static Context getAppContext() {
+    public static Context getContext() {
         return context;
     }
 

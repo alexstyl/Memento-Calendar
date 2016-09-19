@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="?attr/colorSecondary">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:src="@mipmap/ic_logo" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/contact_permission_arrow_horizontal_margin"
+        android:layout_marginRight="@dimen/contact_permission_arrow_horizontal_margin"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_action_arrow_light_back" />
+
+      <ImageView
+        android:id="@+id/contact_permission_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_contacts" />
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/contact_permission_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="24dp"
+      android:gravity="center"
+      android:text="@string/contact_permission_message_request"
+      android:textColor="?android:attr/textColorPrimaryInverse" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="36dp"
+      android:gravity="center"
+      android:text="@string/contact_permission_fact"
+      android:textColor="?android:attr/textColorPrimaryInverse" />
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/contact_permission_grant_button"
+    style="@style/ContactPermission.GrantPermission"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:text="@string/contact_permission_button_label" />
+</FrameLayout>

@@ -25,7 +25,7 @@
 
     <com.alexstyl.specialdates.ui.HorizontalDivider style="@style/Divider" />
 
-    <com.alexstyl.specialdates.upcoming.ui.UpcomingEventsView
+    <com.alexstyl.specialdates.upcoming.view.UpcomingEventsView
       android:id="@+id/upcoming_events_view"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

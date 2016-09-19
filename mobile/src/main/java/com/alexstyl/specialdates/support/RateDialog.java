@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -17,17 +18,18 @@ public class RateDialog extends MementoActivity {
 
     private final String smiley = " " + Emoticon.SMILEY.asText();
     private AskForSupport askForSupport;
+    private Navigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_dialog);
         askForSupport = new AskForSupport(context());
-
+        navigator = new Navigator(this, AnalyticsProvider.getAnalytics(this));
         Views.findById(this, R.id.support_rate_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Navigator(v.getContext()).toPlayStore();
+                navigator.toPlayStore();
                 Toast.makeText(context(), R.string.support_thanks_for_rating, Toast.LENGTH_LONG).show();
                 askForSupport.onRateEnd();
                 finish();

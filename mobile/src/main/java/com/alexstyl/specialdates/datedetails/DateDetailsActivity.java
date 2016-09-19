@@ -23,7 +23,6 @@ public class DateDetailsActivity extends ThemedActivity {
     private static final String EXTRA_DAY = BuildConfig.APPLICATION_ID + ".dayOfMonth";
     private static final String EXTRA_MONTH = BuildConfig.APPLICATION_ID + ".month";
     private static final String EXTRA_YEAR = BuildConfig.APPLICATION_ID + ".year";
-
     private static final String EXTRA_SOURCE = BuildConfig.APPLICATION_ID + ".source";
     /**
      * The activity was lauched because the user tapped on a notification
@@ -32,25 +31,18 @@ public class DateDetailsActivity extends ThemedActivity {
 
     private DayDate displayingDate;
 
-    private void setHeaderTitle(String str) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(str);
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_details);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
-
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
 
         Optional<DayDate> receivedDate = getCalendarFromIntent(getIntent());
         if (!receivedDate.isPresent()) {
             finish();
-            ErrorTracker.track(new RuntimeException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
+            ErrorTracker.track(new NullPointerException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
             return;
         }
         this.displayingDate = receivedDate.get();
@@ -76,6 +68,11 @@ public class DateDetailsActivity extends ThemedActivity {
 
         }
 
+        String titleDate = DateFormatUtils.formatTimeStampString(
+                DateDetailsActivity.this, displayingDate.toMillis(),
+                true
+        );
+        setTitle(titleDate);
     }
 
     private Optional<DayDate> getCalendarFromIntent(Intent intent) {
@@ -107,18 +104,6 @@ public class DateDetailsActivity extends ThemedActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // update date?
-        String titleDate = DateFormatUtils.formatTimeStampString(
-                DateDetailsActivity.this, displayingDate.toMillis(),
-                true
-        );
-
-        setHeaderTitle(titleDate);
-    }
-
     /**
      * Starts the {@link DateDetailsActivity}, that will display details about
      * the given date
@@ -127,7 +112,8 @@ public class DateDetailsActivity extends ThemedActivity {
      */
     public static void startActivity(Context context, int month,
                                      int dayOfMonth, int year) {
-        context.startActivity(getStartIntent(context, dayOfMonth, month, year));
+        Intent startIntent = getStartIntent(context, dayOfMonth, month, year);
+        context.startActivity(startIntent);
     }
 
     /**
@@ -151,11 +137,4 @@ public class DateDetailsActivity extends ThemedActivity {
         return startIntent;
     }
 
-    public static void startActivity(Context context, DayDate date) {
-        startActivity(
-                context, date.getMonth(), date.getDayOfMonth(),
-                date.getYear()
-        );
-
-    }
 }

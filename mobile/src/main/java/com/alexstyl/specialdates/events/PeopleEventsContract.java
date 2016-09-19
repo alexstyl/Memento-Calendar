@@ -35,8 +35,8 @@ public class PeopleEventsContract {
 
         public static EventType getEventType(Cursor cursor) {
             int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEvents.EVENT_TYPE);
-            @EventTypeId int anInt = cursor.getInt(eventTypeIndex);
-            return EventType.fromId(anInt);
+            @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
+            return EventType.fromId(rawEventType);
         }
 
         private static final String SEPARATOR = "-";

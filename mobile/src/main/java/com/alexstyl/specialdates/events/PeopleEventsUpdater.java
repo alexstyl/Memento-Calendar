@@ -56,7 +56,7 @@ class PeopleEventsUpdater {
         boolean wereNamedaysSettingsUpdated = namedayMonitor.dataWasUpdated();
 
         if (wereNamedaysSettingsUpdated) {
-            namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(MementoApplication.getAppContext());
+            namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(MementoApplication.getContext());
         }
         if (wereContactsUpdated) {
             birthdayDatabaseRefresher.refreshBirthdays();
