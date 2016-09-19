@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 
 import java.util.List;
 
-public class ContentValuesMarshaller implements Marshaller<List<ContactEvent>> {
+public class ContactEventsMarshaller implements Marshaller<List<ContactEvent>> {
 
     @Override
     public ContentValues[] marshall(List<ContactEvent> item) {

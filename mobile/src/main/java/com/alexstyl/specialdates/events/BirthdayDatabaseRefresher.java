@@ -27,19 +27,19 @@ class BirthdayDatabaseRefresher {
     private final ContactProvider contactProvider;
     private final ContentResolver contentResolver;
     private final PeopleEventsPersister persister;
-    private final ContentValuesMarshaller marshaller;
+    private final ContactEventsMarshaller marshaller;
 
     static BirthdayDatabaseRefresher newInstance(Context context) {
         ContactProvider contactProvider = ContactProvider.get(context);
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        ContentValuesMarshaller marshaller = new ContentValuesMarshaller();
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         return new BirthdayDatabaseRefresher(contactProvider, context.getContentResolver(), persister, marshaller);
     }
 
     BirthdayDatabaseRefresher(ContactProvider contactProvider,
                               ContentResolver contentResolver,
                               PeopleEventsPersister persister,
-                              ContentValuesMarshaller marshaller) {
+                              ContactEventsMarshaller marshaller) {
         this.contentResolver = contentResolver;
         this.persister = persister;
         this.marshaller = marshaller;
@@ -116,8 +116,8 @@ class BirthdayDatabaseRefresher {
                 "(" + ContactsContract.Data.MIMETYPE + " = ? AND " +
                         ContactsContract.CommonDataKinds.Event.TYPE
                         + "="
-                        + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + ")";
-//                        + " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + " = 1";
+                        + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + ")"
+                        + " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + " = 1";
 
         public static final String[] WHERE_ARGS = {ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE};
         public final static String SORT_ORDER = COL_DISPLAY_NAME;
