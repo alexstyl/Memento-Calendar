@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.events;
 
 import android.content.ContentValues;
 
-import com.alexstyl.specialdates.Marshaller;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
