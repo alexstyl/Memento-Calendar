@@ -2,7 +2,9 @@ package com.alexstyl.specialdates.contact;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Handler;
+import android.provider.ContactsContract.Data;
 
 import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.DateParser;
