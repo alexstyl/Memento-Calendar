@@ -1,24 +1,19 @@
 package com.alexstyl.specialdates.events;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.contact.Birthday;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.DeviceContact;
-import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.contact.ContactNotFoundException;
+import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.util.DateParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,32 +21,34 @@ import java.util.List;
 
 class BirthdayDatabaseRefresher {
 
-    @SuppressWarnings("unchecked")
-    private static final List<Contact> NO_CONTACTS = Collections.EMPTY_LIST;
+    private static final List<ContactEvent> NO_CONTACTS = Collections.emptyList();
+    private static final Optional<Contact> NO_CONTACT = Optional.absent();
 
+    private final ContactProvider contactProvider;
     private final ContentResolver contentResolver;
-    private final DateParser dateParser;
     private final PeopleEventsPersister persister;
-    private final BirthdayContentValuesMarshaller marshaller;
+    private final ContentValuesMarshaller marshaller;
 
     static BirthdayDatabaseRefresher newInstance(Context context) {
-        ContentResolver cr = context.getContentResolver();
-        DateParser dateParser = new DateParser();
+        ContactProvider contactProvider = ContactProvider.get(context);
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        BirthdayContentValuesMarshaller marshaller = new BirthdayContentValuesMarshaller();
-        return new BirthdayDatabaseRefresher(cr, dateParser, persister, marshaller);
+        ContentValuesMarshaller marshaller = new ContentValuesMarshaller();
+        return new BirthdayDatabaseRefresher(contactProvider, context.getContentResolver(), persister, marshaller);
     }
 
-    BirthdayDatabaseRefresher(ContentResolver contentResolver, DateParser dateParser, PeopleEventsPersister persister, BirthdayContentValuesMarshaller marshaller) {
+    BirthdayDatabaseRefresher(ContactProvider contactProvider,
+                              ContentResolver contentResolver,
+                              PeopleEventsPersister persister,
+                              ContentValuesMarshaller marshaller) {
         this.contentResolver = contentResolver;
-        this.dateParser = dateParser;
         this.persister = persister;
         this.marshaller = marshaller;
+        this.contactProvider = contactProvider;
     }
 
     public void refreshBirthdays() {
         clearAllBirthdays();
-        List<Contact> contacts = loadBirtdaysFromDisk();
+        List<ContactEvent> contacts = loadBirtdaysFromDisk();
         storeContactsToProvider(contacts);
     }
 
@@ -59,28 +56,23 @@ class BirthdayDatabaseRefresher {
         persister.deleteAllBirthdays();
     }
 
-    private List<Contact> loadBirtdaysFromDisk() {
-        Cursor cursor = Query.query(contentResolver);
+    private List<ContactEvent> loadBirtdaysFromDisk() {
+        Cursor cursor = BirthdayQuery.query(contentResolver);
         if (isInvalid(cursor)) {
             return NO_CONTACTS;
         }
-        List<Contact> contacts = new ArrayList<>();
+        List<ContactEvent> contacts = new ArrayList<>();
         try {
             while (cursor.moveToNext()) {
-                String dateOfBirthText = cursor.getString(Query.BIRTHDAY);
-                Birthday dateOfBirth;
-                try {
-                    dateOfBirth = birthdayOn(dateOfBirthText);
-                } catch (DateParseException e) {
-                    ErrorTracker.track(e);
+                int contactIdIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
+                long contactId = cursor.getLong(contactIdIndex);
+                Optional<Contact> optional = getDeviceContactWithId(contactId);
+                if (!optional.isPresent()) {
                     continue;
                 }
-                long id = cursor.getLong(Query.ID);
-
-                DisplayName display = getDisplayNameFrom(cursor);
-                String lookup = cursor.getString(Query.LOOKUP_KEY);
-                DeviceContact contact = new DeviceContact(id, display, lookup, dateOfBirth);
-                contacts.add(contact);
+                Contact contact = optional.get();
+                DayDate birthday = contact.getBirthday().asDayDate();
+                contacts.add(new ContactEvent(EventType.BIRTHDAY, birthday, contact));
             }
         } finally {
             cursor.close();
@@ -88,20 +80,20 @@ class BirthdayDatabaseRefresher {
         return contacts;
     }
 
-    private DisplayName getDisplayNameFrom(Cursor cursor) {
-        return DisplayName.from(cursor.getString(Query.DISPLAY_NAME));
-    }
-
-    private Birthday birthdayOn(String bday) throws DateParseException {
-        DayDate parsedDate = dateParser.parse(bday);
-        return Birthday.on(parsedDate);
+    private Optional<Contact> getDeviceContactWithId(long id) {
+        try {
+            Contact contact = contactProvider.getOrCreateContact(id);
+            return new Optional<>(contact);
+        } catch (ContactNotFoundException e) {
+            return NO_CONTACT;
+        }
     }
 
     private boolean isInvalid(Cursor cursor) {
         return cursor == null || cursor.isClosed();
     }
 
-    private void storeContactsToProvider(List<Contact> contacts) {
+    private void storeContactsToProvider(List<ContactEvent> contacts) {
         ContentValues[] values = marshaller.marshall(contacts);
         persister.insertAnnualEvents(values);
     }
@@ -109,8 +101,7 @@ class BirthdayDatabaseRefresher {
     /**
      * Contract that queries birthdays only
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private static final class Query {
+    private static final class BirthdayQuery {
         /**
          * Queries the contacts tables for birthdays with the default settings.
          */
@@ -125,28 +116,13 @@ class BirthdayDatabaseRefresher {
                 "(" + ContactsContract.Data.MIMETYPE + " = ? AND " +
                         ContactsContract.CommonDataKinds.Event.TYPE
                         + "="
-                        + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + ")"
-                        + " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + " = 1";
+                        + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + ")";
+//                        + " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + " = 1";
 
-        public static final String[] WHERE_ARGS = {
-                ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE
-        };
-
-        @SuppressLint("InlinedApi")
+        public static final String[] WHERE_ARGS = {ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE};
         public final static String SORT_ORDER = COL_DISPLAY_NAME;
-
-        @SuppressLint("InlinedApi")
-        public static final String[] PROJECTION = {
-                ContactsContract.Data.CONTACT_ID,     //0
-                ContactsContract.Contacts.LOOKUP_KEY, //1
-                COL_DISPLAY_NAME, //2
-                ContactsContract.CommonDataKinds.Event.START_DATE, //3
-        };
+        public static final String[] PROJECTION = {ContactsContract.Data.CONTACT_ID};
         public static final int ID = 0;
-        public static final int LOOKUP_KEY = 1;
-        public static final int DISPLAY_NAME = 2;
-
-        public static final int BIRTHDAY = 3;
 
     }
 }
