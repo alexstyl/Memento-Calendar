@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
+ext {
+    android_support_version = '24.2.1'
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
@@ -66,11 +70,11 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', exclude: 'android-support-v4.jar', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
-    compile 'com.android.support:transition:24.2.0'
+    compile "com.android.support:design:$android_support_version"
+    compile "com.android.support:appcompat-v7:$android_support_version"
+    compile "com.android.support:recyclerview-v7:$android_support_version"
+    compile "com.android.support:transition:$android_support_version"
+    compile "com.android.support:support-annotations:$android_support_version"
     compile 'net.danlew:android.joda:2.8.0'
     compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
         exclude module: 'support-v4'
