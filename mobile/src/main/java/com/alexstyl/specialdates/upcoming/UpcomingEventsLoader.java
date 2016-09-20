@@ -84,7 +84,7 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
 
     private List<NamesInADate> getNamedaysFor(LoadingTimeDuration timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext());
+        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, currentYear);
 
         DayDate indexDate = timeDuration.getFrom();

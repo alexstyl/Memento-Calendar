@@ -44,7 +44,7 @@ public class NamedayDatabaseRefresher {
 
     public static NamedayDatabaseRefresher newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
-        NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context);
+        NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context.getResources());
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactProvider contactProvider = ContactProvider.get(context);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();

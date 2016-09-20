@@ -1,10 +1,10 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import android.support.annotation.RawRes;
+import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 interface JSONResourceLoader {
-    JSONObject getJSON(@RawRes int jsonRawId) throws JSONException;
+    JSONObject loadJSON(NamedayLocale locale) throws JSONException;
 }

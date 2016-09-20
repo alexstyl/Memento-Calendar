@@ -1,7 +1,8 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import android.content.res.Resources;
-import android.support.annotation.RawRes;
+
+import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,8 +20,8 @@ public class AndroidJSONResourceLoader implements JSONResourceLoader {
     }
 
     @Override
-    public JSONObject getJSON(@RawRes int jsonRawId) throws JSONException {
-        InputStream inputStream = resources.openRawResource(jsonRawId);
+    public JSONObject loadJSON(NamedayLocale locale) throws JSONException {
+        InputStream inputStream = resources.openRawResource(locale.getRawResId());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         int ctr;

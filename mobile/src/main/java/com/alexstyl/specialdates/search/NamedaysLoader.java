@@ -48,7 +48,7 @@ public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
     private NamedayCalendar getNamedayCalendar() {
         if (namedayCalendar == null) {
             NamedayLocale locale = NamedayPreferences.newInstance(getContext()).getSelectedLanguage();
-            namedayCalendar = NamedayCalendarProvider.newInstance(getContext()).loadNamedayCalendarForLocale(locale, year);
+            namedayCalendar = NamedayCalendarProvider.newInstance(getContext().getResources()).loadNamedayCalendarForLocale(locale, year);
         }
         return namedayCalendar;
 

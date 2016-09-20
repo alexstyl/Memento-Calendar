@@ -58,7 +58,7 @@ public class DailyReminderIntentService extends IntentService {
         super.onCreate();
         notifier = Notifier.newInstance(this);
         namedayPreferences = NamedayPreferences.newInstance(this);
-        namedayCalendarProvider = NamedayCalendarProvider.newInstance(this);
+        namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
         checker = new PermissionChecker(this);
     }

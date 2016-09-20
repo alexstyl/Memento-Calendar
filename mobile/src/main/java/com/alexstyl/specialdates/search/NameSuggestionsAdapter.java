@@ -27,7 +27,7 @@ public class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder>
 
     public static NameSuggestionsAdapter newInstance(Context context) {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context);
+        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         WordComparator compatator;
         if (locale.isComparedBySounds()) {
