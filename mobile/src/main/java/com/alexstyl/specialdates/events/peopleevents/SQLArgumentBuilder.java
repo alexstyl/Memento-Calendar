@@ -1,7 +1,7 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.database.EventColumns;
+import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 
@@ -11,19 +11,19 @@ class SQLArgumentBuilder {
 
     private static final String date = PeopleEventsContract.PeopleEvents.DATE;
 
-    public String dateBetween(LoadingTimeDuration duration) {
+    String dateIn(int year) {
+        return String.format(Locale.US, "'%d' || substr(date, -6) as '%s'", year, AnnualEvents.DATE);
+    }
+
+    String dateBetween(LoadingTimeDuration duration) {
         return dateFrom(duration.getFrom()) + " AND " + dateTo(duration.getTo());
     }
 
-    public String dateFrom(Date date) {
+    private String dateFrom(Date date) {
         return String.format(Locale.US, "'%d' || substr(%s,-6) >= '%s'", date.getYear(), SQLArgumentBuilder.date, date.toString());
     }
 
-    public String dateTo(Date date) {
+    private String dateTo(Date date) {
         return String.format(Locale.US, "'%d' || substr(%s,-6) <= '%s'", date.getYear(), SQLArgumentBuilder.date, date.toString());
-    }
-
-    public String dateIn(int year) {
-        return String.format(Locale.US, "'%d' || substr(date, -6) as '%s'", year, EventColumns.DATE);
     }
 }

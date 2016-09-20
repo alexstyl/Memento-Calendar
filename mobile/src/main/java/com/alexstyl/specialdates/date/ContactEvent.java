@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 /**
  * A representation of an event, affiliated to a contact

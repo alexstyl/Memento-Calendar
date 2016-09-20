@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -11,11 +11,11 @@ import android.support.annotation.Nullable;
 
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract;
+import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
@@ -64,7 +64,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
             cursors[0] = queryAnnualEvents(projection, selection, selectionArgs, sortOrder, db, builder);
             cursors[1] = queryDynamicEvents(projection, selection, selectionArgs, sortOrder, db, builder);
 
-            SortCursor sortCursor = new SortCursor(cursors, EventColumns.DATE);
+            SortCursor sortCursor = new SortCursor(cursors, AnnualEvents.DATE);
             sortCursor.setNotificationUri(getContext().getContentResolver(), uri);
             return sortCursor;
         } else {
@@ -83,7 +83,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
     }
 
     private Cursor queryAnnualEvents(String[] projection, String selection, String[] selectionArgs, String sortOrder, SQLiteDatabase db, SQLiteQueryBuilder builder) {
-        builder.setTables(EventsDBContract.AnnualEvents.TABLE_NAME);
+        builder.setTables(AnnualEvents.TABLE_NAME);
 
         if (selectionArgs != null) {
             LoadingTimeDuration duration = getDurationfrom(selection, selectionArgs);
@@ -99,7 +99,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
         }
         String[] newProjection = new String[projection.length];
         for (int i = 0; i < newProjection.length; i++) {
-            if (EventColumns.DATE.equals(projection[i])) {
+            if (AnnualEvents.DATE.equals(projection[i])) {
                 newProjection[i] = sqlArgumentBuilder.dateIn(year);
             } else {
                 newProjection[i] = projection[i];

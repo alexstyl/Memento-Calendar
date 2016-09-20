@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;

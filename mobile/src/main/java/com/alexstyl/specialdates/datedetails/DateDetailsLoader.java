@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.util.ContactsObserver;

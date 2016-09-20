@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.date;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 

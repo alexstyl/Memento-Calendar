@@ -27,7 +27,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
