@@ -1,12 +1,13 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
-public class RomanianEasterSpecialCalculator {
+class RomanianEasterSpecialCalculator {
 
     private final EasterCalculator easterCalculator;
 
-    public RomanianEasterSpecialCalculator() {
+    RomanianEasterSpecialCalculator() {
         easterCalculator = new EasterCalculator();
     }
 

@@ -4,9 +4,6 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
-import com.alexstyl.specialdates.events.namedays.calendar.CharacterNode;
-import com.alexstyl.specialdates.events.namedays.calendar.Node;
-import com.alexstyl.specialdates.events.namedays.calendar.SoundNode;
 import com.novoda.notils.exception.DeveloperError;
 
 import org.joda.time.IllegalFieldValueException;
@@ -14,17 +11,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NamedayJSONParser {
+class NamedayJSONParser {
 
     private NamedayJSONParser() {
         // hide this
     }
 
-    public static NamedayBundle createAsSounds(NamedayJSON json) {
+    static NamedayBundle createAsSounds(NamedayJSON json) {
         return createBundleWith(json, new SoundNode());
     }
 
-    public static NamedayBundle create(NamedayJSON json) {
+    static NamedayBundle create(NamedayJSON json) {
         return createBundleWith(json, new CharacterNode());
     }
 

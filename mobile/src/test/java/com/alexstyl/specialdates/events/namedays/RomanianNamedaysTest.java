@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.namedays.calendar.RomanianNamedays;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianNamedays;
 
 import java.util.ArrayList;
 import java.util.Arrays;

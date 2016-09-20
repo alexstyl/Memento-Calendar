@@ -1,13 +1,12 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSON;
 
 import org.json.JSONArray;
 
-public class SpecialNamedaysHandlerFactory {
+class SpecialNamedaysHandlerFactory {
 
-    public SpecialNamedaysStrategy createStrategyForLocale(NamedayLocale locale, NamedayJSON namedayJSON) {
+    SpecialNamedaysStrategy createStrategyForLocale(NamedayLocale locale, NamedayJSON namedayJSON) {
         JSONArray specialJSON = namedayJSON.getSpecial();
         if (isGreekLocale(locale)) {
             return GreekSpecialNamedaysStrategy.from(specialJSON);

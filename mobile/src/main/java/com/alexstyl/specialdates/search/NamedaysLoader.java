@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;

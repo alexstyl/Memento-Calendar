@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;

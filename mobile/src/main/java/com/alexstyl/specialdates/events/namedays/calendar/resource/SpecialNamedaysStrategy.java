@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;

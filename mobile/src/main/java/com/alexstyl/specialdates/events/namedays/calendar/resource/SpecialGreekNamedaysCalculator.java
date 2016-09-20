@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import android.content.Context;
 
@@ -7,21 +7,22 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
+import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class SpecialGreekNamedaysCalculator {
+class SpecialGreekNamedaysCalculator {
 
     private final List<EasternNameday> easternNamedays;
     private final Context context;
 
-    public SpecialGreekNamedaysCalculator(List<EasternNameday> easternNamedays) {
+    SpecialGreekNamedaysCalculator(List<EasternNameday> easternNamedays) {
         this.easternNamedays = easternNamedays;
         this.context = MementoApplication.getContext();
     }
 
-    public NamedayBundle calculateForEasterDate(DayDate easter) {
+    NamedayBundle calculateForEasterDate(DayDate easter) {
         Node node = new SoundNode();
         NamedaysList namedaysList = new NamedaysList();
 
