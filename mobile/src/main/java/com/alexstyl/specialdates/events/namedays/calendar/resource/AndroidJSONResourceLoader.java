@@ -11,7 +11,7 @@ import java.io.InputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class AndroidJSONResourceLoader implements JSONResourceLoader {
+class AndroidJSONResourceLoader implements NamedayJSONResourceLoader {
 
     private final Resources resources;
 
