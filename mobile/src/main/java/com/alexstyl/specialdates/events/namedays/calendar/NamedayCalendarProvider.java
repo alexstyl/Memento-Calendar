@@ -6,10 +6,10 @@ import android.content.res.Resources;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.resource.AndroidJSONResourceLoader;
-import com.alexstyl.specialdates.events.namedays.resource.NamedayJSON;
-import com.alexstyl.specialdates.events.namedays.resource.NamedayJSONParser;
-import com.alexstyl.specialdates.events.namedays.resource.NamedayJSONResourceProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.AndroidJSONResourceLoader;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSON;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONParser;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONResourceProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
