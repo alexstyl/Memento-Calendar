@@ -15,14 +15,10 @@ public class NamedayJSONResourceProvider {
     }
 
     public NamedayJSON getNamedayJSONFor(NamedayLocale locale) throws JSONException {
-        try {
-            JSONObject json = loader.getJSON(locale.getRawResId());
-            JSONArray data = json.getJSONArray("data");
-            JSONArray special = json.getJSONArray("special");
-            return new NamedayJSON(data, special);
-        } catch (JSONException ex) {
-            throw ex;
-        }
+        JSONObject json = loader.getJSON(locale.getRawResId());
+        JSONArray data = json.getJSONArray("data");
+        JSONArray special = json.getJSONArray("special");
+        return new NamedayJSON(data, special);
     }
 
 }

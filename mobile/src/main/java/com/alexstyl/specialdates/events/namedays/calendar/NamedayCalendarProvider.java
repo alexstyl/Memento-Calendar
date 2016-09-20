@@ -17,6 +17,7 @@ import org.json.JSONException;
 public class NamedayCalendarProvider {
 
     private static NamedayCalendar cachedCalendar;
+
     private final SpecialNamedaysHandlerFactory factory;
     private final NamedayJSONResourceProvider jsonResourceProvider;
 
