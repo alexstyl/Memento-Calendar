@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.events;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.database.EventColumns;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 
 import java.util.Locale;

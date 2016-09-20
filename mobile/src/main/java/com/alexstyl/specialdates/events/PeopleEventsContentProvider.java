@@ -11,7 +11,9 @@ import android.support.annotation.Nullable;
 
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.PeopleEventsContract.PeopleEvents;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
+import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;

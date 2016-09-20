@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.database;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.EventType;
 
 public class PeopleEventsContract {
 
@@ -15,6 +16,7 @@ public class PeopleEventsContract {
     public static class PeopleEvents implements BaseColumns, ContactColumns, EventColumns {
 
         private PeopleEvents() {
+            // hide this
         }
 
         public static final String PATH = "people_events";

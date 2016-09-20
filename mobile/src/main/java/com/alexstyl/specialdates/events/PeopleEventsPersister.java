@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
 import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEvents;
