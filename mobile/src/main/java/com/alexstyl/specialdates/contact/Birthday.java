@@ -65,6 +65,11 @@ public class Birthday implements ShortDate {
         return year - yearOfBirth.get();
     }
 
+    public DayDate asDayDate() {
+        return includesYear() ? DayDate.newInstance(getDayOfMonth(), getMonth(), getYear())
+                : DayDate.newInstance(getDayOfMonth(), getMonth());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
