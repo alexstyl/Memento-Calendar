@@ -69,7 +69,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         if (namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly()) {
             NamedayLocale locale = namedayPreferences.getSelectedLanguage();
-            NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(context).loadNamedayCalendarForLocale(locale, dateToDisplay.getYear());
+            NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(context.getResources()).loadNamedayCalendarForLocale(locale, dateToDisplay.getYear());
             NamesInADate names = namedayCalendar.getAllNamedayOn(dateToDisplay);
             if (names.nameCount() > 0) {
                 return new Optional<>(names);

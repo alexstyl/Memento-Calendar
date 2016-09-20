@@ -15,7 +15,7 @@ public class NamedayJSONResourceProvider {
     }
 
     public NamedayJSON getNamedayJSONFor(NamedayLocale locale) throws JSONException {
-        JSONObject json = loader.getJSON(locale.getRawResId());
+        JSONObject json = loader.loadJSON(locale);
         JSONArray data = json.getJSONArray("data");
         JSONArray special = json.getJSONArray("special");
         return new NamedayJSON(data, special);

@@ -98,7 +98,7 @@ public class SearchActivity extends ThemedActivity {
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
         int year = DayDate.today().getYear();
         NamedayLocale locale = NamedayPreferences.newInstance(this).getSelectedLanguage();
-        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this).loadNamedayCalendarForLocale(locale, year);
+        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this.getResources()).loadNamedayCalendarForLocale(locale, year);
 
         adapter = new SearchResultAdapter(imageLoader, namedayCalendar);
         adapter.setSearchResultClickListener(listener);
