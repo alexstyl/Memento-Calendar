@@ -8,9 +8,9 @@ import org.json.JSONObject;
 
 class NamedayJSONResourceProvider {
 
-    private final JSONResourceLoader loader;
+    private final NamedayJSONResourceLoader loader;
 
-    NamedayJSONResourceProvider(JSONResourceLoader loader) {
+    NamedayJSONResourceProvider(NamedayJSONResourceLoader loader) {
         this.loader = loader;
     }
 

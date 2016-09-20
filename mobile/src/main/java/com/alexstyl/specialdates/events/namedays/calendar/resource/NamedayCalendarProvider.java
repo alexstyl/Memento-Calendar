@@ -18,7 +18,7 @@ public class NamedayCalendarProvider {
     private final NamedayJSONResourceProvider jsonResourceProvider;
 
     public static NamedayCalendarProvider newInstance(Resources resources) {
-        AndroidJSONResourceLoader loader = new AndroidJSONResourceLoader(resources);
+        NamedayJSONResourceLoader loader = new AndroidJSONResourceLoader(resources);
         NamedayJSONResourceProvider jsonResourceProvider = new NamedayJSONResourceProvider(loader);
         SpecialNamedaysHandlerFactory factory = new SpecialNamedaysHandlerFactory();
         return new NamedayCalendarProvider(jsonResourceProvider, factory);
