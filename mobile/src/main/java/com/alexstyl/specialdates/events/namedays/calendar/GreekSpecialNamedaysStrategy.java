@@ -12,7 +12,7 @@ public final class GreekSpecialNamedaysStrategy implements SpecialNamedaysStrate
 
     private final GreekNamedays greekNamedays;
 
-    public static GreekSpecialNamedaysStrategy newInstance(JSONArray specialJSON) {
+    public static GreekSpecialNamedaysStrategy from(JSONArray specialJSON) {
         GreekNamedays greekNamedays = GreekNamedays.from(specialJSON);
         return new GreekSpecialNamedaysStrategy(greekNamedays);
     }

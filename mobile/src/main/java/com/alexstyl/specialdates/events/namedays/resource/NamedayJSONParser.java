@@ -1,10 +1,12 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.resource;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
-import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
+import com.alexstyl.specialdates.events.namedays.calendar.CharacterNode;
+import com.alexstyl.specialdates.events.namedays.calendar.Node;
+import com.alexstyl.specialdates.events.namedays.calendar.SoundNode;
 import com.novoda.notils.exception.DeveloperError;
 
 import org.joda.time.IllegalFieldValueException;
@@ -14,25 +16,29 @@ import org.json.JSONObject;
 
 public class NamedayJSONParser {
 
-    private static final String DATE = "date";
-    private static final String NAMES = "names";
-    private final NamedayLocale locale;
-
-    public NamedayJSONParser(NamedayLocale locale) {
-        this.locale = locale;
+    private NamedayJSONParser() {
+        // hide this
     }
 
-    NamedayBundle parseAsNamedays(JSONArray data) {
-        Node namesToDate = getNode(locale);
+    public static NamedayBundle createAsSounds(NamedayJSON json) {
+        return createBundleWith(json, new SoundNode());
+    }
+
+    public static NamedayBundle create(NamedayJSON json) {
+        return createBundleWith(json, new CharacterNode());
+    }
+
+    private static NamedayBundle createBundleWith(NamedayJSON locale, Node namesToDate) {
         NamedaysList dateToNames = new NamedaysList();
 
+        JSONArray data = locale.getData();
         int size = data.length();
         for (int i = 0; i < size; i++) {
             try {
                 JSONObject nameday;
 
                 nameday = (JSONObject) data.get(i);
-                String dateString = nameday.getString(DATE);
+                String dateString = nameday.getString("date");
                 DayDate theDate;
                 try {
                     theDate = parse(dateString);
@@ -41,7 +47,7 @@ public class NamedayJSONParser {
                     continue;
                 }
 
-                JSONArray variations = nameday.getJSONArray(NAMES);
+                JSONArray variations = nameday.getJSONArray("names");
                 int numberOfVariations = variations.length();
                 for (int varCount = 0; varCount < numberOfVariations; varCount++) {
                     String variation = variations.getString(varCount);
@@ -56,14 +62,6 @@ public class NamedayJSONParser {
         }
 
         return new NamedayBundle(namesToDate, dateToNames);
-
-    }
-
-    private Node getNode(NamedayLocale locale) {
-        if (locale.isComparedBySounds()) {
-            return new SoundNode();
-        }
-        return new CharacterNode();
     }
 
     private static DayDate parse(String date) {
