@@ -1,11 +1,10 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
 import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEvents;
@@ -19,11 +18,11 @@ public class PeopleEventsPersister {
     }
 
     public void deleteAllNamedays() {
-        deleteAllEventsOfType(EventColumns.TYPE_NAMEDAY);
+        deleteAllEventsOfType(AnnualEvents.TYPE_NAMEDAY);
     }
 
     public void deleteAllBirthdays() {
-        deleteAllEventsOfType(EventColumns.TYPE_BIRTHDAY);
+        deleteAllEventsOfType(AnnualEvents.TYPE_BIRTHDAY);
     }
 
     private void deleteAllEventsOfType(int type) {

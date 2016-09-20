@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 public class PeopleEventsContract {
 

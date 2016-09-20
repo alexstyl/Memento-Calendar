@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
