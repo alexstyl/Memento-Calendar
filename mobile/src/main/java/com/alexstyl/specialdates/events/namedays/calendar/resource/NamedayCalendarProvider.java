@@ -15,7 +15,7 @@ public class NamedayCalendarProvider {
     private static NamedayCalendar cachedCalendar;
 
     private final SpecialNamedaysHandlerFactory factory;
-    private final NamedayJSONResourceProvider jsonResourceProvider;
+    private final NamedayJSONResourceProvider jsonProvider;
 
     public static NamedayCalendarProvider newInstance(Resources resources) {
         NamedayJSONResourceLoader loader = new AndroidJSONResourceLoader(resources);
@@ -24,9 +24,10 @@ public class NamedayCalendarProvider {
         return new NamedayCalendarProvider(jsonResourceProvider, factory);
     }
 
-    private NamedayCalendarProvider(NamedayJSONResourceProvider jsonResourceProvider, SpecialNamedaysHandlerFactory factory) {
+    // eventually we will use DI to provide this
+    public NamedayCalendarProvider(NamedayJSONResourceProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
         this.factory = factory;
-        this.jsonResourceProvider = jsonResourceProvider;
+        this.jsonProvider = jsonProvider;
     }
 
     public NamedayCalendar loadNamedayCalendarForLocale(NamedayLocale locale, int year) {
@@ -45,7 +46,7 @@ public class NamedayCalendarProvider {
 
     private NamedayJSON getNamedayJSONFor(NamedayLocale locale) {
         try {
-            return jsonResourceProvider.getNamedayJSONFor(locale);
+            return jsonProvider.getNamedayJSONFor(locale);
         } catch (JSONException e) {
             ErrorTracker.track(e);
             return new NamedayJSON(new JSONArray(), new JSONArray());
