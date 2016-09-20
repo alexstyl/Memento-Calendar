@@ -2,20 +2,20 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import org.json.JSONArray;
 
-public class NamedayJSON {
+class NamedayJSON {
     private final JSONArray data;
     private final JSONArray special;
 
-    public NamedayJSON(JSONArray data, JSONArray special) {
+    NamedayJSON(JSONArray data, JSONArray special) {
         this.data = data;
         this.special = special;
     }
 
-    public JSONArray getData() {
+    JSONArray getData() {
         return data;
     }
 
-    public JSONArray getSpecial() {
+    JSONArray getSpecial() {
         return special;
     }
 }

@@ -6,15 +6,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NamedayJSONResourceProvider {
+class NamedayJSONResourceProvider {
 
     private final JSONResourceLoader loader;
 
-    public NamedayJSONResourceProvider(JSONResourceLoader loader) {
+    NamedayJSONResourceProvider(JSONResourceLoader loader) {
         this.loader = loader;
     }
 
-    public NamedayJSON getNamedayJSONFor(NamedayLocale locale) throws JSONException {
+    NamedayJSON getNamedayJSONFor(NamedayLocale locale) throws JSONException {
         JSONObject json = loader.loadJSON(locale);
         JSONArray data = json.getJSONArray("data");
         JSONArray special = json.getJSONArray("special");

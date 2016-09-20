@@ -1,8 +1,10 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
+import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,11 +11,11 @@ import java.io.InputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AndroidJSONResourceLoader implements JSONResourceLoader {
+class AndroidJSONResourceLoader implements JSONResourceLoader {
 
     private final Resources resources;
 
-    public AndroidJSONResourceLoader(Resources resources) {
+    AndroidJSONResourceLoader(Resources resources) {
         this.resources = resources;
     }
 

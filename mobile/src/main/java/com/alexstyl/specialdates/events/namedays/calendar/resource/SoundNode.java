@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.gsc.Index;
 import com.alexstyl.gsc.Sound;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SoundNode implements Serializable, Node {
+class SoundNode implements Serializable, Node {
 
     private static final NameCelebrations NO_NAMEDAYS = new NameCelebrations("", new Dates());
 
@@ -19,7 +19,7 @@ public class SoundNode implements Serializable, Node {
     private List<SoundNode> nodes; // a b c d
     private NameCelebrations dates; // Name
 
-    public SoundNode() {
+    SoundNode() {
         this(null);
     }
 
