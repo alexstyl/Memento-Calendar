@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.ContentValuesMarshaller;
+import com.alexstyl.specialdates.events.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.EventType;
 import com.alexstyl.specialdates.events.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -40,14 +40,14 @@ public class NamedayDatabaseRefresher {
     private final NamedayCalendarProvider namedayCalendarProvider;
     private final NamedayPreferences namedayPreferences;
     private final PeopleEventsPersister perister;
-    private final ContentValuesMarshaller eventMarshaller;
+    private final ContactEventsMarshaller eventMarshaller;
 
     public static NamedayDatabaseRefresher newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactProvider contactProvider = ContactProvider.get(context);
-        ContentValuesMarshaller marshaller = new ContentValuesMarshaller();
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller);
     }
@@ -56,7 +56,7 @@ public class NamedayDatabaseRefresher {
                              NamedayCalendarProvider namedayCalendarProvider,
                              NamedayPreferences namedayPreferences,
                              PeopleEventsPersister databaseProvider, ContactProvider contactProvider,
-                             ContentValuesMarshaller eventMarshaller) {
+                             ContactEventsMarshaller eventMarshaller) {
         this.contentResolver = contentResolver;
         this.namedayCalendarProvider = namedayCalendarProvider;
         this.namedayPreferences = namedayPreferences;

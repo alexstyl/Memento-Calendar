@@ -3,11 +3,11 @@ package com.alexstyl.specialdates.upcoming;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.EventType;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 

@@ -4,9 +4,9 @@ import android.content.res.Resources;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.DeviceContact;
 import com.alexstyl.specialdates.events.EventType;
 
 import org.junit.Before;
@@ -21,8 +21,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ContactEventTest {
 
-    private static final String NO_LOOKUP_KEY = null;
-    private static final Contact CONTACT_WITHOUT_BIRTHDAY = new DeviceContact(1, DisplayName.from("Peter"), NO_LOOKUP_KEY);
+    private static final Contact CONTACT_WITHOUT_BIRTHDAY = new TestContact(1, DisplayName.from("Peter"));
     private static final DayDate SOME_DATE = DayDate.newInstance(1, 1, 1990);
 
     @Mock
@@ -78,11 +77,11 @@ public class ContactEventTest {
     }
 
     private Contact contactWithBirthdayOn(int dayOfMonth, int month, int year) {
-        return new DeviceContact(1, DisplayName.from("Peter"), NO_LOOKUP_KEY, Birthday.on(dayOfMonth, month, year));
+        return new TestContact(1, DisplayName.from("Peter"), Birthday.on(dayOfMonth, month, year));
     }
 
     private Contact contactWithBirthdayOn(int day, int month) {
-        return new DeviceContact(1, DisplayName.from("Peter"), NO_LOOKUP_KEY, Birthday.on(day, month));
+        return new TestContact(1, DisplayName.from("Peter"), Birthday.on(day, month));
     }
 
 }
