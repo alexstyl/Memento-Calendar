@@ -26,7 +26,7 @@ public final class GreekNamedays {
 
     public static GreekNamedays from(JSONArray specialJSON) {
         EasternNamedaysExtractor extractor = new EasternNamedaysExtractor(specialJSON);
-        List<EasternNameday> namedays = extractor.parse(); // TODO performing haevy operation on constructor
+        List<EasternNameday> namedays = extractor.parse();
         SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator = new SpecialGreekNamedaysCalculator(namedays);
         return new GreekNamedays(specialGreekNamedaysCalculator);
     }

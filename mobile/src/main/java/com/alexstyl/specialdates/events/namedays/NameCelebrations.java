@@ -13,6 +13,11 @@ public class NameCelebrations {
     private final String name;
     private final Dates dates;
 
+    public NameCelebrations(String name) {
+        this.name = name;
+        this.dates = new Dates();
+    }
+
     public NameCelebrations(String name, DayDate easter) {
         this(name, new Dates(easter));
     }
@@ -20,11 +25,6 @@ public class NameCelebrations {
     public NameCelebrations(String name, Dates dates) {
         this.name = name;
         this.dates = dates;
-    }
-
-    public NameCelebrations(String name) {
-        this.name = name;
-        this.dates = new Dates();
     }
 
     public String getName() {
