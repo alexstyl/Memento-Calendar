@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.events.database.EventColumns;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;

@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.events;
 
+import com.alexstyl.specialdates.events.database.EventColumns;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;

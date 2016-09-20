@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
 import com.alexstyl.specialdates.events.ContactEvents;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.EventType;
-import com.alexstyl.specialdates.events.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 import com.novoda.notils.exception.DeveloperError;

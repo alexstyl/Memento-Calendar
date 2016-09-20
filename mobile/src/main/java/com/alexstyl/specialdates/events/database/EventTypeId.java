@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events;
+package com.alexstyl.specialdates.events.database;
 
 import android.support.annotation.IntDef;
 

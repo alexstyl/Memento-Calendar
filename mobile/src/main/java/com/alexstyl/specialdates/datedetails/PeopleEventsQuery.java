@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.datedetails;
 
-import com.alexstyl.specialdates.events.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 
 public class PeopleEventsQuery {
 

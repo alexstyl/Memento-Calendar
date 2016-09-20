@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
-import com.alexstyl.specialdates.events.PeopleEventsContract.PeopleEvents;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
