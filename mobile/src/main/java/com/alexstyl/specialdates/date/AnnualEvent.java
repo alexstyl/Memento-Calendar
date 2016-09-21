@@ -8,7 +8,7 @@ public class AnnualEvent implements Date {
     private final int dayOfMonth;
     private final int month;
 
-    public AnnualEvent(int dayOfMonth, int month) {
+    public AnnualEvent(int dayOfMonth, @MonthInt int month) {
         this.dayOfMonth = dayOfMonth;
         this.month = month;
     }
@@ -23,6 +23,7 @@ public class AnnualEvent implements Date {
         return dayOfMonth;
     }
 
+    @MonthInt
     @Override
     public int getMonth() {
         return month;
