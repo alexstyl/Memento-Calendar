@@ -1,80 +1,38 @@
 package com.alexstyl.specialdates.date;
 
-import android.support.annotation.NonNull;
-
 import com.alexstyl.specialdates.contact.ShortDate;
-
-import java.util.Calendar;
 
 import org.joda.time.LocalDate;
 
-public class DayDate implements Comparable<Date>, Date, ShortDate {
-
-    public static final int NO_YEAR = -1;
-
-    public static final int JANUARY = 1;
-    public static final int FEBRUARY = 2;
-    public static final int MARCH = 3;
-    public static final int APRIL = 4;
-    public static final int MAY = 5;
-    public static final int JUNE = 6;
-    public static final int JULY = 7;
-    public static final int AUGUST = 8;
-    public static final int SEPTEMBER = 9;
-    public static final int OCTOBER = 10;
-    public static final int NOVEMBER = 11;
-    public static final int DECEMBER = 12;
-
-    public static int MONDAY = 1;
-    public static int TUESDAY = 2;
-    public static int WEDNESDAY = 3;
-    public static int THURSDAY = 4;
-    public static int FRIDAY = 5;
-    public static int SATURDAY = 6;
-    public static int SUNDAY = 7;
+/**
+ * A specific date on a specific year
+ */
+public class DayDate implements Comparable<DayDate>, ShortDate, Date {
 
     private final LocalDate localDate;
-    private final boolean includesYear;
 
     public static DayDate today() {
         LocalDate localDate = LocalDate.now();
-        return new DayDate(localDate, true);
+        return new DayDate(localDate);
     }
 
-    public static DayDate newInstance(DayDate dayDate) {
-        int dayOfMonth = dayDate.getDayOfMonth();
-        int month = dayDate.getMonth();
-        int year = dayDate.getYear();
-
-        return DayDate.newInstance(dayOfMonth, month, year);
-    }
-
-    public static DayDate newInstance(int dayOfMonth, int month) {
-        return newInstance(dayOfMonth, month, NO_YEAR);
+    public static int todaysYear() {
+        LocalDate localDate = LocalDate.now();
+        return localDate.getYear();
     }
 
     public static DayDate newInstance(int dayOfMonth, int month, int year) {
         LocalDate localDate = new LocalDate(year, month, dayOfMonth);
-        boolean includesYear = year != NO_YEAR;
-        return new DayDate(localDate, includesYear);
+        return new DayDate(localDate);
     }
 
-    private DayDate(LocalDate localDate, boolean includesYear) {
+    private DayDate(LocalDate localDate) {
         this.localDate = localDate;
-        this.includesYear = includesYear;
-    }
-
-    public static DayDate newInstance(Calendar easter) {
-        int dayOfMonth = easter.get(Calendar.DAY_OF_MONTH);
-        int month = easter.get(Calendar.MONTH);
-        int year = easter.get(Calendar.YEAR);
-
-        return DayDate.newInstance(dayOfMonth, month, year);
     }
 
     public DayDate addDay(int i) {
         LocalDate addedDate = localDate.plusDays(i);
-        return new DayDate(addedDate, containsYear(addedDate));
+        return new DayDate(addedDate);
     }
 
     @Override
@@ -87,80 +45,34 @@ public class DayDate implements Comparable<Date>, Date, ShortDate {
         return localDate.getMonthOfYear();
     }
 
-    @Override
     public int getYear() {
-        if (includesYear) {
-            return localDate.getYear();
-        }
-        return NO_YEAR;
+        return localDate.getYear();
     }
 
     public DayDate addMonth(int m) {
         LocalDate minusDate = localDate.plusMonths(m);
-        return new DayDate(minusDate, containsYear(minusDate));
+        return new DayDate(minusDate);
     }
 
     public DayDate minusMonth(int m) {
         LocalDate minusDate = localDate.minusMonths(m);
-        return new DayDate(minusDate, containsYear(minusDate));
+        return new DayDate(minusDate);
     }
 
     @Override
     public String toString() {
-        return DateDisplayStringCreator.getInstance().stringOf(this);
-    }
-
-    private static boolean containsYear(LocalDate addedDate) {
-        return addedDate.getYear() != NO_YEAR;
-    }
-
-    @Override
-    public int compareTo(@NonNull Date another) {
-        if (this.getYear() != another.getYear()) {
-            return this.getYear() - another.getYear();
-        }
-        if (this.getMonth() != another.getMonth()) {
-            return this.getMonth() - another.getMonth();
-        }
-        return getDayOfMonth() - another.getDayOfMonth();
+        return localDate.toString();
     }
 
     public long toMillis() {
         return localDate.toDate().getTime();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        DayDate dayDate = (DayDate) o;
-
-        if (includesYear != dayDate.includesYear) {
-            return false;
-        }
-        return localDate.equals(dayDate.localDate);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = localDate.hashCode();
-        result = 31 * result + (includesYear ? 1 : 0);
-        return result;
-    }
-
-    @Override
-    public boolean isBefore(Date date) {
+    public boolean isBefore(DayDate date) {
         return compareTo(date) < 0;
     }
 
-    @Override
-    public boolean isAfter(Date date) {
+    public boolean isAfter(DayDate date) {
         return compareTo(date) > 0;
     }
 
@@ -174,7 +86,7 @@ public class DayDate implements Comparable<Date>, Date, ShortDate {
 
     public DayDate minusDay(int days) {
         LocalDate localDate = this.localDate.minusDays(days);
-        return new DayDate(localDate, true);
+        return new DayDate(localDate);
     }
 
     public static DayDate endOfYear(int currentYear) {
@@ -192,12 +104,41 @@ public class DayDate implements Comparable<Date>, Date, ShortDate {
     public int daysDifferenceTo(DayDate otherEvent) {
         int dayOfYear = localDate.dayOfYear().get();
         int otherDayOfYear = otherEvent.localDate.dayOfYear().get();
-        int daysOfYearsDifference = (getYear() - otherEvent.getYear()) * 365;
+        Integer daysOfYearsDifference = (yearOf(this) - yearOf(otherEvent)) * 365;
         return (otherDayOfYear - dayOfYear) - daysOfYearsDifference;
+    }
+
+    private Integer yearOf(DayDate otherEvent) {
+        return otherEvent.getYear();
     }
 
     @Override
     public String toShortDate() {
         return DateDisplayStringCreator.getInstance().stringOf(this);
+    }
+
+    @Override
+    public int compareTo(DayDate o) {
+        return localDate.compareTo(o.localDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DayDate dayDate = (DayDate) o;
+
+        return localDate.equals(dayDate.localDate);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return localDate.hashCode();
     }
 }

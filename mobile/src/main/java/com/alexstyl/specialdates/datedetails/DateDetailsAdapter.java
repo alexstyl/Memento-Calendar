@@ -28,6 +28,8 @@ import com.novoda.notils.exception.DeveloperError;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.alexstyl.specialdates.Optional.absent;
+
 public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int DETAILED_CARDS_NUMBER_LIMIT = 2;
@@ -75,20 +77,17 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return new Optional<>(names);
             }
         }
-        return Optional.absent();
+        return absent();
 
     }
 
     private static Optional<BankHoliday> getBankHolidayOptionalForDate(DayDate dateToDisplay, BankHolidaysPreferences bankHolidaysPreferences) {
-        Optional<BankHoliday> optional;
         if (bankHolidaysPreferences.isEnabled()) {
             BankholidayCalendar repository = BankholidayCalendar.get();
-            BankHoliday bankholiday = repository.getBankholidayFor(dateToDisplay);
-            optional = new Optional<>(bankholiday);
+            return repository.getBankholidayFor(dateToDisplay);
         } else {
-            optional = Optional.absent();
+            return Optional.absent();
         }
-        return optional;
     }
 
     DateDetailsAdapter(ImageLoader imageLoader,

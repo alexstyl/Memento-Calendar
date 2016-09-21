@@ -9,7 +9,6 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 /**
  * A date that contains celebrations. A CelebrationDate can contain namedays, and contacts celebrating
- * <p>Created by alexstyl on 20/07/15.</p>
  */
 public class CelebrationDate implements Comparable<CelebrationDate> {
 

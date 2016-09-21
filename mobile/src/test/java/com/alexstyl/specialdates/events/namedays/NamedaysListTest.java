@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.events.namedays;
 
+import com.alexstyl.specialdates.date.AnnualEvent;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DayDate;
 
 import org.junit.BeforeClass;
@@ -14,7 +16,7 @@ public class NamedaysListTest {
     private static final int FIXED_YEAR = 2015;
     private static final int FIXED_MONTH = 1;
 
-    private static final NamedaysList NAMEDAYS = new NamedaysList();
+    private static final NamedaysList namedays = new NamedaysList();
 
     @BeforeClass
     public static void setUp() {
@@ -22,47 +24,47 @@ public class NamedaysListTest {
     }
 
     private static void populateNamedays() {
-        NAMEDAYS.addNameday(DayDate.newInstance(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
-        NAMEDAYS.addNameday(DayDate.newInstance(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
-        NAMEDAYS.addNameday(DayDate.newInstance(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(DayDate.newInstance(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(DayDate.newInstance(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(DayDate.newInstance(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
 
-        NAMEDAYS.addNameday(DayDate.newInstance(4, FIXED_MONTH), RECURRING_NAMEDAY);
-        NAMEDAYS.addNameday(DayDate.newInstance(5, FIXED_MONTH), RECURRING_NAMEDAY);
+        namedays.addNameday(new AnnualEvent(4, FIXED_MONTH), RECURRING_NAMEDAY);
+        namedays.addNameday(new AnnualEvent(5, FIXED_MONTH), RECURRING_NAMEDAY);
 
     }
 
     @Test
     public void whenNoYearSpecified_thenRecurringEventIsReturned() {
-        DayDate dateWithNoYear = DayDate.newInstance(4, FIXED_MONTH);
+        Date dateWithNoYear = new AnnualEvent(4, FIXED_MONTH);
 
-        NamesInADate results = NAMEDAYS.getNamedaysFor(dateWithNoYear);
+        NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
         assertThat(results.getNames().get(0)).isEqualTo(RECURRING_NAMEDAY);
     }
 
     @Test
     public void whenNoYearSpecified_thenFixedYearEventIsNotReturned() {
-        DayDate dateWithNoYear = DayDate.newInstance(1, FIXED_MONTH);
+        Date dateWithNoYear = new AnnualEvent(1, FIXED_MONTH);
 
-        NamesInADate results = NAMEDAYS.getNamedaysFor(dateWithNoYear);
+        NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
         assertThat(results.getNames()).isEmpty();
     }
 
     @Test
     public void whenYearSpecified_thenFixedYearEventIsReturned() {
-        DayDate dateWithNoYear = DayDate.newInstance(1, FIXED_MONTH, FIXED_YEAR);
+        Date dateWithNoYear = DayDate.newInstance(1, FIXED_MONTH, FIXED_YEAR);
 
-        NamesInADate results = NAMEDAYS.getNamedaysFor(dateWithNoYear);
+        NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
         assertThat(results.getNames().get(0)).isEqualTo(FIXED_YEAR_NAMEDAY);
     }
 
     @Test
     public void whenYearSpecified_thenRecurringEventIsReturned() {
-        DayDate dateWithNoYear = DayDate.newInstance(4, FIXED_MONTH, FIXED_YEAR);
+        Date date = DayDate.newInstance(4, FIXED_MONTH, FIXED_YEAR);
 
-        NamesInADate results = NAMEDAYS.getNamedaysFor(dateWithNoYear);
+        NamesInADate results = namedays.getNamedaysFor(date);
 
         assertThat(results.getNames().get(0)).isEqualTo(RECURRING_NAMEDAY);
     }

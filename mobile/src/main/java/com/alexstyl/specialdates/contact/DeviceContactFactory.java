@@ -6,16 +6,17 @@ import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.ParsedDate;
+import com.alexstyl.specialdates.util.ContactEventDateParser;
 
 class DeviceContactFactory {
 
     private final ContentResolver resolver;
-    private final DateParser dateParser;
+    private final ContactEventDateParser dateParser;
 
-    DeviceContactFactory(ContentResolver contentResolver, DateParser dateParser) {
+    DeviceContactFactory(ContentResolver contentResolver, ContactEventDateParser dateParser) {
         resolver = contentResolver;
         this.dateParser = dateParser;
     }
@@ -36,7 +37,7 @@ class DeviceContactFactory {
         }
         String lookupKey = null;
         DisplayName displayName = null;
-        Birthday birthday = null;
+        Optional<Birthday> birthday = Optional.absent();
         boolean found = false;
         while (cursor.moveToNext()) {
             if (ContactsQuery.isBirthdayRow(cursor)) {
@@ -71,15 +72,26 @@ class DeviceContactFactory {
         return DisplayName.from(cursor.getString(ContactsQuery.DISPLAY_NAME));
     }
 
-    private Birthday getBirthdayFrom(Cursor cursor) {
-        String birthday = cursor.getString(ContactsQuery.BIRTHDAY);
+    private Optional<Birthday> getBirthdayFrom(Cursor cursor) {
+        String birthdayRaw = cursor.getString(ContactsQuery.BIRTHDAY);
         try {
-            DayDate parse = dateParser.parse(birthday);
-            return Birthday.on(parse);
+            Birthday birthday = getBirthdayFrom(birthdayRaw);
+            return new Optional<>(birthday);
         } catch (DateParseException e) {
             ErrorTracker.track(e);
+            return Optional.absent();
         }
-        return null;
+    }
+
+    private Birthday getBirthdayFrom(String birthdayRaw) throws DateParseException {
+        ParsedDate date = dateParser.parse(birthdayRaw);
+        Birthday birthday;
+        if (date.hasYear()) {
+            birthday = Birthday.on(date.getDayOfMonth(), date.getMonth(), date.getYear());
+        } else {
+            birthday = Birthday.on(date.getDayOfMonth(), date.getMonth());
+        }
+        return birthday;
     }
 
 }

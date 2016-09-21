@@ -1,12 +1,11 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
 import com.novoda.notils.exception.DeveloperError;
 
-import org.joda.time.IllegalFieldValueException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,11 +16,11 @@ class NamedayJSONParser {
         // hide this
     }
 
-    static NamedayBundle createAsSounds(NamedayJSON json) {
+    static NamedayBundle getNamedaysFromJSONasSounds(NamedayJSON json) {
         return createBundleWith(json, new SoundNode());
     }
 
-    static NamedayBundle create(NamedayJSON json) {
+    static NamedayBundle getNamedaysFrom(NamedayJSON json) {
         return createBundleWith(json, new CharacterNode());
     }
 
@@ -36,13 +35,7 @@ class NamedayJSONParser {
 
                 nameday = (JSONObject) data.get(i);
                 String dateString = nameday.getString("date");
-                DayDate theDate;
-                try {
-                    theDate = parse(dateString);
-                } catch (IllegalFieldValueException ex) {
-                    ex.printStackTrace();
-                    continue;
-                }
+                AnnualEvent theDate = getNamedaysFrom(dateString);
 
                 JSONArray variations = nameday.getJSONArray("names");
                 int numberOfVariations = variations.length();
@@ -61,14 +54,13 @@ class NamedayJSONParser {
         return new NamedayBundle(namesToDate, dateToNames);
     }
 
-    private static DayDate parse(String date) {
+    private static AnnualEvent getNamedaysFrom(String date) {
         int slashIndex = date.indexOf("/");
         if (slashIndex == -1) {
-            throw new DeveloperError("Unable to parse " + date);
+            throw new DeveloperError("Unable to getNamedaysFrom " + date);
         }
         int dayOfMonth = Integer.valueOf(date.substring(0, slashIndex));
         int month = Integer.valueOf(date.substring(slashIndex + 1));
-
-        return DayDate.newInstance(dayOfMonth, month);
+        return new AnnualEvent(dayOfMonth, month);
     }
 }

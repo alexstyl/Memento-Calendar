@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 import com.alexstyl.gsc.Index;
 import com.alexstyl.gsc.Sound;
 import com.alexstyl.gsc.SoundRules;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
@@ -57,11 +57,11 @@ class SoundNode implements Serializable, Node {
      * Adds the given date for the given word
      */
     @Override
-    public void addDate(String word, DayDate date) {
+    public void addDate(String word, Date date) {
         addDateInternal(new Index(word.length()), word, date);
     }
 
-    private void addDateInternal(Index index, String word, DayDate date) {
+    private void addDateInternal(Index index, String word, Date date) {
         Sound s = (index.hasEnded() ? null : SoundRules.getInstance().getNextSound(word, index, false));
         if (s == null) {
             if (dates == null) {

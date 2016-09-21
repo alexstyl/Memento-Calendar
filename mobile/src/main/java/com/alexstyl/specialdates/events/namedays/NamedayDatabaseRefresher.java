@@ -8,26 +8,20 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class NamedayDatabaseRefresher {
 
@@ -81,92 +75,94 @@ public class NamedayDatabaseRefresher {
     }
 
     private List<ContactEvent> loadDeviceStaticNamedays() {
-        Cursor cursor = DeviceContactsQuery.query(contentResolver);
-        if (isInvalidCursor(cursor)) {
-            return NO_EVENTS;
-        }
-
-        List<ContactEvent> namedayEvents = new ArrayList<>();
-        Set<Long> contactIDs = new HashSet<>();
-
-        while (cursor.moveToNext()) {
-            long id = DeviceContactsQuery.getID(cursor);
-
-            if (contactIDs.contains(id)) {
-                continue;
-            }
-            contactIDs.add(id);
-            Optional<Contact> contact = getDeviceContactWithId(id);
-            if (!contact.isPresent()) {
-                continue;
-            }
-
-            DisplayName displayName = DisplayName.from(getDisplayName(cursor));
-            HashSet<Nameday> namedays = new HashSet<>();
-            for (String firstName : displayName.getFirstNames()) {
-                NameCelebrations nameDays = getNamedaysOf(firstName);
-                if (nameDays.containsNoDate()) {
-                    continue;
-                }
-                int namedaysCount = nameDays.size();
-                for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = nameDays.getDate(i);
-                    Nameday nameday = new Nameday(date);
-                    if (namedays.contains(nameday)) {
-                        continue;
-                    }
-                    ContactEvent event = new ContactEvent(EventType.NAMEDAY, date, contact.get());
-                    namedayEvents.add(event);
-                    namedays.add(nameday);
-                }
-            }
-        }
-
-        cursor.close();
-        return namedayEvents;
+//        Cursor cursor = DeviceContactsQuery.query(contentResolver);
+//        if (isInvalidCursor(cursor)) {
+//            return NO_EVENTS;
+//        }
+//
+//        List<ContactEvent> namedayEvents = new ArrayList<>();
+//        Set<Long> contactIDs = new HashSet<>();
+//
+//        while (cursor.moveToNext()) {
+//            long id = DeviceContactsQuery.getID(cursor);
+//
+//            if (contactIDs.contains(id)) {
+//                continue;
+//            }
+//            contactIDs.add(id);
+//            Optional<Contact> contact = getDeviceContactWithId(id);
+//            if (!contact.isPresent()) {
+//                continue;
+//            }
+//
+//            DisplayName displayName = DisplayName.from(getDisplayName(cursor));
+//            HashSet<Nameday> namedays = new HashSet<>();
+//            for (String firstName : displayName.getFirstNames()) {
+//                NameCelebrations nameDays = getNamedaysOf(firstName);
+//                if (nameDays.containsNoDate()) {
+//                    continue;
+//                }
+//                int namedaysCount = nameDays.size();
+//                for (int i = 0; i < namedaysCount; i++) {
+//                    DayDate date = nameDays.getDate(i);
+//                    Nameday nameday = new Nameday(date);
+//                    if (namedays.contains(nameday)) {
+//                        continue;
+//                    }
+//                    ContactEvent event = new ContactEvent(EventType.NAMEDAY, date, contact.get());
+//                    namedayEvents.add(event);
+//                    namedays.add(nameday);
+//                }
+//            }
+//        }
+//
+//        cursor.close();
+//        return namedayEvents;
+        throw new UnsupportedOperationException("");
     }
 
     private List<ContactEvent> loadSpecialNamedays() {
-        Cursor cursor = DeviceContactsQuery.query(contentResolver);
-        if (isInvalidCursor(cursor)) {
-            return NO_EVENTS;
-        }
-
-        List<ContactEvent> namedayEvents = new ArrayList<>();
-        Set<Long> contactIDs = new HashSet<>();
-
-        while (cursor.moveToNext()) {
-            long id = DeviceContactsQuery.getID(cursor);
-
-            if (contactIDs.contains(id)) {
-                continue;
-            }
-            contactIDs.add(id);
-
-            Optional<Contact> contact = getDeviceContactWithId(id);
-            if (!contact.isPresent()) {
-                continue;
-            }
-
-            DisplayName displayName = DisplayName.from(getDisplayName(cursor));
-
-            for (String firstName : displayName.getFirstNames()) {
-                NameCelebrations nameDays = getSpecialNamedaysOf(firstName);
-                if (nameDays.containsNoDate()) {
-                    continue;
-                }
-
-                int namedaysCount = nameDays.size();
-                for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = nameDays.getDate(i);
-                    ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact.get());
-                    namedayEvents.add(nameday);
-                }
-            }
-        }
-
-        cursor.close();
-        return namedayEvents;
+//        Cursor cursor = DeviceContactsQuery.query(contentResolver);
+//        if (isInvalidCursor(cursor)) {
+//            return NO_EVENTS;
+//        }
+//
+//        List<ContactEvent> namedayEvents = new ArrayList<>();
+//        Set<Long> contactIDs = new HashSet<>();
+//
+//        while (cursor.moveToNext()) {
+//            long id = DeviceContactsQuery.getID(cursor);
+//
+//            if (contactIDs.contains(id)) {
+//                continue;
+//            }
+//            contactIDs.add(id);
+//
+//            Optional<Contact> contact = getDeviceContactWithId(id);
+//            if (!contact.isPresent()) {
+//                continue;
+//            }
+//
+//            DisplayName displayName = DisplayName.from(getDisplayName(cursor));
+//
+//            for (String firstName : displayName.getFirstNames()) {
+//                NameCelebrations nameDays = getSpecialNamedaysOf(firstName);
+//                if (nameDays.containsNoDate()) {
+//                    continue;
+//                }
+//
+//                int namedaysCount = nameDays.size();
+//                for (int i = 0; i < namedaysCount; i++) {
+//                    DayDate date = nameDays.getDate(i);
+//                    ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact.get());
+//                    namedayEvents.add(nameday);
+//                }
+//            }
+//        }
+//
+//        cursor.close();
+//        return namedayEvents;
+        throw new UnsupportedOperationException("");
     }
 
     private Optional<Contact> getDeviceContactWithId(long id) {
@@ -253,32 +249,11 @@ public class NamedayDatabaseRefresher {
 
     private class Nameday {
 
-        private final Date date;
+        private final DayDate date;
 
-        public Nameday(Date date) {
+        public Nameday(DayDate date) {
             this.date = date;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Nameday nameday = (Nameday) o;
-
-            return date != null ? date.equals(nameday.date) : nameday.date == null;
-
-        }
-
-        @Override
-        public int hashCode() {
-            return date != null ? date.hashCode() : 0;
-        }
-
     }
 
 }

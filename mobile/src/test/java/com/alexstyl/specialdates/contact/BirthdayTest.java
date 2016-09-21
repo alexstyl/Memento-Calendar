@@ -24,13 +24,13 @@ public class BirthdayTest {
     @Test
     public void whenNoYearIsPresent_ItDoesNotIncludeYear() {
         Birthday birthday = Birthday.on(1, 2);
-        assertThat(birthday.includesYear()).isFalse();
+        assertThat(birthday.hasYearOfBirth()).isFalse();
     }
 
     @Test
     public void whenYearIsPresent_ItDoesIncludeYear() {
         Birthday birthday = Birthday.on(1, 2, 1990);
-        assertThat(birthday.includesYear()).isTrue();
+        assertThat(birthday.hasYearOfBirth()).isTrue();
     }
 
     @Test(expected = IllegalArgumentException.class)

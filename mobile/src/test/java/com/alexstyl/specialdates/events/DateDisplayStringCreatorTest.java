@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.events;
 
+import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DayDate;
 
@@ -28,7 +29,7 @@ public class DateDisplayStringCreatorTest {
 
     @Test
     public void givenDateWithNoYear_thenReturningStringIsCorrect() {
-        DayDate date = DayDate.newInstance(5, 5);
+        AnnualEvent date = new AnnualEvent(5, 5);
         String dateToString = creator.stringOf(date);
         assertThat(dateToString).isEqualTo(EXPECTED_STRING_NO_YEAR);
     }

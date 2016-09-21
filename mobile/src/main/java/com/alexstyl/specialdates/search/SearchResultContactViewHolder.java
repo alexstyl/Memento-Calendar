@@ -83,9 +83,10 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         } else {
             // we are only displaying 1 date instead of all of them
             // with Person details this is fixed though
-            String message = getNamedayString(getContext(), namedays.getDate(0));
-            nameday.setVisibility(View.VISIBLE);
-            nameday.setText(message);
+//            String message = getNamedayString(getContext(), namedays.getDate(0));
+//            nameday.setVisibility(View.VISIBLE);
+//            nameday.setText(message);
+            throw new UnsupportedOperationException("");
         }
 
     }

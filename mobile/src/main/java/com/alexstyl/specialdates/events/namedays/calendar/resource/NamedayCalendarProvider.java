@@ -59,9 +59,9 @@ public class NamedayCalendarProvider {
 
     private NamedayBundle getNamedayBundle(NamedayLocale locale, NamedayJSON namedayJSON) {
         if (locale.isComparedBySounds()) {
-            return NamedayJSONParser.createAsSounds(namedayJSON);
+            return NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON);
         } else {
-            return NamedayJSONParser.create(namedayJSON);
+            return NamedayJSONParser.getNamedaysFrom(namedayJSON);
         }
     }
 

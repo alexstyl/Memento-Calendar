@@ -9,7 +9,6 @@ import com.alexstyl.specialdates.contact.Birthday;
 public final class DateDisplayStringCreator {
 
     private static final String SEPARATOR = "-";
-    private static final int NO_YEAR = DayDate.NO_YEAR;
     private static final String ZERO = "0";
 
     private static DateDisplayStringCreator instance;
@@ -21,7 +20,7 @@ public final class DateDisplayStringCreator {
         return instance;
     }
 
-    public String stringOf(Date date) {
+    public String stringOf(DayDate date) {
         StringBuilder str = new StringBuilder();
         addYear(date, str);
         str.append(SEPARATOR);
@@ -31,12 +30,18 @@ public final class DateDisplayStringCreator {
         return str.toString();
     }
 
-    private void addYear(Date date, StringBuilder str) {
-        if (date.getYear() != NO_YEAR) {
-            str.append(date.getYear());
-        } else {
-            str.append(SEPARATOR);
-        }
+    public String stringOf(AnnualEvent date) {
+        StringBuilder str = new StringBuilder();
+        str.append(SEPARATOR);
+        str.append(SEPARATOR);
+        addMonth(date, str);
+        str.append(SEPARATOR);
+        addDayOfMonth(date, str);
+        return str.toString();
+    }
+
+    private void addYear(DayDate date, StringBuilder str) {
+        str.append(date.getYear());
     }
 
     private void addMonth(Date date, StringBuilder str) {
@@ -60,12 +65,12 @@ public final class DateDisplayStringCreator {
     }
 
     public String fullyFormattedBirthday(Birthday birthday) {
-        DayDate dayDate = birthday.asDayDate();
+        DayDate dayDate = getDayDateFor(birthday);
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 
-        if (birthday.includesYear()) {
+        if (birthday.hasYearOfBirth()) {
             format_flags |= DateUtils.FORMAT_SHOW_YEAR;
         } else {
             format_flags |= DateUtils.FORMAT_NO_YEAR;
@@ -74,23 +79,22 @@ public final class DateDisplayStringCreator {
         return DateUtils.formatDateTime(appContext, dayDate.toMillis(), format_flags);
     }
 
-    public String fullyFormattedDate(Date date) {
-        DayDate dayDate = DayDate.newInstance(date.getDayOfMonth(), date.getMonth(), date.getYear());
+    public DayDate getDayDateFor(Birthday birthday) {
+        int year;
+        if (birthday.hasYearOfBirth()) {
+            year = birthday.getYear();
+        } else {
+            year = DayDate.todaysYear();
+        }
+        return DayDate.newInstance(birthday.getDayOfMonth(), birthday.getMonth(), year);
+    }
+
+    public String fullyFormattedDate(DayDate dayDate) {
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
-
-        if (includesYear(date)) {
-            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
-        } else {
-            format_flags |= DateUtils.FORMAT_NO_YEAR;
-        }
-
+        format_flags |= DateUtils.FORMAT_SHOW_YEAR;
         return DateUtils.formatDateTime(appContext, dayDate.toMillis(), format_flags);
 
-    }
-
-    private boolean includesYear(Date date) {
-        return date.getYear() != Date.NO_YEAR;
     }
 }

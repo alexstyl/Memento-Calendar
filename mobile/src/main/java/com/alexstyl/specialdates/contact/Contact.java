@@ -17,16 +17,10 @@ public abstract class Contact {
     private final Optional<Birthday> birthday;
     private List<LabeledAction> actions;
 
-    public Contact(long id, DisplayName displayName) {
+    public Contact(long id, DisplayName displayName, Optional<Birthday> birthday) {
         this.contactID = id;
         this.displayName = displayName;
-        this.birthday = Optional.absent();
-    }
-
-    public Contact(long id, DisplayName displayName, Birthday birthday) {
-        this.contactID = id;
-        this.displayName = displayName;
-        this.birthday = new Optional<>(birthday);
+        this.birthday = birthday;
     }
 
     @Override

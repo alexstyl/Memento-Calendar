@@ -5,14 +5,14 @@ import android.support.annotation.StringRes;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
+import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum EventType {
-    BIRTHDAY(AnnualEvents.TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red),
-    NAMEDAY(AnnualEvents.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue);
+    BIRTHDAY(AnnualEventsContract.TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red),
+    NAMEDAY(AnnualEventsContract.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue);
 
     private final int eventTypeId;
     private final int eventNameRes;
