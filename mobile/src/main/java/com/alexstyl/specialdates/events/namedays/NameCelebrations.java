@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.date.DayDate;
@@ -41,9 +40,8 @@ public class NameCelebrations {
         return dates.containsNoDate();
     }
 
-    public AnnualEvent getDate(int i) {
-//        return dates.getDate(i);
-        throw new UnsupportedOperationException("");
+    public Date getDate(int i) {
+        return dates.getDate(i);
     }
 
     public int size() {

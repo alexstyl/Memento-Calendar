@@ -2,6 +2,8 @@ package com.alexstyl.specialdates.date;
 
 import com.alexstyl.specialdates.Optional;
 
+import java.util.Locale;
+
 public class ParsedDate implements Date {
 
     private static final Optional<Integer> NO_YEAR = Optional.absent();
@@ -37,5 +39,39 @@ public class ParsedDate implements Date {
 
     public int getYear() {
         return year.get();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ParsedDate that = (ParsedDate) o;
+
+        if (dayOfMonth != that.dayOfMonth) {
+            return false;
+        }
+        if (month != that.month) {
+            return false;
+        }
+        return year.equals(that.year);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = dayOfMonth;
+        result = 31 * result + month;
+        result = 31 * result + year.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(Locale.US, "%d-%d-%d", dayOfMonth, month, year.isPresent() ? year.get() : "-");
     }
 }
