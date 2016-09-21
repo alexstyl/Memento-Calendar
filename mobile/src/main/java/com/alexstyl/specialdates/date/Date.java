@@ -25,6 +25,7 @@ public interface Date {
 
     int getDayOfMonth();
 
+    @MonthInt
     int getMonth();
 
 }

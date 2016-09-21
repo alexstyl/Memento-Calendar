@@ -40,7 +40,9 @@ public class DayDate implements Comparable<DayDate>, ShortDate, Date {
         return localDate.getDayOfMonth();
     }
 
+    @MonthInt
     @Override
+    @SuppressWarnings("WrongConstant") // JodaTime follows the same indexing as our project
     public int getMonth() {
         return localDate.getMonthOfYear();
     }
