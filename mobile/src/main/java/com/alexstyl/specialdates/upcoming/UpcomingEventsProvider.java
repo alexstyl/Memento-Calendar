@@ -27,7 +27,7 @@ public class UpcomingEventsProvider {
     }
 
     private static LoadingTimeDuration startingTimeDuration() {
-        int year = DayDate.today().getYear();
+        int year = DayDate.todaysYear();
         DayDate startOfLastMonth = DayDate.newInstance(1, 1, year);
         DayDate endingOfNextMonth = DayDate.newInstance(31, 12, year);
         return new LoadingTimeDuration(startOfLastMonth, endingOfNextMonth);

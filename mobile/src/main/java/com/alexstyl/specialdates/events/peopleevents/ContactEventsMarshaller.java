@@ -5,13 +5,13 @@ import android.content.ContentValues;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
+import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
 
-public class ContactEventsMarshaller implements Marshaller<List<ContactEvent>> {
+public class ContactEventsMarshaller implements Marshaller<ContactEvent> {
 
     @Override
     public ContentValues[] marshall(List<ContactEvent> item) {
@@ -41,9 +41,9 @@ public class ContactEventsMarshaller implements Marshaller<List<ContactEvent>> {
     private int getTypeFor(ContactEvent event) {
         switch (event.getType()) {
             case BIRTHDAY:
-                return AnnualEvents.TYPE_BIRTHDAY;
+                return AnnualEventsContract.TYPE_BIRTHDAY;
             case NAMEDAY:
-                return AnnualEvents.TYPE_NAMEDAY;
+                return AnnualEventsContract.TYPE_NAMEDAY;
         }
         throw new DeveloperError(event.getType() + " has no EventColumn reference");
     }

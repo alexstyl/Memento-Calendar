@@ -85,9 +85,9 @@ public class DayDateTest {
         assertThat(dayDate.toShortDate()).isEqualTo("1990-01-01");
     }
 
-    @Test
-    public void toShortDateWithNoYear() {
-        DayDate dayDate = DayDate.newInstance(1, 1);
-        assertThat(dayDate.toShortDate()).isEqualTo("--01-01");
-    }
+//    @Test
+//    public void toShortDateWithNoYear() {
+//        DayDate dayDate = DayDate.newInstance(1, 1);
+//        assertThat(dayDate.toShortDate()).isEqualTo("--01-01");
+//    }
 }

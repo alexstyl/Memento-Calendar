@@ -1,8 +1,6 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
-import android.support.annotation.Nullable;
-
-import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
@@ -23,8 +21,7 @@ public class BankHolidayRepository {
         calculateHolidaysForYear(year);
     }
 
-    @Nullable
-    public BankHoliday calculateBankholidayFor(Date date) {
+    public Optional<BankHoliday> calculateBankholidayFor(DayDate date) {
         List<BankHoliday> bankHolidaysList;
         int year = date.getYear();
         if (isForNewYear(year)) {
@@ -34,11 +31,10 @@ public class BankHolidayRepository {
 
         for (BankHoliday bankHoliday : bankHolidaysList) {
             if (bankHoliday.getDate().equals(date)) {
-                return bankHoliday;
+                return new Optional<>(bankHoliday);
             }
         }
-
-        return null;
+        return Optional.absent();
     }
 
     private boolean isForNewYear(int year) {

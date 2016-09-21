@@ -8,11 +8,10 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
-import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 
 import java.util.ArrayList;
@@ -21,25 +20,25 @@ import java.util.List;
 
 class BirthdayDatabaseRefresher {
 
-    private static final List<ContactEvent> NO_CONTACTS = Collections.emptyList();
+    private static final List<Birthday> NO_CONTACTS = Collections.emptyList();
     private static final Optional<Contact> NO_CONTACT = Optional.absent();
 
     private final ContactProvider contactProvider;
     private final ContentResolver contentResolver;
     private final PeopleEventsPersister persister;
-    private final ContactEventsMarshaller marshaller;
+    private final Marshaller<Birthday> marshaller;
 
     static BirthdayDatabaseRefresher newInstance(Context context) {
         ContactProvider contactProvider = ContactProvider.get(context);
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
+        Marshaller<Birthday> marshaller = new BirthdayMarshaller();
         return new BirthdayDatabaseRefresher(contactProvider, context.getContentResolver(), persister, marshaller);
     }
 
     BirthdayDatabaseRefresher(ContactProvider contactProvider,
                               ContentResolver contentResolver,
                               PeopleEventsPersister persister,
-                              ContactEventsMarshaller marshaller) {
+                              Marshaller<Birthday> marshaller) {
         this.contentResolver = contentResolver;
         this.persister = persister;
         this.marshaller = marshaller;
@@ -48,7 +47,7 @@ class BirthdayDatabaseRefresher {
 
     public void refreshBirthdays() {
         clearAllBirthdays();
-        List<ContactEvent> contacts = loadBirtdaysFromDisk();
+        List<Birthday> contacts = loadBirtdaysFromDisk();
         storeContactsToProvider(contacts);
     }
 
@@ -56,23 +55,21 @@ class BirthdayDatabaseRefresher {
         persister.deleteAllBirthdays();
     }
 
-    private List<ContactEvent> loadBirtdaysFromDisk() {
+    private List<Birthday> loadBirtdaysFromDisk() {
         Cursor cursor = BirthdayQuery.query(contentResolver);
         if (isInvalid(cursor)) {
             return NO_CONTACTS;
         }
-        List<ContactEvent> contacts = new ArrayList<>();
+        List<Birthday> contacts = new ArrayList<>();
         try {
             while (cursor.moveToNext()) {
                 int contactIdIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
                 long contactId = cursor.getLong(contactIdIndex);
-                Optional<Contact> optional = getDeviceContactWithId(contactId);
-                if (!optional.isPresent()) {
-                    continue;
+                Optional<Contact> optionalContact = getDeviceContactWithId(contactId);
+                if (optionalContact.isPresent()) {
+                    Contact contact = optionalContact.get();
+                    contacts.add(contact.getBirthday());
                 }
-                Contact contact = optional.get();
-                DayDate birthday = contact.getBirthday().asDayDate();
-                contacts.add(new ContactEvent(EventType.BIRTHDAY, birthday, contact));
             }
         } finally {
             cursor.close();
@@ -93,7 +90,7 @@ class BirthdayDatabaseRefresher {
         return cursor == null || cursor.isClosed();
     }
 
-    private void storeContactsToProvider(List<ContactEvent> contacts) {
+    private void storeContactsToProvider(List<Birthday> contacts) {
         ContentValues[] values = marshaller.marshall(contacts);
         persister.insertAnnualEvents(values);
     }

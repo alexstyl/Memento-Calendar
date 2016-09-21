@@ -28,9 +28,8 @@ class SpecialGreekNamedaysCalculator {
 
         for (EasternNameday easternNameday : easternNamedays) {
             int daysUntilEaster = easternNameday.getDateToEaster();
-            DayDate namedayDate = easter.addDay(daysUntilEaster);
+            DayDate date = easter.addDay(daysUntilEaster);
 
-            DayDate date = DayDate.newInstance(namedayDate);
             for (String name : easternNameday.getNamesCelebrating()) {
                 node.addDate(name, date);
                 namedaysList.addNameday(date, name);
@@ -98,18 +97,18 @@ class SpecialGreekNamedaysCalculator {
     }
 
     private void addSpecialChloe(Node node, NamedaysList namedaysList, Context context) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, Calendar.FEBRUARY);
-        cal.set(Calendar.DAY_OF_MONTH, 13);
-
-        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-            cal.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        DayDate date = DayDate.newInstance(cal);
-
-        String variation = context.getString(R.string.specialname_chloe);
-        node.addDate(variation, date);
-        namedaysList.addNameday(date, variation);
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.MONTH, Calendar.FEBRUARY);
+//        cal.set(Calendar.DAY_OF_MONTH, 13);
+//
+//        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+//            cal.add(Calendar.DAY_OF_MONTH, 1);
+//        }
+//        DayDate date = DayDate.newInstance(cal);
+//
+//        String variation = context.getString(R.string.specialname_chloe);
+//        node.addDate(variation, date);
+//        namedaysList.addNameday(date, variation);
     }
 
 }

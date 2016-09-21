@@ -4,7 +4,6 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
@@ -19,9 +18,9 @@ public class UpcomingDatesBuilder {
 
     private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.unmodifiableList(new ArrayList<ContactEvent>());
 
-    private final HashMapList<Date, ContactEvent> contactEvents = new HashMapList<>();
-    private final HashMap<Date, NamesInADate> namedays = new HashMap<>();
-    private final HashMap<Date, BankHoliday> bankHolidays = new HashMap<>();
+    private final HashMapList<DayDate, ContactEvent> contactEvents = new HashMapList<>();
+    private final HashMap<DayDate, NamesInADate> namedays = new HashMap<>();
+    private final HashMap<DayDate, BankHoliday> bankHolidays = new HashMap<>();
 
     private Optional<DayDate> earliestDate = Optional.absent();
     private Optional<DayDate> latestDate = Optional.absent();
@@ -59,13 +58,15 @@ public class UpcomingDatesBuilder {
     }
 
     public UpcomingDatesBuilder withNamedays(List<NamesInADate> namedays) {
-        for (NamesInADate nameday : namedays) {
-            DayDate date = nameday.getDate();
-            keepIfEarliestDate(date);
-            keepIfLatestDate(date);
-            this.namedays.put(date, nameday);
-        }
-        return this;
+//        for (NamesInADate nameday : namedays) {
+//            DayDate date = nameday.getDate();
+//            keepIfEarliestDate(date);
+//            keepIfLatestDate(date);
+//            this.namedays.put(date, nameday);
+//        }
+        // TODO
+        throw new UnsupportedOperationException("");
+//        return this;
     }
 
     public UpcomingDatesBuilder withBankHolidays(List<BankHoliday> bankHolidays) {

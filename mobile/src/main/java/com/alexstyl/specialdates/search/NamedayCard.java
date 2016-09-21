@@ -12,7 +12,8 @@ public class NamedayCard {
     }
 
     public DayDate getDate(int i) {
-        return mNameday.getDate(i);
+//        return mNameday.getDate(i);
+        throw new UnsupportedOperationException();
     }
 
     public void clear() {

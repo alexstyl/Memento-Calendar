@@ -16,16 +16,16 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.ParsedDate;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.util.ContactEventDateParser;
 import com.novoda.notils.caster.Views;
 
 public class BirthdayPickerDialog extends MementoDialog {
 
     public static final String TAG = "fm_tag:birthday";
     private static final String KEY_DATE = "key:birthday";
-    private DateParser parser = new DateParser();
+    private ContactEventDateParser parser = new ContactEventDateParser();
 
     private OnBirthdaySelectedListener listener;
     private BirthdayDatePicker datePicker;
@@ -64,8 +64,12 @@ public class BirthdayPickerDialog extends MementoDialog {
 
     private Optional<Birthday> extractFrom(String birthday) {
         try {
-            DayDate parsedDate = parser.parse(birthday);
-            return new Optional<>(Birthday.on(parsedDate));
+            ParsedDate parsedDate = parser.parse(birthday);
+            if (parsedDate.hasYear()) {
+                return new Optional<>(Birthday.on(parsedDate.getDayOfMonth(), parsedDate.getMonth(), parsedDate.getYear()));
+            } else {
+                return new Optional<>(Birthday.on(parsedDate.getDayOfMonth(), parsedDate.getMonth()));
+            }
         } catch (DateParseException e) {
             ErrorTracker.track(e);
             return Optional.absent();

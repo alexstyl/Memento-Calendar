@@ -13,8 +13,8 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.ParsedDate;
+import com.alexstyl.specialdates.util.ContactEventDateParser;
 import com.novoda.notils.exception.DeveloperError;
 
 public class BirthdayQuery {
@@ -26,17 +26,17 @@ public class BirthdayQuery {
     }
 
     public ContactQuery forContact(Contact contact) {
-        DateParser dateParser = new DateParser();
+        ContactEventDateParser dateParser = new ContactEventDateParser();
         return new ContactQuery(contact, dateParser, contentResolver);
     }
 
     public static class ContactQuery {
 
         private final Contact contact;
-        private final DateParser dateParser;
+        private final ContactEventDateParser dateParser;
         private ContentResolver contentResolver;
 
-        public ContactQuery(Contact contact, DateParser dateParser, ContentResolver contentResolver) {
+        public ContactQuery(Contact contact, ContactEventDateParser dateParser, ContentResolver contentResolver) {
             this.contact = contact;
             this.dateParser = dateParser;
             this.contentResolver = contentResolver;
@@ -71,8 +71,12 @@ public class BirthdayQuery {
 
         private Birthday getBirthdayFrom(Cursor cursor) throws DateParseException {
             String string = cursor.getString(Query.BIRTHDAY);
-            DayDate parse = dateParser.parse(string);
-            return Birthday.on(parse);
+            ParsedDate parse = dateParser.parse(string);
+            if (parse.hasYear()) {
+                return Birthday.on(parse.getDayOfMonth(), parse.getMonth(), parse.getYear());
+            } else {
+                return Birthday.on(parse.getDayOfMonth(), parse.getMonth());
+            }
         }
 
         public boolean replaceBirthdays(BirthdayEntry oldBirthday, Birthday birthday) {

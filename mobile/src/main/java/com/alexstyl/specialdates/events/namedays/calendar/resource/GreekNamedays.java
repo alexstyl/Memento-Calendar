@@ -7,7 +7,6 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,23 +33,12 @@ public final class GreekNamedays {
         return new GreekNamedays(specialGreekNamedaysCalculator);
     }
 
-    public NamesInADate getNamedayByDate(DayDate date) {
-        throwExceptionIfYearIsMissing(date);
+    NamesInADate getNamedayByDate(DayDate date) {
 
         int year = date.getYear();
         refreshNamedaysIfNeeded(year);
 
         return namedays.getNamedaysFor(date);
-    }
-
-    private void throwExceptionIfYearIsMissing(DayDate date) {
-        if (noYearSpecifiedIn(date)) {
-            throw new DeveloperError("You must specify a year");
-        }
-    }
-
-    private boolean noYearSpecifiedIn(DayDate date) {
-        return date.getYear() == DayDate.NO_YEAR;
     }
 
     private void refreshNamedaysIfNeeded(int year) {

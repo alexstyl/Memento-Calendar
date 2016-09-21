@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events;
 
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
+import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 import org.junit.Test;
@@ -14,13 +14,13 @@ public class EventTypeTest {
 
     @Test
     public void mapsTypeBirthdayIdToBirthdayEvent() {
-        EventType eventType = EventType.fromId(AnnualEvents.TYPE_BIRTHDAY);
+        EventType eventType = EventType.fromId(AnnualEventsContract.TYPE_BIRTHDAY);
         assertThat(eventType).isEqualTo(EventType.BIRTHDAY);
     }
 
     @Test
     public void mapsTypeNamedayIdToNamedayEvent() {
-        EventType eventType = EventType.fromId(AnnualEvents.TYPE_NAMEDAY);
+        EventType eventType = EventType.fromId(AnnualEventsContract.TYPE_NAMEDAY);
         assertThat(eventType).isEqualTo(EventType.NAMEDAY);
     }
 

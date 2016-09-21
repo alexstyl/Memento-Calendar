@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEvents;
-import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEvents;
+import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
+import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEventsContract;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
@@ -29,25 +29,25 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     private static String NOT_NULL = " NOT NULL ";
 
     private static final String SQL_CREATE_ANNUAL_EVENTS =
-            "CREATE TABLE " + AnnualEvents.TABLE_NAME + " ("
-                    + AnnualEvents._ID + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + AnnualEvents.DISPLAY_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + AnnualEvents.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + AnnualEvents.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + AnnualEvents.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + AnnualEvents.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + " PRIMARY KEY (" + AnnualEvents._ID + ")"
+            "CREATE TABLE " + AnnualEventsContract.TABLE_NAME + " ("
+                    + AnnualEventsContract._ID + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.DISPLAY_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + " PRIMARY KEY (" + AnnualEventsContract._ID + ")"
                     + ")";
 
     private static final String SQL_CREATE_DYNAMIC_EVENTS =
-            "CREATE TABLE " + DynamicEvents.TABLE_NAME + " ("
-                    + DynamicEvents._ID + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEvents.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEvents.DISPLAY_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEvents.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEvents.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEvents.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + " PRIMARY KEY (" + DynamicEvents._ID + ")"
+            "CREATE TABLE " + DynamicEventsContract.TABLE_NAME + " ("
+                    + DynamicEventsContract._ID + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + DynamicEventsContract.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + DynamicEventsContract.DISPLAY_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
+                    + DynamicEventsContract.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
+                    + DynamicEventsContract.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + DynamicEventsContract.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + " PRIMARY KEY (" + DynamicEventsContract._ID + ")"
                     + ")";
 
     @Override

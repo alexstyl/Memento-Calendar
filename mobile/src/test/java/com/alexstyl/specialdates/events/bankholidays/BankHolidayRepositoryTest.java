@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
@@ -46,8 +47,8 @@ public class BankHolidayRepositoryTest {
     @Test
     public void testThatAGreekKnownBankholidayIsCalculatedProperly() {
         DayDate date = GREEK_INDEPENDENCE_DAY;
-        BankHoliday bankHoliday = repository.calculateBankholidayFor(date);
-        assertThat(bankHoliday.getDate()).isEqualTo(DayDate.newInstance(25, DayDate.MARCH, 1990));
+        Optional<BankHoliday> bankHoliday = repository.calculateBankholidayFor(date);
+        assertThat(bankHoliday.get().getDate()).isEqualTo(DayDate.newInstance(25, DayDate.MARCH, 1990));
     }
 
     private DayDate aDateInYear(int year) {

@@ -25,7 +25,7 @@ public final class ContactEvent {
     public String getLabel(Resources resources) {
         if (eventType == EventType.BIRTHDAY) {
             Birthday birthday = contact.getBirthday();
-            if (birthday.includesYear()) {
+            if (birthday.hasYearOfBirth()) {
                 int age = birthday.getAgeOnYear(getYear());
                 if (age > 0) {
                     return resources.getString(R.string.turns_age, age);

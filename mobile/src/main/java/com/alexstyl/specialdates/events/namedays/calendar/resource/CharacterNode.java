@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.gsc.Index;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
@@ -32,7 +32,7 @@ public class CharacterNode implements Node {
     }
 
     @Override
-    public void addDate(String name, DayDate date) {
+    public void addDate(String name, Date date) {
         Index index = new Index(name.length());
         if (index.hasNotStarted()) {
             if (dates == null) {
@@ -43,7 +43,7 @@ public class CharacterNode implements Node {
         addDateInternal(index, name, date);
     }
 
-    private void addDateInternal(Index index, String word, DayDate date) {
+    private void addDateInternal(Index index, String word, Date date) {
         Character s = null;
         if (!index.hasEnded()) {
             s = word.charAt(index.intValue());
