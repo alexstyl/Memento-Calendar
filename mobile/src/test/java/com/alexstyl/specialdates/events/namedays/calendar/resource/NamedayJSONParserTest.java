@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.Date.AUGUST;
+import static com.alexstyl.specialdates.date.Date.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NamedayJSONParserTest {
@@ -35,5 +35,19 @@ public class NamedayJSONParserTest {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αλέξανδρος");
         assertThat(dates.getDate(0)).isEqualTo(new AnnualEvent(30, AUGUST));
+    }
+
+    @Test
+    public void davidNamedayIsReturnedCorrectly() {
+        NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
+        NameCelebrations dates = namedayBundle.getDatesFor("Δαβίδ");
+        assertThat(dates.getDate(0)).isEqualTo(new AnnualEvent(26, JUNE));
+    }
+
+    @Test
+    public void magdoulaNamedayIsReturnedCorrectly() {
+        NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
+        NameCelebrations dates = namedayBundle.getDatesFor("Αμαλία");
+        assertThat(dates.getDate(0)).isEqualTo(new AnnualEvent(10, JULY));
     }
 }
