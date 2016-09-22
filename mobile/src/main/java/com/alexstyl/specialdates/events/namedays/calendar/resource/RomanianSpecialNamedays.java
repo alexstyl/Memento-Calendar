@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtract
 import java.util.ArrayList;
 import java.util.List;
 
-public final class RomanianSpecialNamedays implements SpecialNamedays {
+final class RomanianSpecialNamedays implements SpecialNamedays {
 
     private final RomanianNamedays namedays;
 
