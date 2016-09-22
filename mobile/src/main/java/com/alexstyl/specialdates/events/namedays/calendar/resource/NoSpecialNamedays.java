@@ -4,7 +4,8 @@ import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public enum NoSpecialNamedays implements SpecialNamedays {
     INSTANCE;
@@ -15,8 +16,8 @@ public enum NoSpecialNamedays implements SpecialNamedays {
     }
 
     @Override
-    public ArrayList<String> getAllNames() {
-        return new ArrayList<>(0);
+    public List<String> getAllNames() {
+        return Collections.emptyList();
     }
 
     @Override
