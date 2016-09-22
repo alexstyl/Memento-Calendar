@@ -20,7 +20,7 @@ public final class GreekSpecialNamedays implements SpecialNamedays {
     }
 
     @Override
-    public NamesInADate getNamedayByDate(DayDate date) {
+    public NamesInADate getNamedayOn(DayDate date) {
         return greekNamedays.getNamedayByDate(date);
     }
 

@@ -39,7 +39,7 @@ public final class RomanianSpecialNamedays implements SpecialNamedays {
     }
 
     @Override
-    public NamesInADate getNamedayByDate(DayDate date) {
+    public NamesInADate getNamedayOn(DayDate date) {
         return namedays.getNamedaysFor(date);
     }
 
