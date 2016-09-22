@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 import java.util.ArrayList;
 
-public final class GreekSpecialNamedays implements SpecialNamedays {
+final class GreekSpecialNamedays implements SpecialNamedays {
 
     private final GreekNamedays greekNamedays;
 
@@ -15,7 +15,7 @@ public final class GreekSpecialNamedays implements SpecialNamedays {
         return new GreekSpecialNamedays(greekNamedays);
     }
 
-    public GreekSpecialNamedays(GreekNamedays greekNamedays) {
+    private GreekSpecialNamedays(GreekNamedays greekNamedays) {
         this.greekNamedays = greekNamedays;
     }
 
