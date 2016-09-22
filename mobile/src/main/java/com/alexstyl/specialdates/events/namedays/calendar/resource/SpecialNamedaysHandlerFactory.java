@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import java.util.Collections;
 import java.util.List;
 
-class SpecialNamedaysHandlerFactory {
+final class SpecialNamedaysHandlerFactory {
 
     SpecialNamedays createStrategyForLocale(NamedayLocale locale, NamedayJSON namedayJSON) {
         if (isGreekLocale(locale)) {
