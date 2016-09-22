@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 import java.util.ArrayList;
 
-public interface SpecialNamedaysStrategy {
+public interface SpecialNamedays {
 
     NamesInADate getNamedayByDate(DayDate date);
 

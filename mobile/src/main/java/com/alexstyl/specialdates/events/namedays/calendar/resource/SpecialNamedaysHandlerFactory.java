@@ -2,18 +2,15 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 
-import org.json.JSONArray;
-
 class SpecialNamedaysHandlerFactory {
 
-    SpecialNamedaysStrategy createStrategyForLocale(NamedayLocale locale, NamedayJSON namedayJSON) {
-        JSONArray specialJSON = namedayJSON.getSpecial();
+    SpecialNamedays createStrategyForLocale(NamedayLocale locale, NamedayJSON namedayJSON) {
         if (isGreekLocale(locale)) {
-            return GreekSpecialNamedaysStrategy.from(specialJSON);
+            return GreekSpecialNamedays.from(namedayJSON);
         } else if (isRomanian(locale)) {
-            return RomanianSpecialNamedaysStrategy.from(specialJSON);
+            return RomanianSpecialNamedays.from(namedayJSON);
         }
-        return NoSpecialNamedaysStrategy.INSTANCE;
+        return NoSpecialNamedays.INSTANCE;
     }
 
     private boolean isRomanian(NamedayLocale locale) {

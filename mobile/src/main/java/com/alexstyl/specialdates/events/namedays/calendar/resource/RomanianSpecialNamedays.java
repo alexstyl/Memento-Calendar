@@ -9,18 +9,16 @@ import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtract
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-
-public final class RomanianSpecialNamedaysStrategy implements SpecialNamedaysStrategy {
+public final class RomanianSpecialNamedays implements SpecialNamedays {
 
     private final RomanianNamedays namedays;
 
-    public static SpecialNamedaysStrategy from(JSONArray specialJSON) {
-        EasternNamedaysExtractor extractor = new EasternNamedaysExtractor(specialJSON);
+    public static SpecialNamedays from(NamedayJSON namedayJSON) {
+        EasternNamedaysExtractor extractor = new EasternNamedaysExtractor(namedayJSON.getSpecial());
         List<EasternNameday> easternNamedays = extractor.parse();
         ArrayList<String> names = namesOf(easternNamedays);
         RomanianNamedays namedays = RomanianNamedays.from(names);
-        return new RomanianSpecialNamedaysStrategy(namedays);
+        return new RomanianSpecialNamedays(namedays);
     }
 
     private static ArrayList<String> namesOf(List<EasternNameday> easternNamedays) {
@@ -31,7 +29,7 @@ public final class RomanianSpecialNamedaysStrategy implements SpecialNamedaysStr
         return names;
     }
 
-    public RomanianSpecialNamedaysStrategy(RomanianNamedays namedays) {
+    public RomanianSpecialNamedays(RomanianNamedays namedays) {
         this.namedays = namedays;
     }
 

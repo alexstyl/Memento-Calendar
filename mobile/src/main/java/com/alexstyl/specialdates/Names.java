@@ -10,14 +10,14 @@ public class Names implements Iterable<String> {
 
     private final List<String> names;
 
-    public Names(List<String> names) {
-        this.names = names;
-    }
-
     public static Names from(String firstNameString) {
         String[] names = firstNameString.split(SPACE_OR_SEMICOLUMN);
         List<String> names1 = Arrays.asList(names);
         return new Names(names1);
+    }
+
+    private Names(List<String> names) {
+        this.names = names;
     }
 
     public String getPrimary() {

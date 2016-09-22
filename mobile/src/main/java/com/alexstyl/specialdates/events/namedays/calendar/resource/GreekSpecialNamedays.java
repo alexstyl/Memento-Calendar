@@ -6,18 +6,16 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-
-public final class GreekSpecialNamedaysStrategy implements SpecialNamedaysStrategy {
+public final class GreekSpecialNamedays implements SpecialNamedays {
 
     private final GreekNamedays greekNamedays;
 
-    public static GreekSpecialNamedaysStrategy from(JSONArray specialJSON) {
-        GreekNamedays greekNamedays = GreekNamedays.from(specialJSON);
-        return new GreekSpecialNamedaysStrategy(greekNamedays);
+    public static GreekSpecialNamedays from(NamedayJSON namedayJSON) {
+        GreekNamedays greekNamedays = GreekNamedays.from(namedayJSON.getSpecial());
+        return new GreekSpecialNamedays(greekNamedays);
     }
 
-    public GreekSpecialNamedaysStrategy(GreekNamedays greekNamedays) {
+    public GreekSpecialNamedays(GreekNamedays greekNamedays) {
         this.greekNamedays = greekNamedays;
     }
 

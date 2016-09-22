@@ -24,7 +24,7 @@ public class NamedayCalendarProvider {
         return new NamedayCalendarProvider(jsonResourceProvider, factory);
     }
 
-    // eventually we will use DI to provide this
+    // eventually we will use DI to provide this, so don't worry about the `public`
     public NamedayCalendarProvider(NamedayJSONResourceProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
         this.factory = factory;
         this.jsonProvider = jsonProvider;
@@ -35,13 +35,17 @@ public class NamedayCalendarProvider {
             return cachedCalendar;
         }
         NamedayJSON namedayJSON = getNamedayJSONFor(locale);
-        SpecialNamedaysStrategy specialCaseHandler = getSpecialnamedaysHandler(locale, namedayJSON);
+        SpecialNamedays specialCaseHandler = getSpecialnamedaysHandler(locale, namedayJSON);
         NamedayBundle namedaysBundle = getNamedayBundle(locale, namedayJSON);
         NamedayCalendar namedayCalendar = new NamedayCalendar(locale, namedaysBundle, specialCaseHandler, year);
 
         cacheCalendar(namedayCalendar);
 
         return namedayCalendar;
+    }
+
+    private boolean hasRequestedSameCalendar(NamedayLocale locale, int year) {
+        return cachedCalendar != null && cachedCalendar.getYear() == year && cachedCalendar.getLocale().equals(locale);
     }
 
     private NamedayJSON getNamedayJSONFor(NamedayLocale locale) {
@@ -53,12 +57,12 @@ public class NamedayCalendarProvider {
         }
     }
 
-    private SpecialNamedaysStrategy getSpecialnamedaysHandler(NamedayLocale locale, NamedayJSON namedayJSON) {
+    private SpecialNamedays getSpecialnamedaysHandler(NamedayLocale locale, NamedayJSON namedayJSON) {
         return factory.createStrategyForLocale(locale, namedayJSON);
     }
 
     private NamedayBundle getNamedayBundle(NamedayLocale locale, NamedayJSON namedayJSON) {
-        if (locale.isComparedBySounds()) {
+        if (locale.isComparedBySound()) {
             return NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON);
         } else {
             return NamedayJSONParser.getNamedaysFrom(namedayJSON);
@@ -67,10 +71,6 @@ public class NamedayCalendarProvider {
 
     private void cacheCalendar(NamedayCalendar namedayCalendar) {
         cachedCalendar = namedayCalendar;
-    }
-
-    private boolean hasRequestedSameCalendar(NamedayLocale locale, int year) {
-        return cachedCalendar != null && cachedCalendar.getYear() == year && cachedCalendar.getLocale().equals(locale);
     }
 
 }

@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 import java.util.ArrayList;
 
-public enum NoSpecialNamedaysStrategy implements SpecialNamedaysStrategy {
+public enum NoSpecialNamedays implements SpecialNamedays {
     INSTANCE;
 
     @Override

@@ -30,7 +30,7 @@ public class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder>
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         WordComparator compatator;
-        if (locale.isComparedBySounds()) {
+        if (locale.isComparedBySound()) {
             compatator = new SoundWordComparator();
         } else {
             compatator = new CaseInsensitiveComparator();
