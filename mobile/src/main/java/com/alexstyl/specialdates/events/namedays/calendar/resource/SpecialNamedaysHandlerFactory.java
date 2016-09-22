@@ -1,6 +1,12 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
+import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
+import com.alexstyl.specialdates.events.namedays.NamesInADate;
+
+import java.util.Collections;
+import java.util.List;
 
 class SpecialNamedaysHandlerFactory {
 
@@ -10,7 +16,7 @@ class SpecialNamedaysHandlerFactory {
         } else if (isRomanian(locale)) {
             return RomanianSpecialNamedays.from(namedayJSON);
         }
-        return NoSpecialNamedays.INSTANCE;
+        return NO_SPECIAL_NAMEDAYS;
     }
 
     private boolean isRomanian(NamedayLocale locale) {
@@ -20,5 +26,22 @@ class SpecialNamedaysHandlerFactory {
     private boolean isGreekLocale(NamedayLocale locale) {
         return locale == NamedayLocale.gr;
     }
+
+    private static final SpecialNamedays NO_SPECIAL_NAMEDAYS = new SpecialNamedays() {
+        @Override
+        public NamesInADate getNamedayOn(DayDate date) {
+            return new NamesInADate(date, Collections.<String>emptyList());
+        }
+
+        @Override
+        public NameCelebrations getNamedaysFor(String name, int year) {
+            return NameCelebrations.EMPTY;
+        }
+
+        @Override
+        public List<String> getAllNames() {
+            return Collections.emptyList();
+        }
+    };
 
 }
