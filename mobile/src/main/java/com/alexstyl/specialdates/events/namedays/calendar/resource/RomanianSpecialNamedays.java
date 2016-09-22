@@ -34,7 +34,7 @@ public final class RomanianSpecialNamedays implements SpecialNamedays {
     }
 
     @Override
-    public ArrayList<String> getAllNames() {
+    public List<String> getAllNames() {
         return namedays.getAllNames();
     }
 
