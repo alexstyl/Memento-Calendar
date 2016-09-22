@@ -35,7 +35,7 @@ public final class NamedayCalendar {
 
     public NamesInADate getAllNamedayOn(DayDate date) {
         List<String> names = namedayBundle.getNamedaysFor(date).getNames();
-        List<String> specialNames = strategy.getNamedayByDate(date).getNames();
+        List<String> specialNames = strategy.getNamedayOn(date).getNames();
         List<String> arrayList = new ArrayList<>(names.size() + specialNames.size());
         arrayList.addAll(names);
         arrayList.addAll(specialNames);

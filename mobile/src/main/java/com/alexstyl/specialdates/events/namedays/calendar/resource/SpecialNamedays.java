@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface SpecialNamedays {
 
-    NamesInADate getNamedayByDate(DayDate date);
-
-    List<String> getAllNames();
+    NamesInADate getNamedayOn(DayDate date);
 
     NameCelebrations getNamedaysFor(String name, int year);
+
+    List<String> getAllNames();
 }

@@ -11,7 +11,7 @@ public enum NoSpecialNamedays implements SpecialNamedays {
     INSTANCE;
 
     @Override
-    public NamesInADate getNamedayByDate(DayDate date) {
+    public NamesInADate getNamedayOn(DayDate date) {
         return new NamesInADate(date);
     }
 
