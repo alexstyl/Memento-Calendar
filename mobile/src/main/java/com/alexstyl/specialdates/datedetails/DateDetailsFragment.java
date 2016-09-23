@@ -64,13 +64,13 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private Navigator navigator;
     private ContactPermissionRequest permissions;
 
-    public static Fragment newInstance(int year, int month, int dayofMonth) {
+    public static Fragment newInstance(DayDate date) {
         Fragment fragment = new DateDetailsFragment();
 
         Bundle args = new Bundle(3);
-        args.putInt(KEY_DISPLAYING_YEAR, year);
-        args.putInt(KEY_DISPLAYING_MONTH, month);
-        args.putInt(KEY_DISPLAYING_DAY_OF_MONTH, dayofMonth);
+        args.putInt(KEY_DISPLAYING_YEAR, date.getYear());
+        args.putInt(KEY_DISPLAYING_MONTH, date.getMonth());
+        args.putInt(KEY_DISPLAYING_DAY_OF_MONTH, date.getDayOfMonth());
         fragment.setArguments(args);
         return fragment;
     }

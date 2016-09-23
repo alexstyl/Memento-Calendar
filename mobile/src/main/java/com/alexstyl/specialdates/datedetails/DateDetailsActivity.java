@@ -55,12 +55,7 @@ public class DateDetailsActivity extends ThemedActivity {
         }
 
         if (savedInstanceState == null) {
-
-            final int year = displayingDate.getYear();
-            final int month = displayingDate.getMonth();
-            final int day = displayingDate.getDayOfMonth();
-
-            Fragment fragment = DateDetailsFragment.newInstance(year, month, day);
+            Fragment fragment = DateDetailsFragment.newInstance(displayingDate);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment)
@@ -122,8 +117,7 @@ public class DateDetailsActivity extends ThemedActivity {
      * @param month      The month to display
      * @param year       The year to display
      */
-    public static Intent getStartIntent(Context context, int dayOfMonth, int month,
-                                        int year) {
+    public static Intent getStartIntent(Context context, int dayOfMonth, int month, int year) {
         Intent i = new Intent(context, DateDetailsActivity.class);
         i.putExtra(DateDetailsActivity.EXTRA_DAY, dayOfMonth);
         i.putExtra(DateDetailsActivity.EXTRA_MONTH, month);

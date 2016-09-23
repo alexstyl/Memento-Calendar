@@ -1,11 +1,14 @@
 package com.alexstyl.specialdates.date;
 
+/**
+ * A date on every year
+ */
 public class AnnualEvent implements Date {
 
     private final int dayOfMonth;
     private final int month;
 
-    public AnnualEvent(int dayOfMonth, int month) {
+    public AnnualEvent(int dayOfMonth, @MonthInt int month) {
         this.dayOfMonth = dayOfMonth;
         this.month = month;
     }
@@ -20,36 +23,10 @@ public class AnnualEvent implements Date {
         return dayOfMonth;
     }
 
+    @MonthInt
     @Override
     public int getMonth() {
         return month;
-    }
-
-    @Override
-    public int getYear() {
-        return Date.NO_YEAR;
-    }
-
-    @Override
-    public boolean isBefore(Date date) {
-        if (month > date.getMonth()) {
-            return false;
-        }
-        if (month < date.getMonth()) {
-            return true;
-        }
-        return dayOfMonth < date.getDayOfMonth();
-    }
-
-    @Override
-    public boolean isAfter(Date date) {
-        if (month < date.getMonth()) {
-            return false;
-        }
-        if (month > date.getMonth()) {
-            return true;
-        }
-        return dayOfMonth > date.getDayOfMonth();
     }
 
     @Override
@@ -63,8 +40,11 @@ public class AnnualEvent implements Date {
 
         AnnualEvent that = (AnnualEvent) o;
 
-        return dayOfMonth == that.dayOfMonth
-                && month == that.month;
+        if (dayOfMonth != that.dayOfMonth) {
+            return false;
+        }
+        return month == that.month;
+
     }
 
     @Override

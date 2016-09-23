@@ -13,11 +13,11 @@ import java.util.List;
 public class TestContact extends Contact {
 
     public TestContact(long id, DisplayName displayName) {
-        super(id, displayName);
+        super(id, displayName, Optional.<Birthday>absent());
     }
 
     public TestContact(long id, DisplayName displayName, Birthday birthday) {
-        super(id, displayName, birthday);
+        super(id, displayName, new Optional<>(birthday));
     }
 
     @Override

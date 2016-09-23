@@ -1,33 +1,33 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
 public class NamedayCard {
 
-    private NameCelebrations mNameday;
+    private NameCelebrations namedays;
 
-    public boolean isAvailable() {
-        return mNameday != null && mNameday.size() > 0;
+    public void setNameday(NameCelebrations nameday) {
+        this.namedays = nameday;
     }
 
-    public DayDate getDate(int i) {
-        return mNameday.getDate(i);
+    public boolean isAvailable() {
+        return namedays != null && namedays.size() > 0;
+    }
+
+    public Date getDate(int i) {
+        return namedays.getDate(i);
     }
 
     public void clear() {
-        this.mNameday = null;
-    }
-
-    public void setNameday(NameCelebrations nameday) {
-        this.mNameday = nameday;
+        this.namedays = null;
     }
 
     public String getName() {
-        return mNameday.getName();
+        return namedays.getName();
     }
 
     public int size() {
-        return mNameday.size();
+        return namedays.size();
     }
 }

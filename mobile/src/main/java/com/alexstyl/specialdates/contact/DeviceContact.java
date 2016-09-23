@@ -10,6 +10,7 @@ import android.provider.ContactsContract.Contacts;
 import android.view.View;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.actions.ContactActionFactory;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.util.ContactUtils;
@@ -19,14 +20,9 @@ import java.util.List;
 
 public class DeviceContact extends Contact {
 
-    protected final String lookupKey;
+    private final String lookupKey;
 
-    DeviceContact(long contactId, DisplayName displayName, String lookupKey) {
-        super(contactId, displayName);
-        this.lookupKey = lookupKey;
-    }
-
-    DeviceContact(long contactId, DisplayName displayName, String lookupKey, Birthday birthday) {
+    DeviceContact(long contactId, DisplayName displayName, String lookupKey, Optional<Birthday> birthday) {
         super(contactId, displayName, birthday);
         this.lookupKey = lookupKey;
     }

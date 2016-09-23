@@ -10,7 +10,7 @@ import android.content.Intent;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidays;
@@ -19,7 +19,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.receiver.EventReceiver;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
@@ -58,7 +58,7 @@ public class DailyReminderIntentService extends IntentService {
         super.onCreate();
         notifier = Notifier.newInstance(this);
         namedayPreferences = NamedayPreferences.newInstance(this);
-        namedayCalendarProvider = NamedayCalendarProvider.newInstance(this);
+        namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
         checker = new PermissionChecker(this);
     }

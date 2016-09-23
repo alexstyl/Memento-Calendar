@@ -3,13 +3,12 @@ package com.alexstyl.specialdates.date;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 /**
  * A date that contains celebrations. A CelebrationDate can contain namedays, and contacts celebrating
- * <p>Created by alexstyl on 20/07/15.</p>
  */
 public class CelebrationDate implements Comparable<CelebrationDate> {
 
@@ -74,7 +73,6 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
         if (another == this) {
             return 0;
         }
-
-        return date.compareTo(another.date);
+        return DateComparator.get().compare(date, another.date);
     }
 }

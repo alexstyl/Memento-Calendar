@@ -98,13 +98,17 @@ public class BirthdayDatePicker extends LinearLayout {
 
     private void setupYearPicker() {
         yearPicker.setMinValue(1900);
-        yearPicker.setMaxValue(today.getYear());
+        yearPicker.setMaxValue(todaysYear());
 
-        yearPicker.setValue(today.getYear());
+        yearPicker.setValue(todaysYear());
+    }
+
+    private Integer todaysYear() {
+        return today.getYear();
     }
 
     public void setDisplayingDate(Birthday dateToDisplay) {
-        if (dateToDisplay.includesYear()) {
+        if (dateToDisplay.hasYearOfBirth()) {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
             yearPicker.setValue(dateToDisplay.getYear());
@@ -113,7 +117,7 @@ public class BirthdayDatePicker extends LinearLayout {
         } else {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
-            yearPicker.setValue(DayDate.today().getYear());
+            yearPicker.setValue(todaysYear());
             yearPicker.setVisibility(GONE);
             includesYearCheckbox.setChecked(false);
         }

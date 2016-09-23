@@ -25,10 +25,10 @@ import android.text.style.StyleSpan;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.events.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.novoda.notils.logger.simple.Log;
@@ -66,12 +66,10 @@ public class Notifier {
      */
     public void forDailyReminder(ContactEvents events) {
         Bitmap largeIcon = null;
-        Date date = events.getDate();
+        DayDate date = events.getDate();
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
-            // Large Icons were introduced in Honeycomb
-            // and we are only displaying one if it is one contact
             int size = resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
             Contact displayingContact = events.getContacts().iterator().next();
             largeIcon = loadImageAsync(displayingContact, size, size);
@@ -200,7 +198,7 @@ public class Notifier {
         return contactCount == 1;
     }
 
-    public void forNamedays(List<String> names, Date date) {
+    public void forNamedays(List<String> names, DayDate date) {
         if (names == null || names.isEmpty()) {
             Log.w(TAG, "Tried to notify for empty name list");
             return;
@@ -238,7 +236,7 @@ public class Notifier {
 
     }
 
-    public void forBankholiday(Date date, BankHoliday bankHoliday) {
+    public void forBankholiday(DayDate date, BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
                 DateDetailsActivity.getStartIntentFromExternal(context, date.getDayOfMonth(), date.getMonth(), date.getYear()),

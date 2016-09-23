@@ -25,11 +25,12 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.events.namedays.DateTransformer;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.transition.FadeInTransition;
@@ -98,9 +99,9 @@ public class SearchActivity extends ThemedActivity {
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
         int year = DayDate.today().getYear();
         NamedayLocale locale = NamedayPreferences.newInstance(this).getSelectedLanguage();
-        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this).loadNamedayCalendarForLocale(locale, year);
+        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this.getResources()).loadNamedayCalendarForLocale(locale, year);
 
-        adapter = new SearchResultAdapter(imageLoader, namedayCalendar);
+        adapter = new SearchResultAdapter(imageLoader, namedayCalendar, new DateTransformer(DayDate.todaysYear()));
         adapter.setSearchResultClickListener(listener);
 
         resultView.setHasFixedSize(true);

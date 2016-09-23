@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.widgetprovider;
 
 import android.os.AsyncTask;
 
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 

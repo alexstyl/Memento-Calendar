@@ -12,12 +12,14 @@ import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.namedays.DateTransformer;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
 class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
+    private final DateTransformer transformer;
     private final NamedayCalendar namedayCalendar;
     private final ColorImageView avatar;
     private final TextView displayName;
@@ -28,13 +30,14 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     public static SearchResultContactViewHolder createFor(ViewGroup parent,
                                                           NamedayCalendar namedayCalendar,
-                                                          ImageLoader imageLoader) {
+                                                          ImageLoader imageLoader,
+                                                          DateTransformer transformer) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_search_result_contact, parent, false);
-        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader);
+        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader, transformer);
     }
 
-    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader) {
+    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader, DateTransformer transformer) {
         super(convertView);
         this.namedayCalendar = namedayCalendar;
         this.imageLoader = imageLoader;
@@ -42,6 +45,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         this.birthday = (TextView) convertView.findViewById(R.id.birthday_label);
         this.nameday = (TextView) convertView.findViewById(R.id.nameday_label);
         this.avatar = (ColorImageView) convertView.findViewById(R.id.avatar);
+        this.transformer = transformer;
     }
 
     void bind(final Contact contact, final SearchResultAdapter.SearchResultClickListener mListener) {
@@ -83,9 +87,10 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         } else {
             // we are only displaying 1 date instead of all of them
             // with Person details this is fixed though
-            String message = getNamedayString(getContext(), namedays.getDate(0));
+            String message = getNamedayString(getContext(), transformer.asDayDate(namedays.getDate(0)));
             nameday.setVisibility(View.VISIBLE);
             nameday.setText(message);
+            throw new UnsupportedOperationException("");
         }
 
     }
