@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 24
         versionCode androidVersionCode
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
