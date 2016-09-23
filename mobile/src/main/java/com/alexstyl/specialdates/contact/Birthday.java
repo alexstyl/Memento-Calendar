@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.contact;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.MonthInt;
 
 public class Birthday implements ShortDate {
 
@@ -29,6 +30,7 @@ public class Birthday implements ShortDate {
         return date.getDayOfMonth();
     }
 
+    @MonthInt
     public int getMonth() {
         return date.getMonth();
     }
