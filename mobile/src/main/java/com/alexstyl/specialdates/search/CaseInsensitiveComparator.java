@@ -8,7 +8,7 @@ class CaseInsensitiveComparator implements WordComparator {
 
     private final Collator collator = Collator.getInstance();
 
-    public CaseInsensitiveComparator() {
+    CaseInsensitiveComparator() {
         this.collator.setStrength(Collator.PRIMARY);
     }
 
