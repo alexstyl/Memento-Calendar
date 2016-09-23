@@ -1,11 +1,14 @@
 package com.alexstyl.specialdates;
 
+import android.support.annotation.Nullable;
+
 /*
  * A simplified version of Java 8's Optional class.
  * See: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
  */
 public class Optional<T> {
 
+    @Nullable
     private final T object;
 
     public Optional(T object) {
@@ -33,5 +36,25 @@ public class Optional<T> {
         } else {
             return object == null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Optional<?> optional = (Optional<?>) o;
+
+        return object != null ? object.equals(optional.object) : optional.object == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return object != null ? object.hashCode() : 0;
     }
 }

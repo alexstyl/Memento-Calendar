@@ -5,6 +5,8 @@ import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 import java.util.ArrayList;
 import java.util.List;

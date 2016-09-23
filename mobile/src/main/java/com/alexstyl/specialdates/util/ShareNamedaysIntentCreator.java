@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 public class ShareNamedaysIntentCreator {
@@ -19,16 +20,19 @@ public class ShareNamedaysIntentCreator {
     }
 
     public Intent createNamedaysShareIntent(NamesInADate namesInADate) {
-        String text = buildSharingTextFor(namesInADate);
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        return intent;
+//        String text = buildSharingTextFor(namesInADate, namesInADate.getDate());
+//        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.setType("text/plain");
+//        intent.putExtra(Intent.EXTRA_TEXT, text);
+//        return intent;
+//        return null;
+        // TODO
+        throw new UnsupportedOperationException("");
     }
 
-    private String buildSharingTextFor(NamesInADate namesInADate) {
+    private String buildSharingTextFor(NamesInADate namesInADate, DayDate date) {
         StringBuilder str = new StringBuilder();
-        String dateString = stringCreator.fullyFormattedDate(namesInADate.getDate());
+        String dateString = stringCreator.fullyFormattedDate(date);
         str
                 .append(context.getString(R.string.days_namedays, dateString))
                 .append("\n").append("\n")

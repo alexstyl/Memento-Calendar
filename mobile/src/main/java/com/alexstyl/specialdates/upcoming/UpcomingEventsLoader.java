@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
@@ -16,7 +17,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.util.ContactsObserver;
@@ -34,6 +35,7 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
     private final EasterCalculator easterCalculator = new EasterCalculator();
 
     private final int currentYear;
+    private final DateComparator comparator = DateComparator.get();
 
     public UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, LoadingTimeDuration timeDuration) {
         super(context);
@@ -84,13 +86,14 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
 
     private List<NamesInADate> getNamedaysFor(LoadingTimeDuration timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext());
+        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, currentYear);
 
         DayDate indexDate = timeDuration.getFrom();
         DayDate toDate = timeDuration.getTo();
         List<NamesInADate> namedays = new ArrayList<>();
-        while (indexDate.isBefore(toDate)) {
+
+        while (comparator.compare(indexDate, toDate) < 0) {
             NamesInADate allNamedayOn = namedayCalendar.getAllNamedayOn(indexDate);
             if (allNamedayOn.nameCount() > 0) {
                 namedays.add(allNamedayOn);

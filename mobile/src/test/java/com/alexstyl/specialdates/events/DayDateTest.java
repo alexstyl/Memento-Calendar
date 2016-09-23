@@ -1,15 +1,21 @@
 package com.alexstyl.specialdates.events;
 
+import com.alexstyl.specialdates.date.AnnualEvent;
+import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.MonthInt;
 
 import org.junit.Test;
 
+import static com.alexstyl.specialdates.date.Date.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DayDateTest {
 
     private static final int DAY = 5;
-    private static final int MONTH = 10;
+    private static final
+    @MonthInt
+    int MONTH = 10;
     private static final DayDate ANY_DATE = DayDate.newInstance(DAY, MONTH, 1990);
 
     @Test
@@ -23,7 +29,7 @@ public class DayDateTest {
 
     @Test(expected = Exception.class)
     public void tests() {
-        DayDate dayDate = DayDate.newInstance(32, 3, 2016);
+        DayDate dayDate = DayDate.newInstance(32, MARCH, 2016);
         dayDate.minusMonth(1);
 
     }
@@ -41,7 +47,7 @@ public class DayDateTest {
 
     @Test
     public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOftheNextYearIsReturned() {
-        DayDate lastDayOfYear = DayDate.newInstance(31, 12, 1990);
+        DayDate lastDayOfYear = DayDate.newInstance(31, DECEMBER, 1990);
         DayDate firstDayOfNextYear = lastDayOfYear.addDay(1);
 
         assertThat(firstDayOfNextYear.getMonth()).isEqualTo(1);
@@ -52,7 +58,7 @@ public class DayDateTest {
 
     @Test
     public void whenNewYearMinus() {
-        DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
+        DayDate firstDayOfYear = DayDate.newInstance(1, JANUARY, 1990);
         DayDate firstDayOfPreviousMonth = firstDayOfYear.minusMonth(1);
 
         assertThat(firstDayOfPreviousMonth.getMonth()).isEqualTo(12);
@@ -60,34 +66,66 @@ public class DayDateTest {
 
     @Test
     public void testOneDayAhead() {
-        DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
-        DayDate secondDayOfYear = DayDate.newInstance(2, 1, 1990);
+        DayDate firstDayOfYear = DayDate.newInstance(1, JANUARY, 1990);
+        DayDate secondDayOfYear = DayDate.newInstance(2, JANUARY, 1990);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(1);
     }
 
     @Test
     public void testOneYearAhead() {
-        DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
-        DayDate secondDayOfYear = DayDate.newInstance(1, 1, 1991);
+        DayDate firstDayOfYear = DayDate.newInstance(1, JANUARY, 1990);
+        DayDate secondDayOfYear = DayDate.newInstance(1, JANUARY, 1991);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(365);
     }
 
     @Test
     public void testTwoYearAhead() {
-        DayDate firstDayOfYear = DayDate.newInstance(1, 1, 1990);
-        DayDate secondDayOfYear = DayDate.newInstance(1, 1, 1992);
+        DayDate firstDayOfYear = DayDate.newInstance(1, JANUARY, 1990);
+        DayDate secondDayOfYear = DayDate.newInstance(1, JANUARY, 1992);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(365 * 2);
     }
 
     @Test
     public void toShortDateWithYear() {
-        DayDate dayDate = DayDate.newInstance(1, 1, 1990);
+        DayDate dayDate = DayDate.newInstance(1, JANUARY, 1990);
         assertThat(dayDate.toShortDate()).isEqualTo("1990-01-01");
     }
 
+    private DateComparator comparator = DateComparator.get();
+
     @Test
-    public void toShortDateWithNoYear() {
-        DayDate dayDate = DayDate.newInstance(1, 1);
-        assertThat(dayDate.toShortDate()).isEqualTo("--01-01");
+    public void compareFutureDayDate() {
+        int result = comparator.compare(DayDate.newInstance(1, JANUARY, 1990), DayDate.newInstance(2, JANUARY, 1990));
+        assertThat(result).isNegative();
+    }
+
+    @Test
+    public void compareSameDayDate() {
+        int result = comparator.compare(DayDate.newInstance(1, JANUARY, 1990), DayDate.newInstance(1, JANUARY, 1990));
+        assertThat(result).isZero();
+    }
+
+    @Test
+    public void comparePastDayDate() {
+        int result = comparator.compare(DayDate.newInstance(1, JANUARY, 1990), DayDate.newInstance(1, JANUARY, 1980));
+        assertThat(result).isPositive();
+    }
+
+    @Test
+    public void compareFutureDate() {
+        int result = comparator.compare(DayDate.newInstance(1, JANUARY, 1990), new AnnualEvent(2, JANUARY));
+        assertThat(result).isNegative();
+    }
+
+    @Test
+    public void compareSameDate() {
+        int result = comparator.compare(DayDate.newInstance(1, JANUARY, 1990), new AnnualEvent(1, JANUARY));
+        assertThat(result).isZero();
+    }
+
+    @Test
+    public void comparePastDate() {
+        int result = comparator.compare(DayDate.newInstance(2, JANUARY, 1990), new AnnualEvent(1, JANUARY));
+        assertThat(result).isPositive();
     }
 }

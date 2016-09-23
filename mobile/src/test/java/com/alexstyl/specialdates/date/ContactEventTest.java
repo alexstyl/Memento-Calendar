@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 import org.junit.Before;
 import org.junit.Test;

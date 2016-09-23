@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.images.ImageLoader;

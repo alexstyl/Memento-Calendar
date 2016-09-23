@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 /**
  * A representation of an event, affiliated to a contact
@@ -25,7 +25,7 @@ public final class ContactEvent {
     public String getLabel(Resources resources) {
         if (eventType == EventType.BIRTHDAY) {
             Birthday birthday = contact.getBirthday();
-            if (birthday.includesYear()) {
+            if (birthday.hasYearOfBirth()) {
                 int age = birthday.getAgeOnYear(getYear());
                 if (age > 0) {
                     return resources.getString(R.string.turns_age, age);

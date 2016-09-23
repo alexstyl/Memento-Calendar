@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.events.namedays.DateTransformer;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -24,11 +25,13 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
     private boolean canLoadMore = false;
     private final ImageLoader imageLoader;
     private final NamedayCalendar namedayCalendar;
+    private final DateTransformer transformer;
     private String searchQuery;
 
-    SearchResultAdapter(ImageLoader imageLoader, NamedayCalendar namedayCalendar) {
+    SearchResultAdapter(ImageLoader imageLoader, NamedayCalendar namedayCalendar, DateTransformer transformer) {
         this.imageLoader = imageLoader;
         this.namedayCalendar = namedayCalendar;
+        this.transformer = transformer;
     }
 
     public void updateSearchResults(SearchResults searchResults) {
@@ -122,10 +125,10 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == VIEWTYPE_CONTACTVIEW) {
-            return SearchResultContactViewHolder.createFor(parent, namedayCalendar, imageLoader);
+            return SearchResultContactViewHolder.createFor(parent, namedayCalendar, imageLoader, transformer);
         }
         if (viewType == VIEWTYPE_NAMEDAYS_VIEW) {
-            return SearchResultNamedayViewHolder.createFor(parent);
+            return SearchResultNamedayViewHolder.createFor(parent, transformer);
         }
 
         if (viewType == VIEWTYPE_LOAD_MORE) {

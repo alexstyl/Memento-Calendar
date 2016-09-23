@@ -14,14 +14,13 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.EventType;
-import com.alexstyl.specialdates.events.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,27 +41,31 @@ public class NamedayDatabaseRefresher {
     private final PeopleEventsPersister perister;
     private final ContactEventsMarshaller eventMarshaller;
 
+    private final DateTransformer transformer;
+
     public static NamedayDatabaseRefresher newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
-        NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context);
+        NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context.getResources());
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactProvider contactProvider = ContactProvider.get(context);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller);
+        DateTransformer transformer = new DateTransformer(DayDate.todaysYear());
+        return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller, transformer);
     }
 
     NamedayDatabaseRefresher(ContentResolver contentResolver,
                              NamedayCalendarProvider namedayCalendarProvider,
                              NamedayPreferences namedayPreferences,
                              PeopleEventsPersister databaseProvider, ContactProvider contactProvider,
-                             ContactEventsMarshaller eventMarshaller) {
+                             ContactEventsMarshaller eventMarshaller, DateTransformer transformer) {
         this.contentResolver = contentResolver;
         this.namedayCalendarProvider = namedayCalendarProvider;
         this.namedayPreferences = namedayPreferences;
         this.perister = databaseProvider;
         this.contactProvider = contactProvider;
         this.eventMarshaller = eventMarshaller;
+        this.transformer = transformer;
     }
 
     public void refreshNamedaysIfEnabled() {
@@ -110,7 +113,7 @@ public class NamedayDatabaseRefresher {
                 }
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = nameDays.getDate(i);
+                    DayDate date = transformer.asDayDate(nameDays.getDate(i));
                     Nameday nameday = new Nameday(date);
                     if (namedays.contains(nameday)) {
                         continue;
@@ -158,7 +161,7 @@ public class NamedayDatabaseRefresher {
 
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = nameDays.getDate(i);
+                    DayDate date = transformer.asDayDate(nameDays.getDate(i));
                     ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(nameday);
                 }
@@ -253,32 +256,11 @@ public class NamedayDatabaseRefresher {
 
     private class Nameday {
 
-        private final Date date;
+        private final DayDate date;
 
-        public Nameday(Date date) {
+        public Nameday(DayDate date) {
             this.date = date;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Nameday nameday = (Nameday) o;
-
-            return date != null ? date.equals(nameday.date) : nameday.date == null;
-
-        }
-
-        @Override
-        public int hashCode() {
-            return date != null ? date.hashCode() : 0;
-        }
-
     }
 
 }

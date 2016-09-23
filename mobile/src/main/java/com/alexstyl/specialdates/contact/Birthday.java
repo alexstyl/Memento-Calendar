@@ -2,30 +2,21 @@ package com.alexstyl.specialdates.contact;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.AnnualEvent;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.MonthInt;
 
 public class Birthday implements ShortDate {
 
     private final AnnualEvent date;
     private final Optional<Integer> yearOfBirth;
 
-    public static Birthday on(DayDate date) {
-        if (date.getYear() == Date.NO_YEAR) {
-            return new Birthday(date.getDayOfMonth(), date.getMonth(), Optional.<Integer>absent());
-        } else {
-            return new Birthday(date.getDayOfMonth(), date.getMonth(), new Optional<>(date.getYear()));
-        }
-    }
-
     public static Birthday on(int dayOfMonth, int month) {
         return new Birthday(dayOfMonth, month, Optional.<Integer>absent());
     }
 
     public static Birthday on(int dayOfMonth, int month, int year) {
-        if (year <= Date.NO_YEAR) {
-            throw new IllegalArgumentException("A birthday cannot have negative year");
+        if (year < 0) {
+            throw new IllegalArgumentException("A birthday cannot have negative year. Use a different constructor if you do not need to specify the year");
         }
         return new Birthday(dayOfMonth, month, new Optional<>(year));
     }
@@ -39,6 +30,7 @@ public class Birthday implements ShortDate {
         return date.getDayOfMonth();
     }
 
+    @MonthInt
     public int getMonth() {
         return date.getMonth();
     }
@@ -47,7 +39,7 @@ public class Birthday implements ShortDate {
         return yearOfBirth.get();
     }
 
-    public boolean includesYear() {
+    public boolean hasYearOfBirth() {
         return yearOfBirth.isPresent();
     }
 
@@ -63,11 +55,6 @@ public class Birthday implements ShortDate {
 
     public int getAgeOnYear(int year) {
         return year - yearOfBirth.get();
-    }
-
-    public DayDate asDayDate() {
-        return includesYear() ? DayDate.newInstance(getDayOfMonth(), getMonth(), getYear())
-                : DayDate.newInstance(getDayOfMonth(), getMonth());
     }
 
     @Override

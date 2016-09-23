@@ -27,4 +27,4 @@ licenses:
 
 
 script:
-  - ./gradlew build
+  - ./build.sh
