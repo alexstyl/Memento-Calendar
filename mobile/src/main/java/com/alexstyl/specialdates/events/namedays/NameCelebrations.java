@@ -48,10 +48,6 @@ public class NameCelebrations {
         return dates.size();
     }
 
-    public void sortDates() {
-        dates.sort();
-    }
-
     public void addDate(Date date) {
         this.dates.add(date);
     }
