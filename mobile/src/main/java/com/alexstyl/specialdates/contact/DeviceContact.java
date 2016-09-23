@@ -21,12 +21,12 @@ public class DeviceContact extends Contact {
 
     protected final String lookupKey;
 
-    public DeviceContact(long contactId, DisplayName displayName, String lookupKey) {
+    DeviceContact(long contactId, DisplayName displayName, String lookupKey) {
         super(contactId, displayName);
         this.lookupKey = lookupKey;
     }
 
-    public DeviceContact(long contactId, DisplayName displayName, String lookupKey, Birthday birthday) {
+    DeviceContact(long contactId, DisplayName displayName, String lookupKey, Birthday birthday) {
         super(contactId, displayName, birthday);
         this.lookupKey = lookupKey;
     }
