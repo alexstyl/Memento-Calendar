@@ -46,21 +46,6 @@ public class Dates {
         this.dates.add(date);
     }
 
-    public void sort() {
-//        Collections.sort(dates);
-        throw new UnsupportedOperationException();
-    }
-
-//    public static Dates merge(Dates... lists) {
-//        ArrayList<DayDate> list = new ArrayList<>();
-//        for (Dates dates : lists) {
-//            for (int i = 0; i < dates.size(); i++) {
-//                list.add(dates.getDate(i));
-//            }
-//        }
-//        return new Dates(list);
-//    }
-
     public void addAll(Dates dates) {
         this.dates.addAll(dates.dates);
     }

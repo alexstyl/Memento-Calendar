@@ -24,7 +24,7 @@ public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
         return new NamedaysLoader(context, namedayPreferences, searchQuery, year);
     }
 
-    NamedaysLoader(Context context, NamedayPreferences namedayPreferences, String searchQuery, int year) {
+    private NamedaysLoader(Context context, NamedayPreferences namedayPreferences, String searchQuery, int year) {
         super(context);
         this.namedayPreferences = namedayPreferences;
         this.searchQuery = searchQuery;
@@ -38,9 +38,7 @@ public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     private NameCelebrations getNamedays(String searchQuery) {
         if (namedayPreferences.isEnabled()) {
-            NameCelebrations namedays = getNamedayCalendar().getAllNamedays(searchQuery);
-            namedays.sortDates();
-            return namedays;
+            return getNamedayCalendar().getAllNamedays(searchQuery);
         }
         return NameCelebrations.EMPTY;
     }
