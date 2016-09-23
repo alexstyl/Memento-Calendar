@@ -7,7 +7,7 @@ import org.joda.time.LocalDate;
 /**
  * A specific date on a specific year
  */
-public class DayDate implements Comparable<DayDate>, ShortDate, Date {
+public class DayDate implements ShortDate, Date {
 
     private final LocalDate localDate;
 
@@ -21,7 +21,7 @@ public class DayDate implements Comparable<DayDate>, ShortDate, Date {
         return localDate.getYear();
     }
 
-    public static DayDate newInstance(int dayOfMonth, int month, int year) {
+    public static DayDate newInstance(int dayOfMonth, @MonthInt int month, int year) {
         LocalDate localDate = new LocalDate(year, month, dayOfMonth);
         return new DayDate(localDate);
     }
@@ -70,20 +70,12 @@ public class DayDate implements Comparable<DayDate>, ShortDate, Date {
         return localDate.toDate().getTime();
     }
 
-    public boolean isBefore(DayDate date) {
-        return compareTo(date) < 0;
-    }
-
-    public boolean isAfter(DayDate date) {
-        return compareTo(date) > 0;
-    }
-
     public AnnualEvent asAnnualEvent() {
         return new AnnualEvent(getDayOfMonth(), getMonth());
     }
 
     public static DayDate startOfTheYear(int currentYear) {
-        return DayDate.newInstance(1, 1, currentYear);
+        return DayDate.newInstance(1, JANUARY, currentYear);
     }
 
     public DayDate minusDay(int days) {
@@ -92,7 +84,7 @@ public class DayDate implements Comparable<DayDate>, ShortDate, Date {
     }
 
     public static DayDate endOfYear(int currentYear) {
-        return DayDate.newInstance(31, 12, currentYear);
+        return DayDate.newInstance(31, DECEMBER, currentYear);
     }
 
     public int getDayOfWeek() {
@@ -117,11 +109,6 @@ public class DayDate implements Comparable<DayDate>, ShortDate, Date {
     @Override
     public String toShortDate() {
         return DateDisplayStringCreator.getInstance().stringOf(this);
-    }
-
-    @Override
-    public int compareTo(DayDate o) {
-        return localDate.compareTo(o.localDate);
     }
 
     @Override

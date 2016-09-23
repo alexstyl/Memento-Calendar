@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events.bankholidays;
 
 import android.support.annotation.NonNull;
 
+import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.DayDate;
 
 public class BankHoliday implements Comparable<BankHoliday> {
@@ -29,6 +30,6 @@ public class BankHoliday implements Comparable<BankHoliday> {
 
     @Override
     public int compareTo(@NonNull BankHoliday another) {
-        return date.compareTo(another.date);
+        return DateComparator.get().compare(date, another.date);
     }
 }
