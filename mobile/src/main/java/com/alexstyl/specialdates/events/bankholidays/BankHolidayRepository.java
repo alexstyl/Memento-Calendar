@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public class BankHolidayRepository {
 
     private final EasterCalculator calculator;
 
-    private DayDate easter;
+    private Date easter;
     private GreekBankHolidays bankHolidays;
 
     public BankHolidayRepository(EasterCalculator calculator) {
@@ -21,7 +21,7 @@ public class BankHolidayRepository {
         calculateHolidaysForYear(year);
     }
 
-    public Optional<BankHoliday> calculateBankholidayFor(DayDate date) {
+    public Optional<BankHoliday> calculateBankholidayFor(Date date) {
         List<BankHoliday> bankHolidaysList;
         int year = date.getYear();
         if (isForNewYear(year)) {

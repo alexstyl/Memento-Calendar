@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
@@ -41,8 +41,6 @@ public class NamedayDatabaseRefresher {
     private final PeopleEventsPersister perister;
     private final ContactEventsMarshaller eventMarshaller;
 
-    private final DateTransformer transformer;
-
     public static NamedayDatabaseRefresher newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context.getResources());
@@ -50,22 +48,20 @@ public class NamedayDatabaseRefresher {
         ContactProvider contactProvider = ContactProvider.get(context);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        DateTransformer transformer = new DateTransformer(DayDate.todaysYear());
-        return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller, transformer);
+        return new NamedayDatabaseRefresher(contentResolver, namedayProvider, namedayPreferences, persister, contactProvider, marshaller);
     }
 
     NamedayDatabaseRefresher(ContentResolver contentResolver,
                              NamedayCalendarProvider namedayCalendarProvider,
                              NamedayPreferences namedayPreferences,
                              PeopleEventsPersister databaseProvider, ContactProvider contactProvider,
-                             ContactEventsMarshaller eventMarshaller, DateTransformer transformer) {
+                             ContactEventsMarshaller eventMarshaller) {
         this.contentResolver = contentResolver;
         this.namedayCalendarProvider = namedayCalendarProvider;
         this.namedayPreferences = namedayPreferences;
         this.perister = databaseProvider;
         this.contactProvider = contactProvider;
         this.eventMarshaller = eventMarshaller;
-        this.transformer = transformer;
     }
 
     public void refreshNamedaysIfEnabled() {
@@ -105,7 +101,7 @@ public class NamedayDatabaseRefresher {
             }
 
             DisplayName displayName = DisplayName.from(getDisplayName(cursor));
-            HashSet<Nameday> namedays = new HashSet<>();
+            HashSet<Date> namedays = new HashSet<>();
             for (String firstName : displayName.getFirstNames()) {
                 NameCelebrations nameDays = getNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {
@@ -113,14 +109,13 @@ public class NamedayDatabaseRefresher {
                 }
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = transformer.asDayDate(nameDays.getDate(i));
-                    Nameday nameday = new Nameday(date);
-                    if (namedays.contains(nameday)) {
+                    Date date = nameDays.getDate(i);
+                    if (namedays.contains(date)) {
                         continue;
                     }
                     ContactEvent event = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(event);
-                    namedays.add(nameday);
+                    namedays.add(date);
                 }
             }
         }
@@ -161,7 +156,7 @@ public class NamedayDatabaseRefresher {
 
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = transformer.asDayDate(nameDays.getDate(i));
+                    Date date = nameDays.getDate(i);
                     ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(nameday);
                 }
@@ -211,7 +206,7 @@ public class NamedayDatabaseRefresher {
 
     public NamedayCalendar getNamedayCalendar() {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
-        int todayYear = DayDate.today().getYear();
+        int todayYear = Date.today().getYear();
         return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, todayYear);
     }
 
@@ -252,15 +247,6 @@ public class NamedayDatabaseRefresher {
             return cursor.getLong(DeviceContactsQuery.ID);
         }
 
-    }
-
-    private class Nameday {
-
-        private final DayDate date;
-
-        public Nameday(DayDate date) {
-            this.date = date;
-        }
     }
 
 }

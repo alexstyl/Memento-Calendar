@@ -7,7 +7,7 @@ import android.os.Handler;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
@@ -64,7 +64,7 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
 
         if (bankHolidaysPreferences.isEnabled()) {
             BankholidayCalendar.get();
-            DayDate easter = easterCalculator.calculateEasterForYear(currentYear);
+            Date easter = easterCalculator.calculateEasterForYear(currentYear);
             List<BankHoliday> bankHolidays = new GreekBankHolidays(easter).getBankHolidaysForYear();
             upcomingDatesBuilder.withBankHolidays(bankHolidays);
         }
@@ -89,8 +89,8 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, currentYear);
 
-        DayDate indexDate = timeDuration.getFrom();
-        DayDate toDate = timeDuration.getTo();
+        Date indexDate = timeDuration.getFrom();
+        Date toDate = timeDuration.getTo();
         List<NamesInADate> namedays = new ArrayList<>();
 
         while (comparator.compare(indexDate, toDate) < 0) {

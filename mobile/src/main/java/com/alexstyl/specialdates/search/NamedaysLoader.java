@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.search;
 
 import android.content.Context;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -20,7 +20,7 @@ class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     public static NamedaysLoader newInstance(Context context, String searchQuery) {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        int year = DayDate.today().getYear();
+        int year = Date.today().getYear();
         return new NamedaysLoader(context, namedayPreferences, searchQuery, year);
     }
 

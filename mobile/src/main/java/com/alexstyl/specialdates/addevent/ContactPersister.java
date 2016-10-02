@@ -3,8 +3,8 @@ package com.alexstyl.specialdates.addevent;
 import android.content.ContentResolver;
 import android.content.Context;
 
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 
 class ContactPersister {
 
@@ -16,11 +16,11 @@ class ContactPersister {
         this.context = context;
     }
 
-    public void createContactWithNameAndBirthday(String contactName, Birthday birthday, AccountData account) {
+    public void createContactWithNameAndBirthday(String contactName, Date birthday, AccountData account) {
         new ContactWithBirthdayCreateTask(contactName, birthday, contentResolver, context, account).execute();
     }
 
-    public void addBirthdayToExistingContact(Birthday birthday, Contact contact) {
+    public void addBirthdayToExistingContact(Date birthday, Contact contact) {
         new AddBirthdayToContactTask(context, contentResolver, birthday, contact).execute();
     }
 }

@@ -2,15 +2,15 @@ package com.alexstyl.specialdates.events.bankholidays;
 
 import android.support.annotation.NonNull;
 
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DayDate;
 
 public class BankHoliday implements Comparable<BankHoliday> {
 
     private final String holidayName;
-    private final DayDate date;
+    private final Date date;
 
-    public BankHoliday(String holidayName, DayDate date) {
+    public BankHoliday(String holidayName, Date date) {
         this.holidayName = holidayName;
         this.date = date;
     }
@@ -19,7 +19,7 @@ public class BankHoliday implements Comparable<BankHoliday> {
         return holidayName;
     }
 
-    public DayDate getDate() {
+    public Date getDate() {
         return date;
     }
 

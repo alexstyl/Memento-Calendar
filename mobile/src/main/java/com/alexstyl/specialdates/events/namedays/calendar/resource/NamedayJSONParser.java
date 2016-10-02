@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.date.AnnualEvent;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
 import com.novoda.notils.exception.DeveloperError;
@@ -35,7 +35,7 @@ class NamedayJSONParser {
 
                 nameday = (JSONObject) data.get(i);
                 String dateString = nameday.getString("date");
-                AnnualEvent theDate = getNamedaysFrom(dateString);
+                Date theDate = getNamedaysFrom(dateString);
 
                 JSONArray variations = nameday.getJSONArray("names");
                 int numberOfVariations = variations.length();
@@ -54,13 +54,13 @@ class NamedayJSONParser {
         return new NamedayBundle(namesToDate, dateToNames);
     }
 
-    private static AnnualEvent getNamedaysFrom(String date) {
+    private static Date getNamedaysFrom(String date) {
         int slashIndex = date.indexOf("/");
         if (slashIndex == -1) {
             throw new DeveloperError("Unable to getNamedaysFrom " + date);
         }
         int dayOfMonth = Integer.valueOf(date.substring(0, slashIndex));
         int month = Integer.valueOf(date.substring(slashIndex + 1));
-        return new AnnualEvent(dayOfMonth, month);
+        return Date.on(dayOfMonth, month);
     }
 }

@@ -8,18 +8,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.namedays.DateTransformer;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
 class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
-    private final DateTransformer transformer;
     private final NamedayCalendar namedayCalendar;
     private final ColorImageView avatar;
     private final TextView displayName;
@@ -30,14 +27,13 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     public static SearchResultContactViewHolder createFor(ViewGroup parent,
                                                           NamedayCalendar namedayCalendar,
-                                                          ImageLoader imageLoader,
-                                                          DateTransformer transformer) {
+                                                          ImageLoader imageLoader) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_search_result_contact, parent, false);
-        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader, transformer);
+        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader);
     }
 
-    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader, DateTransformer transformer) {
+    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader) {
         super(convertView);
         this.namedayCalendar = namedayCalendar;
         this.imageLoader = imageLoader;
@@ -45,7 +41,6 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         this.birthday = (TextView) convertView.findViewById(R.id.birthday_label);
         this.nameday = (TextView) convertView.findViewById(R.id.nameday_label);
         this.avatar = (ColorImageView) convertView.findViewById(R.id.avatar);
-        this.transformer = transformer;
     }
 
     void bind(final Contact contact, final SearchResultAdapter.SearchResultClickListener mListener) {
@@ -70,8 +65,8 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void bindBirthday(Contact contact) {
-        if (contact.hasBirthday()) {
-            Birthday birthday = contact.getBirthday();
+        if (contact.hasDateOfBirth()) {
+            Date birthday = contact.getDateOfBirth();
             String message = getBirthdayString(getContext(), birthday);
             this.birthday.setVisibility(View.VISIBLE);
             this.birthday.setText(message);
@@ -87,17 +82,15 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         } else {
             // we are only displaying 1 date instead of all of them
             // with Person details this is fixed though
-            String message = getNamedayString(getContext(), transformer.asDayDate(namedays.getDate(0)));
+            String message = getNamedayString(getContext(), namedays.getDate(0));
             nameday.setVisibility(View.VISIBLE);
             nameday.setText(message);
-            throw new UnsupportedOperationException("");
         }
 
     }
 
-    public static String getBirthdayString(Context context, Birthday birthday) {
-        DayDate date1 = DayDate.newInstance(birthday.getDayOfMonth(), birthday.getMonth(), DayDate.today().getYear());
-        return getEventString(context, R.string.birthday, date1);
+    public static String getBirthdayString(Context context, Date birthday) {
+        return getEventString(context, R.string.birthday, birthday);
     }
 
     /**
@@ -106,11 +99,11 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
      * @param context The context to use
      * @param date    The date of the event
      */
-    public static String getNamedayString(Context context, DayDate date) {
+    public static String getNamedayString(Context context, Date date) {
         return getEventString(context, R.string.nameday, date);
     }
 
-    private static String getEventString(Context context, int stringRes, DayDate date) {
+    private static String getEventString(Context context, int stringRes, Date date) {
         String message =
                 DateFormatUtils.formatTimeStampString(
                         context,

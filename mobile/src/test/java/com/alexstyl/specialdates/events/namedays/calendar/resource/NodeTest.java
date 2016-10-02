@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
 import org.junit.Test;
@@ -14,7 +14,7 @@ public abstract class NodeTest {
     @Test
     public void addingADate_isPlacedUnderTheRightNode() {
         Node node = buildNode();
-        DayDate date = DayDate.newInstance(1, 2, 1990);
+        Date date = Date.on(1, 2, 1990);
         node.addDate("Alex", date);
 
         NameCelebrations extracted = node.getDates("Alex");

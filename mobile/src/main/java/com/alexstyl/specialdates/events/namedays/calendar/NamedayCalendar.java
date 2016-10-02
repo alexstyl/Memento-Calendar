@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
@@ -33,7 +33,7 @@ public final class NamedayCalendar {
         return strategy.getNamedaysFor(name, year);
     }
 
-    public NamesInADate getAllNamedayOn(DayDate date) {
+    public NamesInADate getAllNamedayOn(Date date) {
         List<String> names = namedayBundle.getNamedaysFor(date).getNames();
         List<String> specialNames = strategy.getNamedayOn(date).getNames();
         List<String> arrayList = new ArrayList<>(names.size() + specialNames.size());

@@ -10,7 +10,7 @@ import android.widget.Filterable;
 
 import com.alexstyl.specialdates.SoundWordComparator;
 import com.alexstyl.specialdates.WordComparator;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -35,7 +35,7 @@ public class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder>
         } else {
             compatator = new CaseInsensitiveComparator();
         }
-        int year = DayDate.today().getYear();
+        int year = Date.today().getYear();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, year);
         ArrayList<String> names = namedayCalendar.getAllNames();
         return new NameSuggestionsAdapter(new NameFilter(names, compatator));

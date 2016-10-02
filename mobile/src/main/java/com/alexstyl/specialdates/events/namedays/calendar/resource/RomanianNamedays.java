@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
@@ -15,7 +15,7 @@ public class RomanianNamedays {
     private final List<String> names;
 
     private NamedayBundle namedays;
-    private DayDate romanianDate;
+    private Date romanianDate;
 
     public static RomanianNamedays from(List<String> names) {
         RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator();
@@ -31,7 +31,7 @@ public class RomanianNamedays {
         return new ArrayList<>(names);
     }
 
-    public NamesInADate getNamedaysFor(DayDate date) {
+    public NamesInADate getNamedaysFor(Date date) {
         calculateEasterIfNecessary(date.getYear());
         if (romanianDate.equals(date)) {
             return namedays.getNamedaysFor(date);

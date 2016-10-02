@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.widgetprovider;
 import android.os.AsyncTask;
 
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 
 public abstract class QueryUpcomingTask extends AsyncTask<Void, Void, ContactEvents> {
@@ -16,7 +16,7 @@ public abstract class QueryUpcomingTask extends AsyncTask<Void, Void, ContactEve
 
     @Override
     protected ContactEvents doInBackground(Void... params) {
-        DayDate today = DayDate.today();
+        Date today = Date.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }
 

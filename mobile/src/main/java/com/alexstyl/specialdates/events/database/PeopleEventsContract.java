@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 public class PeopleEventsContract {
@@ -24,7 +24,7 @@ public class PeopleEventsContract {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(PeopleEventsContract.CONTENT_URI, PATH);
         public static final String SORT_ORDER_DEFAULT = DATE + " ASC";
 
-        public static DayDate getDateFrom(Cursor cursor) {
+        public static Date getDateFrom(Cursor cursor) {
             int index = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DATE);
             String text = cursor.getString(index);
             return from(text);
@@ -43,7 +43,7 @@ public class PeopleEventsContract {
 
         private static final String SEPARATOR = "-";
 
-        public static DayDate from(String text) {
+        public static Date from(String text) {
             int dayToMonth = text.lastIndexOf(SEPARATOR);
             int monthToYear = text.lastIndexOf(SEPARATOR, dayToMonth - 1);
 
@@ -52,7 +52,7 @@ public class PeopleEventsContract {
 
             int yearToMonth = text.indexOf(SEPARATOR);
             int year = Integer.valueOf(text.substring(0, yearToMonth));
-            return DayDate.newInstance(day, month, year);
+            return Date.on(day, month, year);
         }
     }
 
