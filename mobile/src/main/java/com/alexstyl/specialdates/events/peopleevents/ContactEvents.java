@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,11 +10,11 @@ import java.util.List;
 
 public class ContactEvents {
 
-    private final DayDate date;
+    private final Date date;
     private final List<ContactEvent> contactEventList;
     private final List<Contact> contacts;
 
-    public static ContactEvents createFrom(DayDate date, List<ContactEvent> contactEvent) {
+    public static ContactEvents createFrom(Date date, List<ContactEvent> contactEvent) {
         List<Contact> contacts = getContactsIn(contactEvent);
         return new ContactEvents(date, contactEvent, contacts);
     }
@@ -30,7 +30,7 @@ public class ContactEvents {
         return Collections.unmodifiableList(contacts);
     }
 
-    private ContactEvents(DayDate date, List<ContactEvent> contactEventList, List<Contact> contacts) {
+    private ContactEvents(Date date, List<ContactEvent> contactEventList, List<Contact> contacts) {
         this.date = date;
         this.contactEventList = contactEventList;
         this.contacts = contacts;
@@ -44,7 +44,7 @@ public class ContactEvents {
         return contactEventList.get(index);
     }
 
-    public DayDate getDate() {
+    public Date getDate() {
         return date;
     }
 

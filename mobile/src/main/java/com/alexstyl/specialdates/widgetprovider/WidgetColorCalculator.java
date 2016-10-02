@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.widgetprovider;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 public class WidgetColorCalculator {
 
@@ -18,7 +18,7 @@ public class WidgetColorCalculator {
         this.baseColor = baseColor;
     }
 
-    public int getColor(DayDate today, DayDate nextEvent) {
+    public int getColor(Date today, Date nextEvent) {
 
         int dayDiff = today.daysDifferenceTo(nextEvent);
         if (dayDiff <= 3) {

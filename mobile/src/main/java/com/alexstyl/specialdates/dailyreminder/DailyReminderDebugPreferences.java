@@ -5,7 +5,8 @@ import android.support.v4.util.Pair;
 
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateConstants;
 
 public final class DailyReminderDebugPreferences {
 
@@ -19,11 +20,11 @@ public final class DailyReminderDebugPreferences {
         this.preferences = preferences;
     }
 
-    public DayDate getSelectedDate() {
+    public Date getSelectedDate() {
         int dayOfMonth = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_day, 1);
-        int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, DayDate.JANUARY);
+        int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, DateConstants.JANUARY);
         int year = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_year, 2016);
-        return DayDate.newInstance(dayOfMonth, month, year);
+        return Date.on(dayOfMonth, month, year);
     }
 
     public boolean isFakeDateEnabled() {

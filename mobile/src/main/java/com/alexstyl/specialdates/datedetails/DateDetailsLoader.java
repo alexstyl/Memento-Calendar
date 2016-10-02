@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
@@ -25,20 +25,20 @@ import java.util.List;
 
 public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>> {
 
-    private final DayDate date;
+    private final Date date;
     private final ContactProvider contactProvider;
     private final ContactsObserver contactsObserver;
 
     private final Comparator<ContactEvent> displayNameComparator = new SpecialDateDisplayNameComparator();
 
-    public static DateDetailsLoader newInstance(Context context, DayDate date) {
+    public static DateDetailsLoader newInstance(Context context, Date date) {
         context = context.getApplicationContext();
         ContactProvider contactProvider = ContactProvider.get(context);
         ContactsObserver contactsObserver = new ContactsObserver(context.getContentResolver(), new Handler());
         return new DateDetailsLoader(context, date, contactProvider, contactsObserver);
     }
 
-    DateDetailsLoader(Context context, DayDate date, ContactProvider contactProvider, ContactsObserver contactsObserver) {
+    DateDetailsLoader(Context context, Date date, ContactProvider contactProvider, ContactsObserver contactsObserver) {
         super(context);
         this.date = date;
         this.contactProvider = contactProvider;

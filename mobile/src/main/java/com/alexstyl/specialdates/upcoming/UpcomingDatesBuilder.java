@@ -5,7 +5,6 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
@@ -30,7 +29,7 @@ class UpcomingDatesBuilder {
 
     UpcomingDatesBuilder withContactEvents(List<ContactEvent> contactEvents) {
         for (ContactEvent contactEvent : contactEvents) {
-            DayDate date = contactEvent.getDate();
+            Date date = contactEvent.getDate();
             keepIfEarliestDate(date);
             keepIfLatestDate(date);
             this.contactEvents.addValue(date, contactEvent);
@@ -72,7 +71,7 @@ class UpcomingDatesBuilder {
 
     UpcomingDatesBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
         for (BankHoliday bankHoliday : bankHolidays) {
-            DayDate date = bankHoliday.getDate();
+            Date date = bankHoliday.getDate();
             keepIfEarliestDate(date);
             keepIfLatestDate(date);
             this.bankHolidays.put(date, bankHoliday);
@@ -88,8 +87,8 @@ class UpcomingDatesBuilder {
         }
 
         List<CelebrationDate> celebrationDates = new ArrayList<>();
-        DayDate indexDate = daydateOf(earliestDate.get());
-        DayDate lastDate = daydateOf(latestDate.get());
+        Date indexDate = earliestDate.get();
+        Date lastDate = latestDate.get();
         while (comparator.compare(indexDate, lastDate) <= 0) {
             List<ContactEvent> contactEvent = contactEvents.get(indexDate);
             if (contactEvent == null) {
@@ -110,15 +109,6 @@ class UpcomingDatesBuilder {
             indexDate = indexDate.addDay(1);
         }
         return celebrationDates;
-    }
-
-    private DayDate daydateOf(Date date) {
-        if (date instanceof DayDate) {
-            return ((DayDate) date);
-        } else {
-            int currentYear = DayDate.todaysYear();
-            return DayDate.newInstance(date.getDayOfMonth(), date.getMonth(), currentYear);
-        }
     }
 
     private boolean noEventsArePresent() {

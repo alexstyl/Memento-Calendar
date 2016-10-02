@@ -1,20 +1,20 @@
 package com.alexstyl.specialdates.addevent;
 
-import com.alexstyl.specialdates.contact.Birthday;
+import com.alexstyl.specialdates.date.Date;
 
 public class BirthdayCreationValidator {
 
-    private final Birthday displayingBirthday;
+    private final Date displayingBirthday;
 
     public BirthdayCreationValidator() {
         this.displayingBirthday = null;
     }
 
-    public BirthdayCreationValidator(Birthday displayingBirthday) {
+    public BirthdayCreationValidator(Date displayingBirthday) {
         this.displayingBirthday = displayingBirthday;
     }
 
-    public boolean isBirthdayValid(Birthday displayingBirthday) {
+    public boolean isBirthdayValid(Date displayingBirthday) {
         return displayingBirthday != null;
     }
 
@@ -22,7 +22,7 @@ public class BirthdayCreationValidator {
         return displayName.length() > 0;
     }
 
-    public boolean isDifferentToInitialBirthday(Birthday birthday) {
+    public boolean isDifferentToInitialBirthday(Date birthday) {
         if (displayingBirthday == null) {
             return birthday != null;
         }

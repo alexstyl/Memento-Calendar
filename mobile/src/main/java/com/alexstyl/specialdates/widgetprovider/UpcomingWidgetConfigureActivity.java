@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
@@ -68,7 +68,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedActivity {
     protected void onStart() {
         super.onStart();
 
-        String title = DateFormatUtils.formatTimeStampString(this, DayDate.today().toMillis(), true);
+        String title = DateFormatUtils.formatTimeStampString(this, Date.today().toMillis(), true);
         previewLayout.setTitle(title);
         previewLayout.setSubtitle(R.string.upcoming_widget_configure_subtitle);
 

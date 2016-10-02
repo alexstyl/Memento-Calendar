@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DayDate;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class NamedaysList {
     }
 
     private boolean isRecurringEvent(Date comparingDate) {
-        return !(comparingDate instanceof DayDate);
+        return !comparingDate.hasYear();
     }
 
     private boolean areMatching(Date date, Date otherDate) {

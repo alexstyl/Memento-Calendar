@@ -1,7 +1,8 @@
 package com.alexstyl.specialdates.util;
 
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.ParsedDate;
+import com.alexstyl.specialdates.date.MonthInt;
 
 import java.util.Locale;
 
@@ -34,14 +35,14 @@ public class ContactEventDateParser {
     /**
      * Parses the given date using the default date formats
      */
-    public ParsedDate parse(String date) throws DateParseException {
+    public Date parse(String date) throws DateParseException {
         return parse(date, dateFormats);
     }
 
     /**
      * Parses the given date, using the given date formats
      */
-    public ParsedDate parse(String date, String[] formats) throws DateParseException {
+    public Date parse(String date, String[] formats) throws DateParseException {
         if (LOCALES == null) {
             LOCALES = new Locale[]{Locale.getDefault(), Locale.US};
         }
@@ -54,13 +55,13 @@ public class ContactEventDateParser {
                     try {
                         LocalDate dt = formatter.parseLocalDate(date);
                         int day = dt.getDayOfMonth();
-                        int month = dt.getMonthOfYear();
+                        @MonthInt int month = dt.getMonthOfYear();
                         int year = dt.getYear();
 
                         if (year == -1) {
-                            return new ParsedDate(day, month);
+                            return Date.on(day, month);
                         } else {
-                            return new ParsedDate(day, month, year);
+                            return Date.on(day, month, year);
                         }
 
                     } catch (IllegalArgumentException e) {

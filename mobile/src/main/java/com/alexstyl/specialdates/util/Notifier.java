@@ -25,7 +25,7 @@ import android.text.style.StyleSpan;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
@@ -66,7 +66,7 @@ public class Notifier {
      */
     public void forDailyReminder(ContactEvents events) {
         Bitmap largeIcon = null;
-        DayDate date = events.getDate();
+        Date date = events.getDate();
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
@@ -198,7 +198,7 @@ public class Notifier {
         return contactCount == 1;
     }
 
-    public void forNamedays(List<String> names, DayDate date) {
+    public void forNamedays(List<String> names, Date date) {
         if (names == null || names.isEmpty()) {
             Log.w(TAG, "Tried to notify for empty name list");
             return;
@@ -236,7 +236,7 @@ public class Notifier {
 
     }
 
-    public void forBankholiday(DayDate date, BankHoliday bankHoliday) {
+    public void forBankholiday(Date date, BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
                 DateDetailsActivity.getStartIntentFromExternal(context, date.getDayOfMonth(), date.getMonth(), date.getYear()),

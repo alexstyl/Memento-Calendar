@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.contact;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.date.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class ContactCacheTest {
     }
 
     private static Contact anyContact() {
-        return new DeviceContact(5, ANY_DISPLAY_NAME, "any_lookup_key", Optional.<Birthday>absent());
+        return new DeviceContact(5, ANY_DISPLAY_NAME, "any_lookup_key", Optional.<Date>absent());
     }
 
 }

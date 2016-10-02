@@ -14,7 +14,7 @@ public class Dates {
         this.dates.add(date);
     }
 
-    public Dates(List<AnnualEvent> dates) {
+    public Dates(List<Date> dates) {
         this.dates.addAll(dates);
     }
 

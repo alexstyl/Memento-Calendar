@@ -1,8 +1,6 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DayDate;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,18 +22,18 @@ public class NamedaysListTest {
     }
 
     private static void populateNamedays() {
-        namedays.addNameday(DayDate.newInstance(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
-        namedays.addNameday(DayDate.newInstance(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
-        namedays.addNameday(DayDate.newInstance(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(Date.on(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(Date.on(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(Date.on(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
 
-        namedays.addNameday(new AnnualEvent(4, FIXED_MONTH), RECURRING_NAMEDAY);
-        namedays.addNameday(new AnnualEvent(5, FIXED_MONTH), RECURRING_NAMEDAY);
+        namedays.addNameday(Date.on(4, FIXED_MONTH), RECURRING_NAMEDAY);
+        namedays.addNameday(Date.on(5, FIXED_MONTH), RECURRING_NAMEDAY);
 
     }
 
     @Test
     public void whenNoYearSpecified_thenRecurringEventIsReturned() {
-        Date dateWithNoYear = new AnnualEvent(4, FIXED_MONTH);
+        Date dateWithNoYear = Date.on(4, FIXED_MONTH);
 
         NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
@@ -44,7 +42,7 @@ public class NamedaysListTest {
 
     @Test
     public void whenNoYearSpecified_thenFixedYearEventIsNotReturned() {
-        Date dateWithNoYear = new AnnualEvent(1, FIXED_MONTH);
+        Date dateWithNoYear = Date.on(1, FIXED_MONTH);
 
         NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
@@ -53,7 +51,7 @@ public class NamedaysListTest {
 
     @Test
     public void whenYearSpecified_thenFixedYearEventIsReturned() {
-        Date dateWithNoYear = DayDate.newInstance(1, FIXED_MONTH, FIXED_YEAR);
+        Date dateWithNoYear = Date.on(1, FIXED_MONTH, FIXED_YEAR);
 
         NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
@@ -62,7 +60,7 @@ public class NamedaysListTest {
 
     @Test
     public void whenYearSpecified_thenRecurringEventIsReturned() {
-        Date date = DayDate.newInstance(4, FIXED_MONTH, FIXED_YEAR);
+        Date date = Date.on(4, FIXED_MONTH, FIXED_YEAR);
 
         NamesInADate results = namedays.getNamedaysFor(date);
 

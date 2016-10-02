@@ -11,19 +11,19 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
+import com.alexstyl.specialdates.date.Date;
 
 import java.util.ArrayList;
 
 public class ContactWithBirthdayCreateTask extends AsyncTask<Void, Void, Boolean> {
 
     private final String contactName;
-    private final Birthday birthday;
+    private final Date birthday;
     private final ContentResolver contentResolver;
     private final Context context;
     private final AccountData account;
 
-    public ContactWithBirthdayCreateTask(String contactName, Birthday birthday, ContentResolver contentResolver, Context context, AccountData account) {
+    public ContactWithBirthdayCreateTask(String contactName, Date birthday, ContentResolver contentResolver, Context context, AccountData account) {
         this.contactName = contactName;
         this.birthday = birthday;
         this.contentResolver = contentResolver;

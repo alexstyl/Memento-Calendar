@@ -3,10 +3,10 @@ package com.alexstyl.specialdates.upcoming.view;
 import android.view.View;
 
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 public interface OnUpcomingEventClickedListener {
-    void onCardPressed(DayDate date);
+    void onCardPressed(Date date);
 
     void onContactEventPressed(View view, ContactEvent contact);
 

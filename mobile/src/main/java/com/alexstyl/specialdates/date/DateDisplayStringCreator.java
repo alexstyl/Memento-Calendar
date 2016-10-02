@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.format.DateUtils;
 
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.contact.Birthday;
 
 public final class DateDisplayStringCreator {
 
@@ -20,7 +19,7 @@ public final class DateDisplayStringCreator {
         return instance;
     }
 
-    public String stringOf(DayDate date) {
+    public String stringOf(Date date) {
         StringBuilder str = new StringBuilder();
         addYear(date, str);
         str.append(SEPARATOR);
@@ -30,18 +29,12 @@ public final class DateDisplayStringCreator {
         return str.toString();
     }
 
-    public String stringOf(AnnualEvent date) {
-        StringBuilder str = new StringBuilder();
-        str.append(SEPARATOR);
-        str.append(SEPARATOR);
-        addMonth(date, str);
-        str.append(SEPARATOR);
-        addDayOfMonth(date, str);
-        return str.toString();
-    }
-
-    private void addYear(DayDate date, StringBuilder str) {
-        str.append(date.getYear());
+    private void addYear(Date date, StringBuilder str) {
+        if (date.hasYear()) {
+            str.append(date.getYear());
+        } else {
+            str.append(SEPARATOR);
+        }
     }
 
     private void addMonth(Date date, StringBuilder str) {
@@ -64,37 +57,36 @@ public final class DateDisplayStringCreator {
         return number < 10;
     }
 
-    public String fullyFormattedBirthday(Birthday birthday) {
-        DayDate dayDate = getDayDateFor(birthday);
+    public String fullyFormattedBirthday(Date birthday) {
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 
-        if (birthday.hasYearOfBirth()) {
+        if (birthday.hasYear()) {
             format_flags |= DateUtils.FORMAT_SHOW_YEAR;
         } else {
             format_flags |= DateUtils.FORMAT_NO_YEAR;
         }
 
-        return DateUtils.formatDateTime(appContext, dayDate.toMillis(), format_flags);
+        return DateUtils.formatDateTime(appContext, birthday.toMillis(), format_flags);
     }
 
-    public DayDate getDayDateFor(Birthday birthday) {
-        int year;
-        if (birthday.hasYearOfBirth()) {
-            year = birthday.getYear();
-        } else {
-            year = DayDate.todaysYear();
-        }
-        return DayDate.newInstance(birthday.getDayOfMonth(), birthday.getMonth(), year);
-    }
+//    public Date getDayDateFor(Date birthday) {
+//        int year;
+//        if (birthday.hasYear()) {
+//            year = birthday.getYear();
+//        } else {
+//            year = Date.todaysYear();
+//        }
+//        return Date.on(birthday.getDayOfMonth(), birthday.getMonth(), year);
+//    }
 
-    public String fullyFormattedDate(DayDate dayDate) {
+    public String fullyFormattedDate(Date date) {
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
         format_flags |= DateUtils.FORMAT_SHOW_YEAR;
-        return DateUtils.formatDateTime(appContext, dayDate.toMillis(), format_flags);
+        return DateUtils.formatDateTime(appContext, date.toMillis(), format_flags);
 
     }
 }
