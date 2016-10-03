@@ -126,9 +126,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     public void onResume() {
         super.onResume();
         checkIfUserSettingsChanged();
-        if (permissions.permissionIsPresent()) {
-            showData();
-        } else {
+        if (!permissions.permissionIsPresent()) {
             permissions.requestForPermission();
         }
     }
