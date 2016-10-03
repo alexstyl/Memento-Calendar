@@ -49,7 +49,7 @@ class BirthdayDatabaseRefresher {
 
     public void refreshBirthdays() {
         clearAllBirthdays();
-        List<ContactEvent> contacts = loadBirtdaysFromDisk();
+        List<ContactEvent> contacts = loadBirthdaysFromDisk();
         storeContactsToProvider(contacts);
     }
 
@@ -57,7 +57,7 @@ class BirthdayDatabaseRefresher {
         persister.deleteAllBirthdays();
     }
 
-    private List<ContactEvent> loadBirtdaysFromDisk() {
+    private List<ContactEvent> loadBirthdaysFromDisk() {
         Cursor cursor = BirthdayQuery.query(contentResolver);
         if (isInvalid(cursor)) {
             return NO_EVENTS;
