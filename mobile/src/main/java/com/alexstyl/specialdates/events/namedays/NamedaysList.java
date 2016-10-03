@@ -52,8 +52,8 @@ public class NamedaysList {
         return -1;
     }
 
-    private boolean isRecurringEvent(Date comparingDate) {
-        return !comparingDate.hasYear();
+    private boolean isRecurringEvent(Date date) {
+        return !date.hasYear();
     }
 
     private boolean areMatching(Date date, Date otherDate) {

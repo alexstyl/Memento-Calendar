@@ -22,7 +22,7 @@ import static com.alexstyl.specialdates.events.peopleevents.EventType.BIRTHDAY;
 
 class BirthdayDatabaseRefresher {
 
-    private static final List<ContactEvent> NO_CONTACTS = Collections.emptyList();
+    private static final List<ContactEvent> NO_EVENTS = Collections.emptyList();
     private static final Optional<Contact> NO_CONTACT = Optional.absent();
 
     private final ContactProvider contactProvider;
@@ -60,7 +60,7 @@ class BirthdayDatabaseRefresher {
     private List<ContactEvent> loadBirtdaysFromDisk() {
         Cursor cursor = BirthdayQuery.query(contentResolver);
         if (isInvalid(cursor)) {
-            return NO_CONTACTS;
+            return NO_EVENTS;
         }
         List<ContactEvent> events = new ArrayList<>();
         try {
