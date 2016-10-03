@@ -120,6 +120,10 @@ public class Date implements ShortDate {
         return DateDisplayStringCreator.getInstance().stringOf(this);
     }
 
+    public boolean hasYear() {
+        return year.isPresent();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -131,16 +135,17 @@ public class Date implements ShortDate {
 
         Date date = (Date) o;
 
-        return localDate.equals(date.localDate);
+        if (!localDate.equals(date.localDate)) {
+            return false;
+        }
+        return year.equals(date.year);
 
     }
 
     @Override
     public int hashCode() {
-        return localDate.hashCode();
-    }
-
-    public boolean hasYear() {
-        return year.isPresent();
+        int result = localDate.hashCode();
+        result = 31 * result + year.hashCode();
+        return result;
     }
 }
