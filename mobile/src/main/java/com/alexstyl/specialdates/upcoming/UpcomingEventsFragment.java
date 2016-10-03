@@ -163,6 +163,8 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private void showData() {
         boolean displayingEvents = upcomingEventsListView.isDisplayingEvents();
+
+        TransitionManager.beginDelayedTransition((ViewGroup) upcomingEventsListView.getRootView());
         if (displayingEvents) {
             upcomingEventsListView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
