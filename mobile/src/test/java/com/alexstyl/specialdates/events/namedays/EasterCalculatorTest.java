@@ -38,7 +38,7 @@ public class EasterCalculatorTest {
             Date expectedDate = EXPECTED_DATES.get(year);
             Date actualDate = calculator.calculateEasterForYear(year);
             assertThat(actualDate).isEqualTo(expectedDate);
-//            assertThatCalendarsReferToTheSameDate(expectedDate, actualDate);
+            assertThatCalendarsReferToTheSameDate(expectedDate, actualDate);
         }
     }
 
