@@ -5,14 +5,12 @@ import com.alexstyl.specialdates.contact.ShortDate;
 
 import org.joda.time.LocalDate;
 
+import static com.alexstyl.specialdates.date.DateConstants.NO_YEAR;
+
 /**
  * A specific date on a specific year
  */
 public class Date implements ShortDate {
-
-    // we are setting year 1972, as it is a year that contains the date 29 of February.
-    // JodaTime won't allow us to create invalid dates
-    private static final int YEAR_WITH_ALL_DATES = 1972;
 
     private final LocalDate localDate;
     private final Optional<Integer> year;
@@ -29,7 +27,7 @@ public class Date implements ShortDate {
     }
 
     public static Date on(int dayOfMonth, @MonthInt int month) {
-        LocalDate localDate = new LocalDate(YEAR_WITH_ALL_DATES, month, dayOfMonth);
+        LocalDate localDate = new LocalDate(NO_YEAR, month, dayOfMonth);
         return new Date(localDate, Optional.<Integer>absent());
     }
 
