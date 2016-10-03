@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -180,7 +180,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         }
 
         @Override
-        public void onCardPressed(DayDate date) {
+        public void onCardPressed(Date date) {
             analytics.trackScreen(Screen.DATE_DETAILS);
             Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
             startActivity(intent);

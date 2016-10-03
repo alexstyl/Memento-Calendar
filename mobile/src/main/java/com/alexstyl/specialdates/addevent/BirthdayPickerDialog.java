@@ -14,25 +14,24 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker;
-import com.alexstyl.specialdates.contact.Birthday;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.ParsedDate;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
-import com.alexstyl.specialdates.util.ContactEventDateParser;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.caster.Views;
 
 public class BirthdayPickerDialog extends MementoDialog {
 
     public static final String TAG = "fm_tag:birthday";
     private static final String KEY_DATE = "key:birthday";
-    private ContactEventDateParser parser = new ContactEventDateParser();
+    private DateParser parser = new DateParser();
 
     private OnBirthdaySelectedListener listener;
     private BirthdayDatePicker datePicker;
 
-    private Optional<Birthday> initialBirthday;
+    private Optional<Date> initialBirthday;
 
-    public static BirthdayPickerDialog createDialogFor(Birthday birthday, OnBirthdaySelectedListener listener) {
+    public static BirthdayPickerDialog createDialogFor(Date birthday, OnBirthdaySelectedListener listener) {
         Bundle args = new Bundle();
         args.putString(KEY_DATE, birthday.toString());
         BirthdayPickerDialog fragment = new BirthdayPickerDialog();
@@ -53,7 +52,7 @@ public class BirthdayPickerDialog extends MementoDialog {
         initialBirthday = extractBirthday(getArguments());
     }
 
-    private Optional<Birthday> extractBirthday(Bundle arguments) {
+    private Optional<Date> extractBirthday(Bundle arguments) {
         if (arguments == null || !arguments.containsKey(KEY_DATE)) {
             return Optional.absent();
         } else {
@@ -62,13 +61,13 @@ public class BirthdayPickerDialog extends MementoDialog {
         }
     }
 
-    private Optional<Birthday> extractFrom(String birthday) {
+    private Optional<Date> extractFrom(String birthday) {
         try {
-            ParsedDate parsedDate = parser.parse(birthday);
+            Date parsedDate = parser.parse(birthday);
             if (parsedDate.hasYear()) {
-                return new Optional<>(Birthday.on(parsedDate.getDayOfMonth(), parsedDate.getMonth(), parsedDate.getYear()));
+                return new Optional<>(Date.on(parsedDate.getDayOfMonth(), parsedDate.getMonth(), parsedDate.getYear()));
             } else {
-                return new Optional<>(Birthday.on(parsedDate.getDayOfMonth(), parsedDate.getMonth()));
+                return new Optional<>(Date.on(parsedDate.getDayOfMonth(), parsedDate.getMonth()));
             }
         } catch (DateParseException e) {
             ErrorTracker.track(e);
@@ -109,6 +108,6 @@ public class BirthdayPickerDialog extends MementoDialog {
     }
 
     public interface OnBirthdaySelectedListener {
-        void onBirthdaySet(Birthday birthday);
+        void onBirthdaySet(Date birthday);
     }
 }

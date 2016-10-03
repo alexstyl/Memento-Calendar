@@ -4,7 +4,7 @@ import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
@@ -19,23 +19,23 @@ public class ContactActionTest {
 
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
     private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"));
-    private final ContactEvent EVENT_ONE = new ContactEvent(EventType.BIRTHDAY, DayDate.newInstance(1, 1, 1990), CONTACT_ONE);
+    private final ContactEvent EVENT_ONE = new ContactEvent(EventType.BIRTHDAY, Date.on(1, 1, 1990), CONTACT_ONE);
 
     private final TestContact CONTACT_TWO = new TestContact(2, DisplayName.from("George Peterson"));
-    private final ContactEvent EVENT_TWO = new ContactEvent(EventType.BIRTHDAY, DayDate.newInstance(1, 1, 1970), CONTACT_TWO);
+    private final ContactEvent EVENT_TWO = new ContactEvent(EventType.BIRTHDAY, Date.on(1, 1, 1970), CONTACT_TWO);
 
     @Test
     public void testTheSameDateIsReturned() throws Exception {
-        DayDate expectedDate = DayDate.newInstance(1, 1, 1990);
+        Date expectedDate = Date.on(1, 1, 1990);
         ContactEvents events = ContactEvents.createFrom(expectedDate, ANY_CONTACTS);
 
-        DayDate actualDate = events.getDate();
+        Date actualDate = events.getDate();
         assertThat(actualDate).isEqualTo(expectedDate);
     }
 
     @Test
     public void testContactCorrectContactIsReturned() {
-        DayDate date = DayDate.newInstance(1, 1, 2016);
+        Date date = Date.on(1, 1, 2016);
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
 
@@ -47,7 +47,7 @@ public class ContactActionTest {
 
     @Test
     public void testContactsAreCorrectlyReturned() {
-        DayDate date = DayDate.newInstance(1, 1, 2016);
+        Date date = Date.on(1, 1, 2016);
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
@@ -60,7 +60,7 @@ public class ContactActionTest {
 
     @Test
     public void testReturnedContactsSizeIsCorrect() {
-        DayDate date = DayDate.newInstance(1, 1, 2016);
+        Date date = Date.on(1, 1, 2016);
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);

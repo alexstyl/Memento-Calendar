@@ -10,18 +10,18 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.CLASS)
 @IntDef({
-        Date.JANUARY,
-        Date.FEBRUARY,
-        Date.MARCH,
-        Date.APRIL,
-        Date.MAY,
-        Date.JUNE,
-        Date.JULY,
-        Date.AUGUST,
-        Date.SEPTEMBER,
-        Date.OCTOBER,
-        Date.NOVEMBER,
-        Date.DECEMBER,
+        DateConstants.JANUARY,
+        DateConstants.FEBRUARY,
+        DateConstants.MARCH,
+        DateConstants.APRIL,
+        DateConstants.MAY,
+        DateConstants.JUNE,
+        DateConstants.JULY,
+        DateConstants.AUGUST,
+        DateConstants.SEPTEMBER,
+        DateConstants.OCTOBER,
+        DateConstants.NOVEMBER,
+        DateConstants.DECEMBER,
 })
 public @interface MonthInt {
 }

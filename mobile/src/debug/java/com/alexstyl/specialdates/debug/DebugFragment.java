@@ -15,7 +15,8 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.Utils;
@@ -32,6 +33,14 @@ public class DebugFragment extends MementoPreferenceFragment {
         super.onCreate(paramBundle);
         addPreferencesFromResource(R.xml.preference_debug);
         dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(getActivity());
+        findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                DebugPeopleEventsUpdater.newInstance(getActivity()).refresh();
+                Toast.makeText(getActivity(), "Refreshing Database", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         findPreference(R.string.key_debug_refresh_widget).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -52,7 +61,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_daily_reminder_date).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DayDate today = dailyReminderDebugPreferences.getSelectedDate();
+                Date today = dailyReminderDebugPreferences.getSelectedDate();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         getActivity(), onDailyReminderDateSelectedListener,
                         today.getYear(), today.getMonth() - 1, today.getDayOfMonth()

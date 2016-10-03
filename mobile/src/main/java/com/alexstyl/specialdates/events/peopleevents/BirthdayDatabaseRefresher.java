@@ -8,37 +8,39 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.alexstyl.specialdates.events.peopleevents.EventType.BIRTHDAY;
+
 class BirthdayDatabaseRefresher {
 
-    private static final List<Birthday> NO_CONTACTS = Collections.emptyList();
+    private static final List<ContactEvent> NO_EVENTS = Collections.emptyList();
     private static final Optional<Contact> NO_CONTACT = Optional.absent();
 
     private final ContactProvider contactProvider;
     private final ContentResolver contentResolver;
     private final PeopleEventsPersister persister;
-    private final Marshaller<Birthday> marshaller;
+    private final Marshaller<ContactEvent> marshaller;
 
     static BirthdayDatabaseRefresher newInstance(Context context) {
         ContactProvider contactProvider = ContactProvider.get(context);
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        Marshaller<Birthday> marshaller = new BirthdayMarshaller();
+        Marshaller<ContactEvent> marshaller = new ContactEventsMarshaller();
         return new BirthdayDatabaseRefresher(contactProvider, context.getContentResolver(), persister, marshaller);
     }
 
     BirthdayDatabaseRefresher(ContactProvider contactProvider,
                               ContentResolver contentResolver,
                               PeopleEventsPersister persister,
-                              Marshaller<Birthday> marshaller) {
+                              Marshaller<ContactEvent> marshaller) {
         this.contentResolver = contentResolver;
         this.persister = persister;
         this.marshaller = marshaller;
@@ -47,7 +49,7 @@ class BirthdayDatabaseRefresher {
 
     public void refreshBirthdays() {
         clearAllBirthdays();
-        List<Birthday> contacts = loadBirtdaysFromDisk();
+        List<ContactEvent> contacts = loadBirthdaysFromDisk();
         storeContactsToProvider(contacts);
     }
 
@@ -55,12 +57,12 @@ class BirthdayDatabaseRefresher {
         persister.deleteAllBirthdays();
     }
 
-    private List<Birthday> loadBirtdaysFromDisk() {
+    private List<ContactEvent> loadBirthdaysFromDisk() {
         Cursor cursor = BirthdayQuery.query(contentResolver);
         if (isInvalid(cursor)) {
-            return NO_CONTACTS;
+            return NO_EVENTS;
         }
-        List<Birthday> contacts = new ArrayList<>();
+        List<ContactEvent> events = new ArrayList<>();
         try {
             while (cursor.moveToNext()) {
                 int contactIdIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
@@ -68,13 +70,13 @@ class BirthdayDatabaseRefresher {
                 Optional<Contact> optionalContact = getDeviceContactWithId(contactId);
                 if (optionalContact.isPresent()) {
                     Contact contact = optionalContact.get();
-                    contacts.add(contact.getBirthday());
+                    events.add(new ContactEvent(BIRTHDAY, contact.getDateOfBirth(), contact));
                 }
             }
         } finally {
             cursor.close();
         }
-        return contacts;
+        return events;
     }
 
     private Optional<Contact> getDeviceContactWithId(long id) {
@@ -90,7 +92,7 @@ class BirthdayDatabaseRefresher {
         return cursor == null || cursor.isClosed();
     }
 
-    private void storeContactsToProvider(List<Birthday> contacts) {
+    private void storeContactsToProvider(List<ContactEvent> contacts) {
         ContentValues[] values = marshaller.marshall(contacts);
         persister.insertAnnualEvents(values);
     }

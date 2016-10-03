@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+  <PreferenceScreen
+    android:key="@string/key_debug_refresh_db"
+    android:title="Refresh database" />
   <PreferenceScreen
     android:key="@string/key_debug_refresh_widget"
     android:title="Refresh Widget" />

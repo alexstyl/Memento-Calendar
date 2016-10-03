@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import com.alexstyl.specialdates.date.AnnualEvent;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.Date.*;
+import static com.alexstyl.specialdates.date.DateConstants.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NamedayJSONParserTest {
@@ -34,20 +34,20 @@ public class NamedayJSONParserTest {
     public void alexandrosNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αλέξανδρος");
-        assertThat(dates.getDate(0)).isEqualTo(new AnnualEvent(30, AUGUST));
+        assertThat(dates.getDate(0)).isEqualTo(Date.on(30, AUGUST));
     }
 
     @Test
     public void davidNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Δαβίδ");
-        assertThat(dates.getDate(0)).isEqualTo(new AnnualEvent(26, JUNE));
+        assertThat(dates.getDate(0)).isEqualTo(Date.on(26, JUNE));
     }
 
     @Test
     public void magdoulaNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αμαλία");
-        assertThat(dates.getDate(0)).isEqualTo(new AnnualEvent(10, JULY));
+        assertThat(dates.getDate(0)).isEqualTo(Date.on(10, JULY));
     }
 }

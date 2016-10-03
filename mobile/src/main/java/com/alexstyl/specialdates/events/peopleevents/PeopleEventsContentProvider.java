@@ -9,22 +9,21 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.date.ParsedDate;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
-import com.alexstyl.specialdates.util.ContactEventDateParser;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
 public class PeopleEventsContentProvider extends ContentProvider {
 
     private static final int PEOPLE_EVENTS = 10;
-    private final ContactEventDateParser parser = new ContactEventDateParser();
+    private final DateParser parser = new DateParser();
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
 
@@ -112,9 +111,9 @@ public class PeopleEventsContentProvider extends ContentProvider {
     private LoadingTimeDuration getDurationfrom(String selection, String[] selectionArgs) {
         if (selectionArgs.length == 1) {
             try {
-                DayDate date = getDayDate(parser.parse(selectionArgs[0]));
+                Date date = parser.parse(selectionArgs[0]);
                 if (selection.contains(">") || selection.contains("<")) {
-                    DayDate endOfYear = DayDate.endOfYear(date.getYear());
+                    Date endOfYear = Date.endOfYear(date.getYear());
                     return new LoadingTimeDuration(date, endOfYear);
                 } else {
                     return new LoadingTimeDuration(date, date);
@@ -124,10 +123,10 @@ public class PeopleEventsContentProvider extends ContentProvider {
             }
         }
         if (selectionArgs.length == 2) {
-            DayDate[] dates = new DayDate[2];
+            Date[] dates = new Date[2];
             for (int i = 0; i < selectionArgs.length; i++) {
                 try {
-                    dates[i] = getDayDate(parser.parse(selectionArgs[i]));
+                    dates[i] = parser.parse(selectionArgs[i]);
                 } catch (DateParseException e) {
                     throw new DeveloperError(e.getMessage());
                 }
@@ -135,10 +134,6 @@ public class PeopleEventsContentProvider extends ContentProvider {
             return new LoadingTimeDuration(dates[0], dates[1]);
         }
         throw new DeveloperError("Invalid length " + selectionArgs);
-    }
-
-    private DayDate getDayDate(ParsedDate date2) {
-        return DayDate.newInstance(date2.getDayOfMonth(), date2.getMonth(), date2.getYear());
     }
 
     private String getSelectionArgumentsForAnnualEvents(LoadingTimeDuration duration) {
