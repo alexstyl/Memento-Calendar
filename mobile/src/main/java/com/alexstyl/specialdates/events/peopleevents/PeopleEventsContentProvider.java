@@ -17,13 +17,13 @@ import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsCo
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
-import com.alexstyl.specialdates.util.ContactEventDateParser;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
 public class PeopleEventsContentProvider extends ContentProvider {
 
     private static final int PEOPLE_EVENTS = 10;
-    private final ContactEventDateParser parser = new ContactEventDateParser();
+    private final DateParser parser = new DateParser();
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
 

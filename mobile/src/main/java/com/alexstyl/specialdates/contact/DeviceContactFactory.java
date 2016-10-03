@@ -9,14 +9,14 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.util.ContactEventDateParser;
+import com.alexstyl.specialdates.util.DateParser;
 
 class DeviceContactFactory {
 
     private final ContentResolver resolver;
-    private final ContactEventDateParser dateParser;
+    private final DateParser dateParser;
 
-    DeviceContactFactory(ContentResolver contentResolver, ContactEventDateParser dateParser) {
+    DeviceContactFactory(ContentResolver contentResolver, DateParser dateParser) {
         resolver = contentResolver;
         this.dateParser = dateParser;
     }
