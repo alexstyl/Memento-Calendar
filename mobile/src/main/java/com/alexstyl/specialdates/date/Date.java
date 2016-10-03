@@ -99,12 +99,8 @@ public class Date implements ShortDate {
     public int daysDifferenceTo(Date otherEvent) {
         int dayOfYear = localDate.dayOfYear().get();
         int otherDayOfYear = otherEvent.localDate.dayOfYear().get();
-        Integer daysOfYearsDifference = (yearOf(this) - yearOf(otherEvent)) * 365;
+        int daysOfYearsDifference = (getYear() - otherEvent.getYear()) * 365;
         return (otherDayOfYear - dayOfYear) - daysOfYearsDifference;
-    }
-
-    private Integer yearOf(Date otherEvent) {
-        return otherEvent.getYear();
     }
 
     @Override
