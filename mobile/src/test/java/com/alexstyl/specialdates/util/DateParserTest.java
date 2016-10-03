@@ -32,7 +32,14 @@ public class DateParserTest {
         assertThat(parsed).isEqualTo(Date.on(26, 10, 2015));
     }
 
-    @Test(expected = DateParseException.class)
+    @Test
+    public void canParseLongDates3() throws DateParseException {
+        String dateDashes = "--02-29";
+        Date parsed = dateParser.parse(dateDashes);
+        assertThat(parsed).isEqualTo(Date.on(29, 2));
+    }
+
+    @Test(expected = NullPointerException.class)
     public void throwsExceptionWhenNullIsPassed() throws DateParseException {
         dateParser.parse(null);
     }

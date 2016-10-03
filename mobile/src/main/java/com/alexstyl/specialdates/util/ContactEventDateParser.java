@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.util;
 
+import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateConstants;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.MonthInt;
 
@@ -14,7 +16,11 @@ public class ContactEventDateParser {
 
     private static Locale[] LOCALES;
 
-    private final static String[] dateFormats = {
+    static {
+        LOCALES = new Locale[]{Locale.getDefault(), Locale.US};
+    }
+
+    private final static String[] DATE_FORMATS = {
             "yyyy-MM-dd", "--MM-dd",
             "MMM dd, yyyy", "MMM dd yyyy", "MMM dd",
 
@@ -35,42 +41,32 @@ public class ContactEventDateParser {
     /**
      * Parses the given date using the default date formats
      */
-    public Date parse(String date) throws DateParseException {
-        return parse(date, dateFormats);
-    }
+    public Date parse(String rawDate) throws DateParseException {
+        for (Locale locale : LOCALES) {
+            for (String format : DATE_FORMATS) {
+                DateTimeFormatter formatter = DateTimeFormat.forPattern(format)
+                        .withLocale(locale)
+                        .withDefaultYear(DateConstants.NO_YEAR);
+                try {
+                    LocalDate parsedDate = formatter.parseLocalDate(rawDate);
+                    int dayOfMonth = parsedDate.getDayOfMonth();
+                    @MonthInt int month = parsedDate.getMonthOfYear();
+                    int year = parsedDate.getYear();
 
-    /**
-     * Parses the given date, using the given date formats
-     */
-    public Date parse(String date, String[] formats) throws DateParseException {
-        if (LOCALES == null) {
-            LOCALES = new Locale[]{Locale.getDefault(), Locale.US};
-        }
+                    if (year == DateConstants.NO_YEAR) {
+                        return Date.on(dayOfMonth, month);
+                    } else {
+                        return Date.on(dayOfMonth, month, year);
+                    }
 
-        if (date != null) {
-            for (Locale locale : LOCALES) {
-                for (String format : formats) {
-                    DateTimeFormatter formatter = DateTimeFormat.forPattern(format)
-                            .withLocale(locale);
-                    try {
-                        LocalDate dt = formatter.parseLocalDate(date);
-                        int day = dt.getDayOfMonth();
-                        @MonthInt int month = dt.getMonthOfYear();
-                        int year = dt.getYear();
-
-                        if (year == -1) {
-                            return Date.on(day, month);
-                        } else {
-                            return Date.on(day, month, year);
-                        }
-
-                    } catch (IllegalArgumentException e) {
-                        // do not report failed parsing attempts
+                } catch (IllegalArgumentException e) {
+                    if (BuildConfig.DEBUG) {
+                        e.printStackTrace();
                     }
                 }
             }
         }
 
-        throw new DateParseException("Unable to parse " + date);
+        throw new DateParseException("Unable to parse " + rawDate);
     }
 }

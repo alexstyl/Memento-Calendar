@@ -32,7 +32,7 @@ public class ContactProvider {
         observer.registerWith(evictIfContactChanged);
     }
 
-    public ContactProvider(ContactCache<DeviceContact> cache, DeviceContactFactory deviceContactFactory) {
+    private ContactProvider(ContactCache<DeviceContact> cache, DeviceContactFactory deviceContactFactory) {
         this.cache = cache;
         this.deviceContactFactory = deviceContactFactory;
     }

@@ -2,6 +2,8 @@ package com.alexstyl.specialdates.date;
 
 public class DateConstants {
 
+    public static final int NO_YEAR = 4;
+
     private DateConstants() {
         // hide this
     }
