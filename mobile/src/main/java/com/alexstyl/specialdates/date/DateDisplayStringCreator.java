@@ -71,16 +71,6 @@ public final class DateDisplayStringCreator {
         return DateUtils.formatDateTime(appContext, birthday.toMillis(), format_flags);
     }
 
-//    public Date getDayDateFor(Date birthday) {
-//        int year;
-//        if (birthday.hasYear()) {
-//            year = birthday.getYear();
-//        } else {
-//            year = Date.todaysYear();
-//        }
-//        return Date.on(birthday.getDayOfMonth(), birthday.getMonth(), year);
-//    }
-
     public String fullyFormattedDate(Date date) {
         Context appContext = MementoApplication.getContext();
 
