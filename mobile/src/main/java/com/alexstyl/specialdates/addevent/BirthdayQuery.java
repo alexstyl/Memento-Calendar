@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.util.ContactEventDateParser;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
 public class BirthdayQuery {
@@ -25,17 +25,17 @@ public class BirthdayQuery {
     }
 
     public ContactQuery forContact(Contact contact) {
-        ContactEventDateParser dateParser = new ContactEventDateParser();
+        DateParser dateParser = new DateParser();
         return new ContactQuery(contact, dateParser, contentResolver);
     }
 
     public static class ContactQuery {
 
         private final Contact contact;
-        private final ContactEventDateParser dateParser;
+        private final DateParser dateParser;
         private ContentResolver contentResolver;
 
-        public ContactQuery(Contact contact, ContactEventDateParser dateParser, ContentResolver contentResolver) {
+        public ContactQuery(Contact contact, DateParser dateParser, ContentResolver contentResolver) {
             this.contact = contact;
             this.dateParser = dateParser;
             this.contentResolver = contentResolver;

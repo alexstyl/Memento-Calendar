@@ -9,7 +9,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateParserTest {
 
-    private ContactEventDateParser dateParser = new ContactEventDateParser();
+    private DateParser dateParser = new DateParser();
 
     @Test
     public void canParseDatesWithDashes() throws DateParseException {

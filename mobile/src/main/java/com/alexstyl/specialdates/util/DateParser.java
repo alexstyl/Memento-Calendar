@@ -12,7 +12,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class ContactEventDateParser {
+public class DateParser {
 
     private static Locale[] LOCALES;
 
@@ -60,7 +60,7 @@ public class ContactEventDateParser {
                     }
 
                 } catch (IllegalArgumentException e) {
-                    if (BuildConfig.DEBUG) {
+                    if (BuildConfig.DEBUG && isNotAboutInvalidFormat(e)) {
                         e.printStackTrace();
                     }
                 }
@@ -68,5 +68,9 @@ public class ContactEventDateParser {
         }
 
         throw new DateParseException("Unable to parse " + rawDate);
+    }
+
+    private boolean isNotAboutInvalidFormat(IllegalArgumentException e) {
+        return !e.getMessage().contains("Invalid format");
     }
 }
