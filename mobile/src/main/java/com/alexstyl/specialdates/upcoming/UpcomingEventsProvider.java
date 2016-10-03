@@ -8,9 +8,6 @@ import com.alexstyl.specialdates.date.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
-
 public class UpcomingEventsProvider {
 
     private final UpcomingEventsFetcher fetcher;
@@ -31,8 +28,8 @@ public class UpcomingEventsProvider {
 
     private static LoadingTimeDuration startingTimeDuration() {
         int year = Date.CURRENT_YEAR;
-        Date startOfLastMonth = Date.on(1, JANUARY, year);
-        Date endingOfNextMonth = Date.on(31, DECEMBER, year);
+        Date startOfLastMonth = Date.startOfTheYear(year);
+        Date endingOfNextMonth = Date.endOfYear(year);
         return new LoadingTimeDuration(startOfLastMonth, endingOfNextMonth);
     }
 

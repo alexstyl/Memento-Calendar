@@ -5,6 +5,8 @@ import com.alexstyl.specialdates.contact.ShortDate;
 
 import org.joda.time.LocalDate;
 
+import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
+import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
 import static com.alexstyl.specialdates.date.DateConstants.NO_YEAR;
 
 /**
@@ -64,16 +66,6 @@ public class Date implements ShortDate {
         return year.get();
     }
 
-    public Date addMonth(int m) {
-        LocalDate minusDate = localDate.plusMonths(m);
-        return new Date(minusDate, new Optional<>(minusDate.getYear()));
-    }
-
-    public Date minusMonth(int m) {
-        LocalDate minusDate = localDate.minusMonths(m);
-        return new Date(minusDate, new Optional<>(minusDate.getYear()));
-    }
-
     @Override
     public String toString() {
         return DateDisplayStringCreator.getInstance().stringOf(this);
@@ -84,16 +76,16 @@ public class Date implements ShortDate {
     }
 
     public static Date startOfTheYear(int currentYear) {
-        return Date.on(1, DateConstants.JANUARY, currentYear);
+        return Date.on(1, JANUARY, currentYear);
+    }
+
+    public static Date endOfYear(int currentYear) {
+        return Date.on(31, DECEMBER, currentYear);
     }
 
     public Date minusDay(int days) {
         LocalDate minusDays = localDate.minusDays(days);
         return new Date(minusDays, new Optional<>(minusDays.getYear()));
-    }
-
-    public static Date endOfYear(int currentYear) {
-        return Date.on(31, DateConstants.DECEMBER, currentYear);
     }
 
     public int getDayOfWeek() {
