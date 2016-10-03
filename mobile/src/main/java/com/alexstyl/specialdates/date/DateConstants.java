@@ -2,6 +2,14 @@ package com.alexstyl.specialdates.date;
 
 public class DateConstants {
 
+    /**
+     * A value that represents that no year has been specified.
+     */
+    /*
+     * The specific number (4) was used because it's the first positive year in JodaTime which contains the date 29 of February.
+     * We currently not allow the user to use any value for a year less than 1900 anyhow. If year 4 is selected somehow through the device database,
+     * then we are not going to treat it as a real year ¯\_(ツ)_/¯
+     */
     public static final int NO_YEAR = 4;
 
     private DateConstants() {
