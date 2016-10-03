@@ -44,31 +44,25 @@ public class UpcomingEventsListView extends RecyclerView {
     }
 
     public void scrollToToday(final boolean smoothScroll) {
-        post(
-                new Runnable() {
-                    public void run() {
-                        int pos = adapter.getClosestDayPosition();
-                        if (pos == RecyclerView.NO_POSITION) {
-                            pos = getLastDayPosition();
-                        }
+        int pos = adapter.getClosestDayPosition();
+        if (pos == RecyclerView.NO_POSITION) {
+            pos = getLastDayPosition();
+        }
 
-                        if (isPositionVisible(pos)) {
-                            onFinishedScrolling(pos);
-                            return;
-                        }
+        if (isPositionVisible(pos)) {
+            onFinishedScrolling(pos);
+            return;
+        }
 
-                        if (smoothScroll) {
-                            smoothScrollTo(pos);
-                        } else {
-                            layoutManager.scrollToPositionWithOffset(pos, 0);
-                        }
-                    }
+        if (smoothScroll) {
+            smoothScrollTo(pos);
+        } else {
+            layoutManager.scrollToPositionWithOffset(pos, 0);
+        }
+    }
 
-                    private int getLastDayPosition() {
-                        return adapter.getItemCount() - 1;
-                    }
-                }
-        );
+    private int getLastDayPosition() {
+        return adapter.getItemCount() - 1;
     }
 
     private void smoothScrollTo(int pos) {
