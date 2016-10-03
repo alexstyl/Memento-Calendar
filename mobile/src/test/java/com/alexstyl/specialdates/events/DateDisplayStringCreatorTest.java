@@ -1,8 +1,7 @@
 package com.alexstyl.specialdates.events;
 
-import com.alexstyl.specialdates.date.AnnualEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,14 +21,14 @@ public class DateDisplayStringCreatorTest {
 
     @Test
     public void givenDateWithYear_thenReturningStringIsCorrect() {
-        DayDate date = DayDate.newInstance(5, 5, 1995);
+        Date date = Date.on(5, 5, 1995);
         String dateToString = creator.stringOf(date);
         assertThat(dateToString).isEqualTo(EXPECTED_STRING);
     }
 
     @Test
     public void givenDateWithNoYear_thenReturningStringIsCorrect() {
-        AnnualEvent date = new AnnualEvent(5, 5);
+        Date date = Date.on(5, 5);
         String dateToString = creator.stringOf(date);
         assertThat(dateToString).isEqualTo(EXPECTED_STRING_NO_YEAR);
     }

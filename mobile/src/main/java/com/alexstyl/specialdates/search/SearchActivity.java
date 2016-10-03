@@ -23,9 +23,8 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.events.namedays.DateTransformer;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
@@ -97,11 +96,11 @@ public class SearchActivity extends ThemedActivity {
         setupSearchField();
 
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
-        int year = DayDate.today().getYear();
+        int year = Date.today().getYear();
         NamedayLocale locale = NamedayPreferences.newInstance(this).getSelectedLanguage();
         NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this.getResources()).loadNamedayCalendarForLocale(locale, year);
 
-        adapter = new SearchResultAdapter(imageLoader, namedayCalendar, new DateTransformer(DayDate.todaysYear()));
+        adapter = new SearchResultAdapter(imageLoader, namedayCalendar);
         adapter.setSearchResultClickListener(listener);
 
         resultView.setHasFixedSize(true);
@@ -285,8 +284,8 @@ public class SearchActivity extends ThemedActivity {
 
         @Override
         public void onNamedayClicked(View v, int month, int day) {
-            DayDate dayDate = DayDate.today();
-            DateDetailsActivity.startActivity(context(), month, day, dayDate.getYear());
+            Date date = Date.today();
+            DateDetailsActivity.startActivity(context(), month, day, date.getYear());
         }
 
     };

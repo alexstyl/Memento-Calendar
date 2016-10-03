@@ -5,8 +5,8 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.MonthOfYear;
@@ -34,7 +34,7 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final ImageLoader imageLoader;
 
     private int closestDay = -1;
-    private final DayDate today;
+    private final Date today;
 
     private static final int VIEWTYPE_HEADER = 0;
     private static final int VIEWTYPE_DAY_EVENTS = 1;
@@ -44,11 +44,11 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnUpcomingEventClickedListener listener;
 
     public static UpcomingEventsAdapter newInstance(ImageLoader imageLoader) {
-        DayDate today = DayDate.today();
+        Date today = Date.today();
         return new UpcomingEventsAdapter(today, imageLoader, MonthLabels.forLocale(Locale.getDefault()));
     }
 
-    UpcomingEventsAdapter(DayDate today, ImageLoader imageLoader, MonthLabels monthLabels) {
+    UpcomingEventsAdapter(Date today, ImageLoader imageLoader, MonthLabels monthLabels) {
         this.imageLoader = imageLoader;
         this.today = today;
         this.monthLabels = monthLabels;

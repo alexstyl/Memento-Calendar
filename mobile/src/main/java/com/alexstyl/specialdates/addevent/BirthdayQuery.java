@@ -10,11 +10,10 @@ import android.os.Build;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.ParsedDate;
-import com.alexstyl.specialdates.util.ContactEventDateParser;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
 public class BirthdayQuery {
@@ -26,17 +25,17 @@ public class BirthdayQuery {
     }
 
     public ContactQuery forContact(Contact contact) {
-        ContactEventDateParser dateParser = new ContactEventDateParser();
+        DateParser dateParser = new DateParser();
         return new ContactQuery(contact, dateParser, contentResolver);
     }
 
     public static class ContactQuery {
 
         private final Contact contact;
-        private final ContactEventDateParser dateParser;
+        private final DateParser dateParser;
         private ContentResolver contentResolver;
 
-        public ContactQuery(Contact contact, ContactEventDateParser dateParser, ContentResolver contentResolver) {
+        public ContactQuery(Contact contact, DateParser dateParser, ContentResolver contentResolver) {
             this.contact = contact;
             this.dateParser = dateParser;
             this.contentResolver = contentResolver;
@@ -61,7 +60,7 @@ public class BirthdayQuery {
         private BirthdayEntry getEntryFrom(Cursor cursor) {
             long id = cursor.getLong(Query.ID);
             try {
-                Birthday birthday = getBirthdayFrom(cursor);
+                Date birthday = getBirthdayFrom(cursor);
                 return new BirthdayEntry(id, birthday);
             } catch (DateParseException e) {
                 ErrorTracker.track(e);
@@ -69,17 +68,12 @@ public class BirthdayQuery {
             return null;
         }
 
-        private Birthday getBirthdayFrom(Cursor cursor) throws DateParseException {
+        private Date getBirthdayFrom(Cursor cursor) throws DateParseException {
             String string = cursor.getString(Query.BIRTHDAY);
-            ParsedDate parse = dateParser.parse(string);
-            if (parse.hasYear()) {
-                return Birthday.on(parse.getDayOfMonth(), parse.getMonth(), parse.getYear());
-            } else {
-                return Birthday.on(parse.getDayOfMonth(), parse.getMonth());
-            }
+            return dateParser.parse(string);
         }
 
-        public boolean replaceBirthdays(BirthdayEntry oldBirthday, Birthday birthday) {
+        public boolean replaceBirthdays(BirthdayEntry oldBirthday, Date birthday) {
             ContentValues contentValues = new ContentValues(1);
             contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday.toShortDate());
 
@@ -89,7 +83,7 @@ public class BirthdayQuery {
             return update == 1;
         }
 
-        public boolean insertBirthday(Birthday birthday) {
+        public boolean insertBirthday(Date birthday) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(ContactsContract.CommonDataKinds.Event.TYPE, ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY);
             contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday.toString());

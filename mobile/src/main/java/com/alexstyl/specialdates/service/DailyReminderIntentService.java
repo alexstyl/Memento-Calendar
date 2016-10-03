@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
@@ -67,7 +67,7 @@ public class DailyReminderIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         rescheduleAlarm(this);
         PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
-        DayDate today = getDayDateToDisplay();
+        Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {
             ContactEvents celebrationDate = provider.getCelebrationDateFor(today);
@@ -87,16 +87,16 @@ public class DailyReminderIntentService extends IntentService {
         return checker.hasPermission(Manifest.permission.READ_CONTACTS);
     }
 
-    private DayDate getDayDateToDisplay() {
+    private Date getDayDateToDisplay() {
         if (BuildConfig.DEBUG) {
             DailyReminderDebugPreferences preferences = DailyReminderDebugPreferences.newInstance(this);
             if (preferences.isFakeDateEnabled()) {
-                DayDate selectedDate = preferences.getSelectedDate();
+                Date selectedDate = preferences.getSelectedDate();
                 Log.d("Using DEBUG date to display: " + selectedDate);
                 return selectedDate;
             }
         }
-        return DayDate.today();
+        return Date.today();
     }
 
     private boolean containsAnyContactEvents(ContactEvents celebrationDate) {
@@ -107,7 +107,7 @@ public class DailyReminderIntentService extends IntentService {
         return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
     }
 
-    private void notifyForNamedaysFor(DayDate date) {
+    private void notifyForNamedaysFor(Date date) {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, date.getYear());
         NamesInADate names = namedayCalendar.getAllNamedayOn(date);
@@ -120,16 +120,16 @@ public class DailyReminderIntentService extends IntentService {
         return bankHolidaysPreferences.isEnabled();
     }
 
-    private void notifyForBankholidaysFor(DayDate date) {
+    private void notifyForBankholidaysFor(Date date) {
         BankHoliday bankHoliday = findBankholidayFor(date);
         if (bankHoliday != null) {
             notifier.forBankholiday(date, bankHoliday);
         }
     }
 
-    private BankHoliday findBankholidayFor(DayDate date) {
+    private BankHoliday findBankholidayFor(Date date) {
         EasterCalculator calculator = new EasterCalculator();
-        DayDate easter = calculator.calculateEasterForYear(date.getYear());
+        Date easter = calculator.calculateEasterForYear(date.getYear());
         List<BankHoliday> bankHolidays = new GreekBankHolidays(easter).getBankHolidaysForYear();
         for (BankHoliday bankHoliday : bankHolidays) {
             if (bankHoliday.getDate().equals(date)) {

@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
@@ -19,7 +19,7 @@ public final class GreekNamedays {
 
     private final SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator;
 
-    private DayDate easter;
+    private Date easter;
     private NamedayBundle namedays;
 
     public GreekNamedays(SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator) {
@@ -33,7 +33,7 @@ public final class GreekNamedays {
         return new GreekNamedays(specialGreekNamedaysCalculator);
     }
 
-    NamesInADate getNamedayByDate(DayDate date) {
+    NamesInADate getNamedayByDate(Date date) {
 
         int year = date.getYear();
         refreshNamedaysIfNeeded(year);
@@ -57,7 +57,7 @@ public final class GreekNamedays {
     }
 
     public ArrayList<String> getNames() {
-        int year = DayDate.today().getYear();
+        int year = Date.today().getYear();
         refreshNamedaysIfNeeded(year);
         return namedays.getNames();
     }

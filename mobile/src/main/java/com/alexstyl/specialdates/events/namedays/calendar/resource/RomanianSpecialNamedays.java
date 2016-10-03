@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
@@ -39,7 +39,7 @@ final class RomanianSpecialNamedays implements SpecialNamedays {
     }
 
     @Override
-    public NamesInADate getNamedayOn(DayDate date) {
+    public NamesInADate getNamedayOn(Date date) {
         return namedays.getNamedaysFor(date);
     }
 

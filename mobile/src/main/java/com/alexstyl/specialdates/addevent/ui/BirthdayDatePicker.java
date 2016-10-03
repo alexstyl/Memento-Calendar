@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.caster.Views;
@@ -29,13 +29,13 @@ public class BirthdayDatePicker extends LinearLayout {
 
     private final CheckedTextView includesYearCheckbox;
 
-    private final DayDate today;
+    private final Date today;
 
     public BirthdayDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         super.setOrientation(HORIZONTAL);
         labels = MonthLabels.forLocale(Locale.getDefault());
-        today = DayDate.today();
+        today = Date.today();
         inflate(getContext(), R.layout.merge_birthday_picker, this);
 
         dayPicker = Views.findById(this, R.id.day_picker);
@@ -107,8 +107,8 @@ public class BirthdayDatePicker extends LinearLayout {
         return today.getYear();
     }
 
-    public void setDisplayingDate(Birthday dateToDisplay) {
-        if (dateToDisplay.hasYearOfBirth()) {
+    public void setDisplayingDate(Date dateToDisplay) {
+        if (dateToDisplay.hasYear()) {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
             yearPicker.setValue(dateToDisplay.getYear());
@@ -123,14 +123,14 @@ public class BirthdayDatePicker extends LinearLayout {
         }
     }
 
-    public Birthday getDisplayingBirthday() {
+    public Date getDisplayingBirthday() {
         int dayOfMonth = getDayOfMonth();
         int month = getMonth();
         if (isDisplayingYear()) {
             int year = getYear();
-            return Birthday.on(dayOfMonth, month, year);
+            return Date.on(dayOfMonth, month, year);
         } else {
-            return Birthday.on(dayOfMonth, month);
+            return Date.on(dayOfMonth, month);
         }
     }
 
@@ -142,6 +142,7 @@ public class BirthdayDatePicker extends LinearLayout {
         return dayPicker.getValue();
     }
 
+    @MonthInt
     private int getMonth() {
         return monthPicker.getValue();
     }

@@ -8,30 +8,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.namedays.DateTransformer;
 
 class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView name;
     private final LinearLayout datesLayout;
     private final LayoutInflater inflater;
-    private final DateTransformer transformer;
 
-    static SearchResultNamedayViewHolder createFor(ViewGroup parent, DateTransformer transformer) {
+    static SearchResultNamedayViewHolder createFor(ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.card_nameday_single, parent, false);
-        return new SearchResultNamedayViewHolder(view, layoutInflater, transformer);
+        return new SearchResultNamedayViewHolder(view, layoutInflater);
     }
 
-    private SearchResultNamedayViewHolder(View convertView, LayoutInflater layoutInflater, DateTransformer transformer) {
+    private SearchResultNamedayViewHolder(View convertView, LayoutInflater layoutInflater) {
         super(convertView);
         this.name = (TextView) convertView.findViewById(R.id.name_celebrating);
         this.datesLayout = (LinearLayout) convertView.findViewById(R.id.dates);
-
         this.inflater = layoutInflater;
-        this.transformer = transformer;
     }
 
     public void bind(NamedayCard dates, final SearchResultAdapter.SearchResultClickListener searchResultListener) {
@@ -41,7 +37,7 @@ class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
             View view = inflater.inflate(R.layout.nameday_date, datesLayout, false);
             TextView dateView = (TextView) view.findViewById(android.R.id.text1);
 
-            final DayDate date = transformer.asDayDate(dates.getDate(i));
+            final Date date = dates.getDate(i);
             String prettyDate = DateFormatUtils.formatTimeStampString(view.getContext(), date.toMillis(), false);
             dateView.setText(prettyDate);
             if (searchResultListener != null) {

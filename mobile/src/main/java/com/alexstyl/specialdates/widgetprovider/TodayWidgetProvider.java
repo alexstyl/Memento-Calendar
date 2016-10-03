@@ -9,10 +9,10 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
@@ -51,7 +51,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEvents contactEvents) {
-        DayDate date = contactEvents.getDate();
+        Date date = contactEvents.getDate();
         Intent intent = DateDetailsActivity.getStartIntent(context, date.getDayOfMonth(), date.getMonth(), date.getYear());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -71,7 +71,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         int selectedTextColor = context.getResources().getColor(selectedVariant.getTextColor());
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
-        int finalHeaderColor = calculator.getColor(DayDate.today(), date);
+        int finalHeaderColor = calculator.getColor(Date.today(), date);
         for (int i = 0; i < N; i++) {
             final int appWidgetId = appWidgetIds[i];
 
@@ -96,7 +96,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private String toString(Context context, DayDate todayDate) {
+    private String toString(Context context, Date todayDate) {
         return DateFormatUtils.formatTimeStampString(context, todayDate.toMillis(), false, true);
     }
 

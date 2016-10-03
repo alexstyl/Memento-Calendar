@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
-import com.alexstyl.specialdates.date.DayDate;
 
 /**
  * A name and the list of Namedays it's celebrated
@@ -19,7 +18,7 @@ public class NameCelebrations {
         this.dates = new Dates();
     }
 
-    public NameCelebrations(String name, DayDate easter) {
+    public NameCelebrations(String name, Date easter) {
         this(name, new Dates(easter));
     }
 

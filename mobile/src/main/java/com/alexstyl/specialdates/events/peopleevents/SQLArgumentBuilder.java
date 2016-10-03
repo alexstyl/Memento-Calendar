@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
@@ -19,11 +19,11 @@ class SQLArgumentBuilder {
         return dateFrom(duration.getFrom()) + " AND " + dateTo(duration.getTo());
     }
 
-    private String dateFrom(DayDate date) {
+    private String dateFrom(Date date) {
         return String.format(Locale.US, "'%d' || substr(%s,-6) >= '%s'", date.getYear(), SQLArgumentBuilder.date, date.toString());
     }
 
-    private String dateTo(DayDate date) {
+    private String dateTo(Date date) {
         return String.format(Locale.US, "'%d' || substr(%s,-6) <= '%s'", date.getYear(), SQLArgumentBuilder.date, date.toString());
     }
 }

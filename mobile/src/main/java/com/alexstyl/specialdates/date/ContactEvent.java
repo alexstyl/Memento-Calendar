@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.date;
 import android.content.res.Resources;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
@@ -12,11 +11,11 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
  */
 public final class ContactEvent {
 
-    private final DayDate date;
-    private final Contact contact;
     private final EventType eventType;
+    private final Contact contact;
+    private final Date date;
 
-    public ContactEvent(EventType eventType, DayDate date, Contact contact) {
+    public ContactEvent(EventType eventType, Date date, Contact contact) {
         this.eventType = eventType;
         this.date = date;
         this.contact = contact;
@@ -24,9 +23,9 @@ public final class ContactEvent {
 
     public String getLabel(Resources resources) {
         if (eventType == EventType.BIRTHDAY) {
-            Birthday birthday = contact.getBirthday();
-            if (birthday.hasYearOfBirth()) {
-                int age = birthday.getAgeOnYear(getYear());
+            Date birthday = contact.getDateOfBirth();
+            if (birthday.hasYear()) {
+                int age = date.getYear() - birthday.getYear();
                 if (age > 0) {
                     return resources.getString(R.string.turns_age, age);
                 }
@@ -35,7 +34,7 @@ public final class ContactEvent {
         return resources.getString(eventType.nameRes());
     }
 
-    public DayDate getDate() {
+    public Date getDate() {
         return date;
     }
 
