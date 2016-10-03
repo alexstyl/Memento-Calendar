@@ -26,24 +26,6 @@ public class DateTest {
         assertThat(after.getDayOfMonth()).isEqualTo(expectedDay);
     }
 
-    @Test(expected = Exception.class)
-    public void tests() {
-        Date date = Date.on(32, MARCH, 2016);
-        date.minusMonth(1);
-
-    }
-
-    @Test
-    public void whenSubtractingOneMonth_thenMonthIsDecreasedByOne() {
-
-        Date after = ANY_DATE.minusMonth(1);
-
-        int expectedMonth = MONTH - 1;
-
-        assertThat(after.getMonth()).isEqualTo(expectedMonth);
-
-    }
-
     @Test
     public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOftheNextYearIsReturned() {
         Date lastDayOfYear = Date.on(31, DECEMBER, 1990);
@@ -53,14 +35,6 @@ public class DateTest {
         assertThat(firstDayOfNextYear.getDayOfMonth()).isEqualTo(1);
         int nextYear = lastDayOfYear.getYear() + 1;
         assertThat(firstDayOfNextYear.getYear()).isEqualTo(nextYear);
-    }
-
-    @Test
-    public void whenNewYearMinus() {
-        Date firstDayOfYear = Date.on(1, JANUARY, 1990);
-        Date firstDayOfPreviousMonth = firstDayOfYear.minusMonth(1);
-
-        assertThat(firstDayOfPreviousMonth.getMonth()).isEqualTo(12);
     }
 
     @Test
