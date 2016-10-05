@@ -6,8 +6,9 @@ import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.util.DateParser;
 
 class DeviceContactFactory {
@@ -36,7 +37,7 @@ class DeviceContactFactory {
         }
         String lookupKey = null;
         DisplayName displayName = null;
-        Birthday birthday = null;
+        Optional<Date> birthday = Optional.absent();
         boolean found = false;
         while (cursor.moveToNext()) {
             if (ContactsQuery.isBirthdayRow(cursor)) {
@@ -71,15 +72,19 @@ class DeviceContactFactory {
         return DisplayName.from(cursor.getString(ContactsQuery.DISPLAY_NAME));
     }
 
-    private Birthday getBirthdayFrom(Cursor cursor) {
-        String birthday = cursor.getString(ContactsQuery.BIRTHDAY);
+    private Optional<Date> getBirthdayFrom(Cursor cursor) {
+        String birthdayRaw = cursor.getString(ContactsQuery.BIRTHDAY);
         try {
-            DayDate parse = dateParser.parse(birthday);
-            return Birthday.on(parse);
+            Date birthday = getBirthdayFrom(birthdayRaw);
+            return new Optional<>(birthday);
         } catch (DateParseException e) {
             ErrorTracker.track(e);
+            return Optional.absent();
         }
-        return null;
+    }
+
+    private Date getBirthdayFrom(String birthdayRaw) throws DateParseException {
+        return dateParser.parse(birthdayRaw);
     }
 
 }

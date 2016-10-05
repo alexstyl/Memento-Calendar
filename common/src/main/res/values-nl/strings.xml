@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
+  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Memento Namedays</string>
+    <string name="today">Vandaag</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="birthday">Verjaardag</string>
+    <string name="birthdays">Verjaardagen</string>
+    <string name="namedays">Naamdagen</string>
+    <string name="nameday">Naamdag</string>
+    <string name="contacts_birthday">"Het is de verjaardag van %s!"</string>
+    <string name="contacts_nameday">"Het is de naamdag van %s!"</string>
+    <string name="namedays_no_names">Geen naamdagen op deze dag</string>
+    <string name="birthday_no_birthday">Niemand van je contacten heeft vandaag zijn verjaardag.</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="disable">Uitschakelen</string>
+    <string name="enable">Inschakelen</string>
+    <string name="today_celebrates_one">%1$s</string>
+    <string name="today_celebrates_two">%1$s en %2$s</string>
+    <string name="today_celebrates_many">%1$s en %2$d anderen</string>
+    <string name="about">Over</string>
+    <string name="service_dailyreminder">Service voor dagelijkse herinneringen</string>
+    <string name="display_namedays">Toon naamdagen</string>
+    <string name="display_namedays_on">Naamdagen zullen worden getoond voor al je contactpersonen</string>
+    <string name="display_namedays_off">Naamdagen zullen niet getoond worden</string>
+    <string name="contact_dev">Contacteer de ontwikkelaar</string>
+    <string name="contact_dev_summary">Een bug gevonden? Een suggestie? Laat het me weten!</string>
+    <string name="choose">Kies</string>
+    <string name="number">nummer</string>
+    <string name="has_nameday_on">Naamdag op %s</string>
+    <string name="has_birthday_on">Verjaardag op %s</string>
+    <string name="has_birthday_on_age">Wordt %1$d op %2$s</string>
+    <string name="action_call">Bel</string>
+    <string name="action_text">Stuur SMS</string>
+    <string name="action_send_mail">Stuur e-mail</string>
+    <string name="no_app_found">Geen app gevonden om deze actie uit te voeren</string>
+    <string name="send_mail_via">Stuur e-mail via</string>
+    <string name="daily_reminder">Dagelijkse herinnering</string>
+    <string name="daily_reminder_summary">"Toon me dagelijks een herinnering voor de verjaardagen of naamdagen van de dag"</string>
+    <string name="ringtone">Beltoon</string>
+    <string name="vibrate">Trillen</string>
+    <string name="daily_reminder_time_summary">Every dayOfMonth om %s</string>
+    <string name="set_time">Tijd van herinnering</string>
+    <string name="set">opslaan</string>
+    <string name="Discard">Annuleer</string>
+    <string name="contact_added">Contact toegevoegd</string>
+    <string name="failed_to_add_contact">Contact kon niet toegevoegd worden</string>
+    <string name="contact_updated">Contact bijgewerkt</string>
+    <string name="failed_to_update_contact">Contact kon niet bijgewerkt worden</string>
+    <string name="ringtone_silent">Stil</string>
+    <string name="contacts_today">Contactpersonen die deze dag vieren</string>
+    <string name="no_contacts_to_wish">Er zijn geen contactpersonen die deze dag vieren</string>
+    <string name="upcoming">Eerstvolgende</string>
+    <string name="turns_age">Wordt %1$d</string>
+    <string name="display_namedays_names">Naamdagen van vandaag</string>
+    <string name="share_text">Je moet %1$s eens bekijken - een knappe app voor Android die herinneringen toont voor verjaardagen en naamdagen! Download van %2$s</string>
+    <string name="share_via">Delen via</string>
+    <string name="licences">Licenties</string>
+    <string name="about_dev">Ontwikkeld en ontworpen door Alex Styl</string>
+    <string name="about_special_thanks">"Speciaal bedankt aan
+
+Andreas Sfakianakis voor zijn werk aan de Greeklish bibliotheek
+Kosta Stoupas voor de Duitse vertaling
+Aggela Stylianidou voor de Franse vertaling
+Gian Maria Calzolari voor de Italiaanse vertaling
+Andrejs Kotovs voor de Letse vertaling
+Bert Van Dooren voor de Nederlandse vertaling"</string>
+    <string name="about_thanks_special_someone">en *%s* om deze app te gebruiken en te ondersteunen! :)</string>
+    <string name="about_contact">Is er iets mis met de app? Heb je een suggestie? Stuur een e-mail naar %s</string>
+    <string name="you">JIJ</string>
+    <string name="switch_on">Aan</string>
+    <string name="switch_off">Uit</string>
+    <string name="thanks_for_support">Bedankt om deze app te ondersteunen</string>
+    <string name="donate">Doneer</string>
+    <string name="loading">Bezig met laden...</string>
+    <string name="action_search">Zoeken</string>
+    <string name="contacts">Contactpersonen</string>
+    <string name="search_namedays_on">Naamdag op</string>
+    <string name="show_more">Toon meer</string>
+    <string name="create">Aanmaken</string>
+    <!-- The name for contacts with empty Display name-->
+    <string name="no_name">(Geen naam)</string>
+    <string name="include_year">Jaar toevoegen?</string>
+    <string name="save">Opslaan</string>
+    <string name="add">Toevoegen</string>
+    <string name="contact_no_birthday">Geen verjaardag gezet</string>
+    <string name="contact_no_nameday">Geen naamdag voor de naam %s</string>
+    <string name="edit">Bewerken</string>
+    <string name="title_add_birthday">Verjaardag toevoegen</string>
+    <string name="search">Zoeken</string>
+    <string name="and">en</string>
+    <string name="nameday_language_title">Naamdag kalender</string>
+    <string name="no_sound">Stil</string>
+    <string name="label_widget_namedays">"Memento - Naamdagen"</string>
+    <string name="share">Delen</string>
+    <string name="support_app">Ondersteun de app</string>
+    <string name="fb_go_to_fanpage">Open de Facebook Pagina</string>
+    <string name="rate_rate_ask">Welke waardering zou je de app geven?</string>
+    <string name="rate_1_stars">"Het is echt afgrijselijk"</string>
+    <string name="rate_2_stars">"Ik hou er niet van"</string>
+    <string name="rate_3_stars">"'t Is wel ok"</string>
+    <string name="rate_4_stars">"Het is goed"</string>
+    <string name="rate_5_stars">"Ik kan niet meer zonder!"</string>
+    <string name="rate">Waardering geven</string>
+    <string name="message">Bericht</string>
+    <string name="contact_turns_age">%1$s wordt %2$d</string>
+    <string name="no_results_found">Geen resultaten gevonden</string>
+    <string name="contact_celebration_count">%d contactpersonen vieren vandaag</string>
+    <string name="todays_namedays">Naamdagen van vandaag</string>
+    <string name="celebrates_one_namedays">"Naamdag van vandaag"</string>
+    <string name="celebrates_many_namedays">"Naamdagen van vandaag"</string>
+    <string name="action_via">%s via...</string>
+    <string name="go_to_fb_short">Like de pagina</string>
+    <string name="rate_app">Geef de app een waardering</string>
+    <string name="like_page">Like de Facebook pagina</string>
+    <string name="days_namedays">Naamdagen voor %1$s</string>
+    <string name="get_days">Download %1$s op %2$s</string>
+    <string name="hide_names_hints">Je kan de namen verbergen die je niet wil zien in de app door er lang op te duwen.</string>
+    <string name="got_it">Ok, verstaan.</string>
+    <string name="namedays_contacts_only_on">Enkel de naamdagen van je contactpersonen zullen worden getoond</string>
+    <string name="namedays_contacts_only_off">Alle naamdagen van het jaar zullen getoond worden</string>
+    <string name="namedays_contacts_only">Enkel naamdagen voor contactpersonen</string>
+    <string name="support_message">Ik hoop dat je de app leuk en bruikbaar vindt. Hier zijn enkele manieren om de app de ondersteunen:</string>
+    <string name="translate">Vertaal de app</string>
+    <string name="translate_the_app_title">De app vertalen</string>
+    <string name="translate_the_app_message">Open de volgende link op je computer</string>
+    <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
+    <string name="copy_link">Kopiëer de link</string>
+    <string name="copied_to_clipboard">Link gekopiëerd naar het klembord</string>
+    <string name="select_donation_amount">Selecteer hoeveel je wil doneren</string>
+    <string name="go_to_wall">Open Prikbord</string>
+    <string name="view_contact">Toon contactpersoon</string>
+    <string name="no_birthday_set">Geen verjaardag gevonden</string>
+    <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Geen contactpersonen met speciale gebeurtenissen gevonden. \nDuw op de '+' om er toe te voegen"</string>
+    <string name="No_contacts_with_events_found">"Geen contacten met speciale gebeurtenissen gevonden"</string>
+    <string name="add_birthday">Verjaardag toevoegen</string>
+    <string name="Birthday_date">Geboortedatum</string>
+    <string name="Contact_name">Naam contactpersoon</string>
+    <string name="Themes">Thema\'s</string>
+    <string name="romanian">Roemeens</string>
+    <string name="Configure_widget">Stel widget in</string>
+    <string name="Done">Klaar</string>
+    <string name="Transparency">Transparantie</string>
+    <string name="Dark_themeQ">Donker thema?</string>
+    <string name="Contact_names">Namen contactpersonen</string>
+</resources>

@@ -15,13 +15,12 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.EventType;
-import com.alexstyl.specialdates.events.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +43,7 @@ public class NamedayDatabaseRefresher {
 
     public static NamedayDatabaseRefresher newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
-        NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context);
+        NamedayCalendarProvider namedayProvider = NamedayCalendarProvider.newInstance(context.getResources());
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactProvider contactProvider = ContactProvider.get(context);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
@@ -102,7 +101,7 @@ public class NamedayDatabaseRefresher {
             }
 
             DisplayName displayName = DisplayName.from(getDisplayName(cursor));
-            HashSet<Nameday> namedays = new HashSet<>();
+            HashSet<Date> namedays = new HashSet<>();
             for (String firstName : displayName.getFirstNames()) {
                 NameCelebrations nameDays = getNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {
@@ -110,14 +109,13 @@ public class NamedayDatabaseRefresher {
                 }
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = nameDays.getDate(i);
-                    Nameday nameday = new Nameday(date);
-                    if (namedays.contains(nameday)) {
+                    Date date = nameDays.getDate(i);
+                    if (namedays.contains(date)) {
                         continue;
                     }
                     ContactEvent event = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(event);
-                    namedays.add(nameday);
+                    namedays.add(date);
                 }
             }
         }
@@ -158,7 +156,7 @@ public class NamedayDatabaseRefresher {
 
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
-                    DayDate date = nameDays.getDate(i);
+                    Date date = nameDays.getDate(i);
                     ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact.get());
                     namedayEvents.add(nameday);
                 }
@@ -208,7 +206,7 @@ public class NamedayDatabaseRefresher {
 
     public NamedayCalendar getNamedayCalendar() {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
-        int todayYear = DayDate.today().getYear();
+        int todayYear = Date.today().getYear();
         return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, todayYear);
     }
 
@@ -247,36 +245,6 @@ public class NamedayDatabaseRefresher {
 
         public static long getID(Cursor cursor) {
             return cursor.getLong(DeviceContactsQuery.ID);
-        }
-
-    }
-
-    private class Nameday {
-
-        private final Date date;
-
-        public Nameday(Date date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Nameday nameday = (Nameday) o;
-
-            return date != null ? date.equals(nameday.date) : nameday.date == null;
-
-        }
-
-        @Override
-        public int hashCode() {
-            return date != null ? date.hashCode() : 0;
         }
 
     }

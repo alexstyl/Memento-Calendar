@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.date;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
@@ -13,7 +13,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class CelebrationDateTest {
 
-    private static final DayDate DATE = DayDate.newInstance(6, 7, 2016);
+    private static final Date DATE = Date.on(6, 7, 2016);
 
     @Test
     public void givenACelebrationDateWithASetDate_thenReturningDayOfTheMonthIsCorrect() throws Exception {
@@ -33,7 +33,7 @@ public class CelebrationDateTest {
         assertThat(celebrationDate.getYear()).isEqualTo(DATE.getYear());
     }
 
-    private static CelebrationDate aCelebrateDateWithDate(DayDate date) {
+    private static CelebrationDate aCelebrateDateWithDate(Date date) {
         ContactEvents contactEvent = ContactEvents.createFrom(date, new ArrayList<ContactEvent>());
         return new CelebrationDate(date, contactEvent, Optional.<NamesInADate>absent(), Optional.<BankHoliday>absent());
     }

@@ -6,10 +6,10 @@ import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,14 +19,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.alexstyl.specialdates.date.DateConstants.FEBRUARY;
+import static com.alexstyl.specialdates.date.DateConstants.MARCH;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpcomingDatesBuilderTest {
 
-    private static final DayDate FEBRUARY_1st = DayDate.newInstance(1, DayDate.FEBRUARY, 1990);
-    private static final DayDate FEBRUARY_3rd = DayDate.newInstance(3, DayDate.FEBRUARY, 1990);
-    private static final DayDate MARCH_5th = DayDate.newInstance(5, DayDate.MARCH, 1990);
+    private static final Date FEBRUARY_1st = Date.on(1, FEBRUARY, 1990);
+    private static final Date FEBRUARY_3rd = Date.on(3, FEBRUARY, 1990);
+    private static final Date MARCH_5th = Date.on(5, MARCH, 1990);
 
     @Test
     public void givenASingleContactEvent_thenOneCelebrationDateIsCreated() {
@@ -100,20 +102,20 @@ public class UpcomingDatesBuilderTest {
         assertThat(dates.size()).isEqualTo(3);
     }
 
-    private BankHoliday aBankHolidayOn(DayDate date) {
+    private BankHoliday aBankHolidayOn(Date date) {
         return new BankHoliday("A bank holiday", date);
     }
 
     @NonNull
     private BankHoliday aBankHoliday() {
-        return new BankHoliday("A bank holiday", DayDate.newInstance(1, 1, 1990));
+        return new BankHoliday("A bank holiday", Date.on(1, 1, 1990));
     }
 
     private static ContactEvent aContactEvent() {
-        return aContactEventOn(DayDate.newInstance(1, 1, 1990));
+        return aContactEventOn(Date.on(1, 1, 1990));
     }
 
-    private static ContactEvent aContactEventOn(DayDate date) {
+    private static ContactEvent aContactEventOn(Date date) {
         TestContact contact = new TestContact(1, DisplayName.NO_NAME);
         return new ContactEvent(EventType.BIRTHDAY, date, contact);
     }

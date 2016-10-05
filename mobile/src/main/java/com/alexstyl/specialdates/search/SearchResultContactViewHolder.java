@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
@@ -66,8 +65,8 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void bindBirthday(Contact contact) {
-        if (contact.hasBirthday()) {
-            Birthday birthday = contact.getBirthday();
+        if (contact.hasDateOfBirth()) {
+            Date birthday = contact.getDateOfBirth();
             String message = getBirthdayString(getContext(), birthday);
             this.birthday.setVisibility(View.VISIBLE);
             this.birthday.setText(message);
@@ -90,9 +89,8 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public static String getBirthdayString(Context context, Birthday birthday) {
-        DayDate date1 = DayDate.newInstance(birthday.getDayOfMonth(), birthday.getMonth(), DayDate.today().getYear());
-        return getEventString(context, R.string.birthday, date1);
+    public static String getBirthdayString(Context context, Date birthday) {
+        return getEventString(context, R.string.birthday, birthday);
     }
 
     /**
@@ -101,11 +99,11 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
      * @param context The context to use
      * @param date    The date of the event
      */
-    public static String getNamedayString(Context context, DayDate date) {
+    public static String getNamedayString(Context context, Date date) {
         return getEventString(context, R.string.nameday, date);
     }
 
-    private static String getEventString(Context context, int stringRes, DayDate date) {
+    private static String getEventString(Context context, int stringRes, Date date) {
         String message =
                 DateFormatUtils.formatTimeStampString(
                         context,

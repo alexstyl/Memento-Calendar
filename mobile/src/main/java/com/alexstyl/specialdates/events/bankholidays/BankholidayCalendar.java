@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
-import android.support.annotation.Nullable;
-
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 
 public class BankholidayCalendar {
@@ -30,7 +28,7 @@ public class BankholidayCalendar {
             @Override
             public void run() {
                 synchronized (LOCK) {
-                    int year = DayDate.today().getYear();
+                    int year = Date.today().getYear();
                     repository.preloadHolidaysForYear(year);
                 }
             }
@@ -39,8 +37,7 @@ public class BankholidayCalendar {
         thread.start();
     }
 
-    @Nullable
-    public BankHoliday getBankholidayFor(Date date) {
+    public Optional<BankHoliday> getBankholidayFor(Date date) {
         synchronized (LOCK) {
             return repository.calculateBankholidayFor(date);
         }

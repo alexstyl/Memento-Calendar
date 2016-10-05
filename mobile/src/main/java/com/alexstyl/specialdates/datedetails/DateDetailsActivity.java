@@ -10,8 +10,8 @@ import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
@@ -29,7 +29,7 @@ public class DateDetailsActivity extends ThemedActivity {
      */
     private static final int SOURCE_NOTIFICATION = 1;
 
-    private DayDate displayingDate;
+    private Date displayingDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class DateDetailsActivity extends ThemedActivity {
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
 
-        Optional<DayDate> receivedDate = getCalendarFromIntent(getIntent());
+        Optional<Date> receivedDate = getCalendarFromIntent(getIntent());
         if (!receivedDate.isPresent()) {
             finish();
             ErrorTracker.track(new NullPointerException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
@@ -55,12 +55,7 @@ public class DateDetailsActivity extends ThemedActivity {
         }
 
         if (savedInstanceState == null) {
-
-            final int year = displayingDate.getYear();
-            final int month = displayingDate.getMonth();
-            final int day = displayingDate.getDayOfMonth();
-
-            Fragment fragment = DateDetailsFragment.newInstance(year, month, day);
+            Fragment fragment = DateDetailsFragment.newInstance(displayingDate);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment)
@@ -75,14 +70,14 @@ public class DateDetailsActivity extends ThemedActivity {
         setTitle(titleDate);
     }
 
-    private Optional<DayDate> getCalendarFromIntent(Intent intent) {
+    private Optional<Date> getCalendarFromIntent(Intent intent) {
         if (intent.hasExtra(EXTRA_DAY)) {
             Bundle extras = intent.getExtras();
             int year = extras.getInt(EXTRA_YEAR);
             int month = extras.getInt(EXTRA_MONTH);
             int dayOfMonth = extras.getInt(EXTRA_DAY);
 
-            return new Optional<>(DayDate.newInstance(dayOfMonth, month, year));
+            return new Optional<>(Date.on(dayOfMonth, month, year));
         }
         return Optional.absent();
 
@@ -122,8 +117,7 @@ public class DateDetailsActivity extends ThemedActivity {
      * @param month      The month to display
      * @param year       The year to display
      */
-    public static Intent getStartIntent(Context context, int dayOfMonth, int month,
-                                        int year) {
+    public static Intent getStartIntent(Context context, int dayOfMonth, int month, int year) {
         Intent i = new Intent(context, DateDetailsActivity.class);
         i.putExtra(DateDetailsActivity.EXTRA_DAY, dayOfMonth);
         i.putExtra(DateDetailsActivity.EXTRA_MONTH, month);

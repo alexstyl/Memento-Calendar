@@ -4,8 +4,8 @@ import android.widget.Button;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.ContactHeroView;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 
 public class BirthdayFormPresenter {
 
@@ -27,10 +27,10 @@ public class BirthdayFormPresenter {
     public void displayContactAsSelected(final Contact contact) {
         selectedContact = contact;
         contactHeroView.displayAvatarFor(contact);
-        if (contact.hasBirthday()) {
-            birthdayLabel.displayBirthday(contact.getBirthday());
+        if (contact.hasDateOfBirth()) {
+            birthdayLabel.displayBirthday(contact.getDateOfBirth());
             addButton.setText(R.string.add_birthday_store_button_update_label);
-            validator = new BirthdayCreationValidator(contact.getBirthday());
+            validator = new BirthdayCreationValidator(contact.getDateOfBirth());
         } else {
             birthdayLabel.displayNoBirthday();
             addButton.setText(R.string.add_birthday_store_button_add_label);
@@ -63,7 +63,7 @@ public class BirthdayFormPresenter {
         return selectedContact != null;
     }
 
-    public void presentBirthday(Birthday birthday) {
+    public void presentBirthday(Date birthday) {
         birthdayLabel.displayBirthday(birthday);
         updateAddButton();
     }
@@ -76,7 +76,7 @@ public class BirthdayFormPresenter {
         return selectedContact;
     }
 
-    public Birthday getDisplayingBirthday() {
+    public Date getDisplayingBirthday() {
         return birthdayLabel.getDisplayingBirthday();
     }
 }
