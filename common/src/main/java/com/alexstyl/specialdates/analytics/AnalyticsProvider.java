@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.analytics;
 
 import android.content.Context;
 
-import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.common.BuildConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 public class AnalyticsProvider {
