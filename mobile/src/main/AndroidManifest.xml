@@ -140,6 +140,10 @@
       android:exported="false"
       android:label="@string/service_dailyreminder" />
 
+    <service
+      android:name="com.alexstyl.specialdates.wear.WearSyncService"
+      android:exported="false" />
+
     <!-- Receivers -->
     <receiver
       android:name="com.alexstyl.specialdates.receiver.EventReceiver"
@@ -166,7 +170,7 @@
     </receiver>
 
     <provider
-      android:name=".events.PeopleEventsContentProvider"
+      android:name=".events.peopleevents.PeopleEventsContentProvider"
       android:authorities="com.alexstyl.specialdates.peopleeventsprovider"
       android:exported="false"
       android:grantUriPermissions="true"

@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
@@ -17,7 +17,7 @@ public class BirthdayLabelView extends LinearLayout {
     private static final DateDisplayStringCreator DATE_DISPLAY_STRING_CREATOR = DateDisplayStringCreator.getInstance();
 
     private TextView label;
-    private Birthday birthday;
+    private Date birthday;
     private OnEditListener listener = OnEditListener.NO_OP;
 
     public BirthdayLabelView(Context context, AttributeSet attrs) {
@@ -35,7 +35,7 @@ public class BirthdayLabelView extends LinearLayout {
         }
     };
 
-    public void displayBirthday(Birthday birthday) {
+    public void displayBirthday(Date birthday) {
         this.birthday = birthday;
         String text = DATE_DISPLAY_STRING_CREATOR.fullyFormattedBirthday(birthday);
         label.setText(text);
@@ -46,7 +46,7 @@ public class BirthdayLabelView extends LinearLayout {
         label.setText(null);
     }
 
-    public Birthday getDisplayingBirthday() {
+    public Date getDisplayingBirthday() {
         return birthday;
     }
 

@@ -1,12 +1,12 @@
 package com.alexstyl.specialdates.addevent;
 
-import com.alexstyl.specialdates.contact.Birthday;
+import com.alexstyl.specialdates.date.Date;
 
 public class BirthdayEntry {
     private final long id;
-    private final Birthday birthday;
+    private final Date birthday;
 
-    public BirthdayEntry(long id, Birthday birthday) {
+    public BirthdayEntry(long id, Date birthday) {
         this.id = id;
         this.birthday = birthday;
     }

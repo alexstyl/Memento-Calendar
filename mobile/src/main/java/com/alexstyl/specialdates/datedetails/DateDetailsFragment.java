@@ -31,8 +31,8 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
-import com.alexstyl.specialdates.date.DayDate;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -57,20 +57,20 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private static final int LOADER_ID_EVENTS = 503;
 
     private static final int SPAN_SIZE = 1;
-    private DayDate date;
+    private Date date;
     private ProgressBar progress;
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
 
     private Navigator navigator;
     private ContactPermissionRequest permissions;
 
-    public static Fragment newInstance(int year, int month, int dayofMonth) {
+    public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
 
         Bundle args = new Bundle(3);
-        args.putInt(KEY_DISPLAYING_YEAR, year);
-        args.putInt(KEY_DISPLAYING_MONTH, month);
-        args.putInt(KEY_DISPLAYING_DAY_OF_MONTH, dayofMonth);
+        args.putInt(KEY_DISPLAYING_YEAR, date.getYear());
+        args.putInt(KEY_DISPLAYING_MONTH, date.getMonth());
+        args.putInt(KEY_DISPLAYING_DAY_OF_MONTH, date.getDayOfMonth());
         fragment.setArguments(args);
         return fragment;
     }
@@ -221,7 +221,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
             month = getArguments().getInt(KEY_DISPLAYING_MONTH);
             dayOfMonth = getArguments().getInt(KEY_DISPLAYING_DAY_OF_MONTH);
         }
-        date = DayDate.newInstance(dayOfMonth, month, year);
+        date = Date.on(dayOfMonth, month, year);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
         progress = (ProgressBar) view.findViewById(android.R.id.progress);

@@ -27,8 +27,8 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.events.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.novoda.notils.logger.simple.Log;
@@ -70,8 +70,6 @@ public class Notifier {
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
-            // Large Icons were introduced in Honeycomb
-            // and we are only displaying one if it is one contact
             int size = resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
             Contact displayingContact = events.getContacts().iterator().next();
             largeIcon = loadImageAsync(displayingContact, size, size);

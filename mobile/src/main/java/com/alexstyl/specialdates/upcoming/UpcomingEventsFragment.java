@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +21,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -88,7 +89,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_today:
-                onGoToTodayRequested();
+                goToToday();
                 return true;
             default:
                 break;
@@ -96,7 +97,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void onGoToTodayRequested() {
+    private void goToToday() {
         analytics.trackAction(Action.GO_TO_TODAY);
         upcomingEventsListView.scrollToToday(true);
     }
@@ -125,9 +126,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     public void onResume() {
         super.onResume();
         checkIfUserSettingsChanged();
-        if (permissions.permissionIsPresent()) {
-            showData();
-        } else {
+        if (!permissions.permissionIsPresent()) {
             permissions.requestForPermission();
         }
     }
@@ -163,6 +162,8 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private void showData() {
         boolean displayingEvents = upcomingEventsListView.isDisplayingEvents();
+
+        TransitionManager.beginDelayedTransition((ViewGroup) upcomingEventsListView.getRootView());
         if (displayingEvents) {
             upcomingEventsListView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
@@ -180,7 +181,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         }
 
         @Override
-        public void onCardPressed(DayDate date) {
+        public void onCardPressed(Date date) {
             analytics.trackScreen(Screen.DATE_DETAILS);
             Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
             startActivity(intent);

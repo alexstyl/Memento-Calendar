@@ -11,11 +11,11 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
-import com.alexstyl.specialdates.events.ContactEvents;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.EventType;
-import com.alexstyl.specialdates.events.PeopleEventsContract;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 import com.novoda.notils.exception.DeveloperError;
@@ -45,12 +45,12 @@ public class PeopleEventsProvider {
         this.namedayPreferences = namedayPreferences;
     }
 
-    public ContactEvents getCelebrationsClosestTo(DayDate date) {
-        DayDate closestDate = findClosestDateTo(date);
+    public ContactEvents getCelebrationsClosestTo(Date date) {
+        Date closestDate = findClosestDateTo(date);
         return getCelebrationDateFor(closestDate);
     }
 
-    public ContactEvents getCelebrationDateFor(DayDate date) {
+    public ContactEvents getCelebrationDateFor(Date date) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = resolver.query(
                 PeopleEventsContract.PeopleEvents.CONTENT_URI,
@@ -79,13 +79,13 @@ public class PeopleEventsProvider {
         return ContactEvents.createFrom(date, contactEvents);
     }
 
-    private DayDate findClosestDateTo(DayDate date) {
+    private Date findClosestDateTo(Date date) {
         Cursor cursor = queryDateClosestTo(date);
         if (isInvalid(cursor)) {
             throw new DeveloperError("Cursor was invalid");
         }
 
-        DayDate dateFrom;
+        Date dateFrom;
         if (cursor.moveToFirst()) {
             dateFrom = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
         } else {
@@ -97,7 +97,7 @@ public class PeopleEventsProvider {
 
     private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
 
-    private Cursor queryDateClosestTo(DayDate date) {
+    private Cursor queryDateClosestTo(Date date) {
         return resolver.query(
                 PEOPLE_EVENTS,
                 PEOPLE_PROJECTION, whereDateIsEqualOrAfter(), thePassing(date), onlyTheFirstMatch()
@@ -109,7 +109,7 @@ public class PeopleEventsProvider {
         return PeopleEventsContract.PeopleEvents.DATE + " ASC" + " LIMIT 1";
     }
 
-    private String[] thePassing(DayDate date) {
+    private String[] thePassing(Date date) {
         return new String[]{
                 date.toShortDate()
         };
@@ -123,7 +123,7 @@ public class PeopleEventsProvider {
         return cursor == null || cursor.isClosed();
     }
 
-    private String[] getSelectArgs(DayDate date) {
+    private String[] getSelectArgs(Date date) {
         return new String[]{date.toShortDate()};
     }
 
@@ -157,7 +157,7 @@ public class PeopleEventsProvider {
         return contactEvents;
     }
 
-    private Cursor queryPeopleEvents(DayDate startingDate, DayDate endingDate) {
+    private Cursor queryPeopleEvents(Date startingDate, Date endingDate) {
         String select = PeopleEventsContract.PeopleEvents.DATE + " >= ? AND " + PeopleEventsContract.PeopleEvents.DATE + " <=?";
         String[] selectArgs = new String[]{
                 startingDate.toShortDate(),
@@ -190,7 +190,7 @@ public class PeopleEventsProvider {
 
         long contactId = PeopleEventsContract.PeopleEvents.getContactIdFrom(cursor);
         Contact contact = contactProvider.getOrCreateContact(contactId);
-        DayDate date = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
+        Date date = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
         EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
 
         return new ContactEvent(eventType, date, contact);

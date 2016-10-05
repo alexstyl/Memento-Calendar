@@ -5,7 +5,9 @@ import android.net.Uri;
 import android.view.View;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
+import com.alexstyl.specialdates.date.Date;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class ContactTest {
     private final class TestableContact extends Contact {
 
         public TestableContact(long id, DisplayName displayName) {
-            super(id, displayName);
+            super(id, displayName, Optional.<Date>absent());
         }
 
         @Override
