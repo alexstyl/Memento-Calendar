@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
@@ -60,7 +60,7 @@ public class UpcomingEventsViewHolder extends RecyclerView.ViewHolder {
         return drawable;
     }
 
-    public void bind(final CelebrationDate celebrationDate, DayDate today, final OnUpcomingEventClickedListener listener) {
+    public void bind(final CelebrationDate celebrationDate, Date today, final OnUpcomingEventClickedListener listener) {
         backgroundDrawable.resetTransition();
         String text = DateFormatUtils.formatTimeStampString(context, celebrationDate.getDate().toMillis(), true);
         title.setText(text);

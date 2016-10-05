@@ -40,7 +40,7 @@
     <string name="daily_reminder_summary">"Toon me dagelijks een herinnering voor de verjaardagen of naamdagen van de dag"</string>
     <string name="ringtone">Beltoon</string>
     <string name="vibrate">Trillen</string>
-    <string name="daily_reminder_time_summary">Every day om %s</string>
+    <string name="daily_reminder_time_summary">Every dayOfMonth om %s</string>
     <string name="set_time">Tijd van herinnering</string>
     <string name="set">opslaan</string>
     <string name="Discard">Annuleer</string>

@@ -6,17 +6,17 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 
 public class AddBirthdayToContactTask extends AsyncTask<Void, Void, Boolean> {
 
     private final Context context;
     private final ContentResolver contentResolver;
-    private final Birthday birthday;
+    private final Date birthday;
     private final Contact contact;
 
-    public AddBirthdayToContactTask(Context context, ContentResolver contentResolver, Birthday birthday, Contact contact) {
+    public AddBirthdayToContactTask(Context context, ContentResolver contentResolver, Date birthday, Contact contact) {
         this.context = context;
         this.contentResolver = contentResolver;
         this.birthday = birthday;
@@ -25,7 +25,9 @@ public class AddBirthdayToContactTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        BirthdayEntry birthdayEntry = new BirthdayQuery(contentResolver).forContact(contact).queryContactsBirthday();
+        BirthdayEntry birthdayEntry = new BirthdayQuery(contentResolver)
+                .forContact(contact)
+                .queryContactsBirthday();
 
         if (birthdayEntry != null) {
             return updateContactBirthday(birthdayEntry);
@@ -36,7 +38,7 @@ public class AddBirthdayToContactTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     private Boolean updateContactBirthday(BirthdayEntry oldBirthday) {
-        return new BirthdayQuery(contentResolver).forContact(contact).replaceBirthdays(oldBirthday,birthday);
+        return new BirthdayQuery(contentResolver).forContact(contact).replaceBirthdays(oldBirthday, birthday);
     }
 
     private boolean newBirthdayForContact() {

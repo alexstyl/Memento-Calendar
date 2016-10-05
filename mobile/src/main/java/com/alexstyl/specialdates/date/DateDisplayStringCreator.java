@@ -4,12 +4,10 @@ import android.content.Context;
 import android.text.format.DateUtils;
 
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.contact.Birthday;
 
 public final class DateDisplayStringCreator {
 
     private static final String SEPARATOR = "-";
-    private static final int NO_YEAR = DayDate.NO_YEAR;
     private static final String ZERO = "0";
 
     private static DateDisplayStringCreator instance;
@@ -32,7 +30,7 @@ public final class DateDisplayStringCreator {
     }
 
     private void addYear(Date date, StringBuilder str) {
-        if (date.getYear() != NO_YEAR) {
+        if (date.hasYear()) {
             str.append(date.getYear());
         } else {
             str.append(SEPARATOR);
@@ -59,38 +57,26 @@ public final class DateDisplayStringCreator {
         return number < 10;
     }
 
-    public String fullyFormattedBirthday(Birthday birthday) {
-        DayDate dayDate = birthday.asDayDate();
+    public String fullyFormattedBirthday(Date birthday) {
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 
-        if (birthday.includesYear()) {
+        if (birthday.hasYear()) {
             format_flags |= DateUtils.FORMAT_SHOW_YEAR;
         } else {
             format_flags |= DateUtils.FORMAT_NO_YEAR;
         }
 
-        return DateUtils.formatDateTime(appContext, dayDate.toMillis(), format_flags);
+        return DateUtils.formatDateTime(appContext, birthday.toMillis(), format_flags);
     }
 
     public String fullyFormattedDate(Date date) {
-        DayDate dayDate = DayDate.newInstance(date.getDayOfMonth(), date.getMonth(), date.getYear());
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
+        format_flags |= DateUtils.FORMAT_SHOW_YEAR;
+        return DateUtils.formatDateTime(appContext, date.toMillis(), format_flags);
 
-        if (includesYear(date)) {
-            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
-        } else {
-            format_flags |= DateUtils.FORMAT_NO_YEAR;
-        }
-
-        return DateUtils.formatDateTime(appContext, dayDate.toMillis(), format_flags);
-
-    }
-
-    private boolean includesYear(Date date) {
-        return date.getYear() != Date.NO_YEAR;
     }
 }

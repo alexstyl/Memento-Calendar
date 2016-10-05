@@ -1,18 +1,19 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class NamedaysList {
 
-    private final ArrayList<NamesInADate> namedays = new ArrayList<>();
+    private final List<NamesInADate> namedays = new ArrayList<>();
     private final Set<String> names = new TreeSet<>(Collator.getInstance());
 
-    public NamesInADate getNamedaysFor(DayDate date) {
+    public NamesInADate getNamedaysFor(Date date) {
         int index = indexOf(date);
         if (index != -1) {
             return namedays.get(index);
@@ -20,23 +21,14 @@ public class NamedaysList {
         return new NamesInADate(date);
     }
 
-    public void clear() {
-        namedays.clear();
-    }
-
-    public void addAll(NamedaysList namedaysList) {
-        this.namedays.addAll(namedaysList.namedays);
-        this.names.addAll(namedaysList.names);
-    }
-
-    public void addNameday(DayDate date, String name) {
+    public void addNameday(Date date, String name) {
         NamesInADate names = getOrCreateNameDateFor(date);
 
         names.addName(name);
         this.names.add(name);
     }
 
-    private NamesInADate getOrCreateNameDateFor(DayDate date) {
+    private NamesInADate getOrCreateNameDateFor(Date date) {
         int index = indexOf(date);
         if (index == -1) {
             NamesInADate lol = new NamesInADate(date);
@@ -47,36 +39,24 @@ public class NamedaysList {
         }
     }
 
-    private int indexOf(DayDate date) {
+    private int indexOf(Date date) {
         for (int i = 0; i < namedays.size(); i++) {
             NamesInADate inlistDate = namedays.get(i);
-            DayDate comparingDate = inlistDate.getDate();
-
-            if (yearCheckIsNeeded(inlistDate)) {
-                if (hasYearSet(comparingDate) && referToDifferentYear(date, comparingDate)) {
-                    continue;
-                }
-            }
-            if (areMatching(date, comparingDate)) {
+            Date comparingDate = inlistDate.getDate();
+            if (isRecurringEvent(comparingDate) && areMatching(comparingDate, date)) {
+                return i;
+            } else if (comparingDate.equals(date)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private boolean yearCheckIsNeeded(NamesInADate namesInADate) {
-        return namesInADate.getDate().getYear() != -1;
+    private boolean isRecurringEvent(Date date) {
+        return !date.hasYear();
     }
 
-    private boolean referToDifferentYear(DayDate date, DayDate otherDate) {
-        return date.getYear() != otherDate.getYear();
-    }
-
-    private boolean hasYearSet(DayDate date) {
-        return date.getYear() != -1;
-    }
-
-    private boolean areMatching(DayDate date, DayDate otherDate) {
+    private boolean areMatching(Date date, Date otherDate) {
         return date.getDayOfMonth() == otherDate.getDayOfMonth()
                 && date.getMonth() == otherDate.getMonth();
     }

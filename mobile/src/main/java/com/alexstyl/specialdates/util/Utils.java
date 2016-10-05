@@ -19,12 +19,9 @@ package com.alexstyl.specialdates.util;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
-import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -33,13 +30,6 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * This class contains static utility methods.
@@ -181,34 +171,4 @@ public class Utils {
                 }
         );
     }
-
-    /**
-     * Returns a JSON value from the raw folder, of the given resID
-     *
-     * @param context The context to use
-     * @param resID   The resource ID of the JSON file
-     * @throws android.content.res.Resources.NotFoundException if the resource is not a JSON
-     */
-    public static JSONObject getJSON(@NonNull Context context, @RawRes int resID) {
-        InputStream inputStream = context.getResources().openRawResource(resID);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        int ctr;
-        try {
-            ctr = inputStream.read();
-            while (ctr != -1) {
-                byteArrayOutputStream.write(ctr);
-                ctr = inputStream.read();
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            return new JSONObject(byteArrayOutputStream.toString());
-        } catch (JSONException e) {
-            throw new Resources.NotFoundException(e.getMessage());
-        }
-    }
-
 }

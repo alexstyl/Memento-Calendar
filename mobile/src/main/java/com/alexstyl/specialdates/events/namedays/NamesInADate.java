@@ -1,29 +1,29 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * The names celebrating in a specific Date
+ * The names celebrating on a specific Date
  */
 public class NamesInADate {
 
-    private DayDate date;
+    private Date date;
     private List<String> names;
 
-    public NamesInADate(DayDate date) {
+    public NamesInADate(Date date) {
         this(date, new ArrayList<String>());
     }
 
-    public NamesInADate(DayDate date, List<String> names) {
+    public NamesInADate(Date date, List<String> names) {
         this.date = date;
         this.names = names;
     }
 
-    public DayDate getDate() {
+    public Date getDate() {
         return date;
     }
 

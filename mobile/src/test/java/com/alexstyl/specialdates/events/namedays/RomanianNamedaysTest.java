@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.namedays.calendar.RomanianNamedays;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianNamedays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +31,8 @@ public class RomanianNamedaysTest {
 
         RomanianNamedays namedays = RomanianNamedays.from(expectedNames);
 
-        List<DayDate> expectedDates = buildExpectedDates();
-        for (DayDate expectedDate : expectedDates) {
+        List<Date> expectedDates = buildExpectedDates();
+        for (Date expectedDate : expectedDates) {
             NamesInADate allNames = namedays.getNamedaysFor(expectedDate);
             List<String> actualNames = allNames.getNames();
             if (!expectedNames.equals(actualNames)) {
@@ -41,14 +41,14 @@ public class RomanianNamedaysTest {
         }
     }
 
-    private List<DayDate> buildExpectedDates() {
-        List<DayDate> dayDates = new ArrayList<>();
-        dayDates.add(DayDate.newInstance(9, 4, 2017));
-        dayDates.add(DayDate.newInstance(1, 4, 2018));
-        dayDates.add(DayDate.newInstance(21, 4, 2019));
-        dayDates.add(DayDate.newInstance(12, 4, 2020));
-        dayDates.add(DayDate.newInstance(25, 4, 2021));
-        dayDates.add(DayDate.newInstance(17, 4, 2022));
-        return dayDates;
+    private List<Date> buildExpectedDates() {
+        List<Date> dates = new ArrayList<>();
+        dates.add(Date.on(9, 4, 2017));
+        dates.add(Date.on(1, 4, 2018));
+        dates.add(Date.on(21, 4, 2019));
+        dates.add(Date.on(12, 4, 2020));
+        dates.add(Date.on(25, 4, 2021));
+        dates.add(Date.on(17, 4, 2022));
+        return dates;
     }
 }

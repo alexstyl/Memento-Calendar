@@ -3,22 +3,21 @@ package com.alexstyl.specialdates.date;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
 /**
  * A date that contains celebrations. A CelebrationDate can contain namedays, and contacts celebrating
- * <p>Created by alexstyl on 20/07/15.</p>
  */
 public class CelebrationDate implements Comparable<CelebrationDate> {
 
-    private final DayDate date;
+    private final Date date;
     private final ContactEvents events;
     private final Optional<NamesInADate> namedays;
     private final Optional<BankHoliday> bankHoliday;
 
-    public CelebrationDate(DayDate date, ContactEvents contactEvent, Optional<NamesInADate> namedays, Optional<BankHoliday> bankHoliday) {
+    public CelebrationDate(Date date, ContactEvents contactEvent, Optional<NamesInADate> namedays, Optional<BankHoliday> bankHoliday) {
         this.date = date;
         this.events = contactEvent;
         this.namedays = namedays;
@@ -45,7 +44,7 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
         return events.getContactCount();
     }
 
-    public DayDate getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -74,7 +73,6 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
         if (another == this) {
             return 0;
         }
-
-        return date.compareTo(another.date);
+        return DateComparator.get().compare(date, another.date);
     }
 }
