@@ -8,7 +8,8 @@ public enum Screen {
     DATE_DETAILS("date details"),
     DONATE("donate"),
     ABOUT("about"),
-    CONTACT_PERMISSION_REQUESTED("contact permission");
+    CONTACT_PERMISSION_REQUESTED("contact permission"),
+    WEAR_CONTACT_EVENTS("wear: contacts events");
 
     private final String screenName;
 

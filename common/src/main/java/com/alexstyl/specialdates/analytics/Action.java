@@ -6,7 +6,8 @@ public enum Action {
     DONATION("donate"),
     INTERACT_CONTACT("contact"),
     SELECT_THEME("theme"),
-    GO_TO_TODAY("gotoday");
+    GO_TO_TODAY("gotoday"),
+    COMPLICATION("complication: contacts events");
 
     private final String name;
 
