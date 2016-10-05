@@ -14,6 +14,10 @@ import android.support.wearable.complications.ComplicationText;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.alexstyl.specialdates.analytics.Action;
+import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.wear.SharedConstants;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataItem;
@@ -34,6 +38,26 @@ public class ContactEventsProviderService extends ComplicationProviderService {
     private static final String NO_DATE_PLACEHOLDER = "-";
 
     private WearCommunicationService wearCommunicationService;
+
+    private Analytics analytics;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        analytics = AnalyticsProvider.getAnalytics(this);
+    }
+
+    @Override
+    public void onComplicationActivated(int complicationId, int type, ComplicationManager manager) {
+        super.onComplicationActivated(complicationId, type, manager);
+        analytics.trackAction(new ActionWithParameters(Action.COMPLICATION, "enabled", "true"));
+    }
+
+    @Override
+    public void onComplicationDeactivated(int complicationId) {
+        super.onComplicationDeactivated(complicationId);
+        analytics.trackAction(new ActionWithParameters(Action.COMPLICATION, "enabled", "false"));
+    }
 
     @Override
     public void onComplicationUpdate(final int complicationId, final int dataType, final ComplicationManager complicationManager) {

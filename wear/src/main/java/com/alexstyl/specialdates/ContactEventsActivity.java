@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.wear.SharedConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -42,6 +44,7 @@ public class ContactEventsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AnalyticsProvider.getAnalytics(this).trackScreen(Screen.WEAR_CONTACT_EVENTS);
         setContentView(R.layout.activity_contact_events);
 
         dateText = (TextView) findViewById(R.id.contact_events_date_text);
