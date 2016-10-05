@@ -11,4 +11,5 @@
   <string name="key_debug_daily_reminder_date_fake_month">key_debug_daily_reminder_date_fake_month</string>
   <string name="key_debug_daily_reminder_date_fake_year">key_debug_daily_reminder_date_fake_year</string>
   <string name="key_debug_start_calendar">key_debug_start_calendar</string>
+  <string name="key_debug_trigger_wear_service">key_debug_trigger_wear_service</string>
 </resources>
