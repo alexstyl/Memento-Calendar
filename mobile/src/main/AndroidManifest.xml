@@ -140,6 +140,10 @@
       android:exported="false"
       android:label="@string/service_dailyreminder" />
 
+    <service
+      android:name="com.alexstyl.specialdates.wear.WearSyncService"
+      android:exported="false" />
+
     <!-- Receivers -->
     <receiver
       android:name="com.alexstyl.specialdates.receiver.EventReceiver"

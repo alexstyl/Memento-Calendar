@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.specialdates.wear.WearSyncService;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 
 import java.util.Calendar;
@@ -86,7 +87,14 @@ public class DebugFragment extends MementoPreferenceFragment {
                 startDateIntent();
                 return true;
             }
+        });
 
+        findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                WearSyncService.startService(getActivity());
+                return true;
+            }
         });
     }
 
