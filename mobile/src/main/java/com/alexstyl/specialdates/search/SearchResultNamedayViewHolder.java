@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.date.DayDate;
 
 class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
 
@@ -27,7 +27,6 @@ class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
         super(convertView);
         this.name = (TextView) convertView.findViewById(R.id.name_celebrating);
         this.datesLayout = (LinearLayout) convertView.findViewById(R.id.dates);
-
         this.inflater = layoutInflater;
     }
 
@@ -38,8 +37,7 @@ class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
             View view = inflater.inflate(R.layout.nameday_date, datesLayout, false);
             TextView dateView = (TextView) view.findViewById(android.R.id.text1);
 
-            final DayDate date = dates.getDate(i);
-
+            final Date date = dates.getDate(i);
             String prettyDate = DateFormatUtils.formatTimeStampString(view.getContext(), date.toMillis(), false);
             dateView.setText(prettyDate);
             if (searchResultListener != null) {

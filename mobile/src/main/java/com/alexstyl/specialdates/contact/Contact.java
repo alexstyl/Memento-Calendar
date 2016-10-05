@@ -7,6 +7,7 @@ import android.view.View;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
+import com.alexstyl.specialdates.date.Date;
 
 import java.util.List;
 
@@ -14,19 +15,13 @@ public abstract class Contact {
 
     protected final long contactID;
     protected final DisplayName displayName;
-    private final Optional<Birthday> birthday;
+    private final Optional<Date> dateOfBirth;
     private List<LabeledAction> actions;
 
-    public Contact(long id, DisplayName displayName) {
+    public Contact(long id, DisplayName displayName, Optional<Date> dateOfBirth) {
         this.contactID = id;
         this.displayName = displayName;
-        this.birthday = Optional.absent();
-    }
-
-    public Contact(long id, DisplayName displayName, Birthday birthday) {
-        this.contactID = id;
-        this.displayName = displayName;
-        this.birthday = new Optional<>(birthday);
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override
@@ -61,12 +56,12 @@ public abstract class Contact {
      */
     protected abstract List<LabeledAction> onBuildActions(Context context);
 
-    public Birthday getBirthday() {
-        return birthday.get();
+    public Date getDateOfBirth() {
+        return dateOfBirth.get();
     }
 
-    public boolean hasBirthday() {
-        return birthday.isPresent();
+    public boolean hasDateOfBirth() {
+        return dateOfBirth.isPresent();
     }
 
     public abstract Uri getLookupUri();

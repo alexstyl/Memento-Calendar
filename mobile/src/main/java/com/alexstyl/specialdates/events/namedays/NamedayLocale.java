@@ -34,7 +34,7 @@ public enum NamedayLocale {
         return rawResId;
     }
 
-    public boolean isComparedBySounds() {
+    public boolean isComparedBySound() {
         return soundCompared;
     }
 }

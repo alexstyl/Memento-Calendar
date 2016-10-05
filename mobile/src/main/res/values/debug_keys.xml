@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
   tools:ignore="MissingTranslation">
   <string name="key_debug_refresh_widget">key_debug_refresh_widget</string>
+  <string name="key_debug_refresh_db">key_debug_refresh_db</string>
   <string name="pref_dailyreminder_debug">pref_dailyreminder_debug</string>
   <string name="key_debug_daily_reminder">key_debug_daily_reminder</string>
   <string name="key_debug_daily_reminder_date">key_debug_daily_reminder_date</string>

@@ -2,15 +2,15 @@ package com.alexstyl.specialdates.search;
 
 import android.content.Context;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 
-public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
+class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     private final NamedayPreferences namedayPreferences;
 
@@ -20,11 +20,11 @@ public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     public static NamedaysLoader newInstance(Context context, String searchQuery) {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        int year = DayDate.today().getYear();
+        int year = Date.today().getYear();
         return new NamedaysLoader(context, namedayPreferences, searchQuery, year);
     }
 
-    NamedaysLoader(Context context, NamedayPreferences namedayPreferences, String searchQuery, int year) {
+    private NamedaysLoader(Context context, NamedayPreferences namedayPreferences, String searchQuery, int year) {
         super(context);
         this.namedayPreferences = namedayPreferences;
         this.searchQuery = searchQuery;
@@ -38,9 +38,7 @@ public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     private NameCelebrations getNamedays(String searchQuery) {
         if (namedayPreferences.isEnabled()) {
-            NameCelebrations namedays = getNamedayCalendar().getAllNamedays(searchQuery);
-            namedays.sortDates();
-            return namedays;
+            return getNamedayCalendar().getAllNamedays(searchQuery);
         }
         return NameCelebrations.EMPTY;
     }
@@ -48,7 +46,7 @@ public class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
     private NamedayCalendar getNamedayCalendar() {
         if (namedayCalendar == null) {
             NamedayLocale locale = NamedayPreferences.newInstance(getContext()).getSelectedLanguage();
-            namedayCalendar = NamedayCalendarProvider.newInstance(getContext()).loadNamedayCalendarForLocale(locale, year);
+            namedayCalendar = NamedayCalendarProvider.newInstance(getContext().getResources()).loadNamedayCalendarForLocale(locale, year);
         }
         return namedayCalendar;
 

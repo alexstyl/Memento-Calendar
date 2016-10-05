@@ -1,11 +1,12 @@
 package com.alexstyl.specialdates.events.namedays.calendar;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,10 @@ public final class NamedayCalendar {
 
     private final NamedayLocale locale;
     private final NamedayBundle namedayBundle;
-    private final SpecialNamedaysStrategy strategy;
+    private final SpecialNamedays strategy;
     private final int year;
 
-    public NamedayCalendar(NamedayLocale locale, NamedayBundle namedays, SpecialNamedaysStrategy strategy, int year) {
+    public NamedayCalendar(NamedayLocale locale, NamedayBundle namedays, SpecialNamedays strategy, int year) {
         this.locale = locale;
         this.namedayBundle = namedays;
         this.strategy = strategy;
@@ -32,9 +33,9 @@ public final class NamedayCalendar {
         return strategy.getNamedaysFor(name, year);
     }
 
-    public NamesInADate getAllNamedayOn(DayDate date) {
+    public NamesInADate getAllNamedayOn(Date date) {
         List<String> names = namedayBundle.getNamedaysFor(date).getNames();
-        List<String> specialNames = strategy.getNamedayByDate(date).getNames();
+        List<String> specialNames = strategy.getNamedayOn(date).getNames();
         List<String> arrayList = new ArrayList<>(names.size() + specialNames.size());
         arrayList.addAll(names);
         arrayList.addAll(specialNames);

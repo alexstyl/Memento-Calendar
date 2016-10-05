@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import android.support.v4.app.FragmentActivity;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,9 @@ public class UpcomingEventsProvider {
     }
 
     private static LoadingTimeDuration startingTimeDuration() {
-        int year = DayDate.today().getYear();
-        DayDate startOfLastMonth = DayDate.newInstance(1, 1, year);
-        DayDate endingOfNextMonth = DayDate.newInstance(31, 12, year);
+        int year = Date.CURRENT_YEAR;
+        Date startOfLastMonth = Date.startOfTheYear(year);
+        Date endingOfNextMonth = Date.endOfYear(year);
         return new LoadingTimeDuration(startOfLastMonth, endingOfNextMonth);
     }
 

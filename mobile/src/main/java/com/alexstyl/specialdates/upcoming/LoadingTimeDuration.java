@@ -1,24 +1,24 @@
 package com.alexstyl.specialdates.upcoming;
 
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 
 import java.io.Serializable;
 
 public class LoadingTimeDuration implements Serializable {
 
-    private DayDate from;
-    private DayDate to;
+    private Date from;
+    private Date to;
 
-    public LoadingTimeDuration(DayDate from, DayDate to) {
+    public LoadingTimeDuration(Date from, Date to) {
         this.from = from;
         this.to = to;
     }
 
-    public DayDate getFrom() {
+    public Date getFrom() {
         return from;
     }
 
-    public DayDate getTo() {
+    public Date getTo() {
         return to;
     }
 

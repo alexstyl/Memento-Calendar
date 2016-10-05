@@ -31,6 +31,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:text="@string/no_contacts_text"
-    tools:visibility="gone" />
+    android:visibility="gone" />
 
 </FrameLayout>

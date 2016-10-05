@@ -8,8 +8,8 @@ public class EasternNameday {
     private int date;
     private final List<String> celebratingNames;
 
-    public EasternNameday(int daysToEaster,
-                          List<String> celebratingNames) {
+    EasternNameday(int daysToEaster,
+                   List<String> celebratingNames) {
         this.date = daysToEaster;
         this.celebratingNames = celebratingNames;
     }

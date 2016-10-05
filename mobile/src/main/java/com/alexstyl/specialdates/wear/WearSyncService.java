@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.date.DayDate;
-import com.alexstyl.specialdates.events.ContactEvents;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -46,7 +46,7 @@ public class WearSyncService extends IntentService {
 
     private ContactEvents fetchContactEvents() {
         PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this);
-        DayDate today = DayDate.today();
+        Date today = Date.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }
 
@@ -58,7 +58,7 @@ public class WearSyncService extends IntentService {
     }
 
     private ArrayList<String> getContactsNameListFrom(List<Contact> contacts) {
-        ArrayList<String> namesList = new ArrayList<String>(contacts.size());
+        ArrayList<String> namesList = new ArrayList<>(contacts.size());
         for (Contact contact : contacts) {
             namesList.add(contact.getDisplayName().toString());
         }

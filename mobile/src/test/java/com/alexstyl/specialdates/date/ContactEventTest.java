@@ -5,9 +5,8 @@ import android.content.res.Resources;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TestContact;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.EventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class ContactEventTest {
 
     private static final Contact CONTACT_WITHOUT_BIRTHDAY = new TestContact(1, DisplayName.from("Peter"));
-    private static final DayDate SOME_DATE = DayDate.newInstance(1, 1, 1990);
+    private static final Date SOME_DATE = Date.on(1, 1, 1990);
 
     @Mock
     private Resources mockResources;
@@ -51,7 +51,7 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearAfterDate() {
-        DayDate eventDate = DayDate.newInstance(1, 1, 1990);
+        Date eventDate = Date.on(1, 1, 1990);
         Contact contact = contactWithBirthdayOn(1, 1, 2016);
         ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
         String label = contactEvent.getLabel(mockResources);
@@ -60,8 +60,8 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearOnDate() {
-        DayDate eventDate = DayDate.newInstance(1, 1, 1990);
-        Contact contact = contactWithBirthdayOn(1, 1, 1990);
+        Date eventDate = Date.on(1, JANUARY, 1990);
+        Contact contact = contactWithBirthdayOn(1, JANUARY, 1990);
         ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
         String label = contactEvent.getLabel(mockResources);
         assertThat(label).isEqualTo("Birthday");
@@ -69,7 +69,7 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearBeforeDate() {
-        DayDate eventDate = DayDate.newInstance(1, 1, 2000);
+        Date eventDate = Date.on(1, 1, 2000);
         Contact contact = contactWithBirthdayOn(1, 1, 1990);
         ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
         String label = contactEvent.getLabel(mockResources);
@@ -77,11 +77,11 @@ public class ContactEventTest {
     }
 
     private Contact contactWithBirthdayOn(int dayOfMonth, int month, int year) {
-        return new TestContact(1, DisplayName.from("Peter"), Birthday.on(dayOfMonth, month, year));
+        return new TestContact(1, DisplayName.from("Peter"), Date.on(dayOfMonth, month, year));
     }
 
     private Contact contactWithBirthdayOn(int day, int month) {
-        return new TestContact(1, DisplayName.from("Peter"), Birthday.on(day, month));
+        return new TestContact(1, DisplayName.from("Peter"), Date.on(day, month));
     }
 
 }

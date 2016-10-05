@@ -12,8 +12,8 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
-import com.alexstyl.specialdates.contact.Birthday;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.Themer;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
@@ -122,7 +122,7 @@ public class AddBirthdayActivity extends ThemedActivity {
         }
 
         private void displayBirthdayPickerDialog() {
-            Birthday birthday = birthdayLabel.getDisplayingBirthday();
+            Date birthday = birthdayLabel.getDisplayingBirthday();
             BirthdayPickerDialog dialog;
             if (birthday == null) {
                 dialog = BirthdayPickerDialog.createDialog(birthdaySelectedListener);
@@ -158,7 +158,7 @@ public class AddBirthdayActivity extends ThemedActivity {
 
     private BirthdayPickerDialog.OnBirthdaySelectedListener birthdaySelectedListener = new BirthdayPickerDialog.OnBirthdaySelectedListener() {
         @Override
-        public void onBirthdaySet(Birthday birthday) {
+        public void onBirthdaySet(Date birthday) {
             presenter.presentBirthday(birthday);
         }
     };

@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DayDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
@@ -27,6 +27,8 @@ import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alexstyl.specialdates.Optional.absent;
 
 public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -45,7 +47,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isShowingFullDetailedCards;
 
     public static DateDetailsAdapter newInstance(Context context,
-                                                 DayDate dateToDisplay,
+                                                 Date dateToDisplay,
                                                  OnSupportCardClickListener supportListener,
                                                  NamedayCardView.OnShareClickListener namedayListener,
                                                  ContactCardListener contactCardListener) {
@@ -65,30 +67,27 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         );
     }
 
-    private static Optional<NamesInADate> getNamedayOptionalForDate(DayDate dateToDisplay, Context context) {
+    private static Optional<NamesInADate> getNamedayOptionalForDate(Date dateToDisplay, Context context) {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         if (namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly()) {
             NamedayLocale locale = namedayPreferences.getSelectedLanguage();
-            NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(context).loadNamedayCalendarForLocale(locale, dateToDisplay.getYear());
+            NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(context.getResources()).loadNamedayCalendarForLocale(locale, dateToDisplay.getYear());
             NamesInADate names = namedayCalendar.getAllNamedayOn(dateToDisplay);
             if (names.nameCount() > 0) {
                 return new Optional<>(names);
             }
         }
-        return Optional.absent();
+        return absent();
 
     }
 
-    private static Optional<BankHoliday> getBankHolidayOptionalForDate(DayDate dateToDisplay, BankHolidaysPreferences bankHolidaysPreferences) {
-        Optional<BankHoliday> optional;
+    private static Optional<BankHoliday> getBankHolidayOptionalForDate(Date dateToDisplay, BankHolidaysPreferences bankHolidaysPreferences) {
         if (bankHolidaysPreferences.isEnabled()) {
             BankholidayCalendar repository = BankholidayCalendar.get();
-            BankHoliday bankholiday = repository.getBankholidayFor(dateToDisplay);
-            optional = new Optional<>(bankholiday);
+            return repository.getBankholidayFor(dateToDisplay);
         } else {
-            optional = Optional.absent();
+            return Optional.absent();
         }
-        return optional;
     }
 
     DateDetailsAdapter(ImageLoader imageLoader,
