@@ -9,4 +9,13 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    defaultConfig {
+        minSdkVersion 16
+        buildConfigField 'String', 'MIXPANEL_TOKEN', '\"' + mixpanelKey + "\""
+    }
+}
+
+dependencies {
+    compile 'com.mixpanel.android:mixpanel-android:4.9.2'
 }

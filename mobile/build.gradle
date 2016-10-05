@@ -40,7 +40,6 @@ android {
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
         buildConfigField 'String', 'API_KEY_VENDING', '\"' + androidVendingKey + "\""
-        buildConfigField 'String', 'MIXPANEL_TOKEN', '\"' + mixpanelKey + "\""
     }
 
     buildTypes {
@@ -94,7 +93,6 @@ dependencies {
         transitive = true;
     }
     compile 'com.google.android.gms:play-services-wearable:9.4.0'
-    compile 'com.mixpanel.android:mixpanel-android:4.9.2'
     compile 'com.google.dagger:dagger:2.0.1'
     apt 'com.google.dagger:dagger-compiler:2.0.1'
 
