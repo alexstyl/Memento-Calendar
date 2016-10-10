@@ -31,8 +31,7 @@ import java.util.Set;
 public class NamedayDatabaseRefresher {
 
     private static final Optional<Contact> NO_CONTACT = Optional.absent();
-    @SuppressWarnings("unchecked")
-    private static final List<ContactEvent> NO_EVENTS = Collections.EMPTY_LIST;
+    private static final List<ContactEvent> NO_EVENTS = Collections.emptyList();
 
     private final ContentResolver contentResolver;
     private final ContactProvider contactProvider;
