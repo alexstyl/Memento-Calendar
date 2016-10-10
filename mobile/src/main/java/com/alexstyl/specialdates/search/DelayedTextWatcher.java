@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-public class DelayedTextWatcher implements TextWatcher {
+class DelayedTextWatcher implements TextWatcher {
 
     private static final long SHORT_DELAY = 50;
 
@@ -17,7 +17,7 @@ public class DelayedTextWatcher implements TextWatcher {
         return new DelayedTextWatcher(textUpdatedCallback, handler);
     }
 
-    public DelayedTextWatcher(TextUpdatedCallback textWatchTextUpdatedCallback, Handler handler) {
+    private DelayedTextWatcher(TextUpdatedCallback textWatchTextUpdatedCallback, Handler handler) {
         this.textWatchTextUpdatedCallback = textWatchTextUpdatedCallback;
         this.handler = handler;
     }

@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.search;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
-public class NamedayCard {
+class NamedayCard {
 
     private NameCelebrations namedays;
 

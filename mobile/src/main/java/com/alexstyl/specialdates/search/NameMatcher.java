@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.Names;
 import java.text.Collator;
 import java.util.Locale;
 
-public class NameMatcher {
+class NameMatcher {
 
     private final Collator collator;
 
@@ -27,7 +27,7 @@ public class NameMatcher {
         return searchQueryIsPartOfFullName(displayName, searchQuery);
     }
 
-    boolean searchQueryIsPartOfFullName(DisplayName displayName, String searchQuery) {
+    private boolean searchQueryIsPartOfFullName(DisplayName displayName, String searchQuery) {
         String fullDisplayName = displayName.toString();
         String partOfName = substring(fullDisplayName, searchQuery.length());
 

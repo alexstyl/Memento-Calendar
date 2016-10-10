@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-final public class ContactWithEventsSearch {
+final class ContactWithEventsSearch {
 
     private final Context context;
     private final ContactProvider contactProvider;
@@ -28,13 +28,13 @@ final public class ContactWithEventsSearch {
         return new ContactWithEventsSearch(context, contactProvider, nameMatcher);
     }
 
-    ContactWithEventsSearch(Context context, ContactProvider contactProvider, NameMatcher nameMatcher) {
+    private ContactWithEventsSearch(Context context, ContactProvider contactProvider, NameMatcher nameMatcher) {
         this.contactProvider = contactProvider;
         this.nameMatcher = nameMatcher;
         this.context = context.getApplicationContext();
     }
 
-    public List<Contact> searchForContacts(String searchQuery, int counter) {
+    List<Contact> searchForContacts(String searchQuery, int counter) {
         // since we cannot select ignoring accents, we have to manually do a searching
         searchQuery = searchQuery.trim();
 

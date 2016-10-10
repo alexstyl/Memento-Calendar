@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-final public class ContactsSearch {
+public final class ContactsSearch {
 
     private final Context context;
     private final ContactProvider contactProvider;
@@ -28,7 +28,7 @@ final public class ContactsSearch {
         return new ContactsSearch(context, contactProvider, nameMatcher);
     }
 
-    ContactsSearch(Context context, ContactProvider contactProvider, NameMatcher nameMatcher) {
+    private ContactsSearch(Context context, ContactProvider contactProvider, NameMatcher nameMatcher) {
         this.contactProvider = contactProvider;
         this.nameMatcher = nameMatcher;
         this.context = context.getApplicationContext();
