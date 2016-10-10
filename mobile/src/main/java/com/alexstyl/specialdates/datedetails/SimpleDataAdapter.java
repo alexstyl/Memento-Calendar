@@ -15,32 +15,25 @@ import com.alexstyl.specialdates.entity.DataType;
 import java.util.List;
 
 public class SimpleDataAdapter extends BaseAdapter {
-    private final List<DataType> objects;
-    private final Resources res;
-    private final int dataType;
+    private final List<DataType> dataTypes;
+    private final Resources resources;
     private final LayoutInflater mInflater;
 
-    @SuppressWarnings("unchecked")
-    public SimpleDataAdapter(Context context, List<? extends DataType> object, int dataType) {
+    public SimpleDataAdapter(Context context, List<DataType> dataTypes) {
         this.mInflater = LayoutInflater.from(context);
-        this.dataType = dataType;
-        this.objects = (List<DataType>) object;
-        this.res = context.getResources();
+        this.dataTypes = dataTypes;
+        this.resources = context.getResources();
 
     }
 
     @Override
     public int getCount() {
-        return objects.size();
-    }
-
-    public int getDataType() {
-        return dataType;
+        return dataTypes.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return objects.get(position);
+    public DataType getItem(int position) {
+        return dataTypes.get(position);
     }
 
     @Override
@@ -58,18 +51,17 @@ public class SimpleDataAdapter extends BaseAdapter {
         ViewHolder vh;
         if (convertView == null) {
             vh = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.row_datatype, null, false);
+            convertView = mInflater.inflate(R.layout.row_datatype, parent, false);
             vh.label = (TextView) convertView.findViewById(android.R.id.text1);
             vh.data = (TextView) convertView.findViewById(android.R.id.text2);
-
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        DataType obj = (DataType) getItem(position);
-        vh.data.setText(obj.getData());
-        vh.label.setText(obj.getDisplayingLabel(res));
 
+        DataType dataType = getItem(position);
+        vh.data.setText(dataType.getData());
+        vh.label.setText(dataType.getDisplayingLabel(resources));
         return convertView;
     }
 }

@@ -130,7 +130,7 @@ public class ActionDialog extends MementoDialog {
         }
 
         ArrayList<DataType> dataz = getArguments().getParcelableArrayList(ARG_DATA);
-        SimpleDataAdapter adapter = new SimpleDataAdapter(getActivity(), dataz, dataType);
+        SimpleDataAdapter adapter = new SimpleDataAdapter(getActivity(), dataz);
         return new AlertDialog.Builder(getActivity())
                 .setTitle(title)
                 .setAdapter(
