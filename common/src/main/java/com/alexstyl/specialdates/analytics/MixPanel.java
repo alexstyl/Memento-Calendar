@@ -11,7 +11,6 @@ public class MixPanel implements Analytics {
 
     MixPanel(MixpanelAPI mixpanel) {
         this.mixpanel = mixpanel;
-
     }
 
     @Override

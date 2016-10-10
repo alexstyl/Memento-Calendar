@@ -42,8 +42,8 @@ public final class NamedayCalendar {
         return new NamesInADate(date, arrayList);
     }
 
-    public ArrayList<String> getAllNames() {
-        ArrayList<String> names = namedayBundle.getNames();
+    public List<String> getAllNames() {
+        List<String> names = namedayBundle.getNames();
         names.addAll(strategy.getAllNames());
         return names;
     }

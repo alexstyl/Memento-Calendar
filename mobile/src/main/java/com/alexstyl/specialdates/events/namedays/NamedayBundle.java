@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.namedays;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.Node;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class NamedayBundle {
 
@@ -27,7 +27,7 @@ public class NamedayBundle {
         return namedaysList.getNamedaysFor(date);
     }
 
-    public ArrayList<String> getNames() {
+    public List<String> getNames() {
         return namedaysList.getNames();
     }
 }

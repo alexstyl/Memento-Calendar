@@ -8,7 +8,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -56,7 +55,7 @@ public final class GreekNamedays {
         namedays = specialGreekNamedaysCalculator.calculateForEasterDate(easter);
     }
 
-    public ArrayList<String> getNames() {
+    public List<String> getNames() {
         int year = Date.today().getYear();
         refreshNamedaysIfNeeded(year);
         return namedays.getNames();

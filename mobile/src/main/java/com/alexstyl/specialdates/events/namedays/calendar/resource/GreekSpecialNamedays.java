@@ -4,7 +4,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
-import java.util.ArrayList;
+import java.util.List;
 
 final class GreekSpecialNamedays implements SpecialNamedays {
 
@@ -25,7 +25,7 @@ final class GreekSpecialNamedays implements SpecialNamedays {
     }
 
     @Override
-    public ArrayList<String> getAllNames() {
+    public List<String> getAllNames() {
         return greekNamedays.getNames();
     }
 
