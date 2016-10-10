@@ -5,19 +5,19 @@ import com.alexstyl.specialdates.contact.Contact;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResults {
+class SearchResults {
 
     private final String searchQuery;
     private final List<Contact> contacts;
     private final boolean canLoadMore;
 
-    public SearchResults(String searchQuery, List<Contact> contacts, boolean canLoadMore) {
+    SearchResults(String searchQuery, List<Contact> contacts, boolean canLoadMore) {
         this.searchQuery = searchQuery;
         this.contacts = contacts;
         this.canLoadMore = canLoadMore;
     }
 
-    public boolean canLoadMore() {
+    boolean canLoadMore() {
         return canLoadMore;
     }
 
@@ -25,7 +25,7 @@ public class SearchResults {
         return new ArrayList<>(contacts);
     }
 
-    public String getSearchQuery() {
+    String getSearchQuery() {
         return searchQuery;
     }
 }

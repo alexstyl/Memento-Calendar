@@ -14,7 +14,7 @@ import com.novoda.notils.exception.DeveloperError;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<Contact> contacts = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
         this.namedayCalendar = namedayCalendar;
     }
 
-    public void updateSearchResults(SearchResults searchResults) {
+    void updateSearchResults(SearchResults searchResults) {
         this.searchQuery = searchResults.getSearchQuery();
         this.contacts.clear();
         this.contacts.addAll(searchResults.getContacts());
@@ -47,12 +47,12 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
         notifyDataSetChanged();
     }
 
-    public void notifyIsLoadingMore() {
+    void notifyIsLoadingMore() {
         isLoadingMore = true;
         notifyDataSetChanged();
     }
 
-    public void clearResults() {
+    void clearResults() {
         this.contacts.clear();
         this.namedayCard.clear();
         this.isLoadingMore = false;
@@ -60,7 +60,7 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
         notifyDataSetChanged();
     }
 
-    public interface SearchResultClickListener {
+    interface SearchResultClickListener {
 
         /**
          * Called when a contact has been selected.
@@ -82,7 +82,7 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
 
     private SearchResultClickListener listener;
 
-    public void setSearchResultClickListener(SearchResultClickListener l) {
+    void setSearchResultClickListener(SearchResultClickListener l) {
         this.listener = l;
     }
 

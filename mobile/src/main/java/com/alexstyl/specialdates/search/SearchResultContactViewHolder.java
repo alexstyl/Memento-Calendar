@@ -33,7 +33,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader);
     }
 
-    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader) {
+    private SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader) {
         super(convertView);
         this.namedayCalendar = namedayCalendar;
         this.imageLoader = imageLoader;
@@ -89,7 +89,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public static String getBirthdayString(Context context, Date birthday) {
+    private static String getBirthdayString(Context context, Date birthday) {
         return getEventString(context, R.string.birthday, birthday);
     }
 
@@ -99,7 +99,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
      * @param context The context to use
      * @param date    The date of the event
      */
-    public static String getNamedayString(Context context, Date date) {
+    private static String getNamedayString(Context context, Date date) {
         return getEventString(context, R.string.nameday, date);
     }
 

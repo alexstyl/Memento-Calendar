@@ -5,10 +5,11 @@ import android.view.View;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class ToggleVisibilityOnFocus implements View.OnFocusChangeListener {
+class ToggleVisibilityOnFocus implements View.OnFocusChangeListener {
+
     private final View view;
 
-    public ToggleVisibilityOnFocus(View view) {
+    ToggleVisibilityOnFocus(View view) {
         this.view = view;
     }
 

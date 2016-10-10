@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.search;
 
-public interface OnBackKeyPressedListener {
+interface OnBackKeyPressedListener {
     /**
      * @return Return true if the event has been handled
      */

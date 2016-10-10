@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.List;
 
-public class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
+class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     private final ContactWithEventsSearch contactWithEventsSearch;
     private final String searchQuery;
@@ -17,7 +17,7 @@ public class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     private final ContactsObserver observer;
 
-    public SearchLoader(Context context, String query, int mSearchCounter) {
+    SearchLoader(Context context, String query, int mSearchCounter) {
         super(context);
         this.contactWithEventsSearch = ContactWithEventsSearch.newInstance(context);
         this.searchQuery = query;

@@ -19,7 +19,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
+class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
 
     private OnNameSelectedListener listener;
     private final Filter filter;
@@ -41,7 +41,7 @@ public class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder>
         return new NameSuggestionsAdapter(new NameFilter(names, compatator));
     }
 
-    NameSuggestionsAdapter(NameFilter nameFilter) {
+    private NameSuggestionsAdapter(NameFilter nameFilter) {
         this.displayingNames = new ArrayList<>();
         this.filter = createFilterFor(nameFilter);
     }
