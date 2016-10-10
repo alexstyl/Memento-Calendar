@@ -16,13 +16,13 @@ final class RomanianSpecialNamedays implements SpecialNamedays {
     public static SpecialNamedays from(NamedayJSON namedayJSON) {
         EasternNamedaysExtractor extractor = new EasternNamedaysExtractor(namedayJSON.getSpecial());
         List<EasternNameday> easternNamedays = extractor.parse();
-        ArrayList<String> names = namesOf(easternNamedays);
+        List<String> names = namesOf(easternNamedays);
         RomanianNamedays namedays = RomanianNamedays.from(names);
         return new RomanianSpecialNamedays(namedays);
     }
 
-    private static ArrayList<String> namesOf(List<EasternNameday> easternNamedays) {
-        ArrayList<String> names = new ArrayList<>();
+    private static List<String> namesOf(List<EasternNameday> easternNamedays) {
+        List<String> names = new ArrayList<>();
         for (EasternNameday easternNameday : easternNamedays) {
             names.addAll(easternNameday.getNamesCelebrating());
         }

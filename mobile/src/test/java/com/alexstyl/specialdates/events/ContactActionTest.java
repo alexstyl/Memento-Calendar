@@ -36,7 +36,7 @@ public class ContactActionTest {
     @Test
     public void testContactCorrectContactIsReturned() {
         Date date = Date.on(1, 1, 2016);
-        ArrayList<ContactEvent> contactEvent = new ArrayList<>();
+        List<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
 
         ContactEvents events = ContactEvents.createFrom(date, contactEvent);
@@ -48,7 +48,7 @@ public class ContactActionTest {
     @Test
     public void testContactsAreCorrectlyReturned() {
         Date date = Date.on(1, 1, 2016);
-        ArrayList<ContactEvent> contactEvent = new ArrayList<>();
+        List<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
         ContactEvents events = ContactEvents.createFrom(date, contactEvent);
@@ -61,7 +61,7 @@ public class ContactActionTest {
     @Test
     public void testReturnedContactsSizeIsCorrect() {
         Date date = Date.on(1, 1, 2016);
-        ArrayList<ContactEvent> contactEvent = new ArrayList<>();
+        List<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
         ContactEvents events = ContactEvents.createFrom(date, contactEvent);

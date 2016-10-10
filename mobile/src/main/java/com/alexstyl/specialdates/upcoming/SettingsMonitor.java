@@ -13,7 +13,7 @@ public class SettingsMonitor implements EventUpdatedMonitor {
     private List<EventUpdatedMonitor> monitors;
 
     public static SettingsMonitor newInstance(Context context) {
-        ArrayList<EventUpdatedMonitor> monitors = new ArrayList<>(2);
+        List<EventUpdatedMonitor> monitors = new ArrayList<>(2);
         monitors.add(new NamedaySettingsMonitor(NamedayPreferences.newInstance(context)));
         monitors.add(new BankHolidaysMonitor(BankHolidaysPreferences.newInstance(context)));
         return new SettingsMonitor(monitors);

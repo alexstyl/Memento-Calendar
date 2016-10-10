@@ -44,15 +44,16 @@ public class WriteableAccountsProvider {
     }
 
     private static boolean accountIsWritable(String accountType) {
-        // TODO how do you even?
         return GOOGLE_ACCOUNT.equals(accountType);
     }
 
-    private static AuthenticatorDescription getAuthenticatorDescription(String type,
-                                                                        AuthenticatorDescription[] dictionary) {
-        for (int i = 0; i < dictionary.length; i++) {
-            if (dictionary[i].type.equals(type)) {
-                return dictionary[i];
+    private static AuthenticatorDescription getAuthenticatorDescription(
+            String type,
+            AuthenticatorDescription[] descriptions
+    ) {
+        for (AuthenticatorDescription description : descriptions) {
+            if (description.type.equals(type)) {
+                return description;
             }
         }
         throw new RuntimeException("Unable to find matching authenticator");

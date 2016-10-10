@@ -21,7 +21,7 @@ public class RomanianNamedaysTest {
 
         RomanianNamedays namedays = RomanianNamedays.from(celebratingNames);
 
-        ArrayList<String> allNames = namedays.getAllNames();
+        List<String> allNames = namedays.getAllNames();
         assertThat(allNames).isEqualTo(celebratingNames);
     }
 

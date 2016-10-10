@@ -21,7 +21,7 @@ import java.util.List;
 public class ContactsAdapter extends BaseAdapter implements Filterable {
 
     private final ImageLoader imageLoader;
-    private final ArrayList<Contact> contacts = new ArrayList<>();
+    private final List<Contact> contacts = new ArrayList<>();
 
     private final Filter filter;
 

@@ -61,7 +61,7 @@ public class NamedaysList {
                 && date.getMonth() == otherDate.getMonth();
     }
 
-    public ArrayList<String> getNames() {
+    public List<String> getNames() {
         return new ArrayList<>(names);
     }
 }

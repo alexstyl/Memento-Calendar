@@ -28,7 +28,7 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 import com.novoda.notils.string.StringUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ContactEventsActivity extends Activity {
 
@@ -128,7 +128,7 @@ public class ContactEventsActivity extends Activity {
         DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
         long date = dataMap.getLong(SharedConstants.KEY_DATE);
         CharSequence dateString = formatDate(date);
-        ArrayList<String> namesList = dataMap.getStringArrayList(SharedConstants.KEY_CONTACTS_NAMES);
+        List<String> namesList = dataMap.getStringArrayList(SharedConstants.KEY_CONTACTS_NAMES);
 
         dateText.setText(dateString);
         namesText.setText(StringUtils.join(namesList, "\n"));
