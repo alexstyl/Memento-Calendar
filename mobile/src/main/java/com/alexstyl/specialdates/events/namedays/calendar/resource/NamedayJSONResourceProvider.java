@@ -9,6 +9,7 @@ import org.json.JSONObject;
 class NamedayJSONResourceProvider {
 
     private final NamedayJSONResourceLoader loader;
+    private final JSONArray jsonArray = new JSONArray();
 
     NamedayJSONResourceProvider(NamedayJSONResourceLoader loader) {
         this.loader = loader;
@@ -17,8 +18,15 @@ class NamedayJSONResourceProvider {
     NamedayJSON getNamedayJSONFor(NamedayLocale locale) throws JSONException {
         JSONObject json = loader.loadJSON(locale);
         JSONArray data = json.getJSONArray("data");
-        JSONArray special = json.getJSONArray("special");
+        JSONArray special = getSpecialOf(json);
         return new NamedayJSON(data, special);
+    }
+
+    private JSONArray getSpecialOf(JSONObject json) throws JSONException {
+        if (json.has("special")) {
+            return json.getJSONArray("special");
+        }
+        return jsonArray;
     }
 
 }
