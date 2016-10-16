@@ -40,6 +40,9 @@ public class PeopleEventsPersister {
     }
 
     private void insertEventsInTable(ContentValues[] values, String tableName) {
+        if (values.length == 0) {
+            return;
+        }
         SQLiteDatabase database = helper.getWritableDatabase();
         try {
             database.beginTransaction();
