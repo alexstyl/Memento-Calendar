@@ -8,8 +8,9 @@ import org.json.JSONObject;
 
 class NamedayJSONResourceProvider {
 
+    private static final JSONArray EMPTY = new JSONArray();
+
     private final NamedayJSONResourceLoader loader;
-    private final JSONArray jsonArray = new JSONArray();
 
     NamedayJSONResourceProvider(NamedayJSONResourceLoader loader) {
         this.loader = loader;
@@ -26,7 +27,7 @@ class NamedayJSONResourceProvider {
         if (json.has("special")) {
             return json.getJSONArray("special");
         }
-        return jsonArray;
+        return EMPTY;
     }
 
 }
