@@ -5,8 +5,6 @@ import android.content.Intent;
 
 import com.alexstyl.specialdates.Navigator;
 
-import static android.Manifest.permission.READ_CONTACTS;
-
 public class ContactPermissionRequest {
 
     public static final int CONTACT_REQUEST = 1990;
@@ -22,7 +20,7 @@ public class ContactPermissionRequest {
     }
 
     public boolean permissionIsPresent() {
-        return checker.hasPermission(READ_CONTACTS);
+        return checker.canReadAndWriteContacts();
     }
 
     public void requestForPermission() {
