@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
+import static android.Manifest.permission.READ_CONTACTS;
+
 public class PermissionChecker {
     private final Context context;
 
@@ -11,7 +13,7 @@ public class PermissionChecker {
         this.context = context;
     }
 
-    public boolean hasPermission(@MementoPermissions String permission) {
-        return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    public boolean canReadAndWriteContacts() {
+        return ActivityCompat.checkSelfPermission(context, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
     }
 }
