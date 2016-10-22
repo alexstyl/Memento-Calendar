@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -25,14 +23,13 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
 import com.alexstyl.specialdates.util.Utils;
 
 import java.util.Calendar;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class DailyReminderFragment extends MementoPreferenceFragment {
 
@@ -41,6 +38,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     private RingtonePreference ringtonePreference;
     private TimePreference timePreference;
     private Analytics analytics;
+    private PermissionChecker permissionChecker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
         analytics = AnalyticsProvider.getAnalytics(getActivity());
         setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
-
+        permissionChecker = new PermissionChecker(getActivity());
         enablePreference = findPreference(R.string.key_daily_reminder);
         enablePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
@@ -73,7 +71,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
             @TargetApi(Build.VERSION_CODES.M)
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (isExternalStoragePermissionPressent()) {
+                if (permissionChecker.canReadExternalStorage()) {
                     // the permission exists. Let the system handle the event
                     return false;
                 } else {
@@ -82,9 +80,6 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
                 }
             }
 
-            public boolean isExternalStoragePermissionPressent() {
-                return ActivityCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            }
         });
         ringtonePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 

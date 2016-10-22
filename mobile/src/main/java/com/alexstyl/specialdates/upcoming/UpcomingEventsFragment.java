@@ -38,6 +38,7 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
 
+    private ViewGroup root;
     private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
     private TextView emptyView;
@@ -66,6 +67,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upcoming_events, container, false);
+        root = Views.findById(view, R.id.root);
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
         upcomingEventsListView = Views.findById(view, R.id.upcoming_eventslist);
         emptyView = Views.findById(view, R.id.upcoming_events_emptyview);
@@ -163,7 +165,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     private void showData() {
         boolean displayingEvents = upcomingEventsListView.isDisplayingEvents();
 
-        TransitionManager.beginDelayedTransition((ViewGroup) upcomingEventsListView.getRootView());
+        TransitionManager.beginDelayedTransition(root);
         if (displayingEvents) {
             upcomingEventsListView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
