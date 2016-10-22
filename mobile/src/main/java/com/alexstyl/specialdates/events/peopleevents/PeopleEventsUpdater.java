@@ -39,7 +39,12 @@ class PeopleEventsUpdater {
     }
 
     PeopleEventsUpdater(BirthdayDatabaseRefresher birthdayDatabaseRefresher,
-                        NamedayDatabaseRefresher namedayDatabaseRefresher, EventPreferences eventPreferences, ContactsObserver contactsObserver, NamedaySettingsMonitor namedayMonitor, PermissionChecker permissionChecker) {
+                        NamedayDatabaseRefresher namedayDatabaseRefresher,
+                        EventPreferences eventPreferences,
+                        ContactsObserver contactsObserver,
+                        NamedaySettingsMonitor namedayMonitor,
+                        PermissionChecker permissionChecker
+    ) {
         this.birthdayDatabaseRefresher = birthdayDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
         this.eventPreferences = eventPreferences;
