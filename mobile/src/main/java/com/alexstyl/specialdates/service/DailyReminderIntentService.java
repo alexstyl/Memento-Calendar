@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.service;
 
-import android.Manifest;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -84,7 +83,7 @@ public class DailyReminderIntentService extends IntentService {
     }
 
     private boolean hasContactPermission() {
-        return checker.hasPermission(Manifest.permission.READ_CONTACTS);
+        return checker.canReadAndWriteContacts();
     }
 
     private Date getDayDateToDisplay() {
