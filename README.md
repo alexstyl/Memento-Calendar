@@ -1,4 +1,4 @@
-# Memento Namedays for Android  [![alt text](https://travis-ci.org/alexstyl/Memento-Namedays.svg?branch=master "Check the build status on Travis CI")](https://travis-ci.org/alexstyl/Memento-Namedays)
+# Memento Namedays for Android  [![alt text](https://travis-ci.org/alexstyl/Memento-Calendar.svg?branch=master "Check the build status on Travis CI")](https://travis-ci.org/alexstyl/Memento-Calendar)
 
 Memento Namedays is a modern namedays app for Android.
 This repository contains the source code of Memento Namedays.
