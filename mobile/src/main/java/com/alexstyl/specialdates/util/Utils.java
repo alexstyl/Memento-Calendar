@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.ErrorTracker;
@@ -42,10 +41,6 @@ public class Utils {
 
     public static boolean hasJellyBean() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-    }
-
-    public static boolean hasJellyBeanMR1() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 
     /**
@@ -69,28 +64,6 @@ public class Utils {
      */
     public static boolean hasLollipop() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    public static boolean hasMarshmallow() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    /**
-     * Sets the visiblity of the view
-     *
-     * @param view       The view to hide/show
-     * @param setVisible True will make the view VISIBLE, else GONE
-     */
-    public static void toggleViewVisibility(View view, boolean setVisible) {
-        if (view == null) {
-            return;
-        }
-        int visibility = View.GONE;
-        if (setVisible) {
-            visibility = View.VISIBLE;
-        }
-        view.setVisibility(visibility);
-
     }
 
     public static Intent getEmailIntent(String to, String subject, String text) {
@@ -131,13 +104,6 @@ public class Utils {
         return vibr.hasVibrator();
     }
 
-    /**
-     * Starts a {@link IntentAction}. A Toast is displayed if the action throws an ActivityNotFoundException
-     *
-     * @param context
-     * @param action
-     * @return
-     */
     public static boolean openIntentSafely(Context context, IntentAction action) {
         try {
             action.onStartAction(context);

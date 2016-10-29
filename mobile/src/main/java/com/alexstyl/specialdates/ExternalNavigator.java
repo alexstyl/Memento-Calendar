@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
@@ -43,7 +42,6 @@ public class ExternalNavigator {
         }
     }
 
-    @NonNull
     private Intent buildPlayStoreIntent() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("market://details?id=" + activity.getPackageName()));
