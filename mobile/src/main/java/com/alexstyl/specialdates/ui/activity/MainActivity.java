@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
@@ -39,7 +38,7 @@ public class MainActivity extends ThemedActivity {
     private AskForSupport askForSupport;
     private ThemeMonitor themeMonitor;
 
-    private Navigator navigator;
+    private MainNavigator navigator;
 
     private SearchTransitioner searchTransitioner;
 
@@ -49,10 +48,10 @@ public class MainActivity extends ThemedActivity {
         setContentView(R.layout.activity_main);
 
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        Analytics analytics  = AnalyticsProvider.getAnalytics(this);
+        Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new Navigator(this, analytics);
+        navigator = MainNavigator.prepareFor(this, analytics);
 
         ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
@@ -100,7 +99,7 @@ public class MainActivity extends ThemedActivity {
                 navigator.toAbout();
                 break;
             case R.id.action_donate:
-                navigator.toDonateDialog();
+                navigator.toDonate();
                 break;
         }
         return super.onOptionsItemSelected(item);

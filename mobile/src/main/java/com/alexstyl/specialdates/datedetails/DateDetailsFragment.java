@@ -23,10 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.Navigator;
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -34,13 +35,13 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
+import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
-import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
@@ -61,8 +62,8 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private ProgressBar progress;
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
 
-    private Navigator navigator;
     private ContactPermissionRequest permissions;
+    private ExternalNavigator externalNavigator;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
@@ -165,9 +166,10 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         analytics = AnalyticsProvider.getAnalytics(getActivity());
-        navigator = new Navigator(getActivity(), analytics);
+        PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         PermissionChecker checker = new PermissionChecker(getActivity());
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
+        externalNavigator = new ExternalNavigator(getActivity(), analytics);
     }
 
     private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
@@ -289,7 +291,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
             Toast.makeText(getActivity(), R.string.support_thanks_for_rating, Toast.LENGTH_SHORT).show();
             AskForSupport askForSupport = new AskForSupport(getActivity());
             askForSupport.onRateEnd();
-            navigator.toPlayStore();
+            externalNavigator.toPlayStore();
             adapter.notifyDataSetChanged();
         }
     };
