@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.util.Utils;
+import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 public class ExternalNavigator {
 
@@ -21,6 +22,7 @@ public class ExternalNavigator {
     public ExternalNavigator(Activity activity, Analytics analytics) {
         this.activity = activity;
         this.analytics = analytics;
+        SimpleChromeCustomTabs.initialize(activity);
     }
 
     public boolean canGoToPlayStore() {
@@ -88,4 +90,11 @@ public class ExternalNavigator {
         });
     }
 
+    public void connectTo(Activity activity) {
+        SimpleChromeCustomTabs.getInstance().connectTo(activity);
+    }
+
+    public void disconnectTo(Activity activity) {
+        SimpleChromeCustomTabs.getInstance().disconnectFrom(activity);
+    }
 }

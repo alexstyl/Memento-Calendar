@@ -40,8 +40,6 @@ public class AboutActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        SimpleChromeCustomTabs.initialize(this);
-
         externalNavigator = new ExternalNavigator(this, AnalyticsProvider.getAnalytics(this));
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
 
@@ -157,8 +155,8 @@ public class AboutActivity extends ThemedActivity {
 
     @Override
     public void onPause() {
-        SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
         super.onPause();
+        SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
     }
 
     @Override
