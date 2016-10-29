@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
@@ -37,6 +38,7 @@ public class ExternalNavigator {
         try {
             Intent intent = buildPlayStoreIntent();
             activity.startActivity(intent);
+            analytics.trackScreen(Screen.PLAY_STORE);
         } catch (ActivityNotFoundException e) {
             ErrorTracker.track(e);
         }
@@ -64,6 +66,7 @@ public class ExternalNavigator {
             intent.setPackage("com.google.android.apps.plus");
             intent.setData(GOOGLE_PLUS_COMMUNITY);
             activity.startActivity(intent);
+            analytics.trackScreen(Screen.GOOGLE_PLUS_COMMUNITY);
         } catch (ActivityNotFoundException e) {
             ErrorTracker.track(e);
         }
@@ -79,6 +82,7 @@ public class ExternalNavigator {
             public void onStartAction(Context context) throws ActivityNotFoundException {
                 Intent intent = Utils.getSupportEmailIntent(context);
                 context.startActivity(intent);
+                analytics.trackScreen(Screen.EMAIL_SUPPORT);
             }
 
             @Override
