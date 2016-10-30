@@ -39,7 +39,6 @@ android {
         versionCode androidVersionCode
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
-        buildConfigField 'String', 'API_KEY_VENDING', '\"' + androidVendingKey + "\""
     }
 
     buildTypes {

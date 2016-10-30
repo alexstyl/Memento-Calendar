@@ -3,17 +3,15 @@ package com.alexstyl.specialdates.permissions;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.Navigator;
-
 public class ContactPermissionRequest {
 
     public static final int CONTACT_REQUEST = 1990;
 
-    private final Navigator navigator;
+    private final PermissionNavigator navigator;
     private final PermissionCallbacks callbacks;
     private final PermissionChecker checker;
 
-    public ContactPermissionRequest(Navigator navigator, PermissionChecker checker, PermissionCallbacks callbacks) {
+    public ContactPermissionRequest(PermissionNavigator navigator, PermissionChecker checker, PermissionCallbacks callbacks) {
         this.navigator = navigator;
         this.checker = checker;
         this.callbacks = callbacks;

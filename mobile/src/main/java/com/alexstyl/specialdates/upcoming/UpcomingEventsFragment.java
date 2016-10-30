@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
@@ -24,9 +23,10 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.PermissionNavigator;
+import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
 import com.alexstyl.specialdates.views.FabPaddingSetter;
@@ -47,7 +47,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     private boolean mustScrollToPosition = true;
     private GoToTodayEnabler goToTodayEnabler;
     private Analytics analytics;
-    private Navigator navigator;
     private ContactPermissionRequest permissions;
 
     @Override
@@ -55,12 +54,12 @@ public class UpcomingEventsFragment extends MementoFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         analytics = AnalyticsProvider.getAnalytics(getActivity());
-        navigator = new Navigator(getActivity(), analytics);
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
         goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
         PermissionChecker checker = new PermissionChecker(getActivity());
+        PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         permissions = new ContactPermissionRequest(navigator, checker, callbacks);
     }
 
