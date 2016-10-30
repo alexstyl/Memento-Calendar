@@ -2,19 +2,26 @@ package com.alexstyl.specialdates;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.util.Utils;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 public class ExternalNavigator {
 
     public static final Uri GOOGLE_PLUS_COMMUNITY = Uri.parse("https://plus.google.com/u/0/communities/112144353599130693487");
+    private static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
+    private static final Uri URI_PLAYSTORE;
+    private static final String NO_FRAGMENT = null;
+
+    static {
+        String packageName = MementoApplication.getContext().getPackageName();
+        URI_PLAYSTORE = Uri.parse("market://details?id=" + packageName);
+    }
 
     private final Activity activity;
     private final Analytics analytics;
@@ -26,28 +33,18 @@ public class ExternalNavigator {
     }
 
     public boolean canGoToPlayStore() {
-        Intent intent = buildPlayStoreIntent();
+        Intent intent = new Intent(Intent.ACTION_VIEW, URI_PLAYSTORE);
         return canResolveIntent(intent);
-    }
-
-    private boolean canResolveIntent(Intent intent) {
-        return activity.getPackageManager().resolveActivity(intent, 0) != null;
     }
 
     public void toPlayStore() {
         try {
-            Intent intent = buildPlayStoreIntent();
+            Intent intent = new Intent(Intent.ACTION_VIEW, URI_PLAYSTORE);
             activity.startActivity(intent);
             analytics.trackScreen(Screen.PLAY_STORE);
         } catch (ActivityNotFoundException e) {
             ErrorTracker.track(e);
         }
-    }
-
-    private Intent buildPlayStoreIntent() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("market://details?id=" + activity.getPackageName()));
-        return intent;
     }
 
     public void toGooglePlusCommunityBrowser() {
@@ -63,7 +60,7 @@ public class ExternalNavigator {
     public void toGooglePlusCommunityApp() {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setPackage("com.google.android.apps.plus");
+            intent.setPackage(GOOGLE_PLUS_PACKAGE_NAME);
             intent.setData(GOOGLE_PLUS_COMMUNITY);
             activity.startActivity(intent);
             analytics.trackScreen(Screen.GOOGLE_PLUS_COMMUNITY);
@@ -73,23 +70,20 @@ public class ExternalNavigator {
     }
 
     public boolean canGoToEmailSupport() {
-        return canResolveIntent(Utils.getSupportEmailIntent(activity));
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "to", NO_FRAGMENT));
+        return canResolveIntent(emailIntent);
     }
 
     public void toEmailSupport() {
-        Utils.openIntentSafely(activity, new IntentAction() {
-            @Override
-            public void onStartAction(Context context) throws ActivityNotFoundException {
-                Intent intent = Utils.getSupportEmailIntent(context);
-                context.startActivity(intent);
-                analytics.trackScreen(Screen.EMAIL_SUPPORT);
-            }
+        try {
+            Intent intent = Utils.getSupportEmailIntent(activity);
+            activity.startActivity(intent);
+            analytics.trackScreen(Screen.EMAIL_SUPPORT);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
+            ErrorTracker.track(ex);
+        }
 
-            @Override
-            public String getName() {
-                return "email support";
-            }
-        });
     }
 
     public void connectTo(Activity activity) {
@@ -98,5 +92,9 @@ public class ExternalNavigator {
 
     public void disconnectTo(Activity activity) {
         SimpleChromeCustomTabs.getInstance().disconnectFrom(activity);
+    }
+
+    private boolean canResolveIntent(Intent intent) {
+        return activity.getPackageManager().resolveActivity(intent, 0) != null;
     }
 }

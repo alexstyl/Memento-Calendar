@@ -67,19 +67,16 @@ public class Utils {
 
     }
 
-    public static String getDeviceDetailsInfo() {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(getModel()).append(" (").append(getAndroidVersion()).append(")");
-        builder.append("\n-------------------------------\n");
-        return builder.toString();
+    private static String getDeviceDetailsInfo() {
+        return getModel() + " (" + getAndroidVersion() + ")" +
+                "\n-------------------------------\n";
     }
 
     private static String getModel() {
         return android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
     }
 
-    public static String getAndroidVersion() {
+    private static String getAndroidVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
 
@@ -94,8 +91,7 @@ public class Utils {
             return true;
         } catch (ActivityNotFoundException e) {
             ErrorTracker.track(e);
-            Toast.makeText(context, R.string.no_app_found, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(context, R.string.no_app_found, Toast.LENGTH_SHORT).show();
         }
         return false;
     }
