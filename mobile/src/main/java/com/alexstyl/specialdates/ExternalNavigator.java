@@ -15,12 +15,17 @@ public class ExternalNavigator {
 
     public static final Uri GOOGLE_PLUS_COMMUNITY = Uri.parse("https://plus.google.com/u/0/communities/112144353599130693487");
     private static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
-    private static final Uri URI_PLAYSTORE;
     private static final String NO_FRAGMENT = null;
+    private static final Intent PLAY_STORE_INTENT;
 
     static {
+        Uri playstoreUri = createPlayStoreUri();
+        PLAY_STORE_INTENT = new Intent(Intent.ACTION_VIEW, playstoreUri);
+    }
+
+    private static Uri createPlayStoreUri() {
         String packageName = MementoApplication.getContext().getPackageName();
-        URI_PLAYSTORE = Uri.parse("market://details?id=" + packageName);
+        return Uri.parse("market://details?id=" + packageName);
     }
 
     private final Activity activity;
@@ -33,14 +38,12 @@ public class ExternalNavigator {
     }
 
     public boolean canGoToPlayStore() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, URI_PLAYSTORE);
-        return canResolveIntent(intent);
+        return canResolveIntent(PLAY_STORE_INTENT);
     }
 
     public void toPlayStore() {
         try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, URI_PLAYSTORE);
-            activity.startActivity(intent);
+            activity.startActivity(PLAY_STORE_INTENT);
             analytics.trackScreen(Screen.PLAY_STORE);
         } catch (ActivityNotFoundException e) {
             ErrorTracker.track(e);
