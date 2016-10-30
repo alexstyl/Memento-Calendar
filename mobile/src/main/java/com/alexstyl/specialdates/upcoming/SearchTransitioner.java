@@ -7,12 +7,12 @@ import android.support.transition.TransitionManager;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
+import com.alexstyl.specialdates.ui.activity.MainNavigator;
 import com.alexstyl.specialdates.util.Utils;
 
 import static android.view.View.GONE;
@@ -21,7 +21,7 @@ import static android.view.View.VISIBLE;
 public final class SearchTransitioner {
 
     private final Activity activity;
-    private final Navigator navigator;
+    private final MainNavigator navigator;
     private final ViewGroup activityContent;
     private final ExposedSearchToolbar toolbar;
     private final ViewFader viewFader;
@@ -30,7 +30,7 @@ public final class SearchTransitioner {
     private boolean transitioning;
 
     public SearchTransitioner(Activity activity,
-                              Navigator navigator,
+                              MainNavigator navigator,
                               ViewGroup activityContent,
                               ExposedSearchToolbar toolbar,
                               ViewFader viewFader) {

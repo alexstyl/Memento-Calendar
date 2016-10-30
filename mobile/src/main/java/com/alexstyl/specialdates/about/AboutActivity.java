@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.alexstyl.specialdates.Navigator;
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
@@ -28,7 +28,7 @@ import de.psdev.licensesdialog.LicensesDialog;
 
 public class AboutActivity extends ThemedActivity {
 
-    private Navigator navigator;
+    private ExternalNavigator externalNavigator;
 
     private View rateView;
     private View emailView;
@@ -40,9 +40,7 @@ public class AboutActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        SimpleChromeCustomTabs.initialize(this);
-
-        navigator = new Navigator(this, AnalyticsProvider.getAnalytics(this));
+        externalNavigator = new ExternalNavigator(this, AnalyticsProvider.getAnalytics(this));
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
 
         setSupportActionBar(toolbar);
@@ -64,12 +62,12 @@ public class AboutActivity extends ThemedActivity {
     }
 
     private void setupRateView() {
-        if (navigator.canGoToPlayStore()) {
+        if (externalNavigator.canGoToPlayStore()) {
             CheatsSheat.setup(rateView, R.string.rate_app);
             rateView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    navigator.toPlayStore();
+                    externalNavigator.toPlayStore();
                 }
             });
         } else {
@@ -78,12 +76,12 @@ public class AboutActivity extends ThemedActivity {
     }
 
     private void setupEmailView() {
-        if (navigator.canGoToEmailSupport()) {
+        if (externalNavigator.canGoToEmailSupport()) {
             CheatsSheat.setup(emailView, R.string.contact_dev);
             emailView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    navigator.toEmailSupport();
+                    externalNavigator.toEmailSupport();
                 }
             });
         } else {
@@ -98,11 +96,11 @@ public class AboutActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 if (hasPlusInstalled()) {
-                    navigator.toGooglePlusCommunityApp();
+                    externalNavigator.toGooglePlusCommunityApp();
                 } else {
                     SimpleChromeCustomTabs.getInstance().withFallback(navigateWithBrowserFallback)
                             .withIntentCustomizer(intentCustomizer)
-                            .navigateTo(Navigator.GOOGLE_PLUS_COMMUNITY, AboutActivity.this);
+                            .navigateTo(ExternalNavigator.GOOGLE_PLUS_COMMUNITY, AboutActivity.this);
 
                 }
             }
@@ -127,7 +125,7 @@ public class AboutActivity extends ThemedActivity {
     private final NavigationFallback navigateWithBrowserFallback = new NavigationFallback() {
         @Override
         public void onFallbackNavigateTo(Uri url) {
-            navigator.toGooglePlusCommunityBrowser();
+            externalNavigator.toGooglePlusCommunityBrowser();
         }
     };
 
@@ -157,8 +155,8 @@ public class AboutActivity extends ThemedActivity {
 
     @Override
     public void onPause() {
-        SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
         super.onPause();
+        SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
     }
 
     @Override

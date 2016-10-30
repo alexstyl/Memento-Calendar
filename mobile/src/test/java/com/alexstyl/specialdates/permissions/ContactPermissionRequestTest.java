@@ -1,11 +1,8 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.permissions;
 
 import android.app.Activity;
 
-import com.alexstyl.specialdates.Navigator;
-import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +19,7 @@ public class ContactPermissionRequestTest {
     private static final int CODE = ContactPermissionRequest.CONTACT_REQUEST;
 
     @Mock
-    private Navigator mockNavigator;
+    private PermissionNavigator mockNavigator;
     @Mock
     private PermissionCallbacks mockCallback;
     @Mock
