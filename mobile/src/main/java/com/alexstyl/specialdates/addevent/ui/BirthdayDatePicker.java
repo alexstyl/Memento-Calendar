@@ -10,6 +10,7 @@ import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateConstants;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.novoda.notils.caster.Views;
@@ -85,6 +86,7 @@ public class BirthdayDatePicker extends LinearLayout {
         monthPicker.setDisplayedValues(labels.getMonthsOfYear());
 
         monthPicker.setValue(today.getMonth());
+        monthPicker.setOnValueChangedListener(dateValidator);
     }
 
     private void setupYearPicker() {
@@ -92,6 +94,7 @@ public class BirthdayDatePicker extends LinearLayout {
         yearPicker.setMaxValue(todaysYear());
 
         yearPicker.setValue(todaysYear());
+        yearPicker.setOnValueChangedListener(dateValidator);
     }
 
     private Integer todaysYear() {
@@ -142,5 +145,30 @@ public class BirthdayDatePicker extends LinearLayout {
     private int getYear() {
         return yearPicker.getValue();
     }
+
+    private final NumberPicker.OnValueChangeListener dateValidator = new NumberPicker.OnValueChangeListener() {
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+            if (getMonth() == DateConstants.FEBRUARY && isDisplayingYear()) {
+
+                if (isValidDate(29, DateConstants.FEBRUARY, getYear())) {
+                    dayPicker.setMaxValue(29);
+                } else {
+                    dayPicker.setMaxValue(28);
+                }
+            } else {
+                dayPicker.setMaxValue(31);
+            }
+        }
+
+        private boolean isValidDate(int dayOfMonth, int month, int year) {
+            try {
+                Date.on(dayOfMonth, month, year);
+                return true;
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
+        }
+    };
 
 }
