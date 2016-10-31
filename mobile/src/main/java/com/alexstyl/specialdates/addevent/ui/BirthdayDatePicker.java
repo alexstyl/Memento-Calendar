@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.addevent.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
-import android.transition.TransitionManager;
+import android.support.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -14,7 +12,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
-import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.caster.Views;
 
 import java.util.Locale;
@@ -61,19 +58,13 @@ public class BirthdayDatePicker extends LinearLayout {
                 }
             }
 
-            @TargetApi(Build.VERSION_CODES.KITKAT)
             private void hideYearPicker() {
-                if (Utils.hasKitKat()) {
-                    TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
-                }
+                TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
                 yearPicker.setVisibility(GONE);
             }
 
-            @TargetApi(Build.VERSION_CODES.KITKAT)
             private void showYearPicker() {
-                if (Utils.hasKitKat()) {
-                    TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
-                }
+                TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
                 yearPicker.setVisibility(VISIBLE);
             }
         });
