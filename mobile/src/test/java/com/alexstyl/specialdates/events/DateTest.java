@@ -117,4 +117,9 @@ public class DateTest {
 
         assertThat(firstDate.equals(secondDate)).isFalse();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsException_whenInvalidDateIsCreated() {
+        Date.on(31, FEBRUARY, 1991);
+    }
 }
