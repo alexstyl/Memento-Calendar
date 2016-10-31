@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.addevent.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
-import android.transition.TransitionManager;
+import android.support.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -12,9 +10,9 @@ import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateConstants;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
-import com.alexstyl.specialdates.util.Utils;
 import com.novoda.notils.caster.Views;
 
 import java.util.Locale;
@@ -61,19 +59,13 @@ public class BirthdayDatePicker extends LinearLayout {
                 }
             }
 
-            @TargetApi(Build.VERSION_CODES.KITKAT)
             private void hideYearPicker() {
-                if (Utils.hasKitKat()) {
-                    TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
-                }
+                TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
                 yearPicker.setVisibility(GONE);
             }
 
-            @TargetApi(Build.VERSION_CODES.KITKAT)
             private void showYearPicker() {
-                if (Utils.hasKitKat()) {
-                    TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
-                }
+                TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
                 yearPicker.setVisibility(VISIBLE);
             }
         });
@@ -94,6 +86,7 @@ public class BirthdayDatePicker extends LinearLayout {
         monthPicker.setDisplayedValues(labels.getMonthsOfYear());
 
         monthPicker.setValue(today.getMonth());
+        monthPicker.setOnValueChangedListener(dateValidator);
     }
 
     private void setupYearPicker() {
@@ -101,6 +94,7 @@ public class BirthdayDatePicker extends LinearLayout {
         yearPicker.setMaxValue(todaysYear());
 
         yearPicker.setValue(todaysYear());
+        yearPicker.setOnValueChangedListener(dateValidator);
     }
 
     private Integer todaysYear() {
@@ -143,6 +137,7 @@ public class BirthdayDatePicker extends LinearLayout {
     }
 
     @MonthInt
+    @SuppressWarnings("WrongConstant")
     private int getMonth() {
         return monthPicker.getValue();
     }
@@ -150,5 +145,30 @@ public class BirthdayDatePicker extends LinearLayout {
     private int getYear() {
         return yearPicker.getValue();
     }
+
+    private final NumberPicker.OnValueChangeListener dateValidator = new NumberPicker.OnValueChangeListener() {
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+            if (getMonth() == DateConstants.FEBRUARY && isDisplayingYear()) {
+
+                if (isValidDate(29, DateConstants.FEBRUARY, getYear())) {
+                    dayPicker.setMaxValue(29);
+                } else {
+                    dayPicker.setMaxValue(28);
+                }
+            } else {
+                dayPicker.setMaxValue(31);
+            }
+        }
+
+        private boolean isValidDate(int dayOfMonth, int month, int year) {
+            try {
+                Date.on(dayOfMonth, month, year);
+                return true;
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
+        }
+    };
 
 }

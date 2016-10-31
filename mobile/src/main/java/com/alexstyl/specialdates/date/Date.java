@@ -3,6 +3,9 @@ package com.alexstyl.specialdates.date;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.ShortDate;
 
+import java.util.Locale;
+
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
 import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
@@ -38,8 +41,12 @@ public class Date implements ShortDate {
             throw new IllegalArgumentException(
                     "Do not call DayDate.on() if no year is present. Call the respective method without the year argument instead");
         }
-        LocalDate localDate = new LocalDate(year, month, dayOfMonth);
-        return new Date(localDate, new Optional<>(year));
+        try {
+            LocalDate localDate = new LocalDate(year, month, dayOfMonth);
+            return new Date(localDate, new Optional<>(year));
+        } catch (IllegalFieldValueException a) {
+            throw new IllegalArgumentException(String.format(Locale.US, "%d/%d/%d is invalid", dayOfMonth, month, year));
+        }
     }
 
     private Date(LocalDate localDate, Optional<Integer> year) {
