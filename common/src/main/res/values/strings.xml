@@ -11,8 +11,8 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="nameday">Name Day</string>
   <string name="contacts_birthday">"It's %s's birthday!"</string>
   <string name="contacts_nameday">"It's %s's nameday!"</string>
-  <string name="namedays_no_names">No name days for this dayOfMonth</string>
-  <string name="birthday_no_birthday">No contact has their birthday this dayOfMonth</string>
+  <string name="namedays_no_names">No name days for this day</string>
+  <string name="birthday_no_birthday">No contact has their birthday this day</string>
   <string name="action_settings">Settings</string>
   <string name="disable">Disable</string>
   <string name="enable">Enable</string>
@@ -37,10 +37,10 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="no_app_found">No application found in order to perform this action</string>
   <string name="send_mail_via">Send e-mail via</string>
   <string name="daily_reminder">Daily Reminder</string>
-  <string name="daily_reminder_summary">"Remind me for every dayOfMonth's events"</string>
+  <string name="daily_reminder_summary">"Remind me for every day's events"</string>
   <string name="ringtone">Ringtone</string>
   <string name="vibrate">Vibrate</string>
-  <string name="daily_reminder_time_summary">Every dayOfMonth at %s</string>
+  <string name="daily_reminder_time_summary">Every day at %s</string>
   <string name="set_time">Set time</string>
   <string name="set">Set</string>
   <string name="Discard">Discard</string>
@@ -51,8 +51,8 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="label_widget_textonly"
     translatable="false">@string/upcoming</string>
   <string name="ringtone_silent">Silent</string>
-  <string name="contacts_today">Contacts celebrating this dayOfMonth</string>
-  <string name="no_contacts_to_wish">There are no contacts celebrating this dayOfMonth</string>
+  <string name="contacts_today">Contacts celebrating this day</string>
+  <string name="no_contacts_to_wish">There are no contacts celebrating this day</string>
   <string name="upcoming">Upcoming</string>
   <string name="turns_age">Turns %1$d</string>
   <string name="display_namedays_names">Today\'s Namedays</string>
