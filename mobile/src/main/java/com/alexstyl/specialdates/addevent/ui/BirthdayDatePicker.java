@@ -143,6 +143,7 @@ public class BirthdayDatePicker extends LinearLayout {
     }
 
     @MonthInt
+    @SuppressWarnings("WrongConstant")
     private int getMonth() {
         return monthPicker.getValue();
     }
