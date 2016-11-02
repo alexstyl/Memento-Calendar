@@ -34,10 +34,6 @@ public class EventsFilterLayout extends TabLayout {
         }
     }
 
-    public interface OnSectionPressedListener {
-        void onSectionPressed(EventSection section, boolean enabled);
-    }
-
     public void setOnSectionPressedListener(OnSectionPressedListener l) {
         this.listener = l;
     }
@@ -89,4 +85,8 @@ public class EventsFilterLayout extends TabLayout {
             onTabSelected(tab);
         }
     };
+
+    public interface OnSectionPressedListener {
+        void onSectionPressed(EventSection section, boolean enabled);
+    }
 }
