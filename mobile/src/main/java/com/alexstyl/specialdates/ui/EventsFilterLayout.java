@@ -11,68 +11,82 @@ import java.util.Map;
 public class EventsFilterLayout extends TabLayout {
 
     private OnSectionPressedListener listener;
+    private final Map<EventSection, Boolean> categoryStates = new HashMap<>(EventSection.values().length);
 
-    private Map<Section, Boolean> categoryStates;
+    private int numberOfActive = 3;
 
     public EventsFilterLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         initialiseTabs();
-
-        addOnTabSelectedListener(new SimpleTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(Tab tab) {
-                int position = tab.getPosition();
-                Section sectionPressed = Section.ofId(position);
-                Boolean newState = updateStateOf(sectionPressed);
-
-                int updatedIcon = getIconFor(sectionPressed, newState);
-                tab.setIcon(updatedIcon);
-                listener.onSectionPressed(sectionPressed, newState);
-            }
-
-            @DrawableRes
-            private int getIconFor(Section section, boolean enabled) {
-                if (enabled) {
-                    return section.getEnabledResId();
-                } else {
-                    return section.getDisabledResId();
-                }
-            }
-
-            private Boolean updateStateOf(Section sectionPressed) {
-                Boolean oldState = categoryStates.get(sectionPressed);
-                Boolean newState = !oldState;
-                categoryStates.put(sectionPressed, newState);
-                return newState;
-            }
-
-            @Override
-            public void onTabReselected(Tab tab) {
-                onTabSelected(tab);
-            }
-        });
+        addOnTabSelectedListener(onTabSelectedListener);
     }
 
     private void initialiseTabs() {
-        categoryStates = new HashMap<>(Section.values().length);
-        for (Section section : Section.values()) {
+        for (EventSection section : EventSection.values()) {
             Tab contactsTab = newTab();
             contactsTab.setIcon(section.getEnabledResId());
             addTab(contactsTab);
         }
 
-        for (Section section : Section.values()) {
+        for (EventSection section : EventSection.values()) {
             categoryStates.put(section, true);
         }
     }
 
     public interface OnSectionPressedListener {
-        void onSectionPressed(Section section, boolean enabled);
+        void onSectionPressed(EventSection section, boolean enabled);
     }
 
     public void setOnSectionPressedListener(OnSectionPressedListener l) {
         this.listener = l;
     }
+
+    private final SimpleTabSelectedListener onTabSelectedListener = new SimpleTabSelectedListener() {
+
+        @Override
+        public void onTabSelected(Tab tab) {
+            int position = tab.getPosition();
+            EventSection sectionPressed = EventSection.ofId(position);
+
+            if (isTheLastEnabledSection(sectionPressed)) {
+                return;
+            }
+
+            Boolean newState = updateStateOf(sectionPressed);
+            int updatedIcon = getIconFor(sectionPressed, newState);
+            tab.setIcon(updatedIcon);
+            listener.onSectionPressed(sectionPressed, newState);
+            if (!newState) {
+                numberOfActive--;
+            } else {
+                numberOfActive++;
+            }
+        }
+
+        private boolean isTheLastEnabledSection(EventSection sectionPressed) {
+            return categoryStates.get(sectionPressed) && numberOfActive == 1;
+        }
+
+        @DrawableRes
+        private int getIconFor(EventSection section, boolean enabled) {
+            if (enabled) {
+                return section.getEnabledResId();
+            } else {
+                return section.getDisabledResId();
+            }
+        }
+
+        private Boolean updateStateOf(EventSection sectionPressed) {
+            Boolean oldState = categoryStates.get(sectionPressed);
+            Boolean newState = !oldState;
+            categoryStates.put(sectionPressed, newState);
+            return newState;
+        }
+
+        @Override
+        public void onTabReselected(Tab tab) {
+            onTabSelected(tab);
+        }
+    };
 }
