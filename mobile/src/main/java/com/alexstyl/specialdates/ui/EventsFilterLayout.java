@@ -33,8 +33,8 @@ public class EventsFilterLayout extends TabLayout {
         }
     }
 
-    public void setOnSectionPressedListener(OnSectionPressedListener l) {
-        this.listener = l;
+    public void setOnSectionPressedListener(OnSectionPressedListener listener) {
+        this.listener = listener;
     }
 
     private final SimpleTabSelectedListener onTabSelectedListener = new SimpleTabSelectedListener() {
