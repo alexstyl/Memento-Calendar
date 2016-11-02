@@ -13,11 +13,10 @@ public class EventsFilterLayout extends TabLayout {
     private OnSectionPressedListener listener;
     private final Map<EventSection, Boolean> categoryStates = new HashMap<>(EventSection.values().length);
 
-    private int numberOfActive = 3;
+    private int numberOfActive = EventSection.values().length;
 
     public EventsFilterLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         initialiseTabs();
         addOnTabSelectedListener(onTabSelectedListener);
     }
