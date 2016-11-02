@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -46,23 +47,22 @@ public class NamedayJSONParserTest {
     }
 
     @Test
-    public void magdoulaNamedayIsReturnedCorrectly() {
+    public void amaliaNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αμαλία");
         assertThatContainsDate(dates, Date.on(10, JULY));
     }
 
-    private void assertThatContainsDate(NameCelebrations celebrations, Date date) {
-        boolean found = false;
-        for (int i = 0; i < celebrations.getDates().size(); i++) {
-            Date date1 = celebrations.getDate(i);
-            if (date1.equals(date)) {
-                found = true;
-                break;
+    private static void assertThatContainsDate(NameCelebrations celebrations, Date date) {
+        Dates dates = celebrations.getDates();
+        int index = 0;
+        while (index < dates.size()) {
+            if (celebrations.getDate(index).equals(date)) {
+                return;
             }
+            index++;
         }
-        if (!found) {
-            fail("Couldn't find date " + date + " inside " + celebrations);
-        }
+
+        fail("Couldn't find date " + date + " inside " + celebrations);
     }
 }
