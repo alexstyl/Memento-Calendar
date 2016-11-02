@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import static com.alexstyl.specialdates.date.DateConstants.*;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.fail;
 
 public class NamedayJSONParserTest {
 
@@ -34,20 +36,33 @@ public class NamedayJSONParserTest {
     public void alexandrosNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αλέξανδρος");
-        assertThat(dates.getDate(0)).isEqualTo(Date.on(30, AUGUST));
+        assertThatContainsDate(dates, Date.on(30, AUGUST));
     }
 
     @Test
     public void davidNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Δαβίδ");
-        assertThat(dates.getDate(0)).isEqualTo(Date.on(26, JUNE));
+        assertThatContainsDate(dates, Date.on(26, JUNE));
     }
 
     @Test
-    public void magdoulaNamedayIsReturnedCorrectly() {
+    public void amaliaNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αμαλία");
-        assertThat(dates.getDate(0)).isEqualTo(Date.on(10, JULY));
+        assertThatContainsDate(dates, Date.on(10, JULY));
+    }
+
+    private static void assertThatContainsDate(NameCelebrations celebrations, Date date) {
+        Dates dates = celebrations.getDates();
+        int index = 0;
+        while (index < dates.size()) {
+            if (celebrations.getDate(index).equals(date)) {
+                return;
+            }
+            index++;
+        }
+
+        fail("Couldn't find date " + date + " inside " + celebrations);
     }
 }
