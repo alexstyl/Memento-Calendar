@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.alexstyl.specialdates.Navigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
@@ -33,6 +32,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
@@ -85,8 +85,8 @@ public class SearchActivity extends ThemedActivity {
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(false);
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
+        PermissionNavigator navigator = new PermissionNavigator(this, analytics);
         PermissionChecker checker = new PermissionChecker(this);
-        Navigator navigator = new Navigator(this, analytics);
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
 
         if (savedInstanceState != null) {

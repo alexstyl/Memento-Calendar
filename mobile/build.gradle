@@ -4,7 +4,7 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 
 ext {
-    android_support_version = '24.2.1'
+    android_support_version = '25.0.0'
 }
 
 
@@ -39,7 +39,6 @@ android {
         versionCode androidVersionCode
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
-        buildConfigField 'String', 'API_KEY_VENDING', '\"' + androidVendingKey + "\""
     }
 
     buildTypes {
