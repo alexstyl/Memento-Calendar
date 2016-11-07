@@ -15,7 +15,7 @@
   <!-- VIBRATE FOR NOTIFICATION-->
   <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.BLUETOOTH" />
-  
+
   <uses-feature
     android:name="android.hardware.bluetooth"
     android:required="false" />
@@ -83,11 +83,6 @@
       android:exported="false"
       android:label="@string/translate_the_app_title"
       android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
-
-    <activity
-      android:name=".support.SupportDonateDialog"
-      android:exported="false"
-      android:theme="@style/Theme.Dayslight.DialogNoTitle" />
 
     <activity
       android:name=".settings.DailyReminderActivity"

@@ -18,7 +18,7 @@ public class LogoView extends RelativeLayout {
         if (isInEditMode()) {
             return;
         }
-        TextView appversionView = (TextView) findViewById(R.id.app_version);
+        TextView appversionView = (TextView) findViewById(R.id.logo_view_app_version);
         String appVersion = MementoApplication.getVersionName(getContext());
         appversionView.setText(appVersion);
     }
