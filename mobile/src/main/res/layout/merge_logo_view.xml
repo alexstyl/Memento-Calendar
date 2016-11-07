@@ -2,20 +2,19 @@
   xmlns:tools="http://schemas.android.com/tools"
   tools:showIn="@layout/activity_about">
 
-
   <ImageView
-    android:id="@+id/app_icon"
+    android:id="@+id/logo_view_icon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:importantForAccessibility="no"
-    android:src="@mipmap/ic_logo" />
+    android:src="@mipmap/ic_launcher" />
 
   <TextView
-    android:id="@+id/app_name"
+    android:id="@+id/logo_view_app_name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@id/app_icon"
+    android:layout_below="@id/logo_view_icon"
     android:layout_centerHorizontal="true"
     android:layout_marginLeft="8dp"
     android:layout_marginStart="8dp"
@@ -24,22 +23,21 @@
     android:gravity="bottom"
     android:includeFontPadding="false"
     android:text="@string/app_name"
-    android:textColor="@color/main_white"
-    android:textSize="32sp" />
+    android:textColor="?primaryTextColorInverse"
+    android:textSize="24sp" />
 
 
   <TextView
-    android:id="@+id/app_version"
+    android:id="@+id/logo_view_app_version"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_above="@id/app_name"
-    android:layout_alignEnd="@id/app_name"
-    android:layout_alignRight="@id/app_name"
+    android:layout_above="@id/logo_view_app_name"
+    android:layout_alignEnd="@id/logo_view_app_name"
+    android:layout_alignRight="@id/logo_view_app_name"
     android:fontFamily="sans-serif-light"
     android:includeFontPadding="false"
-    android:singleLine="true"
-    android:textColor="@color/main_white"
+    android:lines="1"
+    android:textColor="?primaryTextColorInverse"
     android:textSize="12sp"
     tools:text="v1.2.3" />
-  <!--</RelativeLayout>-->
 </merge>
