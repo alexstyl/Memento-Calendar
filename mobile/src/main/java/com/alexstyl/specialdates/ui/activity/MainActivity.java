@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alexstyl.specialdates.Navigator;
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
@@ -15,7 +15,6 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
-import com.alexstyl.specialdates.support.SupportDonateDialog;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ThemeMonitor;
 import com.alexstyl.specialdates.ui.ViewFader;
@@ -39,8 +38,8 @@ public class MainActivity extends ThemedActivity {
     private AskForSupport askForSupport;
     private ThemeMonitor themeMonitor;
 
-    private Navigator navigator;
-
+    private MainNavigator navigator;
+    private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
 
     @Override
@@ -49,10 +48,11 @@ public class MainActivity extends ThemedActivity {
         setContentView(R.layout.activity_main);
 
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        Analytics analytics  = AnalyticsProvider.getAnalytics(this);
+        Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new Navigator(this, analytics);
+        navigator = new MainNavigator(analytics, this);
+        externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
@@ -79,14 +79,18 @@ public class MainActivity extends ThemedActivity {
             askForSupport.askForRatingFromUser(this);
         }
         searchTransitioner.onActivityResumed();
+        externalNavigator.connectTo(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        externalNavigator.disconnectTo(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
-
-        boolean hasBilling = SupportDonateDialog.isBillingAvailable(this);
-        menu.findItem(R.id.action_donate).setVisible(hasBilling);
         return true;
     }
 
@@ -100,7 +104,7 @@ public class MainActivity extends ThemedActivity {
                 navigator.toAbout();
                 break;
             case R.id.action_donate:
-                navigator.toDonateDialog();
+                navigator.toDonate();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -104,17 +104,22 @@ public class DateTest {
 
     @Test
     public void whenComparingToSameDate_thenTheyAreEqual() {
-        Date firstDate = Date.on(16, 4, 1991);
-        Date secondDate = Date.on(16, 4, 1991);
+        Date firstDate = Date.on(16, APRIL, 1991);
+        Date secondDate = Date.on(16, APRIL, 1991);
 
         assertThat(firstDate.equals(secondDate)).isTrue();
     }
 
     @Test
     public void whenComparingToDateWithDifferentYear_thenTheyAreNotEqual() {
-        Date firstDate = Date.on(16, 4, 1991);
-        Date secondDate = Date.on(16, 4, 1987);
+        Date firstDate = Date.on(16, APRIL, 1991);
+        Date secondDate = Date.on(16, APRIL, 1987);
 
         assertThat(firstDate.equals(secondDate)).isFalse();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsException_whenInvalidDateIsCreated() {
+        Date.on(31, FEBRUARY, 1991);
     }
 }
