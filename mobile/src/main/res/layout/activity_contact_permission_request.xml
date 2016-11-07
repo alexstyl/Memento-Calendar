@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:importantForAccessibility="no"
-        android:src="@mipmap/ic_logo" />
+        android:src="@mipmap/ic_launcher" />
 
       <ImageView
         android:layout_width="wrap_content"
