@@ -93,7 +93,7 @@
   </style>
 
   <style name="TextAppearance.RateMeText"
-    parent="TextAppearance.AppCompat.Medium.Inverse" />
+    parent="TextAppearance.AppCompat.Medium" />
 
   <style name="DaysLight.RatingBar"
     parent="android:Widget.RatingBar" />
@@ -104,7 +104,9 @@
   </style>
 
   <style name="DayCircle.Day"
-    parent="TextAppearance.AppCompat.Small" />
+    parent="TextAppearance.AppCompat.Small">
+    <item name="android:fontFamily">sans-serif-light</item>
+  </style>
 
   <style name="DayCircle.Date"
     parent="TextAppearance.AppCompat.Large" />
@@ -113,7 +115,9 @@
     parent="TextAppearance.AppCompat">
     <item name="android:textColor">@android:color/white</item>
     <item name="android:textSize">@dimen/initials_textSize</item>
+    <item name="android:fontFamily">sans-serif-light</item>
   </style>
+
 
   <style name="Theme.Dayslight.DialogNoTitle"
     parent="Theme.AppCompat.Light.Dialog.Alert">
