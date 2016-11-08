@@ -20,7 +20,7 @@
 
   <dimen name="contactdetail_height">250dp</dimen>
   <dimen name="widgetHeight">48dp</dimen>
-  <dimen name="widget_margin">8dp</dimen>
+  <dimen name="widget_margin">0dp</dimen>
 
   <dimen name="margin_top_empty_view">24dp</dimen>
 
