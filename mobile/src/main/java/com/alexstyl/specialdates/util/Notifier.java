@@ -91,7 +91,7 @@ public class Notifier {
         String title = NaturalLanguageUtils.joinContacts(context, events.getContacts(), 3);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_stat_contact_event)
+                .setSmallIcon(R.drawable.ic_stat_memento)
                 .setContentTitle(title)
                 .setLargeIcon(largeIcon)
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
@@ -134,7 +134,7 @@ public class Notifier {
         if (supportsPublicNotifications()) {
             String publicTitle = context.getString(R.string.contact_celebration_count, contactCount);
             NotificationCompat.Builder publicNotification = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_stat_contact_event)
+                    .setSmallIcon(R.drawable.ic_stat_memento)
                     .setAutoCancel(true)
                     .setContentIntent(intent)
                     .setContentTitle(publicTitle)
