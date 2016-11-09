@@ -1,10 +1,13 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Handler;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -13,7 +16,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 
 class PeopleEventsUpdater {
 
-    private final BirthdayDatabaseRefresher birthdayDatabaseRefresher;
+    private final PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher;
     private final EventPreferences eventPreferences;
     private final NamedaySettingsMonitor namedayMonitor;
     private final ContactsObserver contactsObserver;
@@ -22,15 +25,21 @@ class PeopleEventsUpdater {
     private NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     static PeopleEventsUpdater newInstance(Context context) {
-        BirthdayDatabaseRefresher birthdayDatabaseRefresher = BirthdayDatabaseRefresher.newInstance(context);
+        ContentResolver contentResolver = context.getContentResolver();
+        PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, ContactProvider.get(context));
+        PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher = new PeopleEventsDatabaseRefresher(
+                repository,
+                new ContactEventsMarshaller(),
+                new PeopleEventsPersister(new EventSQLiteOpenHelper(context))
+        );
         NamedayDatabaseRefresher namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(context);
         EventPreferences eventPreferences = new EventPreferences(context);
-        ContactsObserver contactsObserver = new ContactsObserver(context.getContentResolver(), new Handler());
+        ContactsObserver contactsObserver = new ContactsObserver(contentResolver, new Handler());
         NamedaySettingsMonitor namedaySettingsMonitor = new NamedaySettingsMonitor(NamedayPreferences.newInstance(context));
         namedaySettingsMonitor.initialise();
         PermissionChecker permissionChecker = new PermissionChecker(context);
         return new PeopleEventsUpdater(
-                birthdayDatabaseRefresher,
+                peopleEventsDatabaseRefresher,
                 namedayDatabaseRefresher,
                 eventPreferences,
                 contactsObserver,
@@ -39,14 +48,14 @@ class PeopleEventsUpdater {
         );
     }
 
-    PeopleEventsUpdater(BirthdayDatabaseRefresher birthdayDatabaseRefresher,
+    PeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher,
                         NamedayDatabaseRefresher namedayDatabaseRefresher,
                         EventPreferences eventPreferences,
                         ContactsObserver contactsObserver,
                         NamedaySettingsMonitor namedayMonitor,
                         PermissionChecker permissionChecker
     ) {
-        this.birthdayDatabaseRefresher = birthdayDatabaseRefresher;
+        this.peopleEventsDatabaseRefresher = peopleEventsDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
         this.eventPreferences = eventPreferences;
         this.contactsObserver = contactsObserver;
@@ -62,7 +71,7 @@ class PeopleEventsUpdater {
 
         boolean isFirstRun = isFirstTimeRunning();
         if (isFirstRun) {
-            birthdayDatabaseRefresher.refreshBirthdays();
+            peopleEventsDatabaseRefresher.refreshEvents();
             namedayDatabaseRefresher.refreshNamedaysIfEnabled();
             eventPreferences.markEventsAsInitialised();
         } else {
@@ -83,7 +92,7 @@ class PeopleEventsUpdater {
             namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(MementoApplication.getContext());
         }
         if (wereContactsUpdated) {
-            birthdayDatabaseRefresher.refreshBirthdays();
+            peopleEventsDatabaseRefresher.refreshEvents();
         }
         if (wereContactsUpdated || wereNamedaysSettingsUpdated) {
             namedayDatabaseRefresher.refreshNamedaysIfEnabled();
