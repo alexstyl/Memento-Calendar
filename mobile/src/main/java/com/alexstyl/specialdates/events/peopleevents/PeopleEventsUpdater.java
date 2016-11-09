@@ -27,6 +27,7 @@ class PeopleEventsUpdater {
         EventPreferences eventPreferences = new EventPreferences(context);
         ContactsObserver contactsObserver = new ContactsObserver(context.getContentResolver(), new Handler());
         NamedaySettingsMonitor namedaySettingsMonitor = new NamedaySettingsMonitor(NamedayPreferences.newInstance(context));
+        namedaySettingsMonitor.initialise();
         PermissionChecker permissionChecker = new PermissionChecker(context);
         return new PeopleEventsUpdater(
                 birthdayDatabaseRefresher,
