@@ -28,6 +28,7 @@
   <color name="statusbar_color">#9e1726</color>
 
   <color name="birthday_red">#ffff4444</color>
+  <color name="anniversary_yellow">@color/avatar_variant_1</color>
   <color name="nameday_blue">#ff33b5e5</color>
 
   <color name="past_date_grey">#595959</color>

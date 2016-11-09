@@ -21,8 +21,11 @@ public class PeopleEventsPersister {
         deleteAllEventsOfType(AnnualEventsContract.TYPE_NAMEDAY);
     }
 
-    void deleteAllEvents() {
-        deleteAllEventsOfType(AnnualEventsContract.TYPE_BIRTHDAY);
+    void deleteEverythingButNamedays() {
+        // TODO Eventually this will delete ALL events
+        SQLiteDatabase database = helper.getWritableDatabase();
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "!=" + AnnualEventsContract.TYPE_NAMEDAY, null);
+        database.delete(DynamicEventsContract.TABLE_NAME, DynamicEventsContract.EVENT_TYPE + "!=" + AnnualEventsContract.TYPE_NAMEDAY, null);
     }
 
     private void deleteAllEventsOfType(int type) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
+import com.alexstyl.specialdates.util.DateParser;
 
 public class DebugPeopleEventsUpdater {
 
@@ -12,7 +13,7 @@ public class DebugPeopleEventsUpdater {
     private NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     public static DebugPeopleEventsUpdater newInstance(Context context) {
-        PeopleEventsRepository repository = new PeopleEventsRepository(context.getContentResolver(), ContactProvider.get(context));
+        PeopleEventsRepository repository = new PeopleEventsRepository(context.getContentResolver(), ContactProvider.get(context), DateParser.INSTANCE);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, marshaller, persister);
