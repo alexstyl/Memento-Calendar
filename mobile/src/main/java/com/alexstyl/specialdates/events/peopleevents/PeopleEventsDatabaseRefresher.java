@@ -19,13 +19,9 @@ class PeopleEventsDatabaseRefresher {
     }
 
     void refreshEvents() {
-        clearAllBirthdays();
+        persister.deleteEverythingButNamedays();
         List<ContactEvent> contacts = repository.fetchPeopleWithEvents();
         storeContactsToProvider(contacts);
-    }
-
-    private void clearAllBirthdays() {
-        persister.deleteAllEvents();
     }
 
     private void storeContactsToProvider(List<ContactEvent> contacts) {

@@ -44,6 +44,10 @@ public class ContactEventsMarshaller implements Marshaller<ContactEvent> {
                 return AnnualEventsContract.TYPE_BIRTHDAY;
             case NAMEDAY:
                 return AnnualEventsContract.TYPE_NAMEDAY;
+            case ANNIVERSARY:
+                return AnnualEventsContract.TYPE_ANNIVERSARY;
+            case OTHER:
+                return AnnualEventsContract.TYPE_OTHER;
         }
         throw new DeveloperError(event.getType() + " has no EventColumn reference");
     }

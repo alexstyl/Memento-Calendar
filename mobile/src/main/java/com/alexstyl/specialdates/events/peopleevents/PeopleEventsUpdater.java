@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
 import com.alexstyl.specialdates.util.ContactsObserver;
+import com.alexstyl.specialdates.util.DateParser;
 
 class PeopleEventsUpdater {
 
@@ -26,7 +27,7 @@ class PeopleEventsUpdater {
 
     static PeopleEventsUpdater newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
-        PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, ContactProvider.get(context));
+        PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, ContactProvider.get(context), DateParser.INSTANCE);
         PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher = new PeopleEventsDatabaseRefresher(
                 repository,
                 new ContactEventsMarshaller(),
@@ -105,7 +106,7 @@ class PeopleEventsUpdater {
         contactsObserver.resetFlag();
     }
 
-    public void register() {
+    void register() {
         contactsObserver.register();
     }
 }

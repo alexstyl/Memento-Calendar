@@ -18,8 +18,7 @@ public class ContactProvider {
     public static ContactProvider get(Context context) {
         if (INSTANCE == null) {
             ContentResolver contentResolver = context.getContentResolver();
-            DateParser dateParser = new DateParser();
-            DeviceContactFactory factory = new DeviceContactFactory(contentResolver, dateParser);
+            DeviceContactFactory factory = new DeviceContactFactory(contentResolver, DateParser.INSTANCE);
             ContactCache<DeviceContact> contactCache = new ContactCache<>(CACHE_SIZE);
             INSTANCE = new ContactProvider(contactCache, factory);
             INSTANCE.initialise(contentResolver);

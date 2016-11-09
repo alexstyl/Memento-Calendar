@@ -24,7 +24,6 @@ public class BirthdayPickerDialog extends MementoDialog {
 
     public static final String TAG = "fm_tag:birthday";
     private static final String KEY_DATE = "key:birthday";
-    private DateParser parser = new DateParser();
 
     private OnBirthdaySelectedListener listener;
     private BirthdayDatePicker datePicker;
@@ -63,7 +62,7 @@ public class BirthdayPickerDialog extends MementoDialog {
 
     private Optional<Date> extractFrom(String birthday) {
         try {
-            Date parsedDate = parser.parse(birthday);
+            Date parsedDate = DateParser.INSTANCE.parse(birthday);
             if (parsedDate.hasYear()) {
                 return new Optional<>(Date.on(parsedDate.getDayOfMonth(), parsedDate.getMonth(), parsedDate.getYear()));
             } else {

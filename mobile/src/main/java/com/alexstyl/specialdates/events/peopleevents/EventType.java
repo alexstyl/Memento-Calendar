@@ -12,7 +12,10 @@ import java.util.Map;
 
 public enum EventType {
     BIRTHDAY(AnnualEventsContract.TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red),
-    NAMEDAY(AnnualEventsContract.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue);
+    NAMEDAY(AnnualEventsContract.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue),
+    ANNIVERSARY(AnnualEventsContract.TYPE_ANNIVERSARY, R.string.Anniversary, R.color.anniversary_yellow),
+    OTHER(AnnualEventsContract.TYPE_OTHER, R.string.Other, R.color.past_date_grey),
+    CUSTOM(AnnualEventsContract.TYPE_CUSTOM, R.string.Custom, R.color.past_date_grey);
 
     private final int eventTypeId;
     private final int eventNameRes;

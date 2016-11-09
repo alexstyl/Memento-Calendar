@@ -23,7 +23,7 @@ import com.novoda.notils.exception.DeveloperError;
 public class PeopleEventsContentProvider extends ContentProvider {
 
     private static final int PEOPLE_EVENTS = 10;
-    private final DateParser parser = new DateParser();
+    private final DateParser parser = DateParser.INSTANCE;
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
 

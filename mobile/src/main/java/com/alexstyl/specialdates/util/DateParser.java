@@ -12,7 +12,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class DateParser {
+public enum DateParser {
+    INSTANCE;
 
     private static Locale[] LOCALES;
 
