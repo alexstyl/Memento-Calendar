@@ -21,7 +21,7 @@ public class PeopleEventsPersister {
         deleteAllEventsOfType(AnnualEventsContract.TYPE_NAMEDAY);
     }
 
-    public void deleteAllBirthdays() {
+    void deleteAllEvents() {
         deleteAllEventsOfType(AnnualEventsContract.TYPE_BIRTHDAY);
     }
 
