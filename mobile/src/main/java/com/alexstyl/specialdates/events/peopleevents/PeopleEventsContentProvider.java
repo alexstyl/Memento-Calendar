@@ -28,12 +28,15 @@ public class PeopleEventsContentProvider extends ContentProvider {
     private UriMatcher uriMatcher;
 
     private PeopleEventsUpdater peopleEventsUpdater;
+    private SQLArgumentBuilder sqlArgumentBuilder;
 
     @Override
     public boolean onCreate() {
         eventSQLHelper = new EventSQLiteOpenHelper(getContext());
         peopleEventsUpdater = PeopleEventsUpdater.newInstance(getContext());
         peopleEventsUpdater.register();
+
+        sqlArgumentBuilder = new SQLArgumentBuilder();
         initialiseMatcher();
         return true;
     }
@@ -42,8 +45,6 @@ public class PeopleEventsContentProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, PEOPLE_EVENTS);
     }
-
-    private SQLArgumentBuilder sqlArgumentBuilder = new SQLArgumentBuilder();
 
     @Nullable
     @Override
@@ -87,25 +88,9 @@ public class PeopleEventsContentProvider extends ContentProvider {
 
         if (selectionArgs != null) {
             LoadingTimeDuration duration = getDurationfrom(selection, selectionArgs);
-            selection = getSelectionArgumentsForAnnualEvents(duration);
-            projection = makeAnnualProjectFrom(projection, duration.getFrom().getYear());
+            selection = sqlArgumentBuilder.dateBetween(duration);
         }
         return builder.query(db, projection, selection, null, null, null, sortOrder);
-    }
-
-    private String[] makeAnnualProjectFrom(String[] projection, int year) {
-        if (projection == null || projection.length == 0) {
-            return projection;
-        }
-        String[] newProjection = new String[projection.length];
-        for (int i = 0; i < newProjection.length; i++) {
-            if (AnnualEventsContract.DATE.equals(projection[i])) {
-                newProjection[i] = sqlArgumentBuilder.dateIn(year);
-            } else {
-                newProjection[i] = projection[i];
-            }
-        }
-        return newProjection;
     }
 
     private LoadingTimeDuration getDurationfrom(String selection, String[] selectionArgs) {
@@ -134,10 +119,6 @@ public class PeopleEventsContentProvider extends ContentProvider {
             return new LoadingTimeDuration(dates[0], dates[1]);
         }
         throw new DeveloperError("Invalid length " + selectionArgs);
-    }
-
-    private String getSelectionArgumentsForAnnualEvents(LoadingTimeDuration duration) {
-        return sqlArgumentBuilder.dateBetween(duration);
     }
 
     private void throwForInvalidUri(String when, Uri uri) {
