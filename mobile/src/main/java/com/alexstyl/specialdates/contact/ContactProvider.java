@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.alexstyl.specialdates.util.ContactsObserver;
-import com.alexstyl.specialdates.util.DateParser;
 
 public class ContactProvider {
 
@@ -18,7 +17,7 @@ public class ContactProvider {
     public static ContactProvider get(Context context) {
         if (INSTANCE == null) {
             ContentResolver contentResolver = context.getContentResolver();
-            DeviceContactFactory factory = new DeviceContactFactory(contentResolver, DateParser.INSTANCE);
+            DeviceContactFactory factory = new DeviceContactFactory(contentResolver);
             ContactCache<DeviceContact> contactCache = new ContactCache<>(CACHE_SIZE);
             INSTANCE = new ContactProvider(contactCache, factory);
             INSTANCE.initialise(contentResolver);

@@ -27,14 +27,15 @@ public class BirthdayFormPresenter {
     public void displayContactAsSelected(final Contact contact) {
         selectedContact = contact;
         contactHeroView.displayAvatarFor(contact);
-        if (contact.hasDateOfBirth()) {
-            birthdayLabel.displayBirthday(contact.getDateOfBirth());
-            addButton.setText(R.string.add_birthday_store_button_update_label);
-            validator = new BirthdayCreationValidator(contact.getDateOfBirth());
-        } else {
-            birthdayLabel.displayNoBirthday();
-            addButton.setText(R.string.add_birthday_store_button_add_label);
-        }
+        // TODO
+//        if (contact.hasDateOfBirth()) {
+//            birthdayLabel.displayBirthday(contact.getDateOfBirth());
+//            addButton.setText(R.string.add_birthday_store_button_update_label);
+//            validator = new BirthdayCreationValidator(contact.getDateOfBirth());
+//        } else {
+        birthdayLabel.displayNoBirthday();
+        addButton.setText(R.string.add_birthday_store_button_add_label);
+//        }
         updateAddButton();
     }
 
