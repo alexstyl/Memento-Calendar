@@ -36,16 +36,16 @@ class DeviceContactFactory {
         throw new ContactNotFoundException(contactID);
     }
 
-    private boolean isInvalid(Cursor cursor) {
+    private static boolean isInvalid(Cursor cursor) {
         return cursor == null || cursor.isClosed();
     }
 
-    private String getLookupKeyFrom(Cursor cursor) {
-        return cursor.getString(ContactsQuery.LOOKUP_KEY);
+    private static DisplayName getDisplayNameFrom(Cursor cursor) {
+        return DisplayName.from(cursor.getString(ContactsQuery.DISPLAY_NAME));
     }
 
-    private DisplayName getDisplayNameFrom(Cursor cursor) {
-        return DisplayName.from(cursor.getString(ContactsQuery.DISPLAY_NAME));
+    private static String getLookupKeyFrom(Cursor cursor) {
+        return cursor.getString(ContactsQuery.LOOKUP_KEY);
     }
 
 }
