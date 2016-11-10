@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
@@ -19,6 +19,8 @@ import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEven
 import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
+
+import java.util.Arrays;
 
 public class PeopleEventsContentProvider extends ContentProvider {
 
@@ -46,9 +48,8 @@ public class PeopleEventsContentProvider extends ContentProvider {
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, PEOPLE_EVENTS);
     }
 
-    @Nullable
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         refreshEventsIfNeeded();
 
         SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
@@ -118,7 +119,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
             }
             return new LoadingTimeDuration(dates[0], dates[1]);
         }
-        throw new DeveloperError("Invalid length " + selectionArgs);
+        throw new DeveloperError("Invalid length " + Arrays.toString(selectionArgs));
     }
 
     private void throwForInvalidUri(String when, Uri uri) {
@@ -130,7 +131,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)) {
             case PEOPLE_EVENTS:
                 return PeopleEvents.CONTENT_TYPE;
@@ -140,7 +141,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         throwUnsupportedOperation("insert");
         return null;
     }
@@ -150,13 +151,13 @@ public class PeopleEventsContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         throwUnsupportedOperation("delete");
         return -1;
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         throwUnsupportedOperation("update");
         return -1;
     }
