@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 public class PeopleEventsContract {
@@ -48,7 +49,7 @@ public class PeopleEventsContract {
             int monthToYear = text.lastIndexOf(SEPARATOR, dayToMonth - 1);
 
             int day = Integer.valueOf(text.substring(dayToMonth + 1, text.length()));
-            int month = Integer.valueOf(text.substring(monthToYear + 1, dayToMonth));
+            @MonthInt int month = Integer.valueOf(text.substring(monthToYear + 1, dayToMonth));
 
             int yearToMonth = text.indexOf(SEPARATOR);
             int year = Integer.valueOf(text.substring(0, yearToMonth));

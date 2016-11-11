@@ -10,7 +10,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateParserTest {
 
-    private DateParser dateParser = new DateParser();
+    private DateParser dateParser = DateParser.INSTANCE;
 
     @Test
     public void dateWithSlashes() throws DateParseException {

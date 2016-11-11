@@ -6,18 +6,13 @@ import android.view.View;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
-import com.alexstyl.specialdates.date.Date;
 
 import java.util.List;
 
 public class TestContact extends Contact {
 
     public TestContact(long id, DisplayName displayName) {
-        super(id, displayName, Optional.<Date>absent());
-    }
-
-    public TestContact(long id, DisplayName displayName, Date birthday) {
-        super(id, displayName, new Optional<>(birthday));
+        super(id, displayName);
     }
 
     @Override
