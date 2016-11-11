@@ -6,12 +6,8 @@ import android.os.Handler;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
-import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
-import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidays;
+import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
@@ -26,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> {
+class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> {
 
     private final PeopleEventsProvider peopleEventsProvider;
     private final NamedayPreferences namedayPreferences;
@@ -37,7 +33,7 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
     private final int currentYear;
     private final DateComparator comparator = DateComparator.get();
 
-    public UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, LoadingTimeDuration timeDuration) {
+    UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, LoadingTimeDuration timeDuration) {
         super(context);
         this.peopleEventsProvider = peopleEventsProvider;
         this.timeDuration = timeDuration;
@@ -56,23 +52,27 @@ public class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<Celebration
     @Override
     public List<CelebrationDate> loadInBackground() {
 
-        List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(timeDuration);
-
-        BankHolidaysPreferences bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
-        UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder()
+        LoadingTimeDuration calculateDuration = new LoadingTimeDuration(
+                timeDuration.getFrom(),
+                Date.endOfYear(timeDuration.getFrom().getYear())
+        );
+        List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(calculateDuration);
+        UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(calculateDuration)
                 .withContactEvents(contactEvents);
 
-        if (bankHolidaysPreferences.isEnabled()) {
-            BankholidayCalendar.get();
-            Date easter = easterCalculator.calculateEasterForYear(currentYear);
-            List<BankHoliday> bankHolidays = new GreekBankHolidays(easter).getBankHolidaysForYear();
-            upcomingDatesBuilder.withBankHolidays(bankHolidays);
-        }
-
-        if (includeNamedays()) {
-            List<NamesInADate> namedays = getNamedaysFor(timeDuration);
-            upcomingDatesBuilder.withNamedays(namedays);
-        }
+//        BankHolidaysPreferences bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
+//
+//        if (bankHolidaysPreferences.isEnabled()) {
+//            BankholidayCalendar.get();
+//            Date easter = easterCalculator.calculateEasterForYear(currentYear);
+//            List<BankHoliday> bankHolidays = new GreekBankHolidays(easter).getBankHolidaysForYear();
+//            upcomingDatesBuilder.withBankHolidays(bankHolidays);
+//        }
+//
+//        if (includeNamedays()) {
+//            List<NamesInADate> namedays = getNamedaysFor(timeDuration);
+//            upcomingDatesBuilder.withNamedays(namedays);
+//        }
 
         List<CelebrationDate> allDates = upcomingDatesBuilder.build();
 
