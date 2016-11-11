@@ -18,12 +18,12 @@ import java.util.List;
 final class UpcomingDatesBuilder {
 
     private static final List<CelebrationDate> NO_CELEBRATIONS = Collections.emptyList();
-    private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.unmodifiableList(Collections.<ContactEvent>emptyList());
+    private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.emptyList();
     private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
-    private final HashMapList<Date, ContactEvent> contactEvents = new HashMapList<>();
-    private final HashMap<Date, NamesInADate> namedays = new HashMap<>();
-    private final HashMap<Date, BankHoliday> bankHolidays = new HashMap<>();
+    private final HashMapList<AnnualDate, ContactEvent> contactEvents = new HashMapList<>();
+    private final HashMap<AnnualDate, NamesInADate> namedays = new HashMap<>();
+    private final HashMap<AnnualDate, BankHoliday> bankHolidays = new HashMap<>();
     private final LoadingTimeDuration duration;
 
     UpcomingDatesBuilder(LoadingTimeDuration duration) {
@@ -33,7 +33,7 @@ final class UpcomingDatesBuilder {
     UpcomingDatesBuilder withContactEvents(List<ContactEvent> contactEvents) {
         for (ContactEvent contactEvent : contactEvents) {
             Date date = contactEvent.getDate();
-            this.contactEvents.addValue(date, contactEvent);
+            this.contactEvents.addValue(new AnnualDate(date), contactEvent);
         }
         return this;
     }
@@ -41,7 +41,7 @@ final class UpcomingDatesBuilder {
     UpcomingDatesBuilder withNamedays(List<NamesInADate> namedays) {
         for (NamesInADate nameday : namedays) {
             Date date = nameday.getDate();
-            this.namedays.put(date, nameday);
+            this.namedays.put(new AnnualDate(date), nameday);
         }
         return this;
     }
@@ -49,7 +49,7 @@ final class UpcomingDatesBuilder {
     UpcomingDatesBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
         for (BankHoliday bankHoliday : bankHolidays) {
             Date date = bankHoliday.getDate();
-            this.bankHolidays.put(date, bankHoliday);
+            this.bankHolidays.put(new AnnualDate(date), bankHoliday);
         }
         return this;
     }
@@ -64,9 +64,10 @@ final class UpcomingDatesBuilder {
         Date lastDate = duration.getTo();
 
         while (COMPARATOR.compare(indexDate, lastDate) <= 0) {
-            List<ContactEvent> contactEvent = getEventsOn(indexDate);
-            NamesInADate namesOnDate = namedays.get(indexDate);
-            BankHoliday bankHoliday = bankHolidays.get(indexDate);
+            AnnualDate annualDate = new AnnualDate(indexDate);
+            List<ContactEvent> contactEvent = getEventsOn(annualDate);
+            NamesInADate namesOnDate = namedays.get(annualDate);
+            BankHoliday bankHoliday = bankHolidays.get(annualDate);
             if (atLeastOneEventExists(contactEvent, namesOnDate, bankHoliday)) {
                 CelebrationDate date = new CelebrationDate(
                         indexDate,
@@ -81,7 +82,7 @@ final class UpcomingDatesBuilder {
         return celebrationDates;
     }
 
-    private List<ContactEvent> getEventsOn(Date indexDate) {
+    private List<ContactEvent> getEventsOn(AnnualDate indexDate) {
         List<ContactEvent> contactEvent = contactEvents.get(indexDate);
         if (contactEvent == null) {
             return NO_CONTACT_EVENTS;

@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.upcoming;
 
-import android.support.annotation.NonNull;
-
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.date.CelebrationDate;
@@ -28,6 +26,20 @@ public class UpcomingDatesBuilderTest {
     private static final Date FEBRUARY_1st = Date.on(1, FEBRUARY, 1990);
     private static final Date FEBRUARY_3rd = Date.on(3, FEBRUARY, 1990);
     private static final Date MARCH_5th = Date.on(5, MARCH, 1990);
+
+    @Test
+    public void celebrationDateIsCreatedCorrectlyForDifferentYear() {
+        ContactEvent event = aContactEventOn(Date.on(1, JANUARY, 1990));
+        List<ContactEvent> contactEvents = Collections.singletonList(event);
+
+        LoadingTimeDuration duration = new LoadingTimeDuration(Date.on(1, JANUARY, 2016), Date.on(1, DECEMBER, 2016));
+
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(duration)
+                .withContactEvents(contactEvents)
+                .build();
+
+        assertThat(dates.size()).isEqualTo(1);
+    }
 
     @Test
     public void givenASingleContactEvent_thenOneCelebrationDateIsCreated() {
@@ -110,12 +122,11 @@ public class UpcomingDatesBuilderTest {
         assertThat(dates.size()).isEqualTo(3);
     }
 
-    private BankHoliday aBankHolidayOn(Date date) {
+    private static BankHoliday aBankHolidayOn(Date date) {
         return new BankHoliday("A bank holiday", date);
     }
 
-    @NonNull
-    private BankHoliday aBankHoliday() {
+    private static BankHoliday aBankHoliday() {
         return new BankHoliday("A bank holiday", Date.on(1, JANUARY, 1990));
     }
 
