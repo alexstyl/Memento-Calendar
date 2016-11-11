@@ -187,7 +187,6 @@ public class PeopleEventsProvider {
     };
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
-
         long contactId = PeopleEventsContract.PeopleEvents.getContactIdFrom(cursor);
         Contact contact = contactProvider.getOrCreateContact(contactId);
         Date date = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);

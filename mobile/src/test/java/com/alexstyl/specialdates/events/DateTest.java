@@ -11,10 +11,13 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateTest {
 
+    private static final DateComparator comparator = DateComparator.INSTANCE;
+
     private static final int DAY = 5;
     private static final
     @MonthInt
     int MONTH = 10;
+
     private static final Date ANY_DATE = Date.on(DAY, MONTH, 1990);
 
     @Test
@@ -63,8 +66,6 @@ public class DateTest {
         Date date = Date.on(1, JANUARY, 1990);
         assertThat(date.toShortDate()).isEqualTo("1990-01-01");
     }
-
-    private DateComparator comparator = DateComparator.get();
 
     @Test
     public void compareFutureDayDate() {
