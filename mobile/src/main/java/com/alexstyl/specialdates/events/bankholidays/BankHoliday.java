@@ -30,6 +30,6 @@ public class BankHoliday implements Comparable<BankHoliday> {
 
     @Override
     public int compareTo(@NonNull BankHoliday another) {
-        return DateComparator.get().compare(date, another.date);
+        return DateComparator.INSTANCE.compare(date, another.date);
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 class SpecialGreekNamedaysCalculator {
 
-    private final DateComparator comparator = DateComparator.get();
+    private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
     private final List<EasternNameday> easternNamedays;
 
     private final Context context;
@@ -71,7 +71,7 @@ class SpecialGreekNamedaysCalculator {
     private void addSpecialMarkos(Node node, NamedaysList namedaysList, Context context, Date easter) {
         int year = Date.today().getYear();
         Date date = Date.on(23, DateConstants.APRIL, year);
-        if (comparator.compare(easter, date) > 0) {
+        if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2);
         } else {
             date = Date.on(25, DateConstants.APRIL, year);
@@ -88,7 +88,7 @@ class SpecialGreekNamedaysCalculator {
         Date date = Date.on(23, DateConstants.APRIL, Date.today().getYear());
 
         Date actualDate;
-        if (comparator.compare(easter, date) > 0) {
+        if (COMPARATOR.compare(easter, date) > 0) {
             actualDate = easter.addDay(1);
         } else {
             actualDate = date;

@@ -191,7 +191,7 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private boolean isOnOrAfterToday(CelebrationDate event) {
-        return DateComparator.get().compare(event.getDate(), today) >= 0;
+        return DateComparator.INSTANCE.compare(event.getDate(), today) >= 0;
     }
 
     private boolean containsNoCelebration() {

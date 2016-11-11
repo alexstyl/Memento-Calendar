@@ -15,16 +15,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-class UpcomingDatesBuilder {
+final class UpcomingDatesBuilder {
 
+    private static final List<CelebrationDate> NO_CELEBRATIONS = Collections.emptyList();
     private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.unmodifiableList(Collections.<ContactEvent>emptyList());
+    private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
-    private final DateComparator comparator = DateComparator.get();
     private final HashMapList<Date, ContactEvent> contactEvents = new HashMapList<>();
     private final HashMap<Date, NamesInADate> namedays = new HashMap<>();
     private final HashMap<Date, BankHoliday> bankHolidays = new HashMap<>();
-
-    private LoadingTimeDuration duration;
+    private final LoadingTimeDuration duration;
 
     UpcomingDatesBuilder(LoadingTimeDuration duration) {
         this.duration = duration;
@@ -54,8 +54,6 @@ class UpcomingDatesBuilder {
         return this;
     }
 
-    private static final List<CelebrationDate> NO_CELEBRATIONS = Collections.emptyList();
-
     public List<CelebrationDate> build() {
         if (noEventsArePresent()) {
             return NO_CELEBRATIONS;
@@ -65,7 +63,7 @@ class UpcomingDatesBuilder {
         Date indexDate = duration.getFrom();
         Date lastDate = duration.getTo();
 
-        while (comparator.compare(indexDate, lastDate) <= 0) {
+        while (COMPARATOR.compare(indexDate, lastDate) <= 0) {
             List<ContactEvent> contactEvent = getEventsOn(indexDate);
             NamesInADate namesOnDate = namedays.get(indexDate);
             BankHoliday bankHoliday = bankHolidays.get(indexDate);

@@ -24,6 +24,8 @@ import java.util.List;
 
 class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> {
 
+    private static final DateComparator comparator = DateComparator.INSTANCE;
+
     private final PeopleEventsProvider peopleEventsProvider;
     private final NamedayPreferences namedayPreferences;
     private final ContactsObserver contactsObserver;
@@ -31,7 +33,6 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     private final EasterCalculator easterCalculator = new EasterCalculator();
 
     private final int currentYear;
-    private final DateComparator comparator = DateComparator.get();
 
     UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, LoadingTimeDuration timeDuration) {
         super(context);

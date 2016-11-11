@@ -73,6 +73,6 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
         if (another == this) {
             return 0;
         }
-        return DateComparator.get().compare(date, another.date);
+        return DateComparator.INSTANCE.compare(date, another.date);
     }
 }
