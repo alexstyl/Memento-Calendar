@@ -8,8 +8,10 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,55 +59,56 @@ public class UpcomingDatesBuilderTest {
         ContactEvent celebrationDateEvent = dates.get(0).getContactEvents().getEvent(0);
         assertThat(celebrationDateEvent).isEqualTo(contactEvents.get(0));
     }
-//
-//    @Test
-//    public void givenTwoContactEventsOnSameDate_thenOneCelebrationDateIsCreated() {
-//        List<ContactEvent> contactEventsList = Arrays.asList(
-//                aContactEventOn(FEBRUARY_1st),
-//                aContactEventOn(FEBRUARY_1st)
-//        );
-//
-//        List<CelebrationDate> dates = new UpcomingDatesBuilder()
-//                .withContactEvents(contactEventsList)
-//                .build();
-//
-//        assertThat(dates.size()).isEqualTo(1);
-//    }
-//
-//    @Test
-//    public void givenTwoContactEventsOnDifferentDate_thenTwoCelebrationDateAreCreated() {
-//        List<ContactEvent> contactEventsList = Arrays.asList(
-//                aContactEventOn(FEBRUARY_1st),
-//                aContactEventOn(FEBRUARY_3rd)
-//        );
-//
-//        List<CelebrationDate> dates = new UpcomingDatesBuilder()
-//                .withContactEvents(contactEventsList)
-//                .build();
-//
-//        assertThat(dates.size()).isEqualTo(2);
-//    }
-//
-//    @Test
-//    public void givenABankHoliday_thenACelebrationDateIsCreated() {
-//        List<BankHoliday> bankHolidays = Collections.singletonList(aBankHoliday());
-//        List<CelebrationDate> dates = new UpcomingDatesBuilder()
-//                .withBankHolidays(bankHolidays)
-//                .build();
-//
-//        assertThat(dates.size()).isEqualTo(1);
-//    }
-//
-//    @Test
-//    public void givenEventsOnDifferentEvents_thenACelebrationDatesForEachOneAreCreated() {
-//        List<CelebrationDate> dates = new UpcomingDatesBuilder()
-//                .withContactEvents(Collections.singletonList(aContactEventOn(FEBRUARY_1st)))
-//                .withBankHolidays(Collections.singletonList(aBankHolidayOn(FEBRUARY_3rd)))
-//                .withNamedays(Collections.singletonList(new NamesInADate(MARCH_5th, Collections.singletonList("Name"))))
-//                .build();
-//
-//        assertThat(dates.size()).isEqualTo(3);
-//    }
+
+    @Test
+    public void givenTwoContactEventsOnSameDate_thenOneCelebrationDateIsCreated() {
+        List<ContactEvent> contactEventsList = Arrays.asList(
+                aContactEventOn(FEBRUARY_1st),
+                aContactEventOn(FEBRUARY_1st)
+        );
+
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(FEBRUARY_1st, FEBRUARY_1st))
+                .withContactEvents(contactEventsList)
+                .build();
+
+        assertThat(dates.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void givenTwoContactEventsOnDifferentDate_thenTwoCelebrationDateAreCreated() {
+        List<ContactEvent> contactEventsList = Arrays.asList(
+                aContactEventOn(FEBRUARY_1st),
+                aContactEventOn(FEBRUARY_3rd)
+        );
+
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(FEBRUARY_1st, FEBRUARY_3rd))
+                .withContactEvents(contactEventsList)
+                .build();
+
+        assertThat(dates.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void givenABankHoliday_thenACelebrationDateIsCreated() {
+        BankHoliday bankHoliday = aBankHoliday();
+        List<BankHoliday> bankHolidays = Collections.singletonList(bankHoliday);
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(bankHoliday.getDate(), bankHoliday.getDate()))
+                .withBankHolidays(bankHolidays)
+                .build();
+
+        assertThat(dates.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void givenEventsOnDifferentEvents_thenACelebrationDatesForEachOneAreCreated() {
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(FEBRUARY_1st, MARCH_5th))
+                .withContactEvents(Collections.singletonList(aContactEventOn(FEBRUARY_1st)))
+                .withBankHolidays(Collections.singletonList(aBankHolidayOn(FEBRUARY_3rd)))
+                .withNamedays(Collections.singletonList(new NamesInADate(MARCH_5th, Collections.singletonList("Name"))))
+                .build();
+
+        assertThat(dates.size()).isEqualTo(3);
+    }
 
     private BankHoliday aBankHolidayOn(Date date) {
         return new BankHoliday("A bank holiday", date);
