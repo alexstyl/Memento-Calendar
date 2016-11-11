@@ -6,9 +6,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
-/**
- * A representation of an event, affiliated to a contact
- */
 public final class ContactEvent {
 
     private final EventType eventType;
@@ -39,10 +36,6 @@ public final class ContactEvent {
 
     public EventType getType() {
         return eventType;
-    }
-
-    public int getYear() {
-        return date.getYear();
     }
 
     public Contact getContact() {
