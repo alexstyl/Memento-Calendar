@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class ContactEventTest {
 
     private static final Contact CONTACT_WITHOUT_BIRTHDAY = new TestContact(1, DisplayName.from("Peter"));
-    private static final Date SOME_DATE = Date.on(1, 1, 1990);
+    private static final Date SOME_DATE = Date.on(1, JANUARY, 1990);
 
     @Mock
     private Resources mockResources;
@@ -51,7 +51,7 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearAfterDate() {
-        Date eventDate = Date.on(1, 1, 1990);
+        Date eventDate = Date.on(1, JANUARY, 1990);
         Contact contact = contactWithBirthdayOn(1, 1, 2016);
         ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
         String label = contactEvent.getLabel(mockResources);
@@ -69,7 +69,7 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearBeforeDate() {
-        Date eventDate = Date.on(1, 1, 2000);
+        Date eventDate = Date.on(1, JANUARY, 2000);
         Contact contact = contactWithBirthdayOn(1, 1, 1990);
         ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
         String label = contactEvent.getLabel(mockResources);
@@ -77,11 +77,11 @@ public class ContactEventTest {
     }
 
     private Contact contactWithBirthdayOn(int dayOfMonth, int month, int year) {
-        return new TestContact(1, DisplayName.from("Peter"), Date.on(dayOfMonth, month, year));
+        return new TestContact(1, DisplayName.from("Peter"));
     }
 
     private Contact contactWithBirthdayOn(int day, int month) {
-        return new TestContact(1, DisplayName.from("Peter"), Date.on(day, month));
+        return new TestContact(1, DisplayName.from("Peter"));
     }
 
 }
