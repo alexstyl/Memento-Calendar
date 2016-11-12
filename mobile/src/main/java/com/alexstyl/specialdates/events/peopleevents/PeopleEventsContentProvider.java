@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.database.EventsDBContract;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
@@ -45,9 +44,6 @@ public class PeopleEventsContentProvider extends ContentProvider {
             UriQuery query = new UriQuery(uri, projection, selection, selectionArgs, sortOrder);
             SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
             Cursor cursor = queryAnnualEvents(query, db);
-//            Cursor[] cursors = new Cursor[2];
-//            cursors[1] = queryDynamicEvents(projection, selection, selectionArgs, sortOrder, db, builder);
-//            SortCursor sortCursor = new SortCursor(cursors, AnnualEventsContract.DATE);
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
             return cursor;
         }
@@ -63,12 +59,6 @@ public class PeopleEventsContentProvider extends ContentProvider {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(AnnualEventsContract.TABLE_NAME);
         return builder.query(db, query.getProjection(), query.getSelection(), query.getSelectionArgs(), null, null, query.getSortOrder());
-    }
-
-    private Cursor queryDynamicEvents(String[] projection, String selection, String[] selectionArgs, String sortOrder, SQLiteDatabase db) {
-        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(EventsDBContract.DynamicEventsContract.TABLE_NAME);
-        return builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
     @Override

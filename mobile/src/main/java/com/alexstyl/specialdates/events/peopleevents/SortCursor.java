@@ -26,7 +26,7 @@ import android.util.Log;
  * A variant of MergeCursor that sorts the cursors being merged. If decent
  * performance is ever obtained, it can be put back under android.database.
  */
-class SortCursor extends AbstractCursor {
+public class SortCursor extends AbstractCursor {
     private static final String TAG = "SortCursor";
     private Cursor mCursor; // updated in onMove
     private Cursor[] mCursors;

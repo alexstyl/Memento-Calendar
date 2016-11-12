@@ -6,11 +6,11 @@ import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 
-public abstract class QueryUpcomingTask extends AsyncTask<Void, Void, ContactEvents> {
+abstract class QueryUpcomingPeoplEventsTask extends AsyncTask<Void, Void, ContactEvents> {
 
     private final PeopleEventsProvider eventsProvider;
 
-    protected QueryUpcomingTask(PeopleEventsProvider eventsProvider) {
+    QueryUpcomingPeoplEventsTask(PeopleEventsProvider eventsProvider) {
         this.eventsProvider = eventsProvider;
     }
 
