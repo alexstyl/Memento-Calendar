@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.net.Uri;
 
-class UriQuery {
+final class UriQuery {
     private final Uri uri;
     private final String[] projection;
     private final String selection;

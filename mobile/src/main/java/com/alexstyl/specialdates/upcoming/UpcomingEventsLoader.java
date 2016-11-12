@@ -55,45 +55,38 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
 
     @Override
     public List<CelebrationDate> loadInBackground() {
-
         TimePeriod timePeriod = TimePeriod.between(
                 startingPeriod,
                 startingPeriod.addDay(364)
         );
-
-        List<CelebrationDate> celebrationDates = calculateEventsFor(timePeriod);
+        List<CelebrationDate> celebrationDates = calculateEventsBetween(timePeriod);
         Collections.sort(celebrationDates);
         return celebrationDates;
     }
 
-    private List<CelebrationDate> calculateEventsFor(TimePeriod period) {
+    private List<CelebrationDate> calculateEventsBetween(TimePeriod period) {
         List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(period);
         UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(period)
                 .withContactEvents(contactEvents);
 
         if (includesBankholidays()) {
-            GreekBankHolidaysCalculator bankHolidaysCalculator = new GreekBankHolidaysCalculator(easterCalculator);
-            List<BankHoliday> bankHolidays = new BankHolidayProvider(bankHolidaysCalculator).getBankHolidayFor(period);
+            List<BankHoliday> bankHolidays = calculateBankHolidaysBetween(period);
             upcomingDatesBuilder.withBankHolidays(bankHolidays);
         }
 
         if (includeNamedays()) {
-            List<NamesInADate> namedays = getNamedaysFor(period);
+            List<NamesInADate> namedays = calculateNamedaysBetween(period);
             upcomingDatesBuilder.withNamedays(namedays);
         }
-
         return upcomingDatesBuilder.build();
     }
 
-    private boolean includesBankholidays() {
-        return bankHolidaysPreferences.isEnabled();
+    private List<BankHoliday> calculateBankHolidaysBetween(TimePeriod period) {
+        GreekBankHolidaysCalculator bankHolidaysCalculator = new GreekBankHolidaysCalculator(easterCalculator);
+        return new BankHolidayProvider(bankHolidaysCalculator).getBankHolidayFor(period);
     }
 
-    private boolean includeNamedays() {
-        return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
-    }
-
-    private List<NamesInADate> getNamedaysFor(TimePeriod timeDuration) {
+    private List<NamesInADate> calculateNamedaysBetween(TimePeriod timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.getStartingDate().getYear());
@@ -110,6 +103,14 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
             indexDate = indexDate.addDay(1);
         }
         return namedays;
+    }
+
+    private boolean includesBankholidays() {
+        return bankHolidaysPreferences.isEnabled();
+    }
+
+    private boolean includeNamedays() {
+        return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
     }
 
     private void setupContactsObserver() {

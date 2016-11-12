@@ -27,13 +27,9 @@ public class PeopleEventsContentProvider extends ContentProvider {
         eventSQLHelper = new EventSQLiteOpenHelper(getContext());
         peopleEventsUpdater = PeopleEventsUpdater.newInstance(getContext());
         peopleEventsUpdater.register();
-        initialiseMatcher();
-        return true;
-    }
-
-    private void initialiseMatcher() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, CODE_PEOPLE_EVENTS);
+        return true;
     }
 
     @Override
