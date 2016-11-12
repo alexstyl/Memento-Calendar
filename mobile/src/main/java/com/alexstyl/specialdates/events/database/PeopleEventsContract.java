@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.util.DateParser;
+import com.novoda.notils.exception.DeveloperError;
 
 public class PeopleEventsContract {
 
@@ -42,18 +44,13 @@ public class PeopleEventsContract {
             return EventType.fromId(rawEventType);
         }
 
-        private static final String SEPARATOR = "-";
-
         public static Date from(String text) {
-            int dayToMonth = text.lastIndexOf(SEPARATOR);
-            int monthToYear = text.lastIndexOf(SEPARATOR, dayToMonth - 1);
-
-            int day = Integer.valueOf(text.substring(dayToMonth + 1, text.length()));
-            @MonthInt int month = Integer.valueOf(text.substring(monthToYear + 1, dayToMonth));
-
-            int yearToMonth = text.indexOf(SEPARATOR);
-            int year = Integer.valueOf(text.substring(0, yearToMonth));
-            return Date.on(day, month, year);
+            try {
+                return DateParser.INSTANCE.parse(text);
+            } catch (DateParseException e) {
+                e.printStackTrace();
+                throw new DeveloperError("Invalid date stored to database. [" + text + "]");
+            }
         }
     }
 

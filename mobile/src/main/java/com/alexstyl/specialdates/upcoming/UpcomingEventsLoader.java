@@ -8,7 +8,10 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
+import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
+import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
@@ -68,17 +71,16 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
         UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(period)
                 .withContactEvents(contactEvents);
 
-//        if (includesBankholidays()) {
-//            GreekBankHolidaysCalculator bankHolidaysCalculator = new GreekBankHolidaysCalculator(easterCalculator);
-//            List<BankHoliday> bankHolidays = new BankHolidayProvider(bankHolidaysCalculator)
-//                    .getBankHolidayFor(duration);
-//            upcomingDatesBuilder.withBankHolidays(bankHolidays);
-//        }
-//
-//        if (includeNamedays()) {
-//            List<NamesInADate> namedays = getNamedaysFor(timeDuration);
-//            upcomingDatesBuilder.withNamedays(namedays);
-//        }
+        if (includesBankholidays()) {
+            GreekBankHolidaysCalculator bankHolidaysCalculator = new GreekBankHolidaysCalculator(easterCalculator);
+            List<BankHoliday> bankHolidays = new BankHolidayProvider(bankHolidaysCalculator).getBankHolidayFor(period);
+            upcomingDatesBuilder.withBankHolidays(bankHolidays);
+        }
+
+        if (includeNamedays()) {
+            List<NamesInADate> namedays = getNamedaysFor(period);
+            upcomingDatesBuilder.withNamedays(namedays);
+        }
 
         return upcomingDatesBuilder.build();
     }
