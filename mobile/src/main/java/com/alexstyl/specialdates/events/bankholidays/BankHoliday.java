@@ -32,4 +32,29 @@ public class BankHoliday implements Comparable<BankHoliday> {
     public int compareTo(@NonNull BankHoliday another) {
         return DateComparator.INSTANCE.compare(date, another.date);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BankHoliday that = (BankHoliday) o;
+
+        if (!holidayName.equals(that.holidayName)) {
+            return false;
+        }
+        return date.equals(that.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = holidayName.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
+    }
 }

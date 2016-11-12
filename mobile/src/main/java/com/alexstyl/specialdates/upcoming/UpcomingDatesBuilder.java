@@ -24,9 +24,9 @@ final class UpcomingDatesBuilder {
     private final HashMapList<AnnualDate, ContactEvent> contactEvents = new HashMapList<>();
     private final HashMap<AnnualDate, NamesInADate> namedays = new HashMap<>();
     private final HashMap<AnnualDate, BankHoliday> bankHolidays = new HashMap<>();
-    private final LoadingTimeDuration duration;
+    private final TimePeriod duration;
 
-    UpcomingDatesBuilder(LoadingTimeDuration duration) {
+    UpcomingDatesBuilder(TimePeriod duration) {
         this.duration = duration;
     }
 

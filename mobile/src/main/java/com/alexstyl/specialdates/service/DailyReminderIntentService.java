@@ -7,18 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
-import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidays;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.receiver.EventReceiver;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
@@ -26,7 +24,6 @@ import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * A service that looks up all events on the specified date and notifies the user about it
@@ -127,15 +124,18 @@ public class DailyReminderIntentService extends IntentService {
     }
 
     private BankHoliday findBankholidayFor(Date date) {
-        EasterCalculator calculator = new EasterCalculator();
-        Date easter = calculator.calculateEasterForYear(date.getYear());
-        List<BankHoliday> bankHolidays = new GreekBankHolidays(easter).getBankHolidaysForYear();
-        for (BankHoliday bankHoliday : bankHolidays) {
-            if (bankHoliday.getDate().equals(date)) {
-                return bankHoliday;
-            }
-        }
+//        EasterCalculator calculator = new EasterCalculator();
+//        Date easter = calculator.calculateEasterForYear(date.getYear());
+//        List<BankHoliday> bankHolidays = new GreekBankHolidaysCalculator(calculator)
+//                .getBankHolidaysForYear();
+//        for (BankHoliday bankHoliday : bankHolidays) {
+//            if (bankHoliday.getDate().equals(date)) {
+//                return bankHoliday;
+//            }
+//        }
+        // TODO
         return null;
+
     }
 
     private boolean containsNames(NamesInADate names) {

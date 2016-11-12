@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.events.database.EventsDBContract;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
-import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
+import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
@@ -88,21 +88,21 @@ public class PeopleEventsContentProvider extends ContentProvider {
         builder.setTables(AnnualEventsContract.TABLE_NAME);
 
         if (selectionArgs != null) {
-            LoadingTimeDuration duration = getDurationfrom(selection, selectionArgs);
+            TimePeriod duration = getDurationfrom(selection, selectionArgs);
             selection = sqlArgumentBuilder.dateBetween(duration);
         }
         return builder.query(db, projection, selection, null, null, null, sortOrder);
     }
 
-    private LoadingTimeDuration getDurationfrom(String selection, String[] selectionArgs) {
+    private TimePeriod getDurationfrom(String selection, String[] selectionArgs) {
         if (selectionArgs.length == 1) {
             try {
                 Date date = parser.parse(selectionArgs[0]);
                 if (selection.contains(">") || selection.contains("<")) {
                     Date endOfYear = Date.endOfYear(date.getYear());
-                    return new LoadingTimeDuration(date, endOfYear);
+                    return new TimePeriod(date, endOfYear);
                 } else {
-                    return new LoadingTimeDuration(date, date);
+                    return new TimePeriod(date, date);
                 }
             } catch (DateParseException e) {
                 throw new DeveloperError(e.getMessage());
@@ -117,7 +117,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
                     throw new DeveloperError(e.getMessage());
                 }
             }
-            return new LoadingTimeDuration(dates[0], dates[1]);
+            return new TimePeriod(dates[0], dates[1]);
         }
         throw new DeveloperError("Invalid length " + Arrays.toString(selectionArgs));
     }

@@ -11,7 +11,7 @@ import java.util.List;
 public class UpcomingEventsProvider {
 
     private final UpcomingEventsFetcher fetcher;
-    private final LoadingTimeDuration displayingDuration;
+    private final TimePeriod displayingDuration;
 
     private LoadingListener listener;
 
@@ -20,17 +20,17 @@ public class UpcomingEventsProvider {
         return new UpcomingEventsProvider(upcomingEventsFetcher, startingTimeDuration(), onEventsLoadedListener);
     }
 
-    public UpcomingEventsProvider(UpcomingEventsFetcher fetcher, LoadingTimeDuration initialDuration, LoadingListener listener) {
+    public UpcomingEventsProvider(UpcomingEventsFetcher fetcher, TimePeriod initialDuration, LoadingListener listener) {
         this.fetcher = fetcher;
         this.displayingDuration = initialDuration;
         this.listener = listener;
     }
 
-    private static LoadingTimeDuration startingTimeDuration() {
+    private static TimePeriod startingTimeDuration() {
         int year = Date.CURRENT_YEAR;
         Date startOfLastMonth = Date.startOfTheYear(year);
         Date endingOfNextMonth = Date.endOfYear(year);
-        return new LoadingTimeDuration(startOfLastMonth, endingOfNextMonth);
+        return new TimePeriod(startOfLastMonth, endingOfNextMonth);
     }
 
     public void reloadData() {
