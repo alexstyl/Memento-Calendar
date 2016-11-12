@@ -8,33 +8,24 @@ import com.alexstyl.specialdates.date.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpcomingEventsProvider {
+class UpcomingEventsProvider {
 
     private final UpcomingEventsFetcher fetcher;
-    private final TimePeriod displayingDuration;
 
     private LoadingListener listener;
 
     static UpcomingEventsProvider newInstance(FragmentActivity activity, LoadingListener onEventsLoadedListener) {
-        UpcomingEventsFetcher upcomingEventsFetcher = new UpcomingEventsFetcher(activity.getSupportLoaderManager(), activity);
-        return new UpcomingEventsProvider(upcomingEventsFetcher, startingTimeDuration(), onEventsLoadedListener);
+        UpcomingEventsFetcher upcomingEventsFetcher = new UpcomingEventsFetcher(activity.getSupportLoaderManager(), activity, Date.today());
+        return new UpcomingEventsProvider(upcomingEventsFetcher, onEventsLoadedListener);
     }
 
-    public UpcomingEventsProvider(UpcomingEventsFetcher fetcher, TimePeriod initialDuration, LoadingListener listener) {
+    private UpcomingEventsProvider(UpcomingEventsFetcher fetcher, LoadingListener listener) {
         this.fetcher = fetcher;
-        this.displayingDuration = initialDuration;
         this.listener = listener;
     }
 
-    private static TimePeriod startingTimeDuration() {
-        int year = Date.CURRENT_YEAR;
-        Date startOfLastMonth = Date.startOfTheYear(year);
-        Date endingOfNextMonth = Date.endOfYear(year);
-        return new TimePeriod(startOfLastMonth, endingOfNextMonth);
-    }
-
     public void reloadData() {
-        fetcher.loadDatesBetween(displayingDuration, callback);
+        fetcher.loadDatesStartingFromDate(callback);
     }
 
     private final UpcomingEventsFetcher.Callback callback = new UpcomingEventsFetcher.Callback() {

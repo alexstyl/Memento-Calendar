@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
@@ -13,10 +12,10 @@ import com.alexstyl.specialdates.contact.ContactProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
@@ -31,6 +30,12 @@ public class PeopleEventsProvider {
     private final NamedayPreferences namedayPreferences;
 
     private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEventsContract.PeopleEvents.DATE};
+    private static final String[] PROJECTION = {
+            PeopleEventsContract.PeopleEvents.CONTACT_ID,
+            PeopleEventsContract.PeopleEvents.SOURCE,
+            PeopleEventsContract.PeopleEvents.DATE,
+            PeopleEventsContract.PeopleEvents.EVENT_TYPE,
+    };
 
     public static PeopleEventsProvider newInstance(Context context) {
         ContactProvider provider = ContactProvider.get(context);
@@ -39,7 +44,7 @@ public class PeopleEventsProvider {
         return new PeopleEventsProvider(provider, resolver, namedayPreferences);
     }
 
-    public PeopleEventsProvider(ContactProvider contactProvider, ContentResolver resolver, NamedayPreferences namedayPreferences) {
+    private PeopleEventsProvider(ContactProvider contactProvider, ContentResolver resolver, NamedayPreferences namedayPreferences) {
         this.contactProvider = contactProvider;
         this.resolver = resolver;
         this.namedayPreferences = namedayPreferences;
@@ -50,7 +55,7 @@ public class PeopleEventsProvider {
         return getCelebrationDateFor(closestDate);
     }
 
-    public ContactEvents getCelebrationDateFor(Date date) {
+    ContactEvents getCelebrationDateFor(Date date) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = resolver.query(
                 PeopleEventsContract.PeopleEvents.CONTENT_URI,
@@ -104,7 +109,6 @@ public class PeopleEventsProvider {
         );
     }
 
-    @NonNull
     private String onlyTheFirstMatch() {
         return PeopleEventsContract.PeopleEvents.DATE + " ASC" + " LIMIT 1";
     }
@@ -143,7 +147,6 @@ public class PeopleEventsProvider {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = queryPeopleEvents(timeDuration.getFrom(), timeDuration.getTo());
         throwIfInvalid(cursor);
-
         while (cursor.moveToNext()) {
             try {
                 ContactEvent contactEvent = getContactEventFrom(cursor);
@@ -176,15 +179,6 @@ public class PeopleEventsProvider {
         }
         return cursor;
     }
-
-    private static final String[] PROJECTION = {
-            PeopleEventsContract.PeopleEvents.CONTACT_ID,
-            PeopleEventsContract.PeopleEvents.SOURCE,
-
-            PeopleEventsContract.PeopleEvents.DATE,
-
-            PeopleEventsContract.PeopleEvents.EVENT_TYPE,
-    };
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
         long contactId = PeopleEventsContract.PeopleEvents.getContactIdFrom(cursor);

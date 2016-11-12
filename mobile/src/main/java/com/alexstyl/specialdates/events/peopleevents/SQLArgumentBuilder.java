@@ -27,6 +27,7 @@ final class SQLArgumentBuilder {
         StringBuilder stringBuilder = new StringBuilder();
         int month = date.getMonth();
         addWithLeadingZeroIfNeeded(stringBuilder, month);
+        stringBuilder.append("-");
         addWithLeadingZeroIfNeeded(stringBuilder, date.getDayOfMonth());
         return stringBuilder.toString();
     }

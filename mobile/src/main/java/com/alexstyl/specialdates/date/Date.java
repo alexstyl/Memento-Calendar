@@ -73,11 +73,6 @@ public class Date implements ShortDate {
         return year.get();
     }
 
-    @Override
-    public String toString() {
-        return DateDisplayStringCreator.getInstance().stringOf(this);
-    }
-
     public long toMillis() {
         return localDate.toDate().getTime();
     }
@@ -144,4 +139,8 @@ public class Date implements ShortDate {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return DateDisplayStringCreator.getInstance().stringOf(this);
+    }
 }
