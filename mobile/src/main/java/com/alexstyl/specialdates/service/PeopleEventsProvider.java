@@ -33,7 +33,6 @@ public class PeopleEventsProvider {
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
 
-    private static final String SORT_ORDER = PeopleEvents.DATE + " ASC";
     private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEvents.DATE};
     private static final String[] PROJECTION = {
             PeopleEvents.CONTACT_ID,
@@ -74,10 +73,9 @@ public class PeopleEventsProvider {
 
     private Cursor queryEventsFor(TimePeriod timeDuration) {
         if (isWithinTheSameYear(timeDuration)) {
-            return queryPeopleEvents(timeDuration, SORT_ORDER);
+            return queryPeopleEvents(timeDuration, PeopleEvents.DATE + " ASC");
         } else {
-            throw new UnsupportedOperationException("Not ready yet :D ");
-//            return queryForBothYearsIn(timeDuration);
+            return queryForBothYearsIn(timeDuration);
         }
     }
 
@@ -108,13 +106,13 @@ public class PeopleEventsProvider {
                 timeDuration.getTo()
         );
         Cursor[] cursors = new Cursor[2];
-        cursors[0] = queryPeopleEvents(firstHalf, SORT_ORDER);
-        cursors[1] = queryPeopleEvents(secondHalf, SORT_ORDER);
-        return new SortCursor(cursors, SORT_ORDER);
+        cursors[0] = queryPeopleEvents(firstHalf, PeopleEvents.DATE + " ASC");
+        cursors[1] = queryPeopleEvents(secondHalf, PeopleEvents.DATE + " ASC");
+        return new SortCursor(cursors, PeopleEvents.DATE);
     }
 
     private boolean isWithinTheSameYear(TimePeriod timeDuration) {
-        return timeDuration.getFrom().getYear() == timeDuration.getFrom().getYear();
+        return timeDuration.getFrom().getYear() == timeDuration.getTo().getYear();
     }
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {

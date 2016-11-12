@@ -55,7 +55,7 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
 
         TimePeriod timePeriod = new TimePeriod(
                 startingPeriod,
-                Date.endOfYear(startingPeriod.getYear())
+                startingPeriod.addDay(365)
         );
 
         List<CelebrationDate> celebrationDates = calculateFor(timePeriod);
