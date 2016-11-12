@@ -8,21 +8,24 @@ public class TimePeriod {
     private final Date from;
     private final Date to;
 
-    public TimePeriod(Date from, Date to) {
+    public static TimePeriod between(Date startDate, Date endDate) {
+        if (DateComparator.INSTANCE.compare(startDate, endDate) > 0) {
+            throw new IllegalArgumentException("starting Date was after end Date");
+        }
+        return new TimePeriod(startDate, endDate);
+    }
+
+    private TimePeriod(Date from, Date to) {
         this.from = from;
         this.to = to;
     }
 
-    public Date getFrom() {
+    public Date getStartingDate() {
         return from;
     }
 
-    public Date getTo() {
+    public Date getEndingDate() {
         return to;
-    }
-
-    public int getYear() {
-        return from.getYear();
     }
 
     public boolean containsDate(Date date) {

@@ -60,8 +60,8 @@ final class UpcomingDatesBuilder {
         }
 
         List<CelebrationDate> celebrationDates = new ArrayList<>();
-        Date indexDate = duration.getFrom();
-        Date lastDate = duration.getTo();
+        Date indexDate = duration.getStartingDate();
+        Date lastDate = duration.getEndingDate();
 
         while (COMPARATOR.compare(indexDate, lastDate) <= 0) {
             AnnualDate annualDate = new AnnualDate(indexDate);

@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MergeCursor;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.ErrorTracker;
@@ -17,7 +18,6 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.SQLArgumentBuilder;
-import com.alexstyl.specialdates.events.peopleevents.SortCursor;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
@@ -42,7 +42,6 @@ public class PeopleEventsProvider {
     private final ContactProvider contactProvider;
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
-
 
     public static PeopleEventsProvider newInstance(Context context) {
         ContactProvider provider = ContactProvider.get(context);
@@ -84,8 +83,8 @@ public class PeopleEventsProvider {
 
     private Cursor queryPeopleEvents(TimePeriod timePeriod, String sortOrder) {
         String[] selectArgs = new String[]{
-                SQLArgumentBuilder.dateWithoutYear(timePeriod.getFrom()),
-                SQLArgumentBuilder.dateWithoutYear(timePeriod.getTo()),
+                SQLArgumentBuilder.dateWithoutYear(timePeriod.getStartingDate()),
+                SQLArgumentBuilder.dateWithoutYear(timePeriod.getEndingDate()),
         };
 
         Cursor cursor = resolver.query(
@@ -102,20 +101,30 @@ public class PeopleEventsProvider {
     }
 
     private Cursor queryForBothYearsIn(TimePeriod timeDuration) {
-        Date from = timeDuration.getFrom();
-        TimePeriod firstHalf = new TimePeriod(from, Date.endOfYear(from.getYear()));
-        TimePeriod secondHalf = new TimePeriod(
-                Date.startOfTheYear(timeDuration.getTo().getYear()),
-                timeDuration.getTo()
-        );
+        TimePeriod firstHalf = firstHalfOf(timeDuration);
         Cursor[] cursors = new Cursor[2];
         cursors[0] = queryPeopleEvents(firstHalf, PeopleEvents.DATE + " ASC");
+        TimePeriod secondHalf = secondHalfOf(timeDuration);
         cursors[1] = queryPeopleEvents(secondHalf, PeopleEvents.DATE + " ASC");
-        return new SortCursor(cursors, PeopleEvents.DATE);
+        return new MergeCursor(cursors);
+    }
+
+    private TimePeriod firstHalfOf(TimePeriod timeDuration) {
+        return TimePeriod.between(
+                timeDuration.getStartingDate(),
+                Date.endOfYear(timeDuration.getStartingDate().getYear())
+        );
+    }
+
+    private TimePeriod secondHalfOf(TimePeriod timeDuration) {
+        return TimePeriod.between(
+                Date.startOfTheYear(timeDuration.getEndingDate().getYear()),
+                timeDuration.getEndingDate()
+        );
     }
 
     private boolean isWithinTheSameYear(TimePeriod timeDuration) {
-        return timeDuration.getFrom().getYear() == timeDuration.getTo().getYear();
+        return timeDuration.getStartingDate().getYear() == timeDuration.getEndingDate().getYear();
     }
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
