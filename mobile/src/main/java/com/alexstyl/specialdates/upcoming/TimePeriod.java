@@ -3,9 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 
-import java.io.Serializable;
-
-public class TimePeriod implements Serializable {
+public class TimePeriod {
 
     private final Date from;
     private final Date to;
@@ -32,5 +30,13 @@ public class TimePeriod implements Serializable {
                 &&
                 DateComparator.INSTANCE.compare(date, to) < 0
         );
+    }
+
+    @Override
+    public String toString() {
+        return "TimePeriod{" +
+                "from=" + from +
+                ", to=" + to +
+                '}';
     }
 }

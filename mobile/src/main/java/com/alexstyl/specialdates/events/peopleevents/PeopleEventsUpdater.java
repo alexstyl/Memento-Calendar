@@ -64,7 +64,7 @@ class PeopleEventsUpdater {
         this.permissionChecker = permissionChecker;
     }
 
-    public void updateEventsIfNeeded() {
+    void updateEventsIfNeeded() {
         if (!permissionChecker.canReadAndWriteContacts()) {
             ErrorTracker.track(new RuntimeException("Tried to update events without permission"));
             return;

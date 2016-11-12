@@ -9,131 +9,72 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventsDBContract;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
-import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
-
-import java.util.Arrays;
 
 public class PeopleEventsContentProvider extends ContentProvider {
 
-    private static final int PEOPLE_EVENTS = 10;
-    private final DateParser parser = DateParser.INSTANCE;
+    private static final int CODE_PEOPLE_EVENTS = 10;
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
-
     private PeopleEventsUpdater peopleEventsUpdater;
-    private SQLArgumentBuilder sqlArgumentBuilder;
 
     @Override
     public boolean onCreate() {
         eventSQLHelper = new EventSQLiteOpenHelper(getContext());
         peopleEventsUpdater = PeopleEventsUpdater.newInstance(getContext());
         peopleEventsUpdater.register();
-
-        sqlArgumentBuilder = new SQLArgumentBuilder();
         initialiseMatcher();
         return true;
     }
 
     private void initialiseMatcher() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, PEOPLE_EVENTS);
+        uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, CODE_PEOPLE_EVENTS);
     }
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        refreshEventsIfNeeded();
+        peopleEventsUpdater.updateEventsIfNeeded();
 
-        SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
-        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-
-        int uriType = uriMatcher.match(uri);
-
-        if (uriType == PEOPLE_EVENTS) {
-            if (isInvalidSetOfArguments(selectionArgs)) {
-                throwUnsupportedOperation("3+ select args");
-            }
-            Cursor[] cursors = new Cursor[2];
-
-            cursors[0] = queryAnnualEvents(projection, selection, selectionArgs, sortOrder, db, builder);
-            cursors[1] = queryDynamicEvents(projection, selection, selectionArgs, sortOrder, db, builder);
-
-            SortCursor sortCursor = new SortCursor(cursors, AnnualEventsContract.DATE);
-            sortCursor.setNotificationUri(getContext().getContentResolver(), uri);
-            return sortCursor;
-        } else {
-            throwForInvalidUri("querying", uri);
-            return null;
+        if (isAboutPeopleEvents(uri)) {
+            UriQuery query = new UriQuery(uri, projection, selection, selectionArgs, sortOrder);
+            SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
+            Cursor cursor = queryAnnualEvents(query, db);
+//            Cursor[] cursors = new Cursor[2];
+//            cursors[1] = queryDynamicEvents(projection, selection, selectionArgs, sortOrder, db, builder);
+//            SortCursor sortCursor = new SortCursor(cursors, AnnualEventsContract.DATE);
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+            return cursor;
         }
+        return null;
     }
 
-    private boolean isInvalidSetOfArguments(String[] selectionArgs) {
-        return selectionArgs != null && selectionArgs.length > 2;
+    private boolean isAboutPeopleEvents(Uri uri) {
+        int uriType = uriMatcher.match(uri);
+        return uriType == CODE_PEOPLE_EVENTS;
     }
 
-    private Cursor queryDynamicEvents(String[] projection, String selection, String[] selectionArgs, String sortOrder, SQLiteDatabase db, SQLiteQueryBuilder builder) {
+    private Cursor queryAnnualEvents(UriQuery query, SQLiteDatabase db) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(AnnualEventsContract.TABLE_NAME);
+        return builder.query(db, query.getProjection(), query.getSelection(), query.getSelectionArgs(), null, null, query.getSortOrder());
+    }
+
+    private Cursor queryDynamicEvents(String[] projection, String selection, String[] selectionArgs, String sortOrder, SQLiteDatabase db) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(EventsDBContract.DynamicEventsContract.TABLE_NAME);
         return builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
-    }
-
-    private Cursor queryAnnualEvents(String[] projection, String selection, String[] selectionArgs, String sortOrder, SQLiteDatabase db, SQLiteQueryBuilder builder) {
-        builder.setTables(AnnualEventsContract.TABLE_NAME);
-
-        if (selectionArgs != null) {
-            TimePeriod duration = getDurationfrom(selection, selectionArgs);
-            selection = sqlArgumentBuilder.dateBetween(duration);
-        }
-        return builder.query(db, projection, selection, null, null, null, sortOrder);
-    }
-
-    private TimePeriod getDurationfrom(String selection, String[] selectionArgs) {
-        if (selectionArgs.length == 1) {
-            try {
-                Date date = parser.parse(selectionArgs[0]);
-                if (selection.contains(">") || selection.contains("<")) {
-                    Date endOfYear = Date.endOfYear(date.getYear());
-                    return new TimePeriod(date, endOfYear);
-                } else {
-                    return new TimePeriod(date, date);
-                }
-            } catch (DateParseException e) {
-                throw new DeveloperError(e.getMessage());
-            }
-        }
-        if (selectionArgs.length == 2) {
-            Date[] dates = new Date[2];
-            for (int i = 0; i < selectionArgs.length; i++) {
-                try {
-                    dates[i] = parser.parse(selectionArgs[i]);
-                } catch (DateParseException e) {
-                    throw new DeveloperError(e.getMessage());
-                }
-            }
-            return new TimePeriod(dates[0], dates[1]);
-        }
-        throw new DeveloperError("Invalid length " + Arrays.toString(selectionArgs));
-    }
-
-    private void throwForInvalidUri(String when, Uri uri) {
-        throw new DeveloperError("Invalid uri passed " + uri + " while " + when);
-    }
-
-    private void refreshEventsIfNeeded() {
-        peopleEventsUpdater.updateEventsIfNeeded();
     }
 
     @Override
     public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)) {
-            case PEOPLE_EVENTS:
+            case CODE_PEOPLE_EVENTS:
                 return PeopleEvents.CONTENT_TYPE;
             default:
                 return null;
