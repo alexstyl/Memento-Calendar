@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
+import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
 
@@ -139,7 +139,7 @@ public class PeopleEventsProvider {
         return namedayPreferences.isEnabled();
     }
 
-    public List<ContactEvent> getCelebrationDateFor(LoadingTimeDuration timeDuration) {
+    public List<ContactEvent> getCelebrationDateFor(TimePeriod timeDuration) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = queryPeopleEvents(timeDuration.getFrom(), timeDuration.getTo());
         throwIfInvalid(cursor);

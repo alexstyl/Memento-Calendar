@@ -8,6 +8,10 @@ import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
+import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
+import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
@@ -29,18 +33,20 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     private final PeopleEventsProvider peopleEventsProvider;
     private final NamedayPreferences namedayPreferences;
     private final ContactsObserver contactsObserver;
-    private final LoadingTimeDuration timeDuration;
+    private final TimePeriod timeDuration;
     private final EasterCalculator easterCalculator = new EasterCalculator();
+    private final BankHolidaysPreferences bankHolidaysPreferences;
 
     private final int currentYear;
 
-    UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, LoadingTimeDuration timeDuration) {
+    UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, TimePeriod timeDuration) {
         super(context);
         this.peopleEventsProvider = peopleEventsProvider;
         this.timeDuration = timeDuration;
         this.currentYear = timeDuration.getFrom().getYear();
         this.namedayPreferences = NamedayPreferences.newInstance(context);
         this.contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
+        this.bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
         setupContactsObserver();
     }
 
@@ -53,23 +59,22 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     @Override
     public List<CelebrationDate> loadInBackground() {
 
-        LoadingTimeDuration calculateDuration = new LoadingTimeDuration(
-                timeDuration.getFrom(),
-                Date.endOfYear(timeDuration.getFrom().getYear())
+        int year = timeDuration.getFrom().getYear();
+        TimePeriod duration = new TimePeriod(
+                Date.startOfTheYear(year),
+                Date.endOfYear(year)
         );
-        List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(calculateDuration);
-        UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(calculateDuration)
+        List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(duration);
+        UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(duration)
                 .withContactEvents(contactEvents);
 
-//        BankHolidaysPreferences bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
-//
-//        if (bankHolidaysPreferences.isEnabled()) {
-//            BankholidayCalendar.get();
-//            Date easter = easterCalculator.calculateEasterForYear(currentYear);
-//            List<BankHoliday> bankHolidays = new GreekBankHolidays(easter).getBankHolidaysForYear();
-//            upcomingDatesBuilder.withBankHolidays(bankHolidays);
-//        }
-//
+        if (includesBankholidays()) {
+            GreekBankHolidaysCalculator bankHolidaysCalculator = new GreekBankHolidaysCalculator(easterCalculator);
+            List<BankHoliday> bankHolidays = new BankHolidayProvider(bankHolidaysCalculator)
+                    .getBankHolidayFor(duration);
+            upcomingDatesBuilder.withBankHolidays(bankHolidays);
+        }
+
 //        if (includeNamedays()) {
 //            List<NamesInADate> namedays = getNamedaysFor(timeDuration);
 //            upcomingDatesBuilder.withNamedays(namedays);
@@ -81,11 +86,15 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
         return allDates;
     }
 
+    private boolean includesBankholidays() {
+        return bankHolidaysPreferences.isEnabled();
+    }
+
     private boolean includeNamedays() {
         return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
     }
 
-    private List<NamesInADate> getNamedaysFor(LoadingTimeDuration timeDuration) {
+    private List<NamesInADate> getNamedaysFor(TimePeriod timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, currentYear);

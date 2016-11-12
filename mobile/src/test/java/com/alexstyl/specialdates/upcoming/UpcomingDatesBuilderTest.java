@@ -32,7 +32,7 @@ public class UpcomingDatesBuilderTest {
         ContactEvent event = aContactEventOn(Date.on(1, JANUARY, 1990));
         List<ContactEvent> contactEvents = Collections.singletonList(event);
 
-        LoadingTimeDuration duration = new LoadingTimeDuration(Date.on(1, JANUARY, 2016), Date.on(1, DECEMBER, 2016));
+        TimePeriod duration = new TimePeriod(Date.on(1, JANUARY, 2016), Date.on(1, DECEMBER, 2016));
 
         List<CelebrationDate> dates = new UpcomingDatesBuilder(duration)
                 .withContactEvents(contactEvents)
@@ -46,7 +46,7 @@ public class UpcomingDatesBuilderTest {
         ContactEvent event = aContactEvent();
         List<ContactEvent> contactEvents = Collections.singletonList(event);
 
-        LoadingTimeDuration duration = timeOf(event);
+        TimePeriod duration = timeOf(event);
 
         List<CelebrationDate> dates = new UpcomingDatesBuilder(duration)
                 .withContactEvents(contactEvents)
@@ -55,8 +55,8 @@ public class UpcomingDatesBuilderTest {
         assertThat(dates.size()).isEqualTo(1);
     }
 
-    private LoadingTimeDuration timeOf(ContactEvent event) {
-        return new LoadingTimeDuration(event.getDate(), event.getDate());
+    private TimePeriod timeOf(ContactEvent event) {
+        return new TimePeriod(event.getDate(), event.getDate());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class UpcomingDatesBuilderTest {
                 aContactEventOn(FEBRUARY_1st)
         );
 
-        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(FEBRUARY_1st, FEBRUARY_1st))
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new TimePeriod(FEBRUARY_1st, FEBRUARY_1st))
                 .withContactEvents(contactEventsList)
                 .build();
 
@@ -93,7 +93,7 @@ public class UpcomingDatesBuilderTest {
                 aContactEventOn(FEBRUARY_3rd)
         );
 
-        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(FEBRUARY_1st, FEBRUARY_3rd))
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new TimePeriod(FEBRUARY_1st, FEBRUARY_3rd))
                 .withContactEvents(contactEventsList)
                 .build();
 
@@ -104,7 +104,7 @@ public class UpcomingDatesBuilderTest {
     public void givenABankHoliday_thenACelebrationDateIsCreated() {
         BankHoliday bankHoliday = aBankHoliday();
         List<BankHoliday> bankHolidays = Collections.singletonList(bankHoliday);
-        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(bankHoliday.getDate(), bankHoliday.getDate()))
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new TimePeriod(bankHoliday.getDate(), bankHoliday.getDate()))
                 .withBankHolidays(bankHolidays)
                 .build();
 
@@ -113,7 +113,7 @@ public class UpcomingDatesBuilderTest {
 
     @Test
     public void givenEventsOnDifferentEvents_thenACelebrationDatesForEachOneAreCreated() {
-        List<CelebrationDate> dates = new UpcomingDatesBuilder(new LoadingTimeDuration(FEBRUARY_1st, MARCH_5th))
+        List<CelebrationDate> dates = new UpcomingDatesBuilder(new TimePeriod(FEBRUARY_1st, MARCH_5th))
                 .withContactEvents(Collections.singletonList(aContactEventOn(FEBRUARY_1st)))
                 .withBankHolidays(Collections.singletonList(aBankHolidayOn(FEBRUARY_3rd)))
                 .withNamedays(Collections.singletonList(new NamesInADate(MARCH_5th, Collections.singletonList("Name"))))

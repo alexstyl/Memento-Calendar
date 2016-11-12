@@ -25,7 +25,7 @@ class UpcomingEventsFetcher {
         this.context = context;
     }
 
-    public void loadDatesBetween(LoadingTimeDuration duration, Callback callback) {
+    public void loadDatesBetween(TimePeriod duration, Callback callback) {
         this.callback = callback;
         Bundle args = new Bundle();
         args.putSerializable(KEY_LOADING_TIME, duration);
@@ -36,7 +36,7 @@ class UpcomingEventsFetcher {
 
         @Override
         public Loader<List<CelebrationDate>> onCreateLoader(int loaderID, Bundle arg1) {
-            LoadingTimeDuration duration = (LoadingTimeDuration) arg1.getSerializable(KEY_LOADING_TIME);
+            TimePeriod duration = (TimePeriod) arg1.getSerializable(KEY_LOADING_TIME);
             if (loaderID == LOADER_ID_DATES) {
                 return new UpcomingEventsLoader(context, PeopleEventsProvider.newInstance(context), duration);
             }

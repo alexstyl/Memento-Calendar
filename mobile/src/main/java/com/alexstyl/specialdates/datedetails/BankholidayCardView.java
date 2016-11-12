@@ -8,15 +8,14 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.ui.MementoCardView;
 
-public class BankholidayCardView extends MementoCardView {
+public class BankHolidayCardView extends MementoCardView {
 
     private final TextView text;
 
-    public BankholidayCardView(Context context, AttributeSet attrs) {
+    public BankHolidayCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         inflate(context, R.layout.merge_bankholidaycardview, this);
-
         text = (TextView) findViewById(R.id.bankholiday_text);
     }
 
