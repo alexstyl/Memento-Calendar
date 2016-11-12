@@ -53,24 +53,14 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     @Override
     public List<CelebrationDate> loadInBackground() {
 
-//        TimePeriod firstHalf = new TimePeriod(
-//                startingPeriod,
-//                Date.endOfYear(startingPeriod.getYear())
-//        );
-//
-//        TimePeriod secondHalf = new TimePeriod(
-//                Date.startOfTheYear(startingPeriod.getYear() + 1),
-//                startingPeriod.addDay(365)
-//        );
-
         TimePeriod timePeriod = new TimePeriod(
                 startingPeriod,
-                startingPeriod.addDay(364)
+                Date.endOfYear(startingPeriod.getYear())
         );
 
-        List<CelebrationDate> allDates = calculateFor(timePeriod);
-        Collections.sort(allDates);
-        return allDates;
+        List<CelebrationDate> celebrationDates = calculateFor(timePeriod);
+        Collections.sort(celebrationDates);
+        return celebrationDates;
     }
 
     private List<CelebrationDate> calculateFor(TimePeriod period) {
