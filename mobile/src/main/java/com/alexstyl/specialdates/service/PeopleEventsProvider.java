@@ -27,12 +27,9 @@ import java.util.List;
 
 public class PeopleEventsProvider {
 
-    // TODO calculate namedays here
-    private final ContactProvider contactProvider;
-
-    private final ContentResolver resolver;
-    private final NamedayPreferences namedayPreferences;
-
+    private static final String DATE_FROM = "substr(" + PeopleEvents.DATE + ",-5) >= ?";
+    private static final String DATE_TO = "substr(" + PeopleEvents.DATE + ",-5) <= ?";
+    private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
     private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEvents.DATE};
     private static final String[] PROJECTION = {
             PeopleEvents.CONTACT_ID,
@@ -40,6 +37,12 @@ public class PeopleEventsProvider {
             PeopleEvents.DATE,
             PeopleEvents.EVENT_TYPE,
     };
+
+    // TODO calculate namedays here
+    private final ContactProvider contactProvider;
+    private final ContentResolver resolver;
+    private final NamedayPreferences namedayPreferences;
+
 
     public static PeopleEventsProvider newInstance(Context context) {
         ContactProvider provider = ContactProvider.get(context);
@@ -88,7 +91,7 @@ public class PeopleEventsProvider {
         Cursor cursor = resolver.query(
                 PeopleEvents.CONTENT_URI,
                 PROJECTION,
-                SQLArgumentBuilder.DATE_BETWEEN_IGNORING_YEAR,
+                DATE_BETWEEN_IGNORING_YEAR,
                 selectArgs,
                 sortOrder
         );
