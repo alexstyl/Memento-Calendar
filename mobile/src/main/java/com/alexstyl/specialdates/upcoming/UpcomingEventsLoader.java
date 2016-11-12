@@ -28,7 +28,7 @@ import java.util.List;
 
 class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> {
 
-    private static final DateComparator comparator = DateComparator.INSTANCE;
+    private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
     private final PeopleEventsProvider peopleEventsProvider;
     private final NamedayPreferences namedayPreferences;
@@ -56,17 +56,17 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     @Override
     public List<CelebrationDate> loadInBackground() {
 
-        TimePeriod timePeriod = new TimePeriod(
+        TimePeriod timePeriod = TimePeriod.between(
                 startingPeriod,
-                startingPeriod.addDay(365)
+                startingPeriod.addDay(364)
         );
 
-        List<CelebrationDate> celebrationDates = calculateFor(timePeriod);
+        List<CelebrationDate> celebrationDates = calculateEventsFor(timePeriod);
         Collections.sort(celebrationDates);
         return celebrationDates;
     }
 
-    private List<CelebrationDate> calculateFor(TimePeriod period) {
+    private List<CelebrationDate> calculateEventsFor(TimePeriod period) {
         List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(period);
         UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(period)
                 .withContactEvents(contactEvents);
@@ -96,13 +96,13 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     private List<NamesInADate> getNamedaysFor(TimePeriod timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
-        NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.getFrom().getYear());
+        NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.getStartingDate().getYear());
 
-        Date indexDate = timeDuration.getFrom();
-        Date toDate = timeDuration.getTo();
+        Date indexDate = timeDuration.getStartingDate();
+        Date toDate = timeDuration.getEndingDate();
         List<NamesInADate> namedays = new ArrayList<>();
 
-        while (comparator.compare(indexDate, toDate) < 0) {
+        while (COMPARATOR.compare(indexDate, toDate) < 0) {
             NamesInADate allNamedayOn = namedayCalendar.getAllNamedayOn(indexDate);
             if (allNamedayOn.nameCount() > 0) {
                 namedays.add(allNamedayOn);

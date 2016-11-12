@@ -16,7 +16,9 @@ public final class BankHolidayProvider {
     }
 
     public List<BankHoliday> getBankHolidayFor(TimePeriod timePeriod) {
-        List<BankHoliday> allBankHolidays = bankHolidaysCalculator.calculateBankholidaysForYear(timePeriod.getYear());
+        // TODO different years
+        int year = timePeriod.getStartingDate().getYear();
+        List<BankHoliday> allBankHolidays = bankHolidaysCalculator.calculateBankholidaysForYear(year);
         List<BankHoliday> bankHolidays = new ArrayList<>();
         for (BankHoliday bankHoliday : allBankHolidays) {
             if (timePeriod.containsDate(bankHoliday.getDate())) {
