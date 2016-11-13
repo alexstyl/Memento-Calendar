@@ -24,7 +24,7 @@ public class DeviceContact extends Contact {
 
     private final String lookupKey;
 
-    DeviceContact(long contactId, DisplayName displayName, String lookupKey) {
+    public DeviceContact(long contactId, DisplayName displayName, String lookupKey) {
         super(contactId, displayName);
         this.lookupKey = lookupKey;
     }

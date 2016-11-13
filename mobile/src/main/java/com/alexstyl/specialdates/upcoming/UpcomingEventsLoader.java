@@ -11,11 +11,9 @@ import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
-import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
@@ -34,14 +32,22 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     private final NamedayPreferences namedayPreferences;
     private final Date startingPeriod;
     private final ContactsObserver contactsObserver;
-    private final EasterCalculator easterCalculator = new EasterCalculator();
     private final BankHolidaysPreferences bankHolidaysPreferences;
+    private final BankHolidayProvider bankHolidayProvider;
+    private final NamedayCalendarProvider namedayCalendarProvider;
 
-    UpcomingEventsLoader(Context context, PeopleEventsProvider peopleEventsProvider, Date startingPeriod) {
+    UpcomingEventsLoader(Context context,
+                         Date startingPeriod,
+                         PeopleEventsProvider peopleEventsProvider,
+                         BankHolidayProvider bankHolidayProvider,
+                         NamedayCalendarProvider namedayCalendarProvider
+    ) {
         super(context);
         this.peopleEventsProvider = peopleEventsProvider;
         this.namedayPreferences = NamedayPreferences.newInstance(context);
         this.startingPeriod = startingPeriod;
+        this.bankHolidayProvider = bankHolidayProvider;
+        this.namedayCalendarProvider = namedayCalendarProvider;
         this.contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
         this.bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
         setupContactsObserver();
@@ -69,26 +75,24 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
         UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(period)
                 .withContactEvents(contactEvents);
 
-        if (includesBankholidays()) {
-            List<BankHoliday> bankHolidays = calculateBankHolidaysBetween(period);
+        if (shouldLoadBankHolidays()) {
+            List<BankHoliday> bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(period);
             upcomingDatesBuilder.withBankHolidays(bankHolidays);
         }
 
-        if (includeNamedays()) {
+        if (shouldLoadNamedays()) {
             List<NamesInADate> namedays = calculateNamedaysBetween(period);
             upcomingDatesBuilder.withNamedays(namedays);
         }
         return upcomingDatesBuilder.build();
     }
 
-    private List<BankHoliday> calculateBankHolidaysBetween(TimePeriod period) {
-        GreekBankHolidaysCalculator bankHolidaysCalculator = new GreekBankHolidaysCalculator(easterCalculator);
-        return new BankHolidayProvider(bankHolidaysCalculator).getBankHolidayFor(period);
+    private boolean shouldLoadBankHolidays() {
+        return bankHolidaysPreferences.isEnabled();
     }
 
     private List<NamesInADate> calculateNamedaysBetween(TimePeriod timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(getContext().getResources());
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.getStartingDate().getYear());
 
         Date indexDate = timeDuration.getStartingDate();
@@ -105,11 +109,7 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
         return namedays;
     }
 
-    private boolean includesBankholidays() {
-        return bankHolidaysPreferences.isEnabled();
-    }
-
-    private boolean includeNamedays() {
+    private boolean shouldLoadNamedays() {
         return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
     }
 

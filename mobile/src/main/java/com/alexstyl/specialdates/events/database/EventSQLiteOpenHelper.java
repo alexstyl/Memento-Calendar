@@ -5,12 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEventsContract;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "events.db";
-    private static final int INITIAL_CODE = 1;
+    private static final int INITIAL_CODE = 2;
     private static final int DATABASE_VERSION = INITIAL_CODE;
 
     public EventSQLiteOpenHelper(Context context) {
@@ -39,23 +38,13 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
                     + " PRIMARY KEY (" + AnnualEventsContract._ID + ")"
                     + ")";
 
-    private static final String SQL_CREATE_DYNAMIC_EVENTS =
-            "CREATE TABLE " + DynamicEventsContract.TABLE_NAME + " ("
-                    + DynamicEventsContract._ID + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEventsContract.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEventsContract.DISPLAY_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEventsContract.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEventsContract.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + DynamicEventsContract.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
-                    + " PRIMARY KEY (" + DynamicEventsContract._ID + ")"
-                    + ")";
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ANNUAL_EVENTS);
-        db.execSQL(SQL_CREATE_DYNAMIC_EVENTS);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
     }
 }

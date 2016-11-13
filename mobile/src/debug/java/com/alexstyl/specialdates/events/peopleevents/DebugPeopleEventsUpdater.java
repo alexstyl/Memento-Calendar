@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 import android.content.Context;
 
 import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.events.database.ContactColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.util.DateParser;
@@ -14,14 +15,14 @@ public class DebugPeopleEventsUpdater {
 
     public static DebugPeopleEventsUpdater newInstance(Context context) {
         PeopleEventsRepository repository = new PeopleEventsRepository(context.getContentResolver(), ContactProvider.get(context), DateParser.INSTANCE);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller(ContactColumns.SOURCE_DEVICE);
         PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
         PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, marshaller, persister);
 
         return new DebugPeopleEventsUpdater(refresher, NamedayDatabaseRefresher.newInstance(context));
     }
 
-    public DebugPeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
+    private DebugPeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
         this.peopleEventsDatabaseRefresher = peopleEventsDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
     }

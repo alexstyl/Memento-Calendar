@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,9 +10,9 @@ import java.util.List;
 import static com.alexstyl.specialdates.date.DateConstants.*;
 
 public class GreekBankHolidaysCalculator {
-    private final EasterCalculator easterCalculator;
+    private final OrthodoxEasterCalculator easterCalculator;
 
-    public GreekBankHolidaysCalculator(EasterCalculator easterCalculator) {
+    public GreekBankHolidaysCalculator(OrthodoxEasterCalculator easterCalculator) {
         this.easterCalculator = easterCalculator;
     }
 

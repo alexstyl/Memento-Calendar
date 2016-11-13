@@ -6,9 +6,9 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactProvider;
-import com.alexstyl.specialdates.contact.DeviceContact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
@@ -58,7 +58,7 @@ class PeopleEventsRepository {
                 EventType eventType = getEventTypeFrom(cursor);
                 try {
                     Date eventDate = getEventDateFrom(cursor);
-                    DeviceContact contact = contactProvider.getOrCreateContact(contactId);
+                    Contact contact = contactProvider.getOrCreateContact(contactId);
                     events.add(new ContactEvent(eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);

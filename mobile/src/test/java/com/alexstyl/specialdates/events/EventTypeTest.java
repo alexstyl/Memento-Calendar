@@ -26,6 +26,6 @@ public class EventTypeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void throwExceptionOnInvalidId() {
-        EventType.fromId(3);
+        EventType.fromId(5);
     }
 }

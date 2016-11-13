@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 public class ContactProvider {
 
     private static final int CACHE_SIZE = 2 * 1024;
-    private final ContactCache<DeviceContact> cache;
+    private final ContactCache<Contact> cache;
     private final DeviceContactFactory deviceContactFactory;
 
     private static ContactProvider INSTANCE;
@@ -18,7 +18,7 @@ public class ContactProvider {
         if (INSTANCE == null) {
             ContentResolver contentResolver = context.getContentResolver();
             DeviceContactFactory factory = new DeviceContactFactory(contentResolver);
-            ContactCache<DeviceContact> contactCache = new ContactCache<>(CACHE_SIZE);
+            ContactCache<Contact> contactCache = new ContactCache<>(CACHE_SIZE);
             INSTANCE = new ContactProvider(contactCache, factory);
             INSTANCE.initialise(contentResolver);
         }
@@ -30,13 +30,13 @@ public class ContactProvider {
         observer.registerWith(evictIfContactChanged);
     }
 
-    private ContactProvider(ContactCache<DeviceContact> cache, DeviceContactFactory deviceContactFactory) {
+    private ContactProvider(ContactCache<Contact> cache, DeviceContactFactory deviceContactFactory) {
         this.cache = cache;
         this.deviceContactFactory = deviceContactFactory;
     }
 
-    public DeviceContact getOrCreateContact(long contactID) throws ContactNotFoundException {
-        DeviceContact deviceContact = cache.getContact(contactID);
+    public Contact getOrCreateContact(long contactID) throws ContactNotFoundException {
+        Contact deviceContact = cache.getContact(contactID);
         if (deviceContact == null) {
             deviceContact = deviceContactFactory.createContactWithId(contactID);
             cache.addContact(deviceContact);

@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
+import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEventsContract;
 
 public class PeopleEventsPersister {
 
@@ -21,21 +21,14 @@ public class PeopleEventsPersister {
         deleteAllEventsOfType(AnnualEventsContract.TYPE_NAMEDAY);
     }
 
-    void deleteEverythingButNamedays() {
-        // TODO Eventually this will delete ALL events
+    private void deleteAllEventsOfType(@EventTypeId int eventType) {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "!=" + AnnualEventsContract.TYPE_NAMEDAY, null);
-        database.delete(DynamicEventsContract.TABLE_NAME, DynamicEventsContract.EVENT_TYPE + "!=" + AnnualEventsContract.TYPE_NAMEDAY, null);
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "==" + eventType, null);
     }
 
-    private void deleteAllEventsOfType(int type) {
+    void deleteAllDeviceEvents() {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "=" + type, null);
-        database.delete(DynamicEventsContract.TABLE_NAME, DynamicEventsContract.EVENT_TYPE + "=" + type, null);
-    }
-
-    public void insertDynamicEvents(ContentValues[] values) {
-        insertEventsInTable(values, DynamicEventsContract.TABLE_NAME);
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + "==" + AnnualEventsContract.SOURCE_DEVICE, null);
     }
 
     public void insertAnnualEvents(ContentValues[] values) {
