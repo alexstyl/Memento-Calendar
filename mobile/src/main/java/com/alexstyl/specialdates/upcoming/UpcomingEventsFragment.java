@@ -29,7 +29,6 @@ import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
-import com.alexstyl.specialdates.views.FabPaddingSetter;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;
@@ -75,7 +74,6 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        new FabPaddingSetter().setBottomPaddingTo(upcomingEventsListView);
         upcomingEventsListView.setHasFixedSize(true);
     }
 
