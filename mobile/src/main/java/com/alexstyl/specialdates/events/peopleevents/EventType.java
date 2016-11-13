@@ -17,6 +17,7 @@ public enum EventType {
     OTHER(AnnualEventsContract.TYPE_OTHER, R.string.Other, R.color.past_date_grey),
     CUSTOM(AnnualEventsContract.TYPE_CUSTOM, R.string.Custom, R.color.past_date_grey);
 
+    @EventTypeId
     private final int eventTypeId;
     private final int eventNameRes;
     private final int eventColorRes;
@@ -51,5 +52,10 @@ public enum EventType {
     @ColorRes
     public int getColorRes() {
         return eventColorRes;
+    }
+
+    @EventTypeId
+    public int getId() {
+        return eventTypeId;
     }
 }

@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.events.database.ContactColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
@@ -22,15 +22,14 @@ class PeopleEventsUpdater {
     private final NamedaySettingsMonitor namedayMonitor;
     private final ContactsObserver contactsObserver;
     private final PermissionChecker permissionChecker;
-
-    private NamedayDatabaseRefresher namedayDatabaseRefresher;
+    private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     static PeopleEventsUpdater newInstance(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, ContactProvider.get(context), DateParser.INSTANCE);
         PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher = new PeopleEventsDatabaseRefresher(
                 repository,
-                new ContactEventsMarshaller(),
+                new ContactEventsMarshaller(ContactColumns.SOURCE_DEVICE),
                 new PeopleEventsPersister(new EventSQLiteOpenHelper(context))
         );
         NamedayDatabaseRefresher namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(context);
@@ -89,9 +88,6 @@ class PeopleEventsUpdater {
         boolean wereContactsUpdated = contactsObserver.wereContactsUpdated();
         boolean wereNamedaysSettingsUpdated = namedayMonitor.dataWasUpdated();
 
-        if (wereNamedaysSettingsUpdated) {
-            namedayDatabaseRefresher = NamedayDatabaseRefresher.newInstance(MementoApplication.getContext());
-        }
         if (wereContactsUpdated) {
             peopleEventsDatabaseRefresher.refreshEvents();
         }

@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
 import java.util.HashMap;
 
@@ -12,10 +12,10 @@ import static com.alexstyl.specialdates.date.DateConstants.APRIL;
 import static com.alexstyl.specialdates.date.DateConstants.MAY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class EasterCalculatorTest {
+public class OrthodoxEasterCalculatorTest {
 
-    private HashMap<Integer, Date> EXPECTED_DATES = new HashMap<>();
-    private final EasterCalculator calculator = new EasterCalculator();
+    private final HashMap<Integer, Date> EXPECTED_DATES = new HashMap<>();
+    private final OrthodoxEasterCalculator calculator = OrthodoxEasterCalculator.INSTANCE;
 
     @Before
     public void initExpectedDates() {

@@ -10,16 +10,16 @@ class PeopleEventsDatabaseRefresher {
 
     private final PeopleEventsRepository repository;
     private final PeopleEventsPersister persister;
-    private final Marshaller<ContactEvent> marshaller;
+    private final ContactEventsMarshaller marshaller;
 
-    PeopleEventsDatabaseRefresher(PeopleEventsRepository repository, Marshaller<ContactEvent> marshaller, PeopleEventsPersister persister) {
+    PeopleEventsDatabaseRefresher(PeopleEventsRepository repository, ContactEventsMarshaller marshaller, PeopleEventsPersister persister) {
         this.persister = persister;
         this.marshaller = marshaller;
         this.repository = repository;
     }
 
     void refreshEvents() {
-        persister.deleteEverythingButNamedays();
+        persister.deleteAllDeviceEvents();
         List<ContactEvent> contacts = repository.fetchPeopleWithEvents();
         storeContactsToProvider(contacts);
     }

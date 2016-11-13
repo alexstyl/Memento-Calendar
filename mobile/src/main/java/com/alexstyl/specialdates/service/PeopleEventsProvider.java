@@ -38,7 +38,6 @@ public class PeopleEventsProvider {
             PeopleEvents.EVENT_TYPE,
     };
 
-    // TODO calculate namedays here
     private final ContactProvider contactProvider;
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
@@ -68,10 +67,20 @@ public class PeopleEventsProvider {
                 Log.w(e);
             }
         }
-
         cursor.close();
+        if (namedayPreferences.isEnabled()) {
+
+//            PeopleNamedaysCalculator calculator;
+//            List<ContactEvent> contactEvents1 = calculator.loadSpecialNamedays();
+//            List<Contact> allContacts = new DeviceContactsQuery(resolver).getAllContacts();
+//            new PeopleNamedaysCalculator(contentResolver, contactProvider, namedayPreferences, namedayCalendarProvider);
+            // calculate special namedays of the year [timeDuration.getYear()]
+            // getSpecialNameday()
+        }
         return contactEvents;
     }
+
+    //
 
     private Cursor queryEventsFor(TimePeriod timeDuration) {
         if (isWithinTheSameYear(timeDuration)) {
@@ -109,14 +118,14 @@ public class PeopleEventsProvider {
         return new MergeCursor(cursors);
     }
 
-    private TimePeriod firstHalfOf(TimePeriod timeDuration) {
+    private static TimePeriod firstHalfOf(TimePeriod timeDuration) {
         return TimePeriod.between(
                 timeDuration.getStartingDate(),
                 Date.endOfYear(timeDuration.getStartingDate().getYear())
         );
     }
 
-    private TimePeriod secondHalfOf(TimePeriod timeDuration) {
+    private static TimePeriod secondHalfOf(TimePeriod timeDuration) {
         return TimePeriod.between(
                 Date.startOfTheYear(timeDuration.getEndingDate().getYear()),
                 timeDuration.getEndingDate()

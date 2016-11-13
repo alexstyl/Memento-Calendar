@@ -24,7 +24,7 @@ class UpcomingEventsProvider {
         this.listener = listener;
     }
 
-    public void reloadData() {
+    void reloadData() {
         fetcher.loadDatesStartingFromDate(callback);
     }
 

@@ -7,6 +7,10 @@ import android.support.v4.content.Loader;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
+import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.novoda.notils.exception.DeveloperError;
 
@@ -17,9 +21,9 @@ class UpcomingEventsFetcher {
     private static final int LOADER_ID_DATES = 2;
 
     private final LoaderManager loaderManager;
-    private Callback callback;
+    private final Date startingDate;
     private final Context context;
-    private Date startingDate;
+    private Callback callback;
 
     UpcomingEventsFetcher(LoaderManager loaderManager, Context context, Date startingDate) {
         this.loaderManager = loaderManager;
@@ -37,7 +41,16 @@ class UpcomingEventsFetcher {
         @Override
         public Loader<List<CelebrationDate>> onCreateLoader(int loaderID, Bundle arg1) {
             if (loaderID == LOADER_ID_DATES) {
-                return new UpcomingEventsLoader(context, PeopleEventsProvider.newInstance(context), startingDate);
+                PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(context);
+                NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+                BankHolidayProvider bankHolidayProvider = new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE));
+                return new UpcomingEventsLoader(
+                        context,
+                        startingDate,
+                        peopleEventsProvider,
+                        bankHolidayProvider,
+                        namedayCalendarProvider
+                );
             }
             throw new DeveloperError("Unhandled loaderID: " + loaderID);
         }

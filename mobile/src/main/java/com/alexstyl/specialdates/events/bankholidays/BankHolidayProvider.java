@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 
@@ -15,11 +14,44 @@ public final class BankHolidayProvider {
         this.bankHolidaysCalculator = bankHolidaysCalculator;
     }
 
-    public List<BankHoliday> getBankHolidayFor(TimePeriod timePeriod) {
-        // TODO different years
+    public List<BankHoliday> calculateBankHolidaysBetween(TimePeriod timePeriod) {
+        if (isWithinTheSameYear(timePeriod)) {
+            return calculateBankHolidaysFor(timePeriod);
+        } else {
+            ArrayList<BankHoliday> allBankholidays = new ArrayList<>();
+
+            TimePeriod firstHalf = getfirstHalfOf(timePeriod);
+            List<BankHoliday> firstHalfBankHolidays = calculateBankHolidaysFor(firstHalf);
+            allBankholidays.addAll(firstHalfBankHolidays);
+
+            TimePeriod secondHalf = getSecondHalfOf(timePeriod);
+            List<BankHoliday> secondHalfBankHolidays = calculateBankHolidaysFor(secondHalf);
+            allBankholidays.addAll(secondHalfBankHolidays);
+
+            return allBankholidays;
+        }
+    }
+
+    private static TimePeriod getfirstHalfOf(TimePeriod timePeriod) {
+        Date startingDate = timePeriod.getStartingDate();
+        return TimePeriod.between(
+                startingDate,
+                Date.endOfYear(startingDate.getYear())
+        );
+    }
+
+    private static TimePeriod getSecondHalfOf(TimePeriod timePeriod) {
+        Date endingDate = timePeriod.getEndingDate();
+        return TimePeriod.between(
+                Date.startOfTheYear(endingDate.getYear()),
+                endingDate
+        );
+    }
+
+    private List<BankHoliday> calculateBankHolidaysFor(TimePeriod timePeriod) {
+        List<BankHoliday> bankHolidays = new ArrayList<>();
         int year = timePeriod.getStartingDate().getYear();
         List<BankHoliday> allBankHolidays = bankHolidaysCalculator.calculateBankholidaysForYear(year);
-        List<BankHoliday> bankHolidays = new ArrayList<>();
         for (BankHoliday bankHoliday : allBankHolidays) {
             if (timePeriod.containsDate(bankHoliday.getDate())) {
                 bankHolidays.add(bankHoliday);
@@ -28,15 +60,19 @@ public final class BankHolidayProvider {
         return bankHolidays;
     }
 
-    public Optional<BankHoliday> getBankHolidayFor(Date date) {
-        List<BankHoliday> bankHolidaysList;
-        bankHolidaysList = bankHolidaysCalculator.calculateBankholidaysForYear(date.getYear());
-        for (BankHoliday bankHoliday : bankHolidaysList) {
-            if (bankHoliday.getDate().equals(date)) {
-                return new Optional<>(bankHoliday);
-            }
-        }
-        return Optional.absent();
+    private boolean isWithinTheSameYear(TimePeriod timePeriod) {
+        return timePeriod.getStartingDate().getYear() == timePeriod.getEndingDate().getYear();
     }
+
+//    public Optional<BankHoliday> calculateBankHolidaysBetween(Date date) {
+//        List<BankHoliday> bankHolidaysList;
+//        bankHolidaysList = bankHolidaysCalculator.calculateBankholidaysForYear(date.getYear());
+//        for (BankHoliday bankHoliday : bankHolidaysList) {
+//            if (bankHoliday.getDate().equals(date)) {
+//                return new Optional<>(bankHoliday);
+//            }
+//        }
+//        return Optional.absent();
+//    }
 
 }

@@ -1,40 +1,22 @@
 package com.alexstyl.specialdates.contact;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Data;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-class ContactsQuery {
-    public final static Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
+public final class ContactsQuery {
 
-    public static String COL_DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
-
-    public static String COL_LOOKUP = ContactsContract.Contacts.LOOKUP_KEY;
-
-    @SuppressLint("InlinedApi")
-    public final static String SORT_ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
-
-    @SuppressLint("InlinedApi")
+    public final static Uri CONTENT_URI = Data.CONTENT_URI;
+    public final static String SORT_ORDER = Data.CONTACT_ID;
     public static final String[] PROJECTION = {
-            ContactsContract.Data.MIMETYPE,//0
-            ContactsContract.Data.CONTACT_ID,//1
-            COL_LOOKUP, //2
-            COL_DISPLAY_NAME,//3
-            ContactsContract.CommonDataKinds.Event.START_DATE, //4
+            Data.CONTACT_ID,//0
+            Contacts.LOOKUP_KEY, //1
+            Contacts.DISPLAY_NAME_PRIMARY,//2
+            ContactsContract.CommonDataKinds.Event.START_DATE, //3
     };
 
-    public static final int ROW_TYPE = 0;
-
-    public static final int ID = 1;
-    public static final int LOOKUP_KEY = 2;
-    public static final int DISPLAY_NAME = 3;
-    public static final int BIRTHDAY = 4;
-
-    public static boolean isBirthdayRow(Cursor cursor) {
-        return cursor.getString(ROW_TYPE).equals(ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE);
-    }
+    public static final int CONTACT_ID = 0;
+    public static final int LOOKUP_KEY = 1;
+    public static final int DISPLAY_NAME = 2;
 }
