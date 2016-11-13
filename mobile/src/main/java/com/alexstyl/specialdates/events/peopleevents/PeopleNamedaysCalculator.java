@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
@@ -9,6 +10,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.upcoming.TimePeriod;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,22 +21,21 @@ public class PeopleNamedaysCalculator {
 
     private final NamedayPreferences namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
-    private final DeviceContactsQuery deviceContactsQuery;
+    private final ContactsProvider contactsProvider;
 
     public PeopleNamedaysCalculator(NamedayPreferences namedayPreferences,
                                     NamedayCalendarProvider namedayCalendarProvider,
-                                    DeviceContactsQuery deviceContactsQuery
-    ) {
+                                    ContactsProvider contactsProvider) {
         this.namedayPreferences = namedayPreferences;
         this.namedayCalendarProvider = namedayCalendarProvider;
-        this.deviceContactsQuery = deviceContactsQuery;
+        this.contactsProvider = contactsProvider;
     }
 
     public List<ContactEvent> loadDeviceStaticNamedays() {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         Set<Long> contactIDs = new HashSet<>();
-
-        List<Contact> contacts = deviceContactsQuery.getAllContacts();
+        // TODO use Contact Cache
+        List<Contact> contacts = contactsProvider.fetchAllDeviceContacts();
         for (Contact contact : contacts) {
             long contactID = contact.getContactID();
             if (contactIDs.contains(contactID)) {
@@ -65,16 +66,10 @@ public class PeopleNamedaysCalculator {
         return namedayEvents;
     }
 
-    public List<ContactEvent> loadSpecialNamedays() {
+    public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {
         List<ContactEvent> namedayEvents = new ArrayList<>();
-        Set<Long> contactIDs = new HashSet<>();
 
-        for (Contact contact : deviceContactsQuery.getAllContacts()) {
-            long contactID = contact.getContactID();
-            if (contactIDs.contains(contactID)) {
-                continue;
-            }
-            contactIDs.add(contactID);
+        for (Contact contact : contactsProvider.fetchAllDeviceContacts()) {
             for (String firstName : contact.getDisplayName().getFirstNames()) {
                 NameCelebrations nameDays = getSpecialNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {

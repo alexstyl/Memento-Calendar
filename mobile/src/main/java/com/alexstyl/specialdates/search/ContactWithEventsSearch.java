@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.novoda.notils.logger.simple.Log;
 
@@ -18,18 +18,18 @@ import java.util.Set;
 final public class ContactWithEventsSearch {
 
     private final Context context;
-    private final ContactProvider contactProvider;
+    private final ContactsProvider contactsProvider;
 
     private final NameMatcher nameMatcher;
 
     public static ContactWithEventsSearch newInstance(Context context) {
-        ContactProvider contactProvider = ContactProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         NameMatcher nameMatcher = NameMatcher.newInstance();
-        return new ContactWithEventsSearch(context, contactProvider, nameMatcher);
+        return new ContactWithEventsSearch(context, contactsProvider, nameMatcher);
     }
 
-    ContactWithEventsSearch(Context context, ContactProvider contactProvider, NameMatcher nameMatcher) {
-        this.contactProvider = contactProvider;
+    ContactWithEventsSearch(Context context, ContactsProvider contactsProvider, NameMatcher nameMatcher) {
+        this.contactsProvider = contactsProvider;
         this.nameMatcher = nameMatcher;
         this.context = context.getApplicationContext();
     }
@@ -55,7 +55,7 @@ final public class ContactWithEventsSearch {
                 long contactId = PeopleEvents.getContactIdFrom(cursor);
                 Contact contact;
                 try {
-                    contact = contactProvider.getOrCreateContact(contactId);
+                    contact = contactsProvider.getOrCreateContact(contactId);
                     stashedContacts.add(contactID);
                     contacts.add(contact);
                     size++;

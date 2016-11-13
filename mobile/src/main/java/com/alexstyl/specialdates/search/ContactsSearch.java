@@ -7,7 +7,7 @@ import android.provider.ContactsContract;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -18,18 +18,18 @@ import java.util.Set;
 final public class ContactsSearch {
 
     private final Context context;
-    private final ContactProvider contactProvider;
+    private final ContactsProvider contactsProvider;
 
     private final NameMatcher nameMatcher;
 
     public static ContactsSearch newInstance(Context context) {
-        ContactProvider contactProvider = ContactProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         NameMatcher nameMatcher = NameMatcher.newInstance();
-        return new ContactsSearch(context, contactProvider, nameMatcher);
+        return new ContactsSearch(context, contactsProvider, nameMatcher);
     }
 
-    ContactsSearch(Context context, ContactProvider contactProvider, NameMatcher nameMatcher) {
-        this.contactProvider = contactProvider;
+    ContactsSearch(Context context, ContactsProvider contactsProvider, NameMatcher nameMatcher) {
+        this.contactsProvider = contactsProvider;
         this.nameMatcher = nameMatcher;
         this.context = context.getApplicationContext();
     }
@@ -52,7 +52,7 @@ final public class ContactsSearch {
             DisplayName displayName = getDisplayNameFrom(cursor);
             if (nameMatcher.match(displayName, searchQuery)) {
                 try {
-                    Contact contact = contactProvider.getOrCreateContact(contactID);
+                    Contact contact = contactsProvider.getOrCreateContact(contactID);
                     stashedContacts.add(contactID);
                     contacts.add(contact);
                     size++;

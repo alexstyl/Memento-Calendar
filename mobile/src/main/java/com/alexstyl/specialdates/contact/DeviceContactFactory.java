@@ -33,7 +33,7 @@ class DeviceContactFactory {
         throw new ContactNotFoundException(contactID);
     }
 
-    private Contact createContactFrom(Cursor cursor) {
+    public Contact createContactFrom(Cursor cursor) {
         long contactID = getContactIdFrom(cursor);
         DisplayName displayName = getDisplayNameFrom(cursor);
         String lookupKey = getLookupKeyFrom(cursor);
