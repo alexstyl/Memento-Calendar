@@ -11,11 +11,12 @@ import com.alexstyl.specialdates.contact.ContactsQuery;
 import com.alexstyl.specialdates.contact.DeviceContact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class DeviceContactsQuery {
 
-    private static final String WHERE = ContactsContract.Data.MIMETYPE + " = ? AND " + " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + "=1";
+    private static final String WHERE = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.Data.IN_VISIBLE_GROUP + "=1";
     private static final String[] WHERE_ARGS = {ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE};
 
     private final ContentResolver resolver;
@@ -43,7 +44,7 @@ public final class DeviceContactsQuery {
         } finally {
             cursor.close();
         }
-        return contacts;
+        return Collections.unmodifiableList(contacts);
     }
 
     private Contact createContactFrom(Cursor cursor) {

@@ -2,24 +2,36 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.Context;
 
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.ContactColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
+import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.util.DateParser;
 
 public class DebugPeopleEventsUpdater {
 
     private final PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher;
-    private NamedayDatabaseRefresher namedayDatabaseRefresher;
+    private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     public static DebugPeopleEventsUpdater newInstance(Context context) {
-        PeopleEventsRepository repository = new PeopleEventsRepository(context.getContentResolver(), ContactProvider.get(context), DateParser.INSTANCE);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
+        PeopleEventsRepository repository = new PeopleEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller(ContactColumns.SOURCE_DEVICE);
-        PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, marshaller, persister);
+        PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
+        PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, marshaller, databaseProvider);
 
-        return new DebugPeopleEventsUpdater(refresher, NamedayDatabaseRefresher.newInstance(context));
+        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
+        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(ContactColumns.SOURCE_MEMENTO);
+        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
+        return new DebugPeopleEventsUpdater(refresher, new NamedayDatabaseRefresher(
+                namedayPreferences,
+                databaseProvider,
+                mementoMarshaller,
+                peopleNamedaysCalculator
+        ));
     }
 
     private DebugPeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {

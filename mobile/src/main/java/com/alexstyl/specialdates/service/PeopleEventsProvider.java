@@ -9,20 +9,23 @@ import android.net.Uri;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.alexstyl.specialdates.events.peopleevents.SQLArgumentBuilder;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PeopleEventsProvider {
@@ -38,24 +41,45 @@ public class PeopleEventsProvider {
             PeopleEvents.EVENT_TYPE,
     };
 
-    private final ContactProvider contactProvider;
+    private final ContactsProvider contactsProvider;
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
+    private final PeopleNamedaysCalculator peopleNamedaysCalculator;
 
     public static PeopleEventsProvider newInstance(Context context) {
-        ContactProvider provider = ContactProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         ContentResolver resolver = context.getContentResolver();
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        return new PeopleEventsProvider(provider, resolver, namedayPreferences);
+        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
+                namedayPreferences,
+                namedayCalendarProvider,
+                contactsProvider
+        );
+        return new PeopleEventsProvider(contactsProvider, resolver, namedayPreferences, peopleNamedaysCalculator);
     }
 
-    private PeopleEventsProvider(ContactProvider contactProvider, ContentResolver resolver, NamedayPreferences namedayPreferences) {
-        this.contactProvider = contactProvider;
+    private PeopleEventsProvider(ContactsProvider contactsProvider,
+                                 ContentResolver resolver,
+                                 NamedayPreferences namedayPreferences,
+                                 PeopleNamedaysCalculator peopleNamedaysCalculator) {
+        this.contactsProvider = contactsProvider;
         this.resolver = resolver;
         this.namedayPreferences = namedayPreferences;
+        this.peopleNamedaysCalculator = peopleNamedaysCalculator;
     }
 
     public List<ContactEvent> getCelebrationDateFor(TimePeriod timeDuration) {
+        List<ContactEvent> contactEvents = fetchStaticEventsBetween(timeDuration);
+
+        if (namedayPreferences.isEnabled()) {
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
+            contactEvents.addAll(namedaysContactEvents);
+        }
+        return Collections.unmodifiableList(contactEvents);
+    }
+
+    private List<ContactEvent> fetchStaticEventsBetween(TimePeriod timeDuration) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = queryEventsFor(timeDuration);
         throwIfInvalid(cursor);
@@ -68,19 +92,8 @@ public class PeopleEventsProvider {
             }
         }
         cursor.close();
-        if (namedayPreferences.isEnabled()) {
-
-//            PeopleNamedaysCalculator calculator;
-//            List<ContactEvent> contactEvents1 = calculator.loadSpecialNamedays();
-//            List<Contact> allContacts = new DeviceContactsQuery(resolver).getAllContacts();
-//            new PeopleNamedaysCalculator(contentResolver, contactProvider, namedayPreferences, namedayCalendarProvider);
-            // calculate special namedays of the year [timeDuration.getYear()]
-            // getSpecialNameday()
-        }
         return contactEvents;
     }
-
-    //
 
     private Cursor queryEventsFor(TimePeriod timeDuration) {
         if (isWithinTheSameYear(timeDuration)) {
@@ -138,7 +151,7 @@ public class PeopleEventsProvider {
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
         long contactId = PeopleEvents.getContactIdFrom(cursor);
-        Contact contact = contactProvider.getOrCreateContact(contactId);
+        Contact contact = contactsProvider.getOrCreateContact(contactId);
         Date date = PeopleEvents.getDateFrom(cursor);
         EventType eventType = PeopleEvents.getEventType(cursor);
 
@@ -166,7 +179,7 @@ public class PeopleEventsProvider {
         while (cursor.moveToNext()) {
             long contactId = PeopleEvents.getContactIdFrom(cursor);
             try {
-                Contact contact = contactProvider.getOrCreateContact(contactId);
+                Contact contact = contactsProvider.getOrCreateContact(contactId);
                 EventType eventType = PeopleEvents.getEventType(cursor);
 
                 ContactEvent event = new ContactEvent(eventType, date, contact);
@@ -224,9 +237,9 @@ public class PeopleEventsProvider {
 
     private String getSelection() {
         if (namedaysAreEnabled()) {
-            return PeopleEventsQuery.Date.SELECT;
+            return PeopleEventsQuery.SELECT;
         } else {
-            return PeopleEventsQuery.Date.SELECT_ONLY_BIRTHDAYS;
+            return PeopleEventsQuery.SELECT_ONLY_BIRTHDAYS;
         }
     }
 

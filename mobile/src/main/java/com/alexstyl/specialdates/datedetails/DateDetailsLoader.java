@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
@@ -26,22 +26,22 @@ import java.util.List;
 public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>> {
 
     private final Date date;
-    private final ContactProvider contactProvider;
+    private final ContactsProvider contactsProvider;
     private final ContactsObserver contactsObserver;
 
     private final Comparator<ContactEvent> displayNameComparator = new SpecialDateDisplayNameComparator();
 
     public static DateDetailsLoader newInstance(Context context, Date date) {
         context = context.getApplicationContext();
-        ContactProvider contactProvider = ContactProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         ContactsObserver contactsObserver = new ContactsObserver(context.getContentResolver(), new Handler());
-        return new DateDetailsLoader(context, date, contactProvider, contactsObserver);
+        return new DateDetailsLoader(context, date, contactsProvider, contactsObserver);
     }
 
-    DateDetailsLoader(Context context, Date date, ContactProvider contactProvider, ContactsObserver contactsObserver) {
+    DateDetailsLoader(Context context, Date date, ContactsProvider contactsProvider, ContactsObserver contactsObserver) {
         super(context);
         this.date = date;
-        this.contactProvider = contactProvider;
+        this.contactsProvider = contactsProvider;
         this.contactsObserver = contactsObserver;
 
         contactsObserver.registerWith(
@@ -93,7 +93,7 @@ public class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>>
     @Nullable
     private Contact buildContactFrom(Cursor cursor) throws ContactNotFoundException {
         long contactId = PeopleEvents.getContactIdFrom(cursor);
-        return contactProvider.getOrCreateContact(contactId);
+        return contactsProvider.getOrCreateContact(contactId);
     }
 
     private ContentResolver getContentProvider() {

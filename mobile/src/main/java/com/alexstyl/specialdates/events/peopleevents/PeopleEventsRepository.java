@@ -8,7 +8,7 @@ import android.provider.ContactsContract;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
@@ -37,12 +37,12 @@ class PeopleEventsRepository {
     private static final List<ContactEvent> NO_EVENTS = Collections.emptyList();
 
     private final ContentResolver contentResolver;
-    private final ContactProvider contactProvider;
+    private final ContactsProvider contactsProvider;
     private final DateParser dateParser;
 
-    PeopleEventsRepository(ContentResolver contentResolver, ContactProvider contactProvider, DateParser dateParser) {
+    PeopleEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
         this.contentResolver = contentResolver;
-        this.contactProvider = contactProvider;
+        this.contactsProvider = contactsProvider;
         this.dateParser = dateParser;
     }
 
@@ -58,7 +58,7 @@ class PeopleEventsRepository {
                 EventType eventType = getEventTypeFrom(cursor);
                 try {
                     Date eventDate = getEventDateFrom(cursor);
-                    Contact contact = contactProvider.getOrCreateContact(contactId);
+                    Contact contact = contactsProvider.getOrCreateContact(contactId);
                     events.add(new ContactEvent(eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);

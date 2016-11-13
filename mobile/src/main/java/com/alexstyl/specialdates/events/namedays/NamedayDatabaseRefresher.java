@@ -1,14 +1,9 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import android.content.ContentValues;
-import android.content.Context;
 
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.database.ContactColumns;
-import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.peopleevents.DeviceContactsQuery;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 
@@ -21,20 +16,10 @@ public class NamedayDatabaseRefresher {
     private final ContactEventsMarshaller eventMarshaller;
     private final PeopleNamedaysCalculator calculator;
 
-    public static NamedayDatabaseRefresher newInstance(Context context) {
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller(ContactColumns.SOURCE_MEMENTO);
-        PeopleEventsPersister persister = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
-        DeviceContactsQuery deviceContactsQuery = new DeviceContactsQuery(context.getContentResolver());
-        PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, deviceContactsQuery);
-        return new NamedayDatabaseRefresher(namedayPreferences, persister, marshaller, calculator);
-    }
-
-    private NamedayDatabaseRefresher(NamedayPreferences namedayPreferences,
-                                     PeopleEventsPersister databaseProvider,
-                                     ContactEventsMarshaller eventMarshaller,
-                                     PeopleNamedaysCalculator calculator
+    public NamedayDatabaseRefresher(NamedayPreferences namedayPreferences,
+                                    PeopleEventsPersister databaseProvider,
+                                    ContactEventsMarshaller eventMarshaller,
+                                    PeopleNamedaysCalculator calculator
     ) {
         this.namedayPreferences = namedayPreferences;
         this.perister = databaseProvider;
