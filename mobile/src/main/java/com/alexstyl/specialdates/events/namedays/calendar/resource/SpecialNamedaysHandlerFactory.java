@@ -20,11 +20,11 @@ final class SpecialNamedaysHandlerFactory {
     }
 
     private boolean isRomanian(NamedayLocale locale) {
-        return locale == NamedayLocale.ro;
+        return locale == NamedayLocale.ROMANIAN;
     }
 
     private boolean isGreekLocale(NamedayLocale locale) {
-        return locale == NamedayLocale.gr;
+        return locale == NamedayLocale.GREEK;
     }
 
     private static final SpecialNamedays NO_SPECIAL_NAMEDAYS = new SpecialNamedays() {

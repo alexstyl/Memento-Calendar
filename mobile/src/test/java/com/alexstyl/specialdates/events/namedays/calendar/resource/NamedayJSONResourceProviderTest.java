@@ -26,37 +26,37 @@ public class NamedayJSONResourceProviderTest {
 
     @Test
     public void grHasSpecial() throws Exception {
-        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.gr);
+        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.GREEK);
         hasSpecial(namedays);
     }
 
     @Test
     public void roHasSpecial() throws Exception {
-        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.ro);
+        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.ROMANIAN);
         hasSpecial(namedays);
     }
 
     @Test
     public void ruHasNoSpecial() throws Exception {
-        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.ru);
+        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.RUSSIAN);
         hasNoSpecial(namedays);
     }
 
     @Test
     public void lvHasNoSpecial() throws Exception {
-        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.lv);
+        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.LATVIAN);
         hasNoSpecial(namedays);
     }
 
     @Test
     public void csHasNoSpecial() throws Exception {
-        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.cs);
+        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.CZECH);
         hasNoSpecial(namedays);
     }
 
     @Test
     public void skHasNoSpecial() throws Exception {
-        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.sk);
+        NamedayJSON namedays = provider.getNamedayJSONFor(NamedayLocale.SLOVAK);
         hasNoSpecial(namedays);
     }
 

@@ -23,7 +23,7 @@ public class NamedaySettingsMonitorTest {
     private static final boolean DEFAULT_NAMEDAYS_ENABLED = true;
     private static final boolean DEFAULT_CONTACTS_ONLY = false;
 
-    private static final NamedayLocale DEFAULT_LOCALE = NamedayLocale.gr;
+    private static final NamedayLocale DEFAULT_LOCALE = NamedayLocale.GREEK;
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class NamedaySettingsMonitorTest {
 
     @Test
     public void whenSelectedNamedayLanguageChanges_thenMonitorReturnsTrue() {
-        when(preferencesMock.getSelectedLanguage()).thenReturn(NamedayLocale.ro);
+        when(preferencesMock.getSelectedLanguage()).thenReturn(NamedayLocale.ROMANIAN);
         assertThat(monitor.dataWasUpdated()).isTrue();
 
     }
