@@ -9,11 +9,11 @@ import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 
-public class PeopleEventsPersister {
+public final class PeopleEventsPersister {
 
     private final EventSQLiteOpenHelper helper;
 
-    public PeopleEventsPersister(EventSQLiteOpenHelper helper) {
+    PeopleEventsPersister(EventSQLiteOpenHelper helper) {
         this.helper = helper;
     }
 
