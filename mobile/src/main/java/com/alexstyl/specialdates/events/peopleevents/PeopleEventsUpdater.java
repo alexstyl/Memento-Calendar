@@ -8,6 +8,8 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 
 class PeopleEventsUpdater {
 
+    private static final Object REFRESH_LOCK = new Object();
+
     private final PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher;
     private final EventPreferences eventPreferences;
     private final NamedaySettingsMonitor namedayMonitor;
@@ -36,15 +38,15 @@ class PeopleEventsUpdater {
             return;
         }
 
-        boolean isFirstRun = isFirstTimeRunning();
-        if (isFirstRun) {
-            peopleEventsDatabaseRefresher.refreshEvents();
-            namedayDatabaseRefresher.refreshNamedaysIfEnabled();
-            eventPreferences.markEventsAsInitialised();
-        } else {
-            updateEventsIfSettingsChanged();
+        synchronized (REFRESH_LOCK) {
+            if (isFirstTimeRunning()) {
+                peopleEventsDatabaseRefresher.refreshEvents();
+                namedayDatabaseRefresher.refreshNamedaysIfEnabled();
+                eventPreferences.markEventsAsInitialised();
+            } else {
+                updateEventsIfSettingsChanged();
+            }
         }
-
     }
 
     private boolean isFirstTimeRunning() {
