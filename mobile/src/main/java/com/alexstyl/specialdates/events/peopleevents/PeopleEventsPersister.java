@@ -5,9 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 
 public final class PeopleEventsPersister {
 
@@ -28,7 +28,7 @@ public final class PeopleEventsPersister {
 
     void deleteAllDeviceEvents() {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + "==" + AnnualEventsContract.SOURCE_DEVICE, null);
+        database.delete(AnnualEventsContract.TABLE_NAME, null, null);
     }
 
     public void insertAnnualEvents(ContentValues[] values) {

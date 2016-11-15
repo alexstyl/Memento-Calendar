@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.date;
 
 import android.content.res.Resources;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
@@ -9,11 +10,15 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 public final class ContactEvent {
 
+    private static final Optional<Long> NO_EVENT_ID = Optional.absent();
+
+    private final Optional<Long> deviceEventId;
     private final EventType eventType;
     private final Contact contact;
     private final Date date;
 
-    public ContactEvent(EventType eventType, Date date, Contact contact) {
+    public ContactEvent(Optional<Long> deviceEventId, EventType eventType, Date date, Contact contact) {
+        this.deviceEventId = deviceEventId;
         this.eventType = eventType;
         this.date = date;
         this.contact = contact;
@@ -41,5 +46,9 @@ public final class ContactEvent {
 
     public Contact getContact() {
         return contact;
+    }
+
+    public Optional<Long> getDeviceEventId() {
+        return deviceEventId;
     }
 }

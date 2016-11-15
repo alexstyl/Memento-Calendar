@@ -201,7 +201,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onNamedaysShared(NamesInADate namedays) {
-            Intent intent = new ShareNamedaysIntentCreator(getActivity(), new DateDisplayStringCreator()).createNamedaysShareIntent(namedays);
+            Intent intent = new ShareNamedaysIntentCreator(getActivity(), DateDisplayStringCreator.INSTANCE).createNamedaysShareIntent(namedays);
             try {
                 Intent chooserIntent = Intent.createChooser(intent, getString(R.string.share_via));
                 startActivity(chooserIntent);

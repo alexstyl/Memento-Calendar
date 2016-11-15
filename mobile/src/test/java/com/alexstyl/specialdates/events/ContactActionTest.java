@@ -19,10 +19,10 @@ public class ContactActionTest {
 
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
     private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"));
-    private final ContactEvent EVENT_ONE = new ContactEvent(StandardEventType.BIRTHDAY, Date.on(1, 1, 1990), CONTACT_ONE);
+    private final ContactEvent EVENT_ONE = new ContactEvent(deviceEventId, StandardEventType.BIRTHDAY, Date.on(1, 1, 1990), CONTACT_ONE);
 
     private final TestContact CONTACT_TWO = new TestContact(2, DisplayName.from("George Peterson"));
-    private final ContactEvent EVENT_TWO = new ContactEvent(StandardEventType.BIRTHDAY, Date.on(1, 1, 1970), CONTACT_TWO);
+    private final ContactEvent EVENT_TWO = new ContactEvent(deviceEventId, StandardEventType.BIRTHDAY, Date.on(1, 1, 1970), CONTACT_TWO);
 
     @Test
     public void testTheSameDateIsReturned() throws Exception {

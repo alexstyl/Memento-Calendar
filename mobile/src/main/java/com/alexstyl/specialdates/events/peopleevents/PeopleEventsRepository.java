@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactsProvider;
@@ -24,7 +25,10 @@ import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 class PeopleEventsRepository {
 
     private static final Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
-    private static final String[] PROJECTION = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Event.TYPE,
+    private static final String[] PROJECTION = {
+            ContactsContract.Data.CONTACT_ID,
+            ContactsContract.CommonDataKinds.Event.TYPE,
+            ContactsContract.CommonDataKinds.Event._ID,
             ContactsContract.CommonDataKinds.Event.START_DATE
     };
     private static final String SELECTION =
@@ -55,11 +59,12 @@ class PeopleEventsRepository {
         try {
             while (cursor.moveToNext()) {
                 long contactId = getContactIdFrom(cursor);
-                StandardEventType eventType = getEventTypeFrom(cursor);
+                EventType eventType = getEventTypeFrom(cursor);
                 try {
                     Date eventDate = getEventDateFrom(cursor);
+                    long eventId = getEventIdFrom(cursor);
                     Contact contact = contactsProvider.getOrCreateContact(contactId);
-                    events.add(new ContactEvent(eventType, eventDate, contact));
+                    events.add(new ContactEvent(new Optional<>(eventId), eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);
                 } catch (ContactNotFoundException e) {
@@ -70,6 +75,11 @@ class PeopleEventsRepository {
             cursor.close();
         }
         return events;
+    }
+
+    private static long getEventIdFrom(Cursor cursor) {
+        int eventIdIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Event._ID);
+        return cursor.getLong(eventIdIndex);
     }
 
     private long getContactIdFrom(Cursor cursor) {
@@ -84,7 +94,7 @@ class PeopleEventsRepository {
         return dateParser.parse(dateRaw);
     }
 
-    private StandardEventType getEventTypeFrom(Cursor cursor) {
+    private EventType getEventTypeFrom(Cursor cursor) {
         int eventTypeIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Event.TYPE);
         int eventTypeRaw = cursor.getInt(eventTypeIndex);
         switch (eventTypeRaw) {

@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public final class PeopleNamedaysCalculator {
 
+    private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
     private final NamedayPreferences namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
     private final ContactsProvider contactsProvider;
@@ -47,7 +49,7 @@ public final class PeopleNamedaysCalculator {
                     if (namedays.contains(date)) {
                         continue;
                     }
-                    ContactEvent event = new ContactEvent(StandardEventType.NAMEDAY, date, contact);
+                    ContactEvent event = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.NAMEDAY, date, contact);
                     namedayEvents.add(event);
                     namedays.add(date);
                 }
@@ -70,7 +72,7 @@ public final class PeopleNamedaysCalculator {
                 for (int i = 0; i < namedaysCount; i++) {
                     Date date = nameDays.getDate(i);
                     if (timeDuration.containsDate(date)) {
-                        ContactEvent nameday = new ContactEvent(StandardEventType.NAMEDAY, date, contact);
+                        ContactEvent nameday = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.NAMEDAY, date, contact);
                         namedayEvents.add(nameday);
                     }
                 }

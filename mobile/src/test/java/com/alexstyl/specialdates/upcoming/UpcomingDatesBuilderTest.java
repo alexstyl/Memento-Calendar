@@ -136,7 +136,7 @@ public class UpcomingDatesBuilderTest {
 
     private static ContactEvent aContactEventOn(Date date) {
         TestContact contact = new TestContact(1, DisplayName.NO_NAME);
-        return new ContactEvent(StandardEventType.BIRTHDAY, date, contact);
+        return new ContactEvent(deviceEventId, StandardEventType.BIRTHDAY, date, contact);
     }
 
 }
