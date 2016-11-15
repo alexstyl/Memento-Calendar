@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.Names;
 import java.text.Collator;
 import java.util.Locale;
 
-public class NameMatcher {
+class NameMatcher {
 
     private final Collator collator;
 

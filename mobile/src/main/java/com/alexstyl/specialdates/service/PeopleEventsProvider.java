@@ -13,15 +13,21 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
+import com.alexstyl.specialdates.events.database.EventColumns;
+import com.alexstyl.specialdates.events.database.EventTypeId;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
-import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.alexstyl.specialdates.events.peopleevents.SQLArgumentBuilder;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
 
@@ -46,6 +52,7 @@ public class PeopleEventsProvider {
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
+    private final CustomEventProvider customEventProvider;
 
     public static PeopleEventsProvider newInstance(Context context) {
         ContactsProvider contactsProvider = ContactsProvider.get(context);
@@ -57,17 +64,19 @@ public class PeopleEventsProvider {
                 namedayCalendarProvider,
                 contactsProvider
         );
-        return new PeopleEventsProvider(contactsProvider, resolver, namedayPreferences, peopleNamedaysCalculator);
+        CustomEventProvider customEventProvider = new CustomEventProvider(resolver);
+        return new PeopleEventsProvider(contactsProvider, resolver, namedayPreferences, peopleNamedaysCalculator, customEventProvider);
     }
 
     private PeopleEventsProvider(ContactsProvider contactsProvider,
                                  ContentResolver resolver,
                                  NamedayPreferences namedayPreferences,
-                                 PeopleNamedaysCalculator peopleNamedaysCalculator) {
+                                 PeopleNamedaysCalculator peopleNamedaysCalculator, CustomEventProvider customEventProvider) {
         this.contactsProvider = contactsProvider;
         this.resolver = resolver;
         this.namedayPreferences = namedayPreferences;
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
+        this.customEventProvider = customEventProvider;
     }
 
     public List<ContactEvent> getCelebrationDateOn(Date date) {
@@ -163,12 +172,12 @@ public class PeopleEventsProvider {
     }
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
-        long contactId = PeopleEvents.getContactIdFrom(cursor);
+        long contactId = getContactIdFrom(cursor);
         Contact contact = contactsProvider.getOrCreateContact(contactId);
-        Date date = PeopleEvents.getDateFrom(cursor);
-        StandardEventType eventType = PeopleEvents.getEventType(cursor);
+        Date date = getDateFrom(cursor);
+        EventType eventType = getEventType(cursor);
 
-        Optional<Long> eventId = PeopleEvents.getDeviceEventIdFrom(cursor);
+        Optional<Long> eventId = getDeviceEventIdFrom(cursor);
         return new ContactEvent(eventId, eventType, date, contact);
     }
 
@@ -191,11 +200,11 @@ public class PeopleEventsProvider {
         }
 
         while (cursor.moveToNext()) {
-            long contactId = PeopleEvents.getContactIdFrom(cursor);
+            long contactId = getContactIdFrom(cursor);
             try {
                 Contact contact = contactsProvider.getOrCreateContact(contactId);
-                StandardEventType eventType = PeopleEvents.getEventType(cursor);
-                Optional<Long> deviceEventId = PeopleEvents.getDeviceEventIdFrom(cursor);
+                EventType eventType = getEventType(cursor);
+                Optional<Long> deviceEventId = getDeviceEventIdFrom(cursor);
 
                 ContactEvent event = new ContactEvent(deviceEventId, eventType, date, contact);
                 contactEvents.add(event);
@@ -215,7 +224,7 @@ public class PeopleEventsProvider {
 
         Date dateFrom;
         if (cursor.moveToFirst()) {
-            dateFrom = PeopleEvents.getDateFrom(cursor);
+            dateFrom = getDateFrom(cursor);
         } else {
             dateFrom = date;
         }
@@ -228,22 +237,17 @@ public class PeopleEventsProvider {
     private Cursor queryDateClosestTo(Date date) {
         return resolver.query(
                 PEOPLE_EVENTS,
-                PEOPLE_PROJECTION, whereDateIsEqualOrAfter(), thePassing(date), onlyTheFirstMatch()
+                PEOPLE_PROJECTION,
+                PeopleEvents.DATE + " >= ?",
+                thePassing(date),
+                PeopleEvents.DATE + " ASC LIMIT 1"
         );
-    }
-
-    private String onlyTheFirstMatch() {
-        return PeopleEvents.DATE + " ASC" + " LIMIT 1";
     }
 
     private String[] thePassing(Date date) {
         return new String[]{
                 date.toShortDate()
         };
-    }
-
-    private String whereDateIsEqualOrAfter() {
-        return PeopleEvents.DATE + " >= ?";
     }
 
     private String[] getSelectArgs(Date date) {
@@ -270,6 +274,56 @@ public class PeopleEventsProvider {
 
     private static boolean isInvalid(Cursor cursor) {
         return cursor == null || cursor.isClosed();
+    }
+
+    private static Date getDateFrom(Cursor cursor) {
+        int index = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DATE);
+        String text = cursor.getString(index);
+        return from(text);
+    }
+
+    private static long getContactIdFrom(Cursor cursor) {
+        int contactIdIndex = cursor.getColumnIndexOrThrow(PeopleEvents.CONTACT_ID);
+        return cursor.getLong(contactIdIndex);
+    }
+
+    private EventType getEventType(Cursor cursor) {
+        int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEvents.EVENT_TYPE);
+        @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
+        if (rawEventType == EventColumns.TYPE_CUSTOM) {
+            Optional<Long> deviceEventIdFrom = getDeviceEventIdFrom(cursor);
+            if (deviceEventIdFrom.isPresent()) {
+                return queryCustomEvent(deviceEventIdFrom.get());
+            }
+            return StandardEventType.OTHER;
+        }
+        return StandardEventType.fromId(rawEventType);
+    }
+
+    private EventType queryCustomEvent(long deviceId) {
+        return customEventProvider.getEventWithId(deviceId);
+    }
+
+    public static Date from(String text) {
+        try {
+            return DateParser.INSTANCE.parse(text);
+        } catch (DateParseException e) {
+            e.printStackTrace();
+            throw new DeveloperError("Invalid date stored to database. [" + text + "]");
+        }
+    }
+
+    private static Optional<Long> getDeviceEventIdFrom(Cursor cursor) {
+        int eventId = cursor.getColumnIndexOrThrow(PeopleEvents.DEVICE_EVENT_ID);
+        long deviceEventId = cursor.getLong(eventId);
+        if (isALegitEventId(deviceEventId)) {
+            return Optional.absent();
+        }
+        return new Optional<>(deviceEventId);
+    }
+
+    private static boolean isALegitEventId(long deviceEventId) {
+        return deviceEventId == -1;
     }
 
 }

@@ -4,12 +4,13 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.List;
 
-public class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
+class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     private final ContactWithEventsSearch contactWithEventsSearch;
     private final String searchQuery;
@@ -17,9 +18,11 @@ public class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     private final ContactsObserver observer;
 
-    public SearchLoader(Context context, String query, int mSearchCounter) {
+    SearchLoader(Context context, String query, int mSearchCounter) {
         super(context);
-        this.contactWithEventsSearch = ContactWithEventsSearch.newInstance(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
+        NameMatcher nameMatcher = NameMatcher.newInstance();
+        this.contactWithEventsSearch = new ContactWithEventsSearch(contactsProvider, nameMatcher);
         this.searchQuery = query;
         this.searchCounter = mSearchCounter;
 
