@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
@@ -31,20 +31,23 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + AnnualEventsContract.TABLE_NAME + " ("
                     + AnnualEventsContract._ID + INT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.DISPLAY_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.DEVICE_EVENT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
-                    + AnnualEventsContract.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
                     + " PRIMARY KEY (" + AnnualEventsContract._ID + ")"
                     + ")";
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ANNUAL_EVENTS);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // drop everything. we're quite fast at rebuilding the entire db anyway
+        db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
+        db.execSQL("DROP TABLE IF EXISTS annual_events;");
+        onCreate(db);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_ANNUAL_EVENTS);
     }
 }

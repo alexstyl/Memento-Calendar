@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -54,6 +55,19 @@ public class PeopleEventsContract {
                 e.printStackTrace();
                 throw new DeveloperError("Invalid date stored to database. [" + text + "]");
             }
+        }
+
+        public static Optional<Long> getDeviceEventIdFrom(Cursor cursor) {
+            int eventId = cursor.getColumnIndexOrThrow(PeopleEvents.DEVICE_EVENT_ID);
+            long deviceEventId = cursor.getLong(eventId);
+            if (isALegitEventId(deviceEventId)) {
+                return Optional.absent();
+            }
+            return new Optional<>(deviceEventId);
+        }
+
+        private static boolean isALegitEventId(long deviceEventId) {
+            return deviceEventId == -1;
         }
     }
 

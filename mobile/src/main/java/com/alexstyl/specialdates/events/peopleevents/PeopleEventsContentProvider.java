@@ -14,9 +14,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.contact.ContactsProvider;
-import com.alexstyl.specialdates.events.database.ContactColumns;
+import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
@@ -47,13 +46,12 @@ public class PeopleEventsContentProvider extends ContentProvider {
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(ContactColumns.SOURCE_MEMENTO);
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller(ContactColumns.SOURCE_DEVICE);
         peopleEventsUpdater = new PeopleEventsUpdater(
                 new PeopleEventsDatabaseRefresher(repository, marshaller, peopleEventsPersister),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, mementoMarshaller, calculator),
+                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, marshaller, calculator),
                 new EventPreferences(context),
                 new ContactsObserver(contentResolver, new Handler()),
                 new NamedaySettingsMonitor(namedayPreferences),
@@ -86,7 +84,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
 
     private Cursor queryAnnualEvents(UriQuery query, SQLiteDatabase db) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(AnnualEventsContract.TABLE_NAME);
+        builder.setTables(DatabaseContract.AnnualEventsContract.TABLE_NAME);
         return builder.query(db, query.getProjection(), query.getSelection(), query.getSelectionArgs(), null, null, query.getSortOrder());
     }
 

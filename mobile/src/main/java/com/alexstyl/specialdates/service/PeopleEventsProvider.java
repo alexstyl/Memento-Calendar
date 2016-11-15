@@ -7,6 +7,7 @@ import android.database.MergeCursor;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactsProvider;
@@ -36,7 +37,7 @@ public class PeopleEventsProvider {
     private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEvents.DATE};
     private static final String[] PROJECTION = {
             PeopleEvents.CONTACT_ID,
-            PeopleEvents.SOURCE,
+            PeopleEvents.DEVICE_EVENT_ID,
             PeopleEvents.DATE,
             PeopleEvents.EVENT_TYPE,
     };
@@ -167,7 +168,8 @@ public class PeopleEventsProvider {
         Date date = PeopleEvents.getDateFrom(cursor);
         StandardEventType eventType = PeopleEvents.getEventType(cursor);
 
-        return new ContactEvent(eventType, date, contact);
+        Optional<Long> eventId = PeopleEvents.getDeviceEventIdFrom(cursor);
+        return new ContactEvent(eventId, eventType, date, contact);
     }
 
     public ContactEvents getCelebrationsClosestTo(Date date) {
@@ -193,8 +195,9 @@ public class PeopleEventsProvider {
             try {
                 Contact contact = contactsProvider.getOrCreateContact(contactId);
                 StandardEventType eventType = PeopleEvents.getEventType(cursor);
+                Optional<Long> deviceEventId = PeopleEvents.getDeviceEventIdFrom(cursor);
 
-                ContactEvent event = new ContactEvent(eventType, date, contact);
+                ContactEvent event = new ContactEvent(deviceEventId, eventType, date, contact);
                 contactEvents.add(event);
             } catch (Exception e) {
                 ErrorTracker.track(e);

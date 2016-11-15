@@ -5,19 +5,11 @@ import android.text.format.DateUtils;
 
 import com.alexstyl.specialdates.MementoApplication;
 
-public final class DateDisplayStringCreator {
+public enum DateDisplayStringCreator {
+    INSTANCE;
 
     private static final String SEPARATOR = "-";
     private static final String ZERO = "0";
-
-    private static DateDisplayStringCreator instance;
-
-    public static DateDisplayStringCreator getInstance() {
-        if (instance == null) {
-            instance = new DateDisplayStringCreator();
-        }
-        return instance;
-    }
 
     public String stringOf(Date date) {
         StringBuilder str = new StringBuilder();

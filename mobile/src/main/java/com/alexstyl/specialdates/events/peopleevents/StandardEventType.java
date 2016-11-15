@@ -7,7 +7,7 @@ import android.support.annotation.StringRes;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.HashMap;

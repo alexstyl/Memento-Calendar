@@ -107,7 +107,7 @@ public class Date implements ShortDate {
 
     @Override
     public String toShortDate() {
-        return DateDisplayStringCreator.getInstance().stringOf(this);
+        return DateDisplayStringCreator.INSTANCE.stringOf(this);
     }
 
     public boolean hasYear() {
@@ -141,6 +141,6 @@ public class Date implements ShortDate {
 
     @Override
     public String toString() {
-        return DateDisplayStringCreator.getInstance().stringOf(this);
+        return DateDisplayStringCreator.INSTANCE.stringOf(this);
     }
 }
