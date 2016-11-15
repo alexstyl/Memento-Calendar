@@ -10,9 +10,8 @@ import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
-import com.alexstyl.specialdates.events.namedays.calendar.TestNamedayCalendarBuilder;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.TestNamedayCalendarBuilder;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedaysHandlerFactory;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.logger.simple.Log;
 
@@ -43,15 +42,12 @@ public class PeopleNamedaysCalculatorTest {
     private NamedayPreferences mockPreferences;
     @Mock
     private ContactsProvider mockContactsProvider;
-    @Mock
-    private SpecialNamedaysHandlerFactory mockSpecialNamedayHandlerFactory;
-    private NamedayCalendar namedayCalendar;
     private final TestContact EASTER_CELEBRATING_CONTACT = new TestContact(1, DisplayName.from("Λάμπρος"));
 
     @Before
     public void setUp() {
         Log.setShowLogs(false);
-        namedayCalendar = new TestNamedayCalendarBuilder()
+        NamedayCalendar namedayCalendar = new TestNamedayCalendarBuilder()
                 .forLocale(LOCALE)
                 .forYear(YEAR)
                 .build();
@@ -63,7 +59,7 @@ public class PeopleNamedaysCalculatorTest {
     }
 
     @Test
-    public void gettingSpecialNamedaysBetweenRangeOnlyReturnsTheEventsForThatDates() {
+    public void gettingSpecialNamedaysOnSpecificDateOnlyReturnsTheEventsForThatDate() {
         List<Contact> testContacts = createSomeContacts();
         testContacts.add(EASTER_CELEBRATING_CONTACT);
         when(mockContactsProvider.fetchAllDeviceContacts()).thenReturn(testContacts);

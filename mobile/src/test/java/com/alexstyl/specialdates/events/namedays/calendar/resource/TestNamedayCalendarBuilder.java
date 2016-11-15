@@ -1,11 +1,8 @@
-package com.alexstyl.specialdates.events.namedays.calendar;
+package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.JavaJSONResourceLoader;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONResourceProvider;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedaysHandlerFactory;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 
 public class TestNamedayCalendarBuilder {
     private NamedayLocale locale = NamedayLocale.GREEK;
@@ -14,11 +11,6 @@ public class TestNamedayCalendarBuilder {
 
     public TestNamedayCalendarBuilder forLocale(NamedayLocale locale) {
         this.locale = locale;
-        return this;
-    }
-
-    public TestNamedayCalendarBuilder withSpecialHandlerFactory(SpecialNamedaysHandlerFactory factory) {
-        this.factory = factory;
         return this;
     }
 
