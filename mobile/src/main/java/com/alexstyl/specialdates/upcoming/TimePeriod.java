@@ -29,9 +29,9 @@ public class TimePeriod {
     }
 
     public boolean containsDate(Date date) {
-        return (DateComparator.INSTANCE.compare(from, date) < 0
+        return (DateComparator.INSTANCE.compare(from, date) <= 0
                 &&
-                DateComparator.INSTANCE.compare(date, to) < 0
+                DateComparator.INSTANCE.compare(date, to) <= 0
         );
     }
 
