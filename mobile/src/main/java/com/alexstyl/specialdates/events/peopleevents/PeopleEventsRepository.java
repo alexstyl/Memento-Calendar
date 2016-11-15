@@ -102,8 +102,8 @@ class PeopleEventsRepository {
                 return BIRTHDAY;
             case ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY:
                 return ANNIVERSARY;
-//            case ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM:
-//                return CUSTOM;
+            case ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM:
+                return CUSTOM;
         }
         return OTHER;
     }
