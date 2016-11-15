@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.alexstyl.specialdates.events.peopleevents.EventType.*;
+import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 
 class PeopleEventsRepository {
 
@@ -55,7 +55,7 @@ class PeopleEventsRepository {
         try {
             while (cursor.moveToNext()) {
                 long contactId = getContactIdFrom(cursor);
-                EventType eventType = getEventTypeFrom(cursor);
+                StandardEventType eventType = getEventTypeFrom(cursor);
                 try {
                     Date eventDate = getEventDateFrom(cursor);
                     Contact contact = contactsProvider.getOrCreateContact(contactId);
@@ -84,7 +84,7 @@ class PeopleEventsRepository {
         return dateParser.parse(dateRaw);
     }
 
-    private EventType getEventTypeFrom(Cursor cursor) {
+    private StandardEventType getEventTypeFrom(Cursor cursor) {
         int eventTypeIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Event.TYPE);
         int eventTypeRaw = cursor.getInt(eventTypeIndex);
         switch (eventTypeRaw) {

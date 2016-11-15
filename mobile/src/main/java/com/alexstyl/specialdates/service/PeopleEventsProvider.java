@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEven
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.alexstyl.specialdates.events.peopleevents.SQLArgumentBuilder;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
@@ -165,7 +165,7 @@ public class PeopleEventsProvider {
         long contactId = PeopleEvents.getContactIdFrom(cursor);
         Contact contact = contactsProvider.getOrCreateContact(contactId);
         Date date = PeopleEvents.getDateFrom(cursor);
-        EventType eventType = PeopleEvents.getEventType(cursor);
+        StandardEventType eventType = PeopleEvents.getEventType(cursor);
 
         return new ContactEvent(eventType, date, contact);
     }
@@ -192,7 +192,7 @@ public class PeopleEventsProvider {
             long contactId = PeopleEvents.getContactIdFrom(cursor);
             try {
                 Contact contact = contactsProvider.getOrCreateContact(contactId);
-                EventType eventType = PeopleEvents.getEventType(cursor);
+                StandardEventType eventType = PeopleEvents.getEventType(cursor);
 
                 ContactEvent event = new ContactEvent(eventType, date, contact);
                 contactEvents.add(event);

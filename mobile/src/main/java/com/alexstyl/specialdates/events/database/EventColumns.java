@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.database;
 
-interface EventColumns {
+public interface EventColumns {
     String EVENT_TYPE = "event_type";
     int TYPE_BIRTHDAY = 0;
     int TYPE_NAMEDAY = 1;

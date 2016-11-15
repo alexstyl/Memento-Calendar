@@ -47,7 +47,7 @@ public final class PeopleNamedaysCalculator {
                     if (namedays.contains(date)) {
                         continue;
                     }
-                    ContactEvent event = new ContactEvent(EventType.NAMEDAY, date, contact);
+                    ContactEvent event = new ContactEvent(StandardEventType.NAMEDAY, date, contact);
                     namedayEvents.add(event);
                     namedays.add(date);
                 }
@@ -70,7 +70,7 @@ public final class PeopleNamedaysCalculator {
                 for (int i = 0; i < namedaysCount; i++) {
                     Date date = nameDays.getDate(i);
                     if (timeDuration.containsDate(date)) {
-                        ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact);
+                        ContactEvent nameday = new ContactEvent(StandardEventType.NAMEDAY, date, contact);
                         namedayEvents.add(nameday);
                     }
                 }

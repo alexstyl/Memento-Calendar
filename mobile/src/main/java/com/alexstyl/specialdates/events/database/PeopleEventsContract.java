@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
@@ -25,7 +25,6 @@ public class PeopleEventsContract {
         public static final String PATH = "people_events";
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd." + AUTHORITY + "." + PATH;
         public static final Uri CONTENT_URI = Uri.withAppendedPath(PeopleEventsContract.CONTENT_URI, PATH);
-        public static final String SORT_ORDER_DEFAULT = DATE + " ASC";
 
         public static Date getDateFrom(Cursor cursor) {
             int index = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DATE);
@@ -38,10 +37,14 @@ public class PeopleEventsContract {
             return cursor.getLong(contactIdIndex);
         }
 
-        public static EventType getEventType(Cursor cursor) {
+        public static StandardEventType getEventType(Cursor cursor) {
             int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEvents.EVENT_TYPE);
             @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
-            return EventType.fromId(rawEventType);
+            if (rawEventType == EventColumns.TYPE_CUSTOM) {
+                // TODO query custom event
+                return StandardEventType.OTHER;
+            }
+            return StandardEventType.fromId(rawEventType);
         }
 
         public static Date from(String text) {

@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -136,7 +136,7 @@ public class UpcomingDatesBuilderTest {
 
     private static ContactEvent aContactEventOn(Date date) {
         TestContact contact = new TestContact(1, DisplayName.NO_NAME);
-        return new ContactEvent(EventType.BIRTHDAY, date, contact);
+        return new ContactEvent(StandardEventType.BIRTHDAY, date, contact);
     }
 
 }
