@@ -35,6 +35,7 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
                     + AnnualEventsContract.CONTACT_ID + INT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
                     + " PRIMARY KEY (" + AnnualEventsContract._ID + ")"
                     + ")";
 

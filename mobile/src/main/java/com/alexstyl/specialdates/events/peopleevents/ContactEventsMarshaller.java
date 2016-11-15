@@ -7,14 +7,18 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.SourceType;
 
 import java.util.List;
 
 public class ContactEventsMarshaller {
 
     private final DateDisplayStringCreator instance;
+    @SourceType
+    private final int source;
 
-    ContactEventsMarshaller() {
+    ContactEventsMarshaller(@SourceType int source) {
+        this.source = source;
         instance = DateDisplayStringCreator.INSTANCE;
     }
 
@@ -36,6 +40,7 @@ public class ContactEventsMarshaller {
         String date = instance.stringOf(event.getDate());
         values.put(PeopleEventsContract.PeopleEvents.DATE, date);
         values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, event.getType().getId());
+        values.put(PeopleEventsContract.PeopleEvents.SOURCE, source);
 
         putDeviceContactIdIfPresent(event, values);
 

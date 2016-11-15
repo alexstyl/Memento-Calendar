@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 import android.content.Context;
 
 import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
@@ -17,17 +18,18 @@ public class DebugPeopleEventsUpdater {
     public static DebugPeopleEventsUpdater newInstance(Context context) {
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         PeopleEventsRepository repository = new PeopleEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
+        ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
         PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
-        PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, marshaller, databaseProvider);
+        PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, deviceMarshaller, databaseProvider);
 
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
+        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_MEMENTO);
         return new DebugPeopleEventsUpdater(refresher, new NamedayDatabaseRefresher(
                 namedayPreferences,
                 databaseProvider,
-                marshaller,
+                mementoMarshaller,
                 peopleNamedaysCalculator
         ));
     }
