@@ -15,9 +15,8 @@ import com.alexstyl.specialdates.upcoming.TimePeriod;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class PeopleNamedaysCalculator {
+public final class PeopleNamedaysCalculator {
 
     private final NamedayPreferences namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
@@ -33,16 +32,8 @@ public class PeopleNamedaysCalculator {
 
     public List<ContactEvent> loadDeviceStaticNamedays() {
         List<ContactEvent> namedayEvents = new ArrayList<>();
-        Set<Long> contactIDs = new HashSet<>();
-        // TODO use Contact Cache
         List<Contact> contacts = contactsProvider.fetchAllDeviceContacts();
         for (Contact contact : contacts) {
-            long contactID = contact.getContactID();
-            if (contactIDs.contains(contactID)) {
-                continue;
-            }
-            contactIDs.add(contactID);
-
             DisplayName displayName = contact.getDisplayName();
             HashSet<Date> namedays = new HashSet<>();
             for (String firstName : displayName.getFirstNames()) {
@@ -68,7 +59,6 @@ public class PeopleNamedaysCalculator {
 
     public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {
         List<ContactEvent> namedayEvents = new ArrayList<>();
-
         for (Contact contact : contactsProvider.fetchAllDeviceContacts()) {
             for (String firstName : contact.getDisplayName().getFirstNames()) {
                 NameCelebrations nameDays = getSpecialNamedaysOf(firstName);
@@ -79,8 +69,10 @@ public class PeopleNamedaysCalculator {
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
                     Date date = nameDays.getDate(i);
-                    ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact);
-                    namedayEvents.add(nameday);
+                    if (timeDuration.containsDate(date)) {
+                        ContactEvent nameday = new ContactEvent(EventType.NAMEDAY, date, contact);
+                        namedayEvents.add(nameday);
+                    }
                 }
             }
         }
@@ -99,7 +91,6 @@ public class PeopleNamedaysCalculator {
 
     public NamedayCalendar getNamedayCalendar() {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
-        int todayYear = Date.today().getYear();
-        return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, todayYear);
+        return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR);
     }
 }

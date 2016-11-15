@@ -16,8 +16,7 @@ import java.util.List;
 
 public final class DeviceContactsQuery {
 
-    private static final String WHERE = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.Data.IN_VISIBLE_GROUP + "=1";
-    private static final String[] WHERE_ARGS = {ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE};
+    private static final String WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + "=1";
 
     private final ContentResolver resolver;
 
@@ -30,7 +29,7 @@ public final class DeviceContactsQuery {
                 ContactsQuery.CONTENT_URI,
                 ContactsQuery.PROJECTION,
                 WHERE,
-                WHERE_ARGS,
+                null,
                 ContactsQuery.SORT_ORDER
         );
         List<Contact> contacts = new ArrayList<>();

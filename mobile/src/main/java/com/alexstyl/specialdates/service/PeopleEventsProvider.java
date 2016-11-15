@@ -69,6 +69,18 @@ public class PeopleEventsProvider {
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
     }
 
+    public List<ContactEvent> getCelebrationDateOn(Date date) {
+        TimePeriod timeDuration = TimePeriod.between(date, date);
+        List<ContactEvent> contactEvents = fetchStaticEventsBetween(timeDuration);
+
+        if (namedayPreferences.isEnabled()) {
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
+            contactEvents.addAll(namedaysContactEvents);
+        }
+        return contactEvents;
+
+    }
+
     public List<ContactEvent> getCelebrationDateFor(TimePeriod timeDuration) {
         List<ContactEvent> contactEvents = fetchStaticEventsBetween(timeDuration);
 

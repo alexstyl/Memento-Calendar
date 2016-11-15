@@ -38,15 +38,17 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
+import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
 
-public class DateDetailsFragment extends MementoFragment implements LoaderManager.LoaderCallbacks<List<ContactEvent>> {
+public class DateDetailsFragment extends MementoFragment {
 
     private static final ActionWithParameters CONTACT_INTERACT_EXTERNAL = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
 
@@ -150,7 +152,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
         super.onActivityCreated(savedInstanceState);
 
         if (permissions.permissionIsPresent()) {
-            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, this);
+            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, loaderCallbacks);
         } else {
             permissions.requestForPermission();
         }
@@ -175,7 +177,7 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
     private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, DateDetailsFragment.this);
+            getLoaderManager().initLoader(LOADER_ID_EVENTS, null, loaderCallbacks);
         }
 
         @Override
@@ -258,31 +260,36 @@ public class DateDetailsFragment extends MementoFragment implements LoaderManage
         recyclerView.addItemDecoration(spacingDecoration = new GridWithHeaderSpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter));
     }
 
-    @Override
-    public Loader<List<ContactEvent>> onCreateLoader(int loaderID, Bundle bundle) {
-        if (loaderID == LOADER_ID_EVENTS) {
-            return DateDetailsLoader.newInstance(getActivity(), date);
-        }
-        return null;
-    }
+    private LoaderManager.LoaderCallbacks<List<ContactEvent>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<ContactEvent>>() {
 
-    @Override
-    public void onLoadFinished(Loader<List<ContactEvent>> EventItemLoader, List<ContactEvent> result) {
-        adapter.setEvents(result);
-        if (adapter.isLoadingDetailedCards()) {
-            layoutManager.setSpanCount(1); // display everything in one row
-        } else {
-            layoutManager.setSpanCount(getResources().getInteger(R.integer.grid_card_columns));
+        @Override
+        public Loader<List<ContactEvent>> onCreateLoader(int loaderID, Bundle bundle) {
+            if (loaderID == LOADER_ID_EVENTS) {
+                PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(getActivity());
+                ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
+                return new DateDetailsLoader(getActivity(), date, peopleEventsProvider, contactsObserver);
+            }
+            return null;
         }
 
-        spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
-        progress.setVisibility(View.GONE);
-    }
+        @Override
+        public void onLoadFinished(Loader<List<ContactEvent>> EventItemLoader, List<ContactEvent> result) {
+            adapter.setEvents(result);
+            if (adapter.isLoadingDetailedCards()) {
+                layoutManager.setSpanCount(1); // display everything in one row
+            } else {
+                layoutManager.setSpanCount(getResources().getInteger(R.integer.grid_card_columns));
+            }
 
-    @Override
-    public void onLoaderReset(Loader<List<ContactEvent>> EventItemLoader) {
-        adapter.setEvents(null);
-    }
+            spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
+            progress.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<ContactEvent>> EventItemLoader) {
+            adapter.setEvents(null);
+        }
+    };
 
     private final OnSupportCardClickListener supportListener = new OnSupportCardClickListener() {
 
