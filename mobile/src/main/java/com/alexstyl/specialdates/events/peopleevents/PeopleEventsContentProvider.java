@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
+import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
@@ -46,12 +47,13 @@ public class PeopleEventsContentProvider extends ContentProvider {
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
+        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
+        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_MEMENTO);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
         peopleEventsUpdater = new PeopleEventsUpdater(
-                new PeopleEventsDatabaseRefresher(repository, marshaller, peopleEventsPersister),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, marshaller, calculator),
+                new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
+                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, mementoMarshaller, calculator),
                 new EventPreferences(context),
                 new ContactsObserver(contentResolver, new Handler()),
                 new NamedaySettingsMonitor(namedayPreferences),

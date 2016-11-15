@@ -28,7 +28,7 @@ public final class PeopleEventsPersister {
 
     void deleteAllDeviceEvents() {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.delete(AnnualEventsContract.TABLE_NAME, null, null);
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + " == " + AnnualEventsContract.SOURCE_DEVICE, null);
     }
 
     public void insertAnnualEvents(ContentValues[] values) {
