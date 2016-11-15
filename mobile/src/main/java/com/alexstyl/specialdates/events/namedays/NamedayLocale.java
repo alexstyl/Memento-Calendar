@@ -25,7 +25,7 @@ public enum NamedayLocale {
 
     public static NamedayLocale from(String displayLanguage) {
         for (NamedayLocale locale : values()) {
-            if (locale.name().equalsIgnoreCase(displayLanguage)) {
+            if (locale.getShortCode().equalsIgnoreCase(displayLanguage)) {
                 return locale;
             }
         }
