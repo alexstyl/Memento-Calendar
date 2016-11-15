@@ -2,8 +2,8 @@ package com.alexstyl.specialdates.contact;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.StructuredName;
+import android.provider.ContactsContract.Contacts;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.DisplayName;
 
@@ -11,7 +11,7 @@ import static com.alexstyl.specialdates.contact.ContactsQuery.SORT_ORDER;
 
 class DeviceContactFactory {
 
-    private static final String SELECTION_CONTACT_WITH_ID = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+    private static final String SELECTION_CONTACT_WITH_ID = Contacts._ID + " = ?";
     private final ContentResolver resolver;
 
     DeviceContactFactory(ContentResolver contentResolver) {
@@ -45,12 +45,16 @@ class DeviceContactFactory {
                 ContactsQuery.CONTENT_URI,
                 ContactsQuery.PROJECTION,
                 SELECTION_CONTACT_WITH_ID,
-                new String[]{
-                        String.valueOf(contactID),
-                        StructuredName.CONTENT_ITEM_TYPE
-                },
+                makeSelectionArgumentsFor(contactID),
                 SORT_ORDER + " LIMIT 1"
         );
+    }
+
+    @NonNull
+    private String[] makeSelectionArgumentsFor(long contactID) {
+        return new String[]{
+                String.valueOf(contactID)
+        };
     }
 
     private static boolean isInvalid(Cursor cursor) {
