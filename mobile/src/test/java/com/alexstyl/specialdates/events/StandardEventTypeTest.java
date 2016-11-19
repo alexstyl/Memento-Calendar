@@ -31,8 +31,4 @@ public class StandardEventTypeTest {
         StandardEventType.fromId(5);
     }
 
-    @Test(expected = DeveloperError.class)
-    public void throwsADeveloperErrorIfTriedtoCreateACustomEvent() {
-        StandardEventType.fromId(EventColumns.TYPE_CUSTOM);
-    }
 }
