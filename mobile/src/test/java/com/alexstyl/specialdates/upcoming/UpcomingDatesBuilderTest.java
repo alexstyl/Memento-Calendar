@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -26,6 +27,7 @@ public class UpcomingDatesBuilderTest {
     private static final Date FEBRUARY_1st = Date.on(1, FEBRUARY, 1990);
     private static final Date FEBRUARY_3rd = Date.on(3, FEBRUARY, 1990);
     private static final Date MARCH_5th = Date.on(5, MARCH, 1990);
+    private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
 
     @Test
     public void celebrationDateIsCreatedCorrectlyForDifferentYear() {
@@ -136,7 +138,7 @@ public class UpcomingDatesBuilderTest {
 
     private static ContactEvent aContactEventOn(Date date) {
         TestContact contact = new TestContact(1, DisplayName.NO_NAME);
-        return new ContactEvent(deviceEventId, StandardEventType.BIRTHDAY, date, contact);
+        return new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, date, contact);
     }
 
 }
