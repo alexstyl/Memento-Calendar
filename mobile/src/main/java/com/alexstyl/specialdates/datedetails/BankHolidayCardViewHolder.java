@@ -9,7 +9,7 @@ class BankHolidayCardViewHolder extends RecyclerView.ViewHolder {
 
     private final BankHolidayCardView bankHolidayCardView;
 
-    public BankHolidayCardViewHolder(View itemView) {
+    BankHolidayCardViewHolder(View itemView) {
         super(itemView);
         bankHolidayCardView = (BankHolidayCardView) itemView;
     }

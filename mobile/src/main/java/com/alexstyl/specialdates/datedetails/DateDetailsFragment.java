@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
@@ -34,7 +35,13 @@ import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
+import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -47,6 +54,8 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 
 import java.util.List;
+
+import static com.alexstyl.specialdates.Optional.absent;
 
 public class DateDetailsFragment extends MementoFragment {
 
@@ -247,17 +256,29 @@ public class DateDetailsFragment extends MementoFragment {
                 }
         );
 
+        Optional<BankHoliday> bankHoliday = getBankHolidayOn(date);
+
         adapter = DateDetailsAdapter.newInstance(
                 getActivity(),
                 date,
                 supportListener,
                 namedayShareListener,
-                contactCardListener
+                contactCardListener,
+                bankHoliday
         );
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(spacingDecoration = new GridWithHeaderSpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter));
+    }
+
+    private Optional<BankHoliday> getBankHolidayOn(Date date) {
+        BankHolidaysPreferences preferences = BankHolidaysPreferences.newInstance(getActivity());
+        if (preferences.isEnabled()) {
+            BankHolidayProvider bankHolidayProvider = new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE));
+            return bankHolidayProvider.calculateBankHolidayOn(date);
+        }
+        return absent();
     }
 
     private LoaderManager.LoaderCallbacks<List<ContactEvent>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<ContactEvent>>() {
