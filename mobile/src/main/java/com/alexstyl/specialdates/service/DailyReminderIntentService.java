@@ -7,14 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
+import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -117,25 +121,15 @@ public class DailyReminderIntentService extends IntentService {
     }
 
     private void notifyForBankholidaysFor(Date date) {
-        BankHoliday bankHoliday = findBankholidayFor(date);
-        if (bankHoliday != null) {
-            notifier.forBankholiday(date, bankHoliday);
+        Optional<BankHoliday> bankHoliday = findBankholidayFor(date);
+        if (bankHoliday.isPresent()) {
+            notifier.forBankholiday(date, bankHoliday.get());
         }
     }
 
-    private BankHoliday findBankholidayFor(Date date) {
-//        EasterCalculator calculator = new EasterCalculator();
-//        Date easter = calculator.calculateEasterForYear(date.getYear());
-//        List<BankHoliday> bankHolidays = new GreekBankHolidaysCalculator(calculator)
-//                .getBankHolidaysForYear();
-//        for (BankHoliday bankHoliday : bankHolidays) {
-//            if (bankHoliday.getDate().equals(date)) {
-//                return bankHoliday;
-//            }
-//        }
-        // TODO
-        return null;
-
+    private Optional<BankHoliday> findBankholidayFor(Date date) {
+        BankHolidayProvider provider = new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE));
+        return provider.calculateBankHolidayOn(date);
     }
 
     private boolean containsNames(NamesInADate names) {
