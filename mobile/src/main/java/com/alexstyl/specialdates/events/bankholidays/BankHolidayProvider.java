@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.events.bankholidays;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 
@@ -64,15 +65,15 @@ public final class BankHolidayProvider {
         return timePeriod.getStartingDate().getYear() == timePeriod.getEndingDate().getYear();
     }
 
-//    public Optional<BankHoliday> calculateBankHolidaysBetween(Date date) {
-//        List<BankHoliday> bankHolidaysList;
-//        bankHolidaysList = bankHolidaysCalculator.calculateBankholidaysForYear(date.getYear());
-//        for (BankHoliday bankHoliday : bankHolidaysList) {
-//            if (bankHoliday.getDate().equals(date)) {
-//                return new Optional<>(bankHoliday);
-//            }
-//        }
-//        return Optional.absent();
-//    }
+    public Optional<BankHoliday> calculateBankHolidayOn(Date date) {
+        List<BankHoliday> bankHolidaysList;
+        bankHolidaysList = bankHolidaysCalculator.calculateBankholidaysForYear(date.getYear());
+        for (BankHoliday bankHoliday : bankHolidaysList) {
+            if (bankHoliday.getDate().equals(date)) {
+                return new Optional<>(bankHoliday);
+            }
+        }
+        return Optional.absent();
+    }
 
 }
