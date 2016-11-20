@@ -304,7 +304,7 @@ public class PeopleEventsProvider {
         return customEventProvider.getEventWithId(deviceId);
     }
 
-    public static Date from(String text) {
+    private static Date from(String text) {
         try {
             return DateParser.INSTANCE.parse(text);
         } catch (DateParseException e) {

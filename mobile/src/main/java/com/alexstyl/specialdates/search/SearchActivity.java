@@ -33,6 +33,7 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
+import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
@@ -334,7 +335,7 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public Loader<SearchResults> onCreateLoader(int id, Bundle args) {
             adapter.notifyIsLoadingMore();
-            return new SearchLoader(context(), searchQuery, searchCounter);
+            return new SearchLoader(context(), new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE), searchQuery, searchCounter);
         }
 
         @Override

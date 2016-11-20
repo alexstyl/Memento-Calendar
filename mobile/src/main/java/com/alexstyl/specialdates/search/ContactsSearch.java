@@ -22,13 +22,7 @@ final public class ContactsSearch {
 
     private final NameMatcher nameMatcher;
 
-    public static ContactsSearch newInstance(Context context) {
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
-        NameMatcher nameMatcher = NameMatcher.newInstance();
-        return new ContactsSearch(context, contactsProvider, nameMatcher);
-    }
-
-    ContactsSearch(Context context, ContactsProvider contactsProvider, NameMatcher nameMatcher) {
+    public ContactsSearch(Context context, ContactsProvider contactsProvider, NameMatcher nameMatcher) {
         this.contactsProvider = contactsProvider;
         this.nameMatcher = nameMatcher;
         this.context = context.getApplicationContext();

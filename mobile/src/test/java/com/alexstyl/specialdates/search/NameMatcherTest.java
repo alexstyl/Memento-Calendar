@@ -15,7 +15,7 @@ public class NameMatcherTest {
     private static final String FIRST_LETTER_OF_FIRST_NAME = "A";
     private static final String FIRST_LETTER_OF_LAST_NAME = "S";
 
-    private NameMatcher comparer = NameMatcher.newInstance();
+    private NameMatcher comparer = NameMatcher.INSTANCE;
 
     @Test
     public void testFirstLetterOfFirstName_returnsTrue() {

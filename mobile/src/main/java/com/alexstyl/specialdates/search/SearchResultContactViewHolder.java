@@ -43,7 +43,8 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         this.avatar = (ColorImageView) convertView.findViewById(R.id.avatar);
     }
 
-    void bind(final Contact contact, final SearchResultAdapter.SearchResultClickListener mListener) {
+    void bind(final ContactWithEvents contactWithEvents, final SearchResultAdapter.SearchResultClickListener mListener) {
+        final Contact contact = contactWithEvents.getContact();
         avatar.setBackgroundVariant((int) contact.getContactID());
         String displayNameString = contact.getDisplayName().toString();
         this.displayName.setText(displayNameString);
@@ -72,7 +73,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 //            this.birthday.setVisibility(View.VISIBLE);
 //            this.birthday.setText(message);
 //        } else {
-            this.birthday.setVisibility(View.GONE);
+        this.birthday.setVisibility(View.GONE);
 //        }
     }
 

@@ -3,8 +3,6 @@ package com.alexstyl.specialdates.search;
 import android.content.Context;
 import android.os.Handler;
 
-import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.util.ContactsObserver;
 
@@ -12,19 +10,17 @@ import java.util.List;
 
 class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
-    private final ContactWithEventsSearch contactWithEventsSearch;
     private final String searchQuery;
     private final int searchCounter;
 
     private final ContactsObserver observer;
+    private final PeopleEventsSearch peopleEventsSearch;
 
-    SearchLoader(Context context, String query, int mSearchCounter) {
+    SearchLoader(Context context, PeopleEventsSearch peopleEventsSearch, String query, int searchCounter) {
         super(context);
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
-        NameMatcher nameMatcher = NameMatcher.newInstance();
-        this.contactWithEventsSearch = new ContactWithEventsSearch(contactsProvider, nameMatcher);
         this.searchQuery = query;
-        this.searchCounter = mSearchCounter;
+        this.searchCounter = searchCounter;
+        this.peopleEventsSearch = peopleEventsSearch;
 
         observer = new ContactsObserver(context.getContentResolver(), new Handler());
         observer.registerWith(new ContactsObserver.Callback() {
@@ -43,8 +39,7 @@ class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     @Override
     public SearchResults loadInBackground() {
-        List<Contact> contacts = contactWithEventsSearch.searchForContacts(searchQuery, searchCounter);
-
+        List<ContactWithEvents> contacts = peopleEventsSearch.searchForContacts(searchQuery, searchCounter);
         boolean canLoadMore = contacts.size() > searchCounter;
         return new SearchResults(searchQuery, contacts, canLoadMore);
     }
