@@ -7,8 +7,10 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.search.ContactsSearch;
+import com.alexstyl.specialdates.search.NameMatcher;
 import com.novoda.notils.logger.simple.Log;
 
 /**
@@ -26,7 +28,8 @@ public class ContactsAutoCompleteView extends AutoCompleteTextView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        adapter = new ContactsAdapter(ContactsSearch.newInstance(getContext()), ImageLoader.createCircleThumbnailLoader(getResources()));
+        Context context = getContext();
+        adapter = new ContactsAdapter(new ContactsSearch(context, ContactsProvider.get(context), NameMatcher.INSTANCE), ImageLoader.createCircleThumbnailLoader(getResources()));
         setAdapter(adapter);
         setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

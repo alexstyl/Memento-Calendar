@@ -14,9 +14,9 @@ import com.novoda.notils.exception.DeveloperError;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<Contact> contacts = new ArrayList<>();
+    private final List<ContactWithEvents> searchResults = new ArrayList<>();
 
     private NamedayCard namedayCard = new NamedayCard();
 
@@ -31,10 +31,10 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
         this.namedayCalendar = namedayCalendar;
     }
 
-    public void updateSearchResults(SearchResults searchResults) {
+    void updateSearchResults(SearchResults searchResults) {
         this.searchQuery = searchResults.getSearchQuery();
-        this.contacts.clear();
-        this.contacts.addAll(searchResults.getContacts());
+        this.searchResults.clear();
+        this.searchResults.addAll(searchResults.getContacts());
 
         if (this.canLoadMore != searchResults.canLoadMore()) {
             this.canLoadMore = searchResults.canLoadMore();
@@ -47,20 +47,20 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
         notifyDataSetChanged();
     }
 
-    public void notifyIsLoadingMore() {
+    void notifyIsLoadingMore() {
         isLoadingMore = true;
         notifyDataSetChanged();
     }
 
-    public void clearResults() {
-        this.contacts.clear();
+    void clearResults() {
+        this.searchResults.clear();
         this.namedayCard.clear();
         this.isLoadingMore = false;
         this.canLoadMore = false;
         notifyDataSetChanged();
     }
 
-    public interface SearchResultClickListener {
+    interface SearchResultClickListener {
 
         /**
          * Called when a contact has been selected.
@@ -115,7 +115,7 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private boolean containsNoResults() {
-        return contacts.size() == 0 && !namedayCard.isAvailable();
+        return searchResults.size() == 0 && !namedayCard.isAvailable();
     }
 
     @Override
@@ -147,7 +147,7 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
                 // nameday adds one more row
                 position = position - 1;
             }
-            Contact contact = contacts.get(position);
+            ContactWithEvents contact = searchResults.get(position);
             SearchResultContactViewHolder viewHolder = (SearchResultContactViewHolder) vh;
             viewHolder.bind(contact, listener);
         } else if (type == VIEWTYPE_NAMEDAYS_VIEW) {
@@ -168,7 +168,7 @@ public final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return contacts.size()
+        return searchResults.size()
                 + (namedayCard.isAvailable() ? 1 : 0)
                 + (canLoadMore ? 1 : 0)
                 + (shouldDisplayEmptyRow() ? 1 : 0);

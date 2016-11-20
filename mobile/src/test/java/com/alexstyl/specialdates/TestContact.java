@@ -34,4 +34,7 @@ public class TestContact extends Contact {
     public String getImagePath() {
         throw new UnsupportedOperationException("Not supported");
     }
+
+
+
 }
