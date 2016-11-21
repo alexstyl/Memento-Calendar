@@ -52,7 +52,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEvents contactEvents) {
         Date date = contactEvents.getDate();
-        Intent intent = DateDetailsActivity.getStartIntent(context, date.getDayOfMonth(), date.getMonth(), date.getYear());
+        Intent intent = DateDetailsActivity.getStartIntent(context, date);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT

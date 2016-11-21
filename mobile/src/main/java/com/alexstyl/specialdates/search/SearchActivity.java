@@ -279,9 +279,10 @@ public class SearchActivity extends ThemedActivity {
         }
 
         @Override
-        public void onNamedayClicked(View v, int month, int day) {
-            Date date = Date.today();
-            DateDetailsActivity.startActivity(context(), month, day, date.getYear());
+        public void onNamedayClicked(Date date) {
+            Date currentYearDate = Date.on(date.getDayOfMonth(), date.getMonth(), Date.CURRENT_YEAR);
+            Intent intent = DateDetailsActivity.getStartIntent(context(), currentYearDate);
+            startActivity(intent);
         }
 
     };

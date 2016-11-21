@@ -45,7 +45,7 @@ class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                searchResultListener.onNamedayClicked(v, date.getMonth(), date.getDayOfMonth());
+                                searchResultListener.onNamedayClicked(date);
                             }
                         }
                 );

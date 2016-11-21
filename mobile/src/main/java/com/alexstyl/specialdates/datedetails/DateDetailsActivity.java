@@ -99,34 +99,16 @@ public class DateDetailsActivity extends ThemedActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Starts the {@link DateDetailsActivity}, that will display details about
-     * the given date
-     *
-     * @param context The context to use
-     */
-    public static void startActivity(Context context, int month,
-                                     int dayOfMonth, int year) {
-        Intent startIntent = getStartIntent(context, dayOfMonth, month, year);
-        context.startActivity(startIntent);
-    }
-
-    /**
-     * @param context    The context to use
-     * @param dayOfMonth The day of the month to display
-     * @param month      The month to display
-     * @param year       The year to display
-     */
-    public static Intent getStartIntent(Context context, int dayOfMonth, int month, int year) {
+    public static Intent getStartIntent(Context context, Date date) {
         Intent i = new Intent(context, DateDetailsActivity.class);
-        i.putExtra(DateDetailsActivity.EXTRA_DAY, dayOfMonth);
-        i.putExtra(DateDetailsActivity.EXTRA_MONTH, month);
-        i.putExtra(DateDetailsActivity.EXTRA_YEAR, year);
+        i.putExtra(DateDetailsActivity.EXTRA_DAY, date.getDayOfMonth());
+        i.putExtra(DateDetailsActivity.EXTRA_MONTH, date.getMonth());
+        i.putExtra(DateDetailsActivity.EXTRA_YEAR, date.getYear());
         return i;
     }
 
-    public static Intent getStartIntentFromExternal(Context context, int dayOfMonth, int month, int year) {
-        Intent startIntent = getStartIntent(context, dayOfMonth, month, year);
+    public static Intent getStartIntentFromExternal(Context context, Date date) {
+        Intent startIntent = getStartIntent(context, date);
         startIntent.putExtra(EXTRA_SOURCE, SOURCE_NOTIFICATION);
         return startIntent;
     }
