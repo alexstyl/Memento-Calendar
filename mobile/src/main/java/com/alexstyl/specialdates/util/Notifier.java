@@ -80,7 +80,7 @@ public class Notifier {
 
         }
 
-        Intent startIntent = DateDetailsActivity.getStartIntentFromExternal(context, date.getDayOfMonth(), date.getMonth(), date.getYear());
+        Intent startIntent = DateDetailsActivity.getStartIntentFromExternal(context, date);
         PendingIntent intent =
                 PendingIntent.getActivity(
                         context, NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
@@ -205,7 +205,7 @@ public class Notifier {
         }
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS,
-                DateDetailsActivity.getStartIntentFromExternal(context, date.getDayOfMonth(), date.getMonth(), date.getYear()),
+                DateDetailsActivity.getStartIntentFromExternal(context, date),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
@@ -239,7 +239,7 @@ public class Notifier {
     public void forBankholiday(Date date, BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
-                DateDetailsActivity.getStartIntentFromExternal(context, date.getDayOfMonth(), date.getMonth(), date.getYear()),
+                DateDetailsActivity.getStartIntentFromExternal(context, date),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 

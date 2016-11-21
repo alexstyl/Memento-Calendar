@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.novoda.notils.exception.DeveloperError;
@@ -59,27 +60,14 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     interface SearchResultClickListener {
 
-        /**
-         * Called when a contact has been selected.
-         *
-         * @param v       The view the user clicked
-         * @param contact The contact represented by the view
-         */
         void onContactClicked(View v, Contact contact);
 
-        /**
-         * Called when the user has selected a specific day of a nameday
-         *
-         * @param v          The view the user clicked
-         * @param month      The month of the nameday
-         * @param dayOfMonth The day of the month of the nameday
-         */
-        void onNamedayClicked(View v, int month, int dayOfMonth);
+        void onNamedayClicked(Date date);
     }
 
     private SearchResultClickListener listener;
 
-    public void setSearchResultClickListener(SearchResultClickListener l) {
+    void setSearchResultClickListener(SearchResultClickListener l) {
         this.listener = l;
     }
 
