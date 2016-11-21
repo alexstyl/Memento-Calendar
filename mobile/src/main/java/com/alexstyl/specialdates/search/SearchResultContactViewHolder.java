@@ -7,17 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
+import java.util.List;
+
 class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
-    private final NamedayCalendar namedayCalendar;
     private final ColorImageView avatar;
     private final TextView displayName;
     private final TextView birthday;
@@ -26,16 +27,14 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     private final ImageLoader imageLoader;
 
     public static SearchResultContactViewHolder createFor(ViewGroup parent,
-                                                          NamedayCalendar namedayCalendar,
                                                           ImageLoader imageLoader) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_search_result_contact, parent, false);
-        return new SearchResultContactViewHolder(view, namedayCalendar, imageLoader);
+        return new SearchResultContactViewHolder(view, imageLoader);
     }
 
-    SearchResultContactViewHolder(View convertView, NamedayCalendar namedayCalendar, ImageLoader imageLoader) {
+    private SearchResultContactViewHolder(View convertView, ImageLoader imageLoader) {
         super(convertView);
-        this.namedayCalendar = namedayCalendar;
         this.imageLoader = imageLoader;
         this.displayName = (TextView) convertView.findViewById(R.id.contact_name);
         this.birthday = (TextView) convertView.findViewById(R.id.birthday_label);
@@ -52,8 +51,8 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
         imageLoader.loadThumbnail(contact.getImagePath(), avatar.getImageView());
 
-        bindBirthday(contact);
-        bindNamedays(contact);
+        bindBirthday(contactWithEvents);
+        bindNamedays(contactWithEvents);
 
         itemView.setOnClickListener(
                 new View.OnClickListener() {
@@ -65,43 +64,37 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         );
     }
 
-    private void bindBirthday(Contact contact) {
-        // TODO handle event
-//        if (contact.hasDateOfBirth()) {
-//            Date birthday = contact.getDateOfBirth();
-//            String message = getBirthdayString(getContext(), birthday);
-//            this.birthday.setVisibility(View.VISIBLE);
-//            this.birthday.setText(message);
-//        } else {
-        this.birthday.setVisibility(View.GONE);
-//        }
+    private void bindBirthday(ContactWithEvents contactWithEvents) {
+        Optional<ContactEvent> contactEvent = contactWithEvents.getBirthday();
+        if (contactEvent.isPresent()) {
+            Date date = contactEvent.get().getDate();
+            String message = getBirthdayString(getContext(), date);
+            this.birthday.setVisibility(View.VISIBLE);
+            this.birthday.setText(message);
+        } else {
+            this.birthday.setVisibility(View.GONE);
+        }
     }
 
-    private void bindNamedays(Contact contact) {
-        NameCelebrations namedays = namedayCalendar.getAllNamedays(contact.getGivenName());
-        if (noEventsToDisplay(namedays)) {
+    private void bindNamedays(ContactWithEvents contact) {
+        List<ContactEvent> namedays = contact.getNamedays();
+        if (namedays.isEmpty()) {
             nameday.setVisibility(View.GONE);
         } else {
             // we are only displaying 1 date instead of all of them
             // with Person details this is fixed though
-            String message = getNamedayString(getContext(), namedays.getDate(0));
+            String message = getNamedayString(getContext(), namedays.get(0).getDate());
             nameday.setVisibility(View.VISIBLE);
             nameday.setText(message);
         }
 
     }
 
-    public static String getBirthdayString(Context context, Date birthday) {
+    private static String getBirthdayString(Context context, Date birthday) {
         return getEventString(context, R.string.birthday, birthday);
     }
 
-    /**
-     * Returns a 'Nameday on X' string
-     *
-     * @param context The context to use
-     * @param date    The date of the event
-     */
-    public static String getNamedayString(Context context, Date date) {
+    private static String getNamedayString(Context context, Date date) {
         return getEventString(context, R.string.nameday, date);
     }
 
@@ -113,10 +106,6 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
                         false
                 );
         return context.getString(stringRes) + " " + message;
-    }
-
-    private boolean noEventsToDisplay(NameCelebrations namedays) {
-        return namedays.containsNoDate();
     }
 
     private Context getContext() {

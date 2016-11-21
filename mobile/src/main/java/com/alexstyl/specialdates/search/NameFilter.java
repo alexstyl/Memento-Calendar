@@ -10,6 +10,7 @@ final class NameFilter {
     private static final int NAME_THREASHOLD = 5;
 
     private final WordComparator comparator;
+
     private final List<String> allNames;
 
     NameFilter(List<String> allNames, WordComparator comparator) {
@@ -41,6 +42,10 @@ final class NameFilter {
 
         }
         return names;
+    }
+
+    List<String> getAllNames() {
+        return allNames;
     }
 
 }

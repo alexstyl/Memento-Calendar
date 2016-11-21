@@ -78,4 +78,5 @@ public class SearchBar extends Toolbar {
     public void setHint(String hint) {
         editText.setHint(hint);
     }
+
 }
