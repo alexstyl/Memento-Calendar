@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.search;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class ContactWithEvents {
@@ -13,6 +14,12 @@ class ContactWithEvents {
     ContactWithEvents(Contact contact, List<ContactEvent> events) {
         this.contact = contact;
         this.events = events;
+    }
+
+    ContactWithEvents(Contact contact, ContactEvent event) {
+        this.contact = contact;
+        this.events = new ArrayList<>();
+        this.events.add(event);
     }
 
     public Contact getContact() {

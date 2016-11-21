@@ -9,6 +9,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -25,8 +26,8 @@ import static org.mockito.Mockito.when;
 public class PeopleEventsSearchTest {
 
     private static final Contact ALEX = new TestContact(1, DisplayName.from("Alex Styl"));
-    private static final Contact MARIA = new TestContact(1, DisplayName.from("Maria Papadopoulou"));
-    private static final Contact MIMOZA = new TestContact(1, DisplayName.from("Mimoza Dereks"));
+    private static final Contact MARIA = new TestContact(2, DisplayName.from("Maria Papadopoulou"));
+    private static final Contact MIMOZA = new TestContact(3, DisplayName.from("Mimoza Dereks"));
     private static final Date JANUARY_1st = Date.startOfTheYear(2016);
 
     private PeopleEventsSearch search;
@@ -45,17 +46,54 @@ public class PeopleEventsSearchTest {
         when(mockProvider.getCelebrationDateFor(aYearFromNow())).thenReturn(contactEvents);
     }
 
-    private TimePeriod aYearFromNow() {
+    private static TimePeriod aYearFromNow() {
         Date today = Date.today();
         Date aYearFromNow = today.addDay(364);
         return TimePeriod.between(today, aYearFromNow);
     }
 
     @Test
-    public void searchResultsIncludeOnlyTheSearchedContact() {
-        List<ContactWithEvents> actual = search.searchForContacts("Alex", 5);
+    public void searchingByFirstLetter() {
+        List<ContactWithEvents> actual = search.searchForContacts("A", 5);
         ContactWithEvents expected = new ContactWithEvents(ALEX, singletonList(new ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)));
 
         assertThat(actual).containsOnly(expected);
+    }
+
+    @Test
+    public void searchingByLastLetter() {
+        List<ContactWithEvents> actual = search.searchForContacts("S", 5);
+        ContactWithEvents expected = new ContactWithEvents(ALEX, singletonList(new ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)));
+
+        assertThat(actual).containsOnly(expected);
+    }
+
+    @Test
+    public void searchingByFullName() {
+        List<ContactWithEvents> actual = search.searchForContacts("Alex Styl", 5);
+        ContactWithEvents expected = new ContactWithEvents(ALEX, singletonList(new ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)));
+
+        assertThat(actual).containsOnly(expected);
+    }
+
+    @Test
+    public void multipleResults() {
+        List<ContactWithEvents> actual = search.searchForContacts("M", 5);
+
+        List<ContactWithEvents> expected = new ArrayList<>();
+        expected.add(new ContactWithEvents(MIMOZA, new ContactEventTestBuilder(MIMOZA).buildNameday((JANUARY_1st))));
+        expected.add(new ContactWithEvents(MARIA, new ContactEventTestBuilder(MARIA).buildAnniversary((JANUARY_1st))));
+
+        assertThat(actual).containsAll(expected);
+    }
+
+    @Test
+    public void requestOneResultReturnsOnlyOneResult() {
+        List<ContactWithEvents> actual = search.searchForContacts("M", 1);
+
+        List<ContactWithEvents> expected = new ArrayList<>();
+        expected.add(new ContactWithEvents(MARIA, new ContactEventTestBuilder(MARIA).buildAnniversary((JANUARY_1st))));
+
+        assertThat(actual).containsAll(expected);
     }
 }
