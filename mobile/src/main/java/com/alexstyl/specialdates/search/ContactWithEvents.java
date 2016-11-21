@@ -1,12 +1,16 @@
 package com.alexstyl.specialdates.search;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class ContactWithEvents {
+
+    private static final Optional<ContactEvent> NO_EVENT = Optional.absent();
 
     private final Contact contact;
     private final List<ContactEvent> events;
@@ -28,6 +32,25 @@ class ContactWithEvents {
 
     public List<ContactEvent> getEvents() {
         return events;
+    }
+
+    Optional<ContactEvent> getBirthday() {
+        for (ContactEvent event : events) {
+            if (event.getType() == StandardEventType.BIRTHDAY) {
+                return new Optional<>(event);
+            }
+        }
+        return NO_EVENT;
+    }
+
+    public List<ContactEvent> getNamedays() {
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        for (ContactEvent event : events) {
+            if (event.getType() == StandardEventType.NAMEDAY) {
+                contactEvents.add(event);
+            }
+        }
+        return contactEvents;
     }
 
     @Override
