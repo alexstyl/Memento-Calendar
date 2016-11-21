@@ -21,16 +21,16 @@ final class PeopleEventsSearch {
     }
 
     List<ContactWithEvents> searchForContacts(String searchQuery, int counter) {
-        // since we cannot select ignoring accents, we have to manually do a searching
+        if (counter <= 0) {
+            return new ArrayList<>();
+        }
+
         searchQuery = searchQuery.trim();
-
-        // query all events
         HashMapList<Contact, ContactEvent> events = new HashMapList<>();
-
         TimePeriod between = aYearFromNow();
-        List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(between);
+        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getCelebrationDateFor(between);
         int size = 0;
-        for (ContactEvent contactEvent : contactEvents) {
+        for (ContactEvent contactEvent : contactEventsOnDate) {
             Contact contact = contactEvent.getContact();
             if (nameMatcher.match(contact.getDisplayName(), searchQuery)) {
                 events.addValue(contact, contactEvent);

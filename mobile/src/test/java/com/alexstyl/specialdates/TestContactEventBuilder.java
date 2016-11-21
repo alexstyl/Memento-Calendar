@@ -18,17 +18,6 @@ public class TestContactEventBuilder {
     private static final Optional<Long> NO_DEVICE_CONTACT_ID = Optional.absent();
     private List<ContactEvent> contactEvents = new ArrayList<>();
 
-    public List<Contact> withNames(String... names) {
-        long idIndex = 0;
-        List<Contact> contacts = new ArrayList<>(names.length);
-        for (String name : names) {
-            TestContact testContact = new TestContact(idIndex, DisplayName.from(name));
-            contacts.add(testContact);
-            idIndex++;
-        }
-        return Collections.unmodifiableList(contacts);
-    }
-
     public TestContactEventBuilder addBirthdayFor(Contact contact, Date date) {
         addEventFor(contact, BIRTHDAY, date);
         return this;
