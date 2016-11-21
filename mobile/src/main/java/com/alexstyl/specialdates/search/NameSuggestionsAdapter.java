@@ -20,7 +20,7 @@ import java.util.List;
 class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
 
     private final OnNameSelectedListener listener;
-    private final Filter filter;
+    private final NamesFilter filter;
     private final List<String> displayingNames;
 
     public static NameSuggestionsAdapter newInstance(Context context, OnNameSelectedListener onNameSelectedListener) {
@@ -74,6 +74,10 @@ class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implem
         displayingNames.clear();
         displayingNames.addAll(names);
         notifyDataSetChanged();
+    }
+
+    void setTextTyped(String textTyped) {
+        filter.ignoreResults(textTyped);
     }
 
     interface OnNameSelectedListener {
