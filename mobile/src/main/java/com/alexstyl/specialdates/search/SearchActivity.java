@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
+import com.novoda.notils.text.SimpleTextWatcher;
 
 import static android.view.View.GONE;
 import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -252,6 +254,13 @@ public class SearchActivity extends ThemedActivity {
 
     private void setupSearchField() {
         searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
+        searchbar.addTextWatcher(new SimpleTextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                super.afterTextChanged(s);
+                namesAdapter.setTextTyped(s.toString());
+            }
+        });
     }
 
     private final NameSuggestionsAdapter.OnNameSelectedListener onNameSelectedListener = new NameSuggestionsAdapter.OnNameSelectedListener() {

@@ -2,13 +2,17 @@ package com.alexstyl.specialdates.search;
 
 import android.widget.Filter;
 
+import com.alexstyl.specialdates.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
 
 final class NamesFilter extends Filter {
 
+    private static final Optional<String> NO_IGNORED_RESULT = Optional.absent();
     private final NameSuggestionsAdapter adapter;
     private final NameFilter nameFilter;
+    private Optional<String> ignoredResult = NO_IGNORED_RESULT;
 
     NamesFilter(NameSuggestionsAdapter adapter, NameFilter nameFilter) {
         this.adapter = adapter;
@@ -38,11 +42,22 @@ final class NamesFilter extends Filter {
             results.values = nameFilter.getAllNames();
         }
         ArrayList<String> names = (ArrayList<String>) results.values;
+        if (ignoredResult.isPresent()) {
+            names.remove(ignoredResult.get());
+        }
         adapter.updateNames(names);
     }
 
     @Override
     public CharSequence convertResultToString(Object resultValue) {
         return resultValue.toString();
+    }
+
+    void ignoreResults(String ignoredResult) {
+        if (ignoredResult.length() > 0) {
+            this.ignoredResult = new Optional<>(ignoredResult);
+        } else {
+            this.ignoredResult = NO_IGNORED_RESULT;
+        }
     }
 }

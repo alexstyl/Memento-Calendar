@@ -58,6 +58,8 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+
+
     interface SearchResultClickListener {
 
         void onContactClicked(View v, Contact contact);
