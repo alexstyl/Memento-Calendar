@@ -44,7 +44,7 @@ public class NamedayPreferences {
         preferences.setBoolean(R.string.key_namedays_contacts_only, onlyForContacts);
     }
 
-    boolean shouldLookupAllNames() {
+    public boolean shouldLookupAllNames() {
         return preferences.getBoolean(R.string.key_namedays_full_name, false);
     }
 
