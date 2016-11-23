@@ -160,5 +160,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Grant_permission">Δώστε άδεια</string>
     <string name="Use_all_parts_of_names">Χρήση όλων των ονομάτων επαφών</string>
     <string name="The_app_will_lookup_namedays_for_all_names_in_a_contact_including_surname">"Η εφαρμογή θα προσπαθήσει να βρει ονομαστικές εορτές από όλα τα ονόματα κάθε επαφής (συμπεριλαμβανομένου του επωνύμου)"</string>
-    <string name="The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname">"Η εφαρμογή θα προσπαθήσει να βρει ονομαστικές εφαρμογές μόνο από τα μικρά ονόματα κάθε επαφές (χωρίς το επώνυμο)"</string>
+    <string name="The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname">"Η εφαρμογή θα προσπαθήσει να βρει ονομαστικές εορτές μόνο από τα μικρά ονόματα κάθε επαφές (χωρίς το επώνυμο)"</string>
 </resources>
