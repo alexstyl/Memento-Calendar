@@ -80,6 +80,7 @@ public class SearchActivity extends ThemedActivity {
 
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
+        namedayPreferences = NamedayPreferences.newInstance(this);
 
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
@@ -111,7 +112,6 @@ public class SearchActivity extends ThemedActivity {
 
         searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
 
-        namedayPreferences = NamedayPreferences.newInstance(this);
         setupSearchbarHint(namedayPreferences);
 
         if (namedayPreferences.isEnabled()) {
@@ -254,13 +254,15 @@ public class SearchActivity extends ThemedActivity {
 
     private void setupSearchField() {
         searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
-        searchbar.addTextWatcher(new SimpleTextWatcher(){
-            @Override
-            public void afterTextChanged(Editable s) {
-                super.afterTextChanged(s);
-                namesAdapter.setTextTyped(s.toString());
-            }
-        });
+        if (namedayPreferences.isEnabled()) {
+            searchbar.addTextWatcher(new SimpleTextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    super.afterTextChanged(s);
+                    namesAdapter.setTextTyped(s.toString());
+                }
+            });
+        }
     }
 
     private final NameSuggestionsAdapter.OnNameSelectedListener onNameSelectedListener = new NameSuggestionsAdapter.OnNameSelectedListener() {
@@ -362,7 +364,6 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public boolean onBackButtonPressed() {
             if (searchbar.hasText()) {
-                // do nothing
                 return false;
             } else {
                 finish();
@@ -375,12 +376,10 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public void onPermissionGranted() {
             // do nothing.
-            Log.d("permission granted");
         }
 
         @Override
         public void onPermissionDenied() {
-            Log.d("permission denied");
             namesSuggestionsView.post(new Runnable() {
                 @Override
                 public void run() {
