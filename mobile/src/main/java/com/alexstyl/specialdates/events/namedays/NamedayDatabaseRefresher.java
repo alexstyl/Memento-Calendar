@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Names;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
@@ -102,7 +103,9 @@ public class NamedayDatabaseRefresher {
 
             DisplayName displayName = DisplayName.from(getDisplayName(cursor));
             HashSet<Date> namedays = new HashSet<>();
-            for (String firstName : displayName.getFirstNames()) {
+
+            Names firstNames = getNamesToCheckFrom(displayName);
+            for (String firstName : firstNames) {
                 NameCelebrations nameDays = getNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {
                     continue;
@@ -122,6 +125,14 @@ public class NamedayDatabaseRefresher {
 
         cursor.close();
         return namedayEvents;
+    }
+
+    private Names getNamesToCheckFrom(DisplayName displayName) {
+        if (namedayPreferences.shouldLookupAllNames()) {
+            return displayName.getAllNames();
+        } else {
+            return displayName.getFirstNames();
+        }
     }
 
     private List<ContactEvent> loadSpecialNamedays() {
@@ -148,7 +159,7 @@ public class NamedayDatabaseRefresher {
 
             DisplayName displayName = DisplayName.from(getDisplayName(cursor));
 
-            for (String firstName : displayName.getFirstNames()) {
+            for (String firstName : getNamesToCheckFrom(displayName)) {
                 NameCelebrations nameDays = getSpecialNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {
                     continue;
