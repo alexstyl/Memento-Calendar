@@ -57,10 +57,10 @@
     <CheckBoxPreference
       android:defaultValue="false"
       android:dependency="@string/key_enable_namedays"
-      android:key="@string/key_namedays_contacts_only"
-      android:summaryOff="@string/namedays_contacts_only_off"
-      android:summaryOn="@string/namedays_contacts_only_on"
-      android:title="@string/namedays_contacts_only" />
+      android:key="@string/key_namedays_full_name"
+      android:summaryOff="@string/main_preferences_full_name_summary_off"
+      android:summaryOn="@string/main_preferences_full_name_summary_on"
+      android:title="@string/main_preferences_full_name_title" />
   </PreferenceCategory>
 
 
