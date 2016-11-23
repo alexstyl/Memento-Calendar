@@ -15,15 +15,15 @@
     android:id="@+id/search_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/card_padding_from_screen"
-    android:paddingRight="@dimen/card_padding_from_screen">
+    android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
       android:id="@android:id/list"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="1" />
+      android:layout_weight="1"
+      android:paddingLeft="@dimen/card_padding_from_screen"
+      android:paddingRight="@dimen/card_padding_from_screen" />
 
     <android.support.v7.widget.RecyclerView
       android:id="@+id/nameday_suggestions"
@@ -34,6 +34,8 @@
       android:clipChildren="false"
       android:clipToPadding="false"
       android:paddingBottom="4dp"
+      android:paddingLeft="@dimen/card_padding_from_screen"
+      android:paddingRight="@dimen/card_padding_from_screen"
       android:paddingTop="4dp" />
   </LinearLayout>
 
