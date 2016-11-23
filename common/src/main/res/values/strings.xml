@@ -163,4 +163,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">Memento requires your permission to read your contacts in order to display when they celebrate.</string>
   <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Fact: Some people give free cake to those who wish them Happy Birthday. Use Memento to keep track of potential cake givers.</string>
   <string name="Grant_permission">Grant permission</string>
+  <string name="Use_all_parts_of_names">Use all parts of names</string>
+  <string name="The_app_will_lookup_namedays_for_all_names_in_a_contact_including_surname">"The app will lookup namedays for all names in a contact (including surname)."</string>
+  <string name="The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname">"The app will lookup namedays only in contacts\' given names (excluding surname)."</string>
 </resources>
