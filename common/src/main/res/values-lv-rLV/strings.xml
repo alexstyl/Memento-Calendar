@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Memento Namedays</string>
+as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Memento Calendar</string>
     <string name="today">Šodiena</string>
     <string name="tomorrow">Rītdien</string>
     <string name="birthday">Dzimšanas diena</string>
@@ -150,4 +150,8 @@
     <string name="Contact_names">Kontaktpersonu vārdi</string>
     <string name="Bank_holiday">Valsts svētku diena</string>
     <string name="Bank_holidays">Valsts svētku dienas</string>
+    <string name="GoogleP_community">Google+ kopiena</string>
+    <string name="Display_Bankholidays">Rādīt valsts svētku dienas</string>
+    <string name="Bankholidays_Country">Valsts svētku dienas priekš</string>
+    <string name="Bankholidays_are_currently_supported_only_for_Greek">Pašlaik tiek atbalstītas tikai Grieķijas valsts svētku dienas</string>
 </resources>
