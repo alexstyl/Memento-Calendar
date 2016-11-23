@@ -4,12 +4,13 @@ import android.support.annotation.Nullable;
 
 public class DisplayName {
 
+    public static final DisplayName NO_NAME = new DisplayName("", Names.from(""), Names.from(""), "");
+    private static final String SEPARATOR = " ";
+
     private final String displayName;
+    private final Names allNames;
     private final Names firstNames;
     private final String lastName;
-
-    private static final String SEPARATOR = " ";
-    public static final DisplayName NO_NAME = new DisplayName("", Names.from(""), "");
 
     public static DisplayName from(@Nullable String displayName) {
         if (displayName == null || displayName.isEmpty()) {
@@ -19,14 +20,15 @@ public class DisplayName {
 
         String firstNameString = subStringUpTo(displayName, separatorIndex).trim();
 
+        Names allNames = Names.from(displayName);
         Names firstNames = Names.from(firstNameString);
         String lastNameString = subStringAfter(displayName, separatorIndex).trim();
-
-        return new DisplayName(displayName, firstNames, lastNameString);
+        return new DisplayName(displayName, allNames, firstNames, lastNameString);
     }
 
-    private DisplayName(String displayName, Names firstNames, String lastName) {
+    private DisplayName(String displayName, Names allNames, Names firstNames, String lastName) {
         this.displayName = displayName;
+        this.allNames = allNames;
         this.firstNames = firstNames;
         this.lastName = lastName;
     }
@@ -61,7 +63,7 @@ public class DisplayName {
         return displayName.substring(spaceIndex, displayName.length()).trim();
     }
 
-    public boolean hasMultipleFirstNames() {
+    boolean hasMultipleFirstNames() {
         return firstNames.getCount() > 1;
     }
 
@@ -78,4 +80,7 @@ public class DisplayName {
         return displayName;
     }
 
+    public Names getAllNames() {
+        return allNames;
+    }
 }

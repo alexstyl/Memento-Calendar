@@ -38,5 +38,6 @@
   <string name="key_upcoming_widget_opacity">key_upcoming_widget_opacity</string>
   <string name="key_enable_bank_holidays">key_enable_bank_holidays</string>
   <string name="key_bankholidays_language">key_bankholidays_language</string>
+  <string name="key_namedays_full_name">key_namedays_full_name</string>
 
 </resources>
