@@ -50,6 +50,15 @@ android {
             minifyEnabled false
         }
     }
+
+    productFlavors {
+        free {
+        }
+        pro {
+            applicationIdSuffix ".pro"
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
