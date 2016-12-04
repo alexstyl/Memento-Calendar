@@ -17,6 +17,12 @@ fi
 
 echo "Building ${SAMPLE}"
 
+# Copy mock secret.gradle file if necessary
+if [ ! -f secret.gradle ]; then
+  echo "Secret.gradle not found. Using sample"
+  cp secret.gradle.sample secret.gradle
+fi
+
 # Copy mock google-services file if necessary
 if [ ! -f ./mobile/src/free/google-services.json ]; then
   echo "Using mock google-services.json for free"
