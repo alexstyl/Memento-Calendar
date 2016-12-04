@@ -19,11 +19,13 @@ echo "Building ${SAMPLE}"
 
 # Copy mock google-services file if necessary
 if [ ! -f ./mobile/src/free/google-services.json ]; then
-  echo "Using mock google-services.json"
+  echo "Using mock google-services.json for free"
+  mkdir ./mobile/src/free/
   cp mock-google-services.json ./mobile/src/free/google-services.json
 fi
 if [ ! -f ./mobile/src/pro/google-services.json ]; then
-  echo "Using mock google-services.json"
+  echo "Using mock google-services.json for pro"
+  mkdir ./mobile/src/pro/
   cp mock-google-services.json ./mobile/src/pro/google-services.json
 fi
 
