@@ -25,8 +25,7 @@ public class BirthdayQuery {
     }
 
     public ContactQuery forContact(Contact contact) {
-        DateParser dateParser = new DateParser();
-        return new ContactQuery(contact, dateParser, contentResolver);
+        return new ContactQuery(contact, DateParser.INSTANCE, contentResolver);
     }
 
     public static class ContactQuery {

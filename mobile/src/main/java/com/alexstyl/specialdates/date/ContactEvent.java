@@ -2,36 +2,38 @@ package com.alexstyl.specialdates.date;
 
 import android.content.res.Resources;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
-/**
- * A representation of an event, affiliated to a contact
- */
 public final class ContactEvent {
 
+    private static final Optional<Long> NO_EVENT_ID = Optional.absent();
+
+    private final Optional<Long> deviceEventId;
     private final EventType eventType;
     private final Contact contact;
     private final Date date;
 
-    public ContactEvent(EventType eventType, Date date, Contact contact) {
+    public ContactEvent(Optional<Long> deviceEventId, EventType eventType, Date date, Contact contact) {
+        this.deviceEventId = deviceEventId;
         this.eventType = eventType;
         this.date = date;
         this.contact = contact;
     }
 
     public String getLabel(Resources resources) {
-        if (eventType == EventType.BIRTHDAY) {
-            Date birthday = contact.getDateOfBirth();
-            if (birthday.hasYear()) {
-                int age = date.getYear() - birthday.getYear();
+        if (eventType == StandardEventType.BIRTHDAY) {
+            if (date.hasYear()) {
+                int age = Date.CURRENT_YEAR - date.getYear();
                 if (age > 0) {
                     return resources.getString(R.string.turns_age, age);
                 }
             }
         }
-        return resources.getString(eventType.nameRes());
+        return eventType.getEventName(resources);
     }
 
     public Date getDate() {
@@ -42,11 +44,11 @@ public final class ContactEvent {
         return eventType;
     }
 
-    public int getYear() {
-        return date.getYear();
-    }
-
     public Contact getContact() {
         return contact;
+    }
+
+    public Optional<Long> getDeviceEventId() {
+        return deviceEventId;
     }
 }

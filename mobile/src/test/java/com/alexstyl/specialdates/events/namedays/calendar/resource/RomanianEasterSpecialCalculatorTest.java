@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class RomanianEasterSpecialCalculatorTest {
 
     @Test
     public void calculatesSundayBeforeEasterCorrectly() {
-        RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator();
+        RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator(OrthodoxEasterCalculator.INSTANCE);
         List<Date> expectedDates = buildExpectedDates();
         for (Date expectedDate : expectedDates) {
             Date actualDate = calculator.calculateSpecialRomanianDayForYear(expectedDate.getYear());

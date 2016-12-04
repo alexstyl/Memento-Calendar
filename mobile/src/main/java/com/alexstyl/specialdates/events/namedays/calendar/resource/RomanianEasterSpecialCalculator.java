@@ -1,16 +1,16 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
 import static com.alexstyl.specialdates.date.DateConstants.SUNDAY;
 
 class RomanianEasterSpecialCalculator {
 
-    private final EasterCalculator easterCalculator;
+    private final OrthodoxEasterCalculator easterCalculator;
 
-    RomanianEasterSpecialCalculator() {
-        easterCalculator = new EasterCalculator();
+    RomanianEasterSpecialCalculator(OrthodoxEasterCalculator easterCalculator) {
+        this.easterCalculator = easterCalculator;
     }
 
     Date calculateSpecialRomanianDayForYear(int year) {

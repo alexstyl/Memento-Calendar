@@ -65,14 +65,15 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void bindBirthday(Contact contact) {
-        if (contact.hasDateOfBirth()) {
-            Date birthday = contact.getDateOfBirth();
-            String message = getBirthdayString(getContext(), birthday);
-            this.birthday.setVisibility(View.VISIBLE);
-            this.birthday.setText(message);
-        } else {
+        // TODO handle event
+//        if (contact.hasDateOfBirth()) {
+//            Date birthday = contact.getDateOfBirth();
+//            String message = getBirthdayString(getContext(), birthday);
+//            this.birthday.setVisibility(View.VISIBLE);
+//            this.birthday.setText(message);
+//        } else {
             this.birthday.setVisibility(View.GONE);
-        }
+//        }
     }
 
     private void bindNamedays(Contact contact) {

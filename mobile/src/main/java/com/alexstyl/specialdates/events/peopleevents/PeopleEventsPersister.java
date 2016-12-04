@@ -5,15 +5,15 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.database.EventsDBContract.DynamicEventsContract;
+import com.alexstyl.specialdates.events.database.EventTypeId;
 
-public class PeopleEventsPersister {
+public final class PeopleEventsPersister {
 
     private final EventSQLiteOpenHelper helper;
 
-    public PeopleEventsPersister(EventSQLiteOpenHelper helper) {
+    PeopleEventsPersister(EventSQLiteOpenHelper helper) {
         this.helper = helper;
     }
 
@@ -21,18 +21,14 @@ public class PeopleEventsPersister {
         deleteAllEventsOfType(AnnualEventsContract.TYPE_NAMEDAY);
     }
 
-    public void deleteAllBirthdays() {
-        deleteAllEventsOfType(AnnualEventsContract.TYPE_BIRTHDAY);
-    }
-
-    private void deleteAllEventsOfType(int type) {
+    private void deleteAllEventsOfType(@EventTypeId int eventType) {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "=" + type, null);
-        database.delete(DynamicEventsContract.TABLE_NAME, DynamicEventsContract.EVENT_TYPE + "=" + type, null);
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "==" + eventType, null);
     }
 
-    public void insertDynamicEvents(ContentValues[] values) {
-        insertEventsInTable(values, DynamicEventsContract.TABLE_NAME);
+    void deleteAllDeviceEvents() {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + " == " + AnnualEventsContract.SOURCE_DEVICE, null);
     }
 
     public void insertAnnualEvents(ContentValues[] values) {

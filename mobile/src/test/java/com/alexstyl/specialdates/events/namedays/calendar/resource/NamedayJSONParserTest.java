@@ -22,7 +22,7 @@ public class NamedayJSONParserTest {
     public void setUp() throws JSONException {
         JavaJSONResourceLoader resourceLoader = new JavaJSONResourceLoader();
         NamedayJSONResourceProvider resourceProvider = new NamedayJSONResourceProvider(resourceLoader);
-        namedayJSON = resourceProvider.getNamedayJSONFor(NamedayLocale.gr);
+        namedayJSON = resourceProvider.getNamedayJSONFor(NamedayLocale.GREEK);
 
     }
 

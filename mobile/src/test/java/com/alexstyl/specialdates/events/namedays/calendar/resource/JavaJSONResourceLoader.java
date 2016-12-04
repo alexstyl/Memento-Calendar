@@ -27,28 +27,8 @@ class JavaJSONResourceLoader implements NamedayJSONResourceLoader {
     }
 
     private String getPathTo(NamedayLocale locale) {
-        String prefix = getPrefixOf(locale);
+        String prefix = locale.getShortCode();
         return String.format("src/main/res/raw/%s_namedays.json", prefix);
-    }
-
-    private String getPrefixOf(NamedayLocale locale) {
-        switch (locale) {
-            case gr:
-                return "gr";
-            case cs:
-                return "cs";
-            case lv:
-                return "lv";
-            case ro:
-                return "ro";
-            case ru:
-                return "ru";
-            case sk:
-                return "sk";
-            default:
-                throw new IllegalArgumentException("Cannot match " + locale + " to file");
-
-        }
     }
 
 }

@@ -1,9 +1,10 @@
 package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
+import com.alexstyl.specialdates.date.MonthInt;
 
 public class MonthOfYear {
-
+    @MonthInt
     private final int month;
     private final int year;
 
@@ -11,11 +12,12 @@ public class MonthOfYear {
         return new MonthOfYear(date.getMonth(), date.getYear());
     }
 
-    public MonthOfYear(int month, int year) {
+    private MonthOfYear(int month, int year) {
         this.month = month;
         this.year = year;
     }
 
+    @MonthInt
     public int getMonth() {
         return month;
     }
