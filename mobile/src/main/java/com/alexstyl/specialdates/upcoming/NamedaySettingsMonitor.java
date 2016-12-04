@@ -10,6 +10,7 @@ public class NamedaySettingsMonitor implements EventUpdatedMonitor {
     private boolean namedaysEnabled;
     private NamedayLocale displayingLanguage;
     private boolean namedayForContactsOnly;
+    private boolean namedayFullName;
 
     public NamedaySettingsMonitor(NamedayPreferences namedayPreferences) {
         this.namedayPreferences = namedayPreferences;
@@ -19,7 +20,13 @@ public class NamedaySettingsMonitor implements EventUpdatedMonitor {
     public boolean dataWasUpdated() {
         return namedaysEnabled != namedayPreferences.isEnabled() ||
                 namedayForContactsOnly != namedayPreferences.isEnabledForContactsOnly() ||
-                !namedayPreferences.getSelectedLanguage().equals(displayingLanguage);
+                !namedayPreferences.getSelectedLanguage().equals(displayingLanguage) ||
+                namedayFullName != namedayPreferences.shouldLookupAllNames();
+    }
+
+    @Override
+    public void initialise() {
+        refreshData();
     }
 
     @Override
@@ -27,13 +34,6 @@ public class NamedaySettingsMonitor implements EventUpdatedMonitor {
         namedaysEnabled = namedayPreferences.isEnabled();
         namedayForContactsOnly = namedayPreferences.isEnabledForContactsOnly();
         displayingLanguage = namedayPreferences.getSelectedLanguage();
-    }
-
-    @Override
-    public void initialise() {
-        namedaysEnabled = namedayPreferences.isEnabled();
-        namedayForContactsOnly = namedayPreferences.isEnabledForContactsOnly();
-        displayingLanguage = namedayPreferences.getSelectedLanguage();
-
+        namedayFullName = namedayPreferences.shouldLookupAllNames();
     }
 }
