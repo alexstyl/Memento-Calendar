@@ -10,10 +10,9 @@ public class Names implements Iterable<String> {
 
     private final List<String> names;
 
-    public static Names from(String firstNameString) {
-        String[] names = firstNameString.split(SPACE_OR_SEMICOLUMN);
-        List<String> names1 = Arrays.asList(names);
-        return new Names(names1);
+    public static Names from(String names) {
+        String[] allNames = names.split(SPACE_OR_SEMICOLUMN);
+        return new Names(Arrays.asList(allNames));
     }
 
     private Names(List<String> names) {
@@ -26,6 +25,10 @@ public class Names implements Iterable<String> {
 
     public int getCount() {
         return names.size();
+    }
+
+    public String get(int index) {
+        return names.get(index);
     }
 
     @Override
