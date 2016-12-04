@@ -44,6 +44,10 @@ public class NamedayPreferences {
         preferences.setBoolean(R.string.key_namedays_contacts_only, onlyForContacts);
     }
 
+    public boolean shouldLookupAllNames() {
+        return preferences.getBoolean(R.string.key_namedays_full_name, false);
+    }
+
     private static boolean shouldNamedaysBeEnabledByDefault(Context context) {
         return context.getResources().getBoolean(R.bool.isNamedaySupported);
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Memento Namedays</string>
+as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Memento Calendar</string>
     <string name="today">Šodiena</string>
     <string name="tomorrow">Rītdien</string>
     <string name="birthday">Dzimšanas diena</string>
@@ -150,4 +150,16 @@
     <string name="Contact_names">Kontaktpersonu vārdi</string>
     <string name="Bank_holiday">Valsts svētku diena</string>
     <string name="Bank_holidays">Valsts svētku dienas</string>
+    <string name="GoogleP_community">Google+ kopiena</string>
+    <string name="Display_Bankholidays">Rādīt valsts svētku dienas</string>
+    <string name="Bankholidays_Country">Valsts svētku dienas priekš</string>
+    <string name="Bankholidays_are_currently_supported_only_for_Greek">Pašlaik tiek atbalstītas tikai Grieķijas valsts svētku dienas</string>
+    <string name="Clear">Dzēst</string>
+    <string name="Search_for_contacts">Meklēt kontaktpersonas</string>
+    <string name="Search_for_contacts_or_namedays">Meklēt kontaktpersonas vai vārda dienas</string>
+    <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">Memento lietotnei nepieciešama piekļuve taviem kontaktiem, lai parādītu kontaktpersonu svētku dienas.</string>
+    <string name="Grant_permission">Atļaut piekļuvi</string>
+    <string name="Use_all_parts_of_names">Izmantot visas vārdu daļas</string>
+    <string name="The_app_will_lookup_namedays_for_all_names_in_a_contact_including_surname">"Lietotne vārda dienas visās kontaktpersonu vārda daļās, t.sk. uzvārdos"</string>
+    <string name="The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname">"Lietotne neiekļaus kontaktpersonu uzvārdus meklējot vārda dienas"</string>
 </resources>
