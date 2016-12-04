@@ -1,9 +1,5 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import android.content.Context;
-
-import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.DateConstants;
@@ -12,19 +8,52 @@ import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 class SpecialGreekNamedaysCalculator {
 
-    private final DateComparator comparator = DateComparator.get();
-    private final List<EasternNameday> easternNamedays;
+    private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
+    private static final List<String> PROPATORWN = Arrays.asList(
+            "Ααρών",
+            "Αβραάμ",
+            "Αδάμ",
+            "Αδαμάντιος",
+            "Διαμαντής",
+            "Αδαμαντία",
+            "Διαμαντούλα",
+            "Διαμάντω",
+            "Δαβίδ",
+            "Δαυίδ",
+            "Δανάη",
+            "Δανιήλ",
+            "Δεβόρα",
+            "Εσθήρ",
+            "Εύα",
+            "Ισαάκ",
+            "Ιώβ",
+            "Νώε",
+            "Ραχήλ",
+            "Ρεβέκκα",
+            "Ρουμπίνη",
+            "Σάρα",
+            "Μελχισεδέ"
+    );
+    private static final String CLOE = "Χλόη";
 
-    private final Context context;
+    private static final List<String> MARKOS_ALTS = Arrays.asList(
+            "Μάρκος",
+            "Μαρκής",
+            "Μαρκία",
+            "Μαρκούλης",
+            "Μαρκούλ"
+    );
+
+    private final List<EasternNameday> easternNamedays;
 
     SpecialGreekNamedaysCalculator(List<EasternNameday> easternNamedays) {
         this.easternNamedays = easternNamedays;
-        this.context = MementoApplication.getContext();
     }
 
     NamedayBundle calculateForEasterDate(Date easter) {
@@ -45,14 +74,13 @@ class SpecialGreekNamedaysCalculator {
     }
 
     private void appendSpecialScenarios(Date easter, Node node, NamedaysList namedaysList) {
-        addSpecialPropatorwn(node, namedaysList, context);
-        addSpecialMarkos(node, namedaysList, context, easter);
-        addSpecialGiwrgos(node, namedaysList, context, easter);
-        addSpecialChloe(node, namedaysList, context);
+        addSpecialPropatorwn(node, namedaysList);
+        addSpecialMarkos(node, namedaysList, easter);
+        addSpecialGiwrgos(node, namedaysList, easter);
+        addSpecialChloe(node, namedaysList);
     }
 
-    private void addSpecialPropatorwn(Node node, NamedaysList namedaysList, Context context) {
-
+    private void addSpecialPropatorwn(Node node, NamedaysList namedaysList) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, Calendar.DECEMBER);
         calendar.set(Calendar.DAY_OF_MONTH, 11);
@@ -61,47 +89,58 @@ class SpecialGreekNamedaysCalculator {
         }
 
         Date date = createDayDateFrom(calendar);
-        String[] vars = context.getResources().getStringArray(R.array.special_propatorwn_alts);
-        for (String variation : vars) {
+        for (String variation : PROPATORWN) {
             node.addDate(variation, date);
             namedaysList.addNameday(date, variation);
         }
     }
 
-    private void addSpecialMarkos(Node node, NamedaysList namedaysList, Context context, Date easter) {
+    private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
         int year = Date.today().getYear();
         Date date = Date.on(23, DateConstants.APRIL, year);
-        if (comparator.compare(easter, date) > 0) {
+        if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2);
         } else {
             date = Date.on(25, DateConstants.APRIL, year);
         }
 
-        String[] vars = context.getResources().getStringArray(R.array.special_markos_alts);
-        for (String variation : vars) {
+        for (String variation : MARKOS_ALTS) {
             node.addDate(variation, date);
             namedaysList.addNameday(date, variation);
         }
     }
 
-    private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Context context, Date easter) {
+    private static final List<String> GEORGE_ALTS = Arrays.asList(
+            "Γεώργιος",
+            "Γεωργής",
+            "Γιώργος",
+            "Γκόγκος",
+            "Γιώργης",
+            "Γιωργίτσης",
+            "Γεωργία",
+            "Γιωργία",
+            "Γεωργούλα",
+            "Γιωργίτσα",
+            "Γίτσα"
+    );
+
+    private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
         Date date = Date.on(23, DateConstants.APRIL, Date.today().getYear());
 
         Date actualDate;
-        if (comparator.compare(easter, date) > 0) {
+        if (COMPARATOR.compare(easter, date) > 0) {
             actualDate = easter.addDay(1);
         } else {
             actualDate = date;
         }
 
-        String[] vars = context.getResources().getStringArray(R.array.special_george_alts);
-        for (String variation : vars) {
+        for (String variation : GEORGE_ALTS) {
             node.addDate(variation, actualDate);
             namedaysList.addNameday(actualDate, variation);
         }
     }
 
-    private void addSpecialChloe(Node node, NamedaysList namedaysList, Context context) {
+    private void addSpecialChloe(Node node, NamedaysList namedaysList) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.FEBRUARY);
         cal.set(Calendar.DAY_OF_MONTH, 13);
@@ -111,7 +150,7 @@ class SpecialGreekNamedaysCalculator {
         }
         Date date = createDayDateFrom(cal);
 
-        String variation = context.getString(R.string.specialname_chloe);
+        String variation = CLOE;
         node.addDate(variation, date);
         namedaysList.addNameday(date, variation);
     }

@@ -2,89 +2,75 @@ package com.alexstyl.specialdates.contact;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.util.DateParser;
+
+import static com.alexstyl.specialdates.contact.ContactsQuery.SORT_ORDER;
 
 class DeviceContactFactory {
 
+    private static final String SELECTION_CONTACT_WITH_ID = Contacts._ID + " = ?";
     private final ContentResolver resolver;
-    private final DateParser dateParser;
 
-    DeviceContactFactory(ContentResolver contentResolver, DateParser dateParser) {
+    DeviceContactFactory(ContentResolver contentResolver) {
         resolver = contentResolver;
-        this.dateParser = dateParser;
     }
 
-    public DeviceContact createContactWithId(long contactID) throws ContactNotFoundException {
-        String selection = ContactsContract.Data.CONTACT_ID + " = " + contactID;
-        String birthdayRow = "(" + ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.Event.TYPE + "=" +
-                ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + ")";
-        String nameRow = ContactsContract.Data.MIMETYPE + " = ?";
-        String str = selection + " AND (" + birthdayRow + " OR " + nameRow + ")";
-
-        Cursor cursor = resolver.query(ContactsQuery.CONTENT_URI, ContactsQuery.PROJECTION, str, new String[]{
-                ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE,
-                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE
-        }, ContactsQuery.SORT_ORDER);
+    Contact createContactWithId(long contactID) throws ContactNotFoundException {
+        Cursor cursor = queryContactsWithContactId(contactID);
         if (isInvalid(cursor)) {
             throw new RuntimeException("Cursor was invalid");
         }
-        String lookupKey = null;
-        DisplayName displayName = null;
-        Optional<Date> birthday = Optional.absent();
-        boolean found = false;
-        while (cursor.moveToNext()) {
-            if (ContactsQuery.isBirthdayRow(cursor)) {
-                birthday = getBirthdayFrom(cursor);
-                found = true;
+        try {
+            if (cursor.moveToFirst()) {
+                return createContactFrom(cursor);
             }
-
-            if (displayName == null) {
-                displayName = getDisplayNameFrom(cursor);
-                lookupKey = getLookupKeyFrom(cursor);
-                found = true;
-            }
+        } finally {
+            cursor.close();
         }
-
-        if (!found) {
-            throw new ContactNotFoundException(contactID);
-        }
-        DeviceContact contact = new DeviceContact(contactID, displayName, lookupKey, birthday);
-        cursor.close();
-        return contact;
+        throw new ContactNotFoundException(contactID);
     }
 
-    private boolean isInvalid(Cursor cursor) {
+    public Contact createContactFrom(Cursor cursor) {
+        long contactID = getContactIdFrom(cursor);
+        DisplayName displayName = getDisplayNameFrom(cursor);
+        String lookupKey = getLookupKeyFrom(cursor);
+        return new DeviceContact(contactID, displayName, lookupKey);
+    }
+
+    private Cursor queryContactsWithContactId(long contactID) {
+        return resolver.query(
+                ContactsQuery.CONTENT_URI,
+                ContactsQuery.PROJECTION,
+                SELECTION_CONTACT_WITH_ID,
+                makeSelectionArgumentsFor(contactID),
+                SORT_ORDER + " LIMIT 1"
+        );
+    }
+
+    @NonNull
+    private String[] makeSelectionArgumentsFor(long contactID) {
+        return new String[]{
+                String.valueOf(contactID)
+        };
+    }
+
+    private static boolean isInvalid(Cursor cursor) {
         return cursor == null || cursor.isClosed();
     }
 
-    private String getLookupKeyFrom(Cursor cursor) {
-        return cursor.getString(ContactsQuery.LOOKUP_KEY);
+    private static long getContactIdFrom(Cursor cursor) {
+        return cursor.getLong(ContactsQuery.CONTACT_ID);
     }
 
-    private DisplayName getDisplayNameFrom(Cursor cursor) {
+    private static DisplayName getDisplayNameFrom(Cursor cursor) {
         return DisplayName.from(cursor.getString(ContactsQuery.DISPLAY_NAME));
     }
 
-    private Optional<Date> getBirthdayFrom(Cursor cursor) {
-        String birthdayRaw = cursor.getString(ContactsQuery.BIRTHDAY);
-        try {
-            Date birthday = getBirthdayFrom(birthdayRaw);
-            return new Optional<>(birthday);
-        } catch (DateParseException e) {
-            ErrorTracker.track(e);
-            return Optional.absent();
-        }
-    }
-
-    private Date getBirthdayFrom(String birthdayRaw) throws DateParseException {
-        return dateParser.parse(birthdayRaw);
+    private static String getLookupKeyFrom(Cursor cursor) {
+        return cursor.getString(ContactsQuery.LOOKUP_KEY);
     }
 
 }

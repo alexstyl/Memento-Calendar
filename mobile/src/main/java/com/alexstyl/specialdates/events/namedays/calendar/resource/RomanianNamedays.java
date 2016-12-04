@@ -5,6 +5,7 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class RomanianNamedays {
     private Date romanianDate;
 
     public static RomanianNamedays from(List<String> names) {
-        RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator();
+        RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator(OrthodoxEasterCalculator.INSTANCE);
         return new RomanianNamedays(calculator, names);
     }
 

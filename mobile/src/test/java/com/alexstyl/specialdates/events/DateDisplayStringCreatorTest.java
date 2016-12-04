@@ -16,7 +16,7 @@ public class DateDisplayStringCreatorTest {
 
     @BeforeClass
     public static void init() {
-        creator = DateDisplayStringCreator.getInstance();
+        creator = DateDisplayStringCreator.INSTANCE;
     }
 
     @Test

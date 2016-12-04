@@ -24,10 +24,11 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
         this.bankHoliday = bankHoliday;
     }
 
-    public int getDayofMonth() {
+    int getDayofMonth() {
         return date.getDayOfMonth();
     }
 
+    @MonthInt
     public int getMonth() {
         return date.getMonth();
     }
@@ -73,6 +74,6 @@ public class CelebrationDate implements Comparable<CelebrationDate> {
         if (another == this) {
             return 0;
         }
-        return DateComparator.get().compare(date, another.date);
+        return DateComparator.INSTANCE.compare(date, another.date);
     }
 }

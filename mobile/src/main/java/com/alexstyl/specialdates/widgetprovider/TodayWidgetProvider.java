@@ -38,7 +38,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
 
-        new QueryUpcomingTask(PeopleEventsProvider.newInstance(context)) {
+        new QueryUpcomingPeoplEventsTask(PeopleEventsProvider.newInstance(context)) {
             @Override
             void onLoaded(ContactEvents contactEvents) {
                 if (contactEvents.size() > 0) {

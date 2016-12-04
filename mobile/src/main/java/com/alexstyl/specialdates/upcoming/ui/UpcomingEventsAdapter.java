@@ -87,7 +87,7 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private void bindMonthViewHolder(MonthHeaderViewHolder viewHolder, int position) {
         MonthOfYear monthOfYear = headers.get(position);
-        viewHolder.displayMonth(monthOfYear, today.getYear());
+        viewHolder.displayMonth(monthOfYear);
     }
 
     private void bindContactView(UpcomingEventsViewHolder viewHolder, int position) {
@@ -99,11 +99,9 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return type == VIEWTYPE_DAY_EVENTS;
     }
 
-    public CelebrationDate getCelebrationAtPosition(int position) {
-        Integer a = positionToCelebration.get(position);
-
-        return celebrationDates.get(a);
-
+    private CelebrationDate getCelebrationAtPosition(int position) {
+        Integer index = positionToCelebration.get(position);
+        return celebrationDates.get(index);
     }
 
     @Override
@@ -191,7 +189,7 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private boolean isOnOrAfterToday(CelebrationDate event) {
-        return DateComparator.get().compare(event.getDate(), today) >= 0;
+        return DateComparator.INSTANCE.compare(event.getDate(), today) >= 0;
     }
 
     private boolean containsNoCelebration() {

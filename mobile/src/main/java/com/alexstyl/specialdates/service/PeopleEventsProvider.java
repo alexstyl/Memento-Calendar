@@ -3,46 +3,182 @@ package com.alexstyl.specialdates.service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MergeCursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.datedetails.PeopleEventsQuery;
+import com.alexstyl.specialdates.events.database.EventColumns;
+import com.alexstyl.specialdates.events.database.EventTypeId;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
+import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
-import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
+import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
+import com.alexstyl.specialdates.events.peopleevents.SQLArgumentBuilder;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
+import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PeopleEventsProvider {
 
-    private final ContactProvider contactProvider;
+    private static final String DATE_FROM = "substr(" + PeopleEvents.DATE + ",-5) >= ?";
+    private static final String DATE_TO = "substr(" + PeopleEvents.DATE + ",-5) <= ?";
+    private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
+    private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEvents.DATE};
+    private static final String[] PROJECTION = {
+            PeopleEvents.CONTACT_ID,
+            PeopleEvents.DEVICE_EVENT_ID,
+            PeopleEvents.DATE,
+            PeopleEvents.EVENT_TYPE,
+    };
+
+    private final ContactsProvider contactsProvider;
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
-
-    private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEventsContract.PeopleEvents.DATE};
+    private final PeopleNamedaysCalculator peopleNamedaysCalculator;
+    private final CustomEventProvider customEventProvider;
 
     public static PeopleEventsProvider newInstance(Context context) {
-        ContactProvider provider = ContactProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         ContentResolver resolver = context.getContentResolver();
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        return new PeopleEventsProvider(provider, resolver, namedayPreferences);
+        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
+                namedayPreferences,
+                namedayCalendarProvider,
+                contactsProvider
+        );
+        CustomEventProvider customEventProvider = new CustomEventProvider(resolver);
+        return new PeopleEventsProvider(contactsProvider, resolver, namedayPreferences, peopleNamedaysCalculator, customEventProvider);
     }
 
-    public PeopleEventsProvider(ContactProvider contactProvider, ContentResolver resolver, NamedayPreferences namedayPreferences) {
-        this.contactProvider = contactProvider;
+    private PeopleEventsProvider(ContactsProvider contactsProvider,
+                                 ContentResolver resolver,
+                                 NamedayPreferences namedayPreferences,
+                                 PeopleNamedaysCalculator peopleNamedaysCalculator, CustomEventProvider customEventProvider) {
+        this.contactsProvider = contactsProvider;
         this.resolver = resolver;
         this.namedayPreferences = namedayPreferences;
+        this.peopleNamedaysCalculator = peopleNamedaysCalculator;
+        this.customEventProvider = customEventProvider;
+    }
+
+    public List<ContactEvent> getCelebrationDateOn(Date date) {
+        TimePeriod timeDuration = TimePeriod.between(date, date);
+        List<ContactEvent> contactEvents = fetchStaticEventsBetween(timeDuration);
+
+        if (namedayPreferences.isEnabled()) {
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
+            contactEvents.addAll(namedaysContactEvents);
+        }
+        return contactEvents;
+
+    }
+
+    public List<ContactEvent> getCelebrationDateFor(TimePeriod timeDuration) {
+        List<ContactEvent> contactEvents = fetchStaticEventsBetween(timeDuration);
+
+        if (namedayPreferences.isEnabled()) {
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
+            contactEvents.addAll(namedaysContactEvents);
+        }
+        return Collections.unmodifiableList(contactEvents);
+    }
+
+    private List<ContactEvent> fetchStaticEventsBetween(TimePeriod timeDuration) {
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        Cursor cursor = queryEventsFor(timeDuration);
+        throwIfInvalid(cursor);
+        while (cursor.moveToNext()) {
+            try {
+                ContactEvent contactEvent = getContactEventFrom(cursor);
+                contactEvents.add(contactEvent);
+            } catch (ContactNotFoundException e) {
+                Log.w(e);
+            }
+        }
+        cursor.close();
+        return contactEvents;
+    }
+
+    private Cursor queryEventsFor(TimePeriod timeDuration) {
+        if (isWithinTheSameYear(timeDuration)) {
+            return queryPeopleEvents(timeDuration, PeopleEvents.DATE + " ASC");
+        } else {
+            return queryForBothYearsIn(timeDuration);
+        }
+    }
+
+    private Cursor queryPeopleEvents(TimePeriod timePeriod, String sortOrder) {
+        String[] selectArgs = new String[]{
+                SQLArgumentBuilder.dateWithoutYear(timePeriod.getStartingDate()),
+                SQLArgumentBuilder.dateWithoutYear(timePeriod.getEndingDate()),
+        };
+
+        Cursor cursor = resolver.query(
+                PeopleEvents.CONTENT_URI,
+                PROJECTION,
+                DATE_BETWEEN_IGNORING_YEAR,
+                selectArgs,
+                sortOrder
+        );
+        if (isInvalid(cursor)) {
+            ErrorTracker.track(new IllegalStateException("People Events returned invalid cursor"));
+        }
+        return cursor;
+    }
+
+    private Cursor queryForBothYearsIn(TimePeriod timeDuration) {
+        TimePeriod firstHalf = firstHalfOf(timeDuration);
+        Cursor[] cursors = new Cursor[2];
+        cursors[0] = queryPeopleEvents(firstHalf, PeopleEvents.DATE + " ASC");
+        TimePeriod secondHalf = secondHalfOf(timeDuration);
+        cursors[1] = queryPeopleEvents(secondHalf, PeopleEvents.DATE + " ASC");
+        return new MergeCursor(cursors);
+    }
+
+    private static TimePeriod firstHalfOf(TimePeriod timeDuration) {
+        return TimePeriod.between(
+                timeDuration.getStartingDate(),
+                Date.endOfYear(timeDuration.getStartingDate().getYear())
+        );
+    }
+
+    private static TimePeriod secondHalfOf(TimePeriod timeDuration) {
+        return TimePeriod.between(
+                Date.startOfTheYear(timeDuration.getEndingDate().getYear()),
+                timeDuration.getEndingDate()
+        );
+    }
+
+    private boolean isWithinTheSameYear(TimePeriod timeDuration) {
+        return timeDuration.getStartingDate().getYear() == timeDuration.getEndingDate().getYear();
+    }
+
+    private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
+        long contactId = getContactIdFrom(cursor);
+        Contact contact = contactsProvider.getOrCreateContact(contactId);
+        Date date = getDateFrom(cursor);
+        EventType eventType = getEventType(cursor);
+
+        Optional<Long> eventId = getDeviceEventIdFrom(cursor);
+        return new ContactEvent(eventId, eventType, date, contact);
     }
 
     public ContactEvents getCelebrationsClosestTo(Date date) {
@@ -50,26 +186,27 @@ public class PeopleEventsProvider {
         return getCelebrationDateFor(closestDate);
     }
 
-    public ContactEvents getCelebrationDateFor(Date date) {
+    ContactEvents getCelebrationDateFor(Date date) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = resolver.query(
-                PeopleEventsContract.PeopleEvents.CONTENT_URI,
+                PeopleEvents.CONTENT_URI,
                 null,
                 getSelection(),
                 getSelectArgs(date),
-                PeopleEventsContract.PeopleEvents.CONTACT_ID
+                PeopleEvents.CONTACT_ID
         );
         if (isInvalid(cursor)) {
             throw new DeveloperError("Cursor was invalid");
         }
 
         while (cursor.moveToNext()) {
-            long contactId = PeopleEventsContract.PeopleEvents.getContactIdFrom(cursor);
+            long contactId = getContactIdFrom(cursor);
             try {
-                Contact contact = contactProvider.getOrCreateContact(contactId);
-                EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
+                Contact contact = contactsProvider.getOrCreateContact(contactId);
+                EventType eventType = getEventType(cursor);
+                Optional<Long> deviceEventId = getDeviceEventIdFrom(cursor);
 
-                ContactEvent event = new ContactEvent(eventType, date, contact);
+                ContactEvent event = new ContactEvent(deviceEventId, eventType, date, contact);
                 contactEvents.add(event);
             } catch (Exception e) {
                 ErrorTracker.track(e);
@@ -87,7 +224,7 @@ public class PeopleEventsProvider {
 
         Date dateFrom;
         if (cursor.moveToFirst()) {
-            dateFrom = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
+            dateFrom = getDateFrom(cursor);
         } else {
             dateFrom = date;
         }
@@ -95,18 +232,16 @@ public class PeopleEventsProvider {
         return dateFrom;
     }
 
-    private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
+    private static final Uri PEOPLE_EVENTS = PeopleEvents.CONTENT_URI;
 
     private Cursor queryDateClosestTo(Date date) {
         return resolver.query(
                 PEOPLE_EVENTS,
-                PEOPLE_PROJECTION, whereDateIsEqualOrAfter(), thePassing(date), onlyTheFirstMatch()
+                PEOPLE_PROJECTION,
+                PeopleEvents.DATE + " >= ?",
+                thePassing(date),
+                PeopleEvents.DATE + " ASC LIMIT 1"
         );
-    }
-
-    @NonNull
-    private String onlyTheFirstMatch() {
-        return PeopleEventsContract.PeopleEvents.DATE + " ASC" + " LIMIT 1";
     }
 
     private String[] thePassing(Date date) {
@@ -115,23 +250,15 @@ public class PeopleEventsProvider {
         };
     }
 
-    private String whereDateIsEqualOrAfter() {
-        return PeopleEventsContract.PeopleEvents.DATE + " >= ?";
-    }
-
-    private boolean isInvalid(Cursor cursor) {
-        return cursor == null || cursor.isClosed();
-    }
-
     private String[] getSelectArgs(Date date) {
         return new String[]{date.toShortDate()};
     }
 
     private String getSelection() {
         if (namedaysAreEnabled()) {
-            return PeopleEventsQuery.Date.SELECT;
+            return PeopleEventsQuery.SELECT;
         } else {
-            return PeopleEventsQuery.Date.SELECT_ONLY_BIRTHDAYS;
+            return PeopleEventsQuery.SELECT_ONLY_BIRTHDAYS;
         }
     }
 
@@ -139,67 +266,64 @@ public class PeopleEventsProvider {
         return namedayPreferences.isEnabled();
     }
 
-    public List<ContactEvent> getCelebrationDateFor(LoadingTimeDuration timeDuration) {
-        List<ContactEvent> contactEvents = new ArrayList<>();
-        Cursor cursor = queryPeopleEvents(timeDuration.getFrom(), timeDuration.getTo());
-        throwIfInvalid(cursor);
-
-        while (cursor.moveToNext()) {
-            try {
-                ContactEvent contactEvent = getContactEventFrom(cursor);
-                contactEvents.add(contactEvent);
-            } catch (ContactNotFoundException e) {
-                Log.w(e);
-            }
-        }
-
-        cursor.close();
-        return contactEvents;
-    }
-
-    private Cursor queryPeopleEvents(Date startingDate, Date endingDate) {
-        String select = PeopleEventsContract.PeopleEvents.DATE + " >= ? AND " + PeopleEventsContract.PeopleEvents.DATE + " <=?";
-        String[] selectArgs = new String[]{
-                startingDate.toShortDate(),
-                endingDate.toShortDate()
-        };
-
-        Cursor cursor = resolver.query(
-                PeopleEventsContract.PeopleEvents.CONTENT_URI,
-                PROJECTION,
-                select,
-                selectArgs,
-                PeopleEventsContract.PeopleEvents.DATE + " ASC"
-        );
-        if (isInvalid(cursor)) {
-            ErrorTracker.track(new IllegalStateException("People Events returned invalid cursor"));
-        }
-        return cursor;
-    }
-
-    private static final String[] PROJECTION = {
-            PeopleEventsContract.PeopleEvents.CONTACT_ID,
-            PeopleEventsContract.PeopleEvents.SOURCE,
-
-            PeopleEventsContract.PeopleEvents.DATE,
-
-            PeopleEventsContract.PeopleEvents.EVENT_TYPE,
-    };
-
-    private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
-
-        long contactId = PeopleEventsContract.PeopleEvents.getContactIdFrom(cursor);
-        Contact contact = contactProvider.getOrCreateContact(contactId);
-        Date date = PeopleEventsContract.PeopleEvents.getDateFrom(cursor);
-        EventType eventType = PeopleEventsContract.PeopleEvents.getEventType(cursor);
-
-        return new ContactEvent(eventType, date, contact);
-    }
-
-    private void throwIfInvalid(Cursor cursor) {
+    private static void throwIfInvalid(Cursor cursor) {
         if (isInvalid(cursor)) {
             throw new RuntimeException("Invalid cursor");
         }
+    }
+
+    private static boolean isInvalid(Cursor cursor) {
+        return cursor == null || cursor.isClosed();
+    }
+
+    private static Date getDateFrom(Cursor cursor) {
+        int index = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DATE);
+        String text = cursor.getString(index);
+        return from(text);
+    }
+
+    private static long getContactIdFrom(Cursor cursor) {
+        int contactIdIndex = cursor.getColumnIndexOrThrow(PeopleEvents.CONTACT_ID);
+        return cursor.getLong(contactIdIndex);
+    }
+
+    private EventType getEventType(Cursor cursor) {
+        int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEvents.EVENT_TYPE);
+        @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
+        if (rawEventType == EventColumns.TYPE_CUSTOM) {
+            Optional<Long> deviceEventIdFrom = getDeviceEventIdFrom(cursor);
+            if (deviceEventIdFrom.isPresent()) {
+                return queryCustomEvent(deviceEventIdFrom.get());
+            }
+            return StandardEventType.OTHER;
+        }
+        return StandardEventType.fromId(rawEventType);
+    }
+
+    private EventType queryCustomEvent(long deviceId) {
+        return customEventProvider.getEventWithId(deviceId);
+    }
+
+    public static Date from(String text) {
+        try {
+            return DateParser.INSTANCE.parse(text);
+        } catch (DateParseException e) {
+            e.printStackTrace();
+            throw new DeveloperError("Invalid date stored to database. [" + text + "]");
+        }
+    }
+
+    private static Optional<Long> getDeviceEventIdFrom(Cursor cursor) {
+        int eventId = cursor.getColumnIndexOrThrow(PeopleEvents.DEVICE_EVENT_ID);
+        long deviceEventId = cursor.getLong(eventId);
+        if (isALegitEventId(deviceEventId)) {
+            return Optional.absent();
+        }
+        return new Optional<>(deviceEventId);
+    }
+
+    private static boolean isALegitEventId(long deviceEventId) {
+        return deviceEventId == -1;
     }
 
 }

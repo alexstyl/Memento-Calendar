@@ -12,13 +12,11 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
-import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
@@ -50,14 +48,13 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                                  Date dateToDisplay,
                                                  OnSupportCardClickListener supportListener,
                                                  NamedayCardView.OnShareClickListener namedayListener,
-                                                 ContactCardListener contactCardListener) {
+                                                 ContactCardListener contactCardListener,
+                                                 Optional<BankHoliday> bankholiday
+    ) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         Resources resources = context.getResources();
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
         CardActionRecycler cardActionRecycler = new CardActionRecycler(layoutInflater);
-
-        BankHolidaysPreferences bankHolidaysPreferences = BankHolidaysPreferences.newInstance(context);
-        Optional<BankHoliday> bankholiday = getBankHolidayOptionalForDate(dateToDisplay, bankHolidaysPreferences);
         Optional<NamesInADate> nameday = getNamedayOptionalForDate(dateToDisplay, context);
 
         return new DateDetailsAdapter(
@@ -81,23 +78,14 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    private static Optional<BankHoliday> getBankHolidayOptionalForDate(Date dateToDisplay, BankHolidaysPreferences bankHolidaysPreferences) {
-        if (bankHolidaysPreferences.isEnabled()) {
-            BankholidayCalendar repository = BankholidayCalendar.get();
-            return repository.getBankholidayFor(dateToDisplay);
-        } else {
-            return Optional.absent();
-        }
-    }
-
-    DateDetailsAdapter(ImageLoader imageLoader,
-                       Optional<NamesInADate> nameday,
-                       Optional<BankHoliday> bankholiday,
-                       CardActionRecycler cardActionRecycler,
-                       AskForSupport askForSupport,
-                       ContactCardListener contactCardListener,
-                       NamedayCardView.OnShareClickListener namedayListener,
-                       OnSupportCardClickListener supportListener
+    private DateDetailsAdapter(ImageLoader imageLoader,
+                               Optional<NamesInADate> nameday,
+                               Optional<BankHoliday> bankholiday,
+                               CardActionRecycler cardActionRecycler,
+                               AskForSupport askForSupport,
+                               ContactCardListener contactCardListener,
+                               NamedayCardView.OnShareClickListener namedayListener,
+                               OnSupportCardClickListener supportListener
     ) {
         this.nameday = nameday;
         this.imageLoader = imageLoader;

@@ -20,4 +20,8 @@ public class HashMapList<K, V> {
     public List<V> get(K key) {
         return map.get(key);
     }
+
+    public boolean isEmpty() {
+        return map.isEmpty();
+    }
 }

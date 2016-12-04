@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.MonthOfYear;
 
-public final class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
+final class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
     private final MonthLabels monthLabels;
     private final TextView header;
 
@@ -20,17 +20,13 @@ public final class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
         return new MonthHeaderViewHolder(view, monthLabels);
     }
 
-    public MonthHeaderViewHolder(View convertView, MonthLabels monthLabels) {
+    private MonthHeaderViewHolder(View convertView, MonthLabels monthLabels) {
         super(convertView);
         this.monthLabels = monthLabels;
         this.header = (TextView) convertView.findViewById(android.R.id.text1);
     }
 
-    public void displayMonth(MonthOfYear monthOfYear, int currentYear) {
-        if (monthOfYear.getYear() == currentYear) {
-            header.setText(monthLabels.getMonthOfYear(monthOfYear.getMonth()));
-        } else {
-            header.setText(String.valueOf(monthOfYear.getYear()));
-        }
+    void displayMonth(MonthOfYear monthOfYear) {
+        header.setText(monthLabels.getMonthOfYear(monthOfYear.getMonth()));
     }
 }
