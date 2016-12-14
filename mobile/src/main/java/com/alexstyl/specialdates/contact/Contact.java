@@ -62,7 +62,7 @@ public abstract class Contact {
     /**
      * Returns the image path of the avatar of this contact
      */
-    public abstract String getImagePath();
+    public abstract Uri getImagePath();
 
     @Override
     public boolean equals(Object o) {

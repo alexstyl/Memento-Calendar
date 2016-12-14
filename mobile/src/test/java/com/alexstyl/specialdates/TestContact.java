@@ -31,7 +31,7 @@ public class TestContact extends Contact {
     }
 
     @Override
-    public String getImagePath() {
+    public Uri getImagePath() {
         throw new UnsupportedOperationException("Not supported");
     }
 
