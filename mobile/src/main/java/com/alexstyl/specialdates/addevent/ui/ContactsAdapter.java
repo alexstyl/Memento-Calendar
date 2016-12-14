@@ -11,21 +11,20 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.search.ContactsSearch;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.novoda.notils.caster.Views;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsAdapter extends BaseAdapter implements Filterable {
+class ContactsAdapter extends BaseAdapter implements Filterable {
 
     private final ImageLoader imageLoader;
     private final ArrayList<Contact> contacts = new ArrayList<>();
 
     private final Filter filter;
 
-    public ContactsAdapter(ContactsSearch contactsSearch, ImageLoader imageLoader) {
+    ContactsAdapter(ContactsSearch contactsSearch, ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
         this.filter = new DeviceContactsFilter(contactsSearch) {
 
