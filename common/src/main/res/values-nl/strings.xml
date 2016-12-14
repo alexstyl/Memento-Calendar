@@ -28,9 +28,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Een bug gevonden? Een suggestie? Laat het me weten!</string>
     <string name="choose">Kies</string>
     <string name="number">nummer</string>
-    <string name="has_nameday_on">Naamdag op %s</string>
-    <string name="has_birthday_on">Verjaardag op %s</string>
-    <string name="has_birthday_on_age">Wordt %1$d op %2$s</string>
     <string name="action_call">Bel</string>
     <string name="action_text">Stuur SMS</string>
     <string name="action_send_mail">Stuur e-mail</string>
@@ -144,4 +141,5 @@ Bert Van Dooren voor de Nederlandse vertaling"</string>
     <string name="Transparency">Transparantie</string>
     <string name="Dark_themeQ">Donker thema?</string>
     <string name="Contact_names">Namen contactpersonen</string>
+    <string name="eventlabel_on_dateLabel">%1$s op %2$s</string>
 </resources>

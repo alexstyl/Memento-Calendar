@@ -28,9 +28,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Παρουσιάστηκε κάποιο πρόβλημα; Έχετε κάποια πρόταση για την εφαρμογή; Πατήστε εδώ</string>
     <string name="choose">Επιλογή</string>
     <string name="number">αριθμού</string>
-    <string name="has_nameday_on">Γιορτάζει την %s</string>
-    <string name="has_birthday_on">Γενέθλια την %s</string>
-    <string name="has_birthday_on_age">Γίνεται %1$d την %2$s</string>
     <string name="action_call">Κλήση</string>
     <string name="action_text">Αποστολή SMS</string>
     <string name="action_send_mail">Αποστολή e-mail</string>
@@ -161,4 +158,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Use_all_parts_of_names">Χρήση όλων των ονομάτων επαφών</string>
     <string name="The_app_will_lookup_namedays_for_all_names_in_a_contact_including_surname">"Η εφαρμογή θα προσπαθήσει να βρει ονομαστικές εορτές από όλα τα ονόματα κάθε επαφής (συμπεριλαμβανομένου του επωνύμου)"</string>
     <string name="The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname">"Η εφαρμογή θα προσπαθήσει να βρει ονομαστικές εορτές μόνο από τα μικρά ονόματα κάθε επαφές (χωρίς το επώνυμο)"</string>
+    <string name="eventlabel_on_dateLabel">%1$s στις %2$s</string>
 </resources>
