@@ -1,8 +1,7 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
-import android.content.res.Resources;
-
 import com.alexstyl.specialdates.R;
+import com.alexstyl.StringResources;
 import com.alexstyl.specialdates.events.database.EventColumns;
 
 public class CustomEventType implements EventType {
@@ -14,7 +13,7 @@ public class CustomEventType implements EventType {
     }
 
     @Override
-    public String getEventName(Resources resources) {
+    public String getEventName(StringResources stringResources) {
         return name;
     }
 

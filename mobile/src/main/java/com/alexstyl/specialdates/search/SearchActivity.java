@@ -22,6 +22,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
@@ -72,11 +73,16 @@ public class SearchActivity extends ThemedActivity {
     private NamedayPreferences namedayPreferences;
     private ContactPermissionRequest permissions;
     private RecyclerView resultView;
+    private PeopleEventsSearch peopleEventsSearch;
+    private ContactEventViewModelFactory viewModelFactory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
+        viewModelFactory = new ContactEventViewModelFactory(new AndroidStringResources(getResources()));
 
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
@@ -342,7 +348,7 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public Loader<SearchResults> onCreateLoader(int id, Bundle args) {
             adapter.notifyIsLoadingMore();
-            return new SearchLoader(context(), new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE), searchQuery, searchCounter);
+            return new SearchLoader(context(), peopleEventsSearch, searchQuery, searchCounter, viewModelFactory);
         }
 
         @Override

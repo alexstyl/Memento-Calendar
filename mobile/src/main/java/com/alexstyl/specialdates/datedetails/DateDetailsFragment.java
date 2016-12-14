@@ -30,6 +30,8 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.android.AndroidColorResources;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -264,7 +266,9 @@ public class DateDetailsFragment extends MementoFragment {
                 supportListener,
                 namedayShareListener,
                 contactCardListener,
-                bankHoliday
+                bankHoliday,
+                new AndroidStringResources(getResources()),
+                new AndroidColorResources(getResources())
         );
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);

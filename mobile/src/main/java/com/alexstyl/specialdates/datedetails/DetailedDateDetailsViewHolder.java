@@ -1,13 +1,13 @@
 package com.alexstyl.specialdates.datedetails;
 
-import android.content.res.Resources;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.alexstyl.ColorResources;
+import com.alexstyl.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
-import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ActionButton;
 
@@ -19,24 +19,19 @@ class DetailedDateDetailsViewHolder extends DateDetailsViewHolder {
     private final CardActionRecycler cardActionRecycler;
     private final int actionMarginHorizontal;
 
-    static DetailedDateDetailsViewHolder newInstance(View view, ContactCardListener listener, ImageLoader imageLoader, CardActionRecycler cardActionRecycler) {
-        Resources resources = view.getResources();
-        int actionHorizontalMargin = resources.getDimensionPixelSize(R.dimen.card_action_horizontal_margin);
-        return new DetailedDateDetailsViewHolder(view, resources, listener, imageLoader, cardActionRecycler, actionHorizontalMargin);
-    }
-
-    DetailedDateDetailsViewHolder(View itemView, Resources resources, ContactCardListener listener, ImageLoader imageLoader, CardActionRecycler cardActionRecycler, int actionMarginHorizontal) {
-        super(itemView, imageLoader, resources);
+    DetailedDateDetailsViewHolder(View itemView,
+                                  StringResources stringResources,
+                                  ColorResources colorResources,
+                                  ContactCardListener listener,
+                                  ImageLoader imageLoader,
+                                  CardActionRecycler cardActionRecycler
+    ) {
+        super(itemView, imageLoader, stringResources, colorResources);
 
         this.listener = listener;
-        this.actionMarginHorizontal = actionMarginHorizontal;
+        this.actionMarginHorizontal = itemView.getResources().getDimensionPixelSize(R.dimen.card_action_horizontal_margin);
         this.cardActions = (LinearLayout) itemView.findViewById(R.id.card_actions);
         this.cardActionRecycler = cardActionRecycler;
-    }
-
-    @Override
-    public void bind(ContactEvent event, ContactCardListener listener) {
-        super.bind(event, listener);
     }
 
     @Override
