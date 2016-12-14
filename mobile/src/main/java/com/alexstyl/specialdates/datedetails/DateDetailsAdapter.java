@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alexstyl.ColorResources;
+import com.alexstyl.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -43,13 +45,17 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final ContactCardListener contactCardListener;
 
     private boolean isShowingFullDetailedCards;
+    private final StringResources stringResources;
+    private final ColorResources colorResources;
 
     public static DateDetailsAdapter newInstance(Context context,
                                                  Date dateToDisplay,
                                                  OnSupportCardClickListener supportListener,
                                                  NamedayCardView.OnShareClickListener namedayListener,
                                                  ContactCardListener contactCardListener,
-                                                 Optional<BankHoliday> bankholiday
+                                                 Optional<BankHoliday> bankholiday,
+                                                 StringResources stringResources,
+                                                 ColorResources colorResources
     ) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         Resources resources = context.getResources();
@@ -60,7 +66,8 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return new DateDetailsAdapter(
                 imageLoader, nameday,
                 bankholiday, cardActionRecycler,
-                new AskForSupport(context), contactCardListener, namedayListener, supportListener
+                new AskForSupport(context), contactCardListener, namedayListener, supportListener,
+                stringResources, colorResources
         );
     }
 
@@ -85,8 +92,8 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                AskForSupport askForSupport,
                                ContactCardListener contactCardListener,
                                NamedayCardView.OnShareClickListener namedayListener,
-                               OnSupportCardClickListener supportListener
-    ) {
+                               OnSupportCardClickListener supportListener,
+                               StringResources stringResources, ColorResources colorResources) {
         this.nameday = nameday;
         this.imageLoader = imageLoader;
         this.cardActionRecycler = cardActionRecycler;
@@ -95,6 +102,8 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.askForSupport = askForSupport;
         this.supportListener = supportListener;
         this.bankholiday = bankholiday;
+        this.stringResources = stringResources;
+        this.colorResources = colorResources;
     }
 
     public boolean isLoadingDetailedCards() {
@@ -146,11 +155,11 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         if (viewType == VIEW_TYPE_DETAILED) {
             View view = layoutInflater.inflate(R.layout.card_contact_event_full, parent, false);
-            return DetailedDateDetailsViewHolder.newInstance(view, contactCardListener, imageLoader, cardActionRecycler);
+            return new DetailedDateDetailsViewHolder(view, stringResources, colorResources, contactCardListener, imageLoader, cardActionRecycler);
         }
         if (viewType == VIEW_TYPE_COMPACT) {
             View view = layoutInflater.inflate(R.layout.base_card_compact, parent, false);
-            return CompactDateDetailsViewHolder.newInstance(view, imageLoader);
+            return new CompactDateDetailsViewHolder(view, imageLoader, stringResources, colorResources);
         }
 
         if (viewType == VIEW_TYPE_RATE_APP_FULL) {

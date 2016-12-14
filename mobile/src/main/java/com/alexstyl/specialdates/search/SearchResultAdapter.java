@@ -32,7 +32,7 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     void updateSearchResults(SearchResults searchResults) {
         this.searchQuery = searchResults.getSearchQuery();
         this.searchResults.clear();
-        this.searchResults.addAll(searchResults.getContacts());
+        this.searchResults.addAll(searchResults.getViewModels());
 
         if (this.canLoadMore != searchResults.canLoadMore()) {
             this.canLoadMore = searchResults.canLoadMore();
@@ -134,9 +134,9 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 // nameday adds one more row
                 position = position - 1;
             }
-            ContactWithEvents contact = searchResults.get(position);
+            ContactWithEvents contactWithEvents = searchResults.get(position);
             SearchResultContactViewHolder viewHolder = (SearchResultContactViewHolder) vh;
-            viewHolder.bind(contact, listener);
+            viewHolder.bind(contactWithEvents, listener);
         } else if (type == VIEWTYPE_NAMEDAYS_VIEW) {
             ((SearchResultNamedayViewHolder) vh).bind(namedayCard, listener);
         } else if (type == VIEWTYPE_LOAD_MORE) {

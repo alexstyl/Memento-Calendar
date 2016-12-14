@@ -1,11 +1,12 @@
 package com.alexstyl.specialdates.datedetails;
 
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.StringResources;
+import com.alexstyl.ColorResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -16,15 +17,17 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
     private final TextView displayName;
     private final TextView eventLabel;
     private final ImageLoader imageLoader;
-    private final Resources resources;
+    private final StringResources stringResources;
+    private final ColorResources colorResources;
 
-    DateDetailsViewHolder(View convertView, ImageLoader imageLoader, Resources resources) {
+    DateDetailsViewHolder(View convertView, ImageLoader imageLoader, StringResources stringResources, ColorResources colorResources) {
         super(convertView);
         this.imageLoader = imageLoader;
-        this.resources = resources;
+        this.stringResources = stringResources;
         this.displayName = (TextView) convertView.findViewById(R.id.contact_name);
         this.eventLabel = (TextView) convertView.findViewById(R.id.event_label);
         this.avatar = (ColorImageView) convertView.findViewById(R.id.avatar);
+        this.colorResources = colorResources;
     }
 
     public void bind(ContactEvent event, final ContactCardListener listener) {
@@ -50,9 +53,9 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
     abstract void bindActionsFor(Contact contact, ContactCardListener listener);
 
     private void updateEventLabel(ContactEvent event) {
-        eventLabel.setTextColor(resources.getColor(event.getType().getColorRes()));
+        eventLabel.setTextColor(colorResources.getColor(event.getType().getColorRes()));
         eventLabel.setVisibility(View.VISIBLE);
-        String label = event.getLabel(resources);
+        String label = event.getLabel(stringResources);
         eventLabel.setText(label);
     }
 

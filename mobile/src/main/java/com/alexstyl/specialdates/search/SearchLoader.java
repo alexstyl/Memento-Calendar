@@ -15,15 +15,22 @@ class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     private final ContactsObserver observer;
     private final PeopleEventsSearch peopleEventsSearch;
+    private final ContactEventViewModelFactory viewModelFactory;
 
-    SearchLoader(Context context, PeopleEventsSearch peopleEventsSearch, String query, int searchCounter) {
+    SearchLoader(Context context,
+                 PeopleEventsSearch peopleEventsSearch,
+                 String query,
+                 int searchCounter,
+                 ContactEventViewModelFactory viewModelFactory
+    ) {
         super(context);
         this.searchQuery = query;
         this.searchCounter = searchCounter;
         this.peopleEventsSearch = peopleEventsSearch;
+        this.observer = new ContactsObserver(context.getContentResolver(), new Handler());
+        this.viewModelFactory = viewModelFactory;
 
-        observer = new ContactsObserver(context.getContentResolver(), new Handler());
-        observer.registerWith(new ContactsObserver.Callback() {
+        this.observer.registerWith(new ContactsObserver.Callback() {
             @Override
             public void onContactsUpdated() {
                 onContentChanged();
@@ -39,8 +46,10 @@ class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
 
     @Override
     public SearchResults loadInBackground() {
-        List<ContactWithEvents> contacts = peopleEventsSearch.searchForContacts(searchQuery, searchCounter);
-        boolean canLoadMore = contacts.size() > searchCounter;
-        return new SearchResults(searchQuery, contacts, canLoadMore);
+        List<ContactWithEvents> contactEvents = peopleEventsSearch.searchForContacts(searchQuery, searchCounter);
+        List<ContactEventViewModel> viewModels = viewModelFactory.createViewModelFrom(contactEvents);
+        boolean canLoadMore = viewModels.size() > searchCounter;
+
+        return new SearchResults(searchQuery, viewModels, canLoadMore);
     }
 }

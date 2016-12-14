@@ -6,9 +6,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.widget.RemoteViews;
 
+import com.alexstyl.StringResources;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
@@ -20,6 +23,14 @@ import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 public class TodayWidgetProvider extends AppWidgetProvider {
 
     private WidgetImageLoader imageLoader;
+    private StringResources stringResources;
+
+    StringResources getOrCreateStringResources(Resources resources) {
+        if (stringResources == null) {
+            stringResources = new AndroidStringResources(resources);
+        }
+        return stringResources;
+    }
 
     @Override
     public void onEnabled(Context context) {
@@ -29,9 +40,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (imageLoader == null) {
-            imageLoader = WidgetImageLoader.newInstance(context.getResources(), AppWidgetManager.getInstance(context));
-        }
+        getOrCreateImageLoader(context);
         super.onReceive(context, intent);
     }
 
@@ -62,7 +71,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
         final int N = appWidgetIds.length;
 
-        String label = NaturalLanguageUtils.joinContacts(context, contactEvents.getContacts(), 2);
+        String label = NaturalLanguageUtils.joinContacts(getOrCreateStringResources(context.getResources()), contactEvents.getContacts(), 2);
 
         UpcomingWidgetPreferences preferences = new UpcomingWidgetPreferences(context);
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
@@ -135,6 +144,12 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(intent);
+    }
+
+    private void getOrCreateImageLoader(Context context) {
+        if (imageLoader == null) {
+            imageLoader = WidgetImageLoader.newInstance(context.getResources(), AppWidgetManager.getInstance(context));
+        }
     }
 
 }
