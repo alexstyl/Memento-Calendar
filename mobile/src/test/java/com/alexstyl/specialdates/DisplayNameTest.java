@@ -100,4 +100,11 @@ public class DisplayNameTest {
         }
         return namesList;
     }
+
+    @Test
+    public void toStringReturnsTheFullName() {
+        String nameRaw = "Alex Styl";
+        String toString = DisplayName.from(nameRaw).toString();
+        assertThat(nameRaw).isEqualTo(toString);
+    }
 }
