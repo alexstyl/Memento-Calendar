@@ -6,11 +6,10 @@ import com.alexstyl.specialdates.date.Date;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static com.alexstyl.specialdates.date.DateConstants.MAY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateDisplayStringCreatorTest {
-    private static final String EXPECTED_STRING = "1995-05-05";
-    private static final String EXPECTED_STRING_NO_YEAR = "--05-05";
 
     private static DateDisplayStringCreator creator;
 
@@ -21,16 +20,16 @@ public class DateDisplayStringCreatorTest {
 
     @Test
     public void givenDateWithYear_thenReturningStringIsCorrect() {
-        Date date = Date.on(5, 5, 1995);
+        Date date = Date.on(5, MAY, 1995);
         String dateToString = creator.stringOf(date);
-        assertThat(dateToString).isEqualTo(EXPECTED_STRING);
+        assertThat(dateToString).isEqualTo("1995-05-05");
     }
 
     @Test
     public void givenDateWithNoYear_thenReturningStringIsCorrect() {
-        Date date = Date.on(5, 5);
+        Date date = Date.on(5, MAY);
         String dateToString = creator.stringOf(date);
-        assertThat(dateToString).isEqualTo(EXPECTED_STRING_NO_YEAR);
+        assertThat(dateToString).isEqualTo("--05-05");
     }
 
 }
