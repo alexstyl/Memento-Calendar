@@ -22,8 +22,11 @@
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      android:paddingLeft="@dimen/card_padding_from_screen"
-      android:paddingRight="@dimen/card_padding_from_screen" />
+      android:clipToPadding="false"
+      android:paddingBottom="@dimen/search_result_card_vertical_padding"
+      android:paddingLeft="@dimen/search_result_card_horizontal_padding"
+      android:paddingRight="@dimen/search_result_card_horizontal_padding"
+      android:paddingTop="@dimen/search_result_card_vertical_padding" />
 
     <android.support.v7.widget.RecyclerView
       android:id="@+id/nameday_suggestions"
