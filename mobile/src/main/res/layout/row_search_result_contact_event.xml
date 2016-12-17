@@ -13,7 +13,7 @@
     android:orientation="horizontal">
 
     <com.alexstyl.specialdates.ui.widget.ColorImageView
-      android:id="@+id/avatar"
+      android:id="@+id/search_result_avatar"
       style="@style/SearchResult.Avatar"
       tools:background="#000" />
 
@@ -26,7 +26,7 @@
       android:orientation="vertical">
 
       <TextView
-        android:id="@id/contact_name"
+        android:id="@id/search_result_contact_name"
         style="@style/SearchResult.ContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

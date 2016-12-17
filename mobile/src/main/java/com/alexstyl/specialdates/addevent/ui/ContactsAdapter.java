@@ -57,7 +57,7 @@ class ContactsAdapter extends BaseAdapter implements Filterable {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_contact, parent, false);
             vh = new ContactViewHolder();
             vh.contactName = Views.findById(view, R.id.display_name);
-            vh.avatar = Views.findById(view, R.id.avatar);
+            vh.avatar = Views.findById(view, R.id.search_result_avatar);
             view.setTag(vh);
         } else {
             vh = (ContactViewHolder) view.getTag();

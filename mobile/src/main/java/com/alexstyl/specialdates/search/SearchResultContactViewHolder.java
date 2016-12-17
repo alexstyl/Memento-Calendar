@@ -19,16 +19,16 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     public static SearchResultContactViewHolder createFor(ViewGroup parent, ImageLoader imageLoader) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_search_result_contact, parent, false);
+        View view = layoutInflater.inflate(R.layout.row_search_result_contact_event, parent, false);
         return new SearchResultContactViewHolder(view, imageLoader);
     }
 
     private SearchResultContactViewHolder(View convertView, ImageLoader imageLoader) {
         super(convertView);
         this.imageLoader = imageLoader;
-        this.displayName = (TextView) convertView.findViewById(R.id.contact_name);
+        this.displayName = (TextView) convertView.findViewById(R.id.search_result_contact_name);
         this.eventLabel = (TextView) convertView.findViewById(R.id.search_result_event_label);
-        this.avatar = (ColorImageView) convertView.findViewById(R.id.avatar);
+        this.avatar = (ColorImageView) convertView.findViewById(R.id.search_result_avatar);
     }
 
     void bind(final ContactEventViewModel viewModel, final SearchResultAdapter.SearchResultClickListener listener) {
