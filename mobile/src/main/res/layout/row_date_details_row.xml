@@ -14,7 +14,7 @@
 
 
     <com.alexstyl.specialdates.ui.widget.ColorImageView
-      android:id="@+id/avatar"
+      android:id="@+id/search_result_avatar"
       android:layout_width="0dp"
       android:layout_height="@dimen/card_contact_avatar_size"
       android:layout_weight="2"
@@ -27,7 +27,7 @@
       android:layout_weight="5">
 
       <TextView
-        android:id="@id/contact_name"
+        android:id="@id/search_result_contact_name"
         style="@style/Card.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,9 +44,9 @@
         android:id="@+id/event_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/contact_name"
-        android:layout_alignStart="@id/contact_name"
-        android:layout_below="@id/contact_name"
+        android:layout_alignLeft="@id/search_result_contact_name"
+        android:layout_alignStart="@id/search_result_contact_name"
+        android:layout_below="@id/search_result_contact_name"
         android:layout_marginBottom="@dimen/padding_tight"
         android:fontFamily="sans-serif-light"
         android:singleLine="true"

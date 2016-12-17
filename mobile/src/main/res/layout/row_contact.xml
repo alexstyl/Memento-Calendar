@@ -9,7 +9,7 @@
     android:padding="8dp">
 
     <com.alexstyl.specialdates.ui.widget.ColorImageView
-        android:id="@+id/avatar"
+        android:id="@+id/search_result_avatar"
         android:layout_width="@dimen/avatar_size_min"
         android:layout_height="@dimen/avatar_size_min"
         app:isCircle="true"

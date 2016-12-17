@@ -24,9 +24,9 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
         super(convertView);
         this.imageLoader = imageLoader;
         this.stringResources = stringResources;
-        this.displayName = (TextView) convertView.findViewById(R.id.contact_name);
+        this.displayName = (TextView) convertView.findViewById(R.id.search_result_contact_name);
         this.eventLabel = (TextView) convertView.findViewById(R.id.event_label);
-        this.avatar = (ColorImageView) convertView.findViewById(R.id.avatar);
+        this.avatar = (ColorImageView) convertView.findViewById(R.id.search_result_avatar);
         this.colorResources = colorResources;
     }
 
