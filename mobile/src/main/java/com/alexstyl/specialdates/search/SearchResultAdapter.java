@@ -16,7 +16,7 @@ import java.util.List;
 
 final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<ContactWithEvents> searchResults = new ArrayList<>();
+    private final List<ContactEventViewModel> searchResults = new ArrayList<>();
 
     private NamedayCard namedayCard = new NamedayCard();
 
@@ -57,8 +57,6 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.canLoadMore = false;
         notifyDataSetChanged();
     }
-
-
 
     interface SearchResultClickListener {
 
@@ -134,9 +132,9 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 // nameday adds one more row
                 position = position - 1;
             }
-            ContactWithEvents contactWithEvents = searchResults.get(position);
+            ContactEventViewModel viewModel = searchResults.get(position);
             SearchResultContactViewHolder viewHolder = (SearchResultContactViewHolder) vh;
-            viewHolder.bind(contactWithEvents, listener);
+            viewHolder.bind(viewModel, listener);
         } else if (type == VIEWTYPE_NAMEDAYS_VIEW) {
             ((SearchResultNamedayViewHolder) vh).bind(namedayCard, listener);
         } else if (type == VIEWTYPE_LOAD_MORE) {
