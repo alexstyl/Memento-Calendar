@@ -22,10 +22,15 @@ final class ContactEventViewModelFactory {
 
             for (ContactEvent event : contactEvent.getEvents()) {
                 String eventLabel = eventLabelCreator.createFor(event);
-                ContactEventViewModel viewModel = new ContactEventViewModel(contact, eventLabel, event.getType().getColorRes(), 5);
+                int variant = getVariationFor(event);
+                ContactEventViewModel viewModel = new ContactEventViewModel(contact, eventLabel, event.getType().getColorRes(), variant);
                 models.add(viewModel);
             }
         }
         return models;
+    }
+
+    private int getVariationFor(ContactEvent event) {
+        return (int) event.getContact().getContactID();
     }
 }
