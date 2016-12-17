@@ -6,6 +6,7 @@ import android.support.annotation.ColorRes;
 import com.alexstyl.specialdates.contact.Contact;
 
 class ContactEventViewModel {
+
     private final Contact contact;
     private final String eventLabel;
     private final int backgroundVariant;
