@@ -96,8 +96,10 @@ public class SearchActivity extends ThemedActivity {
 
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(true);
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_spacing_between);
+
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding)/2;
         resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
         resultView.setLayoutManager(mLayoutManager);
 
@@ -112,8 +114,7 @@ public class SearchActivity extends ThemedActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
-
+        ImageLoader imageLoader = ImageLoader.createCircleThumbnailLoader(getResources());
         adapter = new SearchResultAdapter(imageLoader);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);
