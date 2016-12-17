@@ -28,7 +28,7 @@
   <style name="Theme.Memento.Light.DarkToolbar">
     <item name="useDarkIcons">false</item>
     <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    <item name="primaryTextColor">@android:color/black</item>
+    <item name="primaryTextColor">@color/card_text</item>
     <item name="primaryTextColorInverse">@android:color/white</item>
   </style>
 

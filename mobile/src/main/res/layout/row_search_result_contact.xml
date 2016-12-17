@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/CardViewStyle"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
   <LinearLayout
+    style="@style/SearchResult.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="8dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp">
-
+    android:orientation="horizontal">
 
     <com.alexstyl.specialdates.ui.widget.ColorImageView
       android:id="@+id/avatar"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:scaleType="centerCrop"
-      app:isCircle="true"
+      style="@style/SearchResult.Avatar"
       tools:background="#000" />
-
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -36,19 +27,16 @@
 
       <TextView
         android:id="@id/contact_name"
-        style="@style/Card.Text"
+        style="@style/SearchResult.ContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textColor="@color/card_text"
         tools:text="Darth Vader" />
 
       <TextView
         android:id="@+id/search_result_event_label"
+        style="@style/SearchResult.EventLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
         tools:text="Birthday on December 12"
         tools:textColor="@color/birthday_red" />
 
