@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.util;
 
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 

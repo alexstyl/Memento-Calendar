@@ -27,8 +27,4 @@ public class MonthLabels {
     public String[] getMonthsOfYear() {
         return Arrays.copyOf(monthLabels, monthLabels.length);
     }
-
-    public String getFullLabel(@MonthInt int month) {
-        return "0";
-    }
 }
