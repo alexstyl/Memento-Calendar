@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
@@ -82,7 +83,8 @@ public class SearchActivity extends ThemedActivity {
         setContentView(R.layout.activity_search);
 
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
-        viewModelFactory = new ContactEventViewModelFactory(new AndroidStringResources(getResources()));
+        StringResources stringResources = new AndroidStringResources(getResources());
+        viewModelFactory = new ContactEventViewModelFactory(new EventLabelCreator(stringResources, new AndroidDateLabelCreator(this)));
 
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
