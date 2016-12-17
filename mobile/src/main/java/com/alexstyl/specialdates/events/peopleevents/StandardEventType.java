@@ -4,7 +4,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 

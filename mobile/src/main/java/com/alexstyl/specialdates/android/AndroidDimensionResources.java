@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.android;
 import android.content.res.Resources;
 import android.support.annotation.DimenRes;
 
-import com.alexstyl.DimensionResources;
+import com.alexstyl.resources.DimensionResources;
 
 public final class AndroidDimensionResources implements DimensionResources {
 

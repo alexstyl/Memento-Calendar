@@ -3,8 +3,8 @@ package com.alexstyl.specialdates.datedetails;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.alexstyl.ColorResources;
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;

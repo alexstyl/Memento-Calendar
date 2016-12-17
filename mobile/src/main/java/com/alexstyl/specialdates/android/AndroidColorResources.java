@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.android;
 import android.content.res.Resources;
 import android.support.annotation.ColorRes;
 
-import com.alexstyl.ColorResources;
+import com.alexstyl.resources.ColorResources;
 
 public final class AndroidColorResources implements ColorResources {
 

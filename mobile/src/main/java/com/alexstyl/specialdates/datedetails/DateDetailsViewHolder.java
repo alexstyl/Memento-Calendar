@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.StringResources;
-import com.alexstyl.ColorResources;
+import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.ColorResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.images.ImageLoader;

@@ -1,4 +1,4 @@
-package com.alexstyl;
+package com.alexstyl.resources;
 
 import android.support.annotation.DimenRes;
 

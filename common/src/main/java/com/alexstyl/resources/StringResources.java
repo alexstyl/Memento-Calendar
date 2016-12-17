@@ -1,4 +1,4 @@
-package com.alexstyl;
+package com.alexstyl.resources;
 
 import android.support.annotation.PluralsRes;
 import android.support.annotation.StringRes;

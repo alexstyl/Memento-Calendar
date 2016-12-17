@@ -22,9 +22,9 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
-import com.alexstyl.ColorResources;
-import com.alexstyl.DimensionResources;
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.DimensionResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidDimensionResources;

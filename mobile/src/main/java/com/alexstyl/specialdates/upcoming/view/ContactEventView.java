@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alexstyl.ColorResources;
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;

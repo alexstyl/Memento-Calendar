@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.support.annotation.PluralsRes;
 import android.support.annotation.StringRes;
 
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.StringResources;
 
 /**
  * Wrapper class of Android's {@link Resources} string related methods

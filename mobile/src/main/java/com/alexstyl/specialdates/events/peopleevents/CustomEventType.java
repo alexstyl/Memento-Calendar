@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.events.database.EventColumns;
 
 public class CustomEventType implements EventType {

@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.widget.RemoteViews;
 
-import com.alexstyl.StringResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
