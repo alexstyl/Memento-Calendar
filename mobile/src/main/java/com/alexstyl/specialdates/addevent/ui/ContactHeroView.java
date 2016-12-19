@@ -22,7 +22,7 @@ import com.novoda.notils.text.SimpleTextWatcher;
 public class ContactHeroView extends LinearLayout {
 
     private ImageLoader imageLoader;
-    private ContactsAutoCompleteView nameSuggestion;
+    private ContactSuggestionView nameSuggestion;
     private ColorImageView avatar;
     private ViewGroup avatarHolder;
 
@@ -51,7 +51,7 @@ public class ContactHeroView extends LinearLayout {
             }
         });
 
-        nameSuggestion.setOnContactSelectedListener(new ContactsAutoCompleteView.OnContactSelectedListener() {
+        nameSuggestion.setOnContactSelectedListener(new ContactSuggestionView.OnContactSelectedListener() {
             @Override
             public void onContactSelected(Contact contact) {
                 listener.onContactSelected(nameSuggestion, contact);
@@ -125,7 +125,7 @@ public class ContactHeroView extends LinearLayout {
 
     public interface Listener {
 
-        void onContactSelected(ContactsAutoCompleteView nameSuggestion, Contact contact);
+        void onContactSelected(ContactSuggestionView nameSuggestion, Contact contact);
 
         boolean onEditorAction(TextView view);
 
@@ -135,7 +135,7 @@ public class ContactHeroView extends LinearLayout {
 
     private static final Listener NO_LISTENER = new Listener() {
         @Override
-        public void onContactSelected(ContactsAutoCompleteView nameSuggestion, Contact contact) {
+        public void onContactSelected(ContactSuggestionView nameSuggestion, Contact contact) {
             Log.w("onContactSeleceted called with an empty listener");
         }
 

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-  tools:ignore="Missing_translation">
-  <string name="addbirthday_title">@string/add_birthday</string>
+<resources>
   <string name="add_birthday_store_button_add_label">@string/add</string>
   <string name="add_birthday_store_button_update_label">@string/set</string>
   <string name="add_birthday_store_button_cancel">@string/Discard</string>
@@ -13,5 +11,16 @@
   <string name="birthday_picker_dialog_title">@string/Birthday_date</string>
   <string name="birthday_picker_dialog_positive">@string/set</string>
   <string name="add_birthday_include_year_label">@string/include_year</string>
+  <string name="add_event_title">@string/Add_event</string>
+
+  <dimen name="add_birthday_row_height">64dp</dimen>
+  <dimen name="add_birthday_row_width">64dp</dimen>
+  <dimen name="add_birthday_avatar_starting_width">0dp</dimen>
+  <dimen name="add_birthday_avatar_starting_height">0dp</dimen>
+  <dimen name="add_birthday_avatar_actual_width">48dp</dimen>
+  <dimen name="add_birthday_avatar_actual_height">48dp</dimen>
+  <dimen name="add_event_image_height">58dp</dimen>
+  <dimen name="add_event_image_width">58dp</dimen>
+  <dimen name="add_event_margin_horizontal">4dp</dimen>
 
 </resources>

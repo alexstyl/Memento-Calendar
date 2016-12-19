@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.search;
 
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.TestDateLabelCreator;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -20,13 +21,13 @@ import static org.fest.assertions.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class EventLabelCreatorTest {
 
-    private EventLabelCreator creator;
+    private ContactEventLabelCreator creator;
     @Mock
     private Contact mockContact;
 
     @Before
     public void setUp() {
-        creator = new EventLabelCreator(new DumbTestResources(), TestDateLabelCreator.newInstance());
+        creator = new ContactEventLabelCreator(new DumbTestResources(), TestDateLabelCreator.forUS());
     }
 
     @Test

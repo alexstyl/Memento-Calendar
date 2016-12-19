@@ -84,7 +84,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_no_birthday">No birthday set</string>
     <string name="contact_no_nameday">No nameday for the name %s</string>
     <string name="edit">Edit</string>
-    <string name="title_add_birthday">Add birthday</string>
+    <string name="Add_birthday">Add birthday</string>
     <string name="search">Search</string>
     <string name="and">and</string>
     <string name="Greek">Greek</string>
@@ -166,5 +166,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Anniversary">Anniversary</string>
     <string name="Other">Other</string>
     <string name="Custom">Custom</string>
+    <string name="Add_event">Add event</string>
 
 </resources>

@@ -80,7 +80,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_no_birthday">Χωρίς γενέθλια</string>
     <string name="contact_no_nameday">Δεν υπάρχει ονομαστική εορτή για το όνομα %s</string>
     <string name="edit">Επεξεργασία</string>
-    <string name="title_add_birthday">Προσθήκη γενεθλίων</string>
+    <string name="Add_birthday">Προσθήκη γενεθλίων</string>
     <string name="search">Αναζήτηση</string>
     <string name="and">και</string>
     <string name="Greek">Ελληνικά</string>

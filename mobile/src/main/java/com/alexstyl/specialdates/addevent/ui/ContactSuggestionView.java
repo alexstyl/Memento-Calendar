@@ -12,18 +12,21 @@ import com.alexstyl.specialdates.search.NameMatcher;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.novoda.notils.logger.simple.Log;
 
-public class ContactsAutoCompleteView extends AutoCompleteTextView {
+public class ContactSuggestionView extends AutoCompleteTextView {
 
     private ContactsAdapter adapter;
     private OnContactSelectedListener listener;
 
-    public ContactsAutoCompleteView(Context context, AttributeSet attrs) {
+    public ContactSuggestionView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        if (isInEditMode()) {
+            return;
+        }
         Context context = getContext();
         adapter = new ContactsAdapter(new ContactsSearch(PeopleEventsProvider.newInstance(context), NameMatcher.INSTANCE), ImageLoader.createCircleThumbnailLoader(getResources()));
         setAdapter(adapter);

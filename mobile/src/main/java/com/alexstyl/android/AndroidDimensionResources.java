@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.android;
+package com.alexstyl.android;
 
 import android.content.res.Resources;
 import android.support.annotation.DimenRes;

@@ -84,7 +84,7 @@ Bert Van Dooren voor de Nederlandse vertaling"</string>
     <string name="contact_no_birthday">Geen verjaardag gezet</string>
     <string name="contact_no_nameday">Geen naamdag voor de naam %s</string>
     <string name="edit">Bewerken</string>
-    <string name="title_add_birthday">Verjaardag toevoegen</string>
+    <string name="Add_birthday">Verjaardag toevoegen</string>
     <string name="search">Zoeken</string>
     <string name="and">en</string>
     <string name="nameday_language_title">Naamdag kalender</string>

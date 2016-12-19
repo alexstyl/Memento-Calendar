@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center_vertical"
+  android:orientation="horizontal">
+
+  <ImageView
+    android:layout_width="@dimen/add_event_image_width"
+    android:layout_height="@dimen/add_event_image_height"
+    android:id="@+id/add_event_event_icon"
+    android:scaleType="center"
+    tools:src="@drawable/ic_cake" />
+
+  <TextView
+    android:id="@+id/add_event_date_picker"
+    style="@style/Widget.AppCompat.EditText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/padding"
+    android:clickable="false"
+    android:drawableRight="@drawable/spinner_ab_default_dayslight"
+    android:focusable="false"
+    tools:hint="@string/birthday" />
+
+
+</LinearLayout>

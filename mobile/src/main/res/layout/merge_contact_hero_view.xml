@@ -5,8 +5,8 @@
 
   <FrameLayout
     android:id="@+id/contact_hero_avatar_holder"
-    android:layout_width="@dimen/add_birthday_image_width"
-    android:layout_height="@dimen/add_birthday_image_height">
+    android:layout_width="@dimen/add_event_image_width"
+    android:layout_height="@dimen/add_event_image_height">
 
     <ImageView
       android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
   </FrameLayout>
 
 
-  <com.alexstyl.specialdates.addevent.ui.ContactsAutoCompleteView
+  <com.alexstyl.specialdates.addevent.ui.ContactSuggestionView
     android:id="@+id/contacthero_name_suggestion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
