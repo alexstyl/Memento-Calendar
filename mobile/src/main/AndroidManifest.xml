@@ -94,13 +94,9 @@
     </activity>
 
     <activity
-      android:name="com.alexstyl.specialdates.addevent.AddBirthdayActivity"
-      android:excludeFromRecents="true"
-      android:exported="false"
-      android:label="@string/title_add_birthday"
-      android:noHistory="true"
-      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
-      android:theme="@style/Theme.Dayslight.DialogNoTitle">
+      android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
+      android:label="@string/add_event_title"
+      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />

@@ -26,4 +26,9 @@ public class CustomEventType implements EventType {
     public int getId() {
         return EventColumns.TYPE_CUSTOM;
     }
+
+    @Override
+    public int getIconResId() {
+        return R.drawable.ic_cake;
+    }
 }

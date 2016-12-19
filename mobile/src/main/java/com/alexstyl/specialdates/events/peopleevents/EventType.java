@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.events.database.EventTypeId;
@@ -14,4 +15,7 @@ public interface EventType {
 
     @EventTypeId
     int getId();
+
+    @DrawableRes
+    int getIconResId();
 }

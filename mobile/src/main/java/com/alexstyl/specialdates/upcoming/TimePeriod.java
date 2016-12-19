@@ -15,6 +15,12 @@ public class TimePeriod {
         return new TimePeriod(startDate, endDate);
     }
 
+    public static TimePeriod aYearFromNow() {
+        Date today = Date.today();
+        Date endDate = today.addDay(364);
+        return TimePeriod.between(today, endDate);
+    }
+
     private TimePeriod(Date from, Date to) {
         this.from = from;
         this.to = to;

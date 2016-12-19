@@ -21,18 +21,18 @@ public class MementoToolbar extends Toolbar {
     public MementoToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        if (isInEditMode()) {
-            return;
-        }
-        themer = Themer.get(context);
 
         int toolbarColor = fetchAccentColor(context);
         float toolbarElevation = getToolbarElevation();
 
         setBackgroundColor(toolbarColor);
         ViewCompat.setElevation(this, toolbarElevation);
-
         setMinimumHeight(getResources().getDimensionPixelSize(R.dimen.toolbar_minHeight));
+
+        if (isInEditMode()) {
+            return;
+        }
+        themer = Themer.get(context);
     }
 
     @ColorInt

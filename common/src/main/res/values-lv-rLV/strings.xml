@@ -82,7 +82,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_no_birthday">Dzimšanas diena nav norādīta</string>
     <string name="contact_no_nameday">%s vārda diena nav zināma</string>
     <string name="edit">Rediģēt</string>
-    <string name="title_add_birthday">Pievienot dzimšanas dienu</string>
+    <string name="Add_birthday">Pievienot dzimšanas dienu</string>
     <string name="search">Meklēt</string>
     <string name="and">un</string>
     <string name="Greek">Grieķu</string>

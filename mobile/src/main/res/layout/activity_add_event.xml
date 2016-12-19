@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <com.alexstyl.specialdates.ui.widget.MementoToolbar
+    android:id="@+id/memento_toolbar"
+    style="@style/Widget.Memento.Toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <com.alexstyl.specialdates.ui.widget.ColorImageView
+    android:id="@+id/add_event_avatar"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    tools:background="#000" />
+
+  <LinearLayout
+    android:id="@+id/add_event_top"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/add_event_image_height"
+    android:layout_below="@id/add_event_avatar"
+    android:background="?colorSecondary"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/add_event_margin_horizontal"
+    android:paddingRight="@dimen/add_event_margin_horizontal">
+
+    <ImageView
+      android:layout_width="@dimen/add_event_image_width"
+      android:layout_height="@dimen/add_event_image_height"
+      android:scaleType="center"
+      android:src="@drawable/ic_person_black_24dp" />
+
+    <com.alexstyl.specialdates.addevent.ui.ContactSuggestionView
+      android:id="@+id/add_event_contact_autocomplete"
+      style="@style/Widget.AppCompat.EditText"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginLeft="@dimen/padding"
+      android:hint="@string/addbirthday_autocomplete_hint"
+      android:inputType="textPersonName"
+      android:maxLines="1" />
+
+  </LinearLayout>
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/add_event_events"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/add_event_top"
+    android:layout_marginLeft="@dimen/add_event_margin_horizontal"
+    android:layout_marginRight="@dimen/add_event_margin_horizontal" />
+
+</RelativeLayout>
+

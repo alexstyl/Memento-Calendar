@@ -1,15 +1,16 @@
-package com.alexstyl.specialdates.search;
+package com.alexstyl.specialdates;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.search.DateLabelCreator;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 
 import java.util.Locale;
 
-final class TestDateLabelCreator implements DateLabelCreator {
+final public class TestDateLabelCreator implements DateLabelCreator {
 
     private final MonthLabels monthLabels;
 
-    public static DateLabelCreator newInstance() {
+    public static DateLabelCreator forUS() {
         MonthLabels monthLabels = MonthLabels.forLocale(Locale.US);
         return new TestDateLabelCreator(monthLabels);
     }

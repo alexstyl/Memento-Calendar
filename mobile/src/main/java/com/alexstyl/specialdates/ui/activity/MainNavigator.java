@@ -7,7 +7,7 @@ import android.net.Uri;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.about.AboutActivity;
-import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
+import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.search.SearchActivity;
@@ -55,7 +55,7 @@ public class MainNavigator {
     }
 
     void toAddBirthday() {
-        Intent intent = new Intent(activity, AddBirthdayActivity.class);
+        Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
     }
 

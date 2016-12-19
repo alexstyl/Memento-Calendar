@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.android.AndroidColorResources;
+import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;

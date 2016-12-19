@@ -4,12 +4,12 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 
-final class EventLabelCreator {
+final class ContactEventLabelCreator {
 
     private final StringResources stringResources;
     private final DateLabelCreator dateLabelCreator;
 
-    EventLabelCreator(StringResources stringResources, DateLabelCreator dateLabelCreator) {
+    ContactEventLabelCreator(StringResources stringResources, DateLabelCreator dateLabelCreator) {
         this.stringResources = stringResources;
         this.dateLabelCreator = dateLabelCreator;
     }

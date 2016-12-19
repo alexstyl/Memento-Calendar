@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.alexstyl.android.AndroidDateLabelCreator;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -84,7 +85,8 @@ public class SearchActivity extends ThemedActivity {
 
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
         StringResources stringResources = new AndroidStringResources(getResources());
-        viewModelFactory = new ContactEventViewModelFactory(new EventLabelCreator(stringResources, new AndroidDateLabelCreator(this)));
+        DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(stringResources, dateLabelCreator));
 
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
@@ -97,7 +99,7 @@ public class SearchActivity extends ThemedActivity {
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(true);
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding)/2;
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / 2;
         resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
