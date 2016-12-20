@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
 import java.util.List;
 
-class BirthdayFormPresenter {
+class EventsListPresenter {
 
     private ImageLoader imageLoader;
     private final ContactSuggestionView contactSuggestionView;
@@ -15,11 +15,11 @@ class BirthdayFormPresenter {
     private final ContactEventsFetcher contactEventsFetcher;
     private ContactEventsAdapter adapter;
 
-    BirthdayFormPresenter(ImageLoader imageLoader,
-                          ContactEventsFetcher contactEventsFetcher,
-                          ContactEventsAdapter adapter,
-                          ContactSuggestionView contactSuggestionView,
-                          ColorImageView avatarView) {
+    EventsListPresenter(ImageLoader imageLoader,
+                        ContactEventsFetcher contactEventsFetcher,
+                        ContactEventsAdapter adapter,
+                        ContactSuggestionView contactSuggestionView,
+                        ColorImageView avatarView) {
         this.imageLoader = imageLoader;
         this.contactSuggestionView = contactSuggestionView;
         this.avatarView = avatarView;

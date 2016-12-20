@@ -41,8 +41,14 @@ public class AddEventActivity extends ThemedActivity {
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
         ContactEventViewModelFactory factory = new ContactEventViewModelFactory(new AndroidDateLabelCreator(this));
         AddEventViewModelFactory newEventFactory = new AddEventViewModelFactory(new AndroidStringResources(getResources()));
-        ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(getSupportLoaderManager(), this, peopleEventsProvider, factory, newEventFactory);
-        BirthdayFormPresenter presenter = new BirthdayFormPresenter(imageLoader, contactEventsFetcher, adapter, contactSuggestionView, avatarView);
+        ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
+                getSupportLoaderManager(),
+                this,
+                peopleEventsProvider,
+                factory,
+                newEventFactory
+        );
+        EventsListPresenter presenter = new EventsListPresenter(imageLoader, contactEventsFetcher, adapter, contactSuggestionView, avatarView);
         presenter.startPresenting();
     }
 
