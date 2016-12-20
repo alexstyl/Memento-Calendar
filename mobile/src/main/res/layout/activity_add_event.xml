@@ -22,6 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/add_event_image_height"
     android:layout_below="@id/add_event_avatar"
+    android:elevation="@dimen/toolbar_elevation"
     android:background="?colorSecondary"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/add_event_margin_horizontal"
