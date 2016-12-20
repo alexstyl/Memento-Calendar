@@ -48,6 +48,7 @@ class EventsListPresenter {
                         toolbarAnimator.fadeOut();
                         AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
                         contactSuggestionView.clearFocus();
+
                     }
                 });
                 contactEventsFetcher.load(contact, onDataFetchedCallbackCallback);
@@ -59,7 +60,6 @@ class EventsListPresenter {
                 contactEventsFetcher.loadEmptyEvents(onDataFetchedCallbackCallback);
                 avatarView.setImageBitmap(null);
                 toolbarAnimator.fadeIn();
-
             }
         });
         contactEventsFetcher.loadEmptyEvents(onDataFetchedCallbackCallback);

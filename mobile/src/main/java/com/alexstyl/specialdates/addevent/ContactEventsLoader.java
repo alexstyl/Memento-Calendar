@@ -13,15 +13,17 @@ import com.alexstyl.specialdates.upcoming.TimePeriod;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventViewModel>> {
 
     private final Optional<Contact> contact;
+
     private final PeopleEventsProvider peopleEventsProvider;
     private final ContactEventViewModelFactory factory;
     private final AddEventViewModelFactory newEventFactory;
-    private final List<ContactEventViewModel> ADD_NEW_EVENTS;
+    private final List<ContactEventViewModel> emptyEvents;
 
     ContactEventsLoader(Context context,
                         Optional<Contact> contact,
@@ -33,7 +35,7 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
         this.peopleEventsProvider = peopleEventsProvider;
         this.factory = factory;
         this.newEventFactory = newEventFactory;
-        ADD_NEW_EVENTS = newEventFactory.createViewModelsForAllEventsBut(Collections.<EventType>emptyList());
+        this.emptyEvents = newEventFactory.createViewModelsForAllEventsBut(Collections.<EventType>emptyList());
     }
 
     @Override
@@ -42,8 +44,10 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
         if (contact.isPresent()) {
             existingViewModels = createModelsFor(contact.get());
         } else {
-            existingViewModels = ADD_NEW_EVENTS;
+            existingViewModels = emptyEvents;
         }
+
+        Collections.sort(existingViewModels, EVENT_TYPE_ID_COMPARATOR);
         return existingViewModels;
     }
 
@@ -67,5 +71,12 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
     private boolean isEditable(ContactEvent contactEvent) {
         return contactEvent.getType() != StandardEventType.NAMEDAY;
     }
+
+    private static final Comparator<ContactEventViewModel> EVENT_TYPE_ID_COMPARATOR = new Comparator<ContactEventViewModel>() {
+        @Override
+        public int compare(ContactEventViewModel o1, ContactEventViewModel o2) {
+            return o1.getEventType().getId() - o2.getEventType().getId();
+        }
+    };
 
 }

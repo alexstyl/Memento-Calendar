@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.addevent;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.events.peopleevents.CustomEventType;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
@@ -17,9 +18,13 @@ final class AddEventViewModelFactory {
 
     List<ContactEventViewModel> createViewModelsForAllEventsBut(List<EventType> existingTypes) {
         List<ContactEventViewModel> addEventViewModels = new ArrayList<>();
+        boolean containsCustomType = containsCustomType(existingTypes);
 
         for (StandardEventType eventType : StandardEventType.values()) {
-            if (existingTypes.contains(eventType) || eventType == StandardEventType.NAMEDAY) {
+            if (existingTypes.contains(eventType)
+                    || eventType == StandardEventType.NAMEDAY
+                    || (eventType == StandardEventType.CUSTOM && containsCustomType)
+                    ) {
                 continue;
             }
             String eventName = eventType.getEventName(stringResources);
@@ -27,6 +32,15 @@ final class AddEventViewModelFactory {
             addEventViewModels.add(viewModel);
         }
         return addEventViewModels;
+    }
+
+    private boolean containsCustomType(List<EventType> existingTypes) {
+        for (EventType existingType : existingTypes) {
+            if (existingType instanceof CustomEventType) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

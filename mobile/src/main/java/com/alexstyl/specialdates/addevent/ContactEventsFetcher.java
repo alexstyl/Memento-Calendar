@@ -36,13 +36,15 @@ final class ContactEventsFetcher {
     }
 
     void load(Contact contact, OnDataFetchedCallback callback) {
-        this.contact = new Optional<>(contact);
-        this.callback = callback;
-        loaderManager.restartLoader(24, null, callbacks);
+        loadEventsFor(new Optional<>(contact), callback);
     }
 
     void loadEmptyEvents(OnDataFetchedCallback callback) {
-        this.contact = Optional.absent();
+        loadEventsFor(Optional.<Contact>absent(), callback);
+    }
+
+    private void loadEventsFor(Optional<Contact> contactOptional, OnDataFetchedCallback callback) {
+        this.contact = contactOptional;
         this.callback = callback;
         loaderManager.restartLoader(24, null, callbacks);
     }
