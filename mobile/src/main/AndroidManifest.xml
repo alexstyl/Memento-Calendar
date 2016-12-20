@@ -95,7 +95,9 @@
 
     <activity
       android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
+      android:exported="true"
       android:label="@string/add_event_title"
+      android:windowSoftInputMode="stateHidden"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"

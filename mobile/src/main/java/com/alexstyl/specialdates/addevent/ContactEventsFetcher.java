@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 
@@ -18,9 +19,9 @@ final class ContactEventsFetcher {
     private final ContactEventViewModelFactory factory;
     private final AddEventViewModelFactory newEventFactory;
 
-    private Contact contact;
+    private Optional<Contact> contact;
 
-    private OnDataFetched listener;
+    private OnDataFetchedCallback callback;
 
     ContactEventsFetcher(LoaderManager loaderManager,
                          Context context,
@@ -33,27 +34,28 @@ final class ContactEventsFetcher {
         this.factory = factory;
         this.newEventFactory = newEventFactory;
     }
-    interface OnDataFetched {
 
-        void onDataFetched(List<ContactEventViewModel> data);
-
-    }
-
-    void load(Contact contact, OnDataFetched listener) {
-        this.contact = contact;
-        this.listener = listener;
+    void load(Contact contact, OnDataFetchedCallback callback) {
+        this.contact = new Optional<>(contact);
+        this.callback = callback;
         loaderManager.restartLoader(24, null, callbacks);
     }
+
+    void loadEmptyEvents(OnDataFetchedCallback callback) {
+        this.contact = Optional.absent();
+        this.callback = callback;
+        loaderManager.restartLoader(24, null, callbacks);
+    }
+
     private LoaderManager.LoaderCallbacks<List<ContactEventViewModel>> callbacks = new LoaderManager.LoaderCallbacks<List<ContactEventViewModel>>() {
         @Override
         public Loader<List<ContactEventViewModel>> onCreateLoader(int id, Bundle args) {
-
             return new ContactEventsLoader(context, contact, peopleEventsProvider, factory, newEventFactory);
         }
 
         @Override
         public void onLoadFinished(Loader<List<ContactEventViewModel>> loader, List<ContactEventViewModel> data) {
-            listener.onDataFetched(data);
+            callback.onDataFetched(data);
         }
 
         @Override
@@ -61,4 +63,9 @@ final class ContactEventsFetcher {
 
         }
     };
+
+    interface OnDataFetchedCallback {
+        void onDataFetched(List<ContactEventViewModel> data);
+    }
+
 }
