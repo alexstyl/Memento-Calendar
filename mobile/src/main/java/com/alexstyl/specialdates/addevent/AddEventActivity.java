@@ -50,8 +50,17 @@ public class AddEventActivity extends ThemedActivity {
                 factory,
                 newEventFactory
         );
-        EventsListPresenter presenter = new EventsListPresenter(imageLoader, contactEventsFetcher, adapter, contactSuggestionView, avatarView, toolbar);
+
+        EventsListPresenter presenter = new EventsListPresenter(
+                imageLoader,
+                contactEventsFetcher,
+                adapter,
+                contactSuggestionView,
+                avatarView,
+                toolbar
+        );
         presenter.startPresenting();
+
     }
 
     @Override
