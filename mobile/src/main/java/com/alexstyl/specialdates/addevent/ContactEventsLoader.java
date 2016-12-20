@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.addevent;
 
 import android.content.Context;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
@@ -11,17 +12,19 @@ import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventViewModel>> {
 
-    private final Contact contact;
+    private final Optional<Contact> contact;
     private final PeopleEventsProvider peopleEventsProvider;
     private final ContactEventViewModelFactory factory;
     private final AddEventViewModelFactory newEventFactory;
+    private final List<ContactEventViewModel> ADD_NEW_EVENTS;
 
     ContactEventsLoader(Context context,
-                        Contact contact,
+                        Optional<Contact> contact,
                         PeopleEventsProvider peopleEventsProvider,
                         ContactEventViewModelFactory factory,
                         AddEventViewModelFactory newEventFactory) {
@@ -30,13 +33,24 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
         this.peopleEventsProvider = peopleEventsProvider;
         this.factory = factory;
         this.newEventFactory = newEventFactory;
+        ADD_NEW_EVENTS = newEventFactory.createViewModelsForAllEventsBut(Collections.<EventType>emptyList());
     }
 
     @Override
     public List<ContactEventViewModel> loadInBackground() {
-        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getCelebrationDateFor(TimePeriod.aYearFromNow());
+        List<ContactEventViewModel> existingViewModels;
+        if (contact.isPresent()) {
+            existingViewModels = createModelsFor(contact.get());
+        } else {
+            existingViewModels = ADD_NEW_EVENTS;
+        }
+        return existingViewModels;
+    }
 
+    private List<ContactEventViewModel> createModelsFor(Contact contact) {
+        List<ContactEventViewModel> existingViewModels;
         List<ContactEvent> contactEvents = new ArrayList<>();
+        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getCelebrationDateFor(TimePeriod.aYearFromNow());
         List<EventType> existingTypes = new ArrayList<>();
         for (ContactEvent contactEvent : contactEventsOnDate) {
             if (contactEvent.getContact().getContactID() == contact.getContactID() && isEditable(contactEvent)) {
@@ -44,9 +58,8 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
                 existingTypes.add(contactEvent.getType());
             }
         }
-        List<ContactEventViewModel> existingViewModels = factory.createViewModelsFor(contactEvents);
+        existingViewModels = factory.createViewModelsFor(contactEvents);
         List<ContactEventViewModel> emptyViewModels = newEventFactory.createViewModelsForAllEventsBut(existingTypes);
-
         existingViewModels.addAll(emptyViewModels);
         return existingViewModels;
     }

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.BuildConfig;
@@ -63,6 +64,15 @@ public class ImageLoader {
 
     public void loadThumbnail(Uri imagePath, ImageView view) {
         loader.displayImage(imagePath.toString(), view, displayImageOptions);
+    }
+
+    public void loadThumbnail(Uri imagePath, ImageView view, final OnImageLoadedCallback callback) {
+        loader.displayImage(imagePath.toString(), view, displayImageOptions, new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                callback.onImageLoaded(loadedImage);
+            }
+        });
     }
 
     public Bitmap loadBitmap(Uri imagePath, int width, int height) {
