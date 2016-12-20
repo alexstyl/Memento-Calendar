@@ -29,6 +29,6 @@ public class CustomEventType implements EventType {
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_cake;
+        return R.drawable.ic_custom;
     }
 }
