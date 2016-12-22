@@ -62,7 +62,7 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
                 existingTypes.add(contactEvent.getType());
             }
         }
-        existingViewModels = factory.createViewModelsFor(contactEvents);
+        existingViewModels = factory.createViewModel(contactEvents);
         List<ContactEventViewModel> emptyViewModels = newEventFactory.createViewModelsForAllEventsBut(existingTypes);
         existingViewModels.addAll(emptyViewModels);
         return existingViewModels;

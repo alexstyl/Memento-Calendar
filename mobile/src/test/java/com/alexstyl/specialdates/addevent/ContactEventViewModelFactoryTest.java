@@ -27,7 +27,7 @@ public class ContactEventViewModelFactoryTest {
     @Test
     public void alwaysCreatesOneViewModelForEachStandardEvent() {
         int eventsCount = StandardEventType.values().length;
-        List<ContactEventViewModel> viewModels = factory.createViewModelsFor(Collections.<ContactEvent>emptyList());
+        List<ContactEventViewModel> viewModels = factory.createViewModel(Collections.<ContactEvent>emptyList());
         assertThat(viewModels.size()).isEqualTo(eventsCount);
     }
 }

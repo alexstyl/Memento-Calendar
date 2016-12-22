@@ -17,20 +17,18 @@ final class ContactEventViewModelFactory {
         this.creator = creator;
     }
 
-    List<ContactEventViewModel> createViewModelsFor(List<ContactEvent> contactEvents) {
+    List<ContactEventViewModel> createViewModel(List<ContactEvent> contactEvents) {
         List<ContactEventViewModel> viewModels = new ArrayList<>(contactEvents.size());
 
         for (ContactEvent contactEvent : contactEvents) {
-            String eventHint = creator.createLabelFor(contactEvent.getDate());
-            Optional<Date> dateOptional = new Optional<>(contactEvent.getDate());
-            EventType eventType = contactEvent.getType();
-            viewModels.add(new ContactEventViewModel(eventHint, eventType, dateOptional));
+            ContactEventViewModel viewModel = createViewModelWith(contactEvent.getType(), contactEvent.getDate());
+            viewModels.add(viewModel);
         }
         return viewModels;
     }
 
-    ContactEventViewModel createViewModelsFor(EventType eventType, Date date) {
-        String eventHint = creator.createLabelFor(date);
+    ContactEventViewModel createViewModelWith(EventType eventType, Date date) {
+        String eventHint = date.hasYear() ? creator.createLabelWithYearFor(date) : creator.createLabelWithoutYearFor(date);
         Optional<Date> dateOptional = new Optional<>(date);
         return new ContactEventViewModel(eventHint, eventType, dateOptional);
     }

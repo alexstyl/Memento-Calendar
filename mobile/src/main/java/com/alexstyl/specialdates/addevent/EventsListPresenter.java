@@ -95,7 +95,7 @@ class EventsListPresenter {
 
     void onEventDatePicked(EventType eventType, Date date) {
         state.keepState(eventType, date);
-        ContactEventViewModel viewModels = factory.createViewModelsFor(eventType, date);
+        ContactEventViewModel viewModels = factory.createViewModelWith(eventType, date);
         adapter.updateWith(viewModels);
     }
 
