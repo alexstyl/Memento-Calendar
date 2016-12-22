@@ -29,4 +29,9 @@ final class ContactEventViewModelFactory {
         return viewModels;
     }
 
+    ContactEventViewModel createViewModelsFor(EventType eventType, Date date) {
+        String eventHint = creator.createLabelFor(date);
+        Optional<Date> dateOptional = new Optional<>(date);
+        return new ContactEventViewModel(eventHint, eventType, dateOptional);
+    }
 }

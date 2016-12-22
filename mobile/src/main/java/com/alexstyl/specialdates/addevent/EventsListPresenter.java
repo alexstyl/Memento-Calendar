@@ -25,6 +25,8 @@ class EventsListPresenter {
     private final ContactEventsFetcher contactEventsFetcher;
     private final ContactEventsAdapter adapter;
     private final ToolbarBackgroundAnimator toolbarAnimator;
+    private final MementoToolbar toolbar;
+    private final ContactEventViewModelFactory factory;
 
     private TemporaryEventsState state;
 
@@ -33,13 +35,16 @@ class EventsListPresenter {
                         ContactEventsAdapter adapter,
                         ContactSuggestionView contactSuggestionView,
                         ImageView avatarView,
-                        MementoToolbar toolbar) {
+                        MementoToolbar toolbar,
+                        ContactEventViewModelFactory factory) {
         this.imageLoader = imageLoader;
         this.contactSuggestionView = contactSuggestionView;
         this.avatarView = avatarView;
         this.contactEventsFetcher = contactEventsFetcher;
         this.adapter = adapter;
         this.toolbarAnimator = ToolbarBackgroundAnimator.setupOn(toolbar);
+        this.toolbar = toolbar;
+        this.factory = factory;
         this.state = TemporaryEventsState.newState();
     }
 
@@ -90,13 +95,11 @@ class EventsListPresenter {
 
     void onEventDatePicked(EventType eventType, Date date) {
         state.keepState(eventType, date);
+        ContactEventViewModel viewModels = factory.createViewModelsFor(eventType, date);
+        adapter.updateWith(viewModels);
     }
 
     void saveChanges() {
-        printState();
-    }
-
-    private void printState() {
         Log.d(state);
     }
 }
