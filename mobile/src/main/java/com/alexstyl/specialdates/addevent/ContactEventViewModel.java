@@ -34,4 +34,33 @@ final class ContactEventViewModel {
     public Optional<Date> getDate() {
         return dateOptional;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ContactEventViewModel that = (ContactEventViewModel) o;
+
+        if (!eventHint.equals(that.eventHint)) {
+            return false;
+        }
+        if (!eventType.equals(that.eventType)) {
+            return false;
+        }
+        return dateOptional.equals(that.dateOptional);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = eventHint.hashCode();
+        result = 31 * result + eventType.hashCode();
+        result = 31 * result + dateOptional.hashCode();
+        return result;
+    }
 }

@@ -90,7 +90,6 @@ public class EventDatePickerDialogFragment extends MementoDialog {
 
         AndroidStringResources stringResources = new AndroidStringResources(getResources());
         return new AlertDialog.Builder(getActivity())
-//                .setTitle(R.string.birthday_picker_dialog_title)
                 .setTitle(eventType.getEventName(stringResources))
                 .setView(view)
                 .setPositiveButton(R.string.birthday_picker_dialog_positive, new DialogInterface.OnClickListener() {

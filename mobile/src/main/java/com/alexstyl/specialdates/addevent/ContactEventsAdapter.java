@@ -47,4 +47,17 @@ final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHo
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();
     }
+
+    void updateWith(ContactEventViewModel viewModel) {
+        for (int i = 0; i < viewModels.size(); i++) {
+            ContactEventViewModel vm = viewModels.get(i);
+            if (vm.getEventType() == viewModel.getEventType()) {
+                viewModels.remove(vm);
+                viewModels.add(i, viewModel);
+                notifyItemChanged(i);
+                break;
+            }
+
+        }
+    }
 }
