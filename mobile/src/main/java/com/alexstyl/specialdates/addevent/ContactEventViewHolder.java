@@ -15,8 +15,14 @@ final class ContactEventViewHolder extends RecyclerView.ViewHolder {
         this.datePicker = datePicker;
     }
 
-    public void bind(ContactEventViewModel viewModel) {
+    public void bind(final ContactEventViewModel viewModel, final OnEventTappedListener onEventTappedListener) {
         icon.setImageResource(viewModel.getEventIconRes());
         datePicker.setHint(viewModel.getHintText());
+        datePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEventTappedListener.onEventTapped(viewModel);
+            }
+        });
     }
 }

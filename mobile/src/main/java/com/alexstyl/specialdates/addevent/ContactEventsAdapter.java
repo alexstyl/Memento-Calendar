@@ -16,6 +16,11 @@ import java.util.List;
 final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHolder> {
 
     private final List<ContactEventViewModel> viewModels = new ArrayList<>();
+    private final OnEventTappedListener onEventTappedListener;
+
+    ContactEventsAdapter(OnEventTappedListener onEventTappedListener) {
+        this.onEventTappedListener = onEventTappedListener;
+    }
 
     @Override
     public ContactEventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,7 +34,7 @@ final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHo
     @Override
     public void onBindViewHolder(ContactEventViewHolder holder, int position) {
         ContactEventViewModel contactEventViewModel = viewModels.get(position);
-        holder.bind(contactEventViewModel);
+        holder.bind(contactEventViewModel, onEventTappedListener);
     }
 
     @Override
