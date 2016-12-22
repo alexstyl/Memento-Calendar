@@ -76,7 +76,6 @@ class EventsListPresenter {
                     newState.keepEventsOf(state);
                 }
                 state = newState;
-                contactEventsFetcher.loadEmptyEvents(onNewContactLoadedCallback);
                 avatarView.setImageBitmap(null); // TODO animate avatar out
                 toolbarAnimator.fadeIn();
             }
