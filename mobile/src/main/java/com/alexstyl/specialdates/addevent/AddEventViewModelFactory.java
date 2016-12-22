@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.addevent;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.CustomEventType;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -10,6 +12,7 @@ import java.util.List;
 
 final class AddEventViewModelFactory {
 
+    private static final Optional<Date> NO_DATE = Optional.absent();
     private final StringResources stringResources;
 
     AddEventViewModelFactory(StringResources stringResources) {
@@ -28,7 +31,7 @@ final class AddEventViewModelFactory {
                 continue;
             }
             String eventName = eventType.getEventName(stringResources);
-            ContactEventViewModel viewModel = new ContactEventViewModel(eventName, eventType);
+            ContactEventViewModel viewModel = new ContactEventViewModel(eventName, eventType, NO_DATE);
             addEventViewModels.add(viewModel);
         }
         return addEventViewModels;

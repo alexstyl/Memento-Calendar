@@ -7,9 +7,12 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
@@ -17,6 +20,8 @@ import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
 
 public class AddEventActivity extends ThemedActivity {
+
+    private EventsListPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class AddEventActivity extends ThemedActivity {
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         eventsView.setHasFixedSize(true);
-        ContactEventsAdapter adapter = new ContactEventsAdapter();
+        ContactEventsAdapter adapter = new ContactEventsAdapter(onEventTappedListener);
         eventsView.setAdapter(adapter);
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
@@ -51,7 +56,7 @@ public class AddEventActivity extends ThemedActivity {
                 newEventFactory
         );
 
-        EventsListPresenter presenter = new EventsListPresenter(
+        presenter = new EventsListPresenter(
                 imageLoader,
                 contactEventsFetcher,
                 adapter,
@@ -60,7 +65,6 @@ public class AddEventActivity extends ThemedActivity {
                 toolbar
         );
         presenter.startPresenting();
-
     }
 
     @Override
@@ -83,4 +87,25 @@ public class AddEventActivity extends ThemedActivity {
         setResult(RESULT_CANCELED);
         finish();
     }
+
+    private final OnEventTappedListener onEventTappedListener = new OnEventTappedListener() {
+        @Override
+        public void onEventTapped(ContactEventViewModel viewModel) {
+            final EventType eventType = viewModel.getEventType();
+            final Optional<Date> initialDate = viewModel.getDate();
+            EventDatePickerDialogFragment dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate, new EventDatePickerDialogFragment.OnBirthdaySelectedListener() {
+                @Override
+                public void onDatePicked(Date date) {
+                    if (hasSelectedNewDate(date)) {
+                        presenter.onEventDatePicked(eventType, date);
+                    }
+                }
+
+                private boolean hasSelectedNewDate(Date date) {
+                    return !initialDate.isPresent() || !initialDate.get().equals(date);
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "pick_event");
+        }
+    };
 }

@@ -14,35 +14,38 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.events.database.EventTypeId;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.caster.Views;
 
-public class BirthdayPickerDialog extends MementoDialog {
+public class EventDatePickerDialogFragment extends MementoDialog {
 
     public static final String TAG = "fm_tag:birthday";
     private static final String KEY_DATE = "key:birthday";
+    private static final String ARG_EVENT_TYPE_ID = "arg:event_type_id";
 
     private OnBirthdaySelectedListener listener;
     private BirthdayDatePicker datePicker;
 
     private Optional<Date> initialBirthday;
 
-    public static BirthdayPickerDialog createDialogFor(Date birthday, OnBirthdaySelectedListener listener) {
-        Bundle args = new Bundle();
-        args.putString(KEY_DATE, birthday.toString());
-        BirthdayPickerDialog fragment = new BirthdayPickerDialog();
-        fragment.setArguments(args);
-        fragment.setOnBirthdaySetListener(listener);
-        return fragment;
-    }
+    public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date, OnBirthdaySelectedListener listener) {
+        EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
+        Bundle args = new Bundle(2);
+        args.putInt(ARG_EVENT_TYPE_ID, eventType.getId());
+        if (date.isPresent()) {
+            args.putString(KEY_DATE, date.get().toString());
+        }
+        dialogFragment.setArguments(args);
 
-    public static BirthdayPickerDialog createDialog(OnBirthdaySelectedListener listener) {
-        BirthdayPickerDialog fragment = new BirthdayPickerDialog();
-        fragment.setOnBirthdaySetListener(listener);
-        return fragment;
+        dialogFragment.setOnBirthdaySetListener(listener);
+        return dialogFragment;
     }
 
     @Override
@@ -79,17 +82,21 @@ public class BirthdayPickerDialog extends MementoDialog {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getThemedContext()).inflate(R.layout.dialog_birthday_picker, null, false);
         datePicker = Views.findById(view, R.id.dialog_birthday_picker);
+        EventType eventType = getEventType();
+
         if (initialBirthday.isPresent()) {
             datePicker.setDisplayingDate(initialBirthday.get());
         }
 
+        AndroidStringResources stringResources = new AndroidStringResources(getResources());
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.birthday_picker_dialog_title)
+//                .setTitle(R.string.birthday_picker_dialog_title)
+                .setTitle(eventType.getEventName(stringResources))
                 .setView(view)
                 .setPositiveButton(R.string.birthday_picker_dialog_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.onBirthdaySet(datePicker.getDisplayingBirthday());
+                        listener.onDatePicked(datePicker.getDisplayingBirthday());
                     }
                 })
                 .create();
@@ -100,13 +107,18 @@ public class BirthdayPickerDialog extends MementoDialog {
     }
 
     public static void resetListenerToDialog(FragmentManager fragmentManager, OnBirthdaySelectedListener onBirthdaySelectedListener) {
-        BirthdayPickerDialog dialog = (BirthdayPickerDialog) fragmentManager.findFragmentByTag(TAG);
+        EventDatePickerDialogFragment dialog = (EventDatePickerDialogFragment) fragmentManager.findFragmentByTag(TAG);
         if (dialog != null) {
             dialog.setOnBirthdaySetListener(onBirthdaySelectedListener);
         }
     }
 
+    public EventType getEventType() {
+        @EventTypeId int eventTypeId = getArguments().getInt(ARG_EVENT_TYPE_ID);
+        return StandardEventType.fromId(eventTypeId);
+    }
+
     public interface OnBirthdaySelectedListener {
-        void onBirthdaySet(Date birthday);
+        void onDatePicked(Date date);
     }
 }
