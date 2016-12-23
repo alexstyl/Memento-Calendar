@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
-public class BirthdayQuery {
+class BirthdayQuery {
 
     private final ContentResolver contentResolver;
 

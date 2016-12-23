@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.addevent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -21,7 +22,7 @@ import com.novoda.notils.caster.Views;
 
 public class AddEventActivity extends ThemedActivity {
 
-    private EventsListPresenter presenter;
+    private AddEventsPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,15 +57,26 @@ public class AddEventActivity extends ThemedActivity {
                 newEventFactory
         );
 
-        presenter = new EventsListPresenter(
+        WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
+        ContactEventPersister contactEventPersister = new ContactEventPersister(getContentResolver(), accountsProvider, peopleEventsProvider);
+        presenter = new AddEventsPresenter(
                 imageLoader,
                 contactEventsFetcher,
                 adapter,
                 contactSuggestionView,
                 avatarView,
-                toolbar
+                toolbar,
+                factory,
+                contactEventPersister,
+                delayedMessageDisplayer
         );
         presenter.startPresenting();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_event, menu);
+        return true;
     }
 
     @Override
@@ -73,19 +85,28 @@ public class AddEventActivity extends ThemedActivity {
             case android.R.id.home:
                 cancelActivity();
                 break;
+            case R.id.menu_add_event_save:
+                presenter.saveChanges();
+                finishActivitySuccessfully();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void finishActivitySuccessfully() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    protected void cancelActivity() {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     @Override
     public void finish() {
         overridePendingTransition(0, R.anim.slide_out_from_below);
         super.finish();
-    }
-
-    private void cancelActivity() {
-        setResult(RESULT_CANCELED);
-        finish();
     }
 
     private final OnEventTappedListener onEventTappedListener = new OnEventTappedListener() {

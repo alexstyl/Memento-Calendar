@@ -18,4 +18,6 @@ public interface EventType {
 
     @DrawableRes
     int getIconResId();
+
+    int getAndroidType();
 }
