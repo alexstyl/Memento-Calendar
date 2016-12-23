@@ -59,6 +59,7 @@ public class AddEventActivity extends ThemedActivity {
 
         WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
         ContactEventPersister contactEventPersister = new ContactEventPersister(getContentResolver(), accountsProvider, peopleEventsProvider);
+        MessageDisplayer messageDisplayer = new MessageDisplayer(getApplicationContext());
         presenter = new AddEventsPresenter(
                 imageLoader,
                 contactEventsFetcher,
@@ -68,7 +69,7 @@ public class AddEventActivity extends ThemedActivity {
                 toolbar,
                 factory,
                 contactEventPersister,
-                delayedMessageDisplayer
+                messageDisplayer
         );
         presenter.startPresenting();
     }
