@@ -8,6 +8,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 final class TemporaryEventsState {
 
@@ -56,5 +57,13 @@ final class TemporaryEventsState {
     void keepEventsOf(TemporaryEventsState state) {
         potentialEvents.clear();
         potentialEvents.putAll(state.potentialEvents);
+    }
+
+    String getContactName() {
+        return contactName;
+    }
+
+    public Set<Map.Entry<EventType, Date>> getEvents() {
+        return potentialEvents.entrySet();
     }
 }

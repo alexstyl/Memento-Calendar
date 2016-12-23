@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="add_birthday_store_button_add_label">@string/add</string>
+  <string name="add_event_store_button_add_label">@string/add</string>
   <string name="add_birthday_store_button_update_label">@string/set</string>
   <string name="add_birthday_store_button_cancel">@string/Discard</string>
   <string name="add_birthday_contact_added">@string/contact_added</string>
   <string name="add_birthday_failed_to_add_contact">@string/failed_to_add_contact</string>
-  <string name="add_birthday_contact_updated">@string/contact_updated</string>
-  <string name="add_birthday_failed_to_update_contact">@string/failed_to_update_contact</string>
+  <string name="add_event_contact_updated">@string/contact_updated</string>
+  <string name="add_event_failed_to_update_contact">@string/failed_to_update_contact</string>
   <string name="addbirthday_autocomplete_hint">@string/Contact_name</string>
   <string name="birthday_picker_dialog_title">@string/Birthday_date</string>
   <string name="birthday_picker_dialog_positive">@string/set</string>

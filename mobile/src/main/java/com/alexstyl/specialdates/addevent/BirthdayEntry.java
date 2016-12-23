@@ -2,16 +2,16 @@ package com.alexstyl.specialdates.addevent;
 
 import com.alexstyl.specialdates.date.Date;
 
-public class BirthdayEntry {
+class BirthdayEntry {
     private final long id;
     private final Date birthday;
 
-    public BirthdayEntry(long id, Date birthday) {
+    BirthdayEntry(long id, Date birthday) {
         this.id = id;
         this.birthday = birthday;
     }
 
-    public long getEntryID() {
+    long getEntryID() {
         return id;
     }
 }

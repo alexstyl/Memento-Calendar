@@ -326,4 +326,8 @@ public class PeopleEventsProvider {
         return deviceEventId == -1;
     }
 
+    public List<ContactEvent> getEventsFor(Contact contact) {
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        return contactEvents;
+    }
 }
