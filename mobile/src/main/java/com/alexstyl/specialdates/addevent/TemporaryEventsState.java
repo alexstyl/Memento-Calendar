@@ -66,4 +66,8 @@ final class TemporaryEventsState {
     public Set<Map.Entry<EventType, Date>> getEvents() {
         return potentialEvents.entrySet();
     }
+
+    void removeEvent(EventType eventType) {
+        potentialEvents.remove(eventType);
+    }
 }

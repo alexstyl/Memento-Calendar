@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.addevent;
 
+import android.view.View;
+
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -30,6 +32,6 @@ final class ContactEventViewModelFactory {
     ContactEventViewModel createViewModelWith(EventType eventType, Date date) {
         String eventHint = date.hasYear() ? creator.createLabelWithYearFor(date) : creator.createLabelWithoutYearFor(date);
         Optional<Date> dateOptional = new Optional<>(date);
-        return new ContactEventViewModel(eventHint, eventType, dateOptional);
+        return new ContactEventViewModel(eventHint, eventType, dateOptional, View.VISIBLE);
     }
 }

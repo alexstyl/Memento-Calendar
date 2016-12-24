@@ -5,11 +5,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
@@ -38,7 +38,7 @@ public class AddEventActivity extends ThemedActivity {
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
-        ImageView avatarView = Views.findById(this, R.id.add_event_avatar);
+        AvatarCameraButtonView avatarView = Views.findById(this, R.id.add_event_avatar);
         ContactSuggestionView contactSuggestionView = Views.findById(this, R.id.add_event_contact_autocomplete);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -48,7 +48,8 @@ public class AddEventActivity extends ThemedActivity {
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
         ContactEventViewModelFactory factory = new ContactEventViewModelFactory(new AndroidDateLabelCreator(this));
-        AddEventViewModelFactory newEventFactory = new AddEventViewModelFactory(new AndroidStringResources(getResources()));
+        AndroidStringResources stringResources = new AndroidStringResources(getResources());
+        AddEventViewModelFactory newEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
                 getSupportLoaderManager(),
                 this,
@@ -68,6 +69,7 @@ public class AddEventActivity extends ThemedActivity {
                 avatarView,
                 toolbar,
                 factory,
+                new AddEventViewModelFactory(stringResources),
                 contactEventPersister,
                 messageDisplayer
         );
@@ -128,6 +130,11 @@ public class AddEventActivity extends ThemedActivity {
                 }
             });
             dialog.show(getSupportFragmentManager(), "pick_event");
+        }
+
+        @Override
+        public void onEventRemoved(EventType eventType) {
+            presenter.onEventRemoved(eventType);
         }
     };
 }

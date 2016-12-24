@@ -57,4 +57,9 @@ public class Optional<T> {
     public int hashCode() {
         return object != null ? object.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(isPresent() ? object : "absent");
+    }
 }
