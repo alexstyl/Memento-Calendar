@@ -13,7 +13,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -41,7 +41,7 @@ public class PeopleEventsContentProvider extends ContentProvider {
         Resources resources = context.getResources();
         ContentResolver contentResolver = context.getContentResolver();
 
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
+        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
         PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);

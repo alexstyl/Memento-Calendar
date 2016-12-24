@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
@@ -48,14 +48,14 @@ public class PeopleEventsProvider {
             PeopleEvents.EVENT_TYPE,
     };
 
-    private final ContactsProvider contactsProvider;
+    private final AndroidContactsProvider contactsProvider;
     private final ContentResolver resolver;
     private final NamedayPreferences namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
     private final CustomEventProvider customEventProvider;
 
     public static PeopleEventsProvider newInstance(Context context) {
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
+        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(context);
         ContentResolver resolver = context.getContentResolver();
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
@@ -68,7 +68,7 @@ public class PeopleEventsProvider {
         return new PeopleEventsProvider(contactsProvider, resolver, namedayPreferences, peopleNamedaysCalculator, customEventProvider);
     }
 
-    private PeopleEventsProvider(ContactsProvider contactsProvider,
+    private PeopleEventsProvider(AndroidContactsProvider contactsProvider,
                                  ContentResolver resolver,
                                  NamedayPreferences namedayPreferences,
                                  PeopleNamedaysCalculator peopleNamedaysCalculator, CustomEventProvider customEventProvider) {

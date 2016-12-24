@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
+import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.search.NameMatcher;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.novoda.notils.logger.simple.Log;
 
 public class ContactSuggestionView extends AutoCompleteTextView {
@@ -27,8 +27,9 @@ public class ContactSuggestionView extends AutoCompleteTextView {
         if (isInEditMode()) {
             return;
         }
-        Context context = getContext();
-        adapter = new ContactsAdapter(new ContactsSearch(PeopleEventsProvider.newInstance(context), NameMatcher.INSTANCE), ImageLoader.createCircleThumbnailLoader(getResources()));
+        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(getContext());
+        ContactsSearch contactsSearch = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
+        adapter = new ContactsAdapter(contactsSearch, ImageLoader.createCircleThumbnailLoader(getResources()));
         setAdapter(adapter);
         setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
