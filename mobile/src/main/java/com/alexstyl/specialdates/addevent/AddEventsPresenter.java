@@ -3,10 +3,11 @@ package com.alexstyl.specialdates.addevent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.Editable;
-import android.widget.ImageView;
+import android.view.View;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
@@ -25,11 +26,12 @@ class AddEventsPresenter {
 
     private final ImageLoader imageLoader;
     private final ContactSuggestionView contactSuggestionView;
-    private final ImageView avatarView;
+    private final AvatarCameraButtonView avatarView;
     private final ContactEventsFetcher contactEventsFetcher;
     private final ContactEventsAdapter adapter;
     private final ToolbarBackgroundAnimator toolbarAnimator;
     private final ContactEventViewModelFactory factory;
+    private final AddEventViewModelFactory addEventFactory;
     private final ContactEventPersister contactEventPersister;
     private final MessageDisplayer messageDisplayer;
 
@@ -39,10 +41,10 @@ class AddEventsPresenter {
                        ContactEventsFetcher contactEventsFetcher,
                        ContactEventsAdapter adapter,
                        ContactSuggestionView contactSuggestionView,
-                       ImageView avatarView,
+                       AvatarCameraButtonView avatarView,
                        MementoToolbar toolbar,
                        ContactEventViewModelFactory factory,
-                       ContactEventPersister contactEventPersister,
+                       AddEventViewModelFactory addEventFactory, ContactEventPersister contactEventPersister,
                        MessageDisplayer messageDisplayer) {
         this.imageLoader = imageLoader;
         this.contactSuggestionView = contactSuggestionView;
@@ -51,12 +53,23 @@ class AddEventsPresenter {
         this.adapter = adapter;
         this.toolbarAnimator = ToolbarBackgroundAnimator.setupOn(toolbar);
         this.factory = factory;
+        this.addEventFactory = addEventFactory;
         this.contactEventPersister = contactEventPersister;
         this.messageDisplayer = messageDisplayer;
         this.state = TemporaryEventsState.newState();
     }
 
     void startPresenting() {
+        avatarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (state.getContact().isPresent()) {
+                    // retake image
+                } else {
+                    // take picture with camera
+                }
+            }
+        });
         contactSuggestionView.setOnContactSelectedListener(new ContactSuggestionView.OnContactSelectedListener() {
             @Override
             public void onContactSelected(final Contact contact) {
@@ -95,7 +108,7 @@ class AddEventsPresenter {
 
         @Override
         public void onDataFetched(List<ContactEventViewModel> data) {
-            adapter.updateWith(data);
+            adapter.replace(data);
             state.keepState(data);
         }
     };
@@ -103,7 +116,13 @@ class AddEventsPresenter {
     void onEventDatePicked(EventType eventType, Date date) {
         state.keepState(eventType, date);
         ContactEventViewModel viewModels = factory.createViewModelWith(eventType, date);
-        adapter.updateWith(viewModels);
+        adapter.replace(viewModels);
+    }
+
+    void onEventRemoved(EventType eventType) {
+        state.removeEvent(eventType);
+        ContactEventViewModel viewModels = addEventFactory.createAddEventViewModelsFor(eventType);
+        adapter.replace(viewModels);
     }
 
     void saveChanges() {
@@ -144,5 +163,4 @@ class AddEventsPresenter {
             }.execute();
         }
     }
-
 }

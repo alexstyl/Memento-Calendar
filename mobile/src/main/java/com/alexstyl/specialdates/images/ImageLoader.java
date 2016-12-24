@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.L;
 import com.nostra13.universalimageloader.utils.StorageUtils;
@@ -66,8 +67,17 @@ public class ImageLoader {
         loader.displayImage(imagePath.toString(), view, displayImageOptions);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageView view, final OnImageLoadedCallback callback) {
-        loader.displayImage(imagePath.toString(), view, displayImageOptions, new SimpleImageLoadingListener() {
+    public void loadThumbnail(Uri imagePath, ImageView imageView, final OnImageLoadedCallback callback) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions, new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                callback.onImageLoaded(loadedImage);
+            }
+        });
+    }
+
+    public void loadThumbnail(Uri imagePath, ImageAware imageView, final OnImageLoadedCallback callback) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 callback.onImageLoaded(loadedImage);

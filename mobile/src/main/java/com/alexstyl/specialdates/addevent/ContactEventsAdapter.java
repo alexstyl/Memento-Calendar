@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +29,8 @@ final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHo
         View view = layoutInflater.inflate(R.layout.row_add_event_contact_event, parent, false);
         ImageView icon = Views.findById(view, R.id.add_event_event_icon);
         TextView datePicker = Views.findById(view, R.id.add_event_date_picker);
-        return new ContactEventViewHolder(view, icon, datePicker);
+        ImageButton clear = Views.findById(view, R.id.add_event_remove_event);
+        return new ContactEventViewHolder(view, icon, datePicker, clear);
     }
 
     @Override
@@ -42,13 +44,13 @@ final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHo
         return viewModels.size();
     }
 
-    void updateWith(List<ContactEventViewModel> viewModels) {
+    void replace(List<ContactEventViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();
     }
 
-    void updateWith(ContactEventViewModel viewModel) {
+    void replace(ContactEventViewModel viewModel) {
         for (int i = 0; i < viewModels.size(); i++) {
             ContactEventViewModel vm = viewModels.get(i);
             if (vm.getEventType() == viewModel.getEventType()) {
@@ -57,7 +59,7 @@ final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHo
                 notifyItemChanged(i);
                 break;
             }
-
         }
     }
+
 }

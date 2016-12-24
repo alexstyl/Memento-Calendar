@@ -17,7 +17,7 @@ import com.novoda.notils.caster.Views;
 
 import java.util.Locale;
 
-public class BirthdayDatePicker extends LinearLayout {
+public class EventDatePicker extends LinearLayout {
 
     private final MonthLabels labels;
 
@@ -29,7 +29,7 @@ public class BirthdayDatePicker extends LinearLayout {
 
     private final Date today;
 
-    public BirthdayDatePicker(Context context, AttributeSet attrs) {
+    public EventDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         super.setOrientation(HORIZONTAL);
         labels = MonthLabels.forLocale(Locale.getDefault());
@@ -60,12 +60,12 @@ public class BirthdayDatePicker extends LinearLayout {
             }
 
             private void hideYearPicker() {
-                TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
+                TransitionManager.beginDelayedTransition(EventDatePicker.this);
                 yearPicker.setVisibility(GONE);
             }
 
             private void showYearPicker() {
-                TransitionManager.beginDelayedTransition(BirthdayDatePicker.this);
+                TransitionManager.beginDelayedTransition(EventDatePicker.this);
                 yearPicker.setVisibility(VISIBLE);
             }
         });

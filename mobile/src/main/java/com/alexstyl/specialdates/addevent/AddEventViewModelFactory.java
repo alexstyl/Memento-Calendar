@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.addevent;
 
+import android.view.View;
+
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
@@ -30,11 +32,14 @@ final class AddEventViewModelFactory {
                     ) {
                 continue;
             }
-            String eventName = eventType.getEventName(stringResources);
-            ContactEventViewModel viewModel = new ContactEventViewModel(eventName, eventType, NO_DATE);
-            addEventViewModels.add(viewModel);
+            addEventViewModels.add(createAddEventViewModelsFor(eventType));
         }
         return addEventViewModels;
+    }
+
+    ContactEventViewModel createAddEventViewModelsFor(EventType eventType) {
+        String eventName = eventType.getEventName(stringResources);
+        return new ContactEventViewModel(eventName, eventType, NO_DATE, View.GONE);
     }
 
     private boolean containsCustomType(List<EventType> existingTypes) {

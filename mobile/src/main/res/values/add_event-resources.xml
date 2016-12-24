@@ -23,4 +23,7 @@
   <dimen name="add_event_image_width">58dp</dimen>
   <dimen name="add_event_margin_horizontal">4dp</dimen>
 
+  <dimen name="add_event_camera_button_height">190dp</dimen>
+  <dimen name="add_event_avatar_height">240dp</dimen>
+
 </resources>

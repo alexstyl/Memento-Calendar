@@ -7,22 +7,30 @@
   android:orientation="horizontal">
 
   <ImageView
+    android:id="@+id/add_event_event_icon"
     android:layout_width="@dimen/add_event_image_width"
     android:layout_height="@dimen/add_event_image_height"
-    android:id="@+id/add_event_event_icon"
     android:scaleType="center"
     tools:src="@drawable/ic_cake" />
 
   <TextView
     android:id="@+id/add_event_date_picker"
     style="@style/Widget.AppCompat.EditText"
-    android:layout_width="match_parent"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/padding"
+    android:layout_weight="1"
     android:clickable="false"
     android:drawableRight="@drawable/spinner_ab_default_dayslight"
     android:focusable="false"
     tools:hint="@string/birthday" />
+
+  <ImageButton
+    android:id="@+id/add_event_remove_event"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:background="@drawable/selectable_back_no_bounds"
+    android:src="@drawable/ic_action_content_clear" />
 
 
 </LinearLayout>

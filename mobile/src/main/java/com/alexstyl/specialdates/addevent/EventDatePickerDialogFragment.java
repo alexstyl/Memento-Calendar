@@ -13,7 +13,7 @@ import android.view.View;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker;
+import com.alexstyl.specialdates.addevent.ui.EventDatePicker;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
@@ -31,7 +31,7 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     private static final String ARG_EVENT_TYPE_ID = "arg:event_type_id";
 
     private OnBirthdaySelectedListener listener;
-    private BirthdayDatePicker datePicker;
+    private EventDatePicker datePicker;
 
     private Optional<Date> initialBirthday;
 

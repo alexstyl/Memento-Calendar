@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
   <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/toolbar_elevation">
 
-    <ImageView
+    <com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView
       android:id="@+id/add_event_avatar"
+      style="@style/CardViewStyle"
       android:layout_width="match_parent"
-      android:layout_height="240dp"
-      android:elevation="@dimen/toolbar_elevation"
-      android:scaleType="centerCrop"
-      tools:background="#000" />
+      android:layout_height="@dimen/add_event_avatar_height"
+      android:background="@color/nameday_blue" />
 
     <com.alexstyl.specialdates.ui.widget.MementoToolbar
       android:id="@+id/memento_toolbar"
@@ -40,7 +39,7 @@
       android:layout_width="@dimen/add_event_image_width"
       android:layout_height="@dimen/add_event_image_height"
       android:scaleType="center"
-      android:src="@drawable/ic_person_black_24dp" />
+      android:src="@drawable/ic_person_24dp" />
 
     <com.alexstyl.specialdates.addevent.ui.ContactSuggestionView
       android:id="@+id/add_event_contact_autocomplete"
