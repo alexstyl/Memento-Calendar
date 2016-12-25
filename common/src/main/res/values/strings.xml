@@ -167,5 +167,9 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Other">Other</string>
     <string name="Custom">Custom</string>
     <string name="Add_event">Add event</string>
+    <string name="Change_photo">Change photo</string>
+    <string name="Remove_photo">Remove photo</string>
+    <string name="Take_new_photo">Take new photo</string>
+    <string name="Pick_existing_photo">Pick existing photo</string>
 
 </resources>

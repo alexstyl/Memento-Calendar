@@ -52,7 +52,15 @@ final public class AvatarCameraButtonView extends RelativeLayout implements Imag
 
     @Override
     public boolean setImageBitmap(Bitmap imageBitmap) {
-        imageView.setImageBitmap(imageBitmap);
+        if (imageBitmap == null) {
+            setImageDrawable(null);
+        } else {
+            imageView.setImageBitmap(imageBitmap);
+        }
         return true;
+    }
+
+    public boolean isDisplayingAvatar() {
+        return imageView.getDrawable() != null;
     }
 }

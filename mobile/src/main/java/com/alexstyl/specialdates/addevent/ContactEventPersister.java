@@ -43,25 +43,15 @@ class ContactEventPersister {
         return execute(operations);
     }
 
-    private boolean execute(ArrayList<ContentProviderOperation> operations) {
-        try {
-            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations);
-            return true;
-        } catch (RemoteException | OperationApplicationException e) {
-            ErrorTracker.track(e);
-        }
-        return false;
-    }
-
     private int rawContactID(Contact contact) {
         String[] projection = new String[]{ContactsContract.CommonDataKinds.Event.RAW_CONTACT_ID};
         String selection = ContactsContract.CommonDataKinds.Event.CONTACT_ID + " = ?";
         String[] selectionArgs = new String[]{
                 String.valueOf(contact.getContactID())};
         Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
-        if (cursor == null || cursor.isClosed()) {
-            throw new DeveloperError("");
-        }
+
+        throwIfInvalid(cursor);
+
         try {
             if (cursor.moveToFirst()) {
                 return cursor.getInt(0);
@@ -99,5 +89,21 @@ class ContactEventPersister {
         } else {
             return availableAccounts.get(0);
         }
+    }
+
+    private static void throwIfInvalid(Cursor cursor) {
+        if (cursor == null || cursor.isClosed()) {
+            throw new DeveloperError("Cursor was invalid");
+        }
+    }
+
+    private boolean execute(ArrayList<ContentProviderOperation> operations) {
+        try {
+            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations);
+            return true;
+        } catch (RemoteException | OperationApplicationException e) {
+            ErrorTracker.track(e);
+        }
+        return false;
     }
 }

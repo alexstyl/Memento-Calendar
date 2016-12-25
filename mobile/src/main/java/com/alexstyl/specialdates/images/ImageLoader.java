@@ -63,17 +63,12 @@ public class ImageLoader {
         return new ImageLoader(options);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageView view) {
-        loader.displayImage(imagePath.toString(), view, displayImageOptions);
+    public void loadThumbnail(Uri imagePath, ImageView imageView) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageView imageView, final OnImageLoadedCallback callback) {
-        loader.displayImage(imagePath.toString(), imageView, displayImageOptions, new SimpleImageLoadingListener() {
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                callback.onImageLoaded(loadedImage);
-            }
-        });
+    public void loadThumbnail(Uri imagePath, ImageAware imageAware) {
+        loader.displayImage(imagePath.toString(), imageAware, displayImageOptions);
     }
 
     public void loadThumbnail(Uri imagePath, ImageAware imageView, final OnImageLoadedCallback callback) {
@@ -86,7 +81,6 @@ public class ImageLoader {
     }
 
     public Bitmap loadBitmap(Uri imagePath, int width, int height) {
-
         ImageSize imageSize = new ImageSize(width, height);
         return loader.loadImageSync(imagePath.toString(), imageSize);
     }
