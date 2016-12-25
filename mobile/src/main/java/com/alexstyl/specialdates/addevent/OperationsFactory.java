@@ -29,9 +29,9 @@ final class OperationsFactory {
     ContentProviderOperation newInsertFor(EventType eventType, Date date) {
         return ContentProviderOperation
                 .newInsert(Data.CONTENT_URI)
-                .withValue(Event.RAW_CONTACT_ID, rawContactID)
+                .withValueBackReference(Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(Data.MIMETYPE, Event.CONTENT_ITEM_TYPE)
                 .withValue(Event.TYPE, eventType.getAndroidType())
-                .withValue(Event.MIMETYPE, Event.CONTENT_ITEM_TYPE)
                 .withValue(Event.START_DATE, date.toShortDate())
                 .build();
     }
@@ -48,6 +48,7 @@ final class OperationsFactory {
         }
         return ops;
     }
+
 
     List<ContentProviderOperation> createContactIn(AccountData account, String contactName) {
         List<ContentProviderOperation> ops = new ArrayList<>(2);
