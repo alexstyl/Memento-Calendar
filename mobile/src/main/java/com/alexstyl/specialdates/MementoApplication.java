@@ -13,6 +13,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
+    public static final String PACKAGE = BuildConfig.APPLICATION_ID;
     private static Context context;
 
     public static String getVersionName(Context context) {

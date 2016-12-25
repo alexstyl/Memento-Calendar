@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.addevent;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
+import com.alexstyl.specialdates.FilePathProvider;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
@@ -38,7 +38,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
 
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
-        pictureTakeRequest = new PictureTakeRequest(getPackageManager());
+        pictureTakeRequest = new PictureTakeRequest(getPackageManager(), new FilePathProvider(getApplication()), getApplicationContext());
         filePicker = new FilePicker();
         // TODO analytics
         // TODO black and white icons for X
@@ -100,9 +100,14 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_PICTURE_TAKE && resultCode == RESULT_OK) {
             // do picture stuff
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            presenter.presentAvatar(imageBitmap);
+            if (pictureTakeRequest.getCurrentPhotoPath().isPresent()) {
+                Uri imageUri = pictureTakeRequest.getCurrentPhotoPath().get();
+                presenter.presentAvatar(imageUri);
+                revokeUriPermission(
+                        imageUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION
+                );
+            }
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             presenter.presentAvatar(imageUri);
@@ -175,7 +180,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     public void onOptionSelected(PictureSelectOption option) {
         switch (option) {
             case TAKE_PICTURE:
-                pictureTakeRequest.requestPicture(this, CODE_PICTURE_TAKE);
+                pictureTakeRequest.takeNewPicture(this, CODE_PICTURE_TAKE);
                 break;
             case PICK_EXISTING:
                 filePicker.pickAFile(this, CODE_PICK_A_FILE);
