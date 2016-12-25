@@ -20,6 +20,14 @@
     android:name="android.hardware.bluetooth"
     android:required="false" />
 
+  <uses-feature
+    android:name="android.hardware.camera"
+    android:required="false" />
+
+  <uses-permission
+    android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    android:maxSdkVersion="18" />
+
   <application
     android:name="com.alexstyl.specialdates.MementoApplication"
     android:allowBackup="true"
@@ -97,8 +105,8 @@
       android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
       android:exported="true"
       android:label="@string/add_event_title"
-      android:windowSoftInputMode="stateHidden"
-      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity">
+      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:windowSoftInputMode="stateHidden">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
@@ -172,6 +180,16 @@
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="${crashlyticsApiKey}" />
+
+    <provider
+      android:name="android.support.v4.content.FileProvider"
+      android:authorities="com.alexstyl.specialdates.fileprovider"
+      android:exported="false"
+      android:grantUriPermissions="true">
+      <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_paths" />
+    </provider>
   </application>
 
 </manifest>
