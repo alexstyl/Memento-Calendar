@@ -12,6 +12,10 @@
   <string name="birthday_picker_dialog_positive">@string/set</string>
   <string name="add_birthday_include_year_label">@string/include_year</string>
   <string name="add_event_title">@string/Add_event</string>
+  <string name="add_event_pick_image_title">@string/Change_photo</string>
+  <string name="add_event_remove_photo">@string/Remove_photo</string>
+  <string name="add_event_take_photo">@string/Take_new_photo</string>
+  <string name="add_event_pick_from_files">@string/Pick_existing_photo</string>
 
   <dimen name="add_birthday_row_height">64dp</dimen>
   <dimen name="add_birthday_row_width">64dp</dimen>

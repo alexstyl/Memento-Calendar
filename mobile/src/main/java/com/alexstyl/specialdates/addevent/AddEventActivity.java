@@ -1,5 +1,8 @@
 package com.alexstyl.specialdates.addevent;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +23,14 @@ import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
 
-public class AddEventActivity extends ThemedActivity {
+public class AddEventActivity extends ThemedActivity implements PictureOptionSelectDialog.OnPictureOptionSelectedListener {
+
+    private static final int CODE_PICTURE_TAKE = 501;
+    private static final int CODE_PICK_A_FILE = 502;
 
     private AddEventsPresenter presenter;
+    private PictureTakeRequest pictureTakeRequest;
+    private FilePicker filePicker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +38,8 @@ public class AddEventActivity extends ThemedActivity {
 
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
-
+        pictureTakeRequest = new PictureTakeRequest(getPackageManager());
+        filePicker = new FilePicker();
         // TODO analytics
         // TODO black and white icons for X
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
@@ -73,7 +82,31 @@ public class AddEventActivity extends ThemedActivity {
                 contactEventPersister,
                 messageDisplayer
         );
-        presenter.startPresenting();
+        presenter.startPresenting(new OnCameraClickedListener() {
+            @Override
+            public void onPictureRetakenRequested() {
+                PictureOptionSelectDialog.withRemoveOption().show(getSupportFragmentManager(), "picture_option_select");
+            }
+
+            @Override
+            public void onNewPictureTakenRequested() {
+                PictureOptionSelectDialog.withoutRemoveOption().show(getSupportFragmentManager(), "picture_option_select");
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_PICTURE_TAKE && resultCode == RESULT_OK) {
+            // do picture stuff
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            presenter.presentAvatar(imageBitmap);
+        } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            presenter.presentAvatar(imageUri);
+        }
     }
 
     @Override
@@ -137,4 +170,21 @@ public class AddEventActivity extends ThemedActivity {
             presenter.onEventRemoved(eventType);
         }
     };
+
+    @Override
+    public void onOptionSelected(PictureSelectOption option) {
+        switch (option) {
+            case TAKE_PICTURE:
+                pictureTakeRequest.requestPicture(this, CODE_PICTURE_TAKE);
+                break;
+            case PICK_EXISTING:
+                filePicker.pickAFile(this, CODE_PICK_A_FILE);
+                break;
+            case REMOVE:
+                presenter.removeAvatar();
+                break;
+            default:
+                break;
+        }
+    }
 }

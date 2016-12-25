@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.List;
 
-public class AndroidContactsProvider {
+public class AndroidContactsProvider implements ContactsProvider {
 
     private static AndroidContactsProvider INSTANCE;
 
@@ -50,9 +50,8 @@ public class AndroidContactsProvider {
         return deviceContact;
     }
 
+    @Override
     public List<Contact> fetchAllDeviceContacts() {
-        // evict the cache. there is no way of reusing existing objects...
-        // this might not be the most optimal thing to do
         cache.evictAll();
         List<Contact> allContacts = deviceContactsQuery.getAllContacts();
         for (Contact allContact : allContacts) {

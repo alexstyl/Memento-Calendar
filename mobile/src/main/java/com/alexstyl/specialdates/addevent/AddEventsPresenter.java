@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.addevent;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.view.View;
@@ -59,14 +60,14 @@ class AddEventsPresenter {
         this.state = TemporaryEventsState.newState();
     }
 
-    void startPresenting() {
+    void startPresenting(final OnCameraClickedListener listener) {
         avatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (state.getContact().isPresent()) {
-                    // retake image
+                if (avatarView.isDisplayingAvatar()) {
+                    listener.onPictureRetakenRequested();
                 } else {
-                    // take picture with camera
+                    listener.onNewPictureTakenRequested();
                 }
             }
         });
@@ -77,11 +78,8 @@ class AddEventsPresenter {
                 imageLoader.loadThumbnail(contact.getImagePath(), avatarView, new OnImageLoadedCallback() {
                     @Override
                     public void onImageLoaded(Bitmap loadedImage) {
-                        avatarView.setImageBitmap(loadedImage);
-                        toolbarAnimator.fadeOut();
+                        presentAvatar(loadedImage);
                         AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
-                        contactSuggestionView.clearFocus();
-
                     }
                 });
                 contactEventsFetcher.load(contact, onNewContactLoadedCallback);
@@ -162,5 +160,22 @@ class AddEventsPresenter {
                 }
             }.execute();
         }
+    }
+
+    void presentAvatar(Bitmap bitmap) {
+        avatarView.setImageBitmap(bitmap);
+        toolbarAnimator.fadeOut();
+        avatarView.requestFocus();
+    }
+
+    void presentAvatar(Uri imageUri) {
+        imageLoader.loadThumbnail(imageUri, avatarView);
+        toolbarAnimator.fadeOut();
+        avatarView.requestFocus();
+    }
+
+    void removeAvatar() {
+        avatarView.setImageBitmap(null); // TODO animate avatar out
+        toolbarAnimator.fadeIn();
     }
 }
