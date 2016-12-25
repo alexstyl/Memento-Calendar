@@ -49,7 +49,7 @@ public class ContactEventView extends LinearLayout {
         avatarView.setBackgroundVariant(event.hashCode());
         avatarView.setLetter(event.getContact().getDisplayName().toString());
 
-        imageLoader.loadThumbnail(contact.getImagePath(), avatarView.getImageView());
+        imageLoader.displayThumbnail(contact.getImagePath(), avatarView.getImageView());
     }
 
     private void displayEventFor(ContactEvent event) {

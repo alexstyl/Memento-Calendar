@@ -12,7 +12,6 @@ import android.support.v4.content.FileProvider;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.FilePathProvider;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.Optional;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,9 +24,9 @@ final class PictureTakeRequest {
     private static final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     private final PackageManager packageManager;
     private final FilePathProvider filePathProvider;
-
-    private Optional<Uri> currentPhotoPath = Optional.absent();
     private final Context context;
+
+    private Uri currentPhotoPath;
 
     PictureTakeRequest(PackageManager packageManager, FilePathProvider filePathProvider, Context context) {
         this.packageManager = packageManager;
@@ -49,7 +48,7 @@ final class PictureTakeRequest {
                 MementoApplication.PACKAGE + ".fileprovider",
                 photoFile
         );
-        currentPhotoPath = new Optional<>(photoUri);
+        currentPhotoPath = photoUri;
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 
         List<ResolveInfo> resolvedIntentActivities = packageManager.queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -62,23 +61,29 @@ final class PictureTakeRequest {
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = filePathProvider.getExternalFilesDir();
-        File image = File.createTempFile(
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        return image;
     }
 
     boolean canTakePicture() {
         return takePictureIntent.resolveActivity(packageManager) != null;
     }
 
-    Optional<Uri> getCurrentPhotoPath() {
+    Uri getCurrentPhotoPath() {
         return currentPhotoPath;
+    }
+
+    void finishRequest() {
+        context.revokeUriPermission(
+                currentPhotoPath,
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        | Intent.FLAG_GRANT_READ_URI_PERMISSION
+        );
     }
 }

@@ -36,7 +36,7 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
         String displayNameString = contact.getDisplayName().toString();
         avatar.setLetter(displayNameString);
         displayName.setText(displayNameString);
-        imageLoader.loadThumbnail(contact.getImagePath(), avatar.getImageView());
+        imageLoader.displayThumbnail(contact.getImagePath(), avatar.getImageView());
         eventLabel.setVisibility(View.GONE);
         itemView.setOnClickListener(
                 new View.OnClickListener() {

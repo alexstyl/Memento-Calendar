@@ -63,16 +63,16 @@ public class ImageLoader {
         return new ImageLoader(options);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageView imageView) {
+    public void displayThumbnail(Uri imagePath, ImageView imageView) {
         loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageAware imageAware) {
-        loader.displayImage(imagePath.toString(), imageAware, displayImageOptions);
+    public void displayThumbnail(Uri imagePath, ImageAware imageView) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageAware imageView, final OnImageLoadedCallback callback) {
-        loader.displayImage(imagePath.toString(), imageView, displayImageOptions, new SimpleImageLoadingListener() {
+    public void loadImage(Uri imagePath, final OnImageLoadedCallback callback) {
+        loader.loadImage(imagePath.toString(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 callback.onImageLoaded(loadedImage);

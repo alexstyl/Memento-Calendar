@@ -99,15 +99,9 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_PICTURE_TAKE && resultCode == RESULT_OK) {
-            // do picture stuff
-            if (pictureTakeRequest.getCurrentPhotoPath().isPresent()) {
-                Uri imageUri = pictureTakeRequest.getCurrentPhotoPath().get();
-                presenter.presentAvatar(imageUri);
-                revokeUriPermission(
-                        imageUri,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION
-                );
-            }
+            Uri imageUri = pictureTakeRequest.getCurrentPhotoPath();
+            presenter.presentAvatar(imageUri);
+            pictureTakeRequest.finishRequest();
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             presenter.presentAvatar(imageUri);
