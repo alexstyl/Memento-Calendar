@@ -50,7 +50,9 @@ public class MementoActivity extends AppCompatActivity {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null) {
             for (Fragment fragment : fragments) {
-                fragment.onActivityResult(requestCode, resultCode, data);
+                if (fragment != null) {
+                    fragment.onActivityResult(requestCode, resultCode, data);
+                }
             }
         }
     }
