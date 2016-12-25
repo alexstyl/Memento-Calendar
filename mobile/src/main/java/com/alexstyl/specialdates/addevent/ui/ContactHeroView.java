@@ -81,7 +81,7 @@ public class ContactHeroView extends LinearLayout {
     }
 
     public void displayAvatarFor(Contact contact) {
-        imageLoader.loadThumbnail(contact.getImagePath(), avatar.getImageView());
+        imageLoader.displayThumbnail(contact.getImagePath(), avatar.getImageView());
         avatar.setLetter(contact.getGivenName());
         avatar.setBackgroundVariant((int) contact.getContactID());
         animateAvatarIn();

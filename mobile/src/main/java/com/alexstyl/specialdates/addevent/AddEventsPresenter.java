@@ -75,7 +75,7 @@ class AddEventsPresenter {
             @Override
             public void onContactSelected(final Contact contact) {
                 state = TemporaryEventsState.forContact(contact);
-                imageLoader.loadThumbnail(contact.getImagePath(), avatarView, new OnImageLoadedCallback() {
+                imageLoader.loadImage(contact.getImagePath(), new OnImageLoadedCallback() {
                     @Override
                     public void onImageLoaded(Bitmap loadedImage) {
                         presentAvatar(loadedImage);
@@ -88,15 +88,18 @@ class AddEventsPresenter {
 
         contactSuggestionView.addTextChangedListener(new SimpleTextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {
-                TemporaryEventsState newState = state.asAnnonymous(s.toString());
-                if (state.getContact().equals(newState.getContact())) {
-                    // cary over the events
+            public void afterTextChanged(Editable text) {
+                if (hasModifiedSelectedContact()) {
+                    TemporaryEventsState newState = state.asAnnonymous(text.toString());
                     newState.keepEventsOf(state);
+                    removeAvatar();
+                    state = newState;
                 }
-                state = newState;
-                avatarView.setImageBitmap(null); // TODO animate avatar out
-                toolbarAnimator.fadeIn();
+
+            }
+
+            private boolean hasModifiedSelectedContact() {
+                return state.getContact().isPresent();
             }
         });
         contactEventsFetcher.loadEmptyEvents(onNewContactLoadedCallback);
@@ -169,7 +172,7 @@ class AddEventsPresenter {
     }
 
     void presentAvatar(Uri imageUri) {
-        imageLoader.loadThumbnail(imageUri, avatarView);
+        imageLoader.displayThumbnail(imageUri, avatarView);
         toolbarAnimator.fadeOut();
         avatarView.requestFocus();
     }
