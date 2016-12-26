@@ -116,19 +116,18 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     }
 
     private void startCropIntent(Uri imageUri) {
+        Intent intent = ImageCrop.newIntent(imageUri);
+
         File photoFile = TempImageFile.newInstance(getApplicationContext());
         croppedImageUri = FileProvider.getUriForFile(
                 this,
                 MementoApplication.PACKAGE + ".fileprovider",
                 photoFile
         );
-        Intent intent = ImageCrop.newIntent(imageUri);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                                 | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
         intent.putExtra(MediaStore.EXTRA_OUTPUT, croppedImageUri);
         intent.setClipData(ClipData.newRawUri(MediaStore.EXTRA_OUTPUT, croppedImageUri));
-
         startActivityForResult(intent, CODE_CROP_IMAGE);
     }
 
@@ -184,9 +183,8 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
                 break;
             }
             case PICK_EXISTING: {
-                Uri photoUri = makeAFileAndKeep();
-                Intent intent = imagePickerIntent.createIntentWithOutput(photoUri);
-                startActivityForResult(intent, CODE_TAKE_PICTURE);
+                Intent intent = imagePickerIntent.createIntentWithOutput(null);
+                startActivityForResult(intent, CODE_PICK_A_FILE);
                 break;
             }
             case REMOVE:
