@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class HashMapList<K, V> {
 
@@ -23,5 +24,9 @@ public class HashMapList<K, V> {
 
     public boolean isEmpty() {
         return map.isEmpty();
+    }
+
+    public Set<K> keys() {
+        return map.keySet();
     }
 }

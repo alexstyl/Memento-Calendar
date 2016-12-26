@@ -42,4 +42,29 @@ public class TimePeriod {
                 ", to=" + to +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        TimePeriod that = (TimePeriod) o;
+
+        if (!from.equals(that.from)) {
+            return false;
+        }
+        return to.equals(that.to);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = from.hashCode();
+        result = 31 * result + to.hashCode();
+        return result;
+    }
 }

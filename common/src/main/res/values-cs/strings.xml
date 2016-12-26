@@ -28,9 +28,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Nalezl/a jste chybu? Máte námět? Dejte mi vědět!</string>
     <string name="choose">Vybrat</string>
     <string name="number">číslo</string>
-    <string name="has_nameday_on">Svátek %s</string>
-    <string name="has_birthday_on">Narozeniny %s</string>
-    <string name="has_birthday_on_age">%1$s slaví %2$d</string>
     <string name="action_call">Zavolat</string>
     <string name="action_text">Poslat SMS</string>
     <string name="action_send_mail">Poslat e-mail</string>
@@ -161,4 +158,5 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">Memento požaduje Vaše svolení číst Vaše kontakty, aby zobrazilo datum oslavy.</string>
     <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Fakt: Někteří lidé darují dort těm, kteří jim přejí vše nejlepší. Využijte Memento k dokumentování potencionálních dárců dortu.</string>
     <string name="Grant_permission">Povolit přístup.</string>
+    <string name="eventlabel_on_dateLabel">%1$s slaví %2$s</string>
 </resources>

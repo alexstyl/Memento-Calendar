@@ -1,10 +1,10 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
-import android.content.res.Resources;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 
@@ -46,8 +46,8 @@ public enum StandardEventType implements EventType {
     }
 
     @Override
-    public String getEventName(Resources resources) {
-        return resources.getString(eventNameRes);
+    public String getEventName(StringResources stringResources) {
+        return stringResources.getString(eventNameRes);
     }
 
     @ColorRes

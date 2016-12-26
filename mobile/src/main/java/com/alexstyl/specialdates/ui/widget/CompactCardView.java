@@ -18,9 +18,9 @@ public class CompactCardView extends FrameLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.base_card_compact, this, false);
         addView(view);
 
-        TextView title = (TextView) findViewById(R.id.contact_name);
+        TextView title = (TextView) findViewById(R.id.search_result_contact_name);
         TextView subtitle = (TextView) findViewById(R.id.event_label);
-        ColorImageView heroImage = (ColorImageView) findViewById(R.id.avatar);
+        ColorImageView heroImage = (ColorImageView) findViewById(R.id.search_result_avatar);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(
                 attrs,

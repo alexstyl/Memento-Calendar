@@ -28,9 +28,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Est-ce qu\'il y a des problèmes? Est-ce que vous avez des suggestions concernant l\' application? Touchez ici</string>
     <string name="choose">Choisissez</string>
     <string name="number">un numéro de téléphone</string>
-    <string name="has_nameday_on">Sa fête est %s</string>
-    <string name="has_birthday_on">Son anniversaire est %s</string>
-    <string name="has_birthday_on_age">Aura %1$d ans %2$s</string>
     <string name="action_call">Appel</string>
     <string name="action_text">Envoi un message</string>
     <string name="action_send_mail">Envoi un courriel</string>
@@ -77,4 +74,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="message">Message</string>
     <string name="no_results_found">Aucun résultat trouvé</string>
     <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
+    <string name="eventlabel_on_dateLabel">%1$s est %2$s</string>
 </resources>

@@ -15,7 +15,7 @@
 
 
     <com.alexstyl.specialdates.ui.widget.ColorImageView
-      android:id="@+id/avatar"
+      android:id="@+id/search_result_avatar"
       android:layout_width="match_parent"
       android:layout_height="@dimen/card_contact_avatar_size"
       app:letterSize="@dimen/contact_details_text_size" />
@@ -27,7 +27,7 @@
       android:layout_height="48dp"
       android:layout_alignParentEnd="true"
       android:layout_alignParentRight="true"
-      android:layout_below="@id/avatar"
+      android:layout_below="@id/search_result_avatar"
       android:visibility="gone"
       tools:visibility="visible">
 
@@ -42,10 +42,10 @@
     </FrameLayout>
 
     <TextView
-      android:id="@+id/contact_name"
+      android:id="@+id/search_result_contact_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/avatar"
+      android:layout_below="@id/search_result_avatar"
       android:layout_marginLeft="@dimen/card_spacing"
       android:layout_marginRight="@dimen/card_spacing"
       android:layout_marginTop="@dimen/card_spacing"
@@ -61,9 +61,9 @@
       android:id="@+id/event_label"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignLeft="@id/contact_name"
-      android:layout_alignStart="@id/contact_name"
-      android:layout_below="@id/contact_name"
+      android:layout_alignLeft="@id/search_result_contact_name"
+      android:layout_alignStart="@id/search_result_contact_name"
+      android:layout_below="@id/search_result_contact_name"
       android:fontFamily="sans-serif-light"
       android:textSize="@dimen/card_text_size_body_smaller"
       tools:text="@string/nameday"

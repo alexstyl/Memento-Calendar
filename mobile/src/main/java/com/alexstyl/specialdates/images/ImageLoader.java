@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.images;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.format.DateUtils;
 import android.widget.ImageView;
 
@@ -21,7 +22,6 @@ public class ImageLoader {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
     private static final long FB_LIFE_TIME = DateUtils.DAY_IN_MILLIS * 3;
-
 
     public static void init(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context)
@@ -61,19 +61,19 @@ public class ImageLoader {
         return new ImageLoader(options);
     }
 
-    public void loadThumbnail(String imagePath, ImageView view) {
-        loader.displayImage(imagePath, view, displayImageOptions);
+    public void loadThumbnail(Uri imagePath, ImageView view) {
+        loader.displayImage(imagePath.toString(), view, displayImageOptions);
     }
 
-    public Bitmap loadBitmap(String imagePath, int width, int height) {
+    public Bitmap loadBitmap(Uri imagePath, int width, int height) {
 
         ImageSize imageSize = new ImageSize(width, height);
-        return loader.loadImageSync(imagePath, imageSize);
+        return loader.loadImageSync(imagePath.toString(), imageSize);
     }
 
-    public void loadBitmapAsync(String imagePath, int size, SimpleImageLoadingListener listener) {
+    public void loadBitmapAsync(Uri imagePath, int size, SimpleImageLoadingListener listener) {
         ImageSize imageSize = new ImageSize(size, size);
-        loader.loadImage(imagePath, imageSize, displayImageOptions, listener);
+        loader.loadImage(imagePath.toString(), imageSize, displayImageOptions, listener);
     }
 
     public void resume() {
