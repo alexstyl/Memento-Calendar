@@ -28,9 +28,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Hai trovato un bug? Hai un suggerimento? Fammelo sapere!</string>
     <string name="choose">Scegli</string>
     <string name="number">numero</string>
-    <string name="has_nameday_on">Onomastico il %s</string>
-    <string name="has_birthday_on">Compleanno il %s</string>
-    <string name="has_birthday_on_age">compie %1$d il %2$s</string>
     <string name="action_call">Chiama</string>
     <string name="action_text">Invia SMS</string>
     <string name="action_send_mail">Invia e-mail</string>
@@ -161,4 +158,5 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">L\'app necessita il tuo permesso di leggere i contatti per poter visualizzare le date.</string>
     <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Alcune persone offrono una torta a chi gli augura Buon Compleanno. Usa questa app per tenere traccia dei potenziali donatori di torta.</string>
     <string name="Grant_permission">Concedi il permesso</string>
+    <string name="eventlabel_on_dateLabel">%1$s il %2$s</string>
 </resources>

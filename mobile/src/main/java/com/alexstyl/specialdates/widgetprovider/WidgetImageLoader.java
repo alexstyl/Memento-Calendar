@@ -26,7 +26,7 @@ public class WidgetImageLoader {
         return new WidgetImageLoader(appWidgetManager, imageLoader, size);
     }
 
-    public WidgetImageLoader(AppWidgetManager appWidgetManager, ImageLoader imageLoader, int size) {
+    private WidgetImageLoader(AppWidgetManager appWidgetManager, ImageLoader imageLoader, int size) {
         this.appWidgetManager = appWidgetManager;
         this.imageLoader = imageLoader;
         this.size = size;

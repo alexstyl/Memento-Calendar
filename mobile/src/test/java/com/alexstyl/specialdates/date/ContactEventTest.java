@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.date;
 
-import android.content.res.Resources;
-
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -29,7 +28,7 @@ public class ContactEventTest {
     private static final int CURRENT_YEAR = Date.CURRENT_YEAR;
 
     @Mock
-    private Resources mockResources;
+    private StringResources mockResources;
 
     @Before
     public void setUp() throws Exception {

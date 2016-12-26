@@ -3,17 +3,16 @@ package com.alexstyl.specialdates.addevent.ui;
 import android.widget.Filter;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.search.ContactsSearch;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DeviceContactsFilter extends Filter {
+abstract class DeviceContactsFilter extends Filter {
 
     private static final int LOAD_A_SINGLE_CONTACT = 1;
     private final ContactsSearch contactsSearch;
 
-    public DeviceContactsFilter(ContactsSearch contactsSearch) {
+    DeviceContactsFilter(ContactsSearch contactsSearch) {
         this.contactsSearch = contactsSearch;
     }
 
@@ -44,5 +43,5 @@ public abstract class DeviceContactsFilter extends Filter {
         onContactsFiltered((List<Contact>) results.values);
     }
 
-    protected abstract void onContactsFiltered(List<Contact> contacts);
+    abstract void onContactsFiltered(List<Contact> contacts);
 }

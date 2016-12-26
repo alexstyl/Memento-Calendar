@@ -28,9 +28,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Haben Sie einen Bug gefunden? Oder Sie haben einen Vorschlag? Lassen Sie es uns wissen!</string>
     <string name="choose">Wähle</string>
     <string name="number">Nummer</string>
-    <string name="has_nameday_on">Namenstag am %s</string>
-    <string name="has_birthday_on">Geburtstag am %s</string>
-    <string name="has_birthday_on_age">Wird %1$d am %2$s</string>
     <string name="action_call">Anrufen</string>
     <string name="action_text">SMS schreiben</string>
     <string name="action_send_mail">Email schreiben</string>
@@ -48,4 +45,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <!-- The name for contacts with empty Display name-->
     <string name="message">Nachricht</string>
     <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
+    <string name="eventlabel_on_dateLabel">%1$s am %2$s</string>
 </resources>

@@ -170,7 +170,6 @@ public class SoundRules {
         this.accentCapitals.put('Ϊ', IOTA);
         this.accentCapitals.put('\u0390', IOTA); // small iota with dyalitika and tonos does not have a upper case counter part
 
-
         /// Find all characters which may start a double symbol sound
         StringBuilder str = new StringBuilder();
         Iterator var2 = this.doubleSounds.keySet().iterator();
@@ -334,7 +333,6 @@ public class SoundRules {
 //            return null;
 //        }
 //    }
-
     public Sound getNextSound(String string, Index index, boolean retrieveAll) {
         boolean doubleSoundPending = false;
         char previousCharacter = 0;

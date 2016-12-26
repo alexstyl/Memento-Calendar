@@ -182,7 +182,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         @Override
         public void onCardPressed(Date date) {
             analytics.trackScreen(Screen.DATE_DETAILS);
-            Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date.getDayOfMonth(), date.getMonth(), date.getYear());
+            Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date);
             startActivity(intent);
         }
     };

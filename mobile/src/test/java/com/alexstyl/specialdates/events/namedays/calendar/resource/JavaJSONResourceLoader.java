@@ -13,7 +13,6 @@ class JavaJSONResourceLoader implements NamedayJSONResourceLoader {
 
     @Override
     public JSONObject loadJSON(NamedayLocale locale) throws JSONException {
-
         String namedayRaw;
         try {
             BufferedReader br = new BufferedReader(new FileReader(getPathTo(locale)));
