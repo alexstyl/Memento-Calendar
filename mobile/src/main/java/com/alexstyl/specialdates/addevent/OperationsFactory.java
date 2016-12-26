@@ -3,12 +3,15 @@ package com.alexstyl.specialdates.addevent;
 import android.content.ContentProviderOperation;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Event;
+import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
 
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.images.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +19,13 @@ import java.util.Map;
 import java.util.Set;
 
 final class OperationsFactory {
+
+    private static final int NO_RAW_CONTACT_ID = 0;
+
     private final int rawContactID;
 
     static OperationsFactory forNewContact() {
-        return new OperationsFactory(0);
+        return new OperationsFactory(NO_RAW_CONTACT_ID);
     }
 
     OperationsFactory(int rawContactID) {
@@ -27,13 +33,22 @@ final class OperationsFactory {
     }
 
     ContentProviderOperation newInsertFor(EventType eventType, Date date) {
-        return ContentProviderOperation
+        ContentProviderOperation.Builder builder = ContentProviderOperation
                 .newInsert(Data.CONTENT_URI)
-                .withValueBackReference(Data.RAW_CONTACT_ID, rawContactID)
                 .withValue(Data.MIMETYPE, Event.CONTENT_ITEM_TYPE)
                 .withValue(Event.TYPE, eventType.getAndroidType())
-                .withValue(Event.START_DATE, date.toShortDate())
-                .build();
+                .withValue(Event.START_DATE, date.toShortDate());
+        addRawContactID(builder);
+        return builder.build();
+    }
+
+    private void addRawContactID(ContentProviderOperation.Builder builder) {
+        if (rawContactID == NO_RAW_CONTACT_ID) {
+            builder.withValueBackReference(Data.RAW_CONTACT_ID, rawContactID);
+        } else {
+            builder.withValue(Data.RAW_CONTACT_ID, rawContactID);
+
+        }
     }
 
     ArrayList<ContentProviderOperation> deleteEvents(List<ContactEvent> contactEvents) {
@@ -49,16 +64,15 @@ final class OperationsFactory {
         return ops;
     }
 
-
     List<ContentProviderOperation> createContactIn(AccountData account, String contactName) {
         List<ContentProviderOperation> ops = new ArrayList<>(2);
-        ops.add(ContentProviderOperation
-                        .newInsert(ContactsContract.RawContacts.CONTENT_URI)
+        ops.add(
+                ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                         .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, account.getAccountName())
                         .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, account.getAccountType())
                         .build());
-        ops.add(ContentProviderOperation
-                        .newInsert(Data.CONTENT_URI)
+        ops.add(
+                ContentProviderOperation.newInsert(Data.CONTENT_URI)
                         .withValueBackReference(Data.RAW_CONTACT_ID, rawContactID)
                         .withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
                         .withValue(StructuredName.DISPLAY_NAME, contactName)
