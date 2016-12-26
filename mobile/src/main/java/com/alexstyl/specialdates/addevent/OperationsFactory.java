@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
-import com.alexstyl.specialdates.images.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,5 +89,21 @@ final class OperationsFactory {
             operations.add(operation);
         }
         return operations;
+    }
+
+    ContentProviderOperation insertImageToContact(byte[] image) {
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                .withValue(Data.MIMETYPE, Photo.CONTENT_ITEM_TYPE)
+                .withValue(Photo.PHOTO, image);
+        addRawContactID(builder);
+        return builder.build();
+    }
+
+    ContentProviderOperation deleteImageFor(Contact contact) {
+        return ContentProviderOperation.newDelete(Data.CONTENT_URI)
+                .withValueBackReference(Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(Data.MIMETYPE, Photo.CONTENT_ITEM_TYPE)
+                .withSelection(Photo.CONTACT_ID + "=?", new String[]{String.valueOf(contact.getContactID())})
+                .build();
     }
 }
