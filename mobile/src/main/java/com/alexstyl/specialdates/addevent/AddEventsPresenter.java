@@ -37,6 +37,7 @@ class AddEventsPresenter {
     private final MessageDisplayer messageDisplayer;
 
     private TemporaryEventsState state;
+    private Uri currentAvatarUri;
 
     AddEventsPresenter(ImageLoader imageLoader,
                        ContactEventsFetcher contactEventsFetcher,
@@ -45,7 +46,8 @@ class AddEventsPresenter {
                        AvatarCameraButtonView avatarView,
                        MementoToolbar toolbar,
                        ContactEventViewModelFactory factory,
-                       AddEventViewModelFactory addEventFactory, ContactEventPersister contactEventPersister,
+                       AddEventViewModelFactory addEventFactory,
+                       ContactEventPersister contactEventPersister,
                        MessageDisplayer messageDisplayer) {
         this.imageLoader = imageLoader;
         this.contactSuggestionView = contactSuggestionView;
@@ -75,27 +77,21 @@ class AddEventsPresenter {
             @Override
             public void onContactSelected(final Contact contact) {
                 state = TemporaryEventsState.forContact(contact);
-                imageLoader.loadImage(contact.getImagePath(), new OnImageLoadedCallback() {
-                    @Override
-                    public void onImageLoaded(Bitmap loadedImage) {
-                        presentAvatar(loadedImage);
-                        AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
-                    }
-                });
+                presentAvatar(contact.getImagePath());
+                AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
                 contactEventsFetcher.load(contact, onNewContactLoadedCallback);
             }
         });
-
         contactSuggestionView.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable text) {
+                TemporaryEventsState newState = state.asAnnonymous(text.toString());
                 if (hasModifiedSelectedContact()) {
-                    TemporaryEventsState newState = state.asAnnonymous(text.toString());
-                    newState.keepEventsOf(state);
                     removeAvatar();
-                    state = newState;
+                } else {
+                    newState.keepEventsOf(state);
                 }
-
+                state = newState;
             }
 
             private boolean hasModifiedSelectedContact() {
@@ -128,9 +124,9 @@ class AddEventsPresenter {
 
     void saveChanges() {
         if (state.getContact().isPresent()) {
-            new AsyncTask<Object, Object, Boolean>() {
+            new AsyncTask<Void, Void, Boolean>() {
                 @Override
-                protected Boolean doInBackground(Object... params) {
+                protected Boolean doInBackground(Void... params) {
                     Set<Map.Entry<EventType, Date>> events = state.getEvents();
                     Optional<Contact> contact = state.getContact();
                     return contactEventPersister.updateExistingContact(contact.get(), events);
@@ -150,6 +146,7 @@ class AddEventsPresenter {
             new AsyncTask<Void, Void, Boolean>() {
                 @Override
                 protected Boolean doInBackground(Void... params) {
+                    // TODO just get image to store if any
                     return contactEventPersister.createNewContactWithEvents(state.getContactName(), state);
                 }
 
@@ -165,20 +162,20 @@ class AddEventsPresenter {
         }
     }
 
-    void presentAvatar(Bitmap bitmap) {
-        avatarView.setImageBitmap(bitmap);
-        toolbarAnimator.fadeOut();
-        avatarView.requestFocus();
-    }
-
     void presentAvatar(Uri imageUri) {
-        imageLoader.displayThumbnail(imageUri, avatarView);
-        toolbarAnimator.fadeOut();
-        avatarView.requestFocus();
+        currentAvatarUri = imageUri;
+        imageLoader.loadImage(imageUri, new OnImageLoadedCallback() {
+            @Override
+            public void onImageLoaded(Bitmap loadedImage) {
+                avatarView.setImageBitmap(loadedImage);
+                toolbarAnimator.fadeOut();
+                avatarView.requestFocus();
+            }
+        });
     }
 
     void removeAvatar() {
-        avatarView.setImageBitmap(null); // TODO animate avatar out
+        avatarView.setImageBitmap(null); // TODO animate currentAvatarUri out
         toolbarAnimator.fadeIn();
     }
 }
