@@ -74,11 +74,12 @@ class ContactEventPersister {
         return contactEvents;
     }
 
-    boolean createNewContactWithEvents(String contactName, TemporaryEventsState state) {
+    boolean createNewContactWithEvents(String contactName, TemporaryEventsState state, byte[] image) {
         OperationsFactory factory = OperationsFactory.forNewContact();
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         operations.addAll(factory.createContactIn(getAccountToStoreContact(), contactName));
         operations.addAll(factory.insertEvents(state.getEvents()));
+        operations.add(factory.insertImageToContact(image));
         return execute(operations);
     }
 

@@ -16,9 +16,12 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.OnImageLoadedCallback;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
+import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 import com.novoda.notils.text.SimpleTextWatcher;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +40,17 @@ class AddEventsPresenter {
     private final MessageDisplayer messageDisplayer;
 
     private TemporaryEventsState state;
-    private Uri currentAvatarUri;
+    private Bitmap currentImageLoaded;
+    private final OnImageLoadedCallback onImageLoadedCallback = new OnImageLoadedCallback() {
+        @Override
+        public void onImageLoaded(Bitmap loadedImage) {
+            currentImageLoaded = loadedImage;
+            avatarView.setImageBitmap(loadedImage);
+            toolbarAnimator.fadeOut();
+            avatarView.requestFocus();
+        }
+    };
+    ;
 
     AddEventsPresenter(ImageLoader imageLoader,
                        ContactEventsFetcher contactEventsFetcher,
@@ -77,7 +90,7 @@ class AddEventsPresenter {
             @Override
             public void onContactSelected(final Contact contact) {
                 state = TemporaryEventsState.forContact(contact);
-                presentAvatar(contact.getImagePath());
+                imageLoader.loadImage(contact.getImagePath(), avatarView, onImageLoadedCallback);
                 AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
                 contactEventsFetcher.load(contact, onNewContactLoadedCallback);
             }
@@ -146,8 +159,22 @@ class AddEventsPresenter {
             new AsyncTask<Void, Void, Boolean>() {
                 @Override
                 protected Boolean doInBackground(Void... params) {
-                    // TODO just get image to store if any
-                    return contactEventPersister.createNewContactWithEvents(state.getContactName(), state);
+                    byte[] image = byteArrayOf(currentImageLoaded);
+                    return contactEventPersister.createNewContactWithEvents(state.getContactName(), state, image);
+                }
+
+                byte[] byteArrayOf(Bitmap bitmap) {
+                    final int size = bitmap.getWidth() * bitmap.getHeight() * 4;
+                    final ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+                    try {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                        return out.toByteArray();
+                    } catch (IOException e) {
+                        Log.w("Unable to serialize photo: " + e.toString());
+                        return null;
+                    }
                 }
 
                 @Override
@@ -162,20 +189,12 @@ class AddEventsPresenter {
         }
     }
 
-    void presentAvatar(Uri imageUri) {
-        currentAvatarUri = imageUri;
-        imageLoader.loadImage(imageUri, new OnImageLoadedCallback() {
-            @Override
-            public void onImageLoaded(Bitmap loadedImage) {
-                avatarView.setImageBitmap(loadedImage);
-                toolbarAnimator.fadeOut();
-                avatarView.requestFocus();
-            }
-        });
+    void presentAvatar(final Uri imageUri) {
+        imageLoader.loadImage(imageUri, avatarView, onImageLoadedCallback);
     }
 
     void removeAvatar() {
-        avatarView.setImageBitmap(null); // TODO animate currentAvatarUri out
+        avatarView.setImageBitmap(null); // TODO animate currentImageLoaded out
         toolbarAnimator.fadeIn();
     }
 }

@@ -18,7 +18,6 @@ final public class PictureOptionSelectDialog extends MementoDialog {
 
     interface OnPictureOptionSelectedListener {
         void onOptionSelected(PictureSelectOption option);
-
     }
 
     static PictureOptionSelectDialog withoutRemoveOption() {

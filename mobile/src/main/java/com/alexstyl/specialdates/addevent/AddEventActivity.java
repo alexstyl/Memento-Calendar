@@ -1,15 +1,18 @@
 package com.alexstyl.specialdates.addevent;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
-import com.alexstyl.specialdates.FilePathProvider;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
@@ -23,14 +26,18 @@ import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
 
+import java.io.File;
+
 public class AddEventActivity extends ThemedActivity implements PictureOptionSelectDialog.OnPictureOptionSelectedListener {
 
-    private static final int CODE_PICTURE_TAKE = 501;
+    private static final int CODE_TAKE_PICTURE = 501;
     private static final int CODE_PICK_A_FILE = 502;
+    private static final int CODE_CROP_IMAGE = 503;
 
     private AddEventsPresenter presenter;
-    private PictureTakeRequest pictureTakeRequest;
-    private FilePicker filePicker;
+    private final PictureTakeRequest pictureTakeRequest = new PictureTakeRequest();
+    private final ImagePickerIntent imagePickerIntent = new ImagePickerIntent();
+    private Uri croppedImageUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +45,6 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
 
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
-        pictureTakeRequest = new PictureTakeRequest(getPackageManager(), new FilePathProvider(getApplication()), getApplicationContext());
-        filePicker = new FilePicker();
         // TODO analytics
         // TODO black and white icons for X
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
@@ -85,6 +90,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
         presenter.startPresenting(new OnCameraClickedListener() {
             @Override
             public void onPictureRetakenRequested() {
+                // retake picture = add remove option
                 PictureOptionSelectDialog.withRemoveOption().show(getSupportFragmentManager(), "picture_option_select");
             }
 
@@ -98,34 +104,32 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODE_PICTURE_TAKE && resultCode == RESULT_OK) {
-            Uri imageUri = pictureTakeRequest.getCurrentPhotoPath();
-            presenter.presentAvatar(imageUri);
-            pictureTakeRequest.finishRequest();
+        if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
+            // TODO delete temp file?
+            startCropIntent(croppedImageUri);
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
-            presenter.presentAvatar(imageUri);
+            startCropIntent(imageUri);
+        } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
+            presenter.presentAvatar(croppedImageUri);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_event, menu);
-        return true;
-    }
+    private void startCropIntent(Uri imageUri) {
+        File photoFile = TempImageFile.newInstance(getApplicationContext());
+        croppedImageUri = FileProvider.getUriForFile(
+                this,
+                MementoApplication.PACKAGE + ".fileprovider",
+                photoFile
+        );
+        Intent intent = ImageCrop.newIntent(imageUri);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                cancelActivity();
-                break;
-            case R.id.menu_add_event_save:
-                presenter.saveChanges();
-                finishActivitySuccessfully();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, croppedImageUri);
+        intent.setClipData(ClipData.newRawUri(MediaStore.EXTRA_OUTPUT, croppedImageUri));
+
+        startActivityForResult(intent, CODE_CROP_IMAGE);
     }
 
     protected void finishActivitySuccessfully() {
@@ -173,12 +177,18 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     @Override
     public void onOptionSelected(PictureSelectOption option) {
         switch (option) {
-            case TAKE_PICTURE:
-                pictureTakeRequest.takeNewPicture(this, CODE_PICTURE_TAKE);
+            case TAKE_PICTURE: {
+                Uri photoUri = makeAFileAndKeep();
+                Intent intent = pictureTakeRequest.createIntentWithOutput(photoUri);
+                startActivityForResult(intent, CODE_TAKE_PICTURE);
                 break;
-            case PICK_EXISTING:
-                filePicker.pickAFile(this, CODE_PICK_A_FILE);
+            }
+            case PICK_EXISTING: {
+                Uri photoUri = makeAFileAndKeep();
+                Intent intent = imagePickerIntent.createIntentWithOutput(photoUri);
+                startActivityForResult(intent, CODE_TAKE_PICTURE);
                 break;
+            }
             case REMOVE:
                 presenter.removeAvatar();
                 break;
@@ -186,4 +196,35 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
                 break;
         }
     }
+
+    private Uri makeAFileAndKeep() {
+        File photoFile = TempImageFile.newInstance(getApplicationContext());
+        croppedImageUri = FileProvider.getUriForFile(
+                this,
+                MementoApplication.PACKAGE + ".fileprovider",
+                photoFile
+        );
+        return croppedImageUri;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_event, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                cancelActivity();
+                break;
+            case R.id.menu_add_event_save:
+                presenter.saveChanges();
+                finishActivitySuccessfully();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
