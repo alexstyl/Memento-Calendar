@@ -2,7 +2,10 @@ package com.alexstyl.specialdates.addevent;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -27,6 +30,7 @@ import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
 
 import java.io.File;
+import java.util.List;
 
 public class AddEventActivity extends ThemedActivity implements PictureOptionSelectDialog.OnPictureOptionSelectedListener {
 
@@ -35,8 +39,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     private static final int CODE_CROP_IMAGE = 503;
 
     private AddEventsPresenter presenter;
-    private final PictureTakeRequest pictureTakeRequest = new PictureTakeRequest();
-    private final ImagePickerIntent imagePickerIntent = new ImagePickerIntent();
+    private final ImageIntentCretor imageIntentCretor = new ImageIntentCretor();
     private Uri croppedImageUri;
 
     @Override
@@ -112,6 +115,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
             presenter.presentAvatar(croppedImageUri);
+            revokeReadPermissionIfNeeded(croppedImageUri);
         }
     }
 
@@ -178,20 +182,38 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
         switch (option) {
             case TAKE_PICTURE: {
                 Uri photoUri = makeAFileAndKeep();
-                Intent intent = pictureTakeRequest.createIntentWithOutput(photoUri);
+                Intent intent = imageIntentCretor.takeAPicture(photoUri);
+                grandReadPermissionIfNeeded(photoUri, intent);
                 startActivityForResult(intent, CODE_TAKE_PICTURE);
                 break;
             }
             case PICK_EXISTING: {
-                Intent intent = imagePickerIntent.createIntentWithOutput(null);
+                Intent intent = imageIntentCretor.pickAnImage();
                 startActivityForResult(intent, CODE_PICK_A_FILE);
                 break;
             }
-            case REMOVE:
+            case REMOVE: {
                 presenter.removeAvatar();
                 break;
+            }
             default:
                 break;
+        }
+    }
+
+    private void grandReadPermissionIfNeeded(Uri photoUri, Intent intent) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }
+    }
+
+    private void revokeReadPermissionIfNeeded(Uri photoUri) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            revokeUriPermission(photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
     }
 
