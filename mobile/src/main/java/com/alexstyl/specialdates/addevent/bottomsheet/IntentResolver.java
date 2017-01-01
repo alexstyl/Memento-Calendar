@@ -16,7 +16,7 @@ final public class IntentResolver {
         this.packageManager = packageManager;
     }
 
-    public List<IntentOptionViewModel> createViewModelsFor(Intent intent) {
+    List<IntentOptionViewModel> createViewModelsFor(Intent intent) {
         List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(intent, 0);
         List<IntentOptionViewModel> viewModels = new ArrayList<>(resolveInfos.size());
         for (ResolveInfo resolveInfo : resolveInfos) {
