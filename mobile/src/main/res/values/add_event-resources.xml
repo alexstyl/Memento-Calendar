@@ -29,5 +29,6 @@
 
   <dimen name="add_event_camera_button_height">190dp</dimen>
   <dimen name="add_event_avatar_height">240dp</dimen>
+  <dimen name="add_event_image_option_vertical">16dp</dimen>
 
 </resources>

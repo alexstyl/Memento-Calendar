@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.addevent.bottomsheet.IntentOptionViewModel;
 import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickerOptionsAdapter;
 import com.alexstyl.specialdates.addevent.bottomsheet.IntentResolver;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
+import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Classes;
 import com.novoda.notils.caster.Views;
 
@@ -67,7 +68,12 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         View view = layoutInflater.inflate(R.layout.dialog_pick_image, null, false);
 
         RecyclerView grid = Views.findById(view, R.id.pick_image_grid);
-        grid.setLayoutManager(new GridLayoutManager(context, 4));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
+        grid.addItemDecoration(new SpacesItemDecoration(
+                getResources().getDimensionPixelSize(R.dimen.add_event_image_option_vertical),
+                gridLayoutManager.getSpanCount()
+        ));
+        grid.setLayoutManager(gridLayoutManager);
         adapter = getIncludeClear()
                 ? ImagePickerOptionsAdapter.createWithClear(internalListener)
                 : ImagePickerOptionsAdapter.newInstance(internalListener);
