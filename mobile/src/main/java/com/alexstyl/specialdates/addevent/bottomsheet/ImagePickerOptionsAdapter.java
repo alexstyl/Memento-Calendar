@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.OnImageOptio
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntentOptionsAdapter extends RecyclerView.Adapter<ImageOptionViewHolder> {
+public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_CLEAR = 0;
     private static final int TYPE_OPTION = 1;
@@ -21,19 +21,21 @@ public class IntentOptionsAdapter extends RecyclerView.Adapter<ImageOptionViewHo
     private final List<IntentOptionViewModel> viewModels;
     private final OnImageOptionPickedListener listener;
     private boolean includeClear;
+    private final int includeClearCount;
 
-    public static IntentOptionsAdapter newInstance(OnImageOptionPickedListener listener) {
-        return new IntentOptionsAdapter(listener, false);
+    public static ImagePickerOptionsAdapter newInstance(OnImageOptionPickedListener listener) {
+        return new ImagePickerOptionsAdapter(listener, false);
     }
 
-    public static IntentOptionsAdapter createWithClear(OnImageOptionPickedListener listener) {
-        return new IntentOptionsAdapter(listener, true);
+    public static ImagePickerOptionsAdapter createWithClear(OnImageOptionPickedListener listener) {
+        return new ImagePickerOptionsAdapter(listener, true);
     }
 
-    private IntentOptionsAdapter(OnImageOptionPickedListener listener, boolean includeClear) {
+    private ImagePickerOptionsAdapter(OnImageOptionPickedListener listener, boolean includeClear) {
         this.includeClear = includeClear;
         this.viewModels = new ArrayList<>();
         this.listener = listener;
+        this.includeClearCount = includeClear ? 1 : 0;
     }
 
     @Override
@@ -45,26 +47,35 @@ public class IntentOptionsAdapter extends RecyclerView.Adapter<ImageOptionViewHo
     }
 
     @Override
-    public ImageOptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_image_option, parent, false);
         ImageView iconView = (ImageView) view.findViewById(R.id.pick_image_activity_icon);
         TextView labelView = (TextView) view.findViewById(R.id.pick_image_activity_label);
         if (viewType == TYPE_CLEAR) {
             return new ClearImageViewHolder(view, iconView, labelView);
         } else if (viewType == TYPE_OPTION) {
-            return new IntentOptionViewHolder(view, iconView, labelView);
+            return new ImagePickerOptionViewHolder(view, iconView, labelView);
+        } else {
+            throw new IllegalStateException("Illegal view type " + viewType);
         }
-        throw new IllegalStateException("Illegal view type " + viewType);
     }
 
     @Override
-    public void onBindViewHolder(ImageOptionViewHolder holder, int position) {
-        holder.bind(viewModels.get(position), listener);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int itemViewType = getItemViewType(position);
+        if (itemViewType == TYPE_CLEAR) {
+            ((ClearImageViewHolder) holder).bind(listener);
+        } else if (itemViewType == TYPE_OPTION) {
+            IntentOptionViewModel viewModel = viewModels.get(position);
+            ((ImagePickerOptionViewHolder) holder).bind(viewModel, listener);
+        } else {
+            throw new IllegalStateException("Illegal view type " + itemViewType);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return viewModels.size();
+        return viewModels.size() + includeClearCount;
     }
 
     public void updateWith(List<IntentOptionViewModel> viewModels) {

@@ -17,7 +17,7 @@ import android.view.View;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickResolver;
 import com.alexstyl.specialdates.addevent.bottomsheet.IntentOptionViewModel;
-import com.alexstyl.specialdates.addevent.bottomsheet.IntentOptionsAdapter;
+import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickerOptionsAdapter;
 import com.alexstyl.specialdates.addevent.bottomsheet.IntentResolver;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.novoda.notils.caster.Classes;
@@ -31,7 +31,7 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
     private static final String KEY_INCLUDE_CLEAR = "key_include_clear";
 
     private OnImageOptionPickedListener parentListener;
-    private IntentOptionsAdapter adapter;
+    private ImagePickerOptionsAdapter adapter;
     private ImagePickResolver resolver;
 
     public static BottomSheetPicturesDialog newInstance(Uri outputUri) {
@@ -69,8 +69,8 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         RecyclerView grid = Views.findById(view, R.id.pick_image_grid);
         grid.setLayoutManager(new GridLayoutManager(context, 4));
         adapter = getIncludeClear()
-                ? IntentOptionsAdapter.createWithClear(internalListener)
-                : IntentOptionsAdapter.newInstance(internalListener);
+                ? ImagePickerOptionsAdapter.createWithClear(internalListener)
+                : ImagePickerOptionsAdapter.newInstance(internalListener);
         grid.setAdapter(adapter);
         dialog.setContentView(view);
         return dialog;
