@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="bottom_sheet_span_count">4</integer>
+
+  <dimen name="bottom_sheet_layout_width">446dp</dimen>
+</resources>

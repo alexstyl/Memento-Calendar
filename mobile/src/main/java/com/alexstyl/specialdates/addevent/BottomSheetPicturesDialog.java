@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,9 +69,10 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         View view = layoutInflater.inflate(R.layout.dialog_pick_image, null, false);
 
         RecyclerView grid = Views.findById(view, R.id.pick_image_grid);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
+        Resources resources = getResources();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, resources.getInteger(R.integer.bottom_sheet_span_count));
         grid.addItemDecoration(new SpacesItemDecoration(
-                getResources().getDimensionPixelSize(R.dimen.add_event_image_option_vertical),
+                resources.getDimensionPixelSize(R.dimen.add_event_image_option_vertical),
                 gridLayoutManager.getSpanCount()
         ));
         grid.setLayoutManager(gridLayoutManager);
