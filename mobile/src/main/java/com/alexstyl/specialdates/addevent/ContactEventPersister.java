@@ -34,12 +34,13 @@ class ContactEventPersister {
         this.peopleEventsProvider = peopleEventsProvider;
     }
 
-    boolean updateExistingContact(Contact contact, Set<Map.Entry<EventType, Date>> events) {
+    boolean updateExistingContact(Contact contact, Set<Map.Entry<EventType, Date>> events, byte[] image) {
         int rawContactID = rawContactID(contact);
         OperationsFactory operationsFactory = new OperationsFactory(rawContactID);
         List<ContactEvent> contactEvents = getAllDeviceEventsFor(contact);
         ArrayList<ContentProviderOperation> operations = operationsFactory.deleteEvents(contactEvents);
         operations.addAll(operationsFactory.insertEvents(events));
+        operations.add(operationsFactory.insertImageToContact(image));
         return execute(operations);
     }
 

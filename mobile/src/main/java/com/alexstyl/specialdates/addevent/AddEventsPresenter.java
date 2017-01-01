@@ -143,7 +143,8 @@ class AddEventsPresenter {
                 protected Boolean doInBackground(Void... params) {
                     Set<Map.Entry<EventType, Date>> events = state.getEvents();
                     Optional<Contact> contact = state.getContact();
-                    return contactEventPersister.updateExistingContact(contact.get(), events);
+                    byte[] image = byteArrayOf(currentImageLoaded);
+                    return contactEventPersister.updateExistingContact(contact.get(), events, image);
                 }
 
                 @Override
@@ -164,20 +165,6 @@ class AddEventsPresenter {
                     return contactEventPersister.createNewContactWithEvents(state.getContactName(), state, image);
                 }
 
-                byte[] byteArrayOf(Bitmap bitmap) {
-                    final int size = bitmap.getWidth() * bitmap.getHeight() * 4;
-                    final ByteArrayOutputStream out = new ByteArrayOutputStream(size);
-                    try {
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                        out.flush();
-                        out.close();
-                        return out.toByteArray();
-                    } catch (IOException e) {
-                        Log.w("Unable to serialize photo: " + e.toString());
-                        return null;
-                    }
-                }
-
                 @Override
                 protected void onPostExecute(Boolean success) {
                     if (success) {
@@ -190,12 +177,27 @@ class AddEventsPresenter {
         }
     }
 
+    byte[] byteArrayOf(Bitmap bitmap) {
+        final int size = bitmap.getWidth() * bitmap.getHeight() * 4;
+        final ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            return out.toByteArray();
+        } catch (IOException e) {
+            Log.w("Unable to serialize photo: " + e.toString());
+            return null;
+        }
+    }
+
     void presentAvatar(final Uri imageUri) {
         imageLoader.loadImage(imageUri, avatarView, onImageLoadedCallback);
     }
 
     void removeAvatar() {
         avatarView.setImageBitmap(null); // TODO animate currentImageLoaded out
+        currentImageLoaded = null;
         toolbarAnimator.fadeIn();
     }
 }
