@@ -79,6 +79,7 @@ class AddEventsPresenter {
         avatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // request permission
                 if (avatarView.isDisplayingAvatar()) {
                     listener.onPictureRetakenRequested();
                 } else {

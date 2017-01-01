@@ -30,7 +30,7 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:background="@drawable/selectable_back_no_bounds"
-    android:src="@drawable/ic_action_content_clear" />
+    android:src="@drawable/ic_clear" />
 
 
 </LinearLayout>

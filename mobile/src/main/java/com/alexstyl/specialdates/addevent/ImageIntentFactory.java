@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-final class ImageIntentCretor {
+final public class ImageIntentFactory {
 
-    Intent pickAnImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+    static String ACTION_IMAGE_PICK = Intent.ACTION_PICK;
+    static String ACTION_IMAGE_CAPTURE = MediaStore.ACTION_IMAGE_CAPTURE;
+
+    public Intent pickExistingImage() {
+        Intent intent = new Intent(ACTION_IMAGE_PICK);
         intent.setType("image/*");
         intent.addFlags(
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -16,8 +19,8 @@ final class ImageIntentCretor {
         return intent;
     }
 
-    Intent takeAPicture(Uri outputUri) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public Intent captureNewPhoto(Uri outputUri) {
+        Intent takePictureIntent = new Intent(ACTION_IMAGE_CAPTURE);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
         takePictureIntent.addFlags(
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION
