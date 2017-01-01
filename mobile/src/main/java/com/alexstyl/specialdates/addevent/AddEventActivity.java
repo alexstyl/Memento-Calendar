@@ -18,6 +18,8 @@ import com.alexstyl.android.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.OnImageOptionPickedListener;
+import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
 import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
@@ -32,14 +34,13 @@ import com.novoda.notils.caster.Views;
 import java.io.File;
 import java.util.List;
 
-public class AddEventActivity extends ThemedActivity implements PictureOptionSelectDialog.OnPictureOptionSelectedListener {
+public class AddEventActivity extends ThemedActivity implements OnImageOptionPickedListener, OnEventDatePickedListener {
 
     private static final int CODE_TAKE_PICTURE = 501;
     private static final int CODE_PICK_A_FILE = 502;
     private static final int CODE_CROP_IMAGE = 503;
 
     private AddEventsPresenter presenter;
-    private final ImageIntentCretor imageIntentCretor = new ImageIntentCretor();
     private Uri croppedImageUri;
 
     @Override
@@ -48,6 +49,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
 
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
+
         // TODO analytics
         // TODO black and white icons for X
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
@@ -75,7 +77,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
                 newEventFactory
         );
 
-        WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
+        final WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
         ContactEventPersister contactEventPersister = new ContactEventPersister(getContentResolver(), accountsProvider, peopleEventsProvider);
         MessageDisplayer messageDisplayer = new MessageDisplayer(getApplicationContext());
         presenter = new AddEventsPresenter(
@@ -90,18 +92,24 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
                 contactEventPersister,
                 messageDisplayer
         );
-        presenter.startPresenting(new OnCameraClickedListener() {
-            @Override
-            public void onPictureRetakenRequested() {
-                // retake picture = add remove option
-                PictureOptionSelectDialog.withRemoveOption().show(getSupportFragmentManager(), "picture_option_select");
-            }
+        presenter.startPresenting(
+                new OnCameraClickedListener() {
+                    @Override
+                    public void onPictureRetakenRequested() {
+                        BottomSheetPicturesDialog
+                                .newInstance(makeAFileAndKeep())
+                                .includeClearOption()
+                                .show(getSupportFragmentManager(), "picture_pick");
+                    }
 
-            @Override
-            public void onNewPictureTakenRequested() {
-                PictureOptionSelectDialog.withoutRemoveOption().show(getSupportFragmentManager(), "picture_option_select");
-            }
-        });
+                    @Override
+                    public void onNewPictureTakenRequested() {
+                        BottomSheetPicturesDialog
+                                .newInstance(makeAFileAndKeep())
+                                .show(getSupportFragmentManager(), "picture_pick");
+                    }
+                }
+        );
     }
 
     @Override
@@ -156,18 +164,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
         public void onEventTapped(ContactEventViewModel viewModel) {
             final EventType eventType = viewModel.getEventType();
             final Optional<Date> initialDate = viewModel.getDate();
-            EventDatePickerDialogFragment dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate, new EventDatePickerDialogFragment.OnBirthdaySelectedListener() {
-                @Override
-                public void onDatePicked(Date date) {
-                    if (hasSelectedNewDate(date)) {
-                        presenter.onEventDatePicked(eventType, date);
-                    }
-                }
-
-                private boolean hasSelectedNewDate(Date date) {
-                    return !initialDate.isPresent() || !initialDate.get().equals(date);
-                }
-            });
+            EventDatePickerDialogFragment dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate);
             dialog.show(getSupportFragmentManager(), "pick_event");
         }
 
@@ -178,26 +175,29 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     };
 
     @Override
-    public void onOptionSelected(PictureSelectOption option) {
-        switch (option) {
-            case TAKE_PICTURE: {
-                Uri photoUri = makeAFileAndKeep();
-                Intent intent = imageIntentCretor.takeAPicture(photoUri);
-                grandReadPermissionIfNeeded(photoUri, intent);
-                startActivityForResult(intent, CODE_TAKE_PICTURE);
-                break;
-            }
-            case PICK_EXISTING: {
-                Intent intent = imageIntentCretor.pickAnImage();
-                startActivityForResult(intent, CODE_PICK_A_FILE);
-                break;
-            }
-            case REMOVE: {
-                presenter.removeAvatar();
-                break;
-            }
-            default:
-                break;
+    public void onDatePicked(EventType eventType, Date date) {
+        presenter.onEventDatePicked(eventType, date);
+    }
+
+    @Override
+    public void onIntentSelected(Intent intent) {
+        grandReadPermissionIfNeeded(croppedImageUri, intent);
+        startActivityForResult(intent, getRequestCodeFor(intent));
+    }
+
+    @Override
+    public void onClearSelected() {
+        presenter.removeAvatar();
+    }
+
+    private static int getRequestCodeFor(Intent intent) {
+        String action = intent.getAction();
+        if (ImageIntentFactory.ACTION_IMAGE_CAPTURE.equals(action)) {
+            return CODE_TAKE_PICTURE;
+        } else if (ImageIntentFactory.ACTION_IMAGE_PICK.equals(action)) {
+            return CODE_PICK_A_FILE;
+        } else {
+            throw new IllegalArgumentException("Don't know how to handle " + action);
         }
     }
 
@@ -237,6 +237,7 @@ public class AddEventActivity extends ThemedActivity implements PictureOptionSel
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                // TODO ask for save
                 cancelActivity();
                 break;
             case R.id.menu_add_event_save:

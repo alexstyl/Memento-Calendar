@@ -117,7 +117,7 @@ public class EventDatePicker extends LinearLayout {
         }
     }
 
-    public Date getDisplayingBirthday() {
+    public Date getDisplayingDate() {
         int dayOfMonth = getDayOfMonth();
         int month = getMonth();
         if (isDisplayingYear()) {
