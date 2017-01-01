@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/CardViewStyle"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical">
+  android:orientation="vertical"
+  android:paddingBottom="24dp"
+  android:paddingLeft="24dp"
+  android:paddingRight="24dp"
+  android:paddingTop="16dp">
 
   <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="I am a title lol" />
+    android:text="@string/add_event_pick_image_title"
+    android:textSize="16sp" />
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/pick_image_grid"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    app:layoutManager="GridLayoutManager"
+    app:spanCount="3"
+    tools:listitem="@layout/row_image_option" />
 
-</LinearLayout>
+</com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground>

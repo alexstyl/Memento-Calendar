@@ -66,7 +66,7 @@ public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView
         if (itemViewType == TYPE_CLEAR) {
             ((ClearImageViewHolder) holder).bind(listener);
         } else if (itemViewType == TYPE_OPTION) {
-            IntentOptionViewModel viewModel = viewModels.get(position);
+            IntentOptionViewModel viewModel = viewModels.get(position - includeClearCount);
             ((ImagePickerOptionViewHolder) holder).bind(viewModel, listener);
         } else {
             throw new IllegalStateException("Illegal view type " + itemViewType);
