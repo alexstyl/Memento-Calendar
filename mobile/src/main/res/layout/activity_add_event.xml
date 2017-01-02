@@ -14,13 +14,15 @@
       style="@style/CardViewStyle"
       android:layout_width="match_parent"
       android:layout_height="@dimen/add_event_avatar_height"
-      android:background="@color/nameday_blue" />
+      android:background="@color/nameday_blue"
+      android:elevation="@dimen/toolbar_elevation" />
 
     <com.alexstyl.specialdates.ui.widget.MementoToolbar
       android:id="@+id/memento_toolbar"
       style="@style/Widget.Memento.Toolbar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
+      android:layout_height="wrap_content"
+      android:elevation="@dimen/toolbar_elevation" />
 
   </FrameLayout>
 

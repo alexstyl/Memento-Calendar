@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -21,12 +20,9 @@ public class MementoToolbar extends Toolbar {
     public MementoToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-
         int toolbarColor = fetchAccentColor(context);
-        float toolbarElevation = getToolbarElevation();
 
         setBackgroundColor(toolbarColor);
-        ViewCompat.setElevation(this, toolbarElevation);
         setMinimumHeight(getResources().getDimensionPixelSize(R.dimen.toolbar_minHeight));
 
         if (isInEditMode()) {
@@ -42,10 +38,6 @@ public class MementoToolbar extends Toolbar {
         int color = a.getColor(0, 0);
         a.recycle();
         return color;
-    }
-
-    public float getToolbarElevation() {
-        return getResources().getDimensionPixelSize(R.dimen.toolbar_elevation);
     }
 
     public void displayAsUp() {
