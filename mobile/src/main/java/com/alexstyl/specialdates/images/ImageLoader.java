@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
-import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -19,20 +16,16 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.L;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 public class ImageLoader {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
-    private static final long FB_LIFE_TIME = DateUtils.DAY_IN_MILLIS * 3;
 
     public static void init(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .threadPoolSize(10)
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .diskCache(new LimitedAgeDiskCache(StorageUtils.getCacheDirectory(context), FB_LIFE_TIME))
                 .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))
                 .imageDownloader(new ImageDownloader(context));
 
@@ -98,4 +91,5 @@ public class ImageLoader {
     public void pause() {
         loader.pause();
     }
+
 }
