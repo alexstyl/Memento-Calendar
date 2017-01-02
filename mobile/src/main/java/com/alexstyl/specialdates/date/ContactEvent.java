@@ -10,8 +10,8 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 public final class ContactEvent {
 
     private final Optional<Long> deviceEventId;
-    private final EventType eventType;
     private final Contact contact;
+    private final EventType eventType;
     private final Date date;
 
     public ContactEvent(Optional<Long> deviceEventId, EventType eventType, Date date, Contact contact) {

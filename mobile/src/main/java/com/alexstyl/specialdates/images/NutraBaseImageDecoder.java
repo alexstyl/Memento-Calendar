@@ -6,9 +6,9 @@ import com.nostra13.universalimageloader.core.decode.ImageDecodingInfo;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class NutraBaseImageDecoder extends BaseImageDecoder {
+class NutraBaseImageDecoder extends BaseImageDecoder {
 
-    public NutraBaseImageDecoder(boolean loggingEnabled) {
+    NutraBaseImageDecoder(boolean loggingEnabled) {
         super(loggingEnabled);
     }
 
