@@ -32,7 +32,7 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
     private static final String KEY_OUTPUT_URI = "key_output_uri";
     private static final String KEY_INCLUDE_CLEAR = "key_include_clear";
 
-    private OnImageOptionPickedListener parentListener;
+    private Listener parentListener;
     private ImagePickerOptionsAdapter adapter;
     private ImagePickResolver resolver;
 
@@ -109,23 +109,22 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         return getArguments().getBoolean(KEY_INCLUDE_CLEAR, false);
     }
 
-    private final OnImageOptionPickedListener internalListener = new OnImageOptionPickedListener() {
+    private final Listener internalListener = new Listener() {
         @Override
-        public void onIntentSelected(Intent intent) {
+        public void startIntent(Intent intent) {
             dismiss();
-            parentListener.onIntentSelected(intent);
+            parentListener.startIntent(intent);
         }
 
         @Override
-        public void onClearSelected() {
+        public void clearSelectedAvatar() {
             dismiss();
-            parentListener.onClearSelected();
+            parentListener.clearSelectedAvatar();
         }
     };
 
-    public interface OnImageOptionPickedListener {
-        void onIntentSelected(Intent intent);
-
-        void onClearSelected();
+    public interface Listener {
+        void startIntent(Intent intent);
+        void clearSelectedAvatar();
     }
 }

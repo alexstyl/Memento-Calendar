@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.OnImageOptionPickedListener;
+import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
 
 final class ImagePickerOptionViewHolder extends RecyclerView.ViewHolder {
 
@@ -18,13 +18,13 @@ final class ImagePickerOptionViewHolder extends RecyclerView.ViewHolder {
         this.labelView = labelView;
     }
 
-    void bind(final IntentOptionViewModel viewModel, final OnImageOptionPickedListener listener) {
+    void bind(final IntentOptionViewModel viewModel, final Listener listener) {
         iconView.setImageDrawable(viewModel.getActivityIcon());
         labelView.setText(viewModel.getLabel());
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onIntentSelected(viewModel.getIntent());
+                listener.startIntent(viewModel.getIntent());
             }
         });
     }

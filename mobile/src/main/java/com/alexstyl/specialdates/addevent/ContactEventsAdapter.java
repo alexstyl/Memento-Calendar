@@ -17,10 +17,10 @@ import java.util.List;
 final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHolder> {
 
     private final List<ContactEventViewModel> viewModels = new ArrayList<>();
-    private final OnEventTappedListener onEventTappedListener;
+    private final ContactEventsListener contactEventsListener;
 
-    ContactEventsAdapter(OnEventTappedListener onEventTappedListener) {
-        this.onEventTappedListener = onEventTappedListener;
+    ContactEventsAdapter(ContactEventsListener contactEventsListener) {
+        this.contactEventsListener = contactEventsListener;
     }
 
     @Override
@@ -36,7 +36,7 @@ final class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventViewHo
     @Override
     public void onBindViewHolder(ContactEventViewHolder holder, int position) {
         ContactEventViewModel contactEventViewModel = viewModels.get(position);
-        holder.bind(contactEventViewModel, onEventTappedListener);
+        holder.bind(contactEventViewModel, contactEventsListener);
     }
 
     @Override

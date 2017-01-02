@@ -19,13 +19,13 @@ final class ClearImageViewHolder extends RecyclerView.ViewHolder {
         this.textView = textView;
     }
 
-    void bind(final BottomSheetPicturesDialog.OnImageOptionPickedListener listener) {
+    void bind(final BottomSheetPicturesDialog.Listener listener) {
         imageView.setImageResource(R.drawable.ic_clear);
         textView.setText(R.string.add_event_remove_photo);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClearSelected();
+                listener.clearSelectedAvatar();
             }
         });
     }

@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.OnImageOptionPickedListener;
+import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +19,19 @@ public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_OPTION = 1;
 
     private final List<IntentOptionViewModel> viewModels;
-    private final OnImageOptionPickedListener listener;
+    private final Listener listener;
     private boolean includeClear;
     private final int includeClearCount;
 
-    public static ImagePickerOptionsAdapter newInstance(OnImageOptionPickedListener listener) {
+    public static ImagePickerOptionsAdapter newInstance(Listener listener) {
         return new ImagePickerOptionsAdapter(listener, false);
     }
 
-    public static ImagePickerOptionsAdapter createWithClear(OnImageOptionPickedListener listener) {
+    public static ImagePickerOptionsAdapter createWithClear(Listener listener) {
         return new ImagePickerOptionsAdapter(listener, true);
     }
 
-    private ImagePickerOptionsAdapter(OnImageOptionPickedListener listener, boolean includeClear) {
+    private ImagePickerOptionsAdapter(Listener listener, boolean includeClear) {
         this.includeClear = includeClear;
         this.viewModels = new ArrayList<>();
         this.listener = listener;
