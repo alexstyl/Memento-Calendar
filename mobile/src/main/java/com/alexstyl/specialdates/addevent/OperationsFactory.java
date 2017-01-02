@@ -11,6 +11,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.images.DecodedImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +64,8 @@ final class OperationsFactory {
         return ops;
     }
 
-    List<ContentProviderOperation> createContactIn(AccountData account, String contactName) {
-        List<ContentProviderOperation> ops = new ArrayList<>(2);
+    ArrayList<ContentProviderOperation> createContactIn(AccountData account, String contactName) {
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>(2);
         ops.add(
                 ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                         .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, account.getAccountName())
@@ -91,12 +92,24 @@ final class OperationsFactory {
         return operations;
     }
 
-    ContentProviderOperation insertImageToContact(byte[] image) {
+    ContentProviderOperation insertImageToContact(DecodedImage image) {
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Data.CONTENT_URI)
                 .withValue(Data.MIMETYPE, Photo.CONTENT_ITEM_TYPE)
-                .withValue(Photo.PHOTO, image);
+                .withValue(Photo.PHOTO, image.getBytes());
         addRawContactID(builder);
         return builder.build();
+    }
+
+    ContentProviderOperation updateImageContact(DecodedImage decodedImage) {
+        return ContentProviderOperation
+                .newUpdate(ContactsContract.Data.CONTENT_URI)
+                .withSelection(
+                        Data.RAW_CONTACT_ID + "= ?" + " AND " + ContactsContract.Data.MIMETYPE + "=?",
+                        new String[]{String.valueOf(rawContactID),
+                                ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE}
+                )
+                .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, decodedImage.getBytes())
+                .build();
     }
 
     ContentProviderOperation deleteImageFor(Contact contact) {

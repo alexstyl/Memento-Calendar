@@ -2,17 +2,15 @@ package com.alexstyl.specialdates.addevent;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
+import com.alexstyl.specialdates.images.DecodedImage;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
@@ -22,26 +20,66 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-class ContactEventPersister {
+class ContactOperations {
 
     private final ContentResolver contentResolver;
     private final WriteableAccountsProvider accountsProvider;
     private final PeopleEventsProvider peopleEventsProvider;
 
-    ContactEventPersister(ContentResolver contentResolver, WriteableAccountsProvider accountsProvider, PeopleEventsProvider peopleEventsProvider) {
+    ContactOperations(ContentResolver contentResolver, WriteableAccountsProvider accountsProvider, PeopleEventsProvider peopleEventsProvider) {
         this.contentResolver = contentResolver;
         this.accountsProvider = accountsProvider;
         this.peopleEventsProvider = peopleEventsProvider;
     }
 
-    boolean updateExistingContact(Contact contact, Set<Map.Entry<EventType, Date>> events, byte[] image) {
+    ContactOperationsBuilder updateExistingContact(Contact contact) {
         int rawContactID = rawContactID(contact);
         OperationsFactory operationsFactory = new OperationsFactory(rawContactID);
-        List<ContactEvent> contactEvents = getAllDeviceEventsFor(contact);
-        ArrayList<ContentProviderOperation> operations = operationsFactory.deleteEvents(contactEvents);
-        operations.addAll(operationsFactory.insertEvents(events));
-        operations.add(operationsFactory.insertImageToContact(image));
-        return execute(operations);
+        ArrayList<ContentProviderOperation> operations = operationsFactory.deleteEvents(getAllDeviceEventsFor(contact));
+        return new ContactOperationsBuilder(operations, operationsFactory);
+    }
+
+    ContactOperationsBuilder createNewContact(String contactName) {
+        OperationsFactory operationsFactory = OperationsFactory.forNewContact();
+        ArrayList<ContentProviderOperation> operations = operationsFactory.createContactIn(getAccountToStoreContact(), contactName);
+        return new ContactOperationsBuilder(operations, operationsFactory);
+    }
+
+    static class ContactOperationsBuilder {
+        private final ArrayList<ContentProviderOperation> existingOperations;
+        private final OperationsFactory operationsFactory;
+
+        private Set<Map.Entry<EventType, Date>> events;
+
+        ContactOperationsBuilder(ArrayList<ContentProviderOperation> initialOperations, OperationsFactory operationsFactory) {
+            existingOperations = initialOperations;
+            this.operationsFactory = operationsFactory;
+        }
+
+        ContactOperationsBuilder withEvents(Set<Map.Entry<EventType, Date>> events) {
+            this.events = events;
+            return this;
+        }
+
+        ContactOperationsBuilder addContactImage(DecodedImage decodedImage) {
+            if (decodedImage != DecodedImage.EMPTY) {
+                existingOperations.add(operationsFactory.insertImageToContact(decodedImage));
+            }
+            return this;
+        }
+
+        ContactOperationsBuilder updateContactImage(DecodedImage decodedImage) {
+            existingOperations.add(operationsFactory.updateImageContact(decodedImage));
+            return this;
+        }
+
+        public ArrayList<ContentProviderOperation> build() {
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>(existingOperations);
+            if (events.size() > 0) {
+                operations.addAll(operationsFactory.insertEvents(events));
+            }
+            return operations;
+        }
     }
 
     private int rawContactID(Contact contact) {
@@ -75,15 +113,6 @@ class ContactEventPersister {
         return contactEvents;
     }
 
-    boolean createNewContactWithEvents(String contactName, TemporaryEventsState state, byte[] image) {
-        OperationsFactory factory = OperationsFactory.forNewContact();
-        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-        operations.addAll(factory.createContactIn(getAccountToStoreContact(), contactName));
-        operations.addAll(factory.insertEvents(state.getEvents()));
-        operations.add(factory.insertImageToContact(image));
-        return execute(operations);
-    }
-
     private AccountData getAccountToStoreContact() {
         ArrayList<AccountData> availableAccounts = accountsProvider.getAvailableAccounts();
         if (availableAccounts.size() == 0) {
@@ -97,15 +126,5 @@ class ContactEventPersister {
         if (cursor == null || cursor.isClosed()) {
             throw new DeveloperError("Cursor was invalid");
         }
-    }
-
-    private boolean execute(ArrayList<ContentProviderOperation> operations) {
-        try {
-            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations);
-            return true;
-        } catch (RemoteException | OperationApplicationException e) {
-            ErrorTracker.track(e);
-        }
-        return false;
     }
 }
