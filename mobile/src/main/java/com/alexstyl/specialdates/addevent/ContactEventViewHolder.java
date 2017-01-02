@@ -18,20 +18,20 @@ final class ContactEventViewHolder extends RecyclerView.ViewHolder {
         this.removeEvent = removeEvent;
     }
 
-    public void bind(final ContactEventViewModel viewModel, final OnEventTappedListener onEventTappedListener) {
+    public void bind(final ContactEventViewModel viewModel, final ContactEventsListener contactEventsListener) {
         icon.setImageResource(viewModel.getEventIconRes());
         datePicker.setHint(viewModel.getHintText());
         datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEventTappedListener.onEventTapped(viewModel);
+                contactEventsListener.onAddEventClicked(viewModel);
             }
         });
         removeEvent.setVisibility(viewModel.getClearVisibility());
         removeEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEventTappedListener.onEventRemoved(viewModel.getEventType());
+                contactEventsListener.onRemoveEventClicked(viewModel.getEventType());
             }
         });
     }

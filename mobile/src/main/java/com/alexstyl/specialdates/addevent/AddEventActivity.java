@@ -18,7 +18,7 @@ import com.alexstyl.android.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.OnImageOptionPickedListener;
+import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
 import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
@@ -35,7 +35,7 @@ import com.novoda.notils.caster.Views;
 import java.io.File;
 import java.util.List;
 
-public class AddEventActivity extends ThemedActivity implements OnImageOptionPickedListener, OnEventDatePickedListener {
+public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener {
 
     private static final int CODE_TAKE_PICTURE = 501;
     private static final int CODE_PICK_A_FILE = 502;
@@ -63,7 +63,7 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         eventsView.setHasFixedSize(true);
-        ContactEventsAdapter adapter = new ContactEventsAdapter(onEventTappedListener);
+        ContactEventsAdapter adapter = new ContactEventsAdapter(contactEventsListener);
         eventsView.setAdapter(adapter);
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
@@ -117,7 +117,6 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
-            // TODO delete temp file?
             startCropIntent(croppedImageUri);
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
@@ -144,33 +143,24 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
         startActivityForResult(intent, CODE_CROP_IMAGE);
     }
 
-    protected void finishActivitySuccessfully() {
-        setResult(RESULT_OK);
-        finish();
-    }
-
-    protected void cancelActivity() {
-        setResult(RESULT_CANCELED);
-        finish();
-    }
-
     @Override
     public void finish() {
         overridePendingTransition(0, R.anim.slide_out_from_below);
         super.finish();
     }
 
-    private final OnEventTappedListener onEventTappedListener = new OnEventTappedListener() {
+    private final ContactEventsListener contactEventsListener = new ContactEventsListener() {
         @Override
-        public void onEventTapped(ContactEventViewModel viewModel) {
-            final EventType eventType = viewModel.getEventType();
-            final Optional<Date> initialDate = viewModel.getDate();
+        public void onAddEventClicked(ContactEventViewModel viewModel) {
+            EventType eventType = viewModel.getEventType();
+            Optional<Date> initialDate = viewModel.getDate();
+
             EventDatePickerDialogFragment dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate);
             dialog.show(getSupportFragmentManager(), "pick_event");
         }
 
         @Override
-        public void onEventRemoved(EventType eventType) {
+        public void onRemoveEventClicked(EventType eventType) {
             presenter.onEventRemoved(eventType);
         }
     };
@@ -181,13 +171,13 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
     }
 
     @Override
-    public void onIntentSelected(Intent intent) {
+    public void startIntent(Intent intent) {
         grandReadPermissionIfNeeded(croppedImageUri, intent);
         startActivityForResult(intent, getRequestCodeFor(intent));
     }
 
     @Override
-    public void onClearSelected() {
+    public void clearSelectedAvatar() {
         presenter.removeAvatar();
     }
 
@@ -247,6 +237,16 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void finishActivitySuccessfully() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    protected void cancelActivity() {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
 }
