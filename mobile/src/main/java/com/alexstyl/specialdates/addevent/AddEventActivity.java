@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
-import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
+import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
@@ -58,7 +58,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
-        AvatarCameraButtonView avatarView = Views.findById(this, R.id.add_event_avatar);
+        AvatarPickerView avatarView = Views.findById(this, R.id.add_event_avatar);
         ContactSuggestionView contactSuggestionView = Views.findById(this, R.id.add_event_contact_autocomplete);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

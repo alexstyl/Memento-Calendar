@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
+import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.DecodedImage;
 import com.alexstyl.specialdates.images.ImageDecoder;
@@ -15,14 +15,14 @@ import com.alexstyl.specialdates.images.OnImageLoadedCallback;
 final class AvatarPresenter {
 
     private final ImageLoader imageLoader;
-    private final AvatarCameraButtonView avatarView;
+    private final AvatarPickerView avatarView;
     private final ToolbarBackgroundAnimator toolbarAnimator;
     private final ImageDecoder imageDecoder;
 
     private Optional<Bitmap> currentImageLoaded = Optional.absent();
 
     AvatarPresenter(ImageLoader imageLoader,
-                    AvatarCameraButtonView avatarView,
+                    AvatarPickerView avatarView,
                     ToolbarBackgroundAnimator toolbarAnimator,
                     ImageDecoder imageDecoder) {
         this.imageLoader = imageLoader;
