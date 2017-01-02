@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.addevent;
 
 import android.content.ContentProviderOperation;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Event;
+import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
@@ -10,13 +10,13 @@ import android.provider.ContactsContract.Data;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.DecodedImage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 final class OperationsFactory {
 
@@ -35,9 +35,9 @@ final class OperationsFactory {
     ContentProviderOperation newInsertFor(EventType eventType, Date date) {
         ContentProviderOperation.Builder builder = ContentProviderOperation
                 .newInsert(Data.CONTENT_URI)
-                .withValue(Data.MIMETYPE, Event.CONTENT_ITEM_TYPE)
-                .withValue(Event.TYPE, eventType.getAndroidType())
-                .withValue(Event.START_DATE, date.toShortDate());
+                .withValue(Data.MIMETYPE, CommonDataKinds.Event.CONTENT_ITEM_TYPE)
+                .withValue(CommonDataKinds.Event.TYPE, eventType.getAndroidType())
+                .withValue(CommonDataKinds.Event.START_DATE, date.toShortDate());
         addRawContactID(builder);
         return builder.build();
     }
@@ -58,7 +58,7 @@ final class OperationsFactory {
             ops.add(
                     ContentProviderOperation
                             .newDelete(Data.CONTENT_URI)
-                            .withSelection(Event._ID + "= " + eventId, null)
+                            .withSelection(CommonDataKinds.Event._ID + "= " + eventId, null)
                             .build());
         }
         return ops;
@@ -81,11 +81,11 @@ final class OperationsFactory {
         return ops;
     }
 
-    List<ContentProviderOperation> insertEvents(Set<Map.Entry<EventType, Date>> events) {
+    List<ContentProviderOperation> insertEvents(Collection<Event> events) {
         List<ContentProviderOperation> operations = new ArrayList<>(events.size());
-        for (Map.Entry<EventType, Date> entry : events) {
-            EventType eventType = entry.getKey();
-            Date date = entry.getValue();
+        for (Event entry : events) {
+            EventType eventType = entry.getEventType();
+            Date date = entry.getDate();
             ContentProviderOperation operation = newInsertFor(eventType, date);
             operations.add(operation);
         }
@@ -106,9 +106,9 @@ final class OperationsFactory {
                 .withSelection(
                         Data.RAW_CONTACT_ID + "= ?" + " AND " + ContactsContract.Data.MIMETYPE + "=?",
                         new String[]{String.valueOf(rawContactID),
-                                ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE}
+                                CommonDataKinds.Photo.CONTENT_ITEM_TYPE}
                 )
-                .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, decodedImage.getBytes())
+                .withValue(CommonDataKinds.Photo.PHOTO, decodedImage.getBytes())
                 .build();
     }
 

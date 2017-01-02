@@ -41,7 +41,7 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
     private static final int CODE_PICK_A_FILE = 502;
     private static final int CODE_CROP_IMAGE = 503;
 
-    private AddEventsPresenter presenter;
+    private AddContactEventsPresenter presenter;
     private Uri croppedImageUri;
 
     @Override
@@ -80,22 +80,18 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
 
         final WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
         ContactOperations contactOperations = new ContactOperations(getContentResolver(), accountsProvider, peopleEventsProvider);
-        MessageDisplayer messageDisplayer = new MessageDisplayer(getApplicationContext());
+        MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
         ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
         ImageDecoder imageDecoder = new ImageDecoder();
-        presenter = new AddEventsPresenter(
-                imageLoader,
-                contactEventsFetcher,
-                adapter,
+        AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, ToolbarBackgroundAnimator.setupOn(toolbar), imageDecoder);
+        EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
+        presenter = new AddContactEventsPresenter(
+                avatarPresenter,
+                eventsPresenter,
                 contactSuggestionView,
-                avatarView,
-                toolbar,
-                factory,
-                addEventFactory,
                 contactOperations,
                 messageDisplayer,
-                operationsExecutor,
-                imageDecoder
+                operationsExecutor
         );
         presenter.startPresenting(
                 new OnCameraClickedListener() {

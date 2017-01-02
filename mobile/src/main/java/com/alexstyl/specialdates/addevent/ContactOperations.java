@@ -7,8 +7,7 @@ import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.images.DecodedImage;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
@@ -16,9 +15,8 @@ import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 class ContactOperations {
 
@@ -48,15 +46,14 @@ class ContactOperations {
     static class ContactOperationsBuilder {
         private final ArrayList<ContentProviderOperation> existingOperations;
         private final OperationsFactory operationsFactory;
-
-        private Set<Map.Entry<EventType, Date>> events;
+        private Collection<Event> events;
 
         ContactOperationsBuilder(ArrayList<ContentProviderOperation> initialOperations, OperationsFactory operationsFactory) {
             existingOperations = initialOperations;
             this.operationsFactory = operationsFactory;
         }
 
-        ContactOperationsBuilder withEvents(Set<Map.Entry<EventType, Date>> events) {
+        ContactOperationsBuilder withEvents(Collection<Event> events) {
             this.events = events;
             return this;
         }
