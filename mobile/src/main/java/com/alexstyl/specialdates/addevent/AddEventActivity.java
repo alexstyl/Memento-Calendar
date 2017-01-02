@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
@@ -68,18 +69,20 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
         ContactEventViewModelFactory factory = new ContactEventViewModelFactory(new AndroidDateLabelCreator(this));
         AndroidStringResources stringResources = new AndroidStringResources(getResources());
-        AddEventViewModelFactory newEventFactory = new AddEventViewModelFactory(stringResources);
+        AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
                 getSupportLoaderManager(),
                 this,
                 peopleEventsProvider,
                 factory,
-                newEventFactory
+                addEventFactory
         );
 
         final WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
-        ContactEventPersister contactEventPersister = new ContactEventPersister(getContentResolver(), accountsProvider, peopleEventsProvider);
+        ContactOperations contactOperations = new ContactOperations(getContentResolver(), accountsProvider, peopleEventsProvider);
         MessageDisplayer messageDisplayer = new MessageDisplayer(getApplicationContext());
+        ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
+        ImageDecoder imageDecoder = new ImageDecoder();
         presenter = new AddEventsPresenter(
                 imageLoader,
                 contactEventsFetcher,
@@ -88,9 +91,11 @@ public class AddEventActivity extends ThemedActivity implements OnImageOptionPic
                 avatarView,
                 toolbar,
                 factory,
-                new AddEventViewModelFactory(stringResources),
-                contactEventPersister,
-                messageDisplayer
+                addEventFactory,
+                contactOperations,
+                messageDisplayer,
+                operationsExecutor,
+                imageDecoder
         );
         presenter.startPresenting(
                 new OnCameraClickedListener() {
