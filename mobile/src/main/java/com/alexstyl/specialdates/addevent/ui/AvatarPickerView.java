@@ -13,20 +13,24 @@ import com.nostra13.universalimageloader.core.assist.ViewScaleType;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.novoda.notils.caster.Views;
 
-final public class AvatarCameraButtonView extends RelativeLayout implements ImageAware {
+final public class AvatarPickerView extends RelativeLayout implements ImageAware {
 
     private ImageView imageView;
+    private ImageView gradientTopView;
+    private ImageView gradientBottomView;
 
-    public AvatarCameraButtonView(Context context, AttributeSet attrs) {
+    public AvatarPickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        inflate(getContext(), R.layout.merge_camera_button_image_view, this);
+        inflate(getContext(), R.layout.merge_avatar_picker_view, this);
 
-        imageView = Views.findById(this, R.id.camera_button_image);
+        imageView = Views.findById(this, R.id.avatar_picker_image);
+        gradientTopView = Views.findById(this, R.id.avatar_picker_gradient_top);
+        gradientBottomView = Views.findById(this, R.id.avatar_picker_gradient_bottom);
     }
 
     @Override
@@ -46,18 +50,35 @@ final public class AvatarCameraButtonView extends RelativeLayout implements Imag
 
     @Override
     public boolean setImageDrawable(Drawable drawable) {
+        if (drawable == null) {
+            hideGradient();
+        } else {
+            showGradient();
+        }
         imageView.setImageDrawable(drawable);
         return true;
+    }
+
+    private void hideGradient() {
+        gradientTopView.setVisibility(GONE);
+        gradientBottomView.setVisibility(GONE);
     }
 
     @Override
     public boolean setImageBitmap(Bitmap imageBitmap) {
         if (imageBitmap == null) {
             setImageDrawable(null);
+            hideGradient();
         } else {
             imageView.setImageBitmap(imageBitmap);
+            showGradient();
         }
         return true;
+    }
+
+    private void showGradient() {
+        gradientTopView.setVisibility(VISIBLE);
+        gradientBottomView.setVisibility(VISIBLE);
     }
 
     public boolean isDisplayingAvatar() {

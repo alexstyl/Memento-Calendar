@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     android:elevation="@dimen/toolbar_elevation">
 
-    <com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView
+    <com.alexstyl.specialdates.addevent.ui.AvatarPickerView
       android:id="@+id/add_event_avatar"
       style="@style/CardViewStyle"
       android:layout_width="match_parent"

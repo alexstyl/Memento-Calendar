@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.addevent.ui.AvatarCameraButtonView;
+import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -65,7 +65,7 @@ public class ImageLoader {
         loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
-    public void loadImage(Uri imagePath, AvatarCameraButtonView avatarView, final OnImageLoadedCallback callback) {
+    public void loadImage(Uri imagePath, AvatarPickerView avatarView, final OnImageLoadedCallback callback) {
         loader.loadImage(imagePath.toString(), new ImageSize(avatarView.getWidth(), avatarView.getHeight()), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
