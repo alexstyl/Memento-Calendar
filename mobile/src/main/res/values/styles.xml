@@ -152,6 +152,7 @@
   <style name="Widget.Memento.Toolbar"
     parent="Widget.AppCompat.Toolbar">
     <item name="android:theme">?attr/toolbarTheme</item>
+    <item name="elevation">@dimen/toolbar_elevation</item>
   </style>
 
   <style name="Divider">
