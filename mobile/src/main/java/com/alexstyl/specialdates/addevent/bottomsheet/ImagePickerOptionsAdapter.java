@@ -81,5 +81,6 @@ public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView
     public void updateWith(List<IntentOptionViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
+        notifyDataSetChanged();
     }
 }
