@@ -22,7 +22,9 @@ final public class IntentResolver {
         for (ResolveInfo resolveInfo : resolveInfos) {
             Drawable icon = resolveInfo.loadIcon(packageManager);
             String label = String.valueOf(resolveInfo.loadLabel(packageManager));
-            viewModels.add(new IntentOptionViewModel(icon, label, intent));
+            Intent launchingIntent = new Intent(intent.getAction());
+            launchingIntent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+            viewModels.add(new IntentOptionViewModel(icon, label, launchingIntent));
         }
         return viewModels;
     }
