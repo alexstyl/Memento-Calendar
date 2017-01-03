@@ -15,15 +15,15 @@ final public class IntentOptionViewModel {
         this.intent = intent;
     }
 
-    public Drawable getActivityIcon() {
+    Drawable getActivityIcon() {
         return icon;
     }
 
-    public String getLabel() {
+    String getLabel() {
         return label;
     }
 
-    public Intent getIntent() {
+    Intent getIntent() {
         return intent;
     }
 
