@@ -123,7 +123,6 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
             presenter.presentAvatar(croppedImageUri);
-            revokeReadPermissionIfNeeded(croppedImageUri);
         }
     }
 
@@ -199,12 +198,6 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 String packageName = resolveInfo.activityInfo.packageName;
                 grantUriPermission(packageName, photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
-        }
-    }
-
-    private void revokeReadPermissionIfNeeded(Uri photoUri) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            revokeUriPermission(photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
     }
 
