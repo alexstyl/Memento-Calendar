@@ -3,6 +3,8 @@ package com.alexstyl.specialdates.upcoming;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
+import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class MonthLabelsTest {
@@ -19,16 +21,16 @@ public class MonthLabelsTest {
 
     @Test
     public void givenTheFirstMonthOfTheYear_thenTheCorrectLabelIsReturned() {
-        int index = 1;
+        int index = JANUARY;
         String zeroIndexedLabel = monthLabels.getMonthOfYear(index);
-        assertThat(zeroIndexedLabel).isEqualTo(months[index - 1]);
+        assertThat(zeroIndexedLabel).isEqualTo("January");
     }
 
     @Test
     public void givenTheLastMonthOfTheYear_thenTheCorrectLabelIsReturned() {
-        int index = 12;
+        int index = DECEMBER;
         String zeroIndexedLabel = monthLabels.getMonthOfYear(index);
-        assertThat(zeroIndexedLabel).isEqualTo(months[index - 1]);
+        assertThat(zeroIndexedLabel).isEqualTo("December");
     }
 
     @Test

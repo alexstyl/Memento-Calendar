@@ -14,7 +14,7 @@ import com.novoda.notils.logger.simple.Log;
 
 public class BirthdayLabelView extends LinearLayout {
 
-    private static final DateDisplayStringCreator DATE_DISPLAY_STRING_CREATOR = DateDisplayStringCreator.getInstance();
+    private static final DateDisplayStringCreator DATE_DISPLAY_STRING_CREATOR = DateDisplayStringCreator.INSTANCE;
 
     private TextView label;
     private Date birthday;

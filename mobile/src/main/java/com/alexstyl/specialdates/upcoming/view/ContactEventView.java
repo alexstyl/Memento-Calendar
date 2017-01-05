@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.upcoming.view;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -9,7 +8,11 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.android.AndroidColorResources;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
@@ -22,7 +25,8 @@ public class ContactEventView extends LinearLayout {
     private final TextView contactNameView;
     private final TextView eventTypeView;
     private final ColorImageView avatarView;
-    private final Resources resources;
+    private final StringResources stringResources;
+    private final ColorResources colorResources;
 
     public ContactEventView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,7 +38,8 @@ public class ContactEventView extends LinearLayout {
         avatarView = Views.findById(this, R.id.upcoming_event_contact_card_avatar);
 
         setGravity(Gravity.CENTER_VERTICAL);
-        resources = context.getResources();
+        stringResources = new AndroidStringResources(getResources());
+        colorResources = new AndroidColorResources(getResources());
     }
 
     public void displayEvent(ContactEvent event, ImageLoader imageLoader) {
@@ -49,9 +54,9 @@ public class ContactEventView extends LinearLayout {
 
     private void displayEventFor(ContactEvent event) {
         EventType eventType = event.getType();
-        String eventLabel = event.getLabel(resources);
+        String eventLabel = event.getLabel(stringResources);
         eventTypeView.setText(eventLabel);
-        eventTypeView.setTextColor(resources.getColor(eventType.getColorRes()));
+        eventTypeView.setTextColor(colorResources.getColor(eventType.getColorRes()));
     }
 
     public void setNameTypeface(Typeface typeface) {

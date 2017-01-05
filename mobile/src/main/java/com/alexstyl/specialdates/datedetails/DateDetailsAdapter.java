@@ -7,18 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
-import com.alexstyl.specialdates.events.bankholidays.BankholidayCalendar;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
@@ -45,25 +45,29 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final ContactCardListener contactCardListener;
 
     private boolean isShowingFullDetailedCards;
+    private final StringResources stringResources;
+    private final ColorResources colorResources;
 
     public static DateDetailsAdapter newInstance(Context context,
                                                  Date dateToDisplay,
                                                  OnSupportCardClickListener supportListener,
                                                  NamedayCardView.OnShareClickListener namedayListener,
-                                                 ContactCardListener contactCardListener) {
+                                                 ContactCardListener contactCardListener,
+                                                 Optional<BankHoliday> bankholiday,
+                                                 StringResources stringResources,
+                                                 ColorResources colorResources
+    ) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         Resources resources = context.getResources();
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
         CardActionRecycler cardActionRecycler = new CardActionRecycler(layoutInflater);
-
-        BankHolidaysPreferences bankHolidaysPreferences = BankHolidaysPreferences.newInstance(context);
-        Optional<BankHoliday> bankholiday = getBankHolidayOptionalForDate(dateToDisplay, bankHolidaysPreferences);
         Optional<NamesInADate> nameday = getNamedayOptionalForDate(dateToDisplay, context);
 
         return new DateDetailsAdapter(
                 imageLoader, nameday,
                 bankholiday, cardActionRecycler,
-                new AskForSupport(context), contactCardListener, namedayListener, supportListener
+                new AskForSupport(context), contactCardListener, namedayListener, supportListener,
+                stringResources, colorResources
         );
     }
 
@@ -81,24 +85,15 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    private static Optional<BankHoliday> getBankHolidayOptionalForDate(Date dateToDisplay, BankHolidaysPreferences bankHolidaysPreferences) {
-        if (bankHolidaysPreferences.isEnabled()) {
-            BankholidayCalendar repository = BankholidayCalendar.get();
-            return repository.getBankholidayFor(dateToDisplay);
-        } else {
-            return Optional.absent();
-        }
-    }
-
-    DateDetailsAdapter(ImageLoader imageLoader,
-                       Optional<NamesInADate> nameday,
-                       Optional<BankHoliday> bankholiday,
-                       CardActionRecycler cardActionRecycler,
-                       AskForSupport askForSupport,
-                       ContactCardListener contactCardListener,
-                       NamedayCardView.OnShareClickListener namedayListener,
-                       OnSupportCardClickListener supportListener
-    ) {
+    private DateDetailsAdapter(ImageLoader imageLoader,
+                               Optional<NamesInADate> nameday,
+                               Optional<BankHoliday> bankholiday,
+                               CardActionRecycler cardActionRecycler,
+                               AskForSupport askForSupport,
+                               ContactCardListener contactCardListener,
+                               NamedayCardView.OnShareClickListener namedayListener,
+                               OnSupportCardClickListener supportListener,
+                               StringResources stringResources, ColorResources colorResources) {
         this.nameday = nameday;
         this.imageLoader = imageLoader;
         this.cardActionRecycler = cardActionRecycler;
@@ -107,6 +102,8 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.askForSupport = askForSupport;
         this.supportListener = supportListener;
         this.bankholiday = bankholiday;
+        this.stringResources = stringResources;
+        this.colorResources = colorResources;
     }
 
     public boolean isLoadingDetailedCards() {
@@ -158,11 +155,11 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         if (viewType == VIEW_TYPE_DETAILED) {
             View view = layoutInflater.inflate(R.layout.card_contact_event_full, parent, false);
-            return DetailedDateDetailsViewHolder.newInstance(view, contactCardListener, imageLoader, cardActionRecycler);
+            return new DetailedDateDetailsViewHolder(view, stringResources, colorResources, contactCardListener, imageLoader, cardActionRecycler);
         }
         if (viewType == VIEW_TYPE_COMPACT) {
             View view = layoutInflater.inflate(R.layout.base_card_compact, parent, false);
-            return CompactDateDetailsViewHolder.newInstance(view, imageLoader);
+            return new CompactDateDetailsViewHolder(view, imageLoader, stringResources, colorResources);
         }
 
         if (viewType == VIEW_TYPE_RATE_APP_FULL) {

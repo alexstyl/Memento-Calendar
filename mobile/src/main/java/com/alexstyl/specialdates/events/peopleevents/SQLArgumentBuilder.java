@@ -1,29 +1,23 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.database.EventsDBContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.upcoming.LoadingTimeDuration;
 
-import java.util.Locale;
+public final class SQLArgumentBuilder {
 
-class SQLArgumentBuilder {
-
-    private static final String date = PeopleEventsContract.PeopleEvents.DATE;
-
-    String dateIn(int year) {
-        return String.format(Locale.US, "'%d' || substr(date, -6) as '%s'", year, AnnualEventsContract.DATE);
+    public static String dateWithoutYear(Date date) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int month = date.getMonth();
+        addWithLeadingZeroIfNeeded(stringBuilder, month);
+        stringBuilder.append("-");
+        addWithLeadingZeroIfNeeded(stringBuilder, date.getDayOfMonth());
+        return stringBuilder.toString();
     }
 
-    String dateBetween(LoadingTimeDuration duration) {
-        return dateFrom(duration.getFrom()) + " AND " + dateTo(duration.getTo());
-    }
-
-    private String dateFrom(Date date) {
-        return String.format(Locale.US, "'%d' || substr(%s,-6) >= '%s'", date.getYear(), SQLArgumentBuilder.date, date.toString());
-    }
-
-    private String dateTo(Date date) {
-        return String.format(Locale.US, "'%d' || substr(%s,-6) <= '%s'", date.getYear(), SQLArgumentBuilder.date, date.toString());
+    private static void addWithLeadingZeroIfNeeded(StringBuilder stringBuilder, int value) {
+        if (value < 10) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append(value);
     }
 }

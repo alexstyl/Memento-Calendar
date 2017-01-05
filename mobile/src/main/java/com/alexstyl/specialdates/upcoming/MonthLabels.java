@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
+import com.alexstyl.specialdates.date.MonthInt;
+
 import java.text.DateFormatSymbols;
 import java.util.Arrays;
 import java.util.Locale;
@@ -18,15 +20,8 @@ public class MonthLabels {
         this.monthLabels = monthLabels;
     }
 
-    public String getMonthOfYear(int monthPosition) {
-        checkArgument(monthPosition);
+    public String getMonthOfYear(@MonthInt int monthPosition) {
         return monthLabels[monthPosition - 1];
-    }
-
-    private void checkArgument(int month) {
-        if (month < 1 || month > 12) {
-            throw new IllegalArgumentException("There are only 12 months in a year. [" + month + "] is not one of them");
-        }
     }
 
     public String[] getMonthsOfYear() {

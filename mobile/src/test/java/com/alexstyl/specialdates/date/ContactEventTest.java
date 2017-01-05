@@ -1,12 +1,12 @@
 package com.alexstyl.specialdates.date;
 
-import android.content.res.Resources;
-
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,11 +21,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ContactEventTest {
 
-    private static final Contact CONTACT_WITHOUT_BIRTHDAY = new TestContact(1, DisplayName.from("Peter"));
-    private static final Date SOME_DATE = Date.on(1, 1, 1990);
+    private static final Optional<Long> NO_DEVICE_ID = Optional.absent();
+    private static final Contact ANY_CONTACT = new TestContact(1, DisplayName.from("Peter"));
+    private static final Date SOME_DATE = Date.on(1, JANUARY, 1990);
+    private static final Date SOME_DATE_WITHOUT_YEAR = Date.on(1, JANUARY);
+    private static final int CURRENT_YEAR = Date.CURRENT_YEAR;
 
     @Mock
-    private Resources mockResources;
+    private StringResources mockResources;
 
     @Before
     public void setUp() throws Exception {
@@ -37,51 +40,40 @@ public class ContactEventTest {
 
     @Test
     public void labelForNameday() {
-        ContactEvent contactEvent = new ContactEvent(EventType.NAMEDAY, SOME_DATE, CONTACT_WITHOUT_BIRTHDAY);
+        ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.NAMEDAY, SOME_DATE, ANY_CONTACT);
         String label = contactEvent.getLabel(mockResources);
         assertThat(label).isEqualTo("Nameday");
     }
 
     @Test
     public void labelForBirthdayWithoutYear() {
-        ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, SOME_DATE, contactWithBirthdayOn(1, 1));
+        ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, SOME_DATE_WITHOUT_YEAR, ANY_CONTACT);
         String label = contactEvent.getLabel(mockResources);
         assertThat(label).isEqualTo("Birthday");
     }
 
     @Test
     public void labelForBirthdayWithYearAfterDate() {
-        Date eventDate = Date.on(1, 1, 1990);
-        Contact contact = contactWithBirthdayOn(1, 1, 2016);
-        ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
+        Date eventDate = Date.on(1, JANUARY, CURRENT_YEAR + 50);
+        ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT);
         String label = contactEvent.getLabel(mockResources);
         assertThat(label).isEqualTo("Birthday");
     }
 
     @Test
     public void labelForBirthdayWithYearOnDate() {
-        Date eventDate = Date.on(1, JANUARY, 1990);
-        Contact contact = contactWithBirthdayOn(1, JANUARY, 1990);
-        ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
+        Date eventDate = Date.on(1, JANUARY, CURRENT_YEAR);
+        ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT);
         String label = contactEvent.getLabel(mockResources);
         assertThat(label).isEqualTo("Birthday");
     }
 
     @Test
     public void labelForBirthdayWithYearBeforeDate() {
-        Date eventDate = Date.on(1, 1, 2000);
-        Contact contact = contactWithBirthdayOn(1, 1, 1990);
-        ContactEvent contactEvent = new ContactEvent(EventType.BIRTHDAY, eventDate, contact);
+        Date eventDate = Date.on(1, JANUARY, CURRENT_YEAR - 10);
+        ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT);
         String label = contactEvent.getLabel(mockResources);
         assertThat(label).isEqualTo("Turns 10");
-    }
-
-    private Contact contactWithBirthdayOn(int dayOfMonth, int month, int year) {
-        return new TestContact(1, DisplayName.from("Peter"), Date.on(dayOfMonth, month, year));
-    }
-
-    private Contact contactWithBirthdayOn(int day, int month) {
-        return new TestContact(1, DisplayName.from("Peter"), Date.on(day, month));
     }
 
 }

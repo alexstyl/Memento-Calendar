@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="main_preferences_full_name_title">@string/Use_all_parts_of_names</string>
+  <string name="main_preferences_full_name_summary_on">@string/The_app_will_lookup_namedays_for_all_names_in_a_contact_including_surname</string>
+  <string name="main_preferences_full_name_summary_off">@string/The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname</string>
+</resources>

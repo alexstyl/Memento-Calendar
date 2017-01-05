@@ -6,18 +6,14 @@ import com.alexstyl.specialdates.Names;
 import java.text.Collator;
 import java.util.Locale;
 
-public class NameMatcher {
+public enum NameMatcher {
+    INSTANCE;
 
     private final Collator collator;
 
-    static NameMatcher newInstance() {
-        Collator collator = Collator.getInstance(Locale.getDefault());
+    {
+        collator = Collator.getInstance(Locale.getDefault());
         collator.setStrength(Collator.PRIMARY);
-        return new NameMatcher(collator);
-    }
-
-    private NameMatcher(Collator collator) {
-        this.collator = collator;
     }
 
     public boolean match(DisplayName displayName, String searchQuery) {

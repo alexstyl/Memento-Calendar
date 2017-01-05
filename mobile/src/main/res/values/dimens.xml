@@ -20,7 +20,7 @@
 
   <dimen name="contactdetail_height">250dp</dimen>
   <dimen name="widgetHeight">48dp</dimen>
-  <dimen name="widget_margin">8dp</dimen>
+  <dimen name="widget_margin">0dp</dimen>
 
   <dimen name="margin_top_empty_view">24dp</dimen>
 
@@ -64,7 +64,6 @@
   <dimen name="mini_avatar_size">24dp</dimen>
   <dimen name="avatar_placeholder_height">38dp</dimen>
   <dimen name="size_daymarker">56dp</dimen>
-  <dimen name="fab_margin">16dp</dimen>
 
   <dimen name="padding_month_header_vertical">38dp</dimen>
   <dimen name="padding_upcoming_vertical">18dp</dimen>
@@ -75,5 +74,8 @@
 
 
   <dimen name="list_item_avatar_size">40dp</dimen>
+
+  <dimen name="fab_margin">16dp</dimen>
   <dimen name="fab_size_normal">48dp</dimen>
+  <dimen name="fab_total_size">64dp</dimen>
 </resources>

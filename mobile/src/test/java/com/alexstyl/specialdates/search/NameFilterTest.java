@@ -15,34 +15,36 @@ public class NameFilterTest {
     private NameFilter greekNameFilter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         List<String> allNames = new ArrayList<>();
         allNames.add("Γιώργος");
+        allNames.add("Αλέξανδρος");
         greekNameFilter = new NameFilter(allNames, new SoundWordComparator());
 
     }
 
     @Test
-    public void givenTheNameInGreeklish_thenTheNameIsReturned() throws Exception {
+    public void givenTheNameInGreeklish_thenTheNameIsReturned() {
         List<String> giwrgos = greekNameFilter.performFiltering("Giwrgos");
         assertThat(giwrgos.get(0)).isEqualTo("Γιώργος");
     }
 
     @Test
-    public void givenPartOfTheNameInGreeklish_thenTheNameIsReturned() throws Exception {
+    public void givenPartOfTheNameInGreeklish_thenTheNameIsReturned() {
         List<String> giwrgos = greekNameFilter.performFiltering("Giwrgo");
         assertThat(giwrgos.get(0)).isEqualTo("Γιώργος");
     }
 
     @Test
-    public void givenTheNameInGreek_thenTheNameIsReturned() throws Exception {
+    public void givenTheNameInGreek_thenTheNameIsReturned() {
         List<String> giwrgos = greekNameFilter.performFiltering("Γιώργος");
         assertThat(giwrgos.get(0)).isEqualTo("Γιώργος");
     }
 
     @Test
-    public void givenPartOfTheNameInGreek_thenTheNameIsReturned() throws Exception {
+    public void givenPartOfTheNameInGreek_thenTheNameIsReturned() {
         List<String> giwrgos = greekNameFilter.performFiltering("Γιώργο");
         assertThat(giwrgos.get(0)).isEqualTo("Γιώργος");
     }
+
 }

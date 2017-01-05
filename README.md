@@ -1,20 +1,20 @@
 # Memento Calendar for Android  [![alt text](https://travis-ci.org/alexstyl/Memento-Calendar.svg?branch=master "Check the build status on Travis CI")](https://travis-ci.org/alexstyl/Memento-Calendar)
 
+<img src="https://github.com/alexstyl/Memento-Calendar/blob/master/common/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true" width="200" align="right" hspace="20">
+
 Memento Calendar is a modern namedays app for Android.
 This repository contains the source code of Memento Calendar.
 
 You can get started by having a look at the project's wiki. It contains some information about how to get Memento up and running on your machine and other useful info.
 
-This repo is open for PRs and they are more than welcome! Have a look at the wiki page to see how to contribute.
+This repo is open for PRs and they are more than welcome! Have a look [at the wiki page to see how to contribute](https://github.com/alexstyl/Memento-Calendar/wiki/How-to-contribute).
 
-
-## Google Play link
 
 [![alt text](http://developer.android.com/images/brand/en_app_rgb_wo_60.png "Download Memento Calendar from the Play Store")](https://play.google.com/store/apps/details?id=com.alexstyl.specialdates)
 
-https://play.google.com/store/apps/details?id=com.alexstyl.specialdates
 
-### License
+
+## License
 ```
 MIT License
 

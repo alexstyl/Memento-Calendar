@@ -24,7 +24,6 @@ public class NamedayCalendarProvider {
         return new NamedayCalendarProvider(jsonResourceProvider, factory);
     }
 
-    // eventually we will use DI to provide this, so don't worry about the `public`
     public NamedayCalendarProvider(NamedayJSONResourceProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
         this.factory = factory;
         this.jsonProvider = jsonProvider;

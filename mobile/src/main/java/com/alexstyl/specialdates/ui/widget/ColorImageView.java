@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.Size;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -92,7 +93,7 @@ public class ColorImageView extends FrameLayout {
     /**
      * Returns the currently selected background variant of the view
      */
-    public void setBackgroundVariant(int i) {
+    public void setBackgroundVariant(@Size(min = 1, max = 5) int i) {
         int variant = LetterPainter.getVariant(getResources(), i);
         if (backgroundVariant != variant) {
             backgroundVariant = variant;
