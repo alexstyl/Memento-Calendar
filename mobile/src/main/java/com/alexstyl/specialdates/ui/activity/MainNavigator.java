@@ -54,7 +54,7 @@ public class MainNavigator {
         }
     }
 
-    void toAddBirthday() {
+    void toAddEvent() {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
     }
