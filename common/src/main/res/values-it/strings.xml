@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Memento Namedays</string>
+as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Calendario Compleanni e Onomastici</string>
     <string name="today">Oggi</string>
     <string name="tomorrow">Domani</string>
     <string name="birthday">Compleanno</string>
@@ -28,9 +28,6 @@
     <string name="contact_dev_summary">Hai trovato un bug? Hai un suggerimento? Fammelo sapere!</string>
     <string name="choose">Scegli</string>
     <string name="number">numero</string>
-    <string name="has_nameday_on">Onomastico il %s</string>
-    <string name="has_birthday_on">Compleanno il %s</string>
-    <string name="has_birthday_on_age">compie %1$d il %2$s</string>
     <string name="action_call">Chiama</string>
     <string name="action_text">Invia SMS</string>
     <string name="action_send_mail">Invia e-mail</string>
@@ -139,6 +136,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="no_birthday_set">Compleanno non impostato</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Non ho trovato contatti con eventi speciali.\nTocca il '+' per aggiungerne"</string>
     <string name="No_contacts_with_events_found">"Non ho trovato contatti con eventi speciali"</string>
+    <string name="add_birthday">Aggiungi compleanno</string>
     <string name="Birthday_date">Compleanno</string>
     <string name="Contact_name">Nome contatto</string>
     <string name="Themes">Temi</string>
@@ -150,4 +148,15 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Contact_names">Nomi dei contatti</string>
     <string name="Bank_holiday">Festività</string>
     <string name="Bank_holidays">Festività</string>
+    <string name="GoogleP_community">Comunità Google+</string>
+    <string name="Display_Bankholidays">Visualizza Festività</string>
+    <string name="Bankholidays_Country">Nazione</string>
+    <string name="Bankholidays_are_currently_supported_only_for_Greek">Al momento sono supportate solo le Festività greche</string>
+    <string name="Clear">Pulisci</string>
+    <string name="Search_for_contacts">Ricerca dei contatti</string>
+    <string name="Search_for_contacts_or_namedays">Ricerca dei contatti o onomastici</string>
+    <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">L\'app necessita il tuo permesso di leggere i contatti per poter visualizzare le date.</string>
+    <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Alcune persone offrono una torta a chi gli augura Buon Compleanno. Usa questa app per tenere traccia dei potenziali donatori di torta.</string>
+    <string name="Grant_permission">Concedi il permesso</string>
+    <string name="eventlabel_on_dateLabel">%1$s il %2$s</string>
 </resources>

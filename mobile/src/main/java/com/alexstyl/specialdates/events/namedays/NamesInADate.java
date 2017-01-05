@@ -31,6 +31,10 @@ public class NamesInADate {
         return Collections.unmodifiableList(names);
     }
 
+    /**
+     * Do not use this method. Prefer passing names from the constructor of the class
+     */
+    @Deprecated
     public void addName(String name) {
         names.add(name);
     }

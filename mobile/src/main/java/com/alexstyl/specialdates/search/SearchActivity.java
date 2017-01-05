@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,22 +18,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
+import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
@@ -42,6 +43,7 @@ import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
+import com.novoda.notils.text.SimpleTextWatcher;
 
 import static android.view.View.GONE;
 import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -62,7 +64,6 @@ public class SearchActivity extends ThemedActivity {
 
     private int searchCounter = INITAL_COUNT;
     private SearchBar searchbar;
-    private RecyclerView resultView;
     private RecyclerView namesSuggestionsView;
     private SearchResultAdapter adapter;
     private NameSuggestionsAdapter namesAdapter;
@@ -72,18 +73,36 @@ public class SearchActivity extends ThemedActivity {
     private ViewGroup content;
     private NamedayPreferences namedayPreferences;
     private ContactPermissionRequest permissions;
+    private RecyclerView resultView;
+    private PeopleEventsSearch peopleEventsSearch;
+    private ContactEventViewModelFactory viewModelFactory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
+        StringResources stringResources = new AndroidStringResources(getResources());
+        viewModelFactory = new ContactEventViewModelFactory(new EventLabelCreator(stringResources, new AndroidDateLabelCreator(this)));
+
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
+        namedayPreferences = NamedayPreferences.newInstance(this);
+
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
         content = Views.findById(this, R.id.search_content);
+
         resultView = Views.findById(this, android.R.id.list);
-        resultView.setHasFixedSize(false);
+        resultView.setHasFixedSize(true);
+
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding)/2;
+        resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
+        resultView.setLayoutManager(mLayoutManager);
+
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
         PermissionNavigator navigator = new PermissionNavigator(this, analytics);
         PermissionChecker checker = new PermissionChecker(this);
@@ -95,31 +114,19 @@ public class SearchActivity extends ThemedActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
-        int year = Date.today().getYear();
-        NamedayLocale locale = NamedayPreferences.newInstance(this).getSelectedLanguage();
-        NamedayCalendar namedayCalendar = NamedayCalendarProvider.newInstance(this.getResources()).loadNamedayCalendarForLocale(locale, year);
-
-        adapter = new SearchResultAdapter(imageLoader, namedayCalendar);
+        ImageLoader imageLoader = ImageLoader.createCircleThumbnailLoader(getResources());
+        adapter = new SearchResultAdapter(imageLoader);
         adapter.setSearchResultClickListener(listener);
-
-        resultView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_spacing_between);
-        resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
-        resultView.setLayoutManager(mLayoutManager);
         resultView.setAdapter(adapter);
 
         searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
 
-        namedayPreferences = NamedayPreferences.newInstance(this);
         setupSearchbarHint(namedayPreferences);
 
         if (namedayPreferences.isEnabled()) {
             // we are loading namedays as well
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
-            namesAdapter = NameSuggestionsAdapter.newInstance(context());
-            namesAdapter.setOnNameSelectedListener(onNameSelectedListener);
+            namesAdapter = NameSuggestionsAdapter.newInstance(context(), onNameSelectedListener);
             namesSuggestionsView.setHasFixedSize(true);
             namesSuggestionsView.setLayoutManager(namedayManager);
             namesSuggestionsView.setAdapter(namesAdapter);
@@ -256,24 +263,33 @@ public class SearchActivity extends ThemedActivity {
 
     private void setupSearchField() {
         searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
-    }
-
-    private void onNameSet(String name) {
-        // setting the text to the EditText will trigger the search for the name
-        AndroidUtils.requestHideKeyboard(this, searchbar);
-        searchbar.setText(name);
-        searchbar.clearFocus();
         if (namedayPreferences.isEnabled()) {
-            namesAdapter.clearNames();
+            searchbar.addTextWatcher(new SimpleTextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    super.afterTextChanged(s);
+                    namesAdapter.setTextTyped(s.toString());
+                }
+            });
         }
     }
 
     private final NameSuggestionsAdapter.OnNameSelectedListener onNameSelectedListener = new NameSuggestionsAdapter.OnNameSelectedListener() {
         @Override
-        public void onNameSelected(View view, String name) {
+        public void onNameSelected(String name) {
+            AndroidUtils.requestHideKeyboard(context(), searchbar);
             onNameSet(name);
+            resultView.requestFocus();
         }
     };
+
+    private void onNameSet(String name) {
+        // setting the text to the EditText will trigger the search for the name
+        searchbar.setText(name);
+        if (namedayPreferences.isEnabled()) {
+            namesAdapter.clearNames();
+        }
+    }
 
     private final SearchResultAdapter.SearchResultClickListener listener = new SearchResultAdapter.SearchResultClickListener() {
 
@@ -283,9 +299,10 @@ public class SearchActivity extends ThemedActivity {
         }
 
         @Override
-        public void onNamedayClicked(View v, int month, int day) {
-            Date date = Date.today();
-            DateDetailsActivity.startActivity(context(), month, day, date.getYear());
+        public void onNamedayClicked(Date date) {
+            Date currentYearDate = Date.on(date.getDayOfMonth(), date.getMonth(), Date.CURRENT_YEAR);
+            Intent intent = DateDetailsActivity.getStartIntent(context(), currentYearDate);
+            startActivity(intent);
         }
 
     };
@@ -334,7 +351,7 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public Loader<SearchResults> onCreateLoader(int id, Bundle args) {
             adapter.notifyIsLoadingMore();
-            return new SearchLoader(context(), searchQuery, searchCounter);
+            return new SearchLoader(context(), peopleEventsSearch, searchQuery, searchCounter, viewModelFactory);
         }
 
         @Override
@@ -356,7 +373,6 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public boolean onBackButtonPressed() {
             if (searchbar.hasText()) {
-                // do nothing
                 return false;
             } else {
                 finish();
@@ -369,12 +385,10 @@ public class SearchActivity extends ThemedActivity {
         @Override
         public void onPermissionGranted() {
             // do nothing.
-            Log.d("permission granted");
         }
 
         @Override
         public void onPermissionDenied() {
-            Log.d("permission denied");
             namesSuggestionsView.post(new Runnable() {
                 @Override
                 public void run() {

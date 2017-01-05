@@ -5,10 +5,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
-import com.alexstyl.specialdates.date.Date;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
 
@@ -34,28 +31,28 @@ public class ContactTest {
 
     private final class TestableContact extends Contact {
 
-        public TestableContact(long id, DisplayName displayName) {
-            super(id, displayName, Optional.<Date>absent());
+        TestableContact(long id, DisplayName displayName) {
+            super(id, displayName);
         }
 
         @Override
         protected List<LabeledAction> onBuildActions(Context context) {
-            throw new DeveloperError("Not impletemented");
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public Uri getLookupUri() {
-            throw new DeveloperError("Not impletemented");
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void displayQuickInfo(Context context, View view) {
-            throw new DeveloperError("Not impletemented");
+            throw new UnsupportedOperationException();
         }
 
         @Override
-        public String getImagePath() {
-            throw new DeveloperError("Not impletemented");
+        public Uri getImagePath() {
+            throw new UnsupportedOperationException();
         }
     }
 }

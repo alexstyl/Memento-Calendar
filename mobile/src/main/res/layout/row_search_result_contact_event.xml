@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/CardViewStyle"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <LinearLayout
+    style="@style/SearchResult.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.alexstyl.specialdates.ui.widget.ColorImageView
+      android:id="@+id/search_result_avatar"
+      style="@style/SearchResult.Avatar"
+      tools:background="#000" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_marginLeft="@dimen/card_content_padding"
+      android:layout_marginRight="@dimen/card_content_padding"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@id/search_result_contact_name"
+        style="@style/SearchResult.ContactName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Darth Vader" />
+
+      <TextView
+        android:id="@+id/search_result_event_label"
+        style="@style/SearchResult.EventLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Birthday on December 12"
+        tools:textColor="@color/birthday_red" />
+
+    </LinearLayout>
+  </LinearLayout>
+</com.alexstyl.specialdates.ui.MementoCardView>

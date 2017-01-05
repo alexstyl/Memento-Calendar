@@ -28,7 +28,7 @@ class NameViewHolder extends RecyclerView.ViewHolder {
         nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onNameSelected(itemView, name);
+                listener.onNameSelected(name);
             }
         });
     }

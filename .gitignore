@@ -45,4 +45,4 @@ captures/
 
 # secrets
 secret.gradle
-/mobile/google-services.json
+google-services.json

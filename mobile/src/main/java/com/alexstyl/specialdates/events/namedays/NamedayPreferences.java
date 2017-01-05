@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R;
 
 public class NamedayPreferences {
 
-    private static final String DEFAULT_LOCALE = NamedayLocale.gr.name();
+    private static final String DEFAULT_LOCALE = NamedayLocale.GREEK.getShortCode();
 
     private final boolean enabledByDefault;
     private final EasyPreferences preferences;
@@ -42,6 +42,10 @@ public class NamedayPreferences {
 
     public void setEnabledForContactsOnly(boolean onlyForContacts) {
         preferences.setBoolean(R.string.key_namedays_contacts_only, onlyForContacts);
+    }
+
+    public boolean shouldLookupAllNames() {
+        return preferences.getBoolean(R.string.key_namedays_full_name, false);
     }
 
     private static boolean shouldNamedaysBeEnabledByDefault(Context context) {

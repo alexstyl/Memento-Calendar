@@ -15,56 +15,33 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-class UpcomingDatesBuilder {
+final class UpcomingDatesBuilder {
 
-    private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.unmodifiableList(Collections.<ContactEvent>emptyList());
+    private static final List<CelebrationDate> NO_CELEBRATIONS = Collections.emptyList();
+    private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.emptyList();
+    private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
-    private final DateComparator comparator = DateComparator.get();
-    private final HashMapList<Date, ContactEvent> contactEvents = new HashMapList<>();
-    private final HashMap<Date, NamesInADate> namedays = new HashMap<>();
-    private final HashMap<Date, BankHoliday> bankHolidays = new HashMap<>();
+    private final HashMapList<AnnualDate, ContactEvent> contactEvents = new HashMapList<>();
+    private final HashMap<AnnualDate, NamesInADate> namedays = new HashMap<>();
+    private final HashMap<AnnualDate, BankHoliday> bankHolidays = new HashMap<>();
+    private final TimePeriod duration;
 
-    private Optional<Date> earliestDate = Optional.absent();
-    private Optional<Date> latestDate = Optional.absent();
+    UpcomingDatesBuilder(TimePeriod duration) {
+        this.duration = duration;
+    }
 
     UpcomingDatesBuilder withContactEvents(List<ContactEvent> contactEvents) {
         for (ContactEvent contactEvent : contactEvents) {
             Date date = contactEvent.getDate();
-            keepIfEarliestDate(date);
-            keepIfLatestDate(date);
-            this.contactEvents.addValue(date, contactEvent);
+            this.contactEvents.addValue(new AnnualDate(date), contactEvent);
         }
         return this;
-    }
-
-    private void keepIfLatestDate(Date date) {
-        if (latestDate.isPresent()) {
-            Date previousLatestDate = latestDate.get();
-            if (comparator.compare(date, previousLatestDate) > 0) {
-                latestDate = new Optional<>(date);
-            }
-        } else {
-            latestDate = new Optional<>(date);
-        }
-    }
-
-    private void keepIfEarliestDate(Date date) {
-        if (earliestDate.isPresent()) {
-            Date previousEarliestDate = earliestDate.get();
-            if (comparator.compare(date, previousEarliestDate) < 0) {
-                earliestDate = new Optional<>(date);
-            }
-        } else {
-            earliestDate = new Optional<>(date);
-        }
     }
 
     UpcomingDatesBuilder withNamedays(List<NamesInADate> namedays) {
         for (NamesInADate nameday : namedays) {
             Date date = nameday.getDate();
-            keepIfEarliestDate(date);
-            keepIfLatestDate(date);
-            this.namedays.put(date, nameday);
+            this.namedays.put(new AnnualDate(date), nameday);
         }
         return this;
     }
@@ -72,14 +49,10 @@ class UpcomingDatesBuilder {
     UpcomingDatesBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
         for (BankHoliday bankHoliday : bankHolidays) {
             Date date = bankHoliday.getDate();
-            keepIfEarliestDate(date);
-            keepIfLatestDate(date);
-            this.bankHolidays.put(date, bankHoliday);
+            this.bankHolidays.put(new AnnualDate(date), bankHoliday);
         }
         return this;
     }
-
-    private static final List<CelebrationDate> NO_CELEBRATIONS = Collections.emptyList();
 
     public List<CelebrationDate> build() {
         if (noEventsArePresent()) {
@@ -87,21 +60,19 @@ class UpcomingDatesBuilder {
         }
 
         List<CelebrationDate> celebrationDates = new ArrayList<>();
-        Date indexDate = earliestDate.get();
-        Date lastDate = latestDate.get();
-        while (comparator.compare(indexDate, lastDate) <= 0) {
-            List<ContactEvent> contactEvent = contactEvents.get(indexDate);
-            if (contactEvent == null) {
-                contactEvent = NO_CONTACT_EVENTS;
-            }
-            NamesInADate namedays = this.namedays.get(indexDate);
+        Date indexDate = duration.getStartingDate();
+        Date lastDate = duration.getEndingDate();
 
-            BankHoliday bankHoliday = bankHolidays.get(indexDate);
-            if (atLeastOneEventExists(contactEvent, namedays, bankHoliday)) {
+        while (COMPARATOR.compare(indexDate, lastDate) <= 0) {
+            AnnualDate annualDate = new AnnualDate(indexDate);
+            List<ContactEvent> contactEvent = getEventsOn(annualDate);
+            NamesInADate namesOnDate = namedays.get(annualDate);
+            BankHoliday bankHoliday = bankHolidays.get(annualDate);
+            if (atLeastOneEventExists(contactEvent, namesOnDate, bankHoliday)) {
                 CelebrationDate date = new CelebrationDate(
                         indexDate,
                         ContactEvents.createFrom(indexDate, contactEvent),
-                        new Optional<>(namedays),
+                        new Optional<>(namesOnDate),
                         new Optional<>(bankHoliday)
                 );
                 celebrationDates.add(date);
@@ -111,8 +82,17 @@ class UpcomingDatesBuilder {
         return celebrationDates;
     }
 
+    private List<ContactEvent> getEventsOn(AnnualDate indexDate) {
+        List<ContactEvent> contactEvent = contactEvents.get(indexDate);
+        if (contactEvent == null) {
+            return NO_CONTACT_EVENTS;
+        } else {
+            return contactEvent;
+        }
+    }
+
     private boolean noEventsArePresent() {
-        return !earliestDate.isPresent() || !latestDate.isPresent();
+        return contactEvents.isEmpty() && namedays.isEmpty() && bankHolidays.isEmpty();
     }
 
     private boolean atLeastOneEventExists(List<ContactEvent> contactEvent, NamesInADate namedays, BankHoliday bankHoliday) {

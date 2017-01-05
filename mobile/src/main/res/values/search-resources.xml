@@ -3,7 +3,35 @@
   <string name="search_hint_contacts">@string/Search_for_contacts</string>
   <string name="search_hint_contacts_and_namedays">@string/Search_for_contacts_or_namedays</string>
   <string name="search_clear_title">@string/Clear</string>
+  <string name="search_event_label">@string/eventlabel_on_dateLabel</string>
   <color name="search_hint_color">#808080</color>
 
+  <dimen name="search_result_card_vertical_padding">8dp</dimen>
+  <dimen name="search_result_card_horizontal_padding">8dp</dimen>
+
+
+  <style name="SearchResult" />
+
+  <style name="SearchResult.ContactName"
+    parent="Card.Text">
+    <item name="android:ellipsize">end</item>
+    <item name="android:lines">1</item>
+    <item name="android:textColor">?primaryTextColor</item>
+  </style>
+
+  <style name="SearchResult.EventLabel">
+    <item name="android:fontFamily">sans-serif-condensed</item>
+  </style>
+
+  <style name="SearchResult.Card">
+    <item name="android:padding">8dp</item>
+  </style>
+
+  <style name="SearchResult.Avatar">
+    <item name="android:layout_height">48dp</item>
+    <item name="android:layout_width">48dp</item>
+    <item name="android:scaleType">centerCrop</item>
+    <item name="isCircle">true</item>
+  </style>
 
 </resources>

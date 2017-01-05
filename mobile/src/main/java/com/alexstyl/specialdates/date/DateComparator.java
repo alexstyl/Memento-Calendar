@@ -5,10 +5,6 @@ import java.util.Comparator;
 public enum DateComparator implements Comparator<Date> {
     INSTANCE;
 
-    public static DateComparator get() {
-        return INSTANCE;
-    }
-
     @Override
     public int compare(Date o1, Date o2) {
         if (o1.hasYear() && o2.hasYear()) {

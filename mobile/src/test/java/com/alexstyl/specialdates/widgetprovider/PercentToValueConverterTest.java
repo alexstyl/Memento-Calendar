@@ -15,7 +15,7 @@ public class PercentToValueConverterTest {
     private final PercentToValueConverter converter = new PercentToValueConverter();
 
     @Test
-    public void testPercentToValue() throws Exception {
+    public void testPercentToValue() {
         assertThat(converter.percentToProgress(0)).isEqualTo(0);
         assertThat(converter.percentToProgress(0.25f)).isEqualTo(1);
         assertThat(converter.percentToProgress(0.50f)).isEqualTo(2);
@@ -24,7 +24,7 @@ public class PercentToValueConverterTest {
     }
 
     @Test
-    public void testValueToPercentage() throws Exception {
+    public void testValueToPercentage() {
         assertThat(converter.progressToPercent(0)).isEqualTo(0);
         assertThat(converter.progressToPercent(1)).isEqualTo(0.25f);
         assertThat(converter.progressToPercent(2)).isEqualTo(0.50f);

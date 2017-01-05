@@ -18,12 +18,13 @@ public class NamedaySettingsMonitorTest {
     private NamedaySettingsMonitor monitor;
 
     @Mock
-    private NamedayPreferences preferencesMock;
+    private NamedayPreferences mockPreferences;
 
     private static final boolean DEFAULT_NAMEDAYS_ENABLED = true;
     private static final boolean DEFAULT_CONTACTS_ONLY = false;
+    private static final boolean DEFAULT_FULL_NAME = false;
 
-    private static final NamedayLocale DEFAULT_LOCALE = NamedayLocale.gr;
+    private static final NamedayLocale DEFAULT_LOCALE = NamedayLocale.GREEK;
 
     @Before
     public void setUp() throws Exception {
@@ -31,22 +32,28 @@ public class NamedaySettingsMonitorTest {
     }
 
     private void initialiseMonitor() {
-        monitor = new NamedaySettingsMonitor(preferencesMock);
-        when(preferencesMock.isEnabled()).thenReturn(DEFAULT_NAMEDAYS_ENABLED);
-        when(preferencesMock.getSelectedLanguage()).thenReturn(DEFAULT_LOCALE);
-        when(preferencesMock.isEnabledForContactsOnly()).thenReturn(DEFAULT_CONTACTS_ONLY);
+        when(mockPreferences.isEnabled()).thenReturn(DEFAULT_NAMEDAYS_ENABLED);
+        when(mockPreferences.getSelectedLanguage()).thenReturn(DEFAULT_LOCALE);
+        when(mockPreferences.isEnabledForContactsOnly()).thenReturn(DEFAULT_CONTACTS_ONLY);
+        when(mockPreferences.shouldLookupAllNames()).thenReturn(DEFAULT_FULL_NAME);
+        monitor = new NamedaySettingsMonitor(mockPreferences);
     }
 
     @Test
     public void whenSelectedNamedayLanguageChanges_thenMonitorReturnsTrue() {
-        when(preferencesMock.getSelectedLanguage()).thenReturn(NamedayLocale.ro);
+        when(mockPreferences.getSelectedLanguage()).thenReturn(NamedayLocale.ROMANIAN);
         assertThat(monitor.dataWasUpdated()).isTrue();
+    }
 
+    @Test
+    public void whenFullnameChanges_thenMonitorReturnsTrue() {
+        when(mockPreferences.shouldLookupAllNames()).thenReturn(true);
+        assertThat(monitor.dataWasUpdated()).isTrue();
     }
 
     @Test
     public void whenSameNamedayLanguageIsSelected_thenMonitorReturnsFalse() {
-        when(preferencesMock.getSelectedLanguage()).thenReturn(DEFAULT_LOCALE);
+        when(mockPreferences.getSelectedLanguage()).thenReturn(DEFAULT_LOCALE);
         monitor.initialise();
         monitor.refreshData();
         assertThat(monitor.dataWasUpdated()).isFalse();

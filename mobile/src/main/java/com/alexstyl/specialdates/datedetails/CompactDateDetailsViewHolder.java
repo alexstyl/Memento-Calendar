@@ -1,9 +1,10 @@
 package com.alexstyl.specialdates.datedetails;
 
-import android.content.res.Resources;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -16,13 +17,8 @@ class CompactDateDetailsViewHolder extends DateDetailsViewHolder {
     private final FrameLayout more;
     private final View cardView;
 
-    static CompactDateDetailsViewHolder newInstance(View view, ImageLoader imageLoader) {
-        Resources resources = view.getResources();
-        return new CompactDateDetailsViewHolder(view, imageLoader, resources);
-    }
-
-    private CompactDateDetailsViewHolder(View convertView, ImageLoader imageLoader, Resources resources) {
-        super(convertView, imageLoader, resources);
+    CompactDateDetailsViewHolder(View convertView, ImageLoader imageLoader, StringResources strings, ColorResources colors) {
+        super(convertView, imageLoader, strings, colors);
         this.cardView = convertView;
         this.more = (FrameLayout) convertView.findViewById(R.id.more_actions);
     }

@@ -4,7 +4,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.events.namedays.calendar.EasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
 
@@ -15,7 +15,7 @@ import org.json.JSONArray;
 
 public final class GreekNamedays {
 
-    private final EasterCalculator easterCalculator = new EasterCalculator();
+    private final OrthodoxEasterCalculator easterCalculator = OrthodoxEasterCalculator.INSTANCE;
 
     private final SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator;
 

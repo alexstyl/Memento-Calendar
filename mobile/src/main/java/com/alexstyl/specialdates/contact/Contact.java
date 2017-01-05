@@ -5,9 +5,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
-import com.alexstyl.specialdates.date.Date;
 
 import java.util.List;
 
@@ -15,13 +13,11 @@ public abstract class Contact {
 
     protected final long contactID;
     protected final DisplayName displayName;
-    private final Optional<Date> dateOfBirth;
     private List<LabeledAction> actions;
 
-    public Contact(long id, DisplayName displayName, Optional<Date> dateOfBirth) {
+    public Contact(long id, DisplayName displayName) {
         this.contactID = id;
         this.displayName = displayName;
-        this.dateOfBirth = dateOfBirth;
     }
 
     @Override
@@ -56,14 +52,6 @@ public abstract class Contact {
      */
     protected abstract List<LabeledAction> onBuildActions(Context context);
 
-    public Date getDateOfBirth() {
-        return dateOfBirth.get();
-    }
-
-    public boolean hasDateOfBirth() {
-        return dateOfBirth.isPresent();
-    }
-
     public abstract Uri getLookupUri();
 
     /**
@@ -74,7 +62,7 @@ public abstract class Contact {
     /**
      * Returns the image path of the avatar of this contact
      */
-    public abstract String getImagePath();
+    public abstract Uri getImagePath();
 
     @Override
     public boolean equals(Object o) {

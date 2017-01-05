@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Memento Namedays</string>
+as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+    <string name="localised_app_name">Memento Calendar</string>
     <string name="today">Dnes</string>
     <string name="tomorrow">Zítra</string>
     <string name="birthday">Datum narození</string>
@@ -22,15 +22,12 @@
     <string name="about">O aplikaci</string>
     <string name="service_dailyreminder">Služba denního připomínání</string>
     <string name="display_namedays">Zobrazit svátky</string>
-    <string name="display_namedays_on">Budou zobrazeny svátky pro všechny tvoje kontakty</string>
+    <string name="display_namedays_on">Budou zobrazeny svátky pro všechny Vaše kontakty</string>
     <string name="display_namedays_off">Svátky nebudou zobrazeny</string>
     <string name="contact_dev">Kontakt na vývojáře</string>
-    <string name="contact_dev_summary">Nalezl/a jsi chybu? Máš námět? Dej mi vědět!</string>
+    <string name="contact_dev_summary">Nalezl/a jste chybu? Máte námět? Dejte mi vědět!</string>
     <string name="choose">Vybrat</string>
     <string name="number">číslo</string>
-    <string name="has_nameday_on">Svátek %s</string>
-    <string name="has_birthday_on">Narozeniny %s</string>
-    <string name="has_birthday_on_age">%1$s slaví %2$d</string>
     <string name="action_call">Zavolat</string>
     <string name="action_text">Poslat SMS</string>
     <string name="action_send_mail">Poslat e-mail</string>
@@ -48,13 +45,13 @@
     <string name="failed_to_add_contact">Kontakt nemohl být přidán</string>
     <string name="contact_updated">Kontakt aktualizován</string>
     <string name="failed_to_update_contact">Kontakt nemohl být aktualizován</string>
-    <string name="ringtone_silent">tichý</string>
+    <string name="ringtone_silent">Tichý</string>
     <string name="contacts_today">Kontakty slavící dnes</string>
     <string name="no_contacts_to_wish">Žádné kontakty slavící tento den</string>
     <string name="upcoming">Nadcházející</string>
     <string name="turns_age">Slaví %1$d</string>
     <string name="display_namedays_names">Dnešní svátky</string>
-    <string name="share_text">Ozkoušej %1$s - pěknou aplikaci pro připomínání narozenin a svátků pro Android! Získej ji zde %2$s</string>
+    <string name="share_text">Ozkoušejte %1$s - pěknou aplikaci pro připomínání narozenin a svátků pro Android! Získejte ji zde %2$s</string>
     <string name="share_via">Sdílet přes</string>
     <string name="licences">Licence</string>
     <string name="about_dev">Vývoj a design Alex Styl</string>
@@ -66,8 +63,8 @@ Aggele Stylianidou - francouzský překlad
 Gian Maria Calzolari - italský překlad
 Andrejs Kotovs - lotyšský překlad"</string>
     <string name="about_thanks_special_someone">a *%s* za používání a podporu aplikace</string>
-    <string name="about_contact">Chyba v aplikaci? Máš nějaký podnět? Pošli email na %s</string>
-    <string name="you">Ty</string>
+    <string name="about_contact">Chyba v aplikaci? Máte nějaký podnět? Pošlete email na %s</string>
+    <string name="you">Vy</string>
     <string name="switch_on">Zapnout</string>
     <string name="switch_off">Vypnout</string>
     <string name="thanks_for_support">Děkuji za podporu aplikace</string>
@@ -101,7 +98,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="share">Sdílet</string>
     <string name="support_app">Aplikační podpora</string>
     <string name="fb_go_to_fanpage">Otevřít stránku Facebooku</string>
-    <string name="rate_rate_ask">Jak aplikaci hodnotíš?</string>
+    <string name="rate_rate_ask">Jak aplikaci hodnotíte?</string>
     <string name="rate_1_stars">"Je hrozná"</string>
     <string name="rate_2_stars">"Nemám ji moc rád"</string>
     <string name="rate_3_stars">"Je ok"</string>
@@ -116,28 +113,28 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="celebrates_one_namedays">"Dnešní svátek"</string>
     <string name="celebrates_many_namedays">"Dnešní svátky"</string>
     <string name="action_via">%s přes…</string>
-    <string name="go_to_fb_short">jako strana</string>
+    <string name="go_to_fb_short">Jako strana</string>
     <string name="rate_app">Ohodnotit aplikaci</string>
     <string name="like_page">Pochválit stránku Facebooku</string>
     <string name="days_namedays">Narozeniny pro %1$s</string>
     <string name="get_days">Dostat %1$s v %2$s</string>
-    <string name="hide_names_hints">Dlouhým stiskem můžeš skrýt jména, která nechceš v aplikaci zobrazit</string>
+    <string name="hide_names_hints">Dlouhým stiskem můžete skrýt jména, která nechcete v aplikaci zobrazit</string>
     <string name="got_it">Ok, rozumím</string>
     <string name="namedays_contacts_only_on">Svátky budou zobrazeny pouze pro uložené kontakty</string>
     <string name="namedays_contacts_only_off">Svátky budou zobrazeny pro celý rok</string>
     <string name="namedays_contacts_only">Svátky pouze pro kontakty</string>
-    <string name="support_message">Doufám, že se ti aplikace líbí a je ti užitečná. Tady jsou nějaké možnosti jak ji můžeš podpořit:</string>
+    <string name="support_message">Doufám, že se Vám aplikace líbí a je Vám užitečná. Tady jsou nějaké možnosti jak ji můžete podpořit:</string>
     <string name="translate">Přeložit aplikaci</string>
     <string name="translate_the_app_title">Překládání aplikace</string>
     <string name="translate_the_app_message">Navštívit následující odkaz ze svého počítače</string>
     <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
     <string name="copy_link">Zkopírovat odkaz</string>
     <string name="copied_to_clipboard">Odkaz zkopírován do schránky</string>
-    <string name="select_donation_amount">Vyber částku, kterou chceš darovat</string>
+    <string name="select_donation_amount">Vyber částku, kterou chcete darovat</string>
     <string name="go_to_wall">Otevřít tabuli</string>
     <string name="view_contact">Zobrazit kontakt</string>
     <string name="no_birthday_set">Žádné narozeniny nastaveny</string>
-    <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Nenalezeny žádné kontakty se zvláštními událostmi\nPoklepej na '+' pro přidání"</string>
+    <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Nenalezeny žádné kontakty se zvláštními událostmi\nPoklepejte na '+' pro přidání"</string>
     <string name="No_contacts_with_events_found">"Nenalezeny žádné kontakty se zvláštními událostmi"</string>
     <string name="add_birthday">Přidat narozeniny</string>
     <string name="Birthday_date">Datum narození</string>
@@ -149,6 +146,17 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="Transparency">Průhlednost</string>
     <string name="Dark_themeQ">Tmavý motiv</string>
     <string name="Contact_names">Kontaktní jména</string>
-    <string name="Bank_holiday">státní svátek</string>
-    <string name="Bank_holidays">státní svátky</string>
+    <string name="Bank_holiday">Státní svátek</string>
+    <string name="Bank_holidays">Státní svátky</string>
+    <string name="GoogleP_community">Google+ komunita</string>
+    <string name="Display_Bankholidays">Zobrazit státní svátky</string>
+    <string name="Bankholidays_Country">Státní svátky pro zemi</string>
+    <string name="Bankholidays_are_currently_supported_only_for_Greek">Státní svátky jsou v současnosti podporovány pouze pro Řecko</string>
+    <string name="Clear">Vymazat</string>
+    <string name="Search_for_contacts">Hledat kontakty</string>
+    <string name="Search_for_contacts_or_namedays">Hledat kontakty nebo svátky</string>
+    <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">Memento požaduje Vaše svolení číst Vaše kontakty, aby zobrazilo datum oslavy.</string>
+    <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Fakt: Někteří lidé darují dort těm, kteří jim přejí vše nejlepší. Využijte Memento k dokumentování potencionálních dárců dortu.</string>
+    <string name="Grant_permission">Povolit přístup.</string>
+    <string name="eventlabel_on_dateLabel">%1$s slaví %2$s</string>
 </resources>

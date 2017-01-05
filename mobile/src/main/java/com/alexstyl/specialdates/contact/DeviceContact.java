@@ -12,11 +12,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.ContactActionFactory;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.util.ContactUtils;
 
 import java.util.ArrayList;
@@ -25,10 +23,12 @@ import java.util.List;
 public class DeviceContact extends Contact {
 
     private final String lookupKey;
+    private final Uri avatarUri;
 
-    DeviceContact(long contactId, DisplayName displayName, String lookupKey, Optional<Date> dateOfBirth) {
-        super(contactId, displayName, dateOfBirth);
+    public DeviceContact(long contactId, DisplayName displayName, String lookupKey) {
+        super(contactId, displayName);
         this.lookupKey = lookupKey;
+        this.avatarUri = ContentUris.withAppendedId(Contacts.CONTENT_URI, getContactID());
     }
 
     @Override
@@ -37,9 +37,8 @@ public class DeviceContact extends Contact {
     }
 
     @Override
-    public String getImagePath() {
-        Uri contactUri = ContentUris.withAppendedId(Contacts.CONTENT_URI, getContactID());
-        return contactUri.toString();
+    public Uri getImagePath() {
+        return avatarUri;
     }
 
     /**
