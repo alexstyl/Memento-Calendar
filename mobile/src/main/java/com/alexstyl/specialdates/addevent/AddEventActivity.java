@@ -144,8 +144,8 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     @Override
     public void finish() {
-        overridePendingTransition(0, R.anim.slide_out_from_below);
         super.finish();
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_from_below);
     }
 
     private final ContactEventsListener contactEventsListener = new ContactEventsListener() {
