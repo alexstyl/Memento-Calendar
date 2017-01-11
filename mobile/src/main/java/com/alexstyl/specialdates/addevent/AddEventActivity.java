@@ -1,8 +1,13 @@
 package com.alexstyl.specialdates.addevent;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -11,9 +16,9 @@ import android.view.MenuItem;
 import com.alexstyl.android.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
-import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
@@ -21,6 +26,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
@@ -33,8 +39,10 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     private static final int CODE_TAKE_PICTURE = 404;
     private static final int CODE_PICK_A_FILE = 405;
     private static final int CODE_CROP_IMAGE = CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE;
+    private static final int CODE_PERMISSION_EXTERNAL_STORAGE = 406;
 
     private AddContactEventsPresenter presenter;
+    private PermissionChecker permissionChecker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,22 +93,52 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 messageDisplayer,
                 operationsExecutor
         );
+        permissionChecker = new PermissionChecker(this);
         presenter.startPresenting(
                 new OnCameraClickedListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onPictureRetakenRequested() {
-                        BottomSheetPicturesDialog
-                                .withClearOption()
-                                .show(getSupportFragmentManager(), "picture_pick");
+                        if (permissionChecker.canReadExternalStorage()) {
+                            BottomSheetPicturesDialog
+                                    .withClearOption()
+                                    .show(getSupportFragmentManager(), "picture_pick");
+                        } else {
+                            requestPermission();
+                        }
                     }
 
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onNewPictureTakenRequested() {
-                        BottomSheetPicturesDialog.newInstance()
-                                .show(getSupportFragmentManager(), "picture_pick");
+                        if (permissionChecker.canReadExternalStorage()) {
+                            BottomSheetPicturesDialog.newInstance()
+                                    .show(getSupportFragmentManager(), "picture_pick");
+                        } else {
+                            requestPermission();
+                        }
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    private void requestPermission() {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE_PERMISSION_EXTERNAL_STORAGE);
                     }
                 }
         );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CODE_PERMISSION_EXTERNAL_STORAGE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            findViewById(android.R.id.content).post(new Runnable() {
+                @Override
+                public void run() {
+                    BottomSheetPicturesDialog.newInstance()
+                            .show(getSupportFragmentManager(), "picture_pick");
+                }
+            });
+        }
     }
 
     @Override
@@ -110,7 +148,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
             Uri imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(new FilePathProvider(context()), data);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
-            Uri imageUri = BottomSheetPicturesDialog.getImageResultUri(data);
+            Uri imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -118,8 +156,8 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         }
     }
 
-    private void startCropIntent(Uri imageUri) {
-        CropImage.activity(imageUri)
+    private void startCropIntent(Uri imageToCrop) {
+        CropImage.activity(imageToCrop)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
                 .start(this);
