@@ -124,7 +124,7 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         return uri;
     }
 
-    public static Uri getImageResultUri(Intent data) {
+    public static Uri getImagePickResultUri(Intent data) {
         return data.getData();
     }
 
