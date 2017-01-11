@@ -1,10 +1,7 @@
 package com.alexstyl.specialdates.addevent;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
-import com.alexstyl.specialdates.FilePathProvider;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
@@ -28,19 +24,17 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.logger.simple.Log;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.List;
-
 public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener {
 
-    private static final int CODE_TAKE_PICTURE = 501;
-    private static final int CODE_PICK_A_FILE = 502;
-    private static final int CODE_CROP_IMAGE = 503;
+    private static final int CODE_TAKE_PICTURE = CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
+    private static final int CODE_PICK_A_FILE = CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
+    private static final int CODE_CROP_IMAGE = CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE;
 
     private AddContactEventsPresenter presenter;
-    private Uri croppedImageUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,17 +89,19 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 new OnCameraClickedListener() {
                     @Override
                     public void onPictureRetakenRequested() {
-                        BottomSheetPicturesDialog
-                                .newInstance(makeAFileAndKeep())
-                                .includeClearOption()
-                                .show(getSupportFragmentManager(), "picture_pick");
+//                        BottomSheetPicturesDialog
+//                                .newInstance(makeAFileAndKeep())
+//                                .includeClearOption()
+//                                .show(getSupportFragmentManager(), "picture_pick");
+                        CropImage.startPickImageActivity(AddEventActivity.this);
                     }
 
                     @Override
                     public void onNewPictureTakenRequested() {
-                        BottomSheetPicturesDialog
-                                .newInstance(makeAFileAndKeep())
-                                .show(getSupportFragmentManager(), "picture_pick");
+                        CropImage.startPickImageActivity(AddEventActivity.this);
+//                        BottomSheetPicturesDialog
+//                                .newInstance(makeAFileAndKeep())
+//                                .show(getSupportFragmentManager(), "picture_pick");
                     }
                 }
         );
@@ -114,16 +110,20 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
-            startCropIntent(croppedImageUri);
-        } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();
+//        if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
+//            Uri imageUri = CropImage.getCaptureImageOutputUri(this);
+//            startCropIntent(imageUri);
+//        } else
+        if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
-            presenter.presentAvatar(croppedImageUri);
-        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            croppedImageUri = CropImage.getPickImageResultUri(this, data);
-            presenter.presentAvatar(croppedImageUri);
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            presenter.presentAvatar(result.getUri());
+        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            Exception error = result.getError();
+            Log.d(error);
         }
     }
 
@@ -170,7 +170,6 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     @Override
     public void startIntent(Intent intent) {
-        grandReadPermissionIfNeeded(croppedImageUri, intent);
         startActivityForResult(intent, getRequestCodeFor(intent));
     }
 
@@ -188,21 +187,6 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         } else {
             throw new IllegalArgumentException("Don't know how to handle " + action);
         }
-    }
-
-    private void grandReadPermissionIfNeeded(Uri photoUri, Intent intent) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-            for (ResolveInfo resolveInfo : resInfoList) {
-                String packageName = resolveInfo.activityInfo.packageName;
-                grantUriPermission(packageName, photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-        }
-    }
-
-    private Uri makeAFileAndKeep() {
-        croppedImageUri = new FilePathProvider(this).getExternalFilesDir();
-        return croppedImageUri;
     }
 
     @Override
