@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog;
 
 final class ClearImageViewHolder extends RecyclerView.ViewHolder {
 

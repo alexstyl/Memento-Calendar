@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.addevent;
+package com.alexstyl.specialdates.addevent.bottomsheet;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -16,10 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickResolver;
-import com.alexstyl.specialdates.addevent.bottomsheet.IntentOptionViewModel;
-import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickerOptionsAdapter;
-import com.alexstyl.specialdates.addevent.bottomsheet.IntentResolver;
+import com.alexstyl.specialdates.addevent.FilePathProvider;
+import com.alexstyl.specialdates.addevent.ImageIntentFactory;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Classes;
@@ -29,24 +27,22 @@ import java.util.List;
 
 final public class BottomSheetPicturesDialog extends MementoDialog {
 
-    private static final String KEY_OUTPUT_URI = "key_output_uri";
     private static final String KEY_INCLUDE_CLEAR = "key_include_clear";
 
     private Listener parentListener;
     private ImagePickerOptionsAdapter adapter;
     private ImagePickResolver resolver;
 
-    public static BottomSheetPicturesDialog newInstance(Uri outputUri) {
+    public static BottomSheetPicturesDialog newInstance() {
+        return new BottomSheetPicturesDialog();
+    }
+
+    public static BottomSheetPicturesDialog withClearOption() {
         Bundle args = new Bundle(1);
-        args.putString(KEY_OUTPUT_URI, outputUri.toString());
+        args.putBoolean(KEY_INCLUDE_CLEAR, true);
         BottomSheetPicturesDialog fragment = new BottomSheetPicturesDialog();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public BottomSheetPicturesDialog includeClearOption() {
-        getArguments().putBoolean(KEY_INCLUDE_CLEAR, true);
-        return this;
     }
 
     @Override
@@ -87,10 +83,12 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        final FilePathProvider filePathProvider = new FilePathProvider(getActivity());
         new AsyncTask<Object, Object, List<IntentOptionViewModel>>() {
             @Override
             protected List<IntentOptionViewModel> doInBackground(Object... params) {
-                return resolver.createFor(getOutputUri());
+                Uri outputFileUri = filePathProvider.createTemporaryCacheFile();
+                return resolver.createFor(outputFileUri);
             }
 
             @Override
@@ -100,20 +98,15 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         }.execute();
     }
 
-    private Uri getOutputUri() {
-        String rawUri = getArguments().getString(KEY_OUTPUT_URI);
-        return Uri.parse(rawUri);
-    }
-
     private boolean getIncludeClear() {
-        return getArguments().getBoolean(KEY_INCLUDE_CLEAR, false);
+        return getArguments() != null && getArguments().getBoolean(KEY_INCLUDE_CLEAR, false);
     }
 
     private final Listener internalListener = new Listener() {
         @Override
-        public void startIntent(Intent intent) {
+        public void onActivitySelected(Intent intent) {
             dismiss();
-            parentListener.startIntent(intent);
+            parentListener.onActivitySelected(intent);
         }
 
         @Override
@@ -123,8 +116,21 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         }
     };
 
+    public static Uri getImageCaptureResultUri(FilePathProvider filePathProvider, Intent data) {
+        Uri uri = data.getData();
+        if (uri == null) {
+            return filePathProvider.createTemporaryCacheFile();
+        }
+        return uri;
+    }
+
+    public static Uri getImageResultUri(Intent data) {
+        return data.getData();
+    }
+
     public interface Listener {
-        void startIntent(Intent intent);
+        void onActivitySelected(Intent intent);
+
         void clearSelectedAvatar();
     }
 }

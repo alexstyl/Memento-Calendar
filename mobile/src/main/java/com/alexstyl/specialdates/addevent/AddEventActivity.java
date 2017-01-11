@@ -11,7 +11,8 @@ import android.view.MenuItem;
 import com.alexstyl.android.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
+import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
+import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
@@ -24,14 +25,13 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener {
 
-    private static final int CODE_TAKE_PICTURE = CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
-    private static final int CODE_PICK_A_FILE = CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
+    private static final int CODE_TAKE_PICTURE = 404;
+    private static final int CODE_PICK_A_FILE = 405;
     private static final int CODE_CROP_IMAGE = CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE;
 
     private AddContactEventsPresenter presenter;
@@ -89,19 +89,15 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 new OnCameraClickedListener() {
                     @Override
                     public void onPictureRetakenRequested() {
-//                        BottomSheetPicturesDialog
-//                                .newInstance(makeAFileAndKeep())
-//                                .includeClearOption()
-//                                .show(getSupportFragmentManager(), "picture_pick");
-                        CropImage.startPickImageActivity(AddEventActivity.this);
+                        BottomSheetPicturesDialog
+                                .withClearOption()
+                                .show(getSupportFragmentManager(), "picture_pick");
                     }
 
                     @Override
                     public void onNewPictureTakenRequested() {
-                        CropImage.startPickImageActivity(AddEventActivity.this);
-//                        BottomSheetPicturesDialog
-//                                .newInstance(makeAFileAndKeep())
-//                                .show(getSupportFragmentManager(), "picture_pick");
+                        BottomSheetPicturesDialog.newInstance()
+                                .show(getSupportFragmentManager(), "picture_pick");
                     }
                 }
         );
@@ -110,31 +106,19 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
-//            Uri imageUri = CropImage.getCaptureImageOutputUri(this);
-//            startCropIntent(imageUri);
-//        } else
-        if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
-            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+        if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
+            Uri imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(new FilePathProvider(context()), data);
+            startCropIntent(imageUri);
+        } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
+            Uri imageUri = BottomSheetPicturesDialog.getImageResultUri(data);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             presenter.presentAvatar(result.getUri());
-        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            Exception error = result.getError();
-            Log.d(error);
         }
     }
 
     private void startCropIntent(Uri imageUri) {
-//        Intent intent = ImageCrop.newIntent(imageUri);
-//        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-//                                | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, croppedImageUri);
-//        intent.setClipData(ClipData.newRawUri(MediaStore.EXTRA_OUTPUT, croppedImageUri));
-//        startActivityForResult(intent, CODE_CROP_IMAGE);
-
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
@@ -169,7 +153,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     }
 
     @Override
-    public void startIntent(Intent intent) {
+    public void onActivitySelected(Intent intent) {
         startActivityForResult(intent, getRequestCodeFor(intent));
     }
 

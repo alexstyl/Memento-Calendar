@@ -8,12 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
+import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_CLEAR = 0;
     private static final int TYPE_OPTION = 1;
@@ -27,7 +27,7 @@ public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView
         return new ImagePickerOptionsAdapter(listener, false);
     }
 
-    public static ImagePickerOptionsAdapter createWithClear(Listener listener) {
+    static ImagePickerOptionsAdapter createWithClear(Listener listener) {
         return new ImagePickerOptionsAdapter(listener, true);
     }
 
@@ -78,7 +78,7 @@ public class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView
         return viewModels.size() + includeClearCount;
     }
 
-    public void updateWith(List<IntentOptionViewModel> viewModels) {
+    void updateWith(List<IntentOptionViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();

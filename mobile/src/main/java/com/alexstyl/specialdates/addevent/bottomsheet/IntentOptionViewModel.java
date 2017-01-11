@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.addevent.bottomsheet;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-final public class IntentOptionViewModel {
+final class IntentOptionViewModel {
 
     private final Drawable icon;
     private final String label;

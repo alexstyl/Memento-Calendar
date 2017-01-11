@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable;
 import java.util.ArrayList;
 import java.util.List;
 
-final public class IntentResolver {
+final class IntentResolver {
 
     private final PackageManager packageManager;
 
-    public IntentResolver(PackageManager packageManager) {
+    IntentResolver(PackageManager packageManager) {
         this.packageManager = packageManager;
     }
 

@@ -1,11 +1,11 @@
-package com.alexstyl.specialdates;
+package com.alexstyl.specialdates.addevent;
 
 import android.content.Context;
 import android.net.Uri;
 
 import java.io.File;
 
-final public class FilePathProvider {
+public final class FilePathProvider {
 
     private final Context context;
 
@@ -13,7 +13,7 @@ final public class FilePathProvider {
         this.context = context;
     }
 
-    public Uri getExternalFilesDir() {
+    public Uri createTemporaryCacheFile() {
         Uri outputFileUri = null;
         File getImage = context.getExternalCacheDir();
         if (getImage != null) {
