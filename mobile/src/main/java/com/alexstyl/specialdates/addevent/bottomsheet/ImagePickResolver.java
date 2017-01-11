@@ -9,12 +9,12 @@ import com.alexstyl.specialdates.addevent.ImageIntentFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-final public class ImagePickResolver {
+final class ImagePickResolver {
 
     private final IntentResolver intentResolver;
     private final ImageIntentFactory intentCreator;
 
-    public ImagePickResolver(IntentResolver intentResolver, ImageIntentFactory intentCreator) {
+    ImagePickResolver(IntentResolver intentResolver, ImageIntentFactory intentCreator) {
         this.intentResolver = intentResolver;
         this.intentCreator = intentCreator;
     }

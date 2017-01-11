@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
+import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 
 final class ImagePickerOptionViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,7 +24,7 @@ final class ImagePickerOptionViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.startIntent(viewModel.getIntent());
+                listener.onActivitySelected(viewModel.getIntent());
             }
         });
     }
