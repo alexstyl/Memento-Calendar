@@ -1,21 +1,18 @@
 package com.alexstyl.specialdates.addevent;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
-import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.FilePathProvider;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.BottomSheetPicturesDialog.Listener;
@@ -31,8 +28,9 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.File;
 import java.util.List;
 
 public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener {
@@ -123,23 +121,24 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
             presenter.presentAvatar(croppedImageUri);
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            croppedImageUri = CropImage.getPickImageResultUri(this, data);
+            presenter.presentAvatar(croppedImageUri);
         }
     }
 
     private void startCropIntent(Uri imageUri) {
-        Intent intent = ImageCrop.newIntent(imageUri);
+//        Intent intent = ImageCrop.newIntent(imageUri);
+//        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+//                                | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, croppedImageUri);
+//        intent.setClipData(ClipData.newRawUri(MediaStore.EXTRA_OUTPUT, croppedImageUri));
+//        startActivityForResult(intent, CODE_CROP_IMAGE);
 
-        File photoFile = TempImageFile.newInstance(getApplicationContext());
-        croppedImageUri = FileProvider.getUriForFile(
-                this,
-                MementoApplication.PACKAGE + ".fileprovider",
-                photoFile
-        );
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                                | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, croppedImageUri);
-        intent.setClipData(ClipData.newRawUri(MediaStore.EXTRA_OUTPUT, croppedImageUri));
-        startActivityForResult(intent, CODE_CROP_IMAGE);
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1, 1)
+                .start(this);
     }
 
     @Override
@@ -202,12 +201,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     }
 
     private Uri makeAFileAndKeep() {
-        File photoFile = TempImageFile.newInstance(getApplicationContext());
-        croppedImageUri = FileProvider.getUriForFile(
-                this,
-                MementoApplication.PACKAGE + ".fileprovider",
-                photoFile
-        );
+        croppedImageUri = new FilePathProvider(this).getExternalFilesDir();
         return croppedImageUri;
     }
 

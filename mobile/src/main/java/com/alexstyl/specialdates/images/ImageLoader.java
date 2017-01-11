@@ -26,7 +26,7 @@ public class ImageLoader {
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .threadPoolSize(10)
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))
+                .imageDecoder(new NutraBaseImageDecoder())
                 .imageDownloader(new ImageDownloader(context));
 
         L.writeLogs(DEBUG);
