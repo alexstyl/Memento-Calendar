@@ -127,4 +127,8 @@ class AddContactEventsPresenter {
     void removeAvatar() {
         avatarPresenter.removeAvatar();
     }
+
+    boolean displaysAvatar() {
+        return avatarPresenter.getDecodedImage() != DecodedImage.EMPTY;
+    }
 }
