@@ -65,8 +65,8 @@ class AddContactEventsPresenter {
         eventsPresenter.onEventDatePicked(eventType, date);
     }
 
-    void onEventRemoved(EventType eventType) {
-        eventsPresenter.onEventRemoved(eventType);
+    void removeEvent(EventType eventType) {
+        eventsPresenter.removeEvent(eventType);
     }
 
     void saveChanges() {

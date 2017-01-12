@@ -29,6 +29,6 @@ final class SelectedEvents {
     }
 
     public void remove(EventType eventType) {
-        mappedEvents.remove(eventType);
+        mappedEvents.remove(eventType.getId());
     }
 }

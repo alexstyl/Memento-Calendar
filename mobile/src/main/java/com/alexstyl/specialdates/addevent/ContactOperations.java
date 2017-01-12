@@ -33,7 +33,8 @@ class ContactOperations {
     ContactOperationsBuilder updateExistingContact(Contact contact) {
         int rawContactID = rawContactID(contact);
         OperationsFactory operationsFactory = new OperationsFactory(rawContactID);
-        ArrayList<ContentProviderOperation> operations = operationsFactory.deleteEvents(getAllDeviceEventsFor(contact));
+        List<ContactEvent> contactEvents = getAllDeviceEventsFor(contact);
+        ArrayList<ContentProviderOperation> operations = operationsFactory.deleteEvents(contactEvents);
         return new ContactOperationsBuilder(operations, operationsFactory);
     }
 

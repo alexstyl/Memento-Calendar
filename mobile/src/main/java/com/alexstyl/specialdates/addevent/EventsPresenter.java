@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.addevent;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.Event;
@@ -14,7 +15,6 @@ final class EventsPresenter {
     private final ContactEventsAdapter adapter;
     private final ContactEventViewModelFactory factory;
     private final AddEventViewModelFactory addEventFactory;
-
     private SelectedEvents events = new SelectedEvents();
 
     EventsPresenter(ContactEventsFetcher contactEventsFetcher,
@@ -39,6 +39,17 @@ final class EventsPresenter {
         @Override
         public void onDataFetched(List<ContactEventViewModel> data) {
             adapter.replace(data);
+            updateEventsWith(data);
+        }
+
+        private void updateEventsWith(List<ContactEventViewModel> data) {
+            events = new SelectedEvents();
+            for (ContactEventViewModel viewModel : data) {
+                Optional<Date> date = viewModel.getDate();
+                if (date.isPresent()) {
+                    events.replaceDate(viewModel.getEventType(), date.get());
+                }
+            }
         }
     };
 
@@ -48,7 +59,7 @@ final class EventsPresenter {
         events.replaceDate(eventType, date);
     }
 
-    void onEventRemoved(EventType eventType) {
+    void removeEvent(EventType eventType) {
         ContactEventViewModel viewModels = addEventFactory.createAddEventViewModelsFor(eventType);
         adapter.replace(viewModels);
         events.remove(eventType);
@@ -57,4 +68,5 @@ final class EventsPresenter {
     public Collection<Event> getEvents() {
         return events.getEvents();
     }
+
 }
