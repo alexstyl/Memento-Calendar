@@ -1,11 +1,14 @@
 package com.alexstyl.specialdates.addevent;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
@@ -157,10 +161,31 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     }
 
     private void startCropIntent(Uri imageToCrop) {
+        int size = queryCropSize();
         CropImage.activity(imageToCrop)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
                 .start(this);
+    }
+
+    private static final int MAX_RESOLUTION = 720;
+
+    private static int queryCropSize() {
+        Context context = MementoApplication.getContext();
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
+                new String[]{ContactsContract.DisplayPhoto.DISPLAY_MAX_DIM}, null, null, null
+        );
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    return cursor.getInt(0);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return MAX_RESOLUTION;
     }
 
     @Override
@@ -181,7 +206,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
         @Override
         public void onRemoveEventClicked(EventType eventType) {
-            presenter.onEventRemoved(eventType);
+            presenter.removeEvent(eventType);
         }
     };
 
