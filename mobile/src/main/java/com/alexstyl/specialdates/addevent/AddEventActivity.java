@@ -138,8 +138,15 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
             findViewById(android.R.id.content).post(new Runnable() {
                 @Override
                 public void run() {
-                    BottomSheetPicturesDialog.newInstance()
-                            .show(getSupportFragmentManager(), "picture_pick");
+                    if (presenter.displaysAvatar()) {
+                        BottomSheetPicturesDialog
+                                .withClearOption()
+                                .show(getSupportFragmentManager(), "picture_pick");
+                    } else {
+                        BottomSheetPicturesDialog
+                                .newInstance()
+                                .show(getSupportFragmentManager(), "picture_pick");
+                    }
                 }
             });
         }
