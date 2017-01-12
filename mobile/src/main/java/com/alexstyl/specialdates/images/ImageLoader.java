@@ -11,9 +11,9 @@ import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.L;
 
@@ -30,7 +30,6 @@ public class ImageLoader {
                 .imageDownloader(new ImageDownloader(context));
 
         L.writeLogs(DEBUG);
-        // Initialize ImageLoader with configuration.
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
     }
 
@@ -61,15 +60,16 @@ public class ImageLoader {
         loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
-    public void displayThumbnail(Uri imagePath, ImageAware imageView) {
-        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
-    }
-
     public void loadImage(Uri imagePath, AvatarPickerView avatarView, final OnImageLoadedCallback callback) {
         loader.loadImage(imagePath.toString(), new ImageSize(avatarView.getWidth(), avatarView.getHeight()), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 callback.onImageLoaded(loadedImage);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                callback.onLoadingFailed();
             }
         });
     }
@@ -84,11 +84,11 @@ public class ImageLoader {
         loader.loadImage(imagePath.toString(), imageSize, displayImageOptions, listener);
     }
 
-    public void resume() {
+    void resume() {
         loader.resume();
     }
 
-    public void pause() {
+    void pause() {
         loader.pause();
     }
 
