@@ -165,6 +165,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         CropImage.activity(imageToCrop)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
+                .setRequestedSize(size, size)
                 .start(this);
     }
 
