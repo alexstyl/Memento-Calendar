@@ -43,13 +43,17 @@ final class AvatarPresenter {
             toolbarAnimator.fadeOut();
             avatarView.requestFocus();
         }
+
+        @Override
+        public void onLoadingFailed() {
+            removeAvatar();
+        }
     };
 
     void startPresenting(final OnCameraClickedListener listener) {
         avatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO request permission
                 if (avatarView.isDisplayingAvatar()) {
                     listener.onPictureRetakenRequested();
                 } else {
