@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="add_event_store_button_add_label">@string/add</string>
-  <string name="add_birthday_store_button_update_label">@string/set</string>
-  <string name="add_birthday_store_button_cancel">@string/Discard</string>
   <string name="add_birthday_contact_added">@string/contact_added</string>
   <string name="add_birthday_failed_to_add_contact">@string/failed_to_add_contact</string>
   <string name="add_event_contact_updated">@string/contact_updated</string>
@@ -16,6 +14,9 @@
   <string name="add_event_remove_photo">@string/Remove_photo</string>
   <string name="add_event_take_photo">@string/Take_new_photo</string>
   <string name="add_event_pick_from_files">@string/Pick_existing_photo</string>
+  <string name="add_event_discard_changes_title">@string/Discard_changes</string>
+  <string name="add_event_discard_changes_accept">@string/Discard</string>
+
 
   <dimen name="add_birthday_row_height">64dp</dimen>
   <dimen name="add_birthday_row_width">64dp</dimen>
