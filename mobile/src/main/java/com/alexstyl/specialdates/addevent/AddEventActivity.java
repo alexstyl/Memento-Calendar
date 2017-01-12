@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,6 +27,7 @@ import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
@@ -35,10 +37,12 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.meta.AndroidUtils;
+import com.novoda.notils.text.SimpleTextWatcher;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener {
+public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
     private static final int CODE_TAKE_PICTURE = 404;
     private static final int CODE_PICK_A_FILE = 405;
@@ -63,7 +67,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
         AvatarPickerView avatarView = Views.findById(this, R.id.add_event_avatar);
-        ContactSuggestionView contactSuggestionView = Views.findById(this, R.id.add_event_contact_autocomplete);
+        final ContactSuggestionView contactSuggestionView = Views.findById(this, R.id.add_event_contact_autocomplete);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         eventsView.setHasFixedSize(true);
@@ -87,16 +91,30 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
         ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
         ImageDecoder imageDecoder = new ImageDecoder();
-        AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, ToolbarBackgroundAnimator.setupOn(toolbar), imageDecoder);
-        EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
+        final AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, ToolbarBackgroundAnimator.setupOn(toolbar), imageDecoder);
+        final EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
         presenter = new AddContactEventsPresenter(
                 avatarPresenter,
                 eventsPresenter,
-                contactSuggestionView,
                 contactOperations,
                 messageDisplayer,
                 operationsExecutor
         );
+
+        contactSuggestionView.setOnContactSelectedListener(new ContactSuggestionView.OnContactSelectedListener() {
+            @Override
+            public void onContactSelected(final Contact contact) {
+                presenter.onContactSelected(contact);
+                AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
+            }
+        });
+        contactSuggestionView.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable text) {
+                presenter.onNameModified(text.toString());
+            }
+        });
+
         permissionChecker = new PermissionChecker(this);
         presenter.startPresenting(
                 new OnCameraClickedListener() {
@@ -254,8 +272,11 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // TODO ask for save
-                cancelActivity();
+                if (presenter.isHoldingModifiedData()) {
+                    promptToDiscardBeforeExiting();
+                } else {
+                    cancelActivity();
+                }
                 break;
             case R.id.menu_add_event_save:
                 presenter.saveChanges();
@@ -265,14 +286,32 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         return super.onOptionsItemSelected(item);
     }
 
-    protected void finishActivitySuccessfully() {
+    private void promptToDiscardBeforeExiting() {
+        new DiscardPromptDialog()
+                .show(getSupportFragmentManager(), "discard_prompt");
+    }
+
+    private void finishActivitySuccessfully() {
         setResult(RESULT_OK);
         finish();
     }
 
-    protected void cancelActivity() {
+    private void cancelActivity() {
         setResult(RESULT_CANCELED);
         finish();
     }
 
+    @Override
+    public void onDiscardChangesSelected() {
+        cancelActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter.isHoldingModifiedData()) {
+            promptToDiscardBeforeExiting();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

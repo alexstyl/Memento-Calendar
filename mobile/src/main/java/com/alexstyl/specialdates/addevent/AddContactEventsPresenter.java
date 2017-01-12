@@ -2,37 +2,32 @@ package com.alexstyl.specialdates.addevent;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.text.Editable;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.DecodedImage;
-import com.novoda.notils.meta.AndroidUtils;
-import com.novoda.notils.text.SimpleTextWatcher;
+import com.novoda.notils.logger.simple.Log;
 
 class AddContactEventsPresenter {
 
     private final AvatarPresenter avatarPresenter;
     private final EventsPresenter eventsPresenter;
-    private final ContactSuggestionView contactSuggestionView;
     private final ContactOperations contactOperations;
     private final MessageDisplayer messageDisplayer;
     private final ContactOperationsExecutor operationsExecutor;
 
     private SelectedContact selectedContact = SelectedContact.anonymous();
+    private boolean modified = false;
 
     AddContactEventsPresenter(AvatarPresenter avatarPresenter,
                               EventsPresenter eventsPresenter,
-                              ContactSuggestionView contactSuggestionView,
                               ContactOperations contactOperations,
                               MessageDisplayer messageDisplayer,
                               ContactOperationsExecutor operationsExecutor) {
         this.avatarPresenter = avatarPresenter;
         this.eventsPresenter = eventsPresenter;
-        this.contactSuggestionView = contactSuggestionView;
         this.contactOperations = contactOperations;
         this.messageDisplayer = messageDisplayer;
         this.operationsExecutor = operationsExecutor;
@@ -41,35 +36,56 @@ class AddContactEventsPresenter {
     void startPresenting(final OnCameraClickedListener listener) {
         avatarPresenter.startPresenting(listener);
         eventsPresenter.startPresenting();
-        contactSuggestionView.setOnContactSelectedListener(new ContactSuggestionView.OnContactSelectedListener() {
-            @Override
-            public void onContactSelected(final Contact contact) {
-                avatarPresenter.onContactSelected(contact);
-                eventsPresenter.onContactSelected(contact);
-                selectedContact = SelectedContact.forContact(contact);
-                AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
-            }
-        });
-        contactSuggestionView.addTextChangedListener(new SimpleTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable text) {
-                if (selectedContact.containsContact()) {
-                    avatarPresenter.removeAvatar();
-                }
-                selectedContact = SelectedContact.anonymous(text.toString());
-            }
-        });
+    }
+
+    void onContactSelected(Contact contact) {
+        avatarPresenter.onContactSelected(contact);
+        eventsPresenter.onContactSelected(contact);
+        selectedContact = SelectedContact.forContact(contact);
+        modified = false;
     }
 
     void onEventDatePicked(EventType eventType, Date date) {
         eventsPresenter.onEventDatePicked(eventType, date);
+        modified = true;
     }
 
     void removeEvent(EventType eventType) {
         eventsPresenter.removeEvent(eventType);
+        modified = true;
+    }
+
+    void onNameModified(String text) {
+        if (selectedContact.containsContact()) {
+            avatarPresenter.removeAvatar();
+        }
+        selectedContact = SelectedContact.anonymous(text);
+        modified = true;
+    }
+
+    void presentAvatar(Uri photoUri) {
+        avatarPresenter.presentAvatar(photoUri);
+        modified = true;
+    }
+
+    void removeAvatar() {
+        avatarPresenter.removeAvatar();
+        modified = true;
+    }
+
+    boolean displaysAvatar() {
+        return avatarPresenter.getDecodedImage() != DecodedImage.EMPTY;
+    }
+
+    boolean isHoldingModifiedData() {
+        return modified;
     }
 
     void saveChanges() {
+        if (!modified) {
+            Log.w("Nothing to save. Bailing fast");
+            return;
+        }
         if (selectedContact.containsContact()) {
             new AsyncTask<Void, Void, Boolean>() {
                 @Override
@@ -111,6 +127,7 @@ class AddContactEventsPresenter {
                 @Override
                 protected void onPostExecute(Boolean success) {
                     if (success) {
+                        // TODO open contact screen?
                         messageDisplayer.showMessage(R.string.add_birthday_contact_added);
                     } else {
                         messageDisplayer.showMessage(R.string.add_birthday_failed_to_add_contact);
@@ -118,17 +135,5 @@ class AddContactEventsPresenter {
                 }
             }.execute();
         }
-    }
-
-    void presentAvatar(Uri photoUri) {
-        avatarPresenter.presentAvatar(photoUri);
-    }
-
-    void removeAvatar() {
-        avatarPresenter.removeAvatar();
-    }
-
-    boolean displaysAvatar() {
-        return avatarPresenter.getDecodedImage() != DecodedImage.EMPTY;
     }
 }
