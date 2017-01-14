@@ -69,7 +69,8 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
     }
 
     private boolean isEditable(ContactEvent contactEvent) {
-        return contactEvent.getType() != StandardEventType.NAMEDAY;
+        return contactEvent.getType() != StandardEventType.NAMEDAY
+                && contactEvent.getType().getId() != StandardEventType.CUSTOM.getId();
     }
 
     private static final Comparator<ContactEventViewModel> EVENT_TYPE_ID_COMPARATOR = new Comparator<ContactEventViewModel>() {
