@@ -20,7 +20,7 @@
   <ImageView
     android:id="@+id/avatar_picker_image"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/add_event_avatar_height"
+    android:layout_height="match_parent"
     android:scaleType="centerCrop"
     tools:background="@color/white_semi_transparents" />
 

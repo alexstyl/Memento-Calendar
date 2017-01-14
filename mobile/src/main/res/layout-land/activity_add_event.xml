@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <com.alexstyl.specialdates.ui.widget.MementoToolbar
+    android:id="@+id/memento_toolbar"
+    style="@style/Widget.Memento.Toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/toolbar_elevation" />
+
+  <com.alexstyl.specialdates.addevent.ui.AvatarPickerView
+    android:id="@+id/add_event_avatar"
+    style="@style/CardViewStyle"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:layout_below="@id/memento_toolbar"
+    android:background="@color/nameday_blue" />
+
+  <com.alexstyl.specialdates.addevent.ui.ContactSuggestionView
+    android:id="@+id/add_event_contact_autocomplete"
+    style="@style/Widget.AppCompat.EditText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/memento_toolbar"
+    android:layout_marginLeft="@dimen/padding"
+    android:layout_toRightOf="@id/add_event_avatar"
+    android:drawableLeft="@drawable/ic_person_24dp"
+    android:drawablePadding="24dp"
+    android:hint="@string/addbirthday_autocomplete_hint"
+    android:inputType="textPersonName"
+    android:maxLines="1" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/add_event_events"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/add_event_contact_autocomplete"
+    android:layout_toRightOf="@id/add_event_avatar" />
+
+</RelativeLayout>

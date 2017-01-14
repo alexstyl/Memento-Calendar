@@ -86,13 +86,13 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 addEventFactory
         );
 
-        final WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
+        WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
         ContactOperations contactOperations = new ContactOperations(getContentResolver(), accountsProvider, peopleEventsProvider);
         MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
         ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
         ImageDecoder imageDecoder = new ImageDecoder();
-        final AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, ToolbarBackgroundAnimator.setupOn(toolbar), imageDecoder);
-        final EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
+        AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, createToolbarAnimator(toolbar), imageDecoder);
+        EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
         presenter = new AddContactEventsPresenter(
                 avatarPresenter,
                 eventsPresenter,
@@ -147,6 +147,14 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                     }
                 }
         );
+    }
+
+    private ToolbarBackgroundAnimator createToolbarAnimator(MementoToolbar toolbar) {
+        if (getResources().getBoolean(R.bool.isLandscape)) {
+            return new ToolbarBackgroundStubAnimator();
+        } else {
+            return ToolbarBackgroundFadingAnimator.setupOn(toolbar);
+        }
     }
 
     @Override
