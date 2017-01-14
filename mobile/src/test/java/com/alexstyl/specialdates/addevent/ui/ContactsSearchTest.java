@@ -65,6 +65,15 @@ public class ContactsSearchTest {
         assertThat(results).isEmpty();
     }
 
+    @Test
+    public void returnEmptyForNoContacts() {
+        ContactsProvider contactsProvider = mock(ContactsProvider.class);
+        when(contactsProvider.fetchAllDeviceContacts()).thenReturn(Collections.<Contact>emptyList());
+        ContactsSearch search = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
+        List<Contact> results = search.searchForContacts("there is no contact with a name like this", 1);
+        assertThat(results).isEmpty();
+    }
+
     private static List<Contact> contacts(String firstName, String... names) {
         long id = 0;
         ArrayList<Contact> contacts = new ArrayList<>();
