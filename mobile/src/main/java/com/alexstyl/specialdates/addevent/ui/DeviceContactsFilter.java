@@ -36,6 +36,7 @@ abstract class DeviceContactsFilter extends Filter {
         return filterResults;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected final void publishResults(CharSequence constraint, FilterResults results) {
         onContactsFiltered((List<Contact>) results.values);

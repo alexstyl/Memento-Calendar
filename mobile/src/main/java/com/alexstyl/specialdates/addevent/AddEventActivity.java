@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,7 +24,6 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventD
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
-import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
@@ -37,8 +35,6 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.meta.AndroidUtils;
-import com.novoda.notils.text.SimpleTextWatcher;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -67,11 +63,10 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
         AvatarPickerView avatarView = Views.findById(this, R.id.add_event_avatar);
-        final ContactSuggestionView contactSuggestionView = Views.findById(this, R.id.add_event_contact_autocomplete);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         eventsView.setHasFixedSize(true);
-        ContactEventsAdapter adapter = new ContactEventsAdapter(contactEventsListener);
+        ContactDetailsAdapter adapter = new ContactDetailsAdapter(contactDetailsListener);
         eventsView.setAdapter(adapter);
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
@@ -100,21 +95,6 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 messageDisplayer,
                 operationsExecutor
         );
-
-        contactSuggestionView.setOnContactSelectedListener(new ContactSuggestionView.OnContactSelectedListener() {
-            @Override
-            public void onContactSelected(final Contact contact) {
-                presenter.onContactSelected(contact);
-                AndroidUtils.requestHideKeyboard(contactSuggestionView.getContext(), contactSuggestionView);
-            }
-        });
-        contactSuggestionView.addTextChangedListener(new SimpleTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable text) {
-                presenter.onNameModified(text.toString());
-            }
-        });
-
         permissionChecker = new PermissionChecker(this);
         presenter.startPresenting(
                 new OnCameraClickedListener() {
@@ -126,7 +106,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                                     .withClearOption()
                                     .show(getSupportFragmentManager(), "picture_pick");
                         } else {
-                            requestPermission();
+                            requestExternalStoragePermission();
                         }
                     }
 
@@ -137,12 +117,12 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                             BottomSheetPicturesDialog.newInstance()
                                     .show(getSupportFragmentManager(), "picture_pick");
                         } else {
-                            requestPermission();
+                            requestExternalStoragePermission();
                         }
                     }
 
                     @RequiresApi(api = Build.VERSION_CODES.M)
-                    private void requestPermission() {
+                    private void requestExternalStoragePermission() {
                         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE_PERMISSION_EXTERNAL_STORAGE);
                     }
                 }
@@ -222,13 +202,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         return MAX_RESOLUTION;
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.stay, R.anim.slide_out_from_below);
-    }
-
-    private final ContactEventsListener contactEventsListener = new ContactEventsListener() {
+    private final ContactDetailsListener contactDetailsListener = new ContactDetailsListener() {
         @Override
         public void onAddEventClicked(ContactEventViewModel viewModel) {
             EventType eventType = viewModel.getEventType();
@@ -241,6 +215,16 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         @Override
         public void onRemoveEventClicked(EventType eventType) {
             presenter.removeEvent(eventType);
+        }
+
+        @Override
+        public void onContactSelected(Contact contact) {
+            presenter.onContactSelected(contact);
+        }
+
+        @Override
+        public void onNameModified(String newName) {
+            presenter.onNameModified(newName);
         }
     };
 
@@ -310,8 +294,9 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     }
 
     @Override
-    public void onDiscardChangesSelected() {
-        cancelActivity();
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_from_below);
     }
 
     @Override
@@ -321,5 +306,10 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onDiscardChangesSelected() {
+        cancelActivity();
     }
 }

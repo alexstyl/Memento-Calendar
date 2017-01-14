@@ -19,6 +19,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/padding"
+    android:layout_marginRight="@dimen/padding"
     android:layout_weight="1"
     android:clickable="false"
     android:drawableRight="@drawable/spinner_ab_default_dayslight"

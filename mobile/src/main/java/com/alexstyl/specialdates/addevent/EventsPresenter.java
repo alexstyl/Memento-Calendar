@@ -12,13 +12,13 @@ import java.util.List;
 final class EventsPresenter {
 
     private final ContactEventsFetcher contactEventsFetcher;
-    private final ContactEventsAdapter adapter;
+    private final ContactDetailsAdapter adapter;
     private final ContactEventViewModelFactory factory;
     private final AddEventViewModelFactory addEventFactory;
     private SelectedEvents events = new SelectedEvents();
 
     EventsPresenter(ContactEventsFetcher contactEventsFetcher,
-                    ContactEventsAdapter adapter,
+                    ContactDetailsAdapter adapter,
                     ContactEventViewModelFactory factory,
                     AddEventViewModelFactory addEventFactory) {
         this.contactEventsFetcher = contactEventsFetcher;

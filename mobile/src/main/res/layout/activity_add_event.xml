@@ -26,35 +26,6 @@
 
   </FrameLayout>
 
-  <LinearLayout
-    android:id="@+id/add_event_top"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/add_event_image_height"
-    android:layout_below="@id/add_event_avatar"
-    android:background="?colorSecondary"
-    android:elevation="@dimen/toolbar_elevation"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/add_event_margin_horizontal"
-    android:paddingRight="@dimen/add_event_margin_horizontal">
-
-    <ImageView
-      android:layout_width="@dimen/add_event_image_width"
-      android:layout_height="@dimen/add_event_image_height"
-      android:scaleType="center"
-      android:src="@drawable/ic_person_24dp" />
-
-    <com.alexstyl.specialdates.addevent.ui.ContactSuggestionView
-      android:id="@+id/add_event_contact_autocomplete"
-      style="@style/Widget.AppCompat.EditText"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginLeft="@dimen/padding"
-      android:hint="@string/addbirthday_autocomplete_hint"
-      android:inputType="textPersonName"
-      android:maxLines="1" />
-
-  </LinearLayout>
-
   <android.support.v7.widget.RecyclerView
     android:id="@+id/add_event_events"
     android:layout_width="match_parent"
