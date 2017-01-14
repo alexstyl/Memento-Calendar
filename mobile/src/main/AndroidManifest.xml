@@ -103,6 +103,7 @@
 
     <activity
       android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
+      android:screenOrientation="portrait"
       android:exported="true"
       android:label="@string/add_event_title"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
