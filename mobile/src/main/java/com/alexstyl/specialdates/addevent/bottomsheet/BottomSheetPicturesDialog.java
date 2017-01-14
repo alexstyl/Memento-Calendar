@@ -59,8 +59,9 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // FIXME The dialog gets hidden while in landscape
         Context context = getActivity();
-        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        BottomSheetDialog dialog = new BottomSheetDialog(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.dialog_pick_image, null, false);
 
