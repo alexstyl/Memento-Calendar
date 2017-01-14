@@ -33,7 +33,7 @@ class AddContactEventsPresenter {
         this.operationsExecutor = operationsExecutor;
     }
 
-    void startPresenting(final OnCameraClickedListener listener) {
+    void startPresenting(OnCameraClickedListener listener) {
         avatarPresenter.startPresenting(listener);
         eventsPresenter.startPresenting();
     }

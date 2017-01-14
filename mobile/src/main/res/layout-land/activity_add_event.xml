@@ -19,25 +19,11 @@
     android:layout_below="@id/memento_toolbar"
     android:background="@color/nameday_blue" />
 
-  <com.alexstyl.specialdates.addevent.ui.ContactSuggestionView
-    android:id="@+id/add_event_contact_autocomplete"
-    style="@style/Widget.AppCompat.EditText"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/memento_toolbar"
-    android:layout_marginLeft="@dimen/padding"
-    android:layout_toRightOf="@id/add_event_avatar"
-    android:drawableLeft="@drawable/ic_person_24dp"
-    android:drawablePadding="24dp"
-    android:hint="@string/addbirthday_autocomplete_hint"
-    android:inputType="textPersonName"
-    android:maxLines="1" />
-
   <android.support.v7.widget.RecyclerView
     android:id="@+id/add_event_events"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/add_event_contact_autocomplete"
+    android:layout_below="@id/memento_toolbar"
     android:layout_toRightOf="@id/add_event_avatar" />
 
 </RelativeLayout>
