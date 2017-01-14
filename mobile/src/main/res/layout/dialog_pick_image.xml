@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  style="@style/CardViewStyle"
   android:layout_width="@dimen/bottom_sheet_layout_width"
   android:layout_height="match_parent"
   android:layout_gravity="center_horizontal"
@@ -28,4 +27,4 @@
     app:spanCount="4"
     tools:listitem="@layout/row_image_option" />
 
-</com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground>
+</LinearLayout>
