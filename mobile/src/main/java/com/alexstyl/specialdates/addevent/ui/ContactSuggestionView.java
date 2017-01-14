@@ -8,6 +8,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.search.NameMatcher;
 import com.novoda.notils.logger.simple.Log;
@@ -27,7 +28,7 @@ public class ContactSuggestionView extends AutoCompleteTextView {
         if (isInEditMode()) {
             return;
         }
-        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(getContext());
+        ContactsProvider contactsProvider = AndroidContactsProvider.get(getContext());
         ContactsSearch contactsSearch = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
         adapter = new ContactsAdapter(contactsSearch, ImageLoader.createCircleThumbnailLoader(getResources()));
         setAdapter(adapter);
