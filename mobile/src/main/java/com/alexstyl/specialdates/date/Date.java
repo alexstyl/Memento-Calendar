@@ -45,7 +45,13 @@ public class Date implements ShortDate {
             LocalDate localDate = new LocalDate(year, month, dayOfMonth);
             return new Date(localDate, new Optional<>(year));
         } catch (IllegalFieldValueException a) {
-            throw new IllegalArgumentException(String.format(Locale.US, "%d/%d/%d is invalid", dayOfMonth, month, year));
+            if (month == DateConstants.FEBRUARY && dayOfMonth == 29) {
+                // move the birthday one further
+                LocalDate localDate = new LocalDate(year, DateConstants.MARCH, 1);
+                return new Date(localDate, new Optional<>(year));
+            } else {
+                throw new IllegalArgumentException(String.format(Locale.US, "%d/%d/%d is invalid", dayOfMonth, month, year));
+            }
         }
     }
 
