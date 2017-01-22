@@ -24,6 +24,8 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventD
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
@@ -48,6 +50,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     private AddContactEventsPresenter presenter;
     private PermissionChecker permissionChecker;
     private FilePathProvider filePathProvider;
+    private Analytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
 
-        // TODO analytics
+        analytics = AnalyticsProvider.getAnalytics(this);
         // TODO black and white icons for X
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
         filePathProvider = new FilePathProvider(this);
@@ -90,7 +93,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, createToolbarAnimator(toolbar), imageDecoder);
         EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
         presenter = new AddContactEventsPresenter(
-                avatarPresenter,
+                analytics, avatarPresenter,
                 eventsPresenter,
                 contactOperations,
                 messageDisplayer,
@@ -163,9 +166,11 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
+            analytics.trackImageCaptured();
             Uri imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(filePathProvider);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
+            analytics.trackExistingImagePicked();
             Uri imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_CROP_IMAGE) {
@@ -290,11 +295,13 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     }
 
     private void finishActivitySuccessfully() {
+        analytics.trackEventAddedSuccessfully();
         setResult(RESULT_OK);
         finish();
     }
 
     private void cancelActivity() {
+        analytics.trackAddEventsCancelled();
         setResult(RESULT_CANCELED);
         finish();
     }
