@@ -37,7 +37,7 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         return new BottomSheetPicturesDialog();
     }
 
-    public static BottomSheetPicturesDialog withClearOption() {
+    public static BottomSheetPicturesDialog includeClearImageOption() {
         Bundle args = new Bundle(1);
         args.putBoolean(KEY_INCLUDE_CLEAR, true);
         BottomSheetPicturesDialog fragment = new BottomSheetPicturesDialog();
@@ -59,7 +59,6 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // FIXME The dialog gets hidden while in landscape
         Context context = getActivity();
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -111,18 +110,14 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
         }
 
         @Override
-        public void clearSelectedAvatar() {
+        public void onClearAvatarSelected() {
             dismiss();
-            parentListener.clearSelectedAvatar();
+            parentListener.onClearAvatarSelected();
         }
     };
 
-    public static Uri getImageCaptureResultUri(FilePathProvider filePathProvider, Intent data) {
-        Uri uri = data.getData();
-        if (uri == null) {
-            return filePathProvider.createTemporaryCacheFile();
-        }
-        return uri;
+    public static Uri getImageCaptureResultUri(FilePathProvider filePathProvider) {
+        return filePathProvider.createTemporaryCacheFile();
     }
 
     public static Uri getImagePickResultUri(Intent data) {
@@ -130,8 +125,16 @@ final public class BottomSheetPicturesDialog extends MementoDialog {
     }
 
     public interface Listener {
+        /**
+         * Called when the user selects the option to select an picture as an avatar, via the {@link BottomSheetPicturesDialog}
+         *
+         * @param intent The intent to launch
+         */
         void onActivitySelected(Intent intent);
 
-        void clearSelectedAvatar();
+        /**
+         * Called when the user selects the option to clear the existing avatar, via the {@link BottomSheetPicturesDialog}
+         */
+        void onClearAvatarSelected();
     }
 }
