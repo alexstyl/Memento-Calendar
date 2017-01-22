@@ -60,12 +60,12 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         setContentView(R.layout.activity_add_event);
 
         analytics = AnalyticsProvider.getAnalytics(this);
-        // TODO black and white icons for X
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_close_white);
+        toolbar.setNavigationAsClose();
+
         AvatarPickerView avatarView = Views.findById(this, R.id.add_event_avatar);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
         eventsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -267,7 +267,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_event, menu);
+        inflateThemedMenu(R.menu.menu_add_event, menu);
         return true;
     }
 
