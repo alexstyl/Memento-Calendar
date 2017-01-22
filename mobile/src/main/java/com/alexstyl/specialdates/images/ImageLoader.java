@@ -8,12 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.L;
 
@@ -56,11 +56,15 @@ public class ImageLoader {
         return new ImageLoader(options);
     }
 
+    public void displayThumbnail(Uri imagePath, ImageAware imageView) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
+    }
+
     public void displayThumbnail(Uri imagePath, ImageView imageView) {
         loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
-    public void loadImage(Uri imagePath, AvatarPickerView avatarView, final OnImageLoadedCallback callback) {
+    public void loadImage(Uri imagePath, ImageAware avatarView, final OnImageLoadedCallback callback) {
         loader.loadImage(imagePath.toString(), new ImageSize(avatarView.getWidth(), avatarView.getHeight()), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {

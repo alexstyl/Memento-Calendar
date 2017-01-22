@@ -22,9 +22,6 @@ final public class ImageIntentFactory {
     public Intent captureNewPhoto(Uri outputUri) {
         Intent takePictureIntent = new Intent(ACTION_IMAGE_CAPTURE);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-        takePictureIntent.addFlags(
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return takePictureIntent;
     }
 }

@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.addevent;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,7 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.android.AndroidDateLabelCreator;
-import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
@@ -47,6 +47,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     private AddContactEventsPresenter presenter;
     private PermissionChecker permissionChecker;
+    private FilePathProvider filePathProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         // TODO analytics
         // TODO black and white icons for X
         ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
-
+        filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
@@ -103,7 +104,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                     public void onPictureRetakenRequested() {
                         if (permissionChecker.canReadExternalStorage()) {
                             BottomSheetPicturesDialog
-                                    .withClearOption()
+                                    .includeClearImageOption()
                                     .show(getSupportFragmentManager(), "picture_pick");
                         } else {
                             requestExternalStoragePermission();
@@ -146,7 +147,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
                 public void run() {
                     if (presenter.displaysAvatar()) {
                         BottomSheetPicturesDialog
-                                .withClearOption()
+                                .includeClearImageOption()
                                 .show(getSupportFragmentManager(), "picture_pick");
                     } else {
                         BottomSheetPicturesDialog
@@ -162,19 +163,23 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
-            Uri imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(new FilePathProvider(context()), data);
+            Uri imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(filePathProvider);
             startCropIntent(imageUri);
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == RESULT_OK) {
             Uri imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data);
             startCropIntent(imageUri);
-        } else if (requestCode == CODE_CROP_IMAGE && resultCode == RESULT_OK) {
+        } else if (requestCode == CODE_CROP_IMAGE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            presenter.presentAvatar(result.getUri());
+            if (resultCode == RESULT_OK) {
+                presenter.presentAvatar(result.getUri());
+            } else if (resultCode == RESULT_CANCELED && result != null) {
+                ErrorTracker.track(result.getError());
+            }
         }
     }
 
     private void startCropIntent(Uri imageToCrop) {
-        int size = queryCropSize();
+        int size = queryCropSize(getContentResolver());
         CropImage.activity(imageToCrop)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
@@ -184,9 +189,8 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     private static final int MAX_RESOLUTION = 720;
 
-    private static int queryCropSize() {
-        Context context = MementoApplication.getContext();
-        Cursor cursor = context.getContentResolver().query(
+    private static int queryCropSize(ContentResolver resolver) {
+        Cursor cursor = resolver.query(
                 ContactsContract.DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
                 new String[]{ContactsContract.DisplayPhoto.DISPLAY_MAX_DIM}, null, null, null
         );
@@ -235,11 +239,13 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     @Override
     public void onActivitySelected(Intent intent) {
+        grantUriPermission(intent.getComponent().getPackageName(), filePathProvider.createTemporaryCacheFile(), Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, getRequestCodeFor(intent));
     }
 
     @Override
-    public void clearSelectedAvatar() {
+    public void onClearAvatarSelected() {
         presenter.removeAvatar();
     }
 
