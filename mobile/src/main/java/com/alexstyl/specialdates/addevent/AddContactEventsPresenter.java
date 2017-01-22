@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
@@ -12,6 +13,7 @@ import com.novoda.notils.logger.simple.Log;
 
 class AddContactEventsPresenter {
 
+    private final Analytics analytics;
     private final AvatarPresenter avatarPresenter;
     private final EventsPresenter eventsPresenter;
     private final ContactOperations contactOperations;
@@ -21,11 +23,13 @@ class AddContactEventsPresenter {
     private SelectedContact selectedContact = SelectedContact.anonymous();
     private boolean modified = false;
 
-    AddContactEventsPresenter(AvatarPresenter avatarPresenter,
+    AddContactEventsPresenter(Analytics analytics,
+                              AvatarPresenter avatarPresenter,
                               EventsPresenter eventsPresenter,
                               ContactOperations contactOperations,
                               MessageDisplayer messageDisplayer,
                               ContactOperationsExecutor operationsExecutor) {
+        this.analytics = analytics;
         this.avatarPresenter = avatarPresenter;
         this.eventsPresenter = eventsPresenter;
         this.contactOperations = contactOperations;
@@ -39,6 +43,7 @@ class AddContactEventsPresenter {
     }
 
     void onContactSelected(Contact contact) {
+        analytics.trackContactSelected();
         avatarPresenter.onContactSelected(contact);
         eventsPresenter.onContactSelected(contact);
         selectedContact = SelectedContact.forContact(contact);
@@ -46,11 +51,13 @@ class AddContactEventsPresenter {
     }
 
     void onEventDatePicked(EventType eventType, Date date) {
+        analytics.trackEventDatePicked(eventType);
         eventsPresenter.onEventDatePicked(eventType, date);
         modified = true;
     }
 
     void removeEvent(EventType eventType) {
+        analytics.trackEventRemoved(eventType);
         eventsPresenter.removeEvent(eventType);
         modified = true;
     }
@@ -64,11 +71,13 @@ class AddContactEventsPresenter {
     }
 
     void presentAvatar(Uri photoUri) {
+        analytics.trackAvatarSelected();
         avatarPresenter.presentAvatar(photoUri);
         modified = true;
     }
 
     void removeAvatar() {
+        analytics.trackEventAddedSuccessfully();
         avatarPresenter.removeAvatar();
         modified = true;
     }
@@ -102,6 +111,7 @@ class AddContactEventsPresenter {
                 @Override
                 protected void onPostExecute(Boolean success) {
                     if (success) {
+                        analytics.trackContactUpdated();
                         messageDisplayer.showMessage(R.string.add_event_contact_updated);
                     } else {
                         messageDisplayer.showMessage(R.string.add_event_failed_to_update_contact);
@@ -127,6 +137,7 @@ class AddContactEventsPresenter {
                 @Override
                 protected void onPostExecute(Boolean success) {
                     if (success) {
+                        analytics.trackContactCreated();
                         // TODO open contact screen?
                         messageDisplayer.showMessage(R.string.add_birthday_contact_added);
                     } else {
