@@ -49,13 +49,6 @@ android {
         }
     }
 
-    productFlavors {
-        free {
-        }
-        pro {
-            applicationIdSuffix ".pro"
-        }
-    }
 
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
