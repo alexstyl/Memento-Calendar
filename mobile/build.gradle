@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-//apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.neenbedankt.android-apt'
 
 ext {
-    android_support_version = '25.0.1'
+    android_support_version = '25.1.0'
 }
 
 
@@ -33,7 +32,7 @@ android {
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode androidVersionCode
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
