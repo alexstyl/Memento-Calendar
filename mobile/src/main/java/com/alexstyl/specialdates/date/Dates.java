@@ -14,10 +14,6 @@ public class Dates {
         this.dates.add(date);
     }
 
-    public Dates(List<Date> dates) {
-        this.dates.addAll(dates);
-    }
-
     public Dates(Dates dates) {
         this.dates.addAll(dates.dates);
     }

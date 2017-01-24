@@ -1,19 +1,20 @@
 package com.alexstyl.specialdates;
 
+import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.service.DailyReminderIntentService;
 import com.novoda.notils.logger.simple.Log;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
-    public static final String PACKAGE = BuildConfig.APPLICATION_ID;
     private static Context context;
 
     public static String getVersionName(Context context) {
@@ -43,7 +44,12 @@ public class MementoApplication extends Application {
         context = this;
         initialiseDependencies();
         ErrorTracker.startTracking(this);
-        DailyReminderIntentService.setup(this);
+
+        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
+        if (preferences.isEnabled()) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            new DailyReminderScheduler(alarmManager, this).setupReminder(preferences);
+        }
     }
 
     protected void initialiseDependencies() {

@@ -1,14 +1,12 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.dailyreminder;
 
-import android.app.AlarmManager;
 import android.app.IntentService;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
@@ -20,18 +18,16 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.receiver.EventReceiver;
-import com.alexstyl.specialdates.settings.MainPreferenceActivity;
+import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.upcoming.TimePeriod;
 import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.logger.simple.Log;
 
-import java.util.Calendar;
+import java.util.List;
 
 /**
  * A service that looks up all events on the specified date and notifies the user about it
- * <p>NOTE: The DailyReminder service will display</p>
  */
 public class DailyReminderIntentService extends IntentService {
 
@@ -65,14 +61,13 @@ public class DailyReminderIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        rescheduleAlarm(this);
         PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
         Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {
-            ContactEvents celebrationDate = provider.getCelebrationDateFor(today);
+            List<ContactEvent> celebrationDate = provider.getCelebrationDateFor(TimePeriod.between(today, today));
             if (containsAnyContactEvents(celebrationDate)) {
-                notifier.forDailyReminder(celebrationDate);
+                notifier.forDailyReminder(today, celebrationDate);
             }
         }
         if (namedaysAreEnabledForAllCases()) {
@@ -99,7 +94,7 @@ public class DailyReminderIntentService extends IntentService {
         return Date.today();
     }
 
-    private boolean containsAnyContactEvents(ContactEvents celebrationDate) {
+    private boolean containsAnyContactEvents(List<ContactEvent> celebrationDate) {
         return celebrationDate.size() > 0;
     }
 
@@ -136,64 +131,4 @@ public class DailyReminderIntentService extends IntentService {
         return names.nameCount() > 0;
     }
 
-    public static void resetAlarm(Context context) {
-        cancelAlarm(context);
-        rescheduleAlarm(context);
-    }
-
-    public static void rescheduleAlarm(Context context) {
-        context = context.getApplicationContext();
-
-        Intent myIntent = new Intent(context, EventReceiver.class);
-        myIntent.setAction(EventReceiver.ACTION_START_DAILYREMINDER);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context, REQUEST_CODE, myIntent, 0
-        );
-
-        Calendar firingCal = Calendar.getInstance();
-        Calendar currentCal = Calendar.getInstance();
-
-        int[] time = MainPreferenceActivity.getDailyReminderTime(context);
-
-        firingCal.set(Calendar.HOUR_OF_DAY, time[0]);
-        firingCal.set(Calendar.MINUTE, time[1]);
-        long intendedTime = firingCal.getTimeInMillis();
-        long currentTime = currentCal.getTimeInMillis();
-
-        if (intendedTime <= currentTime) {
-            // we missed this one!
-            firingCal.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(
-                AlarmManager.RTC, firingCal.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent
-        );
-
-    }
-
-    public static boolean isNextAlarmSet(Context context) {
-        return (PendingIntent.getBroadcast(
-                context, REQUEST_CODE,
-                new Intent(EventReceiver.ACTION_START_DAILYREMINDER),
-                PendingIntent.FLAG_NO_CREATE
-        ) != null);
-    }
-
-    public static void cancelAlarm(Context context) {
-        context = context.getApplicationContext();
-        Intent myIntent = new Intent(context, EventReceiver.class);
-        myIntent.setAction(EventReceiver.ACTION_START_DAILYREMINDER);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context, REQUEST_CODE, myIntent, 0
-        );
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-    }
-
-    public static void setup(Context context) {
-        if (MainPreferenceActivity.isDailyReminderSet(context) && !isNextAlarmSet(context)) {
-            rescheduleAlarm(context);
-        }
-    }
 }
