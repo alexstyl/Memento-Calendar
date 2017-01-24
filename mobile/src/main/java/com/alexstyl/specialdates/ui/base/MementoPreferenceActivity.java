@@ -8,6 +8,11 @@ import java.util.List;
 public class MementoPreferenceActivity extends ThemedActivity {
 
     @Override
+    protected boolean shouldUseHomeAsUp() {
+        return true;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         List<Fragment> fragments = getSupportFragmentManager().getFragments();

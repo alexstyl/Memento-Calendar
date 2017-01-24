@@ -81,18 +81,16 @@
 
 
     <activity
-      android:name=".support.SupportTranslateDialog"
-      android:exported="false"
-      android:label="@string/translate_the_app_title"
-      android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
-
-    <activity
       android:name=".settings.DailyReminderActivity"
       android:exported="true"
-      android:label="@string/daily_reminder">
+      android:label="@string/daily_reminder"
+      android:parentActivityName=".settings.MainPreferenceActivity">
       <intent-filter>
         <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
       </intent-filter>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".settings.MainPreferenceActivity" />
     </activity>
 
     <activity
@@ -136,7 +134,7 @@
     <activity android:name=".permissions.ContactPermissionActivity" />
     <!-- Services -->
     <service
-      android:name="com.alexstyl.specialdates.service.DailyReminderIntentService"
+      android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"
       android:exported="false"
       android:label="@string/service_dailyreminder" />
 
@@ -150,8 +148,15 @@
       android:exported="false">
       <intent-filter>
         <action android:name="android.intent.action.LOCALE_CHANGED" />
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
+      </intent-filter>
+    </receiver>
+
+    <receiver
+      android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver"
+      android:exported="false">
+      <intent-filter>
         <action android:name="android.intent.action.TIME_SET" />
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
       </intent-filter>
     </receiver>
 

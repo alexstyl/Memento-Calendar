@@ -22,23 +22,23 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
+import com.alexstyl.android.AndroidColorResources;
+import com.alexstyl.android.AndroidDimensionResources;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.android.AndroidColorResources;
-import com.alexstyl.android.AndroidDimensionResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.novoda.notils.logger.simple.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Notifier {
@@ -47,14 +47,13 @@ public class Notifier {
     private static final int NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS = 1;
     private static final int NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS = 2;
 
-    private static final String TAG = "Notifier";
-
     private final Context context;
     private final NotificationManager notificationManager;
     private final ImageLoader imageLoader;
     private final StringResources stringResources;
     private final DimensionResources dimensions;
     private final ColorResources colorResources;
+    private final DailyReminderPreferences preferences;
 
     public static Notifier newInstance(Context context) {
         Resources resources = context.getResources();
@@ -63,36 +62,33 @@ public class Notifier {
         DimensionResources dimensions = new AndroidDimensionResources(resources);
         ColorResources colorResources = new AndroidColorResources(resources);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        return new Notifier(context, notificationManager, imageLoader, stringResources, colorResources, dimensions);
+        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(context);
+        return new Notifier(context, notificationManager, imageLoader, stringResources, colorResources, dimensions, preferences);
     }
 
     private Notifier(Context context,
-                     NotificationManager notificationManager, ImageLoader imageLoader,
+                     NotificationManager notificationManager,
+                     ImageLoader imageLoader,
                      StringResources stringResources,
                      ColorResources colorResources,
-                     DimensionResources dimensions
-    ) {
+                     DimensionResources dimensions,
+                     DailyReminderPreferences preferences) {
         this.notificationManager = notificationManager;
         this.stringResources = stringResources;
         this.imageLoader = imageLoader;
         this.context = context.getApplicationContext();
         this.dimensions = dimensions;
         this.colorResources = colorResources;
+        this.preferences = preferences;
     }
 
-    /**
-     * Notifies the user about the special dates contained in the given daycard
-     *
-     * @param events The celebration date to display
-     */
-    public void forDailyReminder(ContactEvents events) {
+    public void forDailyReminder(Date date, List<ContactEvent> events) {
         Bitmap largeIcon = null;
-        Date date = events.getDate();
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
             int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
-            Contact displayingContact = events.getContacts().iterator().next();
+            Contact displayingContact = events.get(0).getContact();
             largeIcon = loadImageAsync(displayingContact, size, size);
             if (Utils.hasLollipop() && largeIcon != null) {
                 // in Lollipop the notifications is the default to use Rounded Images
@@ -109,7 +105,11 @@ public class Notifier {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-        String title = NaturalLanguageUtils.joinContacts(stringResources, events.getContacts(), 3);
+        List<Contact> contacts = new ArrayList<>();
+        for (ContactEvent event : events) {
+            contacts.add(event.getContact());
+        }
+        String title = NaturalLanguageUtils.joinContacts(stringResources, contacts, 3);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_memento)
@@ -122,7 +122,7 @@ public class Notifier {
                 .setColor(colorResources.getColor(R.color.main_red));
 
         if (events.size() == 1) {
-            ContactEvent event = events.getEvent(0);
+            ContactEvent event = events.get(0);
             String msg = event.getLabel(stringResources);
 
             NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
@@ -131,13 +131,13 @@ public class Notifier {
 
             builder.setStyle(bigTextStyle);
 
-        } else if (events.getContacts().size() > 1) {
+        } else if (contacts.size() > 1) {
             NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
             inboxStyle.setBigContentTitle(title);
 
             for (int i = 0; i < events.size(); ++i) {
 
-                ContactEvent event = events.getEvent(i);
+                ContactEvent event = events.get(i);
                 Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
 
@@ -149,7 +149,7 @@ public class Notifier {
             }
 
             builder.setStyle(inboxStyle);
-            builder.setContentText(TextUtils.join(", ", events.getContacts()));
+            builder.setContentText(TextUtils.join(", ", contacts));
         }
 
         if (supportsPublicNotifications()) {
@@ -164,17 +164,17 @@ public class Notifier {
             builder.setPublicVersion(publicNotification.build());
         }
 
-        for (Contact contact : events.getContacts()) {
+        for (Contact contact : contacts) {
             Uri uri = contact.getLookupUri();
             if (uri != null) {
                 builder.addPerson(uri.toString());
             }
         }
 
-        String uri = MainPreferenceActivity.getDailyReminderRingtone(context);
-        builder.setSound(Uri.parse(uri));
+        Uri ringtoneUri = preferences.getRingtoneSelected();
+        builder.setSound(ringtoneUri);
 
-        if (MainPreferenceActivity.getDailyReminderVibrationSet(context)) {
+        if (preferences.getVibrationSet()) {
             builder.setDefaults(Notification.DEFAULT_VIBRATE);
         }
 
@@ -185,8 +185,10 @@ public class Notifier {
     }
 
     private static Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                                                  bitmap.getHeight(), Bitmap.Config.ARGB_8888
+        final Bitmap output = Bitmap.createBitmap(
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                Bitmap.Config.ARGB_8888
         );
         final Canvas canvas = new Canvas(output);
 
@@ -220,7 +222,7 @@ public class Notifier {
 
     public void forNamedays(List<String> names, Date date) {
         if (names == null || names.isEmpty()) {
-            Log.w(TAG, "Tried to notify for empty name list");
+            Log.w("Tried to notify for empty name list");
             return;
         }
         PendingIntent intent = PendingIntent.getActivity(
