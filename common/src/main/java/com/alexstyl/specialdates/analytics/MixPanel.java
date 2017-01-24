@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.analytics;
 
+import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -83,6 +84,22 @@ class MixPanel implements Analytics {
         mixpanel.track("contact created");
     }
 
+    @Override
+    public void trackDailyReminderEnabled() {
+        mixpanel.track("daily reminder enabled");
+    }
+
+    @Override
+    public void trackDailyReminderDisabled() {
+        mixpanel.track("daily reminder disabled");
+    }
+
+    @Override
+    public void trackDailyReminderTimeUpdated(TimeOfDay timeOfDay) {
+        JSONObject properties = createPropertyFor(timeOfDay);
+        mixpanel.track("daily reminder time updated", properties);
+    }
+
     private static JSONObject createJSONfor(ActionWithParameters event) {
         JSONObject properties = new JSONObject();
         try {
@@ -97,6 +114,16 @@ class MixPanel implements Analytics {
         JSONObject properties = new JSONObject();
         try {
             properties.put("event type", eventType.getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
+
+    private JSONObject createPropertyFor(TimeOfDay timeOfDay) {
+        JSONObject properties = new JSONObject();
+        try {
+            properties.put("time", timeOfDay.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

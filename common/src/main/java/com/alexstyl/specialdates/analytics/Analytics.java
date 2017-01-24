@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.analytics;
 
+import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 public interface Analytics {
@@ -28,4 +29,10 @@ public interface Analytics {
     void trackContactUpdated();
 
     void trackContactCreated();
+
+    void trackDailyReminderEnabled();
+
+    void trackDailyReminderDisabled();
+
+    void trackDailyReminderTimeUpdated(TimeOfDay timeOfDay);
 }

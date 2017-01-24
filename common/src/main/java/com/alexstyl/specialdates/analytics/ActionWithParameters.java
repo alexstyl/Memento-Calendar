@@ -12,12 +12,6 @@ public final class ActionWithParameters {
         this.value = value;
     }
 
-    public ActionWithParameters(Action action, String label, boolean value) {
-        this.actionName = action;
-        this.label = label;
-        this.value = value ? "true" : "false";
-    }
-
     public String getName() {
         return actionName.getName();
     }
