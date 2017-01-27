@@ -8,13 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import com.alexstyl.specialdates.date.CelebrationDate;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
+import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsAdapter;
 import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsViewHolder;
 
 import java.util.List;
+import java.util.Locale;
 
 public class UpcomingEventsListView extends RecyclerView {
 
@@ -33,7 +36,7 @@ public class UpcomingEventsListView extends RecyclerView {
         if (isInEditMode()) {
             return;
         }
-        adapter = UpcomingEventsAdapter.newInstance(imageLoader);
+        adapter = new UpcomingEventsAdapter(Date.today(), imageLoader, MonthLabels.forLocale(Locale.getDefault()));
         setAdapter(adapter);
 
         addOnScrollListener(PauseImageLoadingScrollListener.newInstance(imageLoader));
