@@ -16,7 +16,6 @@ import com.novoda.notils.exception.DeveloperError;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -39,16 +38,10 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private OnUpcomingEventClickedListener listener;
 
-    public static UpcomingEventsAdapter newInstance(ImageLoader imageLoader) {
-        Date today = Date.today();
-        return new UpcomingEventsAdapter(today, imageLoader, MonthLabels.forLocale(Locale.getDefault()));
-    }
-
-    UpcomingEventsAdapter(Date today, ImageLoader imageLoader, MonthLabels monthLabels) {
+    public UpcomingEventsAdapter(Date today, ImageLoader imageLoader, MonthLabels monthLabels) {
         this.imageLoader = imageLoader;
         this.today = today;
         this.monthLabels = monthLabels;
-
     }
 
     @Override
@@ -65,7 +58,6 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder vh, int position) {
         int viewType = getItemViewType(position);
-
         if (viewType == VIEWTYPE_HEADER) {
             MonthOfYear monthOfYear = headers.get(position);
             ((MonthHeaderViewHolder) vh).displayMonth(monthOfYear);
@@ -75,12 +67,6 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else {
             throw new DeveloperError("Unknown view type " + viewType);
         }
-
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return viewTypes.get(position);
     }
 
     private CelebrationDate getCelebrationAtPosition(int position) {
@@ -89,17 +75,13 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return viewTypes.get(position);
+    }
+
+    @Override
     public int getItemCount() {
         return celebrationDates.size() + headers.size();
-    }
-
-    public boolean isEmpty() {
-        return getItemCount() > 0;
-    }
-
-    public int getMonthAt(int position) {
-        Integer integer = rowToMonth.get(position);
-        return integer == null ? -1 : integer;
     }
 
     public void setUpcomingEvents(List<CelebrationDate> upcomingEvents, OnUpcomingEventClickedListener listener) {
