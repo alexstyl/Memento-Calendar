@@ -18,10 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Adapter to display upcoming events
- * <br/> The adapter contains multiple view types for differe
- */
 public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<CelebrationDate> celebrationDates = new ArrayList<>();
@@ -71,9 +67,11 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         int viewType = getItemViewType(position);
 
         if (viewType == VIEWTYPE_HEADER) {
-            bindMonthViewHolder((MonthHeaderViewHolder) vh, position);
-        } else if (isUpcomingViewType(viewType)) {
-            bindContactView((UpcomingEventsViewHolder) vh, position);
+            MonthOfYear monthOfYear = headers.get(position);
+            ((MonthHeaderViewHolder) vh).displayMonth(monthOfYear);
+        } else if (viewType == VIEWTYPE_DAY_EVENTS) {
+            CelebrationDate celebrationDate = getCelebrationAtPosition(position);
+            ((UpcomingEventsViewHolder) vh).bind(celebrationDate, today, listener);
         } else {
             throw new DeveloperError("Unknown view type " + viewType);
         }
@@ -83,20 +81,6 @@ public class UpcomingEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemViewType(int position) {
         return viewTypes.get(position);
-    }
-
-    private void bindMonthViewHolder(MonthHeaderViewHolder viewHolder, int position) {
-        MonthOfYear monthOfYear = headers.get(position);
-        viewHolder.displayMonth(monthOfYear);
-    }
-
-    private void bindContactView(UpcomingEventsViewHolder viewHolder, int position) {
-        CelebrationDate celebrationDate = getCelebrationAtPosition(position);
-        viewHolder.bind(celebrationDate, today, listener);
-    }
-
-    private boolean isUpcomingViewType(int type) {
-        return type == VIEWTYPE_DAY_EVENTS;
     }
 
     private CelebrationDate getCelebrationAtPosition(int position) {
