@@ -1,10 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
-
-ext {
-    android_support_version = '25.1.0'
-}
+apply from: '../common/versions.gradle'
 
 
 buildscript {
@@ -89,7 +86,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile 'com.google.android.gms:play-services-wearable:9.6.1'
+    compile "com.google.android.gms:play-services-wearable:$play_services_version"
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'

@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
-ext {
-    android_support_version = '25.0.0'
-}
+apply from: 'versions.gradle'
+
 android {
 
     compileSdkVersion androidCompileSdkVersion

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply from: '../common/versions.gradle'
 
 android {
     compileSdkVersion androidCompileSdkVersion
@@ -28,6 +28,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':common')
     compile 'com.google.android.support:wearable:2.0.0-alpha2'
-    compile 'com.google.android.gms:play-services-wearable:9.6.1'
+    compile "com.google.android.gms:play-services-wearable:$play_services_version"
     compile 'com.novoda:notils:2.2.15'
 }
