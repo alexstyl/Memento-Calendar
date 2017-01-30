@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
-import com.alexstyl.specialdates.ui.ThemeMonitor;
+import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
