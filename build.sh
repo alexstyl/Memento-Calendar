@@ -24,17 +24,10 @@ if [ ! -f secret.gradle ]; then
 fi
 
 # Copy mock google-services file if necessary
-if [ ! -f ./mobile/src/free/google-services.json ]; then
+if [ ! -f ./mobile/google-services.json ]; then
   echo "Using mock google-services.json for free"
-  mkdir ./mobile/src/free/
-  cp mock-google-services.json ./mobile/src/free/google-services.json
+  cp mock-google-services.json ./mobile/google-services.json
 fi
-if [ ! -f ./mobile/src/pro/google-services.json ]; then
-  echo "Using mock google-services.json for pro"
-  mkdir ./mobile/src/pro/
-  cp mock-google-services.json ./mobile/src/pro/google-services.json
-fi
-
 # Build
 if [ $TRAVIS_PULL_REQUEST = false ] ; then
   # For a merged commit, build all configurations.
