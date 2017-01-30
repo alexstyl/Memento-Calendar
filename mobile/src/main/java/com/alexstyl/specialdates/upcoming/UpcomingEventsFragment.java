@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.transition.TransitionManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -43,7 +40,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     private SettingsMonitor monitor;
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
-    private GoToTodayEnabler goToTodayEnabler;
     private Analytics analytics;
     private ContactPermissionRequest permissions;
 
@@ -54,7 +50,6 @@ public class UpcomingEventsFragment extends MementoFragment {
         analytics = AnalyticsProvider.getAnalytics(getActivity());
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
-        goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
         PermissionChecker checker = new PermissionChecker(getActivity());
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
@@ -74,30 +69,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         upcomingEventsListView.setHasFixedSize(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_upcoming_dark, menu);
-        goToTodayEnabler.reattachTo(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_select_date:
-                showSelectDateDialog();
-                return true;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showSelectDateDialog() {
-        analytics.trackAction(Action.SELECT_DATE);
-        upcomingEventsListView.scrollToToday(true);
     }
 
     private final PermissionCallbacks callbacks = new PermissionCallbacks() {
@@ -194,9 +165,9 @@ public class UpcomingEventsFragment extends MementoFragment {
                 upcomingEventsListView.scrollToPosition(0);
                 mustScrollToPosition = false;
             }
-            goToTodayEnabler.validateGoToTodayButton(upcomingEventsListView);
             hideLoading();
             showData();
         }
     };
+
 }
