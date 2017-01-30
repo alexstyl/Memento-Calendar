@@ -38,8 +38,4 @@ class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewM
             }
         });
     }
-
-    void playShowMeAnimation() {
-        // TODO remove animation logic
-    }
 }
