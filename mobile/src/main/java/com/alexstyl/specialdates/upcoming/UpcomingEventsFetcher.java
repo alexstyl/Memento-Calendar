@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
@@ -36,10 +35,10 @@ class UpcomingEventsFetcher {
         this.loaderManager.restartLoader(LOADER_ID_DATES, null, loaderCallbacks);
     }
 
-    private final LoaderManager.LoaderCallbacks<List<CelebrationDate>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<CelebrationDate>>() {
+    private final LoaderManager.LoaderCallbacks<List<UpcomingRowViewModel>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<UpcomingRowViewModel>>() {
 
         @Override
-        public Loader<List<CelebrationDate>> onCreateLoader(int loaderID, Bundle arg1) {
+        public Loader<List<UpcomingRowViewModel>> onCreateLoader(int loaderID, Bundle arg1) {
             if (loaderID == LOADER_ID_DATES) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(context);
                 NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
@@ -56,20 +55,20 @@ class UpcomingEventsFetcher {
         }
 
         @Override
-        public void onLoadFinished(Loader<List<CelebrationDate>> loader, List<CelebrationDate> celebrationDates) {
+        public void onLoadFinished(Loader<List<UpcomingRowViewModel>> loader, List<UpcomingRowViewModel> celebrationDates) {
             if (loader.getId() == LOADER_ID_DATES) {
                 callback.onUpcomingDatesLoaded(celebrationDates);
             }
         }
 
         @Override
-        public void onLoaderReset(Loader<List<CelebrationDate>> loader) {
+        public void onLoaderReset(Loader<List<UpcomingRowViewModel>> loader) {
             // no-op
         }
     };
 
     interface Callback {
-        void onUpcomingDatesLoaded(List<CelebrationDate> dates);
+        void onUpcomingDatesLoaded(List<UpcomingRowViewModel> dates);
 
     }
 }

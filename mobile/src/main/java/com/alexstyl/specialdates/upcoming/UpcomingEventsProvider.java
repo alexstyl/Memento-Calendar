@@ -2,10 +2,8 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.support.v4.app.FragmentActivity;
 
-import com.alexstyl.specialdates.date.CelebrationDate;
 import com.alexstyl.specialdates.date.Date;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class UpcomingEventsProvider {
@@ -30,26 +28,14 @@ class UpcomingEventsProvider {
 
     private final UpcomingEventsFetcher.Callback callback = new UpcomingEventsFetcher.Callback() {
 
-        private List<CelebrationDate> accumulatedDates = new ArrayList<>();
-
         @Override
-        public void onUpcomingDatesLoaded(List<CelebrationDate> dates) {
-            appendCelebrationDates(dates);
-            presentDatesToListener();
-        }
-
-        private void appendCelebrationDates(List<CelebrationDate> dates) {
-            accumulatedDates.clear();
-            accumulatedDates.addAll(dates);
-        }
-
-        private void presentDatesToListener() {
-            listener.onUpcomingEventsLoaded(accumulatedDates);
+        public void onUpcomingDatesLoaded(List<UpcomingRowViewModel> dates) {
+            listener.onUpcomingEventsLoaded(dates);
         }
 
     };
 
     interface LoadingListener {
-        void onUpcomingEventsLoaded(List<CelebrationDate> dates);
+        void onUpcomingEventsLoaded(List<UpcomingRowViewModel> dates);
     }
 }

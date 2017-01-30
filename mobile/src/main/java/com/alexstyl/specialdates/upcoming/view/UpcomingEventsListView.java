@@ -6,18 +6,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 
-import com.alexstyl.specialdates.date.CelebrationDate;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
-import com.alexstyl.specialdates.upcoming.MonthLabels;
+import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsAdapter;
 import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsViewHolder;
+import com.alexstyl.specialdates.upcoming.ui.UpcomingViewHolderFactory;
 
 import java.util.List;
-import java.util.Locale;
 
 public class UpcomingEventsListView extends RecyclerView {
 
@@ -36,14 +35,14 @@ public class UpcomingEventsListView extends RecyclerView {
         if (isInEditMode()) {
             return;
         }
-        adapter = new UpcomingEventsAdapter(Date.today(), imageLoader, MonthLabels.forLocale(Locale.getDefault()));
+        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(LayoutInflater.from(context), imageLoader));
         setAdapter(adapter);
 
         addOnScrollListener(PauseImageLoadingScrollListener.newInstance(imageLoader));
     }
 
-    public void updateWith(List<CelebrationDate> dates, OnUpcomingEventClickedListener listener) {
-        adapter.setUpcomingEvents(dates, listener);
+    public void updateWith(List<UpcomingRowViewModel> dates, OnUpcomingEventClickedListener listener) {
+        adapter.displayUpcomingEvents(dates, listener);
     }
 
     public void scrollToToday(final boolean smoothScroll) {
@@ -87,10 +86,9 @@ public class UpcomingEventsListView extends RecyclerView {
         smoothScrollToPosition(pos);
     }
 
-    private void onFinishedScrolling(final int pos) {
-
-        UpcomingEventsViewHolder upcomingViewHolder = (UpcomingEventsViewHolder) findViewHolderForAdapterPosition(pos);
-        if (upcomingViewHolder != null && isPositionVisible(pos)) {
+    private void onFinishedScrolling(int position) {
+        UpcomingEventsViewHolder upcomingViewHolder = (UpcomingEventsViewHolder) findViewHolderForAdapterPosition(position);
+        if (upcomingViewHolder != null && isPositionVisible(position)) {
             upcomingViewHolder.playShowMeAnimation();
         }
 

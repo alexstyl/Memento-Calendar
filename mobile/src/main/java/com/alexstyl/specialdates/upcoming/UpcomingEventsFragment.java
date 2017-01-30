@@ -18,8 +18,7 @@ import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.date.CelebrationDate;
-import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
@@ -174,9 +173,9 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
         @Override
-        public void onContactEventPressed(View view, ContactEvent contact) {
+        public void onContactEventPressed(View view, Contact contact) {
             analytics.trackAction(action);
-            contact.getContact().displayQuickInfo(getActivity(), view);
+            contact.displayQuickInfo(getActivity(), view);
         }
 
         @Override
@@ -189,7 +188,7 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private final UpcomingEventsProvider.LoadingListener onEventsLoadedListener = new UpcomingEventsProvider.LoadingListener() {
         @Override
-        public void onUpcomingEventsLoaded(List<CelebrationDate> dates) {
+        public void onUpcomingEventsLoaded(List<UpcomingRowViewModel> dates) {
             upcomingEventsListView.updateWith(dates, listClickListener);
             if (mustScrollToPosition) {
                 upcomingEventsListView.scrollToToday(false);

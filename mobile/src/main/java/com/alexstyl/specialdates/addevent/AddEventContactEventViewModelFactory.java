@@ -11,27 +11,27 @@ import com.alexstyl.specialdates.search.DateLabelCreator;
 import java.util.ArrayList;
 import java.util.List;
 
-final class ContactEventViewModelFactory {
+final class AddEventContactEventViewModelFactory {
 
     private final DateLabelCreator creator;
 
-    ContactEventViewModelFactory(DateLabelCreator creator) {
+    AddEventContactEventViewModelFactory(DateLabelCreator creator) {
         this.creator = creator;
     }
 
-    List<ContactEventViewModel> createViewModel(List<ContactEvent> contactEvents) {
-        List<ContactEventViewModel> viewModels = new ArrayList<>(contactEvents.size());
+    List<AddEventContactEventViewModel> createViewModel(List<ContactEvent> contactEvents) {
+        List<AddEventContactEventViewModel> viewModels = new ArrayList<>(contactEvents.size());
 
         for (ContactEvent contactEvent : contactEvents) {
-            ContactEventViewModel viewModel = createViewModelWith(contactEvent.getType(), contactEvent.getDate());
+            AddEventContactEventViewModel viewModel = createViewModelWith(contactEvent.getType(), contactEvent.getDate());
             viewModels.add(viewModel);
         }
         return viewModels;
     }
 
-    ContactEventViewModel createViewModelWith(EventType eventType, Date date) {
+    AddEventContactEventViewModel createViewModelWith(EventType eventType, Date date) {
         String eventHint = date.hasYear() ? creator.createLabelWithYearFor(date) : creator.createLabelWithoutYearFor(date);
         Optional<Date> dateOptional = new Optional<>(date);
-        return new ContactEventViewModel(eventHint, eventType, dateOptional, View.VISIBLE);
+        return new AddEventContactEventViewModel(eventHint, eventType, dateOptional, View.VISIBLE);
     }
 }

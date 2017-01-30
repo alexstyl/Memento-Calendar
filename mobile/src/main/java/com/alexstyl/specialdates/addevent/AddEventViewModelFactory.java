@@ -20,8 +20,8 @@ final class AddEventViewModelFactory {
         this.stringResources = stringResources;
     }
 
-    List<ContactEventViewModel> createViewModelsForAllEventsBut(List<EventType> existingTypes) {
-        List<ContactEventViewModel> addEventViewModels = new ArrayList<>();
+    List<AddEventContactEventViewModel> createViewModelsForAllEventsBut(List<EventType> existingTypes) {
+        List<AddEventContactEventViewModel> addEventViewModels = new ArrayList<>();
 
         for (StandardEventType eventType : StandardEventType.values()) {
             if (existingTypes.contains(eventType)
@@ -34,9 +34,9 @@ final class AddEventViewModelFactory {
         return addEventViewModels;
     }
 
-    ContactEventViewModel createAddEventViewModelsFor(EventType eventType) {
+    AddEventContactEventViewModel createAddEventViewModelsFor(EventType eventType) {
         String eventName = eventType.getEventName(stringResources);
-        return new ContactEventViewModel(eventName, eventType, NO_DATE, View.GONE);
+        return new AddEventContactEventViewModel(eventName, eventType, NO_DATE, View.GONE);
     }
 
 }
