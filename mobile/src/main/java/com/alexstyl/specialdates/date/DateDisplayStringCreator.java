@@ -69,6 +69,5 @@ public enum DateDisplayStringCreator {
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
         format_flags |= DateUtils.FORMAT_SHOW_YEAR;
         return DateUtils.formatDateTime(appContext, date.toMillis(), format_flags);
-
     }
 }

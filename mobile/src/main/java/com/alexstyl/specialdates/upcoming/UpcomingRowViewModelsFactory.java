@@ -7,7 +7,6 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
@@ -17,20 +16,20 @@ import java.util.List;
 
 final class UpcomingRowViewModelsFactory {
     private final Date today;
-    private final DateDisplayStringCreator dateDisplayCreator;
+    private final UpcomingDateStringCreator dateCreator;
     private final ContactViewModelFactory contactViewModelFactory;
     private final StringResources stringResources;
     private final BankHolidayViewModelFactory bankHolidayViewModelFactory;
     private final NamedaysViewModelFactory namedaysViewModelFactory;
 
     UpcomingRowViewModelsFactory(Date today,
-                                 DateDisplayStringCreator dateDisplayCreator,
+                                 UpcomingDateStringCreator dateCreator,
                                  ContactViewModelFactory contactViewModelFactory,
                                  StringResources stringResources,
                                  BankHolidayViewModelFactory bankHolidayViewModelFactory,
                                  NamedaysViewModelFactory namedaysViewModelFactory) {
         this.today = today;
-        this.dateDisplayCreator = dateDisplayCreator;
+        this.dateCreator = dateCreator;
         this.contactViewModelFactory = contactViewModelFactory;
         this.stringResources = stringResources;
         this.bankHolidayViewModelFactory = bankHolidayViewModelFactory;
@@ -38,7 +37,7 @@ final class UpcomingRowViewModelsFactory {
     }
 
     UpcomingEventsViewModel createViewModelFor(Date date, List<ContactEvent> contactEvents, NamesInADate namedays, BankHoliday bankHoliday) {
-        String dateLabel = dateDisplayCreator.fullyFormattedDate(date);
+        String dateLabel = dateCreator.createLabelFor(date);
         Typeface typeface = getTypefaceFor(date, today);
 
         BankHolidayViewModel bankHolidayViewModel = bankHolidayViewModelFactory.createViewModelFor(bankHoliday);

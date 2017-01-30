@@ -191,7 +191,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         public void onUpcomingEventsLoaded(List<UpcomingRowViewModel> dates) {
             upcomingEventsListView.updateWith(dates, listClickListener);
             if (mustScrollToPosition) {
-                upcomingEventsListView.scrollToToday(false);
+                upcomingEventsListView.scrollToPosition(0);
                 mustScrollToPosition = false;
             }
             goToTodayEnabler.validateGoToTodayButton(upcomingEventsListView);
