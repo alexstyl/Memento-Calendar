@@ -1,7 +1,4 @@
-package com.alexstyl.specialdates.ui;
-
-import com.alexstyl.specialdates.theming.MementoTheme;
-import com.alexstyl.specialdates.theming.ThemingPreferences;
+package com.alexstyl.specialdates.theming;
 
 public final class ThemeMonitor {
 
