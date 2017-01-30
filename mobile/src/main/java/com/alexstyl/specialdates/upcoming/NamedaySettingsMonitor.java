@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 
-public class NamedaySettingsMonitor implements EventUpdatedMonitor {
+public final class NamedaySettingsMonitor implements EventUpdatedMonitor {
 
     private final NamedayPreferences namedayPreferences;
 

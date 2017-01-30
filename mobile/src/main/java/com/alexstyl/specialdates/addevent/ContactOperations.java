@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.images.DecodedImage;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;

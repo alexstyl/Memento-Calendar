@@ -12,9 +12,6 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
-import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsAdapter;
-import com.alexstyl.specialdates.upcoming.ui.UpcomingEventsViewHolder;
-import com.alexstyl.specialdates.upcoming.ui.UpcomingViewHolderFactory;
 
 import java.util.List;
 

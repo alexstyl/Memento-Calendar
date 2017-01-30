@@ -24,9 +24,9 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
-import com.alexstyl.specialdates.events.peopleevents.SQLArgumentBuilder;
+import com.alexstyl.specialdates.SQLArgumentBuilder;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;

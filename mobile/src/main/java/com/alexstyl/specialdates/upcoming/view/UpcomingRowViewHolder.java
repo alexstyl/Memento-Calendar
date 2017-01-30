@@ -1,9 +1,7 @@
-package com.alexstyl.specialdates.upcoming.ui;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 
 abstract class UpcomingRowViewHolder<T> extends RecyclerView.ViewHolder {
 

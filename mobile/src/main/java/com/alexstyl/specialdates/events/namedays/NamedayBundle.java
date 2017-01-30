@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.Node;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 
 import java.util.ArrayList;
 

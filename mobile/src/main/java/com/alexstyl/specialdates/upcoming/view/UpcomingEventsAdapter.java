@@ -1,22 +1,21 @@
-package com.alexstyl.specialdates.upcoming.ui;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
-import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 
 import java.util.List;
 
-public class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> {
+class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> {
 
     private final UpcomingViewHolderFactory viewHolderFactory;
 
     private List<UpcomingRowViewModel> viewModels;
     private OnUpcomingEventClickedListener listener;
 
-    public UpcomingEventsAdapter(UpcomingViewHolderFactory viewHolderFactory) {
+    UpcomingEventsAdapter(UpcomingViewHolderFactory viewHolderFactory) {
         this.viewHolderFactory = viewHolderFactory;
     }
 

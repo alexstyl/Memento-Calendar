@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsMonitor implements EventUpdatedMonitor {
+class SettingsMonitor implements EventUpdatedMonitor {
 
     private List<EventUpdatedMonitor> monitors;
 
@@ -19,7 +19,7 @@ public class SettingsMonitor implements EventUpdatedMonitor {
         return new SettingsMonitor(monitors);
     }
 
-    public SettingsMonitor(List<EventUpdatedMonitor> monitors) {
+    private SettingsMonitor(List<EventUpdatedMonitor> monitors) {
         this.monitors = monitors;
     }
 

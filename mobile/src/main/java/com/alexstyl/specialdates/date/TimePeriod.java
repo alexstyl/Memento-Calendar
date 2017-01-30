@@ -1,7 +1,4 @@
-package com.alexstyl.specialdates.upcoming;
-
-import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateComparator;
+package com.alexstyl.specialdates.date;
 
 public class TimePeriod {
 

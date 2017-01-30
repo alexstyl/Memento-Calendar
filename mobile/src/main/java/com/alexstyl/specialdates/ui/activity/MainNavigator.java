@@ -18,7 +18,7 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-public class MainNavigator {
+class MainNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("http://paypal.me/alexstyl");
     private final AttributeExtractor attributeExtractor;

@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.bankholidays;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 
 import java.util.ArrayList;
 import java.util.List;

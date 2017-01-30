@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming.ui;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +8,15 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
-import com.alexstyl.specialdates.upcoming.view.UpcomingEventsView;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.exception.DeveloperError;
 
-public final class UpcomingViewHolderFactory {
+final class UpcomingViewHolderFactory {
 
     private final LayoutInflater layoutInflater;
     private final ImageLoader imageLoader;
 
-    public UpcomingViewHolderFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
+    UpcomingViewHolderFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
         this.layoutInflater = layoutInflater;
         this.imageLoader = imageLoader;
     }

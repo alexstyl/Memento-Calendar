@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum EventSection {
+enum EventSection {
     CONTACTS(0, R.drawable.ic_contacts, R.drawable.ic_contacts_disabled),
     BANKHOLIDAYS(1, R.drawable.ic_bankholidays, R.drawable.ic_bankholidays_disabled),
     NAMEDAYS(2, R.drawable.ic_namedays, R.drawable.ic_namedays_disabled);
