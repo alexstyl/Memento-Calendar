@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventsViewModel;
+import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;

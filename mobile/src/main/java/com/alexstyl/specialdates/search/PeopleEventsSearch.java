@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.search;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.util.HashMapList;
 
 import java.util.ArrayList;

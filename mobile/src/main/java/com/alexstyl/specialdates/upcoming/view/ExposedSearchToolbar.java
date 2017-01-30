@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.content.Context;
 import android.support.v7.widget.Toolbar;

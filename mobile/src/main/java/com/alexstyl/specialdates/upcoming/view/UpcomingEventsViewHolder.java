@@ -1,14 +1,12 @@
-package com.alexstyl.specialdates.upcoming.ui;
+package com.alexstyl.specialdates.upcoming.view;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
-import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
-import com.alexstyl.specialdates.upcoming.view.UpcomingEventsView;
 
-public class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewModel> {
+class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewModel> {
 
     private final TextView dateView;
     private final UpcomingEventsView eventsView;
@@ -41,7 +39,7 @@ public class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEven
         });
     }
 
-    public void playShowMeAnimation() {
+    void playShowMeAnimation() {
         // TODO remove animation logic
     }
 }

@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.upcoming;
 import android.graphics.Typeface;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.upcoming.view.NamedaysViewModel;
 
 public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
 

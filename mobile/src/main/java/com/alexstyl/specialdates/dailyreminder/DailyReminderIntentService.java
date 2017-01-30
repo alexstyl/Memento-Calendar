@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.logger.simple.Log;
 

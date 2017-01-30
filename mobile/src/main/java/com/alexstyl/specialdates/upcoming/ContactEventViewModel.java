@@ -19,14 +19,14 @@ public final class ContactEventViewModel {
     private final Uri contactImagePath;
     private final Typeface typeface;
 
-    public ContactEventViewModel(Contact contact,
-                                 @ViewVisibility int visibility,
-                                 String contactName,
-                                 String eventLabel,
-                                 @ColorInt int eventColor,
-                                 int backgroundVariant,
-                                 Uri contactImagePath,
-                                 Typeface typeface
+    ContactEventViewModel(Contact contact,
+                          @ViewVisibility int visibility,
+                          String contactName,
+                          String eventLabel,
+                          @ColorInt int eventColor,
+                          int backgroundVariant,
+                          Uri contactImagePath,
+                          Typeface typeface
     ) {
         this.contact = contact;
         this.visibility = visibility;

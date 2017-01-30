@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 
-public class BankHolidaysMonitor implements EventUpdatedMonitor {
+class BankHolidaysMonitor implements EventUpdatedMonitor {
 
     private final BankHolidaysPreferences preferences;
 

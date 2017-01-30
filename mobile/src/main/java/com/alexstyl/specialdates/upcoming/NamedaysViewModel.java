@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.android.ViewVisibility;
 
@@ -9,22 +9,22 @@ public final class NamedaysViewModel {
     private final int namedaysVisibility;
     private final int maxLines;
 
-    public NamedaysViewModel(String namesLabel, @ViewVisibility int namedaysVisibility, int maxLines) {
+    NamedaysViewModel(String namesLabel, @ViewVisibility int namedaysVisibility, int maxLines) {
         this.namesLabel = namesLabel;
         this.namedaysVisibility = namedaysVisibility;
         this.maxLines = maxLines;
     }
 
-    String getNamesLabel() {
+    public String getNamesLabel() {
         return namesLabel;
     }
 
     @ViewVisibility
-    int getNamedaysVisibility() {
+    public int getNamedaysVisibility() {
         return namedaysVisibility;
     }
 
-    int getMaxLines() {
+    public int getMaxLines() {
         return maxLines;
     }
 }

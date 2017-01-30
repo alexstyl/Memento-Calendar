@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.upcoming.view.NamedaysViewModel;
 
 final class NamedaysViewModelFactory {
 

@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

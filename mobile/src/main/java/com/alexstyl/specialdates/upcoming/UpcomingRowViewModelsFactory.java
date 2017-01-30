@@ -10,7 +10,6 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.upcoming.view.NamedaysViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

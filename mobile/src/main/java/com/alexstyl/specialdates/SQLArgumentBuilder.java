@@ -1,7 +1,6 @@
-package com.alexstyl.specialdates.events.peopleevents;
+package com.alexstyl.specialdates;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 
 public final class SQLArgumentBuilder {
 
