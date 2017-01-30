@@ -22,7 +22,7 @@ final class ContactDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
     private static final int TYPE_CONTACT_SUGGESTION = 0;
     private static final int TYPE_EVENT = 1;
 
-    private final List<ContactEventViewModel> viewModels = new ArrayList<>();
+    private final List<AddEventContactEventViewModel> viewModels = new ArrayList<>();
     private final ContactDetailsListener contactDetailsListener;
 
     ContactDetailsAdapter(ContactDetailsListener contactDetailsListener) {
@@ -59,8 +59,8 @@ final class ContactDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (viewType == TYPE_CONTACT_SUGGESTION) {
             ((ContactSuggestionViewHolder) holder).bind(contactDetailsListener);
         } else if (viewType == TYPE_EVENT) {
-            ContactEventViewModel contactEventViewModel = viewModels.get(position - HEADER_COUNT);
-            ((ContactEventViewHolder) holder).bind(contactEventViewModel, contactDetailsListener);
+            AddEventContactEventViewModel addEventContactEventViewModel = viewModels.get(position - HEADER_COUNT);
+            ((ContactEventViewHolder) holder).bind(addEventContactEventViewModel, contactDetailsListener);
         } else {
             throw new IllegalStateException("Unable to bind view type " + viewType);
         }
@@ -71,15 +71,15 @@ final class ContactDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
         return viewModels.size() + HEADER_COUNT;
     }
 
-    void replace(List<ContactEventViewModel> viewModels) {
+    void replace(List<AddEventContactEventViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();
     }
 
-    void replace(ContactEventViewModel viewModel) {
+    void replace(AddEventContactEventViewModel viewModel) {
         for (int i = 0; i < viewModels.size(); i++) {
-            ContactEventViewModel vm = viewModels.get(i);
+            AddEventContactEventViewModel vm = viewModels.get(i);
             if (vm.getEventType() == viewModel.getEventType()) {
                 viewModels.remove(vm);
                 viewModels.add(i, viewModel);

@@ -7,14 +7,14 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
-final class ContactEventViewModel {
+final class AddEventContactEventViewModel {
 
     private final String eventHint;
     private final EventType eventType;
     private final Optional<Date> dateOptional;
     private final int removeEventVisibility;
 
-    ContactEventViewModel(String eventHint, EventType eventType, Optional<Date> dateOptional, @ViewVisibility int removeEventVisibility) {
+    AddEventContactEventViewModel(String eventHint, EventType eventType, Optional<Date> dateOptional, @ViewVisibility int removeEventVisibility) {
         this.eventType = eventType;
         this.eventHint = eventHint;
         this.dateOptional = dateOptional;
@@ -52,7 +52,7 @@ final class ContactEventViewModel {
             return false;
         }
 
-        ContactEventViewModel that = (ContactEventViewModel) o;
+        AddEventContactEventViewModel that = (AddEventContactEventViewModel) o;
 
         if (removeEventVisibility != that.removeEventVisibility) {
             return false;

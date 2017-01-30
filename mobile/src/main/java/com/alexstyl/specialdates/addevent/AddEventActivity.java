@@ -74,7 +74,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         eventsView.setAdapter(adapter);
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
-        ContactEventViewModelFactory factory = new ContactEventViewModelFactory(new AndroidDateLabelCreator(this));
+        AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
         AndroidStringResources stringResources = new AndroidStringResources(getResources());
         AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
@@ -213,7 +213,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
 
     private final ContactDetailsListener contactDetailsListener = new ContactDetailsListener() {
         @Override
-        public void onAddEventClicked(ContactEventViewModel viewModel) {
+        public void onAddEventClicked(AddEventContactEventViewModel viewModel) {
             EventType eventType = viewModel.getEventType();
             Optional<Date> initialDate = viewModel.getDate();
 

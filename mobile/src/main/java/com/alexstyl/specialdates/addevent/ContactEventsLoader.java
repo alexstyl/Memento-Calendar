@@ -16,19 +16,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventViewModel>> {
+final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<AddEventContactEventViewModel>> {
 
     private final Optional<Contact> contact;
 
     private final PeopleEventsProvider peopleEventsProvider;
-    private final ContactEventViewModelFactory factory;
+    private final AddEventContactEventViewModelFactory factory;
     private final AddEventViewModelFactory newEventFactory;
-    private final List<ContactEventViewModel> emptyEvents;
+    private final List<AddEventContactEventViewModel> emptyEvents;
 
     ContactEventsLoader(Context context,
                         Optional<Contact> contact,
                         PeopleEventsProvider peopleEventsProvider,
-                        ContactEventViewModelFactory factory,
+                        AddEventContactEventViewModelFactory factory,
                         AddEventViewModelFactory newEventFactory) {
         super(context);
         this.contact = contact;
@@ -39,8 +39,8 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
     }
 
     @Override
-    public List<ContactEventViewModel> loadInBackground() {
-        List<ContactEventViewModel> existingViewModels;
+    public List<AddEventContactEventViewModel> loadInBackground() {
+        List<AddEventContactEventViewModel> existingViewModels;
         if (contact.isPresent()) {
             existingViewModels = createModelsFor(contact.get());
         } else {
@@ -51,8 +51,8 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
         return existingViewModels;
     }
 
-    private List<ContactEventViewModel> createModelsFor(Contact contact) {
-        List<ContactEventViewModel> existingViewModels;
+    private List<AddEventContactEventViewModel> createModelsFor(Contact contact) {
+        List<AddEventContactEventViewModel> existingViewModels;
         List<ContactEvent> contactEvents = new ArrayList<>();
         List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getCelebrationDateFor(TimePeriod.aYearFromNow());
         List<EventType> existingTypes = new ArrayList<>();
@@ -63,7 +63,7 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
             }
         }
         existingViewModels = factory.createViewModel(contactEvents);
-        List<ContactEventViewModel> emptyViewModels = newEventFactory.createViewModelsForAllEventsBut(existingTypes);
+        List<AddEventContactEventViewModel> emptyViewModels = newEventFactory.createViewModelsForAllEventsBut(existingTypes);
         existingViewModels.addAll(emptyViewModels);
         return existingViewModels;
     }
@@ -73,9 +73,9 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<ContactEventV
                 && contactEvent.getType().getId() != StandardEventType.CUSTOM.getId();
     }
 
-    private static final Comparator<ContactEventViewModel> EVENT_TYPE_ID_COMPARATOR = new Comparator<ContactEventViewModel>() {
+    private static final Comparator<AddEventContactEventViewModel> EVENT_TYPE_ID_COMPARATOR = new Comparator<AddEventContactEventViewModel>() {
         @Override
-        public int compare(ContactEventViewModel o1, ContactEventViewModel o2) {
+        public int compare(AddEventContactEventViewModel o1, AddEventContactEventViewModel o2) {
             return o1.getEventType().getId() - o2.getEventType().getId();
         }
     };
