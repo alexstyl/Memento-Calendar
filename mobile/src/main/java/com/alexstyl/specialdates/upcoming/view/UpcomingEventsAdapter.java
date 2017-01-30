@@ -48,8 +48,4 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         notifyDataSetChanged();
     }
 
-    int getClosestDayPosition() {
-        // the first item in the list is always the closest one to the today date
-        return 0;
-    }
 }

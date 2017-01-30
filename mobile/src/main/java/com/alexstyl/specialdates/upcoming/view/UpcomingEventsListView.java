@@ -18,12 +18,11 @@ import java.util.List;
 public class UpcomingEventsListView extends RecyclerView {
 
     private UpcomingEventsAdapter adapter;
-    private ScrollingLinearLayoutManager layoutManager;
 
     public UpcomingEventsListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        layoutManager = new ScrollingLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false, 600);
+        ScrollingLinearLayoutManager layoutManager = new ScrollingLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false, 600);
         setLayoutManager(layoutManager);
 
         Resources resources = getResources();
@@ -40,61 +39,6 @@ public class UpcomingEventsListView extends RecyclerView {
 
     public void updateWith(List<UpcomingRowViewModel> dates, OnUpcomingEventClickedListener listener) {
         adapter.displayUpcomingEvents(dates, listener);
-    }
-
-    public void scrollToToday(final boolean smoothScroll) {
-        int pos = adapter.getClosestDayPosition();
-        if (pos == RecyclerView.NO_POSITION) {
-            pos = getLastDayPosition();
-        }
-
-        if (isPositionVisible(pos)) {
-            onFinishedScrolling(pos);
-            return;
-        }
-
-        if (smoothScroll) {
-            smoothScrollTo(pos);
-        } else {
-            layoutManager.scrollToPositionWithOffset(pos, 0);
-        }
-    }
-
-    private int getLastDayPosition() {
-        return adapter.getItemCount() - 1;
-    }
-
-    private void smoothScrollTo(int pos) {
-        // see if today is visible
-        final int finalPos = pos;
-        addOnScrollListener(
-                new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            onFinishedScrolling(finalPos);
-                            // our job here is done
-                            removeOnScrollListener(this);
-                        }
-                    }
-                }
-        );
-        smoothScrollToPosition(pos);
-    }
-
-    private void onFinishedScrolling(int position) {
-        UpcomingEventsViewHolder upcomingViewHolder = (UpcomingEventsViewHolder) findViewHolderForAdapterPosition(position);
-        if (upcomingViewHolder != null && isPositionVisible(position)) {
-            upcomingViewHolder.playShowMeAnimation();
-        }
-
-    }
-
-    boolean isPositionVisible(int pos) {
-        int first = layoutManager.findFirstVisibleItemPosition();
-        int last = layoutManager.findLastCompletelyVisibleItemPosition();
-        return first <= pos && pos <= last;
     }
 
     public boolean isDisplayingEvents() {

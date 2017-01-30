@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
@@ -9,16 +10,20 @@ import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
-import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
+import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
@@ -31,7 +36,7 @@ import static android.view.View.OnClickListener;
  * The activity was first launched with MainActivity being in package.ui.activity
   * For that reason, it needs to stay here so that we don't remove ourselves from the user's desktop
  */
-public class MainActivity extends ThemedActivity {
+public class MainActivity extends ThemedActivity implements DatePickerDialogFragment.OnDateSetListener {
 
     private Notifier notifier;
     private AskForSupport askForSupport;
@@ -40,6 +45,7 @@ public class MainActivity extends ThemedActivity {
     private MainNavigator navigator;
     private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
+    private Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,7 @@ public class MainActivity extends ThemedActivity {
         setContentView(R.layout.activity_main);
 
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
+        analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
         navigator = new MainNavigator(analytics, this);
@@ -96,17 +102,34 @@ public class MainActivity extends ThemedActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_select_date:
+                showSelectDateDialog();
+                return true;
             case R.id.action_settings:
                 navigator.toSettings();
-                break;
+                return true;
             case R.id.action_about:
                 navigator.toAbout();
-                break;
+                return true;
             case R.id.action_donate:
                 navigator.toDonate();
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSelectDateDialog() {
+        analytics.trackAction(Action.SELECT_DATE);
+        DatePickerDialogFragment
+                .newInstance(Date.today())
+                .show(getSupportFragmentManager(), "date_picker");
+    }
+
+    @Override
+    public void onDateSelected(Date dateSelected) {
+        navigator.toDateDetails(dateSelected);
+        Intent intent = DateDetailsActivity.getStartIntent(this, dateSelected);
+        startActivity(intent);
     }
 
     @Override
