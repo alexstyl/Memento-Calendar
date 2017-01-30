@@ -10,6 +10,8 @@ import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -35,6 +37,8 @@ public class DateDetailsActivity extends ThemedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_details);
+
+        AnalyticsProvider.getAnalytics(this).trackScreen(Screen.DATE_DETAILS);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);

@@ -10,6 +10,8 @@ import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
@@ -21,6 +23,7 @@ import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntent
 class MainNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("http://paypal.me/alexstyl");
+
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
     private final Activity activity;
@@ -71,7 +74,7 @@ class MainNavigator {
         analytics.trackScreen(Screen.SETTINGS);
     }
 
-    public void toSearch() {
+    void toSearch() {
         Intent intent = new Intent(activity, SearchActivity.class);
         activity.startActivity(intent);
     }
@@ -83,4 +86,9 @@ class MainNavigator {
             return simpleChromeCustomTabsIntentBuilder.withToolbarColor(toolbarColor);
         }
     };
+
+    void toDateDetails(Date dateSelected) {
+        Intent intent = DateDetailsActivity.getStartIntent(activity, dateSelected);
+        activity.startActivity(intent);
+    }
 }
