@@ -10,7 +10,6 @@ import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
@@ -78,9 +77,10 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
         AndroidStringResources stringResources = new AndroidStringResources(resources);
         ContactViewModelFactory contactViewModelFactory = new ContactViewModelFactory(colorResources, stringResources);
         Date today = Date.today();
+        UpcomingDateStringCreator dateCreator = new UpcomingDateStringCreator(stringResources, today);
         UpcomingRowViewModelsFactory upcomingRowViewModelFactory = new UpcomingRowViewModelsFactory(
                 today,
-                DateDisplayStringCreator.INSTANCE,
+                dateCreator,
                 contactViewModelFactory,
                 stringResources,
                 new BankHolidayViewModelFactory(),

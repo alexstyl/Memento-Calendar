@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events;
 
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

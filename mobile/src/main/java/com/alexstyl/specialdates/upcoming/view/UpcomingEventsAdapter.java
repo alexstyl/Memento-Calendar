@@ -42,13 +42,13 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         return viewModels.size();
     }
 
-    public void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows, OnUpcomingEventClickedListener listener) {
+    void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows, OnUpcomingEventClickedListener listener) {
         this.listener = listener;
         this.viewModels = upcomingEventRows;
         notifyDataSetChanged();
     }
 
-    public int getClosestDayPosition() {
+    int getClosestDayPosition() {
         // the first item in the list is always the closest one to the today date
         return 0;
     }

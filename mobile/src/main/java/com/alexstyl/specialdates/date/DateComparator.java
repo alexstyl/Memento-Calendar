@@ -6,22 +6,22 @@ public enum DateComparator implements Comparator<Date> {
     INSTANCE;
 
     @Override
-    public int compare(Date o1, Date o2) {
-        if (o1.hasYear() && o2.hasYear()) {
-            int yearOne = o1.getYear();
-            int yearTwo = o2.getYear();
+    public int compare(Date left, Date right) {
+        if (left.hasYear() && right.hasYear()) {
+            int yearOne = left.getYear();
+            int yearTwo = right.getYear();
             if (yearOne > yearTwo) {
                 return 1;
             } else if (yearOne < yearTwo) {
                 return -1;
             }
         }
-        if (o1.getMonth() < o2.getMonth()) {
+        if (left.getMonth() < right.getMonth()) {
             return -1;
-        } else if (o1.getMonth() > o2.getMonth()) {
+        } else if (left.getMonth() > right.getMonth()) {
             return 1;
         }
-        return o1.getDayOfMonth() - o2.getDayOfMonth();
+        return left.getDayOfMonth() - right.getDayOfMonth();
     }
 
 }
