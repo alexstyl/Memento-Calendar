@@ -7,11 +7,11 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.DeviceContact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
+import com.alexstyl.specialdates.search.DumbTestResources;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +46,7 @@ public class UpcomingRowViewModelsBuilderTest {
         Date today = Date.today();
         upcomingRowViewModelsFactory = new UpcomingRowViewModelsFactory(
                 today,
-                DateDisplayStringCreator.INSTANCE,
+                new UpcomingDateStringCreator(new DumbTestResources(), today),
                 new ContactViewModelFactory(mockColorResources, mockStringResources),
                 mockStringResources,
                 new BankHolidayViewModelFactory(),
