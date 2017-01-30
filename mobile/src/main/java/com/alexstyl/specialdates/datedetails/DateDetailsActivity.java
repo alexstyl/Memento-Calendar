@@ -31,8 +31,6 @@ public class DateDetailsActivity extends ThemedActivity {
      */
     private static final int SOURCE_NOTIFICATION = 1;
 
-    private Date displayingDate;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +47,7 @@ public class DateDetailsActivity extends ThemedActivity {
             ErrorTracker.track(new NullPointerException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
             return;
         }
-        this.displayingDate = receivedDate.get();
+        Date displayingDate = receivedDate.get();
 
         if (getIntent().hasExtra(EXTRA_SOURCE)) {
             int intExtra = getIntent().getIntExtra(EXTRA_SOURCE, -1);
