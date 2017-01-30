@@ -20,7 +20,7 @@ class GoToTodayEnabler {
     }
 
     void reattachTo(Menu menu) {
-        this.goToToday = menu.findItem(R.id.action_today);
+        this.goToToday = menu.findItem(R.id.action_select_date);
         this.goToToday.setEnabled(showToday);
         this.goToToday.setVisible(showToday);
     }

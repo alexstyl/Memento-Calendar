@@ -86,8 +86,8 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_today:
-                goToToday();
+            case R.id.action_select_date:
+                showSelectDateDialog();
                 return true;
             default:
                 break;
@@ -95,8 +95,8 @@ public class UpcomingEventsFragment extends MementoFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void goToToday() {
-        analytics.trackAction(Action.GO_TO_TODAY);
+    private void showSelectDateDialog() {
+        analytics.trackAction(Action.SELECT_DATE);
         upcomingEventsListView.scrollToToday(true);
     }
 
