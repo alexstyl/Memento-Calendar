@@ -27,7 +27,7 @@ public class DateDetailsActivity extends ThemedActivity {
     private static final String EXTRA_YEAR = BuildConfig.APPLICATION_ID + ".year";
     private static final String EXTRA_SOURCE = BuildConfig.APPLICATION_ID + ".source";
     /**
-     * The activity was lauched because the user tapped on a notification
+     * The activity was launched because the user tapped on a notification
      */
     private static final int SOURCE_NOTIFICATION = 1;
 
