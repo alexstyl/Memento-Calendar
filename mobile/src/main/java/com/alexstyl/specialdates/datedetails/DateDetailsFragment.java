@@ -37,6 +37,7 @@ import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
@@ -223,20 +224,12 @@ public class DateDetailsFragment extends MementoFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        int year;
-        int month;
-        int dayOfMonth;
-        if (savedInstanceState != null) {
-            year = savedInstanceState.getInt(KEY_DISPLAYING_YEAR);
-            month = savedInstanceState.getInt(KEY_DISPLAYING_MONTH);
-            dayOfMonth = savedInstanceState.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
-        } else {
-            year = getArguments().getInt(KEY_DISPLAYING_YEAR);
-            month = getArguments().getInt(KEY_DISPLAYING_MONTH);
-            dayOfMonth = getArguments().getInt(KEY_DISPLAYING_DAY_OF_MONTH);
-        }
-        date = Date.on(dayOfMonth, month, year);
 
+        if (savedInstanceState != null) {
+            date = getDateFrom(savedInstanceState);
+        } else {
+            date = getDate();
+        }
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
         progress = (ProgressBar) view.findViewById(android.R.id.progress);
 
@@ -275,6 +268,20 @@ public class DateDetailsFragment extends MementoFragment {
         recyclerView.addItemDecoration(spacingDecoration = new GridWithHeaderSpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter));
     }
 
+    private Date getDate() {
+        int year = getArguments().getInt(KEY_DISPLAYING_YEAR);
+        @MonthInt int month = getArguments().getInt(KEY_DISPLAYING_MONTH);
+        int dayOfMonth = getArguments().getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+        return Date.on(dayOfMonth, month, year);
+    }
+
+    private Date getDateFrom(Bundle savedInstanceState) {
+        int year = savedInstanceState.getInt(KEY_DISPLAYING_YEAR);
+        @MonthInt int month = savedInstanceState.getInt(KEY_DISPLAYING_MONTH);
+        int dayOfMonth = savedInstanceState.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+        return Date.on(dayOfMonth, month, year);
+    }
+
     private Optional<BankHoliday> getBankHolidayOn(Date date) {
         BankHolidaysPreferences preferences = BankHolidaysPreferences.newInstance(getActivity());
         if (preferences.isEnabled()) {
@@ -298,7 +305,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onLoadFinished(Loader<List<ContactEvent>> EventItemLoader, List<ContactEvent> result) {
-            adapter.setEvents(result);
+            adapter.displayEvents(result);
             if (adapter.isLoadingDetailedCards()) {
                 layoutManager.setSpanCount(1); // display everything in one row
             } else {
@@ -311,7 +318,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onLoaderReset(Loader<List<ContactEvent>> EventItemLoader) {
-            adapter.setEvents(null);
+            // do nothing
         }
     };
 

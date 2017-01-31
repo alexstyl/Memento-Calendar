@@ -86,7 +86,7 @@ public class SearchActivity extends ThemedActivity {
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
         StringResources stringResources = new AndroidStringResources(getResources());
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
-        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(stringResources, dateLabelCreator));
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
 
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);

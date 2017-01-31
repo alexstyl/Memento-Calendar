@@ -123,7 +123,7 @@ public class Notifier {
 
         if (events.size() == 1) {
             ContactEvent event = events.get(0);
-            String msg = event.getLabel(stringResources);
+            String msg = event.getLabel(date, stringResources);
 
             NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
             bigTextStyle.setBigContentTitle(title);
@@ -141,7 +141,7 @@ public class Notifier {
                 Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
 
-                String lineFormatted = name + "\t\t" + event.getLabel(stringResources);
+                String lineFormatted = name + "\t\t" + event.getLabel(date, stringResources);
 
                 Spannable sb = new SpannableString(lineFormatted);
                 sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

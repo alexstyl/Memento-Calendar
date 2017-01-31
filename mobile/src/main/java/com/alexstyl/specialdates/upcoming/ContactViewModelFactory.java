@@ -7,6 +7,7 @@ import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.Date;
 
 final class ContactViewModelFactory {
     private final ColorResources colorResources;
@@ -17,12 +18,12 @@ final class ContactViewModelFactory {
         this.stringResources = stringResources;
     }
 
-    ContactEventViewModel createViewModelFor(Typeface typeface, ContactEvent contactEvent) {
+    ContactEventViewModel createViewModelFor(Typeface typeface, Date date, ContactEvent contactEvent) {
         Contact contact = contactEvent.getContact();
         return new ContactEventViewModel(
                 contact, View.VISIBLE,
                 contact.getDisplayName().toString(),
-                contactEvent.getLabel(stringResources),
+                contactEvent.getLabel(date, stringResources),
                 colorResources.getColor(contactEvent.getType().getColorRes()),
                 ((int) contact.getContactID()),
                 contact.getImagePath(),
