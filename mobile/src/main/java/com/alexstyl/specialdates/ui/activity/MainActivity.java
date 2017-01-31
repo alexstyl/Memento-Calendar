@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -128,8 +126,6 @@ public class MainActivity extends ThemedActivity implements DatePickerDialogFrag
     @Override
     public void onDateSelected(Date dateSelected) {
         navigator.toDateDetails(dateSelected);
-        Intent intent = DateDetailsActivity.getStartIntent(this, dateSelected);
-        startActivity(intent);
     }
 
     @Override
