@@ -8,14 +8,14 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 
-final class UpcomingDateStringCreator {
+final public class UpcomingDateStringCreator {
 
     private static final String DAY_OF_WEEK_SEPARATOR = ", ";
 
     private final StringResources stringResources;
     private final Date today;
 
-    UpcomingDateStringCreator(StringResources stringResources, Date today) {
+    public UpcomingDateStringCreator(StringResources stringResources, Date today) {
         this.stringResources = stringResources;
         this.today = today;
     }

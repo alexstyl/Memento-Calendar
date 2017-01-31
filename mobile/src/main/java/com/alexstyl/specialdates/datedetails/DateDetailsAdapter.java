@@ -47,6 +47,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isShowingFullDetailedCards;
     private final StringResources stringResources;
     private final ColorResources colorResources;
+    private Date dateToDisplay;
 
     public static DateDetailsAdapter newInstance(Context context,
                                                  Date dateToDisplay,
@@ -68,6 +69,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 bankholiday, cardActionRecycler,
                 new AskForSupport(context), contactCardListener, namedayListener, supportListener,
                 stringResources, colorResources
+                , dateToDisplay
         );
     }
 
@@ -93,7 +95,8 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                ContactCardListener contactCardListener,
                                NamedayCardView.OnShareClickListener namedayListener,
                                OnSupportCardClickListener supportListener,
-                               StringResources stringResources, ColorResources colorResources) {
+                               StringResources stringResources, ColorResources colorResources,
+                               Date dateToDisplay) {
         this.nameday = nameday;
         this.imageLoader = imageLoader;
         this.cardActionRecycler = cardActionRecycler;
@@ -104,9 +107,10 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.bankholiday = bankholiday;
         this.stringResources = stringResources;
         this.colorResources = colorResources;
+        this.dateToDisplay = dateToDisplay;
     }
 
-    public boolean isLoadingDetailedCards() {
+    boolean isLoadingDetailedCards() {
         return isShowingFullDetailedCards;
     }
 
@@ -130,11 +134,9 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return itemCount;
     }
 
-    public void setEvents(List<ContactEvent> events) {
+    void displayEvents(List<ContactEvent> events) {
         this.events.clear();
-        if (events != null) {
-            this.events.addAll(events);
-        }
+        this.events.addAll(events);
         isShowingFullDetailedCards = (this.events.size() <= DETAILED_CARDS_NUMBER_LIMIT);
         notifyDataSetChanged();
     }
@@ -186,7 +188,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((NameDayCardViewHolder) holder).bind(nameday.get());
         } else if (type == VIEW_TYPE_DETAILED || type == VIEW_TYPE_COMPACT) {
             ContactEvent event = getEvent(position);
-            ((DateDetailsViewHolder) holder).bind(event, contactCardListener);
+            ((DateDetailsViewHolder) holder).bind(event, dateToDisplay, contactCardListener);
         } else if (type == VIEW_TYPE_BANKHOLIDAY) {
             ((BankHolidayCardViewHolder) holder).bind(bankholiday.get());
         } else {

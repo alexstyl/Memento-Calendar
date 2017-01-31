@@ -46,10 +46,10 @@ final class UpcomingRowViewModelsFactory {
         ContactEventsViewModel contactEventsViewModel;
         if (contactEvents.size() > 0) {
             List<ContactEventViewModel> contactEventViewModels = new ArrayList<>();
-            ContactEventViewModel viewModel = contactViewModelFactory.createViewModelFor(typeface, contactEvents.get(0));
+            ContactEventViewModel viewModel = contactViewModelFactory.createViewModelFor(typeface, date, contactEvents.get(0));
             contactEventViewModels.add(viewModel);
             if (contactEvents.size() > 1) {
-                ContactEventViewModel secondViewModel = contactViewModelFactory.createViewModelFor(typeface, contactEvents.get(1));
+                ContactEventViewModel secondViewModel = contactViewModelFactory.createViewModelFor(typeface, date, contactEvents.get(1));
                 contactEventViewModels.add(secondViewModel);
             }
             int remainingContactSize = contactEvents.size() > 2 ? contactEvents.size() - 2 : 0;

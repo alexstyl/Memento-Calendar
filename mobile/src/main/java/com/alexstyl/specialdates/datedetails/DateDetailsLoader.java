@@ -18,7 +18,6 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>> {
     private final Date date;
     private final ContactsObserver contactsObserver;
 
-    private final Comparator<ContactEvent> displayNameComparator = new SpecialDateDisplayNameComparator();
     private final PeopleEventsProvider peopleEventsProvider;
 
     DateDetailsLoader(Context context, Date date, PeopleEventsProvider peopleEventsProvider, ContactsObserver contactsObserver) {
@@ -50,18 +49,20 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>> {
         return celebrationDates;
     }
 
-    private class SpecialDateDisplayNameComparator implements Comparator<ContactEvent> {
-        Collator col;
+    private final Comparator<ContactEvent> displayNameComparator = new Comparator<ContactEvent>() {
+        private Collator collator;
 
         {
-            col = Collator.getInstance();
-            col.setStrength(Collator.SECONDARY);
+            collator = Collator.getInstance();
+            collator.setStrength(Collator.SECONDARY);
         }
 
         @Override
         public int compare(ContactEvent lhs, ContactEvent rhs) {
-            return col.compare(lhs.getContact().getDisplayName().toString(), rhs.getContact().getDisplayName().toString());
+            return collator.compare(
+                    lhs.getContact().getDisplayName().toString(),
+                    rhs.getContact().getDisplayName().toString()
+            );
         }
-
-    }
+    };
 }

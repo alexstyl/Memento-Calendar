@@ -7,17 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateFormatUtils;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
+import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.novoda.notils.caster.Views;
 
 public class DateDetailsActivity extends ThemedActivity {
@@ -41,13 +41,7 @@ public class DateDetailsActivity extends ThemedActivity {
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
 
-        Optional<Date> receivedDate = getCalendarFromIntent(getIntent());
-        if (!receivedDate.isPresent()) {
-            finish();
-            ErrorTracker.track(new NullPointerException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
-            return;
-        }
-        Date displayingDate = receivedDate.get();
+        Date displayingDate = getDateFrom(getIntent());
 
         if (getIntent().hasExtra(EXTRA_SOURCE)) {
             int intExtra = getIntent().getIntExtra(EXTRA_SOURCE, -1);
@@ -65,24 +59,19 @@ public class DateDetailsActivity extends ThemedActivity {
 
         }
 
-        String titleDate = DateFormatUtils.formatTimeStampString(
-                DateDetailsActivity.this, displayingDate.toMillis(),
-                true
-        );
+        String titleDate = new UpcomingDateStringCreator(new AndroidStringResources(getResources()), Date.today())
+                .createLabelFor(displayingDate);
+
         setTitle(titleDate);
     }
 
-    private Optional<Date> getCalendarFromIntent(Intent intent) {
-        if (intent.hasExtra(EXTRA_DAY)) {
-            Bundle extras = intent.getExtras();
-            int year = extras.getInt(EXTRA_YEAR);
-            int month = extras.getInt(EXTRA_MONTH);
-            int dayOfMonth = extras.getInt(EXTRA_DAY);
+    private Date getDateFrom(Intent intent) {
+        Bundle extras = intent.getExtras();
+        int year = extras.getInt(EXTRA_YEAR);
+        @MonthInt int month = extras.getInt(EXTRA_MONTH);
+        int dayOfMonth = extras.getInt(EXTRA_DAY);
 
-            return new Optional<>(Date.on(dayOfMonth, month, year));
-        }
-        return Optional.absent();
-
+        return Date.on(dayOfMonth, month, year);
     }
 
     @Override

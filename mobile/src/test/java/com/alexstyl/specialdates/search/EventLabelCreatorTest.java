@@ -27,7 +27,7 @@ public class EventLabelCreatorTest {
 
     @Before
     public void setUp() {
-        creator = new ContactEventLabelCreator(new DumbTestResources(), TestDateLabelCreator.forUS());
+        creator = new ContactEventLabelCreator(Date.today(), new DumbTestResources(), TestDateLabelCreator.forUS());
     }
 
     @Test
