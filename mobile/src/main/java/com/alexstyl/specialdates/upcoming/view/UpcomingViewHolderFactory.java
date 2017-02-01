@@ -27,10 +27,14 @@ final class UpcomingViewHolderFactory {
             TextView titleView = Views.findById(view, R.id.upcoming_events_title);
             UpcomingEventsView eventsView = Views.findById(view, R.id.upcoming_events_view);
             return new UpcomingEventsViewHolder(view, titleView, eventsView, imageLoader);
-        } else if (viewType == UpcomingRowViewType.MONTH_HEADER) {
-            View view = layoutInflater.inflate(R.layout.row_header_month, parent, false);
-            TextView monthView = (TextView) view.findViewById(android.R.id.text1);
-            return new MonthHeaderViewHolder(view, monthView);
+        } else if (viewType == UpcomingRowViewType.MONTH) {
+            View view = layoutInflater.inflate(R.layout.row_header, parent, false);
+            TextView monthView = (TextView) view.findViewById(R.id.upcoming_event_header);
+            return new MonthViewHolder(view, monthView);
+        } else if (viewType == UpcomingRowViewType.YEAR) {
+            View view = layoutInflater.inflate(R.layout.row_header, parent, false);
+            TextView headerView = (TextView) view.findViewById(R.id.upcoming_event_header);
+            return new YearViewHolder(view, headerView);
         } else {
             throw new DeveloperError("Invalid viewType " + viewType);
         }

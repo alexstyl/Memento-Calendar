@@ -5,11 +5,11 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.upcoming.MonthHeaderViewModel;
 
-final class MonthHeaderViewHolder extends UpcomingRowViewHolder<MonthHeaderViewModel> {
+final class MonthViewHolder extends UpcomingRowViewHolder<MonthHeaderViewModel> {
 
     private final TextView monthView;
 
-    MonthHeaderViewHolder(View convertView, TextView monthView) {
+    MonthViewHolder(View convertView, TextView monthView) {
         super(convertView);
         this.monthView = monthView;
     }

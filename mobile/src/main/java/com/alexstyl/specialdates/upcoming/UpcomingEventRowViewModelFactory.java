@@ -7,6 +7,7 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
@@ -14,29 +15,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-final class UpcomingRowViewModelsFactory {
+final class UpcomingEventRowViewModelFactory {
     private final Date today;
     private final UpcomingDateStringCreator dateCreator;
     private final ContactViewModelFactory contactViewModelFactory;
     private final StringResources stringResources;
     private final BankHolidayViewModelFactory bankHolidayViewModelFactory;
     private final NamedaysViewModelFactory namedaysViewModelFactory;
+    private final MonthLabels monthLabels;
 
-    UpcomingRowViewModelsFactory(Date today,
-                                 UpcomingDateStringCreator dateCreator,
-                                 ContactViewModelFactory contactViewModelFactory,
-                                 StringResources stringResources,
-                                 BankHolidayViewModelFactory bankHolidayViewModelFactory,
-                                 NamedaysViewModelFactory namedaysViewModelFactory) {
+    UpcomingEventRowViewModelFactory(Date today,
+                                     UpcomingDateStringCreator dateCreator,
+                                     ContactViewModelFactory contactViewModelFactory,
+                                     StringResources stringResources,
+                                     BankHolidayViewModelFactory bankHolidayViewModelFactory,
+                                     NamedaysViewModelFactory namedaysViewModelFactory,
+                                     MonthLabels monthLabels) {
         this.today = today;
         this.dateCreator = dateCreator;
         this.contactViewModelFactory = contactViewModelFactory;
         this.stringResources = stringResources;
         this.bankHolidayViewModelFactory = bankHolidayViewModelFactory;
         this.namedaysViewModelFactory = namedaysViewModelFactory;
+        this.monthLabels = monthLabels;
     }
 
-    UpcomingEventsViewModel createViewModelFor(Date date, List<ContactEvent> contactEvents, NamesInADate namedays, BankHoliday bankHoliday) {
+    UpcomingRowViewModel createEventViewModel(Date date, List<ContactEvent> contactEvents, NamesInADate namedays, BankHoliday bankHoliday) {
         String dateLabel = dateCreator.createLabelFor(date);
         Typeface typeface = getTypefaceFor(date, today);
 
@@ -70,5 +74,13 @@ final class UpcomingRowViewModelsFactory {
             typeface = Typeface.DEFAULT;
         }
         return typeface;
+    }
+
+    UpcomingRowViewModel createRowForMonth(@MonthInt int month) {
+        return new MonthHeaderViewModel(monthLabels.getMonthOfYear(month));
+    }
+
+    UpcomingRowViewModel createRowForYear(int year) {
+        return new YearHeaderViewModel(String.valueOf(year));
     }
 }

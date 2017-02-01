@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewModel>> {
 
@@ -78,13 +79,14 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
         ContactViewModelFactory contactViewModelFactory = new ContactViewModelFactory(colorResources, stringResources);
         Date today = Date.today();
         UpcomingDateStringCreator dateCreator = new UpcomingDateStringCreator(stringResources, today);
-        UpcomingRowViewModelsFactory upcomingRowViewModelFactory = new UpcomingRowViewModelsFactory(
+        UpcomingEventRowViewModelFactory upcomingRowViewModelFactory = new UpcomingEventRowViewModelFactory(
                 today,
                 dateCreator,
                 contactViewModelFactory,
                 stringResources,
                 new BankHolidayViewModelFactory(),
-                new NamedaysViewModelFactory(today)
+                new NamedaysViewModelFactory(today),
+                MonthLabels.forLocale(Locale.getDefault())
         );
         UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(period, upcomingRowViewModelFactory)
                 .withContactEvents(contactEvents);

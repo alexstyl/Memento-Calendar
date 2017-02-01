@@ -23,9 +23,9 @@ final class UpcomingRowViewModelsBuilder {
     private final HashMap<AnnualDate, NamesInADate> namedays = new HashMap<>();
     private final HashMap<AnnualDate, BankHoliday> bankHolidays = new HashMap<>();
     private final TimePeriod duration;
-    private final UpcomingRowViewModelsFactory upcomingRowViewModelFactory;
+    private final UpcomingEventRowViewModelFactory upcomingRowViewModelFactory;
 
-    UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingRowViewModelsFactory upcomingRowViewModelFactory) {
+    UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingEventRowViewModelFactory upcomingRowViewModelFactory) {
         this.duration = duration;
         this.upcomingRowViewModelFactory = upcomingRowViewModelFactory;
     }
@@ -59,25 +59,33 @@ final class UpcomingRowViewModelsBuilder {
             return NO_CELEBRATIONS;
         }
 
-        List<UpcomingRowViewModel> celebrationDates = new ArrayList<>();
+        List<UpcomingRowViewModel> rowsViewModels = new ArrayList<>();
         Date indexDate = duration.getStartingDate();
         Date lastDate = duration.getEndingDate();
 
+        Date previousDate = Date.startOfTheYear(indexDate.getYear());
         while (COMPARATOR.compare(indexDate, lastDate) <= 0) {
             AnnualDate annualDate = new AnnualDate(indexDate);
-
             if (containsAnyEventsOn(annualDate)) {
-                UpcomingEventsViewModel viewModel = upcomingRowViewModelFactory.createViewModelFor(
+                if (indexDate.getYear() != previousDate.getYear()) {
+                    rowsViewModels.add(upcomingRowViewModelFactory.createRowForYear(indexDate.getYear()));
+                }
+                if (indexDate.getMonth() != previousDate.getMonth()) {
+                    rowsViewModels.add(upcomingRowViewModelFactory.createRowForMonth(indexDate.getMonth()));
+                }
+                UpcomingRowViewModel viewModel = upcomingRowViewModelFactory.createEventViewModel(
                         indexDate,
                         getEventsOn(annualDate),
                         this.namedays.get(annualDate),
                         bankHolidays.get(annualDate)
                 );
-                celebrationDates.add(viewModel);
+                rowsViewModels.add(viewModel);
+                previousDate = indexDate;
             }
+
             indexDate = indexDate.addDay(1);
         }
-        return celebrationDates;
+        return rowsViewModels;
     }
 
     private List<ContactEvent> getEventsOn(AnnualDate indexDate) {
