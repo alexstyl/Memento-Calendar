@@ -20,6 +20,8 @@ import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.novoda.notils.caster.Views;
 
+import java.util.List;
+
 public class DateDetailsActivity extends ThemedActivity {
 
     private static final String EXTRA_DAY = BuildConfig.APPLICATION_ID + ".dayOfMonth";
@@ -67,6 +69,16 @@ public class DateDetailsActivity extends ThemedActivity {
 
     private Date getDateFrom(Intent intent) {
         Bundle extras = intent.getExtras();
+        if (intent.getData() != null && "com.android.calendar".equals(intent.getData().getAuthority())) {
+            List<String> pathSegments = intent.getData().getPathSegments();
+            if (pathSegments.size() == 2) {
+                if (pathSegments.get(0).equals("time")) {
+                    String timeInMillis = pathSegments.get(1);
+                    return Date.fromMillis(Long.valueOf(timeInMillis));
+                }
+            }
+        }
+
         int year = extras.getInt(EXTRA_YEAR);
         @MonthInt int month = extras.getInt(EXTRA_MONTH);
         int dayOfMonth = extras.getInt(EXTRA_DAY);
