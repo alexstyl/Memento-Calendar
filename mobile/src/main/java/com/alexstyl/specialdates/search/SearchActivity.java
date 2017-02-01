@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
@@ -296,8 +295,8 @@ public class SearchActivity extends ThemedActivity {
     private final SearchResultAdapter.SearchResultClickListener listener = new SearchResultAdapter.SearchResultClickListener() {
 
         @Override
-        public void onContactClicked(View v, Contact contact) {
-            contact.displayQuickInfo(context(), v);
+        public void onContactClicked(Contact contact) {
+            contact.displayQuickInfo(context());
         }
 
         @Override

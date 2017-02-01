@@ -16,7 +16,6 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -142,16 +141,32 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
         @Override
-        public void onContactEventPressed(View view, Contact contact) {
+        public void onContactEventPressed(Contact contact) {
             analytics.trackAction(action);
-            contact.displayQuickInfo(getActivity(), view);
+            contact.displayQuickInfo(getActivity());
         }
 
         @Override
-        public void onCardPressed(Date date) {
-            analytics.trackScreen(Screen.DATE_DETAILS);
-            Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date);
-            startActivity(intent);
+        public void onCardPressed(UpcomingEventsViewModel viewModel) {
+            if (isDisplayingOnlyOneContact(viewModel)) {
+                List<ContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
+                onContactEventPressed(contactViewModels.get(0).getContact());
+            } else {
+                analytics.trackScreen(Screen.DATE_DETAILS);
+                Intent intent = DateDetailsActivity.getStartIntent(getActivity(), viewModel.getDate());
+                startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onMoreButtonPressed(UpcomingEventsViewModel viewModel) {
+            onCardPressed(viewModel);
+        }
+
+        private boolean isDisplayingOnlyOneContact(UpcomingEventsViewModel viewModel) {
+            return viewModel.getContactViewModels().size() == 1
+                    && viewModel.getBankHolidayViewModel().isHidden()
+                    && viewModel.getNamedaysViewModel().isHidden();
         }
     };
 

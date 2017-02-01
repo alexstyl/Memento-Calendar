@@ -27,17 +27,14 @@ class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewM
         dateView.setText(viewModel.getDisplayDateLabel());
         dateView.setTypeface(viewModel.getDateTypeFace());
 
-        eventsView.bindBankHolidays(viewModel.getBankHolidayViewModel());
-        eventsView.bindNamedays(viewModel.getNamedaysViewModel());
-        eventsView.bindContactEvents(viewModel.getContactEventsViewModel(), listener, imageLoader);
+        eventsView.bind(viewModel, listener, imageLoader);
 
         View.OnClickListener listener1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCardPressed(viewModel.getDate());
+                listener.onCardPressed(viewModel);
             }
         };
-        eventsView.setOnMoreButtonClickListener(listener1);
         itemView.setOnClickListener(listener1);
 
     }

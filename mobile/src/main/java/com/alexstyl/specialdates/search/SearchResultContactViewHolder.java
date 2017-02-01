@@ -42,7 +42,7 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onContactClicked(v, viewModel.getContact());
+                        listener.onContactClicked(viewModel.getContact());
                     }
                 }
         );

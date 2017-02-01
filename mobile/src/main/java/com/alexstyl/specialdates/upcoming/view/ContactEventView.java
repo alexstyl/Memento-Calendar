@@ -44,7 +44,7 @@ public class ContactEventView extends LinearLayout {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onContactEventPressed(v, contactEventViewModel.getContact());
+                listener.onContactEventPressed(contactEventViewModel.getContact());
             }
         });
     }
