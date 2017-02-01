@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingLeft="@dimen/card_padding_horizontal"
+  android:paddingRight="@dimen/card_padding_horizontal">
+
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/contacts_grid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:clipToPadding="false"
+    android:fadingEdge="none"
+    android:horizontalSpacing="@dimen/card_spacing_half"
+    android:paddingBottom="@dimen/card_spacing"
+    android:paddingTop="@dimen/padding_tight"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbars="vertical"
+    android:verticalSpacing="@dimen/card_spacing_half"
+    tools:listitem="@layout/card_contact_event_full" />
 
+  <ProgressBar
+    android:id="@android:id/progress"
+    style="?android:attr/progressBarStyleLarge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="visible" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/contacts_grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fadingEdge="none"
-        android:horizontalSpacing="@dimen/card_spacing_half"
-        android:paddingBottom="@dimen/card_spacing"
-        android:paddingLeft="@dimen/card_padding_horizontal"
-        android:paddingRight="@dimen/card_padding_horizontal"
-        android:paddingTop="@dimen/padding_tight"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        android:verticalSpacing="@dimen/card_spacing_half"
-        tools:listitem="@layout/card_contact_event_full" />
+  <TextView
+    android:id="@+id/date_details_empty"
+    android:text="@string/date_details_no_events"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center" />
 
-    <ProgressBar
-        android:id="@android:id/progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center" />
-
-</LinearLayout>
+</FrameLayout>

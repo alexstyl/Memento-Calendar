@@ -283,11 +283,11 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return position >= getSupportCardPosition();
     }
 
-    public boolean isFullRowAt(int itemPos) {
+    boolean isFullRowAt(int itemPos) {
         return isShowingFullDetailedCards || isNamecardPosition(itemPos) || isBankholidayposition(itemPos);
     }
 
-    public int getHeaderCount() {
+    int getHeaderCount() {
         int count = bankholiday.isPresent() ? 1 : 0;
         count += (nameday.isPresent() ? 1 : 0);
         return count;
