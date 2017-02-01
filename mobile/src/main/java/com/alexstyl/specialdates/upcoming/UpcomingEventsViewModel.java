@@ -42,6 +42,11 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
         return UpcomingRowViewType.UPCOMING_EVENTS;
     }
 
+    @Override
+    public long getId() {
+        return date.hashCode();
+    }
+
     public String getDisplayDateLabel() {
         return displayDateLabel;
     }
@@ -73,5 +78,54 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
     @ViewVisibility
     public int getMoreButtonVisibility() {
         return moreLabelVisibility;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        UpcomingEventsViewModel that = (UpcomingEventsViewModel) o;
+
+        if (moreLabelVisibility != that.moreLabelVisibility) {
+            return false;
+        }
+        if (!date.equals(that.date)) {
+            return false;
+        }
+        if (!displayDateLabel.equals(that.displayDateLabel)) {
+            return false;
+        }
+        if (!dateTypeFace.equals(that.dateTypeFace)) {
+            return false;
+        }
+        if (!bankHolidayViewModel.equals(that.bankHolidayViewModel)) {
+            return false;
+        }
+        if (!namedaysViewModel.equals(that.namedaysViewModel)) {
+            return false;
+        }
+        if (!contactViewModels.equals(that.contactViewModels)) {
+            return false;
+        }
+        return moreLabel.equals(that.moreLabel);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = date.hashCode();
+        result = 31 * result + displayDateLabel.hashCode();
+        result = 31 * result + dateTypeFace.hashCode();
+        result = 31 * result + bankHolidayViewModel.hashCode();
+        result = 31 * result + namedaysViewModel.hashCode();
+        result = 31 * result + contactViewModels.hashCode();
+        result = 31 * result + moreLabel.hashCode();
+        result = 31 * result + moreLabelVisibility;
+        return result;
     }
 }
