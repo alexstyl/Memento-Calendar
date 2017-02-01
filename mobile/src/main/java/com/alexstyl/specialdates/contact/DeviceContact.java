@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
-import android.view.View;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.DisplayName;
@@ -44,11 +43,9 @@ public class DeviceContact extends Contact {
     /**
      * Displays the information window for this contact.
      * </p>
-     *
-     * @param view The view that was clicked in order to display the winod
      */
     @Override
-    public void displayQuickInfo(Context context, View view) {
+    public void displayQuickInfo(Context context) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contactID));

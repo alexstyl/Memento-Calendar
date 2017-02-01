@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.view.View;
+
 import com.alexstyl.android.ViewVisibility;
 
 public final class NamedaysViewModel {
@@ -26,5 +28,9 @@ public final class NamedaysViewModel {
 
     public int getMaxLines() {
         return maxLines;
+    }
+
+    boolean isHidden() {
+        return namedaysVisibility == View.GONE;
     }
 }

@@ -2,7 +2,10 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.graphics.Typeface;
 
+import com.alexstyl.android.ViewVisibility;
 import com.alexstyl.specialdates.date.Date;
+
+import java.util.List;
 
 public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
 
@@ -11,20 +14,27 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
     private final Typeface dateTypeFace;
     private final BankHolidayViewModel bankHolidayViewModel;
     private final NamedaysViewModel namedaysViewModel;
-    private final ContactEventsViewModel contactEventsViewModel;
+    private final List<ContactEventViewModel> contactViewModels;
+    private final String moreLabel;
+    private final int moreLabelVisibility;
 
     UpcomingEventsViewModel(Date date,
                             String displayDateLabel,
                             Typeface dateTypeFace,
                             BankHolidayViewModel bankHolidayViewModel,
                             NamedaysViewModel namedaysViewModel,
-                            ContactEventsViewModel contactEventsViewModel) {
+                            List<ContactEventViewModel> contactViewModels,
+                            String moreLabel,
+                            @ViewVisibility int moreLabelVisibility
+    ) {
         this.date = date;
         this.displayDateLabel = displayDateLabel;
         this.dateTypeFace = dateTypeFace;
         this.bankHolidayViewModel = bankHolidayViewModel;
         this.namedaysViewModel = namedaysViewModel;
-        this.contactEventsViewModel = contactEventsViewModel;
+        this.contactViewModels = contactViewModels;
+        this.moreLabel = moreLabel;
+        this.moreLabelVisibility = moreLabelVisibility;
     }
 
     @Override
@@ -48,11 +58,20 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
         return namedaysViewModel;
     }
 
-    public ContactEventsViewModel getContactEventsViewModel() {
-        return contactEventsViewModel;
-    }
-
     public Date getDate() {
         return date;
+    }
+
+    public List<ContactEventViewModel> getContactViewModels() {
+        return contactViewModels;
+    }
+
+    public String getMoreButtonLabe() {
+        return moreLabel;
+    }
+
+    @ViewVisibility
+    public int getMoreButtonVisibility() {
+        return moreLabelVisibility;
     }
 }

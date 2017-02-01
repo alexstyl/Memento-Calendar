@@ -5,9 +5,9 @@ import android.view.View;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 
-public interface ContactCardListener {
+interface ContactCardListener {
 
-    void onCardClicked(View v, Contact contact);
+    void onCardClicked(Contact contact);
 
     void onActionClicked(View v, LabeledAction action);
 

@@ -11,8 +11,8 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
-import com.alexstyl.specialdates.upcoming.ContactEventsViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;
@@ -40,35 +40,43 @@ public class UpcomingEventsView extends FrameLayout {
 
     }
 
-    public void bindBankHolidays(BankHolidayViewModel viewModel) {
+    public void bind(final UpcomingEventsViewModel viewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+        bindBankHolidays(viewModel.getBankHolidayViewModel());
+        bindNamedays(viewModel.getNamedaysViewModel());
+        bindContactEvents(viewModel.getContactViewModels(), listener, imageLoader);
+        moreContacts.setText(viewModel.getMoreButtonLabe());
+        moreContacts.setVisibility(viewModel.getMoreButtonVisibility());
+        showMoreDivider.setVisibility(viewModel.getMoreButtonVisibility());
+
+        moreContacts.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onMoreButtonPressed(viewModel);
+            }
+        });
+    }
+
+    private void bindBankHolidays(BankHolidayViewModel viewModel) {
         bankholidaysCard.setVisibility(viewModel.getBankHolidaysVisibility());
         bankholidaysCard.setText(viewModel.getBankHolidayName());
     }
 
-    public void bindNamedays(NamedaysViewModel viewModel) {
+    private void bindNamedays(NamedaysViewModel viewModel) {
         namedaysCard.setText(viewModel.getNamesLabel());
         namedaysCard.setVisibility(viewModel.getNamedaysVisibility());
         namedaysCard.setTextLines(viewModel.getMaxLines());
     }
 
-    public void bindContactEvents(ContactEventsViewModel viewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
-        List<ContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
-        if (contactViewModels.size() >= 1) {
-            contactEventCardViewOne.bind(contactViewModels.get(0), listener, imageLoader);
+    private void bindContactEvents(List<ContactEventViewModel> viewModels, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+        if (viewModels.size() >= 1) {
+            contactEventCardViewOne.bind(viewModels.get(0), listener, imageLoader);
         } else {
             contactEventCardViewOne.setVisibility(GONE);
         }
-        if (contactViewModels.size() >= 2) {
-            contactEventCardViewTwo.bind(contactViewModels.get(1), listener, imageLoader);
+        if (viewModels.size() >= 2) {
+            contactEventCardViewTwo.bind(viewModels.get(1), listener, imageLoader);
         } else {
             contactEventCardViewTwo.setVisibility(GONE);
         }
-        moreContacts.setText(viewModel.getMoreButtonLabe());
-        moreContacts.setVisibility(viewModel.getMoreButtonVisibility());
-        showMoreDivider.setVisibility(viewModel.getMoreButtonVisibility());
-    }
-
-    public void setOnMoreButtonClickListener(OnClickListener listener) {
-        moreContacts.setOnClickListener(listener);
     }
 }

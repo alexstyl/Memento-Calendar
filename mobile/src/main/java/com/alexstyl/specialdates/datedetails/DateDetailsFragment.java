@@ -96,19 +96,19 @@ public class DateDetailsFragment extends MementoFragment {
     private final ContactCardListener contactCardListener = new ContactCardListener() {
 
         @Override
-        public void onCardClicked(View v, Contact contact) {
+        public void onCardClicked(Contact contact) {
             analytics.trackAction(CONTACT_INTERACT_EXTERNAL);
-            contact.displayQuickInfo(getActivity(), v);
+            contact.displayQuickInfo(getActivity());
         }
 
         @Override
-        public void onContactActionsMenuClicked(View v, Contact contact) {
+        public void onContactActionsMenuClicked(View view, Contact contact) {
             final List<LabeledAction> actions = contact.getUserActions(getActivity());
             if (actions == null) {
                 return;
             }
             int size = actions.size();
-            PopupMenu popup = new PopupMenu(getActivity(), v);
+            PopupMenu popup = new PopupMenu(getActivity(), view);
             for (int i = 0; i < size; i++) {
                 LabeledAction action = actions.get(i);
                 popup.getMenu().add(contact.hashCode(), i, 0, getString(action.getName()));

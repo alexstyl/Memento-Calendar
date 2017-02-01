@@ -43,7 +43,7 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onCardClicked(v, contact);
+                        listener.onCardClicked(contact);
                     }
                 }
         );
