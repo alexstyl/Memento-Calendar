@@ -5,12 +5,11 @@ import com.alexstyl.specialdates.contact.ShortDate;
 
 import java.util.Locale;
 
+import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
-import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
-import static com.alexstyl.specialdates.date.DateConstants.NO_YEAR;
+import static com.alexstyl.specialdates.date.DateConstants.*;
 
 /**
  * A specific date on a specific year
@@ -47,6 +46,11 @@ public class Date implements ShortDate {
         } catch (IllegalFieldValueException a) {
             throw new IllegalArgumentException(String.format(Locale.US, "%d/%d/%d is invalid", dayOfMonth, month, year));
         }
+    }
+
+    public static Date fromMillis(long timeInMilis) {
+        LocalDate dateTime = new DateTime(timeInMilis).toLocalDate();
+        return new Date(dateTime, new Optional<>(dateTime.getYear()));
     }
 
     private Date(LocalDate localDate, Optional<Integer> year) {
