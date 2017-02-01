@@ -4,4 +4,6 @@ public interface UpcomingRowViewModel {
 
     @UpcomingRowViewType
     int getViewType();
+
+    long getId();
 }
