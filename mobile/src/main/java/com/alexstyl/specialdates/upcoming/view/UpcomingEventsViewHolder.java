@@ -31,11 +31,14 @@ class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewM
         eventsView.bindNamedays(viewModel.getNamedaysViewModel());
         eventsView.bindContactEvents(viewModel.getContactEventsViewModel(), listener, imageLoader);
 
-        eventsView.setOnMoreButtonClickListener(new View.OnClickListener() {
+        View.OnClickListener listener1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onCardPressed(viewModel.getDate());
             }
-        });
+        };
+        eventsView.setOnMoreButtonClickListener(listener1);
+        itemView.setOnClickListener(listener1);
+
     }
 }
