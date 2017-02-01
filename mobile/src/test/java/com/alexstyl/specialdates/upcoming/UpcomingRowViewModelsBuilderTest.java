@@ -34,7 +34,7 @@ public class UpcomingRowViewModelsBuilderTest {
     private static final Date MARCH_5th = Date.on(5, MARCH, 1990);
     private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
 
-    private UpcomingRowViewModelsFactory upcomingRowViewModelsFactory;
+    private UpcomingEventRowViewModelFactory upcomingEventRowViewModelFactory;
 
     @Mock
     private ColorResources mockColorResources;
@@ -44,13 +44,14 @@ public class UpcomingRowViewModelsBuilderTest {
     @Before
     public void setUp() {
         Date today = Date.today();
-        upcomingRowViewModelsFactory = new UpcomingRowViewModelsFactory(
+        upcomingEventRowViewModelFactory = new UpcomingEventRowViewModelFactory(
                 today,
                 new UpcomingDateStringCreator(new DumbTestResources(), today),
                 new ContactViewModelFactory(mockColorResources, mockStringResources),
                 mockStringResources,
                 new BankHolidayViewModelFactory(),
-                new NamedaysViewModelFactory(today)
+                new NamedaysViewModelFactory(today),
+                monthLabels
         );
 
     }
@@ -60,7 +61,7 @@ public class UpcomingRowViewModelsBuilderTest {
         ContactEvent event = aContactEventOn(Date.on(1, JANUARY, 1990));
         TimePeriod duration = TimePeriod.between(Date.on(1, JANUARY, 2016), Date.on(1, DECEMBER, 2016));
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(duration, upcomingRowViewModelsFactory)
+        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(duration, upcomingEventRowViewModelFactory)
                 .withContactEvents(singletonList(event))
                 .build();
 
@@ -74,7 +75,7 @@ public class UpcomingRowViewModelsBuilderTest {
 
         TimePeriod duration = timeOf(event);
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(duration, upcomingRowViewModelsFactory)
+        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(duration, upcomingEventRowViewModelFactory)
                 .withContactEvents(contactEvents)
                 .build();
 
@@ -88,7 +89,7 @@ public class UpcomingRowViewModelsBuilderTest {
                 aContactEventOn(FEBRUARY_1st)
         );
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, FEBRUARY_1st), upcomingRowViewModelsFactory)
+        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, FEBRUARY_1st), upcomingEventRowViewModelFactory)
                 .withContactEvents(contactEventsList)
                 .build();
 
@@ -102,7 +103,7 @@ public class UpcomingRowViewModelsBuilderTest {
                 aContactEventOn(FEBRUARY_3rd)
         );
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, FEBRUARY_3rd), upcomingRowViewModelsFactory)
+        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, FEBRUARY_3rd), upcomingEventRowViewModelFactory)
                 .withContactEvents(contactEventsList)
                 .build();
 
@@ -113,7 +114,7 @@ public class UpcomingRowViewModelsBuilderTest {
     public void givenABankHoliday_thenACelebrationDateIsCreated() {
         BankHoliday bankHoliday = aBankHoliday();
         List<BankHoliday> bankHolidays = singletonList(bankHoliday);
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(bankHoliday.getDate(), bankHoliday.getDate()), upcomingRowViewModelsFactory)
+        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(bankHoliday.getDate(), bankHoliday.getDate()), upcomingEventRowViewModelFactory)
                 .withBankHolidays(bankHolidays)
                 .build();
 
@@ -122,7 +123,7 @@ public class UpcomingRowViewModelsBuilderTest {
 
     @Test
     public void givenEventsOnDifferentEvents_thenACelebrationDatesForEachOneAreCreated() {
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, MARCH_5th), upcomingRowViewModelsFactory)
+        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, MARCH_5th), upcomingEventRowViewModelFactory)
                 .withContactEvents(singletonList(aContactEventOn(FEBRUARY_1st)))
                 .withBankHolidays(singletonList(aBankHolidayOn(FEBRUARY_3rd)))
                 .withNamedays(singletonList(new NamesInADate(MARCH_5th, singletonList("Name"))))

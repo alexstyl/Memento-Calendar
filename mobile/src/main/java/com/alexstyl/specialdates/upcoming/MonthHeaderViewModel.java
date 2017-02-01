@@ -10,7 +10,7 @@ public final class MonthHeaderViewModel implements UpcomingRowViewModel {
 
     @Override
     public int getViewType() {
-        return UpcomingRowViewType.MONTH_HEADER;
+        return UpcomingRowViewType.MONTH;
     }
 
     public String getMonthLabel() {
