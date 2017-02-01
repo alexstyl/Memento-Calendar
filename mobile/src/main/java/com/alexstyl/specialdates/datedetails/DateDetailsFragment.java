@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.Optional;
@@ -30,7 +31,6 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
-import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -45,8 +45,8 @@ import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
-import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
@@ -54,6 +54,7 @@ import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
 import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
+import com.novoda.notils.caster.Views;
 
 import java.util.List;
 
@@ -74,9 +75,12 @@ public class DateDetailsFragment extends MementoFragment {
     private Date date;
     private ProgressBar progress;
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
-
+    private GridLayoutManager layoutManager;
+    private DateDetailsAdapter adapter;
+    private Analytics analytics;
     private ContactPermissionRequest permissions;
     private ExternalNavigator externalNavigator;
+    private RecyclerView recyclerView;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
@@ -88,11 +92,6 @@ public class DateDetailsFragment extends MementoFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private GridLayoutManager layoutManager;
-
-    private DateDetailsAdapter adapter;
-    private Analytics analytics;
 
     private final ContactCardListener contactCardListener = new ContactCardListener() {
 
@@ -224,15 +223,14 @@ public class DateDetailsFragment extends MementoFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         if (savedInstanceState != null) {
             date = getDateFrom(savedInstanceState);
         } else {
             date = getDate();
         }
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
+        recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
         progress = (ProgressBar) view.findViewById(android.R.id.progress);
-
+        emptyView = Views.findById(view, R.id.date_details_empty);
         layoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
 
         layoutManager.setSpanSizeLookup(
@@ -291,6 +289,7 @@ public class DateDetailsFragment extends MementoFragment {
         return absent();
     }
 
+    private View emptyView;
     private LoaderManager.LoaderCallbacks<List<ContactEvent>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<ContactEvent>>() {
 
         @Override
@@ -313,6 +312,21 @@ public class DateDetailsFragment extends MementoFragment {
             }
 
             spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
+            showData();
+            hideLoading();
+        }
+
+        private void showData() {
+            if (adapter.getItemCount() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                emptyView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        private void hideLoading() {
             progress.setVisibility(View.GONE);
         }
 
