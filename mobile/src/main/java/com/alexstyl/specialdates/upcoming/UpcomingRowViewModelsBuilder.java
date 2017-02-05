@@ -81,6 +81,9 @@ final class UpcomingRowViewModelsBuilder {
                 );
                 rowsViewModels.add(viewModel);
                 previousDate = indexDate;
+                if (rowsViewModels.size() % 2 == 0) {
+                    rowsViewModels.add(new AdViewModel());
+                }
             }
 
             indexDate = indexDate.addDay(1);
