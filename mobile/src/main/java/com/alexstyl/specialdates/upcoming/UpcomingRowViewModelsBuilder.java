@@ -71,16 +71,17 @@ final class UpcomingRowViewModelsBuilder {
         while (dateComparator.compare(indexDate, lastDate) <= 0) {
             AnnualDate annualDate = new AnnualDate(indexDate);
             if (containsAnyEventsOn(annualDate)) {
-                if (indexDate.getYear() != previousDate.getYear()) {
-                    rowsViewModels.add(upcomingRowViewModelFactory.createRowForYear(indexDate.getYear()));
-                }
                 if (indexDate.getMonth() != previousDate.getMonth()) {
                     if (adRules.shouldAppendAdForEndOfMonth(index)) {
                         rowsViewModels.add(new AdViewModel(indexDate));
                     }
+                    if (indexDate.getYear() != previousDate.getYear()) {
+                        rowsViewModels.add(upcomingRowViewModelFactory.createRowForYear(indexDate.getYear()));
+                    }
                     rowsViewModels.add(upcomingRowViewModelFactory.createRowForMonth(indexDate.getMonth()));
                     adRules.onNewMonthAdded(index);
                 }
+
                 if (adRules.shouldAppendAdAt(index)) {
                     rowsViewModels.add(new AdViewModel(indexDate));
                     adRules.onNewAdAdded(index);
