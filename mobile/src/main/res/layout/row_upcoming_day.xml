@@ -5,8 +5,6 @@
   style="@style/CardViewStyle"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_marginBottom="@dimen/upcoming_vertical_bottom_padding_between_each_card"
-  android:layout_marginTop="@dimen/upcoming_vertical_top_padding_between_each_card"
   android:orientation="vertical"
   tools:showIn="@layout/activity_main">
 
