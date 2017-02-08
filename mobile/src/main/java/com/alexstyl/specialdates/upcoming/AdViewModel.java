@@ -1,6 +1,14 @@
 package com.alexstyl.specialdates.upcoming;
 
+import com.alexstyl.specialdates.date.Date;
+
 final public class AdViewModel implements UpcomingRowViewModel {
+    private final Date afterDate;
+
+    AdViewModel(Date afterDate) {
+        this.afterDate = afterDate;
+    }
+
     @Override
     public int getViewType() {
         return UpcomingRowViewType.AD;
@@ -9,5 +17,25 @@ final public class AdViewModel implements UpcomingRowViewModel {
     @Override
     public long getId() {
         return 1337;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AdViewModel that = (AdViewModel) o;
+
+        return afterDate.equals(that.afterDate);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return afterDate.hashCode();
     }
 }

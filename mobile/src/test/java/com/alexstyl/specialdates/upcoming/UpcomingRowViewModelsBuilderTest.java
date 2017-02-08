@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.support.annotation.NonNull;
+
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.DisplayName;
@@ -13,8 +15,8 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.search.DumbTestResources;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.alexstyl.specialdates.date.DateConstants.*;
+import static com.alexstyl.specialdates.date.TimePeriod.between;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -40,6 +44,7 @@ public class UpcomingRowViewModelsBuilderTest {
     private ColorResources mockColorResources;
     @Mock
     private StringResources mockStringResources;
+    private UpcomingEventsAdRules adRules = new UpcomingEventsNoAdRules();
 
     @Before
     public void setUp() {
@@ -51,7 +56,7 @@ public class UpcomingRowViewModelsBuilderTest {
                 mockStringResources,
                 new BankHolidayViewModelFactory(),
                 new NamedaysViewModelFactory(today),
-                monthLabels
+                MonthLabels.forLocale(Locale.getDefault())
         );
 
     }
@@ -59,9 +64,9 @@ public class UpcomingRowViewModelsBuilderTest {
     @Test
     public void celebrationDateIsCreatedCorrectlyForDifferentYear() {
         ContactEvent event = aContactEventOn(Date.on(1, JANUARY, 1990));
-        TimePeriod duration = TimePeriod.between(Date.on(1, JANUARY, 2016), Date.on(1, DECEMBER, 2016));
+        TimePeriod duration = between(Date.on(1, JANUARY, 2016), Date.on(1, DECEMBER, 2016));
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(duration, upcomingEventRowViewModelFactory)
+        List<UpcomingRowViewModel> dates = builder(duration)
                 .withContactEvents(singletonList(event))
                 .build();
 
@@ -75,7 +80,7 @@ public class UpcomingRowViewModelsBuilderTest {
 
         TimePeriod duration = timeOf(event);
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(duration, upcomingEventRowViewModelFactory)
+        List<UpcomingRowViewModel> dates = builder(duration)
                 .withContactEvents(contactEvents)
                 .build();
 
@@ -84,37 +89,39 @@ public class UpcomingRowViewModelsBuilderTest {
 
     @Test
     public void givenTwoContactEventsOnSameDate_thenOneCelebrationDateIsCreated() {
-        List<ContactEvent> contactEventsList = Arrays.asList(
-                aContactEventOn(FEBRUARY_1st),
-                aContactEventOn(FEBRUARY_1st)
-        );
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, FEBRUARY_1st), upcomingEventRowViewModelFactory)
-                .withContactEvents(contactEventsList)
+        List<UpcomingRowViewModel> dates = builder(between(FEBRUARY_1st, FEBRUARY_1st))
+                .withContactEvents(asList(
+                        aContactEventOn(FEBRUARY_1st),
+                        aContactEventOn(FEBRUARY_1st)
+                ))
                 .build();
 
-        assertThat(dates.size()).isEqualTo(1);
+        int datesCount = 1;
+        int monthCount = 1;
+        assertThat(dates.size()).isEqualTo(datesCount + monthCount);
     }
 
     @Test
     public void givenTwoContactEventsOnDifferentDate_thenTwoCelebrationDateAreCreated() {
-        List<ContactEvent> contactEventsList = Arrays.asList(
-                aContactEventOn(FEBRUARY_1st),
-                aContactEventOn(FEBRUARY_3rd)
-        );
 
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, FEBRUARY_3rd), upcomingEventRowViewModelFactory)
-                .withContactEvents(contactEventsList)
+        List<UpcomingRowViewModel> dates = builder(between(FEBRUARY_1st, FEBRUARY_3rd))
+                .withContactEvents(asList(
+                        aContactEventOn(FEBRUARY_1st),
+                        aContactEventOn(FEBRUARY_3rd)
+                ))
                 .build();
 
-        assertThat(dates.size()).isEqualTo(2);
+        int monthCount = 1;
+        int datesCount = 2;
+        assertThat(dates.size()).isEqualTo(datesCount + monthCount);
     }
 
     @Test
     public void givenABankHoliday_thenACelebrationDateIsCreated() {
         BankHoliday bankHoliday = aBankHoliday();
         List<BankHoliday> bankHolidays = singletonList(bankHoliday);
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(bankHoliday.getDate(), bankHoliday.getDate()), upcomingEventRowViewModelFactory)
+        List<UpcomingRowViewModel> dates = builder(between(bankHoliday.getDate(), bankHoliday.getDate()))
                 .withBankHolidays(bankHolidays)
                 .build();
 
@@ -122,14 +129,21 @@ public class UpcomingRowViewModelsBuilderTest {
     }
 
     @Test
-    public void givenEventsOnDifferentEvents_thenACelebrationDatesForEachOneAreCreated() {
-        List<UpcomingRowViewModel> dates = new UpcomingRowViewModelsBuilder(TimePeriod.between(FEBRUARY_1st, MARCH_5th), upcomingEventRowViewModelFactory)
-                .withContactEvents(singletonList(aContactEventOn(FEBRUARY_1st)))
-                .withBankHolidays(singletonList(aBankHolidayOn(FEBRUARY_3rd)))
-                .withNamedays(singletonList(new NamesInADate(MARCH_5th, singletonList("Name"))))
+    public void givenEventsOnDifferentMonths_thenACelebrationDatesForEachOneAreCreated() {
+        List<UpcomingRowViewModel> dates = builder(between(FEBRUARY_1st, MARCH_5th))
+                .withContactEvents(asList(aContactEventOn(FEBRUARY_1st)))
+                .withBankHolidays(asList(aBankHolidayOn(FEBRUARY_3rd)))
+                .withNamedays(asList(new NamesInADate(MARCH_5th, singletonList("Name"))))
                 .build();
 
-        assertThat(dates.size()).isEqualTo(3);
+        int datesCount = 3;
+        int monthsCounts = 2;
+        assertThat(dates.size()).isEqualTo(datesCount + monthsCounts);
+    }
+
+    @NonNull
+    private UpcomingRowViewModelsBuilder builder(TimePeriod timePeriod) {
+        return new UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory, adRules);
     }
 
     private static BankHoliday aBankHolidayOn(Date date) {
@@ -150,7 +164,7 @@ public class UpcomingRowViewModelsBuilderTest {
     }
 
     private static TimePeriod timeOf(ContactEvent event) {
-        return TimePeriod.between(event.getDate(), event.getDate());
+        return between(event.getDate(), event.getDate());
     }
 
 }

@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.contact;
 
 import android.content.Context;
 import android.net.Uri;
-import android.view.View;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -46,7 +45,7 @@ public class ContactTest {
         }
 
         @Override
-        public void displayQuickInfo(Context context, View view) {
+        public void displayQuickInfo(Context context) {
             throw new UnsupportedOperationException();
         }
 
