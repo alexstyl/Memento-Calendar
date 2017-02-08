@@ -4,8 +4,7 @@
   <string name="upcoming_events_namedays_title">@string/namedays</string>
   <string name="plus_x_more">+%d more</string>
 
-  <dimen name="upcoming_vertical_top_padding_between_each_card">8dp</dimen>
-  <dimen name="upcoming_vertical_bottom_padding_between_each_card">@dimen/upcoming_vertical_top_padding_between_each_card</dimen>
+  <dimen name="upcoming_vertical_padding_between_cards">12dp</dimen>
 
   <dimen name="upcoming_event_padding_vertical">8dp</dimen>
   <dimen name="upcoming_event_padding_horizontal">16dp</dimen>
