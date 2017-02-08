@@ -2,7 +2,6 @@ package com.alexstyl.specialdates;
 
 import android.content.Context;
 import android.net.Uri;
-import android.view.View;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -26,7 +25,7 @@ public class TestContact extends Contact {
     }
 
     @Override
-    public void displayQuickInfo(Context context, View view) {
+    public void displayQuickInfo(Context context) {
         throw new UnsupportedOperationException("Not supported");
     }
 
@@ -34,7 +33,5 @@ public class TestContact extends Contact {
     public Uri getImagePath() {
         throw new UnsupportedOperationException("Not supported");
     }
-
-
 
 }
