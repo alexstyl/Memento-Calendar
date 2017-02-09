@@ -11,6 +11,7 @@ public enum NamedayLocale {
     RUSSIAN("ru", false, R.raw.ru_namedays),
     LATVIAN("lv", false, R.raw.lv_namedays),
     SLOVAK("sk", false, R.raw.sk_namedays),
+    ITALIAN("it", false, R.raw.it_namedays),
     CZECH("cs", false, R.raw.cs_namedays);
 
     private final String shortCode;
