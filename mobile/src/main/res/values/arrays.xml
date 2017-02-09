@@ -4,6 +4,7 @@
 
   <string-array name="namedays_languages">
     <item>@string/Greek</item>
+    <item>@string/Italian</item>
     <item>@string/Latvian</item>
     <item>@string/Russian</item>
     <item>@string/Slovak</item>
@@ -13,6 +14,8 @@
 
   <string name="lang_gr"
     translatable="false">gr</string>
+  <string name="lang_it"
+    translatable="false">it</string>
   <string name="lang_sk"
     translatable="false">sk</string>
   <string name="lang_ru"
@@ -26,6 +29,7 @@
 
   <string-array name="namedays_languages_values">
     <item>@string/lang_gr</item>
+    <item>@string/lang_it</item>
     <item>@string/lang_lv</item>
     <item>@string/lang_ru</item>
     <item>@string/lang_sk</item>
