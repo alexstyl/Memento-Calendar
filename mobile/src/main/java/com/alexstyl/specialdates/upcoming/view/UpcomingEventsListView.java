@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
+import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class UpcomingEventsListView extends RecyclerView {
         setAdapter(adapter);
 
         addOnScrollListener(PauseImageLoadingScrollListener.newInstance(imageLoader));
+        addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards), 1));
     }
 
     public void updateWith(List<UpcomingRowViewModel> dates, OnUpcomingEventClickedListener listener) {

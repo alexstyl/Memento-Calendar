@@ -16,6 +16,7 @@ import static com.alexstyl.specialdates.date.DateConstants.*;
  */
 public class Date implements ShortDate {
 
+    public static final Date BEGINNING_OF_TIME = Date.on(1, JANUARY, NO_YEAR);
     private final LocalDate localDate;
     private final Optional<Integer> year;
 
