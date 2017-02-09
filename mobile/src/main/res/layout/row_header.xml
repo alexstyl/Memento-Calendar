@@ -5,7 +5,7 @@
   style="@style/Upcoming.MonthHeader"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_marginBottom="@dimen/upcoming_vertical_bottom_padding_between_each_card"
+  android:layout_marginBottom="@dimen/upcoming_vertical_padding_between_cards"
   android:layout_marginLeft="@dimen/upcoming_event_padding_horizontal"
   android:layout_marginRight="@dimen/upcoming_event_padding_horizontal"
   android:layout_marginTop="@dimen/padding_month_header_vertical"

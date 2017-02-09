@@ -88,7 +88,11 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
                 new NamedaysViewModelFactory(today),
                 MonthLabels.forLocale(Locale.getDefault())
         );
-        UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(period, upcomingRowViewModelFactory)
+        UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(
+                period,
+                upcomingRowViewModelFactory,
+                new UpcomingEventsFreeUserAdRules()
+        )
                 .withContactEvents(contactEvents);
 
         if (shouldLoadBankHolidays()) {

@@ -17,17 +17,19 @@ final class UpcomingRowViewModelsBuilder {
 
     private static final List<UpcomingRowViewModel> NO_CELEBRATIONS = Collections.emptyList();
     private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.emptyList();
-    private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
+    private final DateComparator dateComparator = DateComparator.INSTANCE;
 
     private final HashMapList<AnnualDate, ContactEvent> contactEvents = new HashMapList<>();
     private final HashMap<AnnualDate, NamesInADate> namedays = new HashMap<>();
     private final HashMap<AnnualDate, BankHoliday> bankHolidays = new HashMap<>();
     private final TimePeriod duration;
     private final UpcomingEventRowViewModelFactory upcomingRowViewModelFactory;
+    private final UpcomingEventsAdRules adRules;
 
-    UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingEventRowViewModelFactory upcomingRowViewModelFactory) {
+    UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingEventRowViewModelFactory upcomingRowViewModelFactory, UpcomingEventsAdRules adRules) {
         this.duration = duration;
         this.upcomingRowViewModelFactory = upcomingRowViewModelFactory;
+        this.adRules = adRules;
     }
 
     UpcomingRowViewModelsBuilder withContactEvents(List<ContactEvent> contactEvents) {
@@ -64,14 +66,25 @@ final class UpcomingRowViewModelsBuilder {
         Date lastDate = duration.getEndingDate();
 
         Date previousDate = Date.startOfTheYear(indexDate.getYear());
-        while (COMPARATOR.compare(indexDate, lastDate) <= 0) {
+
+        int index = 0;
+        while (dateComparator.compare(indexDate, lastDate) <= 0) {
             AnnualDate annualDate = new AnnualDate(indexDate);
             if (containsAnyEventsOn(annualDate)) {
-                if (indexDate.getYear() != previousDate.getYear()) {
-                    rowsViewModels.add(upcomingRowViewModelFactory.createRowForYear(indexDate.getYear()));
-                }
                 if (indexDate.getMonth() != previousDate.getMonth()) {
+                    if (adRules.shouldAppendAdForEndOfMonth(index)) {
+                        rowsViewModels.add(new AdViewModel(indexDate));
+                    }
+                    if (indexDate.getYear() != previousDate.getYear()) {
+                        rowsViewModels.add(upcomingRowViewModelFactory.createRowForYear(indexDate.getYear()));
+                    }
                     rowsViewModels.add(upcomingRowViewModelFactory.createRowForMonth(indexDate.getMonth()));
+                    adRules.onNewMonthAdded(index);
+                }
+
+                if (adRules.shouldAppendAdAt(index)) {
+                    rowsViewModels.add(new AdViewModel(indexDate));
+                    adRules.onNewAdAdded(index);
                 }
                 UpcomingRowViewModel viewModel = upcomingRowViewModelFactory.createEventViewModel(
                         indexDate,
@@ -81,8 +94,8 @@ final class UpcomingRowViewModelsBuilder {
                 );
                 rowsViewModels.add(viewModel);
                 previousDate = indexDate;
+                index++;
             }
-
             indexDate = indexDate.addDay(1);
         }
         return rowsViewModels;
