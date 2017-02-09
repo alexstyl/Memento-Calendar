@@ -84,6 +84,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="search">Αναζήτηση</string>
     <string name="and">και</string>
     <string name="Greek">Ελληνικά</string>
+    <string name="Italian">Ιταλικά</string>
     <string name="Czech">Τσέχικα</string>
     <string name="Slovak">Σλοβάκικα</string>
     <string name="Russian">Ρώσικα</string>
