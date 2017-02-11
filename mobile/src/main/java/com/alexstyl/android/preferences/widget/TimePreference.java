@@ -1,5 +1,5 @@
 
-package com.alexstyl.specialdates.ui.widget;
+package com.alexstyl.android.preferences.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;

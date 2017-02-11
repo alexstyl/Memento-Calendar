@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R;
 
 public class NamedayPreferences {
 
-    private static final String DEFAULT_LOCALE = NamedayLocale.GREEK.getShortCode();
+    private static final String DEFAULT_LOCALE = NamedayLocale.GREEK.getCountryCode();
 
     private final boolean enabledByDefault;
     private final EasyPreferences preferences;

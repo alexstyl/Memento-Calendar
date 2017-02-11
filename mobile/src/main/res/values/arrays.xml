@@ -2,41 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
   tools:ignore="MissingTranslation">
 
-  <string-array name="namedays_languages">
-    <item>@string/Greek</item>
-    <item>@string/Italian</item>
-    <item>@string/Latvian</item>
-    <item>@string/Russian</item>
-    <item>@string/Slovak</item>
-    <item>@string/romanian</item>
-    <item>@string/Czech</item>
-  </string-array>
-
-  <string name="lang_gr"
-    translatable="false">gr</string>
-  <string name="lang_it"
-    translatable="false">it</string>
-  <string name="lang_sk"
-    translatable="false">sk</string>
-  <string name="lang_ru"
-    translatable="false">ru</string>
-  <string name="lang_lv"
-    translatable="false">lv</string>
-  <string name="lang_ro"
-    translatable="false">ro</string>
-  <string name="lang_cs"
-    translatable="false">cs</string>
-
-  <string-array name="namedays_languages_values">
-    <item>@string/lang_gr</item>
-    <item>@string/lang_it</item>
-    <item>@string/lang_lv</item>
-    <item>@string/lang_ru</item>
-    <item>@string/lang_sk</item>
-    <item>@string/lang_ro</item>
-    <item>@string/lang_cs</item>
-  </string-array>
-
 
   <string-array name="ratings">
     <item>@string/rate_1_stars</item>
