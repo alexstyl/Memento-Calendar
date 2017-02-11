@@ -33,9 +33,10 @@
 
   <TextView
     android:id="@+id/date_details_empty"
-    android:text="@string/date_details_no_events"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center" />
+    android:layout_gravity="center"
+    android:text="@string/date_details_no_events"
+    android:visibility="gone" />
 
 </FrameLayout>
