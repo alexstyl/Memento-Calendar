@@ -105,12 +105,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-//        namedayLanguageListPreferences.setValue(namedaysPreferences.getSelectedLanguage().toString());
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getNameResId());
