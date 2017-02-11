@@ -1,11 +1,11 @@
 package com.alexstyl.specialdates;
 
-import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -47,7 +47,7 @@ public class MementoApplication extends Application {
 
         DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
         if (preferences.isEnabled()) {
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            AlarmManagerCompat alarmManager = AlarmManagerCompat.from(this);
             new DailyReminderScheduler(alarmManager, this).setupReminder(preferences);
         }
     }

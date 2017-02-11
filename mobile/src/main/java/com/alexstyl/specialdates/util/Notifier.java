@@ -119,7 +119,8 @@ public class Notifier {
                 .setAutoCancel(true)
                 .setContentIntent(intent)
                 .setNumber(events.size())
-                .setColor(colorResources.getColor(R.color.main_red));
+                .setColor(colorResources.getColor(R.color.main_red))
+                .setSound(preferences.getRingtoneSelected());
 
         if (events.size() == 1) {
             ContactEvent event = events.get(0);
@@ -170,9 +171,6 @@ public class Notifier {
                 builder.addPerson(uri.toString());
             }
         }
-
-        Uri ringtoneUri = preferences.getRingtoneSelected();
-        builder.setSound(ringtoneUri);
 
         if (preferences.getVibrationSet()) {
             builder.setDefaults(Notification.DEFAULT_VIBRATE);

@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -61,6 +62,7 @@ public class DailyReminderIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d("DAILY", "daily intent service woke up ");
         PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
         Date today = getDayDateToDisplay();
 
@@ -75,6 +77,11 @@ public class DailyReminderIntentService extends IntentService {
         }
         if (bankholidaysAreEnabled()) {
             notifyForBankholidaysFor(today);
+        }
+
+        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
+        if (preferences.isEnabled()) {
+            new DailyReminderScheduler(AlarmManagerCompat.from(this), this).setupReminder(preferences);
         }
     }
 

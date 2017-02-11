@@ -1,14 +1,11 @@
 package com.alexstyl.specialdates.settings;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.CheckBoxPreference;
@@ -17,13 +14,14 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
+import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.ui.widget.TimePreference;
 
@@ -43,7 +41,8 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scheduler = new DailyReminderScheduler((AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE), getActivity());
+        Context context = getActivity().getApplicationContext();
+        scheduler = new DailyReminderScheduler(AlarmManagerCompat.from(context), context);
         analytics = AnalyticsProvider.getAnalytics(getActivity());
         addPreferencesFromResource(R.xml.preference_dailyreminder);
         permissionChecker = new PermissionChecker(getActivity());
@@ -70,7 +69,6 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
 
         ringtonePreference = findPreference(R.string.key_daily_reminder_ringtone);
         ringtonePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (permissionChecker.canReadExternalStorage()) {

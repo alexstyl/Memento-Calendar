@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates;
 
+import org.joda.time.LocalTime;
+
 import static android.text.format.DateUtils.SECOND_IN_MILLIS;
 
 public final class TimeOfDay {
@@ -8,23 +10,30 @@ public final class TimeOfDay {
     private static final long HOUR_IN_MILLIS = MINUTE_IN_MILLIS * 60;
     private static final String ZERO = "0";
     private static final String SEPARATOR = ":";
+    private LocalTime dateTime;
 
-    private final int hour;
-    private final int minute;
+    public static TimeOfDay now() {
+        return new TimeOfDay(LocalTime.now());
+    }
+
+    private TimeOfDay(LocalTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public TimeOfDay(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
+        this(new LocalTime(hour, minute));
     }
 
     @Override
     public String toString() {
+        int hour = getHours();
         StringBuilder str = new StringBuilder();
         if (isOneDigit(hour)) {
             str.append(ZERO);
         }
         str.append(hour)
                 .append(SEPARATOR);
+        int minute = getMinutes();
         if (isOneDigit(minute)) {
             str.append(ZERO);
         }
@@ -37,14 +46,18 @@ public final class TimeOfDay {
     }
 
     public int getHours() {
-        return hour;
+        return dateTime.getHourOfDay();
     }
 
     public int getMinutes() {
-        return minute;
+        return dateTime.getMinuteOfHour();
     }
 
     public long toMillis() {
-        return hour * HOUR_IN_MILLIS + minute * MINUTE_IN_MILLIS;
+        return dateTime.getMillisOfDay();
+    }
+
+    public boolean isAfter(TimeOfDay timeOfDay) {
+        return dateTime.isAfter(timeOfDay.dateTime);
     }
 }
