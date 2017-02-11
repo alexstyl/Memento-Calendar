@@ -2,12 +2,8 @@ package com.alexstyl.specialdates;
 
 import org.joda.time.LocalTime;
 
-import static android.text.format.DateUtils.SECOND_IN_MILLIS;
-
 public final class TimeOfDay {
 
-    private static final long MINUTE_IN_MILLIS = SECOND_IN_MILLIS * 60;
-    private static final long HOUR_IN_MILLIS = MINUTE_IN_MILLIS * 60;
     private static final String ZERO = "0";
     private static final String SEPARATOR = ":";
     private LocalTime dateTime;
