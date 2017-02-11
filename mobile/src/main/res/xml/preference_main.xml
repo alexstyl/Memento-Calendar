@@ -39,10 +39,8 @@
       android:summaryOn="@string/display_namedays_on"
       android:title="@string/display_namedays" />
 
-    <ListPreference
+    <com.alexstyl.specialdates.settings.NamedayListPreference
       android:dependency="@string/key_enable_namedays"
-      android:entries="@array/namedays_languages"
-      android:entryValues="@array/namedays_languages_values"
       android:key="@string/key_namedays_language"
       android:title="@string/nameday_language_title" />
 

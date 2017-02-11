@@ -1,32 +1,37 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import android.support.annotation.RawRes;
+import android.support.annotation.StringRes;
 
 import com.alexstyl.specialdates.R;
 import com.novoda.notils.exception.DeveloperError;
 
 public enum NamedayLocale {
-    GREEK("gr", true, R.raw.gr_namedays),
-    ROMANIAN("ro", false, R.raw.ro_namedays),
-    RUSSIAN("ru", false, R.raw.ru_namedays),
-    LATVIAN("lv", false, R.raw.lv_namedays),
-    SLOVAK("sk", false, R.raw.sk_namedays),
-    ITALIAN("it", false, R.raw.it_namedays),
-    CZECH("cs", false, R.raw.cs_namedays);
+    GREEK("gr", true, R.string.Greek, R.raw.gr_namedays),
+    ROMANIAN("ro", false, R.string.Romanian, R.raw.ro_namedays),
+    RUSSIAN("ru", false, R.string.Russian, R.raw.ru_namedays),
+    LATVIAN("lv", false, R.string.Latvian, R.raw.lv_namedays),
+    SLOVAK("sk", false, R.string.Slovak, R.raw.sk_namedays),
+    ITALIAN("it", false, R.string.Italian, R.raw.it_namedays),
+    CZECH("cs", false, R.string.Czech, R.raw.cs_namedays);
 
     private final String shortCode;
     private final boolean soundCompared;
+    @StringRes
+    private int languageName;
+    @RawRes
     private final int rawResId;
 
-    NamedayLocale(String shortCode, boolean soundCompared, @RawRes int rawResId) {
+    NamedayLocale(String shortCode, boolean soundCompared, @StringRes int languageName, @RawRes int rawResId) {
         this.shortCode = shortCode;
         this.soundCompared = soundCompared;
+        this.languageName = languageName;
         this.rawResId = rawResId;
     }
 
     public static NamedayLocale from(String displayLanguage) {
         for (NamedayLocale locale : values()) {
-            if (locale.getShortCode().equalsIgnoreCase(displayLanguage)) {
+            if (locale.getCountryCode().equalsIgnoreCase(displayLanguage)) {
                 return locale;
             }
         }
@@ -41,7 +46,12 @@ public enum NamedayLocale {
         return soundCompared;
     }
 
-    public String getShortCode() {
+    public String getCountryCode() {
         return shortCode;
+    }
+
+    @StringRes
+    public int getLanguageNameResId() {
+        return languageName;
     }
 }

@@ -140,7 +140,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Birthday_date">Dzimšanas datums</string>
     <string name="Contact_name">Kontaktpersonas vārds</string>
     <string name="Themes">Tēmas</string>
-    <string name="romanian">Rumāņu</string>
+    <string name="Romanian">Rumāņu</string>
     <string name="Configure_widget">Konfigurēt logrīku</string>
     <string name="Done">Darīts</string>
     <string name="Transparency">Caurspīdīgums</string>

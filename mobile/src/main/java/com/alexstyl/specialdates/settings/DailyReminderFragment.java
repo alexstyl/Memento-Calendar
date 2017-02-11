@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.specialdates.ui.widget.TimePreference;
+import com.alexstyl.android.preferences.widget.TimePreference;
 
 import java.util.Calendar;
 
