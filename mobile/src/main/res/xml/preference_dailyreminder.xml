@@ -15,7 +15,7 @@
     android:key="@string/key_daily_reminder_vibrate_enabled"
     android:title="@string/vibrate" />
 
-  <com.alexstyl.specialdates.ui.widget.TimePreference
+  <com.alexstyl.android.preferences.widget.TimePreference
     android:defaultValue="8:00"
     android:key="@string/key_daily_reminder_time"
     android:summary="@string/daily_reminder_time_summary"
