@@ -1,10 +1,10 @@
 package com.alexstyl.specialdates.receiver;
 
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.wear.WearSyncService;
@@ -18,19 +18,18 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)) {
-            startRequiredServices(context);
+            rescheduleDailyReminder(context, DailyReminderPreferences.newInstance(context));
+            TodayWidgetProvider.updateWidgets(context);
+            WearSyncService.startService(context);
         }
     }
 
-    private void startRequiredServices(Context context) {
-        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(context);
+    private void rescheduleDailyReminder(Context context, DailyReminderPreferences preferences) {
         if (preferences.isEnabled()) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            DailyReminderScheduler scheduler = new DailyReminderScheduler(alarmManager, context);
+            AlarmManagerCompat alarmManager = AlarmManagerCompat.from(context);
+            DailyReminderScheduler scheduler = new DailyReminderScheduler(alarmManager, context.getApplicationContext());
             scheduler.setupReminder(preferences);
         }
-        TodayWidgetProvider.updateWidgets(context);
-        WearSyncService.startService(context);
     }
 
 }
