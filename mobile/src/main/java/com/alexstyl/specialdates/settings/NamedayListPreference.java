@@ -31,7 +31,7 @@ public class NamedayListPreference extends ListPreference {
         CharSequence[] entryValues = new CharSequence[locales.length];
         for (int i = 0; i < locales.length; i++) {
             entries[i] = locales[i].getCountryCode();
-            entryValues[i] = getString(locales[i].getNameResId());
+            entryValues[i] = getString(locales[i].getLanguageNameResId());
         }
         setEntries(entryValues);
         setEntryValues(entries);

@@ -84,7 +84,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
                     @Override
                     public boolean onNamedayChanged(NamedayLocale locale) {
                         namedaysPreferences.setSelectedLanguage(locale.getCountryCode());
-                        namedayLanguageListPreferences.setSummary(locale.getNameResId());
+                        namedayLanguageListPreferences.setSummary(locale.getLanguageNameResId());
                         return true;
                     }
 
@@ -107,7 +107,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getNameResId());
+        namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getLanguageNameResId());
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
 
     }

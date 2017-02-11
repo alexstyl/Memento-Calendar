@@ -51,7 +51,7 @@ public enum NamedayLocale {
     }
 
     @StringRes
-    public int getNameResId() {
+    public int getLanguageNameResId() {
         return languageName;
     }
 }
