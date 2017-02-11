@@ -45,7 +45,7 @@ final public class UpcomingDateStringCreator {
     }
 
     private boolean isTomorrow(Date date) {
-        return date.toMillis() - today.toMillis() <= DateUtils.DAY_IN_MILLIS;
+        return date.toMillis() - today.toMillis() == DateUtils.DAY_IN_MILLIS;
     }
 
 }
