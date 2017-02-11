@@ -143,7 +143,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Birthday_date">Birthday date</string>
   <string name="Contact_name">Contact name</string>
   <string name="Themes">Themes</string>
-  <string name="romanian">Romanian</string>
+  <string name="Romanian">Romanian</string>
   <string name="Configure_widget">Configure Widget</string>
   <string name="Done">Done</string>
   <string name="Transparency">Transparency</string>

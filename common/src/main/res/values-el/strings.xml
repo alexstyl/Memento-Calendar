@@ -138,7 +138,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Birthday_date">Ημερομηνία γενεθλίων</string>
     <string name="Contact_name">Όνομα επαφής</string>
     <string name="Themes">Θέματα</string>
-    <string name="romanian">Ρωμάνικα</string>
+    <string name="Romanian">Ρωμάνικα</string>
     <string name="Configure_widget">Ρύθμιση Γρ. Στοιχείου</string>
     <string name="Done">Αποθήκευση</string>
     <string name="Transparency">Διαφάνεια</string>

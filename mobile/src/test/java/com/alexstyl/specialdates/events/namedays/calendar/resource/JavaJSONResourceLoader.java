@@ -26,7 +26,7 @@ class JavaJSONResourceLoader implements NamedayJSONResourceLoader {
     }
 
     private String getPathTo(NamedayLocale locale) {
-        String prefix = locale.getShortCode();
+        String prefix = locale.getCountryCode();
         return String.format("src/main/res/raw/%s_namedays.json", prefix);
     }
 
