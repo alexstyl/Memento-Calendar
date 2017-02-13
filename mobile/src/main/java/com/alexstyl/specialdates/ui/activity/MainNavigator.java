@@ -7,9 +7,11 @@ import android.net.Uri;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.about.AboutActivity;
-import com.alexstyl.specialdates.addevent.AddBirthdayActivity;
+import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
@@ -18,9 +20,10 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-public class MainNavigator {
+class MainNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("http://paypal.me/alexstyl");
+
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
     private final Activity activity;
@@ -54,8 +57,8 @@ public class MainNavigator {
         }
     }
 
-    void toAddBirthday() {
-        Intent intent = new Intent(activity, AddBirthdayActivity.class);
+    void toAddEvent() {
+        Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
     }
 
@@ -71,7 +74,7 @@ public class MainNavigator {
         analytics.trackScreen(Screen.SETTINGS);
     }
 
-    public void toSearch() {
+    void toSearch() {
         Intent intent = new Intent(activity, SearchActivity.class);
         activity.startActivity(intent);
     }
@@ -83,4 +86,9 @@ public class MainNavigator {
             return simpleChromeCustomTabsIntentBuilder.withToolbarColor(toolbarColor);
         }
     };
+
+    void toDateDetails(Date dateSelected) {
+        Intent intent = DateDetailsActivity.getStartIntent(activity, dateSelected);
+        activity.startActivity(intent);
+    }
 }

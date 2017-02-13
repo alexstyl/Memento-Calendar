@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 
 import com.alexstyl.specialdates.ErrorTracker;
@@ -17,20 +16,16 @@ import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.novoda.notils.caster.Classes;
-import com.novoda.notils.exception.DeveloperError;
 
 final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
     private final String FM_THEME_TAG = "fm_theme";
 
-    private ListPreference namedayLanguageListPreferences;
+    private NamedayListPreference namedayLanguageListPreferences;
     private NamedayPreferences namedaysPreferences;
     private ThemingPreferences themingPreferences;
-
     private Preference appThemePreference;
-
     private MainPreferenceActivity activity;
-
     private Analytics analytics;
 
     @Override
@@ -83,27 +78,16 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_namedays_contacts_only).setOnPreferenceChangeListener(onPreferenceChangeListener);
         namedayLanguageListPreferences = findPreference(R.string.key_namedays_language);
 
-        namedayLanguageListPreferences.setOnPreferenceChangeListener(
-                new Preference.OnPreferenceChangeListener() {
+        namedayLanguageListPreferences.setOnNamedayLocaleChangeListener(
+                new NamedayListPreference.OnNamedayLocaleChangeListener() {
+
                     @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        String selectedLanguage = (String) newValue;
-                        String summary = getNamedaySummary(selectedLanguage);
-                        preference.setSummary(summary);
-                        namedaysPreferences.setSelectedLanguage(selectedLanguage);
+                    public boolean onNamedayChanged(NamedayLocale locale) {
+                        namedaysPreferences.setSelectedLanguage(locale.getCountryCode());
+                        namedayLanguageListPreferences.setSummary(locale.getLanguageNameResId());
                         return true;
                     }
 
-                    private String getNamedaySummary(String newValue) {
-                        int index = 0;
-                        for (CharSequence entry : namedayLanguageListPreferences.getEntryValues()) {
-                            if (entry.equals(newValue)) {
-                                return namedayLanguageListPreferences.getEntries()[index].toString();
-                            }
-                            index++;
-                        }
-                        throw new DeveloperError(newValue + " is not a supported Locale");
-                    }
                 }
         );
         reattachThemeDialogIfNeeded();
@@ -121,15 +105,9 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        namedayLanguageListPreferences.setValue(namedaysPreferences.getSelectedLanguage().toString());
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        namedayLanguageListPreferences.setSummary(namedayLanguageListPreferences.getEntry());
+        namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getLanguageNameResId());
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
 
     }

@@ -8,17 +8,19 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.READ_CONTACTS" />
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-  <!-- EXTERNAL_STORAGE FOR RINGTONES-->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-  <uses-permission android:name="com.android.vending.BILLING" />
-  <!-- VIBRATE FOR NOTIFICATION-->
   <uses-permission android:name="android.permission.VIBRATE" />
-  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
   <uses-feature
     android:name="android.hardware.bluetooth"
     android:required="false" />
+
+  <uses-feature
+    android:name="android.hardware.camera"
+    android:required="false" />
+
 
   <application
     android:name="com.alexstyl.specialdates.MementoApplication"
@@ -42,6 +44,16 @@
       android:name=".datedetails.DateDetailsActivity"
       android:exported="true"
       android:parentActivityName=".ui.activity.MainActivity">
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+
+        <data android:mimeType="time/epoch" />
+        <data android:host="com.android.calendar" />
+        <data android:scheme="content" />
+      </intent-filter>
+
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".ui.activity.MainActivity" />
@@ -79,28 +91,25 @@
 
 
     <activity
-      android:name=".support.SupportTranslateDialog"
-      android:exported="false"
-      android:label="@string/translate_the_app_title"
-      android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
-
-    <activity
       android:name=".settings.DailyReminderActivity"
       android:exported="true"
-      android:label="@string/daily_reminder">
+      android:label="@string/daily_reminder"
+      android:parentActivityName=".settings.MainPreferenceActivity">
       <intent-filter>
         <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
       </intent-filter>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".settings.MainPreferenceActivity" />
     </activity>
 
     <activity
-      android:name="com.alexstyl.specialdates.addevent.AddBirthdayActivity"
-      android:excludeFromRecents="true"
-      android:exported="false"
-      android:label="@string/title_add_birthday"
-      android:noHistory="true"
+      android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
+      android:exported="true"
+      android:label="@string/add_event_title"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
-      android:theme="@style/Theme.Dayslight.DialogNoTitle">
+      android:screenOrientation="portrait"
+      android:windowSoftInputMode="stateHidden">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
@@ -127,11 +136,15 @@
       </intent-filter>
     </activity>
 
+    <activity
+      android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+      android:theme="@style/Base.Theme.AppCompat" />
+
 
     <activity android:name=".permissions.ContactPermissionActivity" />
     <!-- Services -->
     <service
-      android:name="com.alexstyl.specialdates.service.DailyReminderIntentService"
+      android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"
       android:exported="false"
       android:label="@string/service_dailyreminder" />
 
@@ -145,8 +158,15 @@
       android:exported="false">
       <intent-filter>
         <action android:name="android.intent.action.LOCALE_CHANGED" />
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
+      </intent-filter>
+    </receiver>
+
+    <receiver
+      android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver"
+      android:exported="false">
+      <intent-filter>
         <action android:name="android.intent.action.TIME_SET" />
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
       </intent-filter>
     </receiver>
 

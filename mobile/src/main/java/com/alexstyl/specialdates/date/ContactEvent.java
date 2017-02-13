@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates.date;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -10,21 +10,21 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 public final class ContactEvent {
 
     private final Optional<Long> deviceEventId;
-    private final EventType eventType;
     private final Contact contact;
-    private final Date date;
+    private final EventType eventType;
+    private final Date eventDate;
 
     public ContactEvent(Optional<Long> deviceEventId, EventType eventType, Date date, Contact contact) {
         this.deviceEventId = deviceEventId;
         this.eventType = eventType;
-        this.date = date;
+        this.eventDate = date;
         this.contact = contact;
     }
 
-    public String getLabel(StringResources stringResources) {
+    public String getLabel(Date dateWithYear, StringResources stringResources) {
         if (eventType == StandardEventType.BIRTHDAY) {
-            if (date.hasYear()) {
-                int age = Date.CURRENT_YEAR - date.getYear();
+            if (eventDate.hasYear()) {
+                int age = dateWithYear.getYear() - eventDate.getYear();
                 if (age > 0) {
                     return stringResources.getString(R.string.turns_age, age);
                 }
@@ -34,7 +34,7 @@ public final class ContactEvent {
     }
 
     public Date getDate() {
-        return date;
+        return eventDate;
     }
 
     public EventType getType() {
@@ -69,7 +69,7 @@ public final class ContactEvent {
         if (!contact.equals(that.contact)) {
             return false;
         }
-        return date.equals(that.date);
+        return eventDate.equals(that.eventDate);
 
     }
 
@@ -78,17 +78,7 @@ public final class ContactEvent {
         int result = deviceEventId.hashCode();
         result = 31 * result + eventType.hashCode();
         result = 31 * result + contact.hashCode();
-        result = 31 * result + date.hashCode();
+        result = 31 * result + eventDate.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ContactEvent{" +
-                "deviceEventId=" + deviceEventId +
-                ", eventType=" + eventType +
-                ", contact=" + contact +
-                ", date=" + date +
-                '}';
     }
 }

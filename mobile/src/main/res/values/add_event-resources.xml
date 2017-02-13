@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="add_event_store_button_add_label">@string/add</string>
+  <string name="add_birthday_contact_added">@string/contact_added</string>
+  <string name="add_birthday_failed_to_add_contact">@string/failed_to_add_contact</string>
+  <string name="add_event_contact_updated">@string/contact_updated</string>
+  <string name="add_event_failed_to_update_contact">@string/failed_to_update_contact</string>
+  <string name="addbirthday_autocomplete_hint">@string/Contact_name</string>
+  <string name="birthday_picker_dialog_title">@string/Birthday_date</string>
+  <string name="birthday_picker_dialog_positive">@string/set</string>
+  <string name="add_birthday_include_year_label">@string/include_year</string>
+  <string name="add_event_title">@string/Add_event</string>
+  <string name="add_event_pick_image_title">@string/Change_photo</string>
+  <string name="add_event_remove_photo">@string/Remove_photo</string>
+  <string name="add_event_take_photo">@string/Take_new_photo</string>
+  <string name="add_event_pick_from_files">@string/Pick_existing_photo</string>
+  <string name="add_event_discard_changes_title">@string/Discard_changes</string>
+  <string name="add_event_discard_changes_accept">@string/Discard</string>
+
+
+  <dimen name="add_birthday_row_height">64dp</dimen>
+  <dimen name="add_birthday_row_width">64dp</dimen>
+  <dimen name="add_birthday_avatar_starting_width">0dp</dimen>
+  <dimen name="add_birthday_avatar_starting_height">0dp</dimen>
+  <dimen name="add_birthday_avatar_actual_width">48dp</dimen>
+  <dimen name="add_birthday_avatar_actual_height">48dp</dimen>
+  <dimen name="add_event_image_height">58dp</dimen>
+  <dimen name="add_event_image_width">58dp</dimen>
+  <dimen name="add_event_margin_horizontal">4dp</dimen>
+
+  <dimen name="add_event_camera_button_height">190dp</dimen>
+  <dimen name="add_event_avatar_height">240dp</dimen>
+  <dimen name="add_event_image_option_vertical">16dp</dimen>
+
+</resources>

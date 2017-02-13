@@ -7,16 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateFormatUtils;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
+import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.novoda.notils.caster.Views;
+
+import java.util.List;
 
 public class DateDetailsActivity extends ThemedActivity {
 
@@ -25,27 +29,21 @@ public class DateDetailsActivity extends ThemedActivity {
     private static final String EXTRA_YEAR = BuildConfig.APPLICATION_ID + ".year";
     private static final String EXTRA_SOURCE = BuildConfig.APPLICATION_ID + ".source";
     /**
-     * The activity was lauched because the user tapped on a notification
+     * The activity was launched because the user tapped on a notification
      */
     private static final int SOURCE_NOTIFICATION = 1;
-
-    private Date displayingDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_details);
+
+        AnalyticsProvider.getAnalytics(this).trackScreen(Screen.DATE_DETAILS);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
 
-        Optional<Date> receivedDate = getCalendarFromIntent(getIntent());
-        if (!receivedDate.isPresent()) {
-            finish();
-            ErrorTracker.track(new NullPointerException("Tried to open DateDetails with no date in the intent:[" + getIntent() + "]"));
-            return;
-        }
-        this.displayingDate = receivedDate.get();
+        Date displayingDate = getDateFrom(getIntent());
 
         if (getIntent().hasExtra(EXTRA_SOURCE)) {
             int intExtra = getIntent().getIntExtra(EXTRA_SOURCE, -1);
@@ -63,24 +61,29 @@ public class DateDetailsActivity extends ThemedActivity {
 
         }
 
-        String titleDate = DateFormatUtils.formatTimeStampString(
-                DateDetailsActivity.this, displayingDate.toMillis(),
-                true
-        );
+        String titleDate = new UpcomingDateStringCreator(new AndroidStringResources(getResources()), Date.today())
+                .createLabelFor(displayingDate);
+
         setTitle(titleDate);
     }
 
-    private Optional<Date> getCalendarFromIntent(Intent intent) {
-        if (intent.hasExtra(EXTRA_DAY)) {
-            Bundle extras = intent.getExtras();
-            int year = extras.getInt(EXTRA_YEAR);
-            int month = extras.getInt(EXTRA_MONTH);
-            int dayOfMonth = extras.getInt(EXTRA_DAY);
-
-            return new Optional<>(Date.on(dayOfMonth, month, year));
+    private Date getDateFrom(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (intent.getData() != null && "com.android.calendar".equals(intent.getData().getAuthority())) {
+            List<String> pathSegments = intent.getData().getPathSegments();
+            if (pathSegments.size() == 2) {
+                if (pathSegments.get(0).equals("time")) {
+                    String timeInMillis = pathSegments.get(1);
+                    return Date.fromMillis(Long.valueOf(timeInMillis));
+                }
+            }
         }
-        return Optional.absent();
 
+        int year = extras.getInt(EXTRA_YEAR);
+        @MonthInt int month = extras.getInt(EXTRA_MONTH);
+        int dayOfMonth = extras.getInt(EXTRA_DAY);
+
+        return Date.on(dayOfMonth, month, year);
     }
 
     @Override

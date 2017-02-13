@@ -3,10 +3,10 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <ImageView
-    android:layout_width="@dimen/add_birthday_image_width"
-    android:layout_height="@dimen/add_birthday_image_height"
+    android:layout_width="@dimen/add_event_image_width"
+    android:layout_height="@dimen/add_event_image_height"
     android:scaleType="center"
-    android:src="@drawable/ic_cake_black_24dp" />
+    android:src="@drawable/ic_cake" />
 
   <TextView
     android:id="@+id/birthdaypicker_label"

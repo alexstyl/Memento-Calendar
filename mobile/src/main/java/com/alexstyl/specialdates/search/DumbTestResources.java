@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.R;
 
 import java.util.Locale;
 
-final class DumbTestResources implements StringResources {
+public final class DumbTestResources implements StringResources {
     @Override
     public String getString(@StringRes int id) {
         switch (id) {
@@ -20,6 +20,10 @@ final class DumbTestResources implements StringResources {
                 return "Anniversary";
             case R.string.Other:
                 return "Other";
+            case R.string.tomorrow:
+                return "Tomorrow";
+            case R.string.today:
+                return "Today";
         }
         throw new UnsupportedOperationException();
     }

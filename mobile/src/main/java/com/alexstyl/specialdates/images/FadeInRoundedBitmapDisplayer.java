@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
-public class FadeInRoundedBitmapDisplayer extends CircleBitmapDisplayer {
+class FadeInRoundedBitmapDisplayer extends CircleBitmapDisplayer {
 
     public static final int FADE_IN_TIME = 200;
     private final ColorDrawable transparent;

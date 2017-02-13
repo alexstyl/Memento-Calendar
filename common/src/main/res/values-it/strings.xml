@@ -83,10 +83,11 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="contact_no_birthday">Compleanno non impostato</string>
     <string name="contact_no_nameday">Nessun onomastico per il nome %s</string>
     <string name="edit">Modifica</string>
-    <string name="title_add_birthday">Aggiungi compleanno</string>
+    <string name="Add_birthday">Aggiungi compleanno</string>
     <string name="search">Cerca</string>
     <string name="and">e</string>
     <string name="Greek">Greco</string>
+    <string name="Italian">Italiano</string>
     <string name="Czech">Ceco</string>
     <string name="Slovak">Slovacco</string>
     <string name="Russian">Russo</string>
@@ -140,7 +141,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Birthday_date">Compleanno</string>
     <string name="Contact_name">Nome contatto</string>
     <string name="Themes">Temi</string>
-    <string name="romanian">Rumeno</string>
+    <string name="Romanian">Rumeno</string>
     <string name="Configure_widget">Configura il widget</string>
     <string name="Done">Fatto</string>
     <string name="Transparency">Trasparenza</string>

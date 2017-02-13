@@ -152,6 +152,7 @@
   <style name="Widget.Memento.Toolbar"
     parent="Widget.AppCompat.Toolbar">
     <item name="android:theme">?attr/toolbarTheme</item>
+    <item name="elevation">@dimen/toolbar_elevation</item>
   </style>
 
   <style name="Divider">
@@ -160,4 +161,15 @@
   </style>
 
   <style name="None" />
+
+  <style name="BottomSheetDialog"
+    parent="Theme.Design.Light.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+  </style>
+
+  <style name="bottomSheetStyleWrapper"
+    parent="Widget.Design.BottomSheet.Modal">
+    <item name="behavior_peekHeight">500dp</item>
+  </style>
+
 </resources>

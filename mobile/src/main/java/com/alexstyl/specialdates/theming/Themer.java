@@ -35,25 +35,14 @@ public class Themer {
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            int primaryDark = fetchPrimaryDarkColor(activity);
+            int primaryDark = attributeExtractor.extractPrimaryColorFrom(activity);
             window.setStatusBarColor(primaryDark);
         }
 
-    }
-
-    private int fetchPrimaryDarkColor(Context context) {
-        return attributeExtractor.extractPrimaryColorFrom(context);
-    }
-
-    private boolean fetchDarkIcons(Context context) {
-        return attributeExtractor.extractDarkIconsFrom(context);
     }
 
     public MementoTheme getCurrentTheme() {
         return preferences.getSelectedTheme();
     }
 
-    public boolean isActivityUsingDarkIcons(Context activity) {
-        return fetchDarkIcons(activity);
-    }
 }

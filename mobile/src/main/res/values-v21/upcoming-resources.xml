@@ -6,4 +6,6 @@
     <item name="android:background">@drawable/selectable_background_dayslight</item>
   </style>
 
+  <string name="upcoming_select_date">@string/Select_date</string>
+
 </resources>

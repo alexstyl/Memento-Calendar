@@ -184,7 +184,7 @@ public class AboutActivity extends ThemedActivity {
     }
 
     private void showLicencesDialog() {
-        new LicensesDialog(this, R.raw.days_notices, false, true).show();
+        new LicensesDialog(this, R.raw.licences, false, true).show();
     }
 
 }

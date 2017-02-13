@@ -2,9 +2,9 @@
   xmlns:app="http://schemas.android.com/apk/res-auto/android">
 
   <item
-    android:id="@+id/action_today"
+    android:id="@+id/action_select_date"
     android:enabled="false"
-    android:icon="@drawable/ic_action_today"
+    android:icon="@drawable/ic_action_select_date"
     android:orderInCategory="100"
     android:title="@string/today"
     app:showAsAction="always" />

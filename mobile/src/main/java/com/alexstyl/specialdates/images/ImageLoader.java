@@ -4,37 +4,32 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.L;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 public class ImageLoader {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
-    private static final long FB_LIFE_TIME = DateUtils.DAY_IN_MILLIS * 3;
 
     public static void init(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .threadPoolSize(10)
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .diskCache(new LimitedAgeDiskCache(StorageUtils.getCacheDirectory(context), FB_LIFE_TIME))
-                .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))
+                .imageDecoder(new NutraBaseImageDecoder())
                 .imageDownloader(new ImageDownloader(context));
 
         L.writeLogs(DEBUG);
-        // Initialize ImageLoader with configuration.
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
     }
 
@@ -61,12 +56,29 @@ public class ImageLoader {
         return new ImageLoader(options);
     }
 
-    public void loadThumbnail(Uri imagePath, ImageView view) {
-        loader.displayImage(imagePath.toString(), view, displayImageOptions);
+    public void displayThumbnail(Uri imagePath, ImageAware imageView) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
+    }
+
+    public void displayThumbnail(Uri imagePath, ImageView imageView) {
+        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
+    }
+
+    public void loadImage(Uri imagePath, ImageAware avatarView, final OnImageLoadedCallback callback) {
+        loader.loadImage(imagePath.toString(), new ImageSize(avatarView.getWidth(), avatarView.getHeight()), new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                callback.onImageLoaded(loadedImage);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                callback.onLoadingFailed();
+            }
+        });
     }
 
     public Bitmap loadBitmap(Uri imagePath, int width, int height) {
-
         ImageSize imageSize = new ImageSize(width, height);
         return loader.loadImageSync(imagePath.toString(), imageSize);
     }
@@ -76,11 +88,12 @@ public class ImageLoader {
         loader.loadImage(imagePath.toString(), imageSize, displayImageOptions, listener);
     }
 
-    public void resume() {
+    void resume() {
         loader.resume();
     }
 
-    public void pause() {
+    void pause() {
         loader.pause();
     }
+
 }

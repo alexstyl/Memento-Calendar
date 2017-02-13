@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.contact;
 
 import android.content.Context;
 import android.net.Uri;
-import android.view.View;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -57,7 +56,7 @@ public abstract class Contact {
     /**
      * Displays the contact information of this contact
      */
-    public abstract void displayQuickInfo(Context context, View view);
+    public abstract void displayQuickInfo(Context context);
 
     /**
      * Returns the image path of the avatar of this contact

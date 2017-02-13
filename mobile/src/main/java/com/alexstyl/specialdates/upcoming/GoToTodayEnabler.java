@@ -15,12 +15,12 @@ class GoToTodayEnabler {
     private MenuItem goToToday;
     private boolean showToday;
 
-    public GoToTodayEnabler(MementoActivity listener) {
+    GoToTodayEnabler(MementoActivity listener) {
         this.listener = listener;
     }
 
-    public void reattachTo(Menu menu) {
-        this.goToToday = menu.findItem(R.id.action_today);
+    void reattachTo(Menu menu) {
+        this.goToToday = menu.findItem(R.id.action_select_date);
         this.goToToday.setEnabled(showToday);
         this.goToToday.setVisible(showToday);
     }

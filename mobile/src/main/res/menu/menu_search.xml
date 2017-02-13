@@ -4,7 +4,7 @@
 
   <item
     android:id="@+id/action_clear"
-    android:icon="@drawable/ic_action_content_clear"
+    android:icon="@drawable/ic_clear"
     android:title="@string/search_clear_title"
     app:showAsAction="always" />
 

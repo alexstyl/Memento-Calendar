@@ -1,23 +1,17 @@
 package com.alexstyl.specialdates.upcoming.view;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alexstyl.resources.ColorResources;
-import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.android.AndroidColorResources;
-import com.alexstyl.specialdates.android.AndroidStringResources;
-import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
+import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
 import com.novoda.notils.caster.Views;
 
 public class ContactEventView extends LinearLayout {
@@ -25,8 +19,6 @@ public class ContactEventView extends LinearLayout {
     private final TextView contactNameView;
     private final TextView eventTypeView;
     private final ColorImageView avatarView;
-    private final StringResources stringResources;
-    private final ColorResources colorResources;
 
     public ContactEventView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -37,29 +29,28 @@ public class ContactEventView extends LinearLayout {
         eventTypeView = Views.findById(this, R.id.upcoming_event_contact_card_event_type);
         avatarView = Views.findById(this, R.id.upcoming_event_contact_card_avatar);
 
-        setGravity(Gravity.CENTER_VERTICAL);
-        stringResources = new AndroidStringResources(getResources());
-        colorResources = new AndroidColorResources(getResources());
+        super.setGravity(Gravity.CENTER_VERTICAL);
     }
 
-    public void displayEvent(ContactEvent event, ImageLoader imageLoader) {
-        Contact contact = event.getContact();
-        contactNameView.setText(contact.getDisplayName().toString());
-        displayEventFor(event);
-        avatarView.setBackgroundVariant(event.hashCode());
-        avatarView.setLetter(event.getContact().getDisplayName().toString());
-
-        imageLoader.loadThumbnail(contact.getImagePath(), avatarView.getImageView());
+    public void bind(final ContactEventViewModel contactEventViewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+        contactNameView.setText(contactEventViewModel.getContactName());
+        eventTypeView.setText(contactEventViewModel.getEventLabel());
+        eventTypeView.setTextColor(contactEventViewModel.getEventColor());
+        avatarView.setBackgroundVariant(contactEventViewModel.getBackgroundVariant());
+        avatarView.setLetter(contactEventViewModel.getContactName());
+        contactNameView.setTypeface(contactEventViewModel.getTypeface());
+        imageLoader.displayThumbnail(contactEventViewModel.getContactImagePath(), avatarView.getImageView());
+        setVisibility(contactEventViewModel.getContactEventVisibility());
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onContactEventPressed(contactEventViewModel.getContact());
+            }
+        });
     }
 
-    private void displayEventFor(ContactEvent event) {
-        EventType eventType = event.getType();
-        String eventLabel = event.getLabel(stringResources);
-        eventTypeView.setText(eventLabel);
-        eventTypeView.setTextColor(colorResources.getColor(eventType.getColorRes()));
-    }
-
-    public void setNameTypeface(Typeface typeface) {
-        contactNameView.setTypeface(typeface);
+    @Override
+    public void setGravity(int gravity) {
+        throw new UnsupportedOperationException("The gravity for this view is pre-set");
     }
 }

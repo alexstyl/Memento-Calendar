@@ -2,12 +2,15 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Handler;
 
-import com.alexstyl.specialdates.date.CelebrationDate;
+import com.alexstyl.android.AndroidColorResources;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
@@ -21,10 +24,10 @@ import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
-class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> {
+class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewModel>> {
 
     private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
@@ -60,31 +63,48 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<CelebrationDate>> 
     }
 
     @Override
-    public List<CelebrationDate> loadInBackground() {
+    public List<UpcomingRowViewModel> loadInBackground() {
         TimePeriod timePeriod = TimePeriod.between(
                 startingPeriod,
                 startingPeriod.addDay(364)
         );
-        List<CelebrationDate> celebrationDates = calculateEventsBetween(timePeriod);
-        Collections.sort(celebrationDates);
-        return celebrationDates;
+        return calculateEventsBetween(timePeriod);
     }
 
-    private List<CelebrationDate> calculateEventsBetween(TimePeriod period) {
+    private List<UpcomingRowViewModel> calculateEventsBetween(TimePeriod period) {
         List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(period);
-        UpcomingDatesBuilder upcomingDatesBuilder = new UpcomingDatesBuilder(period)
+        Resources resources = getContext().getResources();
+        AndroidColorResources colorResources = new AndroidColorResources(resources);
+        AndroidStringResources stringResources = new AndroidStringResources(resources);
+        ContactViewModelFactory contactViewModelFactory = new ContactViewModelFactory(colorResources, stringResources);
+        Date today = Date.today();
+        UpcomingDateStringCreator dateCreator = new UpcomingDateStringCreator(stringResources, today);
+        UpcomingEventRowViewModelFactory upcomingRowViewModelFactory = new UpcomingEventRowViewModelFactory(
+                today,
+                dateCreator,
+                contactViewModelFactory,
+                stringResources,
+                new BankHolidayViewModelFactory(),
+                new NamedaysViewModelFactory(today),
+                MonthLabels.forLocale(Locale.getDefault())
+        );
+        UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(
+                period,
+                upcomingRowViewModelFactory,
+                new UpcomingEventsFreeUserAdRules()
+        )
                 .withContactEvents(contactEvents);
 
         if (shouldLoadBankHolidays()) {
             List<BankHoliday> bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(period);
-            upcomingDatesBuilder.withBankHolidays(bankHolidays);
+            upcomingRowViewModelsBuilder.withBankHolidays(bankHolidays);
         }
 
         if (shouldLoadNamedays()) {
             List<NamesInADate> namedays = calculateNamedaysBetween(period);
-            upcomingDatesBuilder.withNamedays(namedays);
+            upcomingRowViewModelsBuilder.withNamedays(namedays);
         }
-        return upcomingDatesBuilder.build();
+        return upcomingRowViewModelsBuilder.build();
     }
 
     private boolean shouldLoadBankHolidays() {

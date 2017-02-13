@@ -4,7 +4,7 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
-  <com.alexstyl.specialdates.addevent.ui.BirthdayDatePicker
+  <com.alexstyl.specialdates.addevent.ui.EventDatePicker
     android:id="@+id/dialog_birthday_picker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />

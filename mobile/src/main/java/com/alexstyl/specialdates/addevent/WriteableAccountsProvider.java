@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 
-public class WriteableAccountsProvider {
+final class WriteableAccountsProvider {
 
     private static final String GOOGLE_ACCOUNT = "com.google";
 
@@ -23,7 +23,7 @@ public class WriteableAccountsProvider {
         return new WriteableAccountsProvider(manager, packageManager);
     }
 
-    public WriteableAccountsProvider(AccountManager accountManager, PackageManager packageManager) {
+    private WriteableAccountsProvider(AccountManager accountManager, PackageManager packageManager) {
         this.accountManager = accountManager;
         this.packageManager = packageManager;
     }
@@ -44,7 +44,6 @@ public class WriteableAccountsProvider {
     }
 
     private static boolean accountIsWritable(String accountType) {
-        // TODO how do you even?
         return GOOGLE_ACCOUNT.equals(accountType);
     }
 

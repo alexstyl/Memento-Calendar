@@ -16,6 +16,12 @@ public class OptionalDependencies {
 
     void initialise() {
         Stetho.initializeWithDefaults(context);
-        LeakCanary.install((Application) context);
+
+        if (LeakCanary.isInAnalyzerProcess(context)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+        } else {
+            LeakCanary.install((Application) context);
+        }
     }
 }

@@ -22,4 +22,15 @@ public class OptionalTest {
         assertThat(Optional.<String>absent()).isEqualTo(Optional.<String>absent());
     }
 
+    @Test
+    public void toStringPrintsTheObject() {
+        Optional<String> stringOptional = new Optional<>("hello");
+        assertThat(stringOptional.toString()).isEqualTo("hello");
+    }
+
+    @Test
+    public void absentToStringPrintsAbsent() {
+        Optional<String> stringOptional = Optional.absent();
+        assertThat(stringOptional.toString()).isEqualTo("absent");
+    }
 }

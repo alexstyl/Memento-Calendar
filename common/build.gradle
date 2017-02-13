@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
-ext {
-    android_support_version = '25.0.0'
-}
+apply from: 'versions.gradle'
+
 android {
 
     compileSdkVersion androidCompileSdkVersion
@@ -21,4 +20,6 @@ android {
 dependencies {
     compile 'com.mixpanel.android:mixpanel-android:4.9.2'
     compile "com.android.support:support-annotations:$android_support_version"
+    compile 'net.danlew:android.joda:2.9.4.1'
+
 }

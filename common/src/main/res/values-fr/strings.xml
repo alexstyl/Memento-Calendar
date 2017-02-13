@@ -57,7 +57,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="you">Vous</string>
     <string name="thanks_for_support">Merci de supporter l\'application</string>
     <!-- The name for contacts with empty Display name-->
-    <string name="title_add_birthday">Ajouter anniversaire</string>
+    <string name="Add_birthday">Ajouter anniversaire</string>
     <string name="search">Rechercher</string>
     <string name="and">et</string>
     <string name="no_sound">Silencieux</string>

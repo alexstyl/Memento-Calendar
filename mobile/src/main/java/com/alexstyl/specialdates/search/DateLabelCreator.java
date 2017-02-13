@@ -2,6 +2,8 @@ package com.alexstyl.specialdates.search;
 
 import com.alexstyl.specialdates.date.Date;
 
-interface DateLabelCreator {
-    String createLabelFor(Date date);
+public interface DateLabelCreator {
+    String createLabelWithoutYearFor(Date date);
+
+    String createLabelWithYearFor(Date date);
 }

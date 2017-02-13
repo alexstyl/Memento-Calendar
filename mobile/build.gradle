@@ -1,11 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-//apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.neenbedankt.android-apt'
-
-ext {
-    android_support_version = '25.0.0'
-}
+apply from: '../common/versions.gradle'
 
 
 buildscript {
@@ -33,10 +29,11 @@ android {
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode androidVersionCode
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
+        resValue "string", "admob_unit_id", "\"$adMobUnitId\""
     }
 
     buildTypes {
@@ -49,13 +46,6 @@ android {
         }
     }
 
-    productFlavors {
-        free {
-        }
-        pro {
-            applicationIdSuffix ".pro"
-        }
-    }
 
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
@@ -87,7 +77,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:transition:$android_support_version"
-    compile 'net.danlew:android.joda:2.9.4.1'
     compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
         exclude module: 'support-v4'
     }
@@ -97,11 +86,13 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile 'com.google.android.gms:play-services-wearable:9.6.1'
-    compile 'com.google.dagger:dagger:2.0.1'
-    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    compile "com.google.android.gms:play-services-wearable:$play_services_version"
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    compile "com.google.firebase:firebase-core:$play_services_version"
+    compile "com.google.firebase:firebase-ads:$play_services_version"
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     debugCompile 'com.facebook.stetho:stetho:1.3.0'
 
     testCompile 'junit:junit:4.12'
@@ -109,7 +100,6 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'joda-time:joda-time:2.9.4'
     testCompile 'org.json:json:20140107'
-
     androidTestCompile 'junit:junit:4.12'
 }
 
