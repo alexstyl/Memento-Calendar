@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.ui.MementoCardView;
 
-class BankHolidayCardView extends MementoCardView {
+public class BankHolidayCardView extends MementoCardView {
 
     private final TextView text;
 
