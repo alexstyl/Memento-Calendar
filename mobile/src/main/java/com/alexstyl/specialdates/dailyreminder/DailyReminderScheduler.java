@@ -9,7 +9,6 @@ import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateAndTime;
-import com.novoda.notils.logger.simple.Log;
 
 public final class DailyReminderScheduler {
 
@@ -28,7 +27,6 @@ public final class DailyReminderScheduler {
     }
 
     public void updateReminderTime(TimeOfDay timeOfDay) {
-        Log.d("DAILY", "updating reminder");
         PendingIntent pendingIntent = buildPendingIntent();
 
         DateAndTime dateAndTime = new DateAndTime(Date.today(), timeOfDay);

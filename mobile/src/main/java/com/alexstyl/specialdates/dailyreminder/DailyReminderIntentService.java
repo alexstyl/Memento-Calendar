@@ -62,7 +62,6 @@ public class DailyReminderIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("DAILY", "daily intent service woke up ");
         PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
         Date today = getDayDateToDisplay();
 
