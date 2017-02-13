@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.TestNamedayCalendarBuilder;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class PeopleNamedaysCalculatorTest {
     @Mock
     private NamedayPreferences mockPreferences;
     @Mock
-    private ContactsProvider mockContactsProvider;
+    private AndroidContactsProvider mockContactsProvider;
     private final TestContact EASTER_CELEBRATING_CONTACT = new TestContact(1, DisplayName.from("Λάμπρος"));
 
     @Before

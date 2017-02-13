@@ -18,7 +18,7 @@ abstract class DeviceContactsFilter extends Filter {
 
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
-        if (constraint == null) {
+        if (constraint == null || constraint.length() == 0) {
             return emptyResults();
         }
         List<Contact> contacts = contactsSearch.searchForContacts(constraint.toString(), LOAD_A_SINGLE_CONTACT);
@@ -29,8 +29,6 @@ abstract class DeviceContactsFilter extends Filter {
         return filterResults;
     }
 
-
-
     private FilterResults emptyResults() {
         FilterResults filterResults = new FilterResults();
         filterResults.values = new ArrayList<>();
@@ -38,6 +36,7 @@ abstract class DeviceContactsFilter extends Filter {
         return filterResults;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected final void publishResults(CharSequence constraint, FilterResults results) {
         onContactsFiltered((List<Contact>) results.values);

@@ -82,10 +82,11 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_no_birthday">Dzimšanas diena nav norādīta</string>
     <string name="contact_no_nameday">%s vārda diena nav zināma</string>
     <string name="edit">Rediģēt</string>
-    <string name="title_add_birthday">Pievienot dzimšanas dienu</string>
+    <string name="Add_birthday">Pievienot dzimšanas dienu</string>
     <string name="search">Meklēt</string>
     <string name="and">un</string>
     <string name="Greek">Grieķu</string>
+    <string name="Italian">Itālijas</string>
     <string name="Czech">Čehu</string>
     <string name="Slovak">Slovāku</string>
     <string name="Russian">Krievu</string>
@@ -139,7 +140,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Birthday_date">Dzimšanas datums</string>
     <string name="Contact_name">Kontaktpersonas vārds</string>
     <string name="Themes">Tēmas</string>
-    <string name="romanian">Rumāņu</string>
+    <string name="Romanian">Rumāņu</string>
     <string name="Configure_widget">Konfigurēt logrīku</string>
     <string name="Done">Darīts</string>
     <string name="Transparency">Caurspīdīgums</string>

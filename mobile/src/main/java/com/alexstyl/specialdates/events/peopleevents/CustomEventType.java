@@ -1,7 +1,9 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
-import com.alexstyl.specialdates.R;
+import android.provider.ContactsContract.CommonDataKinds.Event;
+
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.database.EventColumns;
 
 public class CustomEventType implements EventType {
@@ -25,5 +27,15 @@ public class CustomEventType implements EventType {
     @Override
     public int getId() {
         return EventColumns.TYPE_CUSTOM;
+    }
+
+    @Override
+    public int getIconResId() {
+        return R.drawable.ic_custom;
+    }
+
+    @Override
+    public int getAndroidType() {
+        return Event.TYPE_CUSTOM;
     }
 }

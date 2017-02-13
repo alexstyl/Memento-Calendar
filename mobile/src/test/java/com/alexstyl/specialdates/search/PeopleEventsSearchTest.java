@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.TimePeriod;
+import com.alexstyl.specialdates.date.TimePeriod;
 
 import java.util.ArrayList;
 import java.util.List;

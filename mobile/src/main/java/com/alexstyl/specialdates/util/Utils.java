@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Vibrator;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -78,11 +77,6 @@ public class Utils {
 
     private static String getAndroidVersion() {
         return android.os.Build.VERSION.RELEASE;
-    }
-
-    public static boolean hasVibrator(Context context) {
-        Vibrator vibr = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        return vibr.hasVibrator();
     }
 
     public static boolean openIntentSafely(Context context, IntentAction action) {

@@ -69,7 +69,7 @@ class ContactsAdapter extends BaseAdapter implements Filterable {
         vh.avatar.setBackgroundVariant((int) contact.getContactID());
         vh.avatar.setLetter(displayName);
 
-        imageLoader.loadThumbnail(contact.getImagePath(), vh.avatar.getImageView());
+        imageLoader.displayThumbnail(contact.getImagePath(), vh.avatar.getImageView());
 
         return view;
     }

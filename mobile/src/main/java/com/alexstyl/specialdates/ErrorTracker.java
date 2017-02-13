@@ -19,7 +19,7 @@ public class ErrorTracker {
 
     private static boolean hasBeenInitialised = false;
 
-    public static void startTracking(Context context) {
+    static void startTracking(Context context) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Ignoring Crash Tracking in DEBUG builds");
             return;
@@ -45,7 +45,7 @@ public class ErrorTracker {
         }
     }
 
-    public static void onLocaleChanged() {
+    public static void updateLocaleUsed() {
         if (hasBeenInitialised) {
             Crashlytics.setString(KEY_LOCALE, String.valueOf(Locale.getDefault()));
         }

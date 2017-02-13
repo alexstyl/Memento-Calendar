@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:background="#000"
+  tools:layout_height="@dimen/add_event_avatar_height"
+  tools:layout_width="match_parent"
+  tools:parentTag="RelativeLayout">
+
+  <android.support.v4.widget.Space
+    android:id="@+id/camera_button_image_top_space"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_minHeight" />
+
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/camera_button_image_top_space"
+    android:src="@drawable/ic_person_96dp" />
+
+  <ImageView
+    android:id="@+id/avatar_picker_image"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    tools:background="@color/white_semi_transparents" />
+
+  <ImageView
+    android:id="@+id/avatar_picker_gradient_top"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_minHeight"
+    android:layout_alignParentTop="true"
+    android:src="@drawable/black_to_transparent_gradient_facing_down"
+    android:visibility="gone" />
+
+  <ImageView
+    android:id="@+id/avatar_picker_gradient_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_minHeight"
+    android:layout_alignParentBottom="true"
+    android:rotation="180"
+    android:src="@drawable/black_to_transparent_gradient_facing_down"
+    android:visibility="gone" />
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:padding="12dp"
+    android:src="@drawable/ic_camera" />
+
+</merge>

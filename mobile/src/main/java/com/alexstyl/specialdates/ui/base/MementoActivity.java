@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.ui.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +25,8 @@ public class MementoActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         if (shouldUseHomeAsUp()) {
             ActionBar bar = getSupportActionBar();
             if (bar != null) {
@@ -50,7 +50,9 @@ public class MementoActivity extends AppCompatActivity {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null) {
             for (Fragment fragment : fragments) {
-                fragment.onActivityResult(requestCode, resultCode, data);
+                if (fragment != null) {
+                    fragment.onActivityResult(requestCode, resultCode, data);
+                }
             }
         }
     }

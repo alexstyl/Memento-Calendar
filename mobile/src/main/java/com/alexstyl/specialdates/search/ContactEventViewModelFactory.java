@@ -8,9 +8,9 @@ import java.util.List;
 
 final class ContactEventViewModelFactory {
 
-    private final EventLabelCreator eventLabelCreator;
+    private final ContactEventLabelCreator eventLabelCreator;
 
-    ContactEventViewModelFactory(EventLabelCreator eventLabelCreator) {
+    ContactEventViewModelFactory(ContactEventLabelCreator eventLabelCreator) {
         this.eventLabelCreator = eventLabelCreator;
     }
 

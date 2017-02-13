@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.transition.TransitionManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -18,9 +15,7 @@ import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.date.CelebrationDate;
-import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -44,7 +39,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     private SettingsMonitor monitor;
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
-    private GoToTodayEnabler goToTodayEnabler;
     private Analytics analytics;
     private ContactPermissionRequest permissions;
 
@@ -55,7 +49,6 @@ public class UpcomingEventsFragment extends MementoFragment {
         analytics = AnalyticsProvider.getAnalytics(getActivity());
         monitor = SettingsMonitor.newInstance(getActivity());
         monitor.initialise();
-        goToTodayEnabler = new GoToTodayEnabler(getMementoActivity());
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
         PermissionChecker checker = new PermissionChecker(getActivity());
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
@@ -75,30 +68,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         upcomingEventsListView.setHasFixedSize(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_upcoming_dark, menu);
-        goToTodayEnabler.reattachTo(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_today:
-                goToToday();
-                return true;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void goToToday() {
-        analytics.trackAction(Action.GO_TO_TODAY);
-        upcomingEventsListView.scrollToToday(true);
     }
 
     private final PermissionCallbacks callbacks = new PermissionCallbacks() {
@@ -160,10 +129,8 @@ public class UpcomingEventsFragment extends MementoFragment {
     }
 
     private void showData() {
-        boolean displayingEvents = upcomingEventsListView.isDisplayingEvents();
-
         TransitionManager.beginDelayedTransition(root);
-        if (displayingEvents) {
+        if (upcomingEventsListView.isDisplayingEvents()) {
             upcomingEventsListView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         } else {
@@ -174,30 +141,46 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private final OnUpcomingEventClickedListener listClickListener = new OnUpcomingEventClickedListener() {
         @Override
-        public void onContactEventPressed(View view, ContactEvent contact) {
+        public void onContactEventPressed(Contact contact) {
             analytics.trackAction(action);
-            contact.getContact().displayQuickInfo(getActivity(), view);
+            contact.displayQuickInfo(getActivity());
         }
 
         @Override
-        public void onCardPressed(Date date) {
-            analytics.trackScreen(Screen.DATE_DETAILS);
-            Intent intent = DateDetailsActivity.getStartIntent(getActivity(), date);
-            startActivity(intent);
+        public void onCardPressed(UpcomingEventsViewModel viewModel) {
+            if (isDisplayingOnlyOneContact(viewModel)) {
+                List<ContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
+                onContactEventPressed(contactViewModels.get(0).getContact());
+            } else {
+                analytics.trackScreen(Screen.DATE_DETAILS);
+                Intent intent = DateDetailsActivity.getStartIntent(getActivity(), viewModel.getDate());
+                startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onMoreButtonPressed(UpcomingEventsViewModel viewModel) {
+            onCardPressed(viewModel);
+        }
+
+        private boolean isDisplayingOnlyOneContact(UpcomingEventsViewModel viewModel) {
+            return viewModel.getContactViewModels().size() == 1
+                    && viewModel.getBankHolidayViewModel().isHidden()
+                    && viewModel.getNamedaysViewModel().isHidden();
         }
     };
 
     private final UpcomingEventsProvider.LoadingListener onEventsLoadedListener = new UpcomingEventsProvider.LoadingListener() {
         @Override
-        public void onUpcomingEventsLoaded(List<CelebrationDate> dates) {
+        public void onUpcomingEventsLoaded(List<UpcomingRowViewModel> dates) {
             upcomingEventsListView.updateWith(dates, listClickListener);
             if (mustScrollToPosition) {
-                upcomingEventsListView.scrollToToday(false);
+                upcomingEventsListView.scrollToPosition(0);
                 mustScrollToPosition = false;
             }
-            goToTodayEnabler.validateGoToTodayButton(upcomingEventsListView);
             hideLoading();
             showData();
         }
     };
+
 }

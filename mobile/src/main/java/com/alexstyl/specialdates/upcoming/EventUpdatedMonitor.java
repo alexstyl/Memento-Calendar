@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
-public interface EventUpdatedMonitor {
+interface EventUpdatedMonitor {
 
     boolean dataWasUpdated();
 

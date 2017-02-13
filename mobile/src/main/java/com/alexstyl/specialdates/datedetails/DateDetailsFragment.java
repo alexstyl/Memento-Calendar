@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.Optional;
@@ -30,7 +31,6 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
-import com.alexstyl.specialdates.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
@@ -45,8 +45,8 @@ import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
-import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
@@ -54,6 +54,7 @@ import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
 import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
+import com.novoda.notils.caster.Views;
 
 import java.util.List;
 
@@ -74,9 +75,12 @@ public class DateDetailsFragment extends MementoFragment {
     private Date date;
     private ProgressBar progress;
     private GridWithHeaderSpacesItemDecoration spacingDecoration;
-
+    private GridLayoutManager layoutManager;
+    private DateDetailsAdapter adapter;
+    private Analytics analytics;
     private ContactPermissionRequest permissions;
     private ExternalNavigator externalNavigator;
+    private RecyclerView recyclerView;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
@@ -89,27 +93,22 @@ public class DateDetailsFragment extends MementoFragment {
         return fragment;
     }
 
-    private GridLayoutManager layoutManager;
-
-    private DateDetailsAdapter adapter;
-    private Analytics analytics;
-
     private final ContactCardListener contactCardListener = new ContactCardListener() {
 
         @Override
-        public void onCardClicked(View v, Contact contact) {
+        public void onCardClicked(Contact contact) {
             analytics.trackAction(CONTACT_INTERACT_EXTERNAL);
-            contact.displayQuickInfo(getActivity(), v);
+            contact.displayQuickInfo(getActivity());
         }
 
         @Override
-        public void onContactActionsMenuClicked(View v, Contact contact) {
+        public void onContactActionsMenuClicked(View view, Contact contact) {
             final List<LabeledAction> actions = contact.getUserActions(getActivity());
             if (actions == null) {
                 return;
             }
             int size = actions.size();
-            PopupMenu popup = new PopupMenu(getActivity(), v);
+            PopupMenu popup = new PopupMenu(getActivity(), view);
             for (int i = 0; i < size; i++) {
                 LabeledAction action = actions.get(i);
                 popup.getMenu().add(contact.hashCode(), i, 0, getString(action.getName()));
@@ -224,23 +223,14 @@ public class DateDetailsFragment extends MementoFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        int year;
-        int month;
-        int dayOfMonth;
         if (savedInstanceState != null) {
-            year = savedInstanceState.getInt(KEY_DISPLAYING_YEAR);
-            month = savedInstanceState.getInt(KEY_DISPLAYING_MONTH);
-            dayOfMonth = savedInstanceState.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+            date = getDateFrom(savedInstanceState);
         } else {
-            year = getArguments().getInt(KEY_DISPLAYING_YEAR);
-            month = getArguments().getInt(KEY_DISPLAYING_MONTH);
-            dayOfMonth = getArguments().getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+            date = getDate();
         }
-        date = Date.on(dayOfMonth, month, year);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
+        recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
         progress = (ProgressBar) view.findViewById(android.R.id.progress);
-
+        emptyView = Views.findById(view, R.id.date_details_empty);
         layoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
 
         layoutManager.setSpanSizeLookup(
@@ -276,6 +266,20 @@ public class DateDetailsFragment extends MementoFragment {
         recyclerView.addItemDecoration(spacingDecoration = new GridWithHeaderSpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter));
     }
 
+    private Date getDate() {
+        int year = getArguments().getInt(KEY_DISPLAYING_YEAR);
+        @MonthInt int month = getArguments().getInt(KEY_DISPLAYING_MONTH);
+        int dayOfMonth = getArguments().getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+        return Date.on(dayOfMonth, month, year);
+    }
+
+    private Date getDateFrom(Bundle savedInstanceState) {
+        int year = savedInstanceState.getInt(KEY_DISPLAYING_YEAR);
+        @MonthInt int month = savedInstanceState.getInt(KEY_DISPLAYING_MONTH);
+        int dayOfMonth = savedInstanceState.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+        return Date.on(dayOfMonth, month, year);
+    }
+
     private Optional<BankHoliday> getBankHolidayOn(Date date) {
         BankHolidaysPreferences preferences = BankHolidaysPreferences.newInstance(getActivity());
         if (preferences.isEnabled()) {
@@ -285,6 +289,7 @@ public class DateDetailsFragment extends MementoFragment {
         return absent();
     }
 
+    private View emptyView;
     private LoaderManager.LoaderCallbacks<List<ContactEvent>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<ContactEvent>>() {
 
         @Override
@@ -299,7 +304,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onLoadFinished(Loader<List<ContactEvent>> EventItemLoader, List<ContactEvent> result) {
-            adapter.setEvents(result);
+            adapter.displayEvents(result);
             if (adapter.isLoadingDetailedCards()) {
                 layoutManager.setSpanCount(1); // display everything in one row
             } else {
@@ -307,12 +312,27 @@ public class DateDetailsFragment extends MementoFragment {
             }
 
             spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
+            showData();
+            hideLoading();
+        }
+
+        private void showData() {
+            if (adapter.getItemCount() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                emptyView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        private void hideLoading() {
             progress.setVisibility(View.GONE);
         }
 
         @Override
         public void onLoaderReset(Loader<List<ContactEvent>> EventItemLoader) {
-            adapter.setEvents(null);
+            // do nothing
         }
     };
 
