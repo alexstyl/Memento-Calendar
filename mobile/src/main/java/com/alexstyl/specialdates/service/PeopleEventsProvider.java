@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
@@ -25,7 +26,7 @@ import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -184,19 +185,29 @@ public class PeopleEventsProvider {
         return new ContactEvent(eventId, eventType, date, contact);
     }
 
-    public ContactEvents getCelebrationsClosestTo(Date date) {
+    public ContactEventsOnADate getCelebrationsClosestTo(Date date) {
         Optional<Date> closestStaticDate = findClosestStaticEventDateFrom(date);
-        ContactEvents staticEvents = getStaticContactEventsFor(closestStaticDate.get());
+        ContactEventsOnADate staticEvents = getStaticContactEventsFor(closestStaticDate.get());
+        ContactEventsOnADate dynamicEvents = getDyanmicEvents(date, closestStaticDate);
 
-//        if (namedayPreferences.isEnabled()) {
-//            Optional<Date> closestDynamicDate = findClosestDynamicEventDateTo(date);
-//            if (closestDynamicDate.isPresent()) {
-//                List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysOn(closestDynamicDate.get());
-//                return ContactEvents.createFrom(closestDynamicDate.get(), namedaysContactEvents);
-//            }
-//        }
+        if (DateComparator.INSTANCE.compare(closestStaticDate.get(), dynamicEvents.getDate()) == 0) {
+            return ContactEventsOnADate.createFrom(dynamicEvents.getDate(), combine(dynamicEvents.getEvents(), staticEvents.getEvents()));
+        } else if (DateComparator.INSTANCE.compare(closestStaticDate.get(), dynamicEvents.getDate()) > 0) {
+            return dynamicEvents;
+        } else {
+            return staticEvents;
+        }
+    }
 
-        return staticEvents;
+    private ContactEventsOnADate getDyanmicEvents(Date date, Optional<Date> closestStaticDate) {
+        if (namedayPreferences.isEnabled()) {
+            Optional<Date> closestDynamicDate = findClosestDynamicEventDateTo(date);
+            if (closestDynamicDate.isPresent()) {
+                List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysOn(closestDynamicDate.get());
+                return ContactEventsOnADate.createFrom(closestDynamicDate.get(), namedaysContactEvents);
+            }
+        }
+        return ContactEventsOnADate.createFrom(closestStaticDate.get(), Collections.<ContactEvent>emptyList());
     }
 
     private Optional<Date> findClosestStaticEventDateFrom(Date date) {
@@ -220,7 +231,7 @@ public class PeopleEventsProvider {
         return Optional.absent();
     }
 
-    private ContactEvents getStaticContactEventsFor(Date date) {
+    private ContactEventsOnADate getStaticContactEventsFor(Date date) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = resolver.query(
                 PeopleEvents.CONTENT_URI,
@@ -244,7 +255,7 @@ public class PeopleEventsProvider {
             }
         }
         cursor.close();
-        return ContactEvents.createFrom(date, contactEvents);
+        return ContactEventsOnADate.createFrom(date, contactEvents);
     }
 
     private static final Uri PEOPLE_EVENTS = PeopleEvents.CONTENT_URI;
@@ -333,6 +344,13 @@ public class PeopleEventsProvider {
 
     private static boolean isALegitEventId(long deviceEventId) {
         return deviceEventId == -1;
+    }
+
+    private static <T> List<T> combine(List<T> listA, List<T> listB) {
+        List<T> contactEvents = new ArrayList<>();
+        contactEvents.addAll(listA);
+        contactEvents.addAll(listB);
+        return contactEvents;
     }
 
 }
