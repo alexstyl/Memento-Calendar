@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
@@ -47,7 +47,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         new QueryUpcomingPeoplEventsTask(PeopleEventsProvider.newInstance(context)) {
             @Override
-            void onLoaded(ContactEvents contactEvents) {
+            void onLoaded(ContactEventsOnADate contactEvents) {
                 if (hasEvents(contactEvents)) {
                     updateForDate(context, appWidgetManager, appWidgetIds, contactEvents);
                 } else {
@@ -55,7 +55,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
                 }
             }
 
-            private boolean hasEvents(ContactEvents contactEvents) {
+            private boolean hasEvents(ContactEventsOnADate contactEvents) {
                 return contactEvents.size() > 0;
             }
         }.execute();
@@ -68,7 +68,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         return stringResources;
     }
 
-    private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEvents contactEvents) {
+    private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
         Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
         Intent intent = DateDetailsActivity.getStartIntent(context, date);
