@@ -43,7 +43,7 @@ public class PeopleEventsSearchTest {
                 .addNamedayFor(MIMOZA, JANUARY_1st)
                 .build();
 
-        when(mockProvider.getCelebrationDateFor(aYearFromNow())).thenReturn(contactEvents);
+        when(mockProvider.getContactEventsFor(aYearFromNow())).thenReturn(contactEvents);
     }
 
     private static TimePeriod aYearFromNow() {
