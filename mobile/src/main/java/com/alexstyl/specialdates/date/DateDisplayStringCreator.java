@@ -21,6 +21,14 @@ public enum DateDisplayStringCreator {
         return str.toString();
     }
 
+    public String stringOfNoYear(Date date) {
+        StringBuilder str = new StringBuilder();
+        addMonth(date, str);
+        str.append(SEPARATOR);
+        addDayOfMonth(date, str);
+        return str.toString();
+    }
+
     private void addYear(Date date, StringBuilder str) {
         if (date.hasYear()) {
             str.append(date.getYear());

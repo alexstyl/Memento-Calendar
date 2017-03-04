@@ -72,7 +72,7 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
     }
 
     private List<UpcomingRowViewModel> calculateEventsBetween(TimePeriod period) {
-        List<ContactEvent> contactEvents = peopleEventsProvider.getCelebrationDateFor(period);
+        List<ContactEvent> contactEvents = peopleEventsProvider.getContactEventsFor(period);
         Resources resources = getContext().getResources();
         AndroidColorResources colorResources = new AndroidColorResources(resources);
         AndroidStringResources stringResources = new AndroidStringResources(resources);

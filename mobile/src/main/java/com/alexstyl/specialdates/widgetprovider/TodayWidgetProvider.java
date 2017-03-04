@@ -25,13 +25,6 @@ public class TodayWidgetProvider extends AppWidgetProvider {
     private WidgetImageLoader imageLoader;
     private StringResources stringResources;
 
-    StringResources getOrCreateStringResources(Resources resources) {
-        if (stringResources == null) {
-            stringResources = new AndroidStringResources(resources);
-        }
-        return stringResources;
-    }
-
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
@@ -44,23 +37,40 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
     }
 
+    private void getOrCreateImageLoader(Context context) {
+        if (imageLoader == null) {
+            imageLoader = WidgetImageLoader.newInstance(context.getResources(), AppWidgetManager.getInstance(context));
+        }
+    }
+
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-
         new QueryUpcomingPeoplEventsTask(PeopleEventsProvider.newInstance(context)) {
             @Override
             void onLoaded(ContactEvents contactEvents) {
-                if (contactEvents.size() > 0) {
+                if (hasEvents(contactEvents)) {
                     updateForDate(context, appWidgetManager, appWidgetIds, contactEvents);
                 } else {
                     onUpdateNoEventsFound(context, appWidgetManager, appWidgetIds);
                 }
             }
+
+            private boolean hasEvents(ContactEvents contactEvents) {
+                return contactEvents.size() > 0;
+            }
         }.execute();
     }
 
+    StringResources getOrCreateStringResources(Resources resources) {
+        if (stringResources == null) {
+            stringResources = new AndroidStringResources(resources);
+        }
+        return stringResources;
+    }
+
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEvents contactEvents) {
-        Date date = contactEvents.getDate();
+        Date eventDate = contactEvents.getDate();
+        Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
         Intent intent = DateDetailsActivity.getStartIntent(context, date);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -144,12 +154,6 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(intent);
-    }
-
-    private void getOrCreateImageLoader(Context context) {
-        if (imageLoader == null) {
-            imageLoader = WidgetImageLoader.newInstance(context.getResources(), AppWidgetManager.getInstance(context));
-        }
     }
 
 }

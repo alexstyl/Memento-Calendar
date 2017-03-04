@@ -59,6 +59,10 @@ public final class PeopleNamedaysCalculator {
         return namedayEvents;
     }
 
+    public List<ContactEvent> loadSpecialNamedaysOn(Date date) {
+        return loadSpecialNamedaysBetween(TimePeriod.between(date, date));
+    }
+
     public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         for (Contact contact : contactsProvider.fetchAllDeviceContacts()) {
@@ -91,7 +95,7 @@ public final class PeopleNamedaysCalculator {
         return namedayCalendar.getSpecialNamedaysFor(firstName);
     }
 
-    public NamedayCalendar getNamedayCalendar() {
+    private NamedayCalendar getNamedayCalendar() {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR);
     }
