@@ -174,7 +174,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         if (viewType == VIEW_TYPE_BANKHOLIDAY) {
             View view = layoutInflater.inflate(R.layout.card_bankholiday, parent, false);
-            return new BankHolidayCardViewHolder(view);
+            return new BankViewHolder(view);
         }
         throw new DeveloperError("Invalid viewType " + viewType);
     }
@@ -190,7 +190,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ContactEvent event = getEvent(position);
             ((DateDetailsViewHolder) holder).bind(event, dateToDisplay, contactCardListener);
         } else if (type == VIEW_TYPE_BANKHOLIDAY) {
-            ((BankHolidayCardViewHolder) holder).bind(bankholiday.get());
+            ((BankViewHolder) holder).bind(bankholiday.get());
         } else {
             throw new DeveloperError("Invalid type : " + type);
         }
