@@ -11,23 +11,17 @@
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <uses-permission android:name="android.permission.VIBRATE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-  <uses-feature
-    android:name="android.hardware.bluetooth"
-    android:required="false" />
 
   <uses-feature
     android:name="android.hardware.camera"
     android:required="false" />
-
 
   <application
     android:name="com.alexstyl.specialdates.MementoApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/localised_app_name">
-    <!-- Activities -->
+
     <activity
       android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
       android:exported="true"
@@ -152,7 +146,6 @@
       android:name="com.alexstyl.specialdates.wear.WearSyncService"
       android:exported="false" />
 
-    <!-- Receivers -->
     <receiver
       android:name="com.alexstyl.specialdates.receiver.EventReceiver"
       android:exported="false">
@@ -170,7 +163,6 @@
       </intent-filter>
     </receiver>
 
-
     <receiver
       android:name="com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider"
       android:exported="false"
@@ -185,7 +177,7 @@
     </receiver>
 
     <provider
-      android:name=".events.peopleevents.PeopleEventsContentProvider"
+      android:name=".events.peopleevents.StaticEventsContentProvider"
       android:authorities="com.alexstyl.specialdates.peopleeventsprovider"
       android:exported="false"
       android:grantUriPermissions="true"

@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.search;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.TestContact;
-import com.alexstyl.specialdates.TestContactEventBuilder;
+import com.alexstyl.specialdates.TestContactEventsBuilder;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -37,13 +37,13 @@ public class PeopleEventsSearchTest {
     @Before
     public void setUp() {
         search = new PeopleEventsSearch(mockProvider, NameMatcher.INSTANCE);
-        List<ContactEvent> contactEvents = new TestContactEventBuilder()
+        List<ContactEvent> contactEvents = new TestContactEventsBuilder()
                 .addBirthdayFor(ALEX, JANUARY_1st)
                 .addAnniversaryFor(MARIA, JANUARY_1st)
                 .addNamedayFor(MIMOZA, JANUARY_1st)
                 .build();
 
-        when(mockProvider.getCelebrationDateFor(aYearFromNow())).thenReturn(contactEvents);
+        when(mockProvider.getContactEventsFor(aYearFromNow())).thenReturn(contactEvents);
     }
 
     private static TimePeriod aYearFromNow() {

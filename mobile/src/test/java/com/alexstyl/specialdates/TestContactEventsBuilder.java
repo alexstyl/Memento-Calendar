@@ -13,22 +13,22 @@ import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.AN
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.BIRTHDAY;
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.NAMEDAY;
 
-public class TestContactEventBuilder {
+public class TestContactEventsBuilder {
 
     private static final Optional<Long> NO_DEVICE_CONTACT_ID = Optional.absent();
     private List<ContactEvent> contactEvents = new ArrayList<>();
 
-    public TestContactEventBuilder addBirthdayFor(Contact contact, Date date) {
+    public TestContactEventsBuilder addBirthdayFor(Contact contact, Date date) {
         addEventFor(contact, BIRTHDAY, date);
         return this;
     }
 
-    public TestContactEventBuilder addAnniversaryFor(Contact contact, Date date) {
+    public TestContactEventsBuilder addAnniversaryFor(Contact contact, Date date) {
         addEventFor(contact, ANNIVERSARY, date);
         return this;
     }
 
-    public TestContactEventBuilder addNamedayFor(Contact contact, Date date) {
+    public TestContactEventsBuilder addNamedayFor(Contact contact, Date date) {
         addEventFor(contact, NAMEDAY, date);
         return this;
     }

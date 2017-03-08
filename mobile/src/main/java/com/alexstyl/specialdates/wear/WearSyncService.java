@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -29,7 +29,7 @@ public class WearSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        ContactEvents contactEvents = fetchContactEvents();
+        ContactEventsOnADate contactEvents = fetchContactEvents();
         if (contactEvents.size() == 0) {
             return;
         }
@@ -44,13 +44,13 @@ public class WearSyncService extends IntentService {
         }
     }
 
-    private ContactEvents fetchContactEvents() {
+    private ContactEventsOnADate fetchContactEvents() {
         PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this);
         Date today = Date.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }
 
-    private PutDataRequest createDataRequest(ContactEvents contactEvents) {
+    private PutDataRequest createDataRequest(ContactEventsOnADate contactEvents) {
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(SharedConstants.NEXT_CONTACT_EVENTS_PATH);
         putDataMapRequest.getDataMap().putStringArrayList(SharedConstants.KEY_CONTACTS_NAMES, getContactsNameListFrom(contactEvents.getContacts()));
         putDataMapRequest.getDataMap().putLong(SharedConstants.KEY_DATE, contactEvents.getDate().toMillis());

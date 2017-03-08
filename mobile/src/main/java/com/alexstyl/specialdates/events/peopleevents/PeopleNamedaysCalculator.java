@@ -3,30 +3,34 @@ package com.alexstyl.specialdates.events.peopleevents;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.date.TimePeriod;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-public final class PeopleNamedaysCalculator {
+public class PeopleNamedaysCalculator {
 
     private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
+
     private final NamedayPreferences namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
-    private final AndroidContactsProvider contactsProvider;
+    private final ContactsProvider contactsProvider;
 
-    public PeopleNamedaysCalculator(NamedayPreferences namedayPreferences,
-                                    NamedayCalendarProvider namedayCalendarProvider,
-                                    AndroidContactsProvider contactsProvider) {
+    public PeopleNamedaysCalculator(
+            NamedayPreferences namedayPreferences,
+            NamedayCalendarProvider namedayCalendarProvider,
+            ContactsProvider contactsProvider
+    ) {
         this.namedayPreferences = namedayPreferences;
         this.namedayCalendarProvider = namedayCalendarProvider;
         this.contactsProvider = contactsProvider;
@@ -59,6 +63,10 @@ public final class PeopleNamedaysCalculator {
         return namedayEvents;
     }
 
+    public List<ContactEvent> loadSpecialNamedaysOn(Date date) {
+        return loadSpecialNamedaysBetween(TimePeriod.between(date, date));
+    }
+
     public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         for (Contact contact : contactsProvider.fetchAllDeviceContacts()) {
@@ -78,7 +86,7 @@ public final class PeopleNamedaysCalculator {
                 }
             }
         }
-        return namedayEvents;
+        return Collections.unmodifiableList(namedayEvents);
     }
 
     private NameCelebrations getNamedaysOf(String given) {
@@ -91,7 +99,7 @@ public final class PeopleNamedaysCalculator {
         return namedayCalendar.getSpecialNamedaysFor(firstName);
     }
 
-    public NamedayCalendar getNamedayCalendar() {
+    private NamedayCalendar getNamedayCalendar() {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR);
     }
