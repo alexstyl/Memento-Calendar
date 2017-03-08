@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventTypeId;
@@ -20,13 +21,13 @@ import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
+import com.alexstyl.specialdates.util.DateParser;
+import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.novoda.notils.caster.Classes.from;
 
 class StaticPeopleEventsProvider {
 
@@ -157,8 +158,13 @@ class StaticPeopleEventsProvider {
 
     private static Date getDateFrom(Cursor cursor) {
         int index = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DATE);
-        String text = cursor.getString(index);
-        return from(text);
+        String rawDate = cursor.getString(index);
+        try {
+            return DateParser.INSTANCE.parse(rawDate);
+        } catch (DateParseException e) {
+            e.printStackTrace();
+            throw new DeveloperError("Invalid date stored to database. [" + rawDate + "]");
+        }
     }
 
     private static long getContactIdFrom(Cursor cursor) {
