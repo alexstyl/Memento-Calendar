@@ -62,8 +62,8 @@ public class PeopleEventsProvider {
 
     public List<ContactEvent> getCelebrationDateOn(Date date) {
         TimePeriod timeDuration = TimePeriod.between(date, date);
-        List<ContactEvent> contactEvents = staticEventsProvider.fetchEventsBetween(timeDuration);
-
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        contactEvents.addAll(staticEventsProvider.fetchEventsBetween(timeDuration));
         if (namedayPreferences.isEnabled()) {
             List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
             contactEvents.addAll(namedaysContactEvents);

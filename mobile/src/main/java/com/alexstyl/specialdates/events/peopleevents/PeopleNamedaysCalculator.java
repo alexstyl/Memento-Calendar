@@ -14,12 +14,14 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-public final class PeopleNamedaysCalculator {
+public class PeopleNamedaysCalculator {
 
     private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
+
     private final NamedayPreferences namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
     private final ContactsProvider contactsProvider;
@@ -84,7 +86,7 @@ public final class PeopleNamedaysCalculator {
                 }
             }
         }
-        return namedayEvents;
+        return Collections.unmodifiableList(namedayEvents);
     }
 
     private NameCelebrations getNamedaysOf(String given) {
