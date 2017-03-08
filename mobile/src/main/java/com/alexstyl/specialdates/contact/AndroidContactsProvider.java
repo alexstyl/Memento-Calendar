@@ -41,6 +41,7 @@ public class AndroidContactsProvider implements ContactsProvider {
         this.deviceContactsQuery = deviceContactsQuery;
     }
 
+    @Override
     public Contact getOrCreateContact(long contactID) throws ContactNotFoundException {
         Contact deviceContact = cache.getContact(contactID);
         if (deviceContact == null) {
