@@ -23,7 +23,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,6 +38,10 @@ public class PeopleEventsProviderTest {
     private CustomEventProvider customEventProvider;
     @Mock
     private StaticPeopleEventsProvider mockStaticEventProvider;
+    @Mock
+    private NamedayCalendarProvider mockNamedayCalendarProvider;
+    @Mock
+    private PeopleNamedaysCalculator mockPeopleNamedaysCalculator;
 
     private PeopleEventsProvider peopleEventsProvider;
 
@@ -48,11 +51,7 @@ public class PeopleEventsProviderTest {
         peopleEventsProvider = new PeopleEventsProvider(
                 mockContactsProvider,
                 mockNamedaysPreferences,
-                new PeopleNamedaysCalculator(
-                        mockNamedaysPreferences,
-                        mock(NamedayCalendarProvider.class),
-                        mockContactsProvider
-                ),
+                mockPeopleNamedaysCalculator,
                 mockStaticEventProvider
         );
     }
@@ -60,11 +59,37 @@ public class PeopleEventsProviderTest {
     @Test
     public void staticEventsAreReturnedCorrectly() {
         Date date = Date.on(1, DateConstants.JANUARY, 2017);
-        List<ContactEvent> staticEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
+        List<ContactEvent> expectedEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
 
-        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.between(date, date))).thenReturn(staticEvents);
+        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.between(date, date))).thenReturn(expectedEvents);
 
         List<ContactEvent> events = peopleEventsProvider.getCelebrationDateOn(date);
-        assertThat(events).containsOnly(staticEvents.get(0));
+        assertThat(events).containsOnly(expectedEvents.get(0));
+    }
+
+    @Test
+    public void dynamicEventsAreReturnedCorrectly() {
+        Date date = Date.on(1, DateConstants.JANUARY, 2017);
+        List<ContactEvent> expectedEvents = new TestContactEventsBuilder().addNamedayFor(PETER, date).build();
+        when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, date))).thenReturn(expectedEvents);
+
+        List<ContactEvent> events = peopleEventsProvider.getCelebrationDateOn(date);
+        assertThat(events).containsOnly(expectedEvents.get(0));
+    }
+
+    @Test
+    public void combinedEventsAreReturnedCorrectly() {
+        Date date = Date.on(1, DateConstants.JANUARY, 2017);
+        List<ContactEvent> expectedDynamicEvents = new TestContactEventsBuilder().addNamedayFor(PETER, date).build();
+        List<ContactEvent> expectedStaticEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
+
+        when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, date))).thenReturn(expectedDynamicEvents);
+        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.between(date, date))).thenReturn(expectedStaticEvents);
+
+        List<ContactEvent> events = peopleEventsProvider.getCelebrationDateOn(date);
+        assertThat(events).containsAll(expectedDynamicEvents);
+        assertThat(events).containsAll(expectedStaticEvents);
     }
 }

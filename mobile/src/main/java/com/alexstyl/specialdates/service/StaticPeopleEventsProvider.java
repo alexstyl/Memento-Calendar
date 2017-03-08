@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.novoda.notils.caster.Classes.from;
@@ -67,7 +68,7 @@ class StaticPeopleEventsProvider {
             }
         }
         cursor.close();
-        return contactEvents;
+        return Collections.unmodifiableList(contactEvents);
     }
 
     private Cursor queryEventsFor(TimePeriod timeDuration) {
