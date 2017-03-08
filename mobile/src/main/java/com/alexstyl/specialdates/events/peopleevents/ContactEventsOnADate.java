@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ContactEvents {
+public class ContactEventsOnADate {
 
     private final Date date;
     private final List<ContactEvent> contactEventList;
     private final List<Contact> contacts;
 
-    public static ContactEvents createFrom(Date date, List<ContactEvent> contactEvent) {
+    public static ContactEventsOnADate createFrom(Date date, List<ContactEvent> contactEvent) {
         List<Contact> contacts = getContactsIn(contactEvent);
-        return new ContactEvents(date, contactEvent, contacts);
+        return new ContactEventsOnADate(date, contactEvent, contacts);
     }
 
     private static List<Contact> getContactsIn(List<ContactEvent> contactEvent) {
@@ -30,7 +30,7 @@ public class ContactEvents {
         return Collections.unmodifiableList(contacts);
     }
 
-    private ContactEvents(Date date, List<ContactEvent> contactEventList, List<Contact> contacts) {
+    private ContactEventsOnADate(Date date, List<ContactEvent> contactEventList, List<Contact> contacts) {
         this.date = date;
         this.contactEventList = contactEventList;
         this.contacts = contacts;
@@ -49,10 +49,10 @@ public class ContactEvents {
     }
 
     public List<Contact> getContacts() {
-        return Collections.unmodifiableList(contacts);
+        return contacts;
     }
 
-    public int getContactCount() {
-        return contacts.size();
+    public List<ContactEvent> getEvents() {
+        return contactEventList;
     }
 }

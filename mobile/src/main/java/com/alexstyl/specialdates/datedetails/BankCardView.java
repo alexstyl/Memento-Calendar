@@ -8,11 +8,11 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.ui.MementoCardView;
 
-public class BankHolidayCardView extends MementoCardView {
+public class BankCardView extends MementoCardView {
 
     private final TextView text;
 
-    public BankHolidayCardView(Context context, AttributeSet attrs) {
+    public BankCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         inflate(context, R.layout.merge_bankholidaycardview, this);

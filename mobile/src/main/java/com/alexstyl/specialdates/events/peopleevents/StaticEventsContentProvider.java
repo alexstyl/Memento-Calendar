@@ -28,7 +28,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
-public class PeopleEventsContentProvider extends ContentProvider {
+public class StaticEventsContentProvider extends ContentProvider {
 
     private static final int CODE_PEOPLE_EVENTS = 10;
     private EventSQLiteOpenHelper eventSQLHelper;
