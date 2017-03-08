@@ -101,7 +101,7 @@ class ContactOperations {
 
     private List<ContactEvent> getAllDeviceEventsFor(Contact contact) {
         List<ContactEvent> contactEvents = new ArrayList<>();
-        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getCelebrationDateFor(TimePeriod.aYearFromNow());
+        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getContactEventsFor(TimePeriod.aYearFromNow());
         for (ContactEvent contactEvent : contactEventsOnDate) {
             Contact dbContact = contactEvent.getContact();
             if (dbContact.getContactID() == contact.getContactID() && contactEvent.getType() != StandardEventType.NAMEDAY) {

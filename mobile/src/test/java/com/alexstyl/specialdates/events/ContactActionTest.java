@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.ContactEvents;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ContactActionTest {
     @Test
     public void testTheSameDateIsReturned() throws Exception {
         Date expectedDate = Date.on(1, 1, 1990);
-        ContactEvents events = ContactEvents.createFrom(expectedDate, ANY_CONTACTS);
+        ContactEventsOnADate events = ContactEventsOnADate.createFrom(expectedDate, ANY_CONTACTS);
 
         Date actualDate = events.getDate();
         assertThat(actualDate).isEqualTo(expectedDate);
@@ -41,7 +41,7 @@ public class ContactActionTest {
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
 
-        ContactEvents events = ContactEvents.createFrom(date, contactEvent);
+        ContactEventsOnADate events = ContactEventsOnADate.createFrom(date, contactEvent);
 
         List<Contact> contacts = events.getContacts();
         assertThat(contacts.get(0)).isEqualTo(CONTACT_ONE);
@@ -53,7 +53,7 @@ public class ContactActionTest {
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
-        ContactEvents events = ContactEvents.createFrom(date, contactEvent);
+        ContactEventsOnADate events = ContactEventsOnADate.createFrom(date, contactEvent);
 
         List<Contact> contacts = events.getContacts();
         assertThat(contacts).contains(CONTACT_ONE);
@@ -66,7 +66,7 @@ public class ContactActionTest {
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
-        ContactEvents events = ContactEvents.createFrom(date, contactEvent);
+        ContactEventsOnADate events = ContactEventsOnADate.createFrom(date, contactEvent);
 
         List<Contact> contacts = events.getContacts();
         assertThat(contacts.size()).isEqualTo(2);
