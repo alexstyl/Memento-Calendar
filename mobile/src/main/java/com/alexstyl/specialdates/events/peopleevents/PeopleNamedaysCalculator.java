@@ -3,15 +3,15 @@ package com.alexstyl.specialdates.events.peopleevents;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.date.TimePeriod;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,11 +22,13 @@ public final class PeopleNamedaysCalculator {
     private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
     private final NamedayPreferences namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
-    private final AndroidContactsProvider contactsProvider;
+    private final ContactsProvider contactsProvider;
 
-    public PeopleNamedaysCalculator(NamedayPreferences namedayPreferences,
-                                    NamedayCalendarProvider namedayCalendarProvider,
-                                    AndroidContactsProvider contactsProvider) {
+    public PeopleNamedaysCalculator(
+            NamedayPreferences namedayPreferences,
+            NamedayCalendarProvider namedayCalendarProvider,
+            ContactsProvider contactsProvider
+    ) {
         this.namedayPreferences = namedayPreferences;
         this.namedayCalendarProvider = namedayCalendarProvider;
         this.contactsProvider = contactsProvider;
