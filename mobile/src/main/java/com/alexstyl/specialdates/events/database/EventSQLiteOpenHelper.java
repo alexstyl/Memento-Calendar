@@ -5,15 +5,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
+import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "events.db";
-    private static final int INITIAL_CODE = 2;
-    private static final int DATABASE_VERSION = INITIAL_CODE;
+    private static final int DATABASE_VERSION = 3;
+    private final EventPreferences eventPreferences;
 
     public EventSQLiteOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        eventPreferences = new EventPreferences(context.getApplicationContext());
     }
 
     private static final String TEXT_TYPE = " TEXT";
@@ -50,5 +52,6 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ANNUAL_EVENTS);
+        eventPreferences.reset();
     }
 }
