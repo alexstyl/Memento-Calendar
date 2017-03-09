@@ -58,7 +58,7 @@ public class DeviceContact extends Contact {
 
     @Override
     protected List<LabeledAction> onBuildActions(Context context) {
-        final ContentResolver resolver = context.getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
         boolean hasPhoneNumber = ContactUtils.hasPhoneNumber(resolver, getContactID());
         List<LabeledAction> actions = new ArrayList<>(2);
         if (hasPhoneNumber) {

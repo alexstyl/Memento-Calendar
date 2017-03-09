@@ -260,7 +260,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         dayHolder.clearActions();
     }
 
-    public ContactEvent getEvent(int position) {
+    private ContactEvent getEvent(int position) {
         int eventPosition = getEventPositionFrom(position);
         return events.get(eventPosition);
     }
