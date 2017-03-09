@@ -112,7 +112,6 @@ public class DateDetailsFragment extends MementoFragment {
             for (int i = 0; i < size; i++) {
                 LabeledAction action = actions.get(i);
                 popup.getMenu().add(contact.hashCode(), i, 0, getString(action.getName()));
-                i++;
             }
 
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
