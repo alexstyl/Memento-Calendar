@@ -5,18 +5,14 @@ import android.content.Context;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.AndroidContactsProvider;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
-import com.alexstyl.specialdates.util.DateParser;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +20,6 @@ import java.util.List;
 
 public class PeopleEventsProvider {
 
-    private final ContactsProvider contactsProvider;
     private final NamedayPreferences namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
     private final StaticPeopleEventsProvider staticEventsProvider;
@@ -42,19 +37,16 @@ public class PeopleEventsProvider {
         CustomEventProvider customEventProvider = new CustomEventProvider(resolver);
         StaticPeopleEventsProvider staticEventsProvider = new StaticPeopleEventsProvider(resolver, contactsProvider, customEventProvider);
         return new PeopleEventsProvider(
-                contactsProvider,
                 namedayPreferences,
                 peopleNamedaysCalculator,
                 staticEventsProvider
         );
     }
 
-    PeopleEventsProvider(ContactsProvider contactsProvider,
-                         NamedayPreferences namedayPreferences,
+    PeopleEventsProvider(NamedayPreferences namedayPreferences,
                          PeopleNamedaysCalculator peopleNamedaysCalculator,
                          StaticPeopleEventsProvider staticEventsProvider
     ) {
-        this.contactsProvider = contactsProvider;
         this.staticEventsProvider = staticEventsProvider;
         this.namedayPreferences = namedayPreferences;
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
@@ -114,15 +106,6 @@ public class PeopleEventsProvider {
             return new Optional<>(contactEvents.get(0).getDate());
         }
         return Optional.absent();
-    }
-
-    private static Date from(String text) {
-        try {
-            return DateParser.INSTANCE.parse(text);
-        } catch (DateParseException e) {
-            e.printStackTrace();
-            throw new DeveloperError("Invalid date stored to database. [" + text + "]");
-        }
     }
 
     private static <T> List<T> combine(List<T> listA, List<T> listB) {

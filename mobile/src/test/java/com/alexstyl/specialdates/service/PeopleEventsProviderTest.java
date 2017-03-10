@@ -1,16 +1,17 @@
 package com.alexstyl.specialdates.service;
 
 import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.novoda.notils.logger.simple.Log;
 
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +51,6 @@ public class PeopleEventsProviderTest {
     public void setUp() {
         Log.setShowLogs(false);
         peopleEventsProvider = new PeopleEventsProvider(
-                mockContactsProvider,
                 mockNamedaysPreferences,
                 mockPeopleNamedaysCalculator,
                 mockStaticEventProvider
@@ -58,7 +59,7 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void staticEventsAreReturnedCorrectly() {
-        Date date = Date.on(1, DateConstants.JANUARY, 2017);
+        Date date = Date.on(1, JANUARY, 2017);
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
 
         when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.between(date, date))).thenReturn(expectedEvents);
@@ -69,7 +70,7 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void dynamicEventsAreReturnedCorrectly() {
-        Date date = Date.on(1, DateConstants.JANUARY, 2017);
+        Date date = Date.on(1, JANUARY, 2017);
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder().addNamedayFor(PETER, date).build();
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
         when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, date))).thenReturn(expectedEvents);
@@ -80,7 +81,7 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void combinedEventsAreReturnedCorrectly() {
-        Date date = Date.on(1, DateConstants.JANUARY, 2017);
+        Date date = Date.on(1, JANUARY, 2017);
         List<ContactEvent> expectedDynamicEvents = new TestContactEventsBuilder().addNamedayFor(PETER, date).build();
         List<ContactEvent> expectedStaticEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
 
@@ -92,4 +93,14 @@ public class PeopleEventsProviderTest {
         assertThat(events).containsAll(expectedDynamicEvents);
         assertThat(events).containsAll(expectedStaticEvents);
     }
+
+    @Test
+    public void noStaticEvents_ReturnNoClosestEvent() {
+        when(mockStaticEventProvider.findClosestStaticEventDateFrom(Date.on(1, JANUARY, 2017))).thenReturn(Optional.<Date>absent());
+        when(mockNamedaysPreferences.isEnabled()).thenReturn(false);
+
+        ContactEventsOnADate date = peopleEventsProvider.getCelebrationsClosestTo(Date.on(1, JANUARY, 2017));
+        assertThat(date.getEvents()).isEmpty();
+    }
+
 }
