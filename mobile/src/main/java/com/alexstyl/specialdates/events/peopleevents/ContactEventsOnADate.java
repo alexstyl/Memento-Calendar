@@ -40,10 +40,6 @@ public class ContactEventsOnADate {
         return contactEventList.size();
     }
 
-    public ContactEvent getEvent(int index) {
-        return contactEventList.get(index);
-    }
-
     public Date getDate() {
         return date;
     }
