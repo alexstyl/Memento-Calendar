@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -29,6 +30,10 @@ public class WearSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        PermissionChecker permissionChecker = new PermissionChecker(this);
+        if (!permissionChecker.canReadAndWriteContacts()) {
+            return;
+        }
         ContactEventsOnADate contactEvents = fetchContactEvents();
         if (contactEvents.size() == 0) {
             return;
