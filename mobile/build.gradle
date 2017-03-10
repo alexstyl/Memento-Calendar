@@ -83,7 +83,7 @@ dependencies {
     compile 'com.novoda:notils:2.2.15'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.novoda:simple-chrome-custom-tabs:0.1.4'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
     compile "com.google.android.gms:play-services-wearable:$play_services_version"
