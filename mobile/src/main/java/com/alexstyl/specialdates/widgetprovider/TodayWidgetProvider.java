@@ -45,19 +45,17 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        new QueryUpcomingPeoplEventsTask(PeopleEventsProvider.newInstance(context)) {
+        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context)) {
             @Override
-            void onLoaded(ContactEventsOnADate contactEvents) {
-                if (hasEvents(contactEvents)) {
-                    updateForDate(context, appWidgetManager, appWidgetIds, contactEvents);
-                } else {
-                    onUpdateNoEventsFound(context, appWidgetManager, appWidgetIds);
-                }
+            void onNextDateLoaded(ContactEventsOnADate events) {
+                updateForDate(context, appWidgetManager, appWidgetIds, events);
             }
 
-            private boolean hasEvents(ContactEventsOnADate contactEvents) {
-                return contactEvents.size() > 0;
+            @Override
+            void onNoEventsFound() {
+                onUpdateNoEventsFound(context, appWidgetManager, appWidgetIds);
             }
+
         }.execute();
     }
 
