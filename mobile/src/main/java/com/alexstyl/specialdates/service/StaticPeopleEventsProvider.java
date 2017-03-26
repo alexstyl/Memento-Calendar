@@ -43,6 +43,12 @@ class StaticPeopleEventsProvider {
             PeopleEventsContract.PeopleEvents.EVENT_TYPE,
     };
 
+    /*
+        We use this column in order to be able to compare
+        tl;dr: select * from annual_events WHERE substr(date,-5) >= '03-04' ORDER BY substr(date,-5) asc LIMIT 1
+     */
+    private static final String DATE_COLUMN_WITHOUT_YEAR = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ", -5) ";
+
     private final ContentResolver resolver;
     private final ContactsProvider contactsProvider;
     private final CustomEventProvider customEventProvider;
@@ -76,7 +82,7 @@ class StaticPeopleEventsProvider {
         if (isWithinTheSameYear(timeDuration)) {
             return queryPeopleEvents(timeDuration, PeopleEventsContract.PeopleEvents.DATE + " ASC");
         } else {
-            return queryForBothYearsIn(timeDuration);
+            return queryAllYearsIn(timeDuration);
         }
     }
 
@@ -95,7 +101,7 @@ class StaticPeopleEventsProvider {
         );
     }
 
-    private Cursor queryForBothYearsIn(TimePeriod timeDuration) {
+    private Cursor queryAllYearsIn(TimePeriod timeDuration) {
         TimePeriod firstHalf = firstHalfOf(timeDuration);
         Cursor[] cursors = new Cursor[2];
         cursors[0] = queryPeopleEvents(firstHalf, PeopleEventsContract.PeopleEvents.DATE + " ASC");
@@ -122,32 +128,30 @@ class StaticPeopleEventsProvider {
         return timeDuration.getStartingDate().getYear() == timeDuration.getEndingDate().getYear();
     }
 
-    Optional<Date> findClosestStaticEventDateFrom(Date date) {
+    Date findClosestStaticEventDateFrom(Date date) throws NoEventsFoundException {
         Cursor cursor = queryDateClosestTo(date);
         try {
             if (cursor.moveToFirst()) {
                 Date closestDate = getDateFrom(cursor);
-                return new Optional<>(closestDate);
+
+                return Date.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
+                               date.getYear()
+                );
             }
-            return Optional.absent();
+            throw new NoEventsFoundException();
         } finally {
             cursor.close();
         }
     }
 
     private Cursor queryDateClosestTo(Date date) {
-        // select * from annual_events WHERE substr(date,3) >= '03-04' ORDER BY substr(date,3) asc LIMIT 1
         return resolver.query(
                 PEOPLE_EVENTS,
                 PEOPLE_PROJECTION,
-                substr(PeopleEventsContract.PeopleEvents.DATE) + " >= ?",
+                DATE_COLUMN_WITHOUT_YEAR + " >= ?",
                 monthAndDayOf(date),
-                substr(PeopleEventsContract.PeopleEvents.DATE) + " ASC LIMIT 1"
+                DATE_COLUMN_WITHOUT_YEAR + " ASC LIMIT 1"
         );
-    }
-
-    private String substr(String datetete) {
-        return "substr(" + datetete + ",3) ";
     }
 
     private String[] monthAndDayOf(Date date) {
