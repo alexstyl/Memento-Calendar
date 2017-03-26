@@ -137,11 +137,11 @@ public class PeopleEventsProvider {
 
         int result = closestEventsComparator.compare(staticEvents, dynamicEvents);
         if (result < 0) {
-            return returnOptionalIfEventsArePresent(staticEvents);
+            return absentIfContainsNoEvent(staticEvents);
         } else if (result > 0) {
-            return returnOptionalIfEventsArePresent(dynamicEvents);
+            return absentIfContainsNoEvent(dynamicEvents);
         } else {
-            return returnOptionalIfEventsArePresent(createOptionalFor(staticEvents, dynamicEvents));
+            return absentIfContainsNoEvent(createOptionalFor(staticEvents, dynamicEvents));
         }
     }
 
@@ -157,11 +157,11 @@ public class PeopleEventsProvider {
         }
     }
 
-    private Optional<ContactEventsOnADate> returnOptionalIfEventsArePresent(Optional<ContactEventsOnADate> contactEventsOnADate) {
-        if (contactEventsOnADate.isPresent()) {
-            List<ContactEvent> events = contactEventsOnADate.get().getEvents();
+    private Optional<ContactEventsOnADate> absentIfContainsNoEvent(Optional<ContactEventsOnADate> optional) {
+        if (optional.isPresent()) {
+            List<ContactEvent> events = optional.get().getEvents();
             if (events.size() > 0) {
-                return contactEventsOnADate;
+                return optional;
             }
         }
         return Optional.absent();
