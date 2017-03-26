@@ -59,6 +59,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    buildToolsVersion '25.0.0'
 }
 
 repositories {
