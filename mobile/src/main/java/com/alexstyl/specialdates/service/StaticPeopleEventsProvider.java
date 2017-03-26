@@ -44,8 +44,10 @@ class StaticPeopleEventsProvider {
     };
 
     /*
-        We use this column in order to be able to compare
-        tl;dr: select * from annual_events WHERE substr(date,-5) >= '03-04' ORDER BY substr(date,-5) asc LIMIT 1
+        We use this column in order to be able to do comparisons of dates, without having to worry about the year
+        So, instead of a full date 1990-12-19, this will return 12-19. Similarwise for --12-19.
+
+        an example in use: select * from annual_events WHERE substr(date,-5) >= '03-04' ORDER BY substr(date,-5) asc LIMIT 1
      */
     private static final String DATE_COLUMN_WITHOUT_YEAR = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ", -5) ";
 
