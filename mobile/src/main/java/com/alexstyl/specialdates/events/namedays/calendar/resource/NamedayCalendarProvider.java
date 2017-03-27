@@ -17,6 +17,9 @@ public class NamedayCalendarProvider {
     private final SpecialNamedaysHandlerFactory factory;
     private final NamedayJSONResourceProvider jsonProvider;
 
+    /**
+     * @deprecated Use the constructor instead.
+     */
     public static NamedayCalendarProvider newInstance(Resources resources) {
         NamedayJSONResourceLoader loader = new AndroidJSONResourceLoader(resources);
         NamedayJSONResourceProvider jsonResourceProvider = new NamedayJSONResourceProvider(loader);
