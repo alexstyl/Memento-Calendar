@@ -15,6 +15,7 @@ android {
         minSdkVersion 16
         buildConfigField 'String', 'MIXPANEL_TOKEN', '\"' + mixpanelKey + "\""
     }
+    buildToolsVersion '25.0.0'
 }
 
 dependencies {

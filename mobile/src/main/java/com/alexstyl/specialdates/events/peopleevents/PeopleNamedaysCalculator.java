@@ -63,8 +63,9 @@ public class PeopleNamedaysCalculator {
         return namedayEvents;
     }
 
-    public List<ContactEvent> loadSpecialNamedaysOn(Date date) {
-        return loadSpecialNamedaysBetween(TimePeriod.between(date, date));
+    public ContactEventsOnADate loadSpecialNamedaysOn(Date date) {
+        List<ContactEvent> contactEvents = loadSpecialNamedaysBetween(TimePeriod.between(date, date));
+        return ContactEventsOnADate.createFrom(date, contactEvents);
     }
 
     public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {

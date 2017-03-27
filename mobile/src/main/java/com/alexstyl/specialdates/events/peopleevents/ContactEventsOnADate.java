@@ -36,10 +36,6 @@ public class ContactEventsOnADate {
         this.contacts = contacts;
     }
 
-    public int size() {
-        return contactEventList.size();
-    }
-
     public Date getDate() {
         return date;
     }
@@ -50,5 +46,34 @@ public class ContactEventsOnADate {
 
     public List<ContactEvent> getEvents() {
         return contactEventList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ContactEventsOnADate that = (ContactEventsOnADate) o;
+
+        if (!date.equals(that.date)) {
+            return false;
+        }
+        if (!contactEventList.equals(that.contactEventList)) {
+            return false;
+        }
+        return contacts.equals(that.contacts);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = date.hashCode();
+        result = 31 * result + contactEventList.hashCode();
+        result = 31 * result + contacts.hashCode();
+        return result;
     }
 }

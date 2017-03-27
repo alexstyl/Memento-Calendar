@@ -5,29 +5,28 @@ import android.content.Context;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.AndroidContactsProvider;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
-import com.alexstyl.specialdates.util.DateParser;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PeopleEventsProvider {
 
-    private final ContactsProvider contactsProvider;
+    private static final DateComparator dateComparator = DateComparator.INSTANCE;
+
     private final NamedayPreferences namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
     private final StaticPeopleEventsProvider staticEventsProvider;
+    private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
 
     public static PeopleEventsProvider newInstance(Context context) {
         AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(context);
@@ -42,19 +41,16 @@ public class PeopleEventsProvider {
         CustomEventProvider customEventProvider = new CustomEventProvider(resolver);
         StaticPeopleEventsProvider staticEventsProvider = new StaticPeopleEventsProvider(resolver, contactsProvider, customEventProvider);
         return new PeopleEventsProvider(
-                contactsProvider,
                 namedayPreferences,
                 peopleNamedaysCalculator,
                 staticEventsProvider
         );
     }
 
-    PeopleEventsProvider(ContactsProvider contactsProvider,
-                         NamedayPreferences namedayPreferences,
+    PeopleEventsProvider(NamedayPreferences namedayPreferences,
                          PeopleNamedaysCalculator peopleNamedaysCalculator,
                          StaticPeopleEventsProvider staticEventsProvider
     ) {
-        this.contactsProvider = contactsProvider;
         this.staticEventsProvider = staticEventsProvider;
         this.namedayPreferences = namedayPreferences;
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
@@ -83,53 +79,105 @@ public class PeopleEventsProvider {
         return Collections.unmodifiableList(contactEvents);
     }
 
-    public ContactEventsOnADate getCelebrationsClosestTo(Date date) {
-        Optional<Date> closestStaticDate = staticEventsProvider.findClosestStaticEventDateFrom(date);
-        ContactEventsOnADate staticEvents = staticEventsProvider.fetchEventsOn(date);
-        ContactEventsOnADate dynamicEvents = getDynamicEvents(date, closestStaticDate);
+    public Optional<ContactEventsOnADate> getCelebrationsClosestTo(Date date) {
+        ensureDateHasYear(date);
 
-        if (DateComparator.INSTANCE.compare(closestStaticDate.get(), dynamicEvents.getDate()) == 0) {
-            return ContactEventsOnADate.createFrom(dynamicEvents.getDate(), combine(dynamicEvents.getEvents(), staticEvents.getEvents()));
-        } else if (DateComparator.INSTANCE.compare(closestStaticDate.get(), dynamicEvents.getDate()) > 0) {
-            return dynamicEvents;
+        Optional<ContactEventsOnADate> staticEvents = findNextStaticEventsOn(date);
+        Optional<ContactEventsOnADate> dynamicEvents;
+        if (namedayPreferences.isEnabled()) {
+            dynamicEvents = findNextDynamicEventsOn(date);
         } else {
-            return staticEvents;
+            dynamicEvents = Optional.absent();
+        }
+        return returnClosestEventsOrMerge(staticEvents, dynamicEvents);
+
+    }
+
+    private Optional<ContactEventsOnADate> findNextStaticEventsOn(Date date) {
+        try {
+            Date closestStaticDate = staticEventsProvider.findClosestStaticEventDateFrom(date);
+            return new Optional<>(staticEventsProvider.fetchEventsOn(closestStaticDate));
+        } catch (NoEventsFoundException e) {
+            return Optional.absent();
         }
     }
 
-    private ContactEventsOnADate getDynamicEvents(Date date, Optional<Date> closestStaticDate) {
-        if (namedayPreferences.isEnabled()) {
-            Optional<Date> closestDynamicDate = findClosestDynamicEventDateTo(date);
-            if (closestDynamicDate.isPresent()) {
-                List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysOn(closestDynamicDate.get());
-                return ContactEventsOnADate.createFrom(closestDynamicDate.get(), namedaysContactEvents);
+    private Optional<ContactEventsOnADate> findNextDynamicEventsOn(Date date) {
+        try {
+            Date closestDynamicDate = findNextDynamicEventDateAfter(date);
+            ContactEventsOnADate namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysOn(closestDynamicDate);
+            return new Optional<>(namedaysContactEvents);
+        } catch (NoEventsFoundException e) {
+            return Optional.absent();
+        }
+    }
+
+    private Date findNextDynamicEventDateAfter(final Date date) throws NoEventsFoundException {
+        List<ContactEvent> contactEvents = new ArrayList<>(peopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, Date.endOfYear(date.getYear()))));
+        Collections.sort(contactEvents, new Comparator<ContactEvent>() {
+            @Override
+            public int compare(ContactEvent o1, ContactEvent o2) {
+                return dateComparator.compare(o1.getDate(), o2.getDate());
+            }
+        });
+
+        for (ContactEvent contactEvent : contactEvents) {
+            Date contactEventDate = contactEvent.getDate();
+            if (dateComparator.compare(contactEventDate, date) >= 0) {
+                return contactEventDate;
             }
         }
-        return ContactEventsOnADate.createFrom(closestStaticDate.get(), Collections.<ContactEvent>emptyList());
+        return date;
     }
 
-    private Optional<Date> findClosestDynamicEventDateTo(Date date) {
-        List<ContactEvent> contactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, date.addWeek(4)));
-        if (contactEvents.size() > 0) {
-            return new Optional<>(contactEvents.get(0).getDate());
+    private Optional<ContactEventsOnADate> returnClosestEventsOrMerge(Optional<ContactEventsOnADate> staticEvents, Optional<ContactEventsOnADate> dynamicEvents) {
+        if (!staticEvents.isPresent() && !dynamicEvents.isPresent()) {
+            return Optional.absent();
+        }
+
+        int result = closestEventsComparator.compare(staticEvents, dynamicEvents);
+        if (result < 0) {
+            return absentIfContainsNoEvent(staticEvents);
+        } else if (result > 0) {
+            return absentIfContainsNoEvent(dynamicEvents);
+        } else {
+            return absentIfContainsNoEvent(createOptionalFor(staticEvents, dynamicEvents));
+        }
+    }
+
+    private Optional<ContactEventsOnADate> createOptionalFor(Optional<ContactEventsOnADate> staticEvents, Optional<ContactEventsOnADate> dynamicEvents) {
+        List<ContactEvent> combinedEvents = combine(dynamicEvents.get().getEvents(), staticEvents.get().getEvents());
+        if (combinedEvents.size() > 0) {
+            return new Optional<>(ContactEventsOnADate.createFrom(
+                    staticEvents.get().getDate(),
+                    combinedEvents
+            ));
+        } else {
+            return Optional.absent();
+        }
+    }
+
+    private Optional<ContactEventsOnADate> absentIfContainsNoEvent(Optional<ContactEventsOnADate> optional) {
+        if (optional.isPresent()) {
+            List<ContactEvent> events = optional.get().getEvents();
+            if (events.size() > 0) {
+                return optional;
+            }
         }
         return Optional.absent();
-    }
-
-    private static Date from(String text) {
-        try {
-            return DateParser.INSTANCE.parse(text);
-        } catch (DateParseException e) {
-            e.printStackTrace();
-            throw new DeveloperError("Invalid date stored to database. [" + text + "]");
-        }
     }
 
     private static <T> List<T> combine(List<T> listA, List<T> listB) {
         List<T> contactEvents = new ArrayList<>();
         contactEvents.addAll(listA);
         contactEvents.addAll(listB);
-        return contactEvents;
+        return Collections.unmodifiableList(contactEvents);
+    }
+
+    private static void ensureDateHasYear(Date date) {
+        if (!date.hasYear()) {
+            throw new IllegalArgumentException("Date must contain year");
+        }
     }
 
 }
