@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
+import com.alexstyl.specialdates.ErrorTracker;
+
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
@@ -15,10 +17,20 @@ public class PermissionChecker {
     }
 
     public boolean canReadAndWriteContacts() {
-        return ActivityCompat.checkSelfPermission(context, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        return hasPermission(context, READ_CONTACTS);
     }
 
     public boolean canReadExternalStorage() {
-        return ActivityCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return hasPermission(context, READ_EXTERNAL_STORAGE);
+    }
+
+    private static boolean hasPermission(Context context, String readContacts) {
+        try {
+            return ActivityCompat.checkSelfPermission(context, readContacts) == PackageManager.PERMISSION_GRANTED;
+        } catch (RuntimeException ex) {
+            // some devices randomly throw an exception to this point. just treat as if the permission is not there
+            ErrorTracker.track(ex);
+            return false;
+        }
     }
 }
