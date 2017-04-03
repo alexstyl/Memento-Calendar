@@ -148,6 +148,9 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
             findViewById(android.R.id.content).post(new Runnable() {
                 @Override
                 public void run() {
+                    if (isFinishing()) {
+                        return;
+                    }
                     if (presenter.displaysAvatar()) {
                         BottomSheetPicturesDialog
                                 .includeClearImageOption()

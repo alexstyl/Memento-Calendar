@@ -4,9 +4,11 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -29,22 +31,25 @@ public class WearSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        ContactEventsOnADate contactEvents = fetchContactEvents();
-        if (contactEvents.size() == 0) {
+        PermissionChecker permissionChecker = new PermissionChecker(this);
+        if (!permissionChecker.canReadAndWriteContacts()) {
             return;
         }
+        Optional<ContactEventsOnADate> eventsOptional = fetchContactEvents();
+        if (eventsOptional.isPresent()) {
+            ContactEventsOnADate contactEvents = eventsOptional.get();
+            PutDataRequest putDataRequest = createDataRequest(contactEvents);
+            GoogleApiClient googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                    .addApi(Wearable.API)
+                    .build();
 
-        PutDataRequest putDataRequest = createDataRequest(contactEvents);
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .addApi(Wearable.API)
-                .build();
-
-        if (googleApiClient.blockingConnect().isSuccess()) {
-            Wearable.DataApi.putDataItem(googleApiClient, putDataRequest);
+            if (googleApiClient.blockingConnect().isSuccess()) {
+                Wearable.DataApi.putDataItem(googleApiClient, putDataRequest);
+            }
         }
     }
 
-    private ContactEventsOnADate fetchContactEvents() {
+    private Optional<ContactEventsOnADate> fetchContactEvents() {
         PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this);
         Date today = Date.today();
         return eventsProvider.getCelebrationsClosestTo(today);
