@@ -25,9 +25,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-ext {
-    androidCompileSdkVersion = 24
-    androidBuildToolsVersion = '24.0.2'
-    androidVersionCode = 68
-    androidVersionName = '7.2'
-}
+
