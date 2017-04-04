@@ -94,7 +94,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
-            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming);
+            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_simple);
 
             remoteViews.setTextViewText(R.id.upcoming_widget_header, title);
             remoteViews.setTextViewText(R.id.upcoming_widget_events_text, label);
