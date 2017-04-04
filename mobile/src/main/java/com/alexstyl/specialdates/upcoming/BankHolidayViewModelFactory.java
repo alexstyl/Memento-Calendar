@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 
-final class BankHolidayViewModelFactory {
+public final class BankHolidayViewModelFactory {
 
     BankHolidayViewModel createViewModelFor(BankHoliday bankHoliday) {
         BankHolidayViewModel bankHolidayViewModel;

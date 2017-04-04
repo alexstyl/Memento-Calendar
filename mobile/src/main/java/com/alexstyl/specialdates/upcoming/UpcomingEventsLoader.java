@@ -31,10 +31,11 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
 
     private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
+    private final ContactsObserver contactsObserver;
+
+    private final Date startingPeriod;
     private final PeopleEventsProvider peopleEventsProvider;
     private final NamedayPreferences namedayPreferences;
-    private final Date startingPeriod;
-    private final ContactsObserver contactsObserver;
     private final BankHolidaysPreferences bankHolidaysPreferences;
     private final BankHolidayProvider bankHolidayProvider;
     private final NamedayCalendarProvider namedayCalendarProvider;
@@ -79,19 +80,23 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
         ContactViewModelFactory contactViewModelFactory = new ContactViewModelFactory(colorResources, stringResources);
         Date today = Date.today();
         UpcomingDateStringCreator dateCreator = new UpcomingDateStringCreator(stringResources, today);
+        BankHolidayViewModelFactory bankHolidayViewModelFactory = new BankHolidayViewModelFactory();
+        NamedaysViewModelFactory namedaysViewModelFactory = new NamedaysViewModelFactory(today);
         UpcomingEventRowViewModelFactory upcomingRowViewModelFactory = new UpcomingEventRowViewModelFactory(
                 today,
                 dateCreator,
                 contactViewModelFactory,
                 stringResources,
-                new BankHolidayViewModelFactory(),
-                new NamedaysViewModelFactory(today),
+                bankHolidayViewModelFactory,
+                namedaysViewModelFactory,
                 MonthLabels.forLocale(Locale.getDefault())
         );
+
+        UpcomingEventsAdRules adRules = new UpcomingEventsFreeUserAdRules();
         UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(
                 period,
                 upcomingRowViewModelFactory,
-                new UpcomingEventsFreeUserAdRules()
+                adRules
         )
                 .withContactEvents(contactEvents);
 

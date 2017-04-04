@@ -4,30 +4,40 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
+import com.alexstyl.specialdates.widgetprovider.upcomingevents.RemoteViewBinder;
+import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsProvider;
 
-import java.util.Arrays;
 import java.util.List;
 
 class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final int VIEW_TYPE_COUNT = 1;
     private final String packageName;
-    private final List<String> rows = Arrays.asList("1", "2", "3");
+    private final UpcomingEventsProvider peopleEventsProvider;
+    private final RemoteViewBinder binder;
 
-    UpcomingEventsViewsFactory(String packageName) {
+    private List<UpcomingRowViewModel> rows;
+
+    UpcomingEventsViewsFactory(String packageName, UpcomingEventsProvider peopleEventsProvider, RemoteViewBinder binder) {
         this.packageName = packageName;
+        this.peopleEventsProvider = peopleEventsProvider;
+        this.binder = binder;
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
+        UpcomingRowViewModel contactEvent = rows.get(position);
         RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-        view.setTextViewText(R.id.row_widget_text, rows.get(position));
+        binder.bind(view, contactEvent);
         return view;
     }
 
     @Override
     public RemoteViews getLoadingView() {
-        // TODO
+        // TODO add spinner
         return null;
     }
 
@@ -53,7 +63,8 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onCreate() {
-        // no impl
+        Date date = Date.today();
+        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.between(date, date.addDay(30)));
     }
 
     @Override

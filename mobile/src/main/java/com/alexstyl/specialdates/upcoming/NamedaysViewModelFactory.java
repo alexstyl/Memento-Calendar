@@ -6,11 +6,11 @@ import android.view.View;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
-final class NamedaysViewModelFactory {
+public final class NamedaysViewModelFactory {
 
     private final Date today;
 
-    NamedaysViewModelFactory(Date today) {
+    public NamedaysViewModelFactory(Date today) {
         this.today = today;
     }
 
