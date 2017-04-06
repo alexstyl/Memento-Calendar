@@ -5,8 +5,7 @@
   style="@style/CardViewStyle"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="vertical"
-  tools:showIn="@layout/activity_main">
+  android:orientation="vertical">
 
   <LinearLayout
     android:layout_width="match_parent"
