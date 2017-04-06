@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   tools:showIn="@layout/row_upcoming_day">
 
-  <android.support.v7.widget.LinearLayoutCompat
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -61,5 +61,5 @@
       android:paddingRight="@dimen/upcoming_event_padding_horizontal"
       tools:text="+1 more" />
 
-  </android.support.v7.widget.LinearLayoutCompat>
+  </LinearLayout>
 </merge>

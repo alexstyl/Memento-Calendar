@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.widget.RemoteViews;
 
+import com.alexstyl.android.AndroidDimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
@@ -16,6 +17,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
@@ -39,7 +41,10 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     private void getOrCreateImageLoader(Context context) {
         if (imageLoader == null) {
-            imageLoader = WidgetImageLoader.newInstance(context.getResources(), AppWidgetManager.getInstance(context));
+            AndroidDimensionResources resources = new AndroidDimensionResources(context.getResources());
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ImageLoader imageLoader = ImageLoader.createWidgetThumbnailLoader();
+            this.imageLoader = WidgetImageLoader.newInstance(resources, appWidgetManager, imageLoader);
         }
     }
 
