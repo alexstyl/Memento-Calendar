@@ -21,14 +21,20 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private static final int VIEW_TYPE_COUNT = 3;
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
+    private final WidgetImageLoader imageLoader;
 
     private List<UpcomingRowViewModel> rows;
-    private final WidgetImageLoader imageLoader;
 
     UpcomingEventsViewsFactory(String packageName, UpcomingEventsProvider peopleEventsProvider, WidgetImageLoader imageLoader) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
         this.imageLoader = imageLoader;
+    }
+
+    @Override
+    public void onCreate() {
+        Date date = Date.today();
+        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.between(date, date.addDay(30)));
     }
 
     @Override
@@ -43,7 +49,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private UpcomingEventViewBinder createBinderFor(UpcomingRowViewModel viewModel) {
         switch (viewModel.getViewType()) {
             case UpcomingRowViewType.MONTH: {
-                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
+                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
                 return new MonthBinder(view);
             }
             case UpcomingRowViewType.YEAR: {
@@ -85,14 +91,8 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     }
 
     @Override
-    public void onCreate() {
-        Date date = Date.today();
-        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.between(date, date.addDay(30)));
-    }
-
-    @Override
     public void onDataSetChanged() {
-        // no-op
+
     }
 
     @Override

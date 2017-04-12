@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <dimen name="widget_upcoming_avatar_size">52dp</dimen>
+  <dimen name="widget_upcoming_vertical_padding">16dp</dimen>
+  <dimen name="widget_upcoming_horizontal_padding">16dp</dimen>
+  <color name="widget_upcoming_text_color">#000</color>
 
   <style name="Widget.Upcoming.Header"
     parent="None">
-    <item name="android:textSize">24sp</item>
-    <item name="android:padding">8dp</item>
-    <item name="android:textColor">#000</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:padding">12dp</item>
+    <item name="android:textColor">@color/widget_upcoming_text_color</item>
   </style>
+
+  <style name="Widget.Upcoming.TodayDate"
+    parent="None">
+    <item name="android:background">@color/nameday_blue</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:fontFamily">sans-serif-condensed</item>
+    <item name="android:textColor">@color/main_white</item>
+    <item name="android:textSize">20sp</item>
+    <item name="android:paddingLeft">@dimen/widget_upcoming_horizontal_padding</item>
+    <item name="android:paddingRight">@dimen/widget_upcoming_horizontal_padding</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:minHeight">48dp</item>
+  </style>
+
+  <style name="Widget.Upcoming.ContactName"
+    parent="Upcoming.ContactName">
+    <item name="android:textColor">@color/widget_upcoming_text_color</item>
+    <item name="android:lines">1</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/upcoming_event_padding_horizontal</item>
+  </style>
+
+  <style name="Widget.Upcoming.DateTitle"
+    parent="None">
+    <item name="android:fontFamily">sans-serif-condensed</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:paddingTop">@dimen/widget_upcoming_vertical_padding</item>
+    <item name="android:paddingBottom">@dimen/widget_upcoming_vertical_padding</item>
+    <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/upcoming_event_padding_horizontal</item>
+  </style>
+
+  <style name="Widget.Upcoming.ShowMore"
+    parent="Upcoming.EventItem">
+    <item name="android:background">@drawable/selectable_background_dayslight</item>
+    <item name="android:textColor">@color/widget_upcoming_text_color</item>
+  </style>
+
 </resources>

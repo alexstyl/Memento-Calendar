@@ -43,7 +43,7 @@ public class DateDetailsActivity extends ThemedActivity {
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
 
-        Date displayingDate = getDateFrom(getIntent());
+        Date displayingDate = extractDateFrom(getIntent());
 
         if (getIntent().hasExtra(EXTRA_SOURCE)) {
             int intExtra = getIntent().getIntExtra(EXTRA_SOURCE, -1);
@@ -67,7 +67,7 @@ public class DateDetailsActivity extends ThemedActivity {
         setTitle(titleDate);
     }
 
-    private Date getDateFrom(Intent intent) {
+    private Date extractDateFrom(Intent intent) {
         Bundle extras = intent.getExtras();
         if (intent.getData() != null && "com.android.calendar".equals(intent.getData().getAuthority())) {
             List<String> pathSegments = intent.getData().getPathSegments();
@@ -79,10 +79,25 @@ public class DateDetailsActivity extends ThemedActivity {
             }
         }
 
-        int year = extras.getInt(EXTRA_YEAR);
-        @MonthInt int month = extras.getInt(EXTRA_MONTH);
-        int dayOfMonth = extras.getInt(EXTRA_DAY);
+        return extractDateFrom(extras);
+    }
 
+    private Date extractDateFrom(Bundle extras) {
+        if (extras == null) {
+            throw new NullPointerException("Bundle was null");
+        }
+        int year = extras.getInt(EXTRA_YEAR, -1);
+        if (year == -1) {
+            throw new IllegalArgumentException("Bundle was missing a year");
+        }
+        @MonthInt int month = extras.getInt(EXTRA_MONTH, -1);
+        if (month == -1) {
+            throw new IllegalArgumentException("Bundle was missing a month");
+        }
+        int dayOfMonth = extras.getInt(EXTRA_DAY);
+        if (dayOfMonth == -1) {
+            throw new IllegalArgumentException("Bundle was missing a dayOfMonth");
+        }
         return Date.on(dayOfMonth, month, year);
     }
 

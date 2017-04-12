@@ -33,16 +33,16 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
-                peopleEventsProvider(),
+                createPeopleEventsProvider(),
                 WidgetImageLoader.newInstance(
                         new AndroidDimensionResources(getResources()),
                         AppWidgetManager.getInstance(this),
-                        ImageLoader.createWidgetThumbnailLoader()
+                        ImageLoader.createWidgetThumbnailLoader() // TODO need circle thumbnail here
                 )
         );
     }
 
-    private UpcomingEventsProvider peopleEventsProvider() {
+    private UpcomingEventsProvider createPeopleEventsProvider() {
         Date today = Date.today();
         StringResources stringResources = new AndroidStringResources(getResources());
         return new UpcomingEventsProvider(
