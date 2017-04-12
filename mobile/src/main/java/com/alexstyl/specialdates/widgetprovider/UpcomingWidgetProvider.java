@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 
 public class UpcomingWidgetProvider extends AppWidgetProvider {
@@ -16,21 +18,32 @@ public class UpcomingWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        for (int i = 0; i < appWidgetIds.length; i++) {
-            Intent intent = new Intent(context, UpcomingEventsRemoteViewService.class);
+        Date date = Date.today();
+        String dateLabel = DateDisplayStringCreator.INSTANCE.fullyFormattedDate(date);
+        PendingIntent pendingIntent = pendingIntentFor(date, context);
 
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+        for (int appWidgetId : appWidgetIds) {
+            Intent intent = new Intent(context, UpcomingEventsRemoteViewService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-            RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events);
-            widget.setRemoteAdapter(R.id.widget_upcoming_events_list, intent);
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events);
+            remoteViews.setRemoteAdapter(R.id.widget_upcoming_events_list, intent);
+
+            remoteViews.setTextViewText(R.id.widget_upcoming_events_date, dateLabel);
+            remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, pendingIntent);
 
             Intent clickIntent = new Intent(context, DateDetailsActivity.class);
             PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            widget.setPendingIntentTemplate(R.id.widget_upcoming_events_list, clickPI);
+            remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, clickPI);
 
-            appWidgetManager.updateAppWidget(appWidgetIds[i], widget);
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    private PendingIntent pendingIntentFor(Date date, Context context) {
+        Intent clickIntent = DateDetailsActivity.getStartIntent(context, date);
+        return PendingIntent.getActivity(context, 1249, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

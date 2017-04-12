@@ -1,31 +1,28 @@
 package com.alexstyl.specialdates.images;
 
-import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
-public class CustomFadeInDisplayer implements BitmapDisplayer {
+class CustomFadeInDisplayer implements BitmapDisplayer {
 
-    public static final int FADE_IN_TIME = 200;
-    private final Resources mResources;
+    private static final int FADE_IN_TIME = 200;
+    private final Resources resources;
     private final ColorDrawable transparent;
 
-    public CustomFadeInDisplayer(Resources resources) {
-        this.mResources = resources;
+    CustomFadeInDisplayer(Resources resources) {
+        this.resources = resources;
         this.transparent = new ColorDrawable(resources.getColor(android.R.color.transparent));
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
         if ((loadedFrom == LoadedFrom.NETWORK) || (loadedFrom == LoadedFrom.DISC_CACHE)) {
@@ -39,7 +36,7 @@ public class CustomFadeInDisplayer implements BitmapDisplayer {
                     new TransitionDrawable(
                             new Drawable[]{
                                     previous,
-                                    new BitmapDrawable(mResources, bitmap)
+                                    new BitmapDrawable(resources, bitmap)
                             }
                     );
 

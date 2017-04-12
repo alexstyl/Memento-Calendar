@@ -36,7 +36,7 @@ public class ImageLoader {
     private final DisplayImageOptions displayImageOptions;
     private final com.nostra13.universalimageloader.core.ImageLoader loader;
 
-    ImageLoader(DisplayImageOptions circleImageOptions) {
+    private ImageLoader(DisplayImageOptions circleImageOptions) {
         this.displayImageOptions = circleImageOptions;
         loader = UniversalImageLoader.newInstance();
     }
@@ -54,10 +54,6 @@ public class ImageLoader {
     public static ImageLoader createSquareThumbnailLoader(Resources resources) {
         DisplayImageOptions options = UniversalImageLoader.buildSquareImageOptions(resources);
         return new ImageLoader(options);
-    }
-
-    public void displayThumbnail(Uri imagePath, ImageAware imageView) {
-        loader.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
     public void displayThumbnail(Uri imagePath, ImageView imageView) {

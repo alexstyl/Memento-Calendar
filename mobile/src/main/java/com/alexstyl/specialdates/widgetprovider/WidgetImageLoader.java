@@ -71,7 +71,7 @@ public class WidgetImageLoader {
         );
     }
 
-    public void loadPicture(Uri imagePath, @IdRes final int appWidgetId, final RemoteViews views, final @IdRes int targetViewId) {
+    public void loadPicture(Uri imagePath, final RemoteViews views, final @IdRes int targetViewId) {
         imageLoader.loadBitmapAsync(
                 imagePath,
                 avatarSize,
@@ -80,13 +80,11 @@ public class WidgetImageLoader {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
                         views.setImageViewBitmap(targetViewId, null);
-                        appWidgetManager.updateAppWidget(appWidgetId, views);
                     }
 
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         views.setImageViewBitmap(targetViewId, loadedImage);
-                        appWidgetManager.updateAppWidget(appWidgetId, views);
                     }
                 }
         );

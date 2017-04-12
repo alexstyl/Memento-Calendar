@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class UniversalImageLoader {
+class UniversalImageLoader {
 
     public static com.nostra13.universalimageloader.core.ImageLoader newInstance() {
         return ImageLoader.getInstance();
     }
 
-    public static DisplayImageOptions buildSquareImageOptions(Resources resources) {
+    static DisplayImageOptions buildSquareImageOptions(Resources resources) {
         DisplayImageOptions.createSimple();
         return new DisplayImageOptions.Builder()
                 .displayer(new CustomFadeInDisplayer(resources))
@@ -22,7 +22,7 @@ public class UniversalImageLoader {
                 .build();
     }
 
-    public static DisplayImageOptions buildCircleImageOptions(Resources resources) {
+    static DisplayImageOptions buildCircleImageOptions(Resources resources) {
         return new DisplayImageOptions.Builder()
                 .displayer(new FadeInRoundedBitmapDisplayer(resources))
                 .showImageOnLoading(android.R.color.transparent)
@@ -31,7 +31,7 @@ public class UniversalImageLoader {
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
-    public static DisplayImageOptions buildWidgetImageOptions() {
+    static DisplayImageOptions buildWidgetImageOptions() {
         DisplayImageOptions.createSimple();
         return new DisplayImageOptions.Builder()
                 .cacheInMemory(true)

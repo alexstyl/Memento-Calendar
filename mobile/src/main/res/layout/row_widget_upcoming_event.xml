@@ -9,7 +9,7 @@
 
   <TextView
     android:id="@+id/row_widget_upcoming_event_date"
-    style="@style/Upcoming.DateTitle"
+    style="@style/Widget.Upcoming.DateTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="#000"
@@ -23,7 +23,7 @@
 
   <TextView
     android:id="@+id/row_widget_upcoming_event_bankholidays"
-    style="@style/Upcoming.DateTitle"
+    style="@style/Widget.Upcoming.DateTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="@color/bankholiday_green"
@@ -36,10 +36,10 @@
 
   <TextView
     android:id="@+id/row_widget_upcoming_event_namedays"
-    style="@style/Upcoming.DateTitle"
+    style="@style/Widget.Upcoming.DateTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:maxLines="2"
+    android:lines="1"
     android:textColor="@color/nameday_blue"
     tools:text="namedays blabla" />
 
@@ -53,85 +53,85 @@
     android:id="@+id/row_widget_upcoming_contact_1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/widget_upcoming_horizontal_padding"
+    android:paddingRight="@dimen/widget_upcoming_horizontal_padding">
+
+    <ImageView
+      android:id="@+id/widget_upcoming_events_avatar_1"
+      android:layout_width="@dimen/widget_upcoming_avatar_size"
+      android:layout_height="@dimen/widget_upcoming_avatar_size"
+      tools:background="#7c7474" />
 
     <LinearLayout
-      android:layout_width="0dp"
-      android:layout_height="match_parent"
-      android:layout_gravity="center_vertical"
-      android:layout_weight="1"
-      android:orientation="vertical">
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingBottom="@dimen/widget_upcoming_vertical_padding"
+      android:paddingTop="@dimen/widget_upcoming_vertical_padding">
 
       <TextView
         android:id="@+id/row_widget_upcoming_event_contact_name_1"
-        style="@style/Upcoming.ContactName"
+        style="@style/Widget.Upcoming.ContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000"
         tools:text="Alex Styl" />
 
       <TextView
         android:id="@+id/row_widget_upcoming_event_contact_event_type_1"
+        style="@style/Widget.Upcoming.ContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="1"
-        android:textColor="#000"
         tools:text="One, two, three" />
     </LinearLayout>
-
-    <ImageView
-      android:id="@+id/row_widget_upcoming_event_contact_avatar_1"
-      style="@style/Upcoming.Avatar"
-      android:layout_gravity="center_vertical"
-      tools:background="#000" />
   </LinearLayout>
 
   <LinearLayout
     android:id="@+id/row_widget_upcoming_contact_2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/widget_upcoming_horizontal_padding"
+    android:paddingRight="@dimen/widget_upcoming_horizontal_padding">
+
+    <ImageView
+      android:id="@+id/widget_upcoming_events_avatar_2"
+      android:layout_width="@dimen/widget_upcoming_avatar_size"
+      android:layout_height="@dimen/widget_upcoming_avatar_size"
+      tools:background="#7c7474" />
 
     <LinearLayout
-      android:layout_width="0dp"
-      android:layout_height="match_parent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:layout_gravity="center_vertical"
-      android:layout_weight="1"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      android:paddingBottom="@dimen/widget_upcoming_vertical_padding"
+      android:paddingTop="@dimen/widget_upcoming_vertical_padding">
 
       <TextView
         android:id="@+id/row_widget_upcoming_event_contact_name_2"
-        style="@style/Upcoming.ContactName"
+        style="@style/Widget.Upcoming.ContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000"
         tools:text="Alex Styl" />
 
       <TextView
         android:id="@+id/row_widget_upcoming_event_contact_event_type_2"
+        style="@style/Widget.Upcoming.ContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="1"
-        android:textColor="#000"
         tools:text="One, two, three" />
     </LinearLayout>
-
-    <ImageView
-      android:id="@+id/row_widget_upcoming_event_contact_avatar_2"
-      style="@style/Upcoming.Avatar"
-      android:layout_gravity="center_vertical"
-      tools:background="#000" />
   </LinearLayout>
-
 
   <Button
     android:id="@+id/row_widget_upcoming_event_more"
-    style="@style/Upcoming.ShowMore"
+    style="@style/Widget.Upcoming.ShowMore"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/upcoming_event_padding_horizontal"
-    android:paddingRight="@dimen/upcoming_event_padding_horizontal"
-    android:textColor="#000"
     tools:text="+1 more" />
 
 </LinearLayout>

@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView android:id="@+id/widget_upcoming_events_list"
-  android:layout_height="match_parent"
-  android:background="@color/anniversary_yellow"
-  android:layout_width="match_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/widget_upcoming_events_date"
+    style="@style/Widget.Upcoming.TodayDate"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/toolbar_elevation"
+    android:minHeight="@dimen/toolbar_minHeight"
+    tools:text="Tuesday, 27 May" />
+
+  <ListView
+    android:id="@+id/widget_upcoming_events_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey"
+    android:divider="@null"
+    android:dividerHeight="@dimen/widget_upcoming_vertical_padding" />
+</LinearLayout>

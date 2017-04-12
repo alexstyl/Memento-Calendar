@@ -16,7 +16,7 @@ class YearBinder implements UpcomingEventViewBinder<YearHeaderViewModel> {
 
     @Override
     public void bind(YearHeaderViewModel viewModel) {
-        views.setTextViewText(R.id.row_widget_text, viewModel.getYear());
+        views.setTextViewText(R.id.widget_row_upcoming_year, viewModel.getYear());
     }
 
     @Override
