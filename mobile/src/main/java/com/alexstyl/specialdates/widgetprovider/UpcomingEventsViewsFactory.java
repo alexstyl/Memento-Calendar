@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.widgetprovider;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -24,17 +25,20 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private final UpcomingEventsProvider peopleEventsProvider;
     private final WidgetImageLoader imageLoader;
     private final DimensionResources dimensResources;
+    private final Context context;
 
     private List<UpcomingRowViewModel> rows;
 
     UpcomingEventsViewsFactory(String packageName,
                                UpcomingEventsProvider peopleEventsProvider,
                                WidgetImageLoader imageLoader,
-                               DimensionResources dimensResources) {
+                               DimensionResources dimensResources,
+                               Context context) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
         this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
+        this.context = context;
     }
 
     @Override
@@ -54,16 +58,16 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @SuppressLint("SwitchIntDef")
     private UpcomingEventViewBinder createBinderFor(UpcomingRowViewModel viewModel) {
         switch (viewModel.getViewType()) {
-            case UpcomingRowViewType.MONTH: {
-                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
-                return new MonthBinder(view);
-            }
             case UpcomingRowViewType.YEAR: {
                 RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_year);
                 return new YearBinder(view);
             }
+            case UpcomingRowViewType.MONTH: {
+                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
+                return new MonthBinder(view);
+            }
             case UpcomingRowViewType.UPCOMING_EVENTS: {
-                return UpcomingEventsBinder.buildFor(packageName, imageLoader, dimensResources);
+                return UpcomingEventsBinder.buildFor(packageName, imageLoader, dimensResources, context);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());

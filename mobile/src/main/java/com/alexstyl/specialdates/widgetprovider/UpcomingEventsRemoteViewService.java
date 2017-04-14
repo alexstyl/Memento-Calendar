@@ -38,7 +38,8 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
                         AppWidgetManager.getInstance(this),
                         UILImageLoader.createCircleLoader(getResources())
                 ),
-                new AndroidDimensionResources(getResources())
+                new AndroidDimensionResources(getResources()),
+                this
         );
     }
 

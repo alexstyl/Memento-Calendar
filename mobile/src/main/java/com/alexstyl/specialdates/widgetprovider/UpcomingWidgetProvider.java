@@ -20,22 +20,20 @@ public class UpcomingWidgetProvider extends AppWidgetProvider {
 
         Date date = Date.today();
         String dateLabel = DateDisplayStringCreator.INSTANCE.fullyFormattedDate(date);
-        PendingIntent pendingIntent = pendingIntentFor(date, context);
 
         for (int appWidgetId : appWidgetIds) {
             Intent intent = new Intent(context, UpcomingEventsRemoteViewService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events);
             remoteViews.setRemoteAdapter(R.id.widget_upcoming_events_list, intent);
+            Intent clickIntent = new Intent(context, DateDetailsActivity.class);
+            PendingIntent listPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, listPendingIntent);
 
             remoteViews.setTextViewText(R.id.widget_upcoming_events_date, dateLabel);
-            remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, pendingIntent);
-
-            Intent clickIntent = new Intent(context, DateDetailsActivity.class);
-            PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, clickPI);
+            PendingIntent todayDatePendingIntent = pendingIntentFor(date, context);
+            remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, todayDatePendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
