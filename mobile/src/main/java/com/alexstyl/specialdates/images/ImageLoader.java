@@ -14,9 +14,10 @@ public interface ImageLoader {
 
     void loadImage(Uri imagePath, ImageSize targetImageSize, OnImageLoadedCallback callback);
 
-    Bitmap loadBitmap(Uri imagePath, int width, int height);
+    Bitmap loadBitmap(Uri imagePath, ImageSize imageSize);
 
     void resume();
 
     void pause();
+
 }

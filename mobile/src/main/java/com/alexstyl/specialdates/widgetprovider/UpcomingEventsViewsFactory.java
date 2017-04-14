@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.widgetprovider;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -9,6 +10,7 @@ import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
 import com.alexstyl.specialdates.widgetprovider.upcomingevents.MonthBinder;
@@ -23,26 +25,38 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private static final int VIEW_TYPE_COUNT = 3;
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
-    private final WidgetImageLoader imageLoader;
+    private final ImageLoader imageLoader;
     private final DimensionResources dimensResources;
     private final Context context;
 
     private List<UpcomingRowViewModel> rows;
+    @AppWidgetId
+    private final int appWidgetId;
+    private final AppWidgetManager appWidgetManager;
 
     UpcomingEventsViewsFactory(String packageName,
                                UpcomingEventsProvider peopleEventsProvider,
-                               WidgetImageLoader imageLoader,
+                               ImageLoader imageLoader,
                                DimensionResources dimensResources,
-                               Context context) {
+                               Context context,
+                               @AppWidgetId int appWidgetId,
+                               AppWidgetManager appWidgetManager) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
         this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
         this.context = context;
+        this.appWidgetId = appWidgetId;
+        this.appWidgetManager = appWidgetManager;
     }
 
     @Override
     public void onCreate() {
+        // onDataSetChanged will be called after this
+    }
+
+    @Override
+    public void onDataSetChanged() {
         Date date = Date.today();
         rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.between(date, date.addDay(30)));
     }
@@ -67,7 +81,8 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
                 return new MonthBinder(view);
             }
             case UpcomingRowViewType.UPCOMING_EVENTS: {
-                return UpcomingEventsBinder.buildFor(packageName, imageLoader, dimensResources, context);
+                RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
+                return new UpcomingEventsBinder(remoteViews, imageLoader, dimensResources, context, appWidgetId, appWidgetManager);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());
@@ -76,8 +91,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public RemoteViews getLoadingView() {
-        // TODO add spinner
-        return null;
+        return null; // use the default loading view by returning null
     }
 
     @Override
@@ -98,11 +112,6 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @Override
     public boolean hasStableIds() {
         return true;
-    }
-
-    @Override
-    public void onDataSetChanged() {
-
     }
 
     @Override

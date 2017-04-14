@@ -2,15 +2,12 @@ package com.alexstyl.specialdates.widgetprovider;
 
 import android.appwidget.AppWidgetManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.support.annotation.IdRes;
 import android.support.annotation.Px;
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.OnImageLoadedCallback;
 import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
@@ -32,7 +29,7 @@ public class WidgetImageLoader {
 
     private void tryToFetchImageFor(final List<Contact> contacts,
                                     final int contactIndex,
-                                    final int appWidgetId,
+                                    @AppWidgetId final int appWidgetId,
                                     final RemoteViews views,
                                     @Px final int size) {
         imageLoader.loadImage(contacts.get(contactIndex).getImagePath(), new ImageSize(size, size), new SimpleOnImageLoadedCallback() {
@@ -63,31 +60,5 @@ public class WidgetImageLoader {
                 }
             }
         });
-    }
-
-    public void loadPicture(Uri imagePath,
-                            @IdRes final int targetViewId,
-                            final RemoteViews views,
-                            @Px final int size) {
-        imageLoader.loadImage(
-                imagePath,
-                new ImageSize(size, size),
-                new OnImageLoadedCallback() {
-                    @Override
-                    public void onLoadingStarted() {
-                        views.setImageViewBitmap(targetViewId, null);
-                    }
-
-                    @Override
-                    public void onImageLoaded(Bitmap loadedImage) {
-                        views.setImageViewBitmap(targetViewId, loadedImage);
-                    }
-
-                    @Override
-                    public void onLoadingFailed() {
-                        views.setImageViewBitmap(targetViewId, null);
-                    }
-                }
-        );
     }
 }
