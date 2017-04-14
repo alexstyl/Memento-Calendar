@@ -36,6 +36,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class Notifier {
 
     public static Notifier newInstance(Context context) {
         Resources resources = context.getResources();
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
+        ImageLoader imageLoader = UILImageLoader.createLoader(resources);
         StringResources stringResources = new AndroidStringResources(resources);
         DimensionResources dimensions = new AndroidDimensionResources(resources);
         ColorResources colorResources = new AndroidColorResources(resources);

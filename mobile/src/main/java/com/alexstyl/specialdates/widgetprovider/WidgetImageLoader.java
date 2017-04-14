@@ -4,87 +4,88 @@ import android.appwidget.AppWidgetManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.IdRes;
-import android.view.View;
+import android.support.annotation.Px;
 import android.widget.RemoteViews;
 
-import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.alexstyl.specialdates.images.OnImageLoadedCallback;
+import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.List;
 
 public class WidgetImageLoader {
 
     private final AppWidgetManager appWidgetManager;
-    private final int avatarSize;
-    private ImageLoader imageLoader;
+    private final ImageLoader imageLoader;
 
-    public static WidgetImageLoader newInstance(DimensionResources resources, AppWidgetManager appWidgetManager, ImageLoader imageLoader) {
-        int size = resources.getPixelSize(R.dimen.widget_avatar_size);
-        return new WidgetImageLoader(appWidgetManager, imageLoader, size);
-    }
-
-    private WidgetImageLoader(AppWidgetManager appWidgetManager, ImageLoader imageLoader, int avatarSize) {
+    WidgetImageLoader(AppWidgetManager appWidgetManager, ImageLoader imageLoader) {
         this.appWidgetManager = appWidgetManager;
         this.imageLoader = imageLoader;
-        this.avatarSize = avatarSize;
     }
 
-    public void loadPicture(List<Contact> contacts, final int appWidgetId, final RemoteViews views) {
-        tryToFetchImageFor(contacts, 0, appWidgetId, views);
+    void loadPicture(List<Contact> contacts, final int appWidgetId, final RemoteViews views, @Px int size) {
+        tryToFetchImageFor(contacts, 0, appWidgetId, views, size);
     }
 
-    private void tryToFetchImageFor(final List<Contact> contacts, final int contactIndex, final int appWidgetId, final RemoteViews views) {
-        imageLoader.loadBitmapAsync(
-                contacts.get(contactIndex).getImagePath(), avatarSize, new SimpleImageLoadingListener() {
+    private void tryToFetchImageFor(final List<Contact> contacts,
+                                    final int contactIndex,
+                                    final int appWidgetId,
+                                    final RemoteViews views,
+                                    @Px final int size) {
+        imageLoader.loadImage(contacts.get(contactIndex).getImagePath(), new ImageSize(size, size), new SimpleOnImageLoadedCallback() {
 
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        super.onLoadingFailed(imageUri, view, failReason);
-                        handleImageNotLoaded();
-                    }
+            @Override
+            public void onLoadingFailed() {
+                handleImageNotLoaded();
+            }
 
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        if (loadedImage == null) {
-                            handleImageNotLoaded();
-                        } else {
-                            views.setImageViewBitmap(R.id.widget_avatar, loadedImage);
-                            appWidgetManager.updateAppWidget(appWidgetId, views);
-                        }
-                    }
-
-                    private void handleImageNotLoaded() {
-                        int contactSize = contacts.size();
-                        if (contactIndex + 1 < contactSize) {
-                            tryToFetchImageFor(contacts, contactIndex + 1, appWidgetId, views);
-                        } else {
-                            // no more pictures to load
-                            views.setImageViewResource(R.id.widget_avatar, R.drawable.ic_contact_picture);
-                            appWidgetManager.updateAppWidget(appWidgetId, views);
-                        }
-                    }
+            private void handleImageNotLoaded() {
+                int contactSize = contacts.size();
+                if (contactIndex + 1 < contactSize) {
+                    tryToFetchImageFor(contacts, contactIndex + 1, appWidgetId, views, size);
+                } else {
+                    // no more pictures to load
+                    views.setImageViewResource(R.id.widget_avatar, R.drawable.ic_contact_picture);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
                 }
-        );
+            }
+
+            @Override
+            public void onImageLoaded(Bitmap loadedImage) {
+                if (loadedImage == null) {
+                    handleImageNotLoaded();
+                } else {
+                    views.setImageViewBitmap(R.id.widget_avatar, loadedImage);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
+                }
+            }
+        });
     }
 
-    public void loadPicture(Uri imagePath, final RemoteViews views, final @IdRes int targetViewId) {
-        imageLoader.loadBitmapAsync(
+    public void loadPicture(Uri imagePath,
+                            @IdRes final int targetViewId,
+                            final RemoteViews views,
+                            @Px final int size) {
+        imageLoader.loadImage(
                 imagePath,
-                avatarSize,
-                new SimpleImageLoadingListener() {
-
+                new ImageSize(size, size),
+                new OnImageLoadedCallback() {
                     @Override
-                    public void onLoadingStarted(String imageUri, View view) {
+                    public void onLoadingStarted() {
                         views.setImageViewBitmap(targetViewId, null);
                     }
 
                     @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    public void onImageLoaded(Bitmap loadedImage) {
                         views.setImageViewBitmap(targetViewId, loadedImage);
+                    }
+
+                    @Override
+                    public void onLoadingFailed() {
+                        views.setImageViewBitmap(targetViewId, null);
                     }
                 }
         );

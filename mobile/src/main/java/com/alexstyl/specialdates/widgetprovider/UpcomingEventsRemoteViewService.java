@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModelFactory;
 import com.alexstyl.specialdates.upcoming.ContactViewModelFactory;
@@ -34,11 +34,11 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
                 createPeopleEventsProvider(),
-                WidgetImageLoader.newInstance(
-                        new AndroidDimensionResources(getResources()),
+                new WidgetImageLoader(
                         AppWidgetManager.getInstance(this),
-                        ImageLoader.createWidgetThumbnailLoader() // TODO need circle thumbnail here
-                )
+                        UILImageLoader.createCircleLoader(getResources())
+                ),
+                new AndroidDimensionResources(getResources())
         );
     }
 

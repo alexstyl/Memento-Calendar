@@ -6,7 +6,7 @@ public class PauseImageLoadingScrollListener extends RecyclerView.OnScrollListen
 
     private final ImageLoader imageLoader;
 
-    public PauseImageLoadingScrollListener(ImageLoader imageLoader) {
+    private PauseImageLoadingScrollListener(ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
     }
 

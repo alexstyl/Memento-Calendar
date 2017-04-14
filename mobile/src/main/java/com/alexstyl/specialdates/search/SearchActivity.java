@@ -30,6 +30,7 @@ import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -115,7 +116,7 @@ public class SearchActivity extends ThemedActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = ImageLoader.createCircleThumbnailLoader(getResources());
+        ImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
         adapter = new SearchResultAdapter(imageLoader);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);

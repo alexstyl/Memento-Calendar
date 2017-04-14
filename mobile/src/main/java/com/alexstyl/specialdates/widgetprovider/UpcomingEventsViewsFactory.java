@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
@@ -22,13 +23,18 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
     private final WidgetImageLoader imageLoader;
+    private final DimensionResources dimensResources;
 
     private List<UpcomingRowViewModel> rows;
 
-    UpcomingEventsViewsFactory(String packageName, UpcomingEventsProvider peopleEventsProvider, WidgetImageLoader imageLoader) {
+    UpcomingEventsViewsFactory(String packageName,
+                               UpcomingEventsProvider peopleEventsProvider,
+                               WidgetImageLoader imageLoader,
+                               DimensionResources dimensResources) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
         this.imageLoader = imageLoader;
+        this.dimensResources = dimensResources;
     }
 
     @Override
@@ -57,7 +63,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
                 return new YearBinder(view);
             }
             case UpcomingRowViewType.UPCOMING_EVENTS: {
-                return UpcomingEventsBinder.buildFor(packageName, imageLoader);
+                return UpcomingEventsBinder.buildFor(packageName, imageLoader, dimensResources);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());

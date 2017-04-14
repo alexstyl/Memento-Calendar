@@ -10,9 +10,9 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-class ImageDownloader extends BaseImageDownloader {
+public class AndroidContactsImageDownloader extends BaseImageDownloader {
 
-    ImageDownloader(Context context) {
+    public AndroidContactsImageDownloader(Context context) {
         super(context);
     }
 
