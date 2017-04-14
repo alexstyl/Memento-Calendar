@@ -37,6 +37,7 @@ import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -88,9 +89,9 @@ public class Notifier {
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
-            int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
             Contact displayingContact = events.get(0).getContact();
-            largeIcon = loadImageAsync(displayingContact, size, size);
+            int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
+            largeIcon = imageLoader.loadBitmap(displayingContact.getImagePath(), new ImageSize(size, size));
             if (Utils.hasLollipop() && largeIcon != null) {
                 // in Lollipop the notifications is the default to use Rounded Images
                 largeIcon = getCircleBitmap(largeIcon);
@@ -205,10 +206,6 @@ public class Notifier {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
-    }
-
-    private Bitmap loadImageAsync(Contact displayingContact, int width, int height) {
-        return imageLoader.loadBitmap(displayingContact.getImagePath(), width, height);
     }
 
     private boolean supportsPublicNotifications() {

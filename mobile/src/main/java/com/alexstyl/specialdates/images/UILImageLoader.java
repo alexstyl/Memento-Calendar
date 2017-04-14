@@ -67,8 +67,7 @@ public class UILImageLoader implements ImageLoader {
     }
 
     @Override
-    public Bitmap loadBitmap(Uri imagePath, int width, int height) {
-        ImageSize imageSize = new ImageSize(width, height);
+    public Bitmap loadBitmap(Uri imagePath, ImageSize imageSize) {
         return uil.loadImageSync(imagePath.toString(), imageSize);
     }
 

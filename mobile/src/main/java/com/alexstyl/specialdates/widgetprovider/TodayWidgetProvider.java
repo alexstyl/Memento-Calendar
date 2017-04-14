@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.widget.RemoteViews;
 
-import com.alexstyl.android.AndroidDimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
@@ -41,7 +40,10 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     private void getOrCreateImageLoader(Context context) {
         if (imageLoader == null) {
-            imageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), UILImageLoader.createCircleLoader(context.getResources()));
+            imageLoader = new WidgetImageLoader(
+                    AppWidgetManager.getInstance(context),
+                    UILImageLoader.createLoader(context.getResources())
+            );
         }
     }
 

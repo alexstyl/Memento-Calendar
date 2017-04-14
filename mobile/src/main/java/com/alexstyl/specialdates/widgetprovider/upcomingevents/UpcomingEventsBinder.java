@@ -1,7 +1,9 @@
 package com.alexstyl.specialdates.widgetprovider.upcomingevents;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.widget.RemoteViews;
@@ -10,11 +12,13 @@ import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
-import com.alexstyl.specialdates.widgetprovider.WidgetImageLoader;
+import com.alexstyl.specialdates.widgetprovider.AppWidgetId;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.List;
 
@@ -24,24 +28,25 @@ import static android.view.View.VISIBLE;
 public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEventsViewModel> {
 
     private final RemoteViews remoteViews;
-    private final WidgetImageLoader imageLoader;
+    private final ImageLoader imageLoader;
     private final DimensionResources dimensResources;
     private final Context context;
+    @AppWidgetId
+    private final int appWidgetId;
+    private final AppWidgetManager appWidgetManager;
 
-    public static UpcomingEventViewBinder buildFor(String packageName,
-                                                   WidgetImageLoader imageLoader,
-                                                   DimensionResources dimensResources,
-                                                   Context context
-    ) {
-        RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-        return new UpcomingEventsBinder(view, imageLoader, dimensResources, context);
-    }
-
-    private UpcomingEventsBinder(RemoteViews remoteViews, WidgetImageLoader imageLoader, DimensionResources dimensResources, Context context) {
+    public UpcomingEventsBinder(RemoteViews remoteViews,
+                                ImageLoader imageLoader,
+                                DimensionResources dimensResources,
+                                Context context,
+                                @AppWidgetId int appWidgetId,
+                                AppWidgetManager appWidgetManager) {
         this.remoteViews = remoteViews;
         this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
         this.context = context;
+        this.appWidgetId = appWidgetId;
+        this.appWidgetManager = appWidgetManager;
     }
 
     @Override
@@ -92,19 +97,20 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
         }
     }
 
-    private void bindContact(ContactEventViewModel contactEventViewModel,
+    private void bindContact(final ContactEventViewModel contactEventViewModel,
                              @IdRes int contactNameViewId,
                              @IdRes int eventTypeViewId,
-                             @IdRes int avatarViewId) {
+                             @IdRes final int avatarViewId) {
         remoteViews.setTextViewText(contactNameViewId, contactEventViewModel.getContactName());
         remoteViews.setTextViewText(eventTypeViewId, contactEventViewModel.getEventLabel());
         remoteViews.setTextColor(eventTypeViewId, contactEventViewModel.getEventColor());
-        imageLoader.loadPicture(
+        int size = dimensResources.getPixelSize(R.dimen.avatar_size);
+
+        Bitmap image = imageLoader.loadBitmap(
                 contactEventViewModel.getContactImagePath(),
-                avatarViewId,
-                remoteViews,
-                dimensResources.getPixelSize(R.dimen.avatar_size)
+                new ImageSize(size, size)
         );
+        remoteViews.setImageViewBitmap(avatarViewId, image);
     }
 
     @Override

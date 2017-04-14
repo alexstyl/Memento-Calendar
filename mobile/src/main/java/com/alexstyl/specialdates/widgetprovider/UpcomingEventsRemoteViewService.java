@@ -31,15 +31,16 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        @AppWidgetId int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
                 createPeopleEventsProvider(),
-                new WidgetImageLoader(
-                        AppWidgetManager.getInstance(this),
-                        UILImageLoader.createCircleLoader(getResources())
-                ),
+                UILImageLoader.createLoader(getResources()),
                 new AndroidDimensionResources(getResources()),
-                this
+                this,
+                appWidgetId,
+                AppWidgetManager.getInstance(this)
         );
     }
 
