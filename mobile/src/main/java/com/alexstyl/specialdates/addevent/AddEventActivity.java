@@ -32,6 +32,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
@@ -60,7 +61,7 @@ public class AddEventActivity extends ThemedActivity implements Listener, OnEven
         setContentView(R.layout.activity_add_event);
 
         analytics = AnalyticsProvider.getAnalytics(this);
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(getResources());
+        ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);

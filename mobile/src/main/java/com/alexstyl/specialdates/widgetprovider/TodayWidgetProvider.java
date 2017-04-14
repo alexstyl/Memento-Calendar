@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
@@ -39,7 +40,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     private void getOrCreateImageLoader(Context context) {
         if (imageLoader == null) {
-            imageLoader = WidgetImageLoader.newInstance(context.getResources(), AppWidgetManager.getInstance(context));
+            imageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), UILImageLoader.createCircleLoader(context.getResources()));
         }
     }
 
@@ -89,6 +90,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
         int finalHeaderColor = calculator.getColor(Date.today(), date);
+        int avatarSizeInPx = context.getResources().getDimensionPixelSize(R.dimen.widget_avatar_size);
         for (int i = 0; i < N; i++) {
             final int appWidgetId = appWidgetIds[i];
 
@@ -109,7 +111,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
-            imageLoader.loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews);
+            imageLoader.loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
         }
     }
 

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.PauseImageLoadingScrollListener;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.widget.ScrollingLinearLayoutManager;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
@@ -28,7 +29,7 @@ public class UpcomingEventsListView extends RecyclerView {
         setLayoutManager(layoutManager);
 
         Resources resources = getResources();
-        ImageLoader imageLoader = ImageLoader.createCircleThumbnailLoader(resources);
+        ImageLoader imageLoader = UILImageLoader.createCircleLoader(resources);
 
         if (isInEditMode()) {
             return;
