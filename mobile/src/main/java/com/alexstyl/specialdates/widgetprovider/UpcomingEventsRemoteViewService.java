@@ -40,7 +40,8 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
                 new AndroidDimensionResources(getResources()),
                 this,
                 appWidgetId,
-                AppWidgetManager.getInstance(this)
+                AppWidgetManager.getInstance(this),
+                new AndroidColorResources(getResources())
         );
     }
 

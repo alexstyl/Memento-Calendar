@@ -27,6 +27,7 @@ import com.alexstyl.android.AndroidDimensionResources;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
@@ -91,12 +92,11 @@ public class Notifier {
         if (shouldDisplayContactImage(contactCount)) {
             Contact displayingContact = events.get(0).getContact();
             int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
-            largeIcon = imageLoader.loadBitmap(displayingContact.getImagePath(), new ImageSize(size, size));
-            if (Utils.hasLollipop() && largeIcon != null) {
+            Optional<Bitmap> loadedIcon = imageLoader.loadBitmap(displayingContact.getImagePath(), new ImageSize(size, size));
+            if (Utils.hasLollipop() && loadedIcon.isPresent()) {
                 // in Lollipop the notifications is the default to use Rounded Images
-                largeIcon = getCircleBitmap(largeIcon);
+                largeIcon = getCircleBitmap(loadedIcon.get());
             }
-
         }
 
         Intent startIntent = DateDetailsActivity.getStartIntentFromExternal(context, date);
