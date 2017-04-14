@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.support.OnSupportCardClickListener;
 import com.alexstyl.specialdates.support.SupportViewHolder;
@@ -60,7 +61,7 @@ public class DateDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     ) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         Resources resources = context.getResources();
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
+        ImageLoader imageLoader = UILImageLoader.createLoader(resources);
         CardActionRecycler cardActionRecycler = new CardActionRecycler(layoutInflater);
         Optional<NamesInADate> nameday = getNamedayOptionalForDate(dateToDisplay, context);
 

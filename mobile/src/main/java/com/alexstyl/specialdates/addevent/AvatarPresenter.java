@@ -11,6 +11,7 @@ import com.alexstyl.specialdates.images.DecodedImage;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.OnImageLoadedCallback;
+import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
 
 final class AvatarPresenter {
 
@@ -35,7 +36,7 @@ final class AvatarPresenter {
         imageLoader.loadImage(contact.getImagePath(), avatarView, onImageLoadedCallback);
     }
 
-    private final OnImageLoadedCallback onImageLoadedCallback = new OnImageLoadedCallback() {
+    private final OnImageLoadedCallback onImageLoadedCallback = new SimpleOnImageLoadedCallback() {
         @Override
         public void onImageLoaded(Bitmap loadedImage) {
             currentImageLoaded = new Optional<>(loadedImage);

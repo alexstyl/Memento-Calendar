@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.widgetprovider.upcomingevents;
 import android.support.annotation.IdRes;
 import android.widget.RemoteViews;
 
+import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
@@ -19,15 +20,20 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
 
     private final RemoteViews remoteViews;
     private final WidgetImageLoader imageLoader;
+    private final DimensionResources dimensResources;
 
-    public static UpcomingEventViewBinder buildFor(String packageName, WidgetImageLoader imageLoader) {
+    public static UpcomingEventViewBinder buildFor(String packageName,
+                                                   WidgetImageLoader imageLoader,
+                                                   DimensionResources dimensResources
+    ) {
         RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-        return new UpcomingEventsBinder(view, imageLoader);
+        return new UpcomingEventsBinder(view, imageLoader, dimensResources);
     }
 
-    private UpcomingEventsBinder(RemoteViews remoteViews, WidgetImageLoader imageLoader) {
+    private UpcomingEventsBinder(RemoteViews remoteViews, WidgetImageLoader imageLoader, DimensionResources dimensResources) {
         this.remoteViews = remoteViews;
         this.imageLoader = imageLoader;
+        this.dimensResources = dimensResources;
     }
 
     @Override
@@ -76,8 +82,12 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
         remoteViews.setTextViewText(contactNameViewId, contactEventViewModel.getContactName());
         remoteViews.setTextViewText(eventTypeViewId, contactEventViewModel.getEventLabel());
         remoteViews.setTextColor(eventTypeViewId, contactEventViewModel.getEventColor());
-
-        imageLoader.loadPicture(contactEventViewModel.getContactImagePath(), remoteViews, avatarViewId);
+        imageLoader.loadPicture(
+                contactEventViewModel.getContactImagePath(),
+                avatarViewId,
+                remoteViews,
+                dimensResources.getPixelSize(R.dimen.avatar_size)
+        );
     }
 
     @Override

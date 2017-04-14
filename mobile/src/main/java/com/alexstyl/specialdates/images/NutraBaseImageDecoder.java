@@ -1,16 +1,16 @@
 package com.alexstyl.specialdates.images;
 
-import com.nostra13.universalimageloader.BuildConfig;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.decode.ImageDecodingInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-class NutraBaseImageDecoder extends BaseImageDecoder {
+public class NutraBaseImageDecoder extends BaseImageDecoder {
 
-    NutraBaseImageDecoder() {
-        super(BuildConfig.DEBUG);
+
+    public NutraBaseImageDecoder(boolean loggingEnabled) {
+        super(loggingEnabled);
     }
 
     @Override
