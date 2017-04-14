@@ -1,10 +1,15 @@
 package com.alexstyl.specialdates.widgetprovider.upcomingevents;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.widget.RemoteViews;
 
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
@@ -21,23 +26,29 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
     private final RemoteViews remoteViews;
     private final WidgetImageLoader imageLoader;
     private final DimensionResources dimensResources;
+    private final Context context;
 
     public static UpcomingEventViewBinder buildFor(String packageName,
                                                    WidgetImageLoader imageLoader,
-                                                   DimensionResources dimensResources
+                                                   DimensionResources dimensResources,
+                                                   Context context
     ) {
         RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-        return new UpcomingEventsBinder(view, imageLoader, dimensResources);
+        return new UpcomingEventsBinder(view, imageLoader, dimensResources, context);
     }
 
-    private UpcomingEventsBinder(RemoteViews remoteViews, WidgetImageLoader imageLoader, DimensionResources dimensResources) {
+    private UpcomingEventsBinder(RemoteViews remoteViews, WidgetImageLoader imageLoader, DimensionResources dimensResources, Context context) {
         this.remoteViews = remoteViews;
         this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
+        this.context = context;
     }
 
     @Override
     public void bind(UpcomingEventsViewModel viewModel) {
+        Intent startIntent = buildDateDetailsIntentFor(viewModel.getDate());
+
+        remoteViews.setOnClickFillInIntent(R.id.upcoming_events_background, startIntent);
         remoteViews.setTextViewText(R.id.row_widget_upcoming_event_date, viewModel.getDisplayDateLabel());
 
         bind(viewModel.getBankHolidayViewModel());
@@ -47,6 +58,22 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
 
         remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_more, viewModel.getMoreButtonVisibility());
         remoteViews.setTextViewText(R.id.row_widget_upcoming_event_more, viewModel.getMoreButtonLabe());
+    }
+
+    private Intent buildDateDetailsIntentFor(Date date) {
+        Intent startIntent = DateDetailsActivity.getStartIntent(context, date);
+        startIntent.setData(Uri.parse(String.valueOf(date.hashCode())));
+        return startIntent;
+    }
+
+    private void bind(BankHolidayViewModel viewModel) {
+        remoteViews.setTextViewText(R.id.row_widget_upcoming_event_bankholidays, viewModel.getBankHolidayName());
+        remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_bankholidays, viewModel.getBankHolidaysVisibility());
+    }
+
+    private void bind(NamedaysViewModel viewModel) {
+        remoteViews.setTextViewText(R.id.row_widget_upcoming_event_namedays, viewModel.getNamesLabel());
+        remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_namedays, viewModel.getNamedaysVisibility());
     }
 
     private void bind(List<ContactEventViewModel> viewModels) {
@@ -63,16 +90,6 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
         } else {
             remoteViews.setViewVisibility(R.id.row_widget_upcoming_contact_2, GONE);
         }
-    }
-
-    private void bind(BankHolidayViewModel viewModel) {
-        remoteViews.setTextViewText(R.id.row_widget_upcoming_event_bankholidays, viewModel.getBankHolidayName());
-        remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_bankholidays, viewModel.getBankHolidaysVisibility());
-    }
-
-    private void bind(NamedaysViewModel viewModel) {
-        remoteViews.setTextViewText(R.id.row_widget_upcoming_event_namedays, viewModel.getNamesLabel());
-        remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_namedays, viewModel.getNamedaysVisibility());
     }
 
     private void bindContact(ContactEventViewModel contactEventViewModel,
