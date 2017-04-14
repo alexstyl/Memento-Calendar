@@ -6,12 +6,15 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.alexstyl.specialdates.Optional;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import static com.alexstyl.specialdates.Optional.absent;
 
 public class UILImageLoader implements ImageLoader {
 
@@ -67,8 +70,13 @@ public class UILImageLoader implements ImageLoader {
     }
 
     @Override
-    public Bitmap loadBitmap(Uri imagePath, ImageSize imageSize) {
-        return uil.loadImageSync(imagePath.toString(), imageSize);
+    public Optional<Bitmap> loadBitmap(Uri imagePath, ImageSize imageSize) {
+        Bitmap bitmap = uil.loadImageSync(imagePath.toString(), imageSize);
+        if (bitmap == null) {
+            return absent();
+        } else {
+            return new Optional<>(bitmap);
+        }
     }
 
     @Override

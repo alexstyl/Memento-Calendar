@@ -6,6 +6,7 @@ import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
@@ -33,6 +34,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @AppWidgetId
     private final int appWidgetId;
     private final AppWidgetManager appWidgetManager;
+    private final ColorResources colorResources;
 
     UpcomingEventsViewsFactory(String packageName,
                                UpcomingEventsProvider peopleEventsProvider,
@@ -40,7 +42,8 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
                                DimensionResources dimensResources,
                                Context context,
                                @AppWidgetId int appWidgetId,
-                               AppWidgetManager appWidgetManager) {
+                               AppWidgetManager appWidgetManager,
+                               ColorResources colorResources) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
         this.imageLoader = imageLoader;
@@ -48,6 +51,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
         this.context = context;
         this.appWidgetId = appWidgetId;
         this.appWidgetManager = appWidgetManager;
+        this.colorResources = colorResources;
     }
 
     @Override
@@ -82,7 +86,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
             }
             case UpcomingRowViewType.UPCOMING_EVENTS: {
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-                return new UpcomingEventsBinder(remoteViews, imageLoader, dimensResources, context, appWidgetId, appWidgetManager);
+                return new UpcomingEventsBinder(remoteViews, imageLoader, dimensResources, context, appWidgetId, appWidgetManager, colorResources);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());
