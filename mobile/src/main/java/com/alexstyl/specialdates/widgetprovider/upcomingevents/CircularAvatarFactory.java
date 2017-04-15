@@ -37,14 +37,18 @@ public final class CircularAvatarFactory {
             return Optional.absent();
         }
 
-        Bitmap drawingBitmap = Bitmap.createBitmap(targetSize, targetSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(drawingBitmap);
         Bitmap avatar = bitmapOptional.get();
+        Bitmap circleBitmap = Bitmap.createBitmap(avatar.getWidth(), avatar.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(circleBitmap);
         Paint paint = createPaintFrom(avatar);
 
-        float radius = (targetSize / 2f);
-        canvas.drawCircle(radius, radius, radius, paint);
-        return new Optional<>(drawingBitmap);
+        canvas.drawCircle(
+                circleBitmap.getWidth() / 2,
+                circleBitmap.getHeight() / 2,
+                circleBitmap.getWidth() / 2f,
+                paint
+        );
+        return new Optional<>(circleBitmap);
     }
 
     private Paint createPaintFrom(Bitmap avatar) {
@@ -56,22 +60,23 @@ public final class CircularAvatarFactory {
 
     Bitmap createLetterAvatarFor(DisplayName displayName, @Px int viewSize, @Px int letterSize) {
         Bitmap drawingBitmap = Bitmap.createBitmap(viewSize, viewSize, Bitmap.Config.ARGB_8888);
-
         Canvas canvas = new Canvas(drawingBitmap);
-        Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backgroundPaint.setColor(colorResources.getColor(R.color.teal));
 
-        float radius = (viewSize / 2f);
+        Paint backgroundPaint = createBackgroundPaint();
+        float radius = canvas.getWidth() / 2;
         canvas.drawCircle(radius, radius, radius, backgroundPaint);
 
         Paint textPaint = createTextPaint(letterSize);
-
-        int xPos = (canvas.getWidth() / 2);
+        int xPos = canvas.getWidth() / 2;
         int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-
         canvas.drawText(firstLetterOf(displayName), xPos, yPos, textPaint);
-
         return drawingBitmap;
+    }
+
+    private Paint createBackgroundPaint() {
+        Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        backgroundPaint.setColor(colorResources.getColor(R.color.widget_upcoming_avatar_background_color));
+        return backgroundPaint;
     }
 
     private static Paint createTextPaint(@Px int letterSize) {
