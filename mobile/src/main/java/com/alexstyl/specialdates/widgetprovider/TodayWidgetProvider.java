@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.resources.StringResources;
@@ -74,6 +75,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         Date eventDate = contactEvents.getDate();
         Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
         Intent intent = DateDetailsActivity.getStartIntent(context, date);
+        intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
