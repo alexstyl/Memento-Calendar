@@ -5,14 +5,13 @@ import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
+import com.alexstyl.specialdates.widgetprovider.upcomingevents.CircularAvatarFactory;
 import com.alexstyl.specialdates.widgetprovider.upcomingevents.MonthBinder;
 import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventViewBinder;
 import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsBinder;
@@ -25,25 +24,22 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private static final int VIEW_TYPE_COUNT = 3;
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
-    private final ImageLoader imageLoader;
     private final DimensionResources dimensResources;
     private final Context context;
+    private final CircularAvatarFactory avatarFactory;
 
     private List<UpcomingRowViewModel> rows;
-    private final ColorResources colorResources;
 
     UpcomingEventsViewsFactory(String packageName,
                                UpcomingEventsProvider peopleEventsProvider,
-                               ImageLoader imageLoader,
                                DimensionResources dimensResources,
                                Context context,
-                               ColorResources colorResources) {
+                               CircularAvatarFactory avatarFactory) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
-        this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
         this.context = context;
-        this.colorResources = colorResources;
+        this.avatarFactory = avatarFactory;
     }
 
     @Override
@@ -78,7 +74,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
             }
             case UpcomingRowViewType.UPCOMING_EVENTS: {
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-                return new UpcomingEventsBinder(remoteViews, imageLoader, dimensResources, context, colorResources);
+                return new UpcomingEventsBinder(remoteViews, context, avatarFactory, dimensResources);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());

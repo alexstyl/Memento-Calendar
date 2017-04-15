@@ -5,6 +5,7 @@ import android.widget.RemoteViewsService;
 
 import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.android.AndroidDimensionResources;
+import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
@@ -22,6 +23,7 @@ import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModelFactory;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.alexstyl.specialdates.upcoming.UpcomingEventRowViewModelFactory;
+import com.alexstyl.specialdates.widgetprovider.upcomingevents.CircularAvatarFactory;
 import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsProvider;
 
 import java.util.Locale;
@@ -30,13 +32,18 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        UpcomingEventsProvider peopleEventsProvider = createPeopleEventsProvider();
+        DimensionResources dimensResources = new AndroidDimensionResources(getResources());
+        CircularAvatarFactory avatarFactory = new CircularAvatarFactory(
+                UILImageLoader.createLoader(getResources()),
+                new AndroidColorResources(getResources())
+        );
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
-                createPeopleEventsProvider(),
-                UILImageLoader.createLoader(getResources()),
-                new AndroidDimensionResources(getResources()),
+                peopleEventsProvider,
+                dimensResources,
                 this,
-                new AndroidColorResources(getResources())
+                avatarFactory
         );
     }
 

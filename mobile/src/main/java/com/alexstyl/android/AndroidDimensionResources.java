@@ -17,4 +17,5 @@ public final class AndroidDimensionResources implements DimensionResources {
     public int getPixelSize(@DimenRes int id) {
         return resources.getDimensionPixelSize(id);
     }
+
 }

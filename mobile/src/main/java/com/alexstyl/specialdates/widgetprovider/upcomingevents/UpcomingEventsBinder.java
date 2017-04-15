@@ -3,54 +3,43 @@ package com.alexstyl.specialdates.widgetprovider.upcomingevents;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.support.annotation.Px;
 import android.widget.RemoteViews;
 
-import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.List;
 
-import static android.graphics.Shader.TileMode.CLAMP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEventsViewModel> {
 
     private final RemoteViews remoteViews;
-    private final ImageLoader imageLoader;
-    private final DimensionResources dimensResources;
+    private final CircularAvatarFactory avatarFactory;
+    private final DimensionResources dimenResources;
+
     private final Context context;
-    private final ColorResources colorResources;
 
     public UpcomingEventsBinder(RemoteViews remoteViews,
-                                ImageLoader imageLoader,
-                                DimensionResources dimensResources,
                                 Context context,
-                                ColorResources colorResources) {
+                                CircularAvatarFactory avatarFactory,
+                                DimensionResources dimensionResources) {
         this.remoteViews = remoteViews;
-        this.imageLoader = imageLoader;
-        this.dimensResources = dimensResources;
         this.context = context;
-        this.colorResources = colorResources;
+        this.avatarFactory = avatarFactory;
+        this.dimenResources = dimensionResources;
     }
 
     @Override
@@ -113,54 +102,15 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
     }
 
     private Bitmap createAvatarFor(Contact contact) {
-        @Px int targetSize = dimensResources.getPixelSize(R.dimen.widget_upcoming_avatar_size);
-        Optional<Bitmap> avatarBitmap = imageLoader.loadBitmap(contact.getImagePath(), new ImageSize(targetSize, targetSize));
+        @Px int targetSize = dimenResources.getPixelSize(R.dimen.widget_upcoming_avatar_size);
+
+        Optional<Bitmap> avatarBitmap = avatarFactory.circularAvatarFor(contact, targetSize);
         if (avatarBitmap.isPresent()) {
-            return circularAvatarFrom(avatarBitmap.get(), targetSize);
+            return avatarBitmap.get();
         } else {
-            return createLetterAvatarFor(contact, targetSize);
+            int textSize = dimenResources.getPixelSize(R.dimen.widget_upcoming_avatar_text_size);
+            return avatarFactory.createLetterAvatarFor(contact.getDisplayName(), targetSize, textSize);
         }
-    }
-
-    private Bitmap circularAvatarFrom(Bitmap avatar, @Px int viewSize) {
-        Bitmap drawingBitmap = Bitmap.createBitmap(viewSize, viewSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(drawingBitmap);
-        Paint paint = createPaintFrom(avatar);
-
-        float radius = (viewSize / 2f);
-        canvas.drawCircle(radius, radius, radius, paint);
-        return drawingBitmap;
-    }
-
-    private Paint createPaintFrom(Bitmap avatar) {
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        BitmapShader shader = new BitmapShader(avatar, CLAMP, CLAMP);
-        paint.setShader(shader);
-        return paint;
-    }
-
-    private Bitmap createLetterAvatarFor(Contact contact, @Px int viewSize) {
-        Bitmap drawingBitmap = Bitmap.createBitmap(viewSize, viewSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(drawingBitmap);
-        Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        float radius = (viewSize / 2f);
-        backgroundPaint.setColor(colorResources.getColor(R.color.teal));
-        canvas.drawCircle(radius, radius, radius, backgroundPaint);
-
-        Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(dimensResources.getPixelSize(R.dimen.widget_upcoming_avatar_size));
-        canvas.drawText(firstLetterOf(contact.getDisplayName()), radius, radius, textPaint);
-
-        return drawingBitmap;
-    }
-
-    private String firstLetterOf(DisplayName displayName) {
-        String rawDisplayName = displayName.toString();
-        if (rawDisplayName.length() == 0) {
-            return ":)";
-        }
-        return rawDisplayName.substring(0, 1);
     }
 
     @Override
