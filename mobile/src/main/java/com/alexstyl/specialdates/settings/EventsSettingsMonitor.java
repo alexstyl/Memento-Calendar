@@ -6,18 +6,18 @@ import com.alexstyl.android.preferences.PreferenceKeyId;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 
-class EventsSettingsMonitor {
+public class EventsSettingsMonitor {
 
     private final SharedPreferences sharedPreferences;
     private final StringResources stringResources;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    EventsSettingsMonitor(SharedPreferences sharedPreferences, StringResources stringResources) {
+    public EventsSettingsMonitor(SharedPreferences sharedPreferences, StringResources stringResources) {
         this.sharedPreferences = sharedPreferences;
         this.stringResources = stringResources;
     }
 
-    void register(final Listener listener) {
+    public void register(final Listener listener) {
         preferenceChangeListener = createPreferenceChangedListenerFrom(listener);
         sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
@@ -46,11 +46,11 @@ class EventsSettingsMonitor {
         };
     }
 
-    void unregister() {
+    public void unregister() {
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
-    interface Listener {
+    public interface Listener {
         void onSettingUpdated();
     }
 }
