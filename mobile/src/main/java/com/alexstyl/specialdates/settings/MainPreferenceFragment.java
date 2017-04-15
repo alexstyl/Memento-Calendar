@@ -1,20 +1,26 @@
 package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
+import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsWidgetRefresher;
 import com.novoda.notils.caster.Classes;
 
 final public class MainPreferenceFragment extends MementoPreferenceFragment {
@@ -26,7 +32,9 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
     private MainPreferenceActivity activity;
+    private EventsSettingsMonitor monitor;
     private Analytics analytics;
+    private UpcomingEventsWidgetRefresher refresher;
 
     @Override
     public void onAttach(Activity activity) {
@@ -90,6 +98,11 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
                 }
         );
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        StringResources stringResources = new AndroidStringResources(getResources());
+        monitor = new EventsSettingsMonitor(sharedPreferences, stringResources);
+        refresher = new UpcomingEventsWidgetRefresher(AppWidgetManager.getInstance(getActivity()), getActivity());
         reattachThemeDialogIfNeeded();
     }
 
@@ -109,11 +122,16 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         super.onResume();
         namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getLanguageNameResId());
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
+        monitor.register(onSettingUpdatedListener);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        monitor.unregister();
     }
 
     private final ThemeSelectDialog.OnThemeSelectedListener themeSelectedListener = new ThemeSelectDialog.OnThemeSelectedListener() {
-
         @Override
         public void onThemeSelected(MementoTheme theme) {
             analytics.trackAction(new ActionWithParameters(Action.SELECT_THEME, "theme name", theme.getThemeName()));
@@ -127,6 +145,13 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             namedaysPreferences.setEnabledForContactsOnly((boolean) newValue);
             return true;
+        }
+    };
+
+    private final EventsSettingsMonitor.Listener onSettingUpdatedListener = new EventsSettingsMonitor.Listener() {
+        @Override
+        public void onSettingUpdated() {
+            refresher.refreshLists();
         }
     };
 }

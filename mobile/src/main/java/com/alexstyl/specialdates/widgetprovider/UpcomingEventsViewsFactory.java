@@ -56,7 +56,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onCreate() {
-        // onDataSetChanged will be called after this
+        // do nothing
     }
 
     @Override
@@ -120,6 +120,6 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onDestroy() {
-        // no-op
+        // do nothing
     }
 }
