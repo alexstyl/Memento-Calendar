@@ -42,6 +42,7 @@ public class UpcomingWidgetProvider extends AppWidgetProvider {
 
     private PendingIntent pendingIntentFor(Date date, Context context) {
         Intent clickIntent = DateDetailsActivity.getStartIntent(context, date);
+        clickIntent.setData(Uri.parse(String.valueOf(date.hashCode())));
         return PendingIntent.getActivity(context, 1249, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
