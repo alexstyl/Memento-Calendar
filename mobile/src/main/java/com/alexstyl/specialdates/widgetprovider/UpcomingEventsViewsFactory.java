@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.widgetprovider;
 
 import android.annotation.SuppressLint;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -31,9 +30,6 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private final Context context;
 
     private List<UpcomingRowViewModel> rows;
-    @AppWidgetId
-    private final int appWidgetId;
-    private final AppWidgetManager appWidgetManager;
     private final ColorResources colorResources;
 
     UpcomingEventsViewsFactory(String packageName,
@@ -41,16 +37,12 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
                                ImageLoader imageLoader,
                                DimensionResources dimensResources,
                                Context context,
-                               @AppWidgetId int appWidgetId,
-                               AppWidgetManager appWidgetManager,
                                ColorResources colorResources) {
         this.packageName = packageName;
         this.peopleEventsProvider = peopleEventsProvider;
         this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
         this.context = context;
-        this.appWidgetId = appWidgetId;
-        this.appWidgetManager = appWidgetManager;
         this.colorResources = colorResources;
     }
 
@@ -86,7 +78,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
             }
             case UpcomingRowViewType.UPCOMING_EVENTS: {
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-                return new UpcomingEventsBinder(remoteViews, imageLoader, dimensResources, context, appWidgetId, appWidgetManager, colorResources);
+                return new UpcomingEventsBinder(remoteViews, imageLoader, dimensResources, context, colorResources);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());

@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.widgetprovider.upcomingevents;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,7 +25,6 @@ import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
 import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
-import com.alexstyl.specialdates.widgetprovider.AppWidgetId;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.List;
@@ -41,24 +39,17 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
     private final ImageLoader imageLoader;
     private final DimensionResources dimensResources;
     private final Context context;
-    @AppWidgetId
-    private final int appWidgetId;
-    private final AppWidgetManager appWidgetManager;
     private final ColorResources colorResources;
 
     public UpcomingEventsBinder(RemoteViews remoteViews,
                                 ImageLoader imageLoader,
                                 DimensionResources dimensResources,
                                 Context context,
-                                @AppWidgetId int appWidgetId,
-                                AppWidgetManager appWidgetManager,
                                 ColorResources colorResources) {
         this.remoteViews = remoteViews;
         this.imageLoader = imageLoader;
         this.dimensResources = dimensResources;
         this.context = context;
-        this.appWidgetId = appWidgetId;
-        this.appWidgetManager = appWidgetManager;
         this.colorResources = colorResources;
     }
 
