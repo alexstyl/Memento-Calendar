@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.widgetprovider;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
@@ -31,16 +30,12 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        @AppWidgetId int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
                 createPeopleEventsProvider(),
                 UILImageLoader.createLoader(getResources()),
                 new AndroidDimensionResources(getResources()),
                 this,
-                appWidgetId,
-                AppWidgetManager.getInstance(this),
                 new AndroidColorResources(getResources())
         );
     }
