@@ -6,7 +6,7 @@
   <dimen name="widget_upcoming_horizontal_padding">16dp</dimen>
   <color name="widget_upcoming_text_color">#000</color>
 
-  <color name="widget_upcoming_avatar_background_color">@color/teal</color>
+  <color name="widget_upcoming_avatar_background_color">@color/main_red</color>
   <color name="widget_upcoming_avatar_text_color">@color/main_white</color>
 
   <style name="Widget.Upcoming.Header"
@@ -18,7 +18,7 @@
 
   <style name="Widget.Upcoming.TodayDate"
     parent="None">
-    <item name="android:background">@color/nameday_blue</item>
+    <item name="android:background">@color/teal</item>
     <item name="android:textStyle">bold</item>
     <item name="android:fontFamily">sans-serif-condensed</item>
     <item name="android:textColor">@color/main_white</item>
