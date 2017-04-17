@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.util.GreekNameUtils;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 import com.novoda.notils.caster.Views;
 
 public class ColorImageView extends FrameLayout {
@@ -46,7 +46,7 @@ public class ColorImageView extends FrameLayout {
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
 
-        if (Utils.hasJellyBean()) {
+        if (Version.hasJellyBean()) {
             paint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
         }
 

@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.ui.CheatsSheat;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.specialdates.util.AppUtils;
 import com.novoda.notils.caster.Views;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
@@ -142,7 +142,7 @@ public class AboutActivity extends ThemedActivity {
         shareView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.shareApp(v.getContext());
+                AppUtils.shareApp(v.getContext());
             }
         });
     }

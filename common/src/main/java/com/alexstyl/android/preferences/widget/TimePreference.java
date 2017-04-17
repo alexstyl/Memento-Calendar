@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 
-import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.common.R;
 
 public class TimePreference extends DialogPreference {
     private int lastHour = 0;

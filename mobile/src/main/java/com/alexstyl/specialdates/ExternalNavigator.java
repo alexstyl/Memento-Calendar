@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.specialdates.util.AppUtils;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 public class ExternalNavigator {
@@ -79,7 +79,7 @@ public class ExternalNavigator {
 
     public void toEmailSupport() {
         try {
-            Intent intent = Utils.getSupportEmailIntent(activity);
+            Intent intent = AppUtils.getSupportEmailIntent(activity);
             activity.startActivity(intent);
             analytics.trackScreen(Screen.EMAIL_SUPPORT);
         } catch (ActivityNotFoundException ex) {
