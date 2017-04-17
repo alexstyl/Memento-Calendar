@@ -16,7 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexstyl.android.AndroidDateLabelCreator;
+import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;

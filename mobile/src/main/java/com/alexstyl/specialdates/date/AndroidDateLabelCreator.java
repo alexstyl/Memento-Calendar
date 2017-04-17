@@ -1,9 +1,8 @@
-package com.alexstyl.android;
+package com.alexstyl.specialdates.date;
 
 import android.content.Context;
 import android.text.format.DateUtils;
 
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.search.DateLabelCreator;
 
 final public class AndroidDateLabelCreator implements DateLabelCreator {

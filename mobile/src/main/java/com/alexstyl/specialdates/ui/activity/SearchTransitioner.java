@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -84,7 +84,7 @@ final class SearchTransitioner {
     }
 
     private static boolean supportsTransitions() {
-        return Utils.hasKitKat();
+        return Version.hasKitKat();
     }
 
     public void onActivityResumed() {

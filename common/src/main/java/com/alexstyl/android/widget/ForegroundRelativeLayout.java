@@ -10,7 +10,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.common.R;
 
 public class ForegroundRelativeLayout extends RelativeLayout {
     private Drawable mForeground;

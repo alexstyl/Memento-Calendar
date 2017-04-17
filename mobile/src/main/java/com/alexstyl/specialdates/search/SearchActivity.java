@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.alexstyl.android.AndroidDateLabelCreator;
+import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
