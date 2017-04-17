@@ -93,6 +93,6 @@ public final class CircularAvatarFactory {
         if (rawDisplayName.length() == 0) {
             return SMILEY_FACE;
         }
-        return rawDisplayName.substring(0, 1);
+        return rawDisplayName.substring(0, 1).toUpperCase();
     }
 }
