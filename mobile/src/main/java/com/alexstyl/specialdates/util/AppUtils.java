@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -13,41 +12,7 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 
-/**
- * This class contains static utility methods.
- */
-public class Utils {
-
-    // Prevents instantiation.
-    private Utils() {
-    }
-
-    public static boolean hasJellyBean() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-    }
-
-    /**
-     * Emulate the as operator of C#. If the object can be cast to type it will
-     * be casted. If not this returns null.
-     */
-    public static <T> T as(Class<T> type, Object o) {
-        if (type.isInstance(o)) {
-            return type.cast(o);
-        }
-        return null;
-    }
-
-    public static boolean hasKitKat() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-    }
-
-    /**
-     * Uses static final constants to detect if the device's platform version is
-     * Lollipop or later.
-     */
-    public static boolean hasLollipop() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
+public class AppUtils {
 
     public static Intent getEmailIntent(String to, String subject, String text) {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", to, null));
@@ -62,7 +27,7 @@ public class Utils {
 
     public static Intent getSupportEmailIntent(Context context) {
         String subject = context.getString(R.string.app_name) + " " + MementoApplication.getVersionName(context);
-        return getEmailIntent(MementoApplication.DEV_EMAIL, subject, Utils.getDeviceDetailsInfo());
+        return getEmailIntent(MementoApplication.DEV_EMAIL, subject, getDeviceDetailsInfo());
 
     }
 

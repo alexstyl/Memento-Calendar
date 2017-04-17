@@ -24,6 +24,7 @@ import android.text.style.StyleSpan;
 
 import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.android.AndroidDimensionResources;
+import com.alexstyl.android.Version;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
@@ -91,7 +92,7 @@ public class Notifier {
             int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
             Contact displayingContact = events.get(0).getContact();
             largeIcon = loadImageAsync(displayingContact, size, size);
-            if (Utils.hasLollipop() && largeIcon != null) {
+            if (Version.hasLollipop() && largeIcon != null) {
                 // in Lollipop the notifications is the default to use Rounded Images
                 largeIcon = getCircleBitmap(largeIcon);
             }
@@ -212,7 +213,7 @@ public class Notifier {
     }
 
     private boolean supportsPublicNotifications() {
-        return Utils.hasLollipop();
+        return Version.hasLollipop();
     }
 
     private boolean shouldDisplayContactImage(int contactCount) {
