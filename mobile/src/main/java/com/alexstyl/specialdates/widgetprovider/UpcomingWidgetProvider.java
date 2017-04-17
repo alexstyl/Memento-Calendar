@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.ui.activity.MainActivity;
 
 public class UpcomingWidgetProvider extends AppWidgetProvider {
 
@@ -32,7 +33,7 @@ public class UpcomingWidgetProvider extends AppWidgetProvider {
             remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, listPendingIntent);
 
             remoteViews.setTextViewText(R.id.widget_upcoming_events_date, dateLabel);
-            PendingIntent todayDatePendingIntent = pendingIntentFor(date, context);
+            PendingIntent todayDatePendingIntent = pendingIntentFor(context);
             remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, todayDatePendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
@@ -40,9 +41,8 @@ public class UpcomingWidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    private PendingIntent pendingIntentFor(Date date, Context context) {
-        Intent clickIntent = DateDetailsActivity.getStartIntent(context, date);
-        clickIntent.setData(Uri.parse(String.valueOf(date.hashCode())));
+    private PendingIntent pendingIntentFor(Context context) {
+        Intent clickIntent = new Intent(context, MainActivity.class);
         return PendingIntent.getActivity(context, 1249, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
