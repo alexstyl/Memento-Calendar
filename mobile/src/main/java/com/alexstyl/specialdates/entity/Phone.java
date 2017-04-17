@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.provider.Telephony;
 import android.telephony.PhoneNumberUtils;
 
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 
 public class Phone extends DataType {
 
@@ -18,7 +18,7 @@ public class Phone extends DataType {
         if (o == null)
             return false;
 
-        DataType other = Utils.as(DataType.class, o);
+        DataType other = Version.as(DataType.class, o);
 
         if (other == null)
             return false;
@@ -59,7 +59,7 @@ public class Phone extends DataType {
     @SuppressLint("NewApi")
     public void sendText(Context context) throws ActivityNotFoundException {
 
-        if (Utils.hasKitKat()) {
+        if (Version.hasKitKat()) {
             // forward to the default sms app if we're in kitkat
 
             String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context);

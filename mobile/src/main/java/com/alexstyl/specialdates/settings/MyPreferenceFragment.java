@@ -7,7 +7,7 @@ import android.support.v4.preference.PreferenceFragment;
 
 import com.alexstyl.specialdates.ui.base.MementoPreferenceActivity;
 import com.alexstyl.specialdates.util.GreekNameUtils;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 import com.novoda.notils.caster.Classes;
 
 public class MyPreferenceFragment extends PreferenceFragment {
@@ -32,7 +32,7 @@ public class MyPreferenceFragment extends PreferenceFragment {
         int count = getPreferenceScreen().getPreferenceCount();
         for (int i = 0; i < count; i++) {
             Preference preference = getPreferenceScreen().getPreference(i);
-            PreferenceCategory category = Utils.as(PreferenceCategory.class, preference);
+            PreferenceCategory category = Version.as(PreferenceCategory.class, preference);
             if (category != null && category.getTitle() != null) {
 
                 CharSequence title = category.getTitle().toString();

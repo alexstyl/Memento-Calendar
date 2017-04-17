@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.specialdates.util.AppUtils;
 import com.alexstyl.specialdates.wear.WearSyncService;
 import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 
@@ -118,7 +118,7 @@ public class DebugFragment extends MementoPreferenceFragment {
                 return "date debug";
             }
         };
-        Utils.openIntentSafely(getActivity(), i);
+        AppUtils.openIntentSafely(getActivity(), i);
     }
 
     private final DatePickerDialog.OnDateSetListener onDailyReminderDateSelectedListener = new DatePickerDialog.OnDateSetListener() {

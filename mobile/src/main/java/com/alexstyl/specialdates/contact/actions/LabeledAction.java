@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.specialdates.util.AppUtils;
 
 /**
  * An action that has a label. In full contact cards, the actions that can be performed are labeled on the card.
@@ -40,7 +40,7 @@ public class LabeledAction {
      * @param context The context to use
      */
     public boolean fire(Context context) {
-        return Utils.openIntentSafely(context, action);
+        return AppUtils.openIntentSafely(context, action);
     }
 
     @DrawableRes
