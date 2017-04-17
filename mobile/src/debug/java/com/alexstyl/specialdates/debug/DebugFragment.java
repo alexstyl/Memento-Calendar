@@ -12,16 +12,16 @@ import android.provider.CalendarContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.Utils;
-import com.alexstyl.specialdates.wear.WearSyncService;
-import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
+import com.alexstyl.specialdates.wear.WearSyncWidgetRefresher;
 
 import java.util.Calendar;
 
@@ -45,7 +45,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_widget).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                TodayWidgetProvider.updateWidgets(getActivity());
+                ExternalWidgetRefresher.get(getActivity()).refreshAllWidgets();
                 Toast.makeText(getActivity(), "Widget(s) refreshed", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -92,7 +92,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                WearSyncService.startService(getActivity());
+                new WearSyncWidgetRefresher(getActivity()).refreshView();
                 return true;
             }
         });

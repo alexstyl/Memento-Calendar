@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.widgetprovider;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -22,16 +21,10 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
-public class TodayWidgetProvider extends AppWidgetProvider {
+public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private WidgetImageLoader imageLoader;
     private StringResources stringResources;
-
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-        updateWidgets(context);
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -147,18 +140,6 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
-    }
-
-    public static void updateWidgets(Context context) {
-        Intent intent = new Intent(context, TodayWidgetProvider.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-
-        int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(
-                new ComponentName(context, TodayWidgetProvider.class)
-        );
-
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        context.sendBroadcast(intent);
     }
 
 }

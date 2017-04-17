@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 
-public class UpcomingWidgetProvider extends AppWidgetProvider {
+public class UpcomingEventsAppWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -43,6 +43,6 @@ public class UpcomingWidgetProvider extends AppWidgetProvider {
 
     private PendingIntent pendingIntentFor(Context context) {
         Intent clickIntent = new Intent(context, MainActivity.class);
-        return PendingIntent.getActivity(context, 1249, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
