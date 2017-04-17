@@ -147,7 +147,7 @@
       android:exported="false" />
 
     <receiver
-      android:name="com.alexstyl.specialdates.receiver.EventReceiver"
+      android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver"
       android:exported="false">
       <intent-filter>
         <action android:name="android.intent.action.LOCALE_CHANGED" />
@@ -164,7 +164,7 @@
     </receiver>
 
     <receiver
-      android:name="com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider"
+      android:name="com.alexstyl.specialdates.widgetprovider.TodayAppWidgetProvider"
       android:exported="false"
       android:label="@string/label_widget_textonly">
       <intent-filter>
@@ -177,7 +177,7 @@
     </receiver>
 
     <receiver
-      android:name="com.alexstyl.specialdates.widgetprovider.UpcomingWidgetProvider"
+      android:name="com.alexstyl.specialdates.widgetprovider.UpcomingEventsAppWidgetProvider"
       android:label="@string/widget_upcoming_title">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

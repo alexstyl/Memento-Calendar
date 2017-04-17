@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -9,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
@@ -20,7 +20,6 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsWidgetRefresher;
 import com.novoda.notils.caster.Classes;
 
 final public class MainPreferenceFragment extends MementoPreferenceFragment {
@@ -34,7 +33,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private MainPreferenceActivity activity;
     private EventsSettingsMonitor monitor;
     private Analytics analytics;
-    private UpcomingEventsWidgetRefresher refresher;
+    private ExternalWidgetRefresher refresher;
 
     @Override
     public void onAttach(Activity activity) {
@@ -102,7 +101,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         StringResources stringResources = new AndroidStringResources(getResources());
         monitor = new EventsSettingsMonitor(sharedPreferences, stringResources);
-        refresher = new UpcomingEventsWidgetRefresher(AppWidgetManager.getInstance(getActivity()), getActivity());
+        refresher = ExternalWidgetRefresher.get(getActivity());
         reattachThemeDialogIfNeeded();
     }
 
@@ -151,7 +150,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private final EventsSettingsMonitor.Listener onSettingUpdatedListener = new EventsSettingsMonitor.Listener() {
         @Override
         public void onSettingUpdated() {
-            refresher.refreshLists();
+            refresher.refreshAllWidgets();
         }
     };
 }

@@ -24,7 +24,6 @@ import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
-import com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -138,14 +137,6 @@ public class MainActivity extends ThemedActivity implements DatePickerDialogFrag
     public void onUserInteraction() {
         super.onUserInteraction();
         notifier.cancelAllEvents();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (isFinishing()) {
-            TodayWidgetProvider.updateWidgets(this);
-        }
     }
 
     private final OnClickListener onToolbarClickListener = new OnClickListener() {
