@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.wear;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.Optional;
@@ -22,11 +21,6 @@ public class WearSyncService extends IntentService {
 
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
-    }
-
-    public static void startService(Context context) {
-        Intent service = new Intent(context, WearSyncService.class);
-        context.startService(service);
     }
 
     @Override

@@ -29,6 +29,7 @@
 
   <style name="Upcoming.DateTitle">
     <item name="android:paddingTop">24dp</item>
+    <item name="android:fontFamily">sans-serif-condensed</item>
     <item name="android:paddingBottom">16dp</item>
 
     <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>

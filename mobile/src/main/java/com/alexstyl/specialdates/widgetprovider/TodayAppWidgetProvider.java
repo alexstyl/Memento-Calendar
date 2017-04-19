@@ -3,10 +3,10 @@ package com.alexstyl.specialdates.widgetprovider;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.resources.StringResources;
@@ -21,16 +21,10 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
-public class TodayWidgetProvider extends AppWidgetProvider {
+public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private WidgetImageLoader imageLoader;
     private StringResources stringResources;
-
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-        updateWidgets(context);
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -40,7 +34,10 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
     private void getOrCreateImageLoader(Context context) {
         if (imageLoader == null) {
-            imageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), UILImageLoader.createCircleLoader(context.getResources()));
+            imageLoader = new WidgetImageLoader(
+                    AppWidgetManager.getInstance(context),
+                    UILImageLoader.createLoader(context.getResources())
+            );
         }
     }
 
@@ -71,6 +68,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
         Date eventDate = contactEvents.getDate();
         Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
         Intent intent = DateDetailsActivity.getStartIntent(context, date);
+        intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
@@ -96,7 +94,7 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
-            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming);
+            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_simple);
 
             remoteViews.setTextViewText(R.id.upcoming_widget_header, title);
             remoteViews.setTextViewText(R.id.upcoming_widget_events_text, label);
@@ -142,18 +140,6 @@ public class TodayWidgetProvider extends AppWidgetProvider {
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
-    }
-
-    public static void updateWidgets(Context context) {
-        Intent intent = new Intent(context, TodayWidgetProvider.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-
-        int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(
-                new ComponentName(context, TodayWidgetProvider.class)
-        );
-
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        context.sendBroadcast(intent);
     }
 
 }

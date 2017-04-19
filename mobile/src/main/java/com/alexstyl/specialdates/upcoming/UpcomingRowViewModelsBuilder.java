@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-final class UpcomingRowViewModelsBuilder {
+public final class UpcomingRowViewModelsBuilder {
 
     private static final List<UpcomingRowViewModel> NO_CELEBRATIONS = Collections.emptyList();
     private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.emptyList();
@@ -26,13 +26,13 @@ final class UpcomingRowViewModelsBuilder {
     private final UpcomingEventRowViewModelFactory upcomingRowViewModelFactory;
     private final UpcomingEventsAdRules adRules;
 
-    UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingEventRowViewModelFactory upcomingRowViewModelFactory, UpcomingEventsAdRules adRules) {
+    public UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingEventRowViewModelFactory upcomingRowViewModelFactory, UpcomingEventsAdRules adRules) {
         this.duration = duration;
         this.upcomingRowViewModelFactory = upcomingRowViewModelFactory;
         this.adRules = adRules;
     }
 
-    UpcomingRowViewModelsBuilder withContactEvents(List<ContactEvent> contactEvents) {
+    public UpcomingRowViewModelsBuilder withContactEvents(List<ContactEvent> contactEvents) {
         for (ContactEvent contactEvent : contactEvents) {
             Date date = contactEvent.getDate();
             this.contactEvents.addValue(new AnnualDate(date), contactEvent);
@@ -40,7 +40,7 @@ final class UpcomingRowViewModelsBuilder {
         return this;
     }
 
-    UpcomingRowViewModelsBuilder withNamedays(List<NamesInADate> namedays) {
+    public UpcomingRowViewModelsBuilder withNamedays(List<NamesInADate> namedays) {
         for (NamesInADate nameday : namedays) {
             Date date = nameday.getDate();
             this.namedays.put(new AnnualDate(date), nameday);
@@ -48,7 +48,7 @@ final class UpcomingRowViewModelsBuilder {
         return this;
     }
 
-    UpcomingRowViewModelsBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
+    public UpcomingRowViewModelsBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
         for (BankHoliday bankHoliday : bankHolidays) {
             Date date = bankHoliday.getDate();
             this.bankHolidays.put(new AnnualDate(date), bankHoliday);

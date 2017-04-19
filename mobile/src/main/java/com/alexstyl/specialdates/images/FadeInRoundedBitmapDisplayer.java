@@ -22,12 +22,15 @@ class FadeInRoundedBitmapDisplayer extends CircleBitmapDisplayer {
 
     @Override
     public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
-        if ((loadedFrom == LoadedFrom.NETWORK) || (loadedFrom == LoadedFrom.DISC_CACHE)) {
+        if (imageAware.getWrappedView() != null || isFreshImage(loadedFrom)) {
             fadeInBitmap(bitmap, (ImageView) imageAware.getWrappedView());
         } else {
             super.display(bitmap, imageAware, loadedFrom);
         }
+    }
 
+    private boolean isFreshImage(LoadedFrom loadedFrom) {
+        return (loadedFrom == LoadedFrom.NETWORK) || (loadedFrom == LoadedFrom.DISC_CACHE);
     }
 
     private void fadeInBitmap(Bitmap bitmap, ImageView wrappedView) {

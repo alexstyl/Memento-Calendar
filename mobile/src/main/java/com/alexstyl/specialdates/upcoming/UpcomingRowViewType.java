@@ -15,7 +15,6 @@ import static com.alexstyl.specialdates.upcoming.UpcomingRowViewType.*;
         AD
 })
 public @interface UpcomingRowViewType {
-
     int MONTH = 0;
     int UPCOMING_EVENTS = 1;
     int YEAR = 2;
