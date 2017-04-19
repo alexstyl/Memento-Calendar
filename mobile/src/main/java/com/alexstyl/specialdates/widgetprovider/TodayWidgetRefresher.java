@@ -18,7 +18,7 @@ public class TodayWidgetRefresher implements WidgetRefresher {
     }
 
     @Override
-    public void refreshView() {
+    public void refreshWidget() {
         Intent intent = new Intent(context, TodayAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

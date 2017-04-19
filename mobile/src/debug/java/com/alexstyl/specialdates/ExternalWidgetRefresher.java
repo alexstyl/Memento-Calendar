@@ -35,7 +35,7 @@ public final class ExternalWidgetRefresher {
 
     public void refreshAllWidgets() {
         for (WidgetRefresher view : views) {
-            view.refreshView();
+            view.refreshWidget();
         }
     }
 }
