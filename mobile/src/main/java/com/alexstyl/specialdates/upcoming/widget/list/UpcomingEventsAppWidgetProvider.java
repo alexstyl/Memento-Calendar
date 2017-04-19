@@ -12,13 +12,24 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 
 public class UpcomingEventsAppWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
 
+        PermissionChecker permissionChecker = new PermissionChecker(context);
+        if (permissionChecker.canReadAndWriteContacts()) {
+            showUpcomingEvents(context, appWidgetManager, appWidgetIds);
+        } else {
+            askForContactReadPermission(context, appWidgetManager, appWidgetIds);
+        }
+    }
+
+    private void showUpcomingEvents(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Date date = Date.today();
         String dateLabel = DateDisplayStringCreator.INSTANCE.fullyFormattedDate(date);
 
@@ -33,16 +44,25 @@ public class UpcomingEventsAppWidgetProvider extends AppWidgetProvider {
             remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, listPendingIntent);
 
             remoteViews.setTextViewText(R.id.widget_upcoming_events_date, dateLabel);
-            PendingIntent todayDatePendingIntent = pendingIntentFor(context);
+            PendingIntent todayDatePendingIntent = pendingIntentToMain(context);
             remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, todayDatePendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    private PendingIntent pendingIntentFor(Context context) {
+    private PendingIntent pendingIntentToMain(Context context) {
         Intent clickIntent = new Intent(context, MainActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void askForContactReadPermission(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        for (int appWidgetId : appWidgetIds) {
+
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events_need_permissions);
+            remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_permission_background, pendingIntentToMain(context));
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        }
+
     }
 }
