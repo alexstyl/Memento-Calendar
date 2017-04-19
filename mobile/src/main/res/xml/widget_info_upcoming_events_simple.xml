@@ -7,10 +7,8 @@
   android:minResizeHeight="@dimen/widgetHeight"
   android:minResizeWidth="270dp"
   android:minWidth="270dp"
-  android:previewImage="@drawable/widgetpreview_upcoming"
+  android:previewImage="@drawable/widget_preview_upcoming_simple"
   android:resizeMode="horizontal"
   android:updatePeriodMillis="43200000"
-  android:widgetCategory="home_screen">
+  android:widgetCategory="home_screen|keyguard" />
 
-
-</appwidget-provider>

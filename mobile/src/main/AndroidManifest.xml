@@ -173,7 +173,7 @@
 
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/widget_info_simple" />
+        android:resource="@xml/widget_info_upcoming_events_simple" />
     </receiver>
 
     <receiver
@@ -185,7 +185,7 @@
 
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/widget_provider_upcoming_events" />
+        android:resource="@xml/widget_info_upcoming_events_list" />
     </receiver>
 
     <service
