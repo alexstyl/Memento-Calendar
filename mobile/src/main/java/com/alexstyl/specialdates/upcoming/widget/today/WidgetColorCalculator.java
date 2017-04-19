@@ -1,11 +1,11 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.today;
 
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
 import com.alexstyl.specialdates.date.Date;
 
-public class WidgetColorCalculator {
+class WidgetColorCalculator {
 
     private static final int modifier = 15;
     private static final double max = 100.00;
@@ -14,7 +14,7 @@ public class WidgetColorCalculator {
     @ColorInt
     private final int baseColor;
 
-    public WidgetColorCalculator(int baseColor) {
+    WidgetColorCalculator(int baseColor) {
         this.baseColor = baseColor;
     }
 
@@ -27,7 +27,7 @@ public class WidgetColorCalculator {
         return baseColor;
     }
 
-    public int getColorForDaysDifference(int dayDiff) {
+    private int getColorForDaysDifference(int dayDiff) {
         float modifier = getModifier(dayDiff);
         return blend(baseColor, highlightColor, modifier);
     }

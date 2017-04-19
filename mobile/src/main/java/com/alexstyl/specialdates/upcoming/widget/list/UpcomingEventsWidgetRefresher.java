@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider.upcomingevents;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.wear.WidgetRefresher;
-import com.alexstyl.specialdates.widgetprovider.UpcomingEventsAppWidgetProvider;
 
 public class UpcomingEventsWidgetRefresher implements WidgetRefresher {
 

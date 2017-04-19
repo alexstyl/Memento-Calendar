@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.android.widget;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

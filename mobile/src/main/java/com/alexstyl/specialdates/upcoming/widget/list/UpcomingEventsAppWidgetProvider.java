@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

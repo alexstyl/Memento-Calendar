@@ -1,10 +1,11 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.today;
 
 import android.appwidget.AppWidgetManager;
 import android.graphics.Bitmap;
 import android.support.annotation.Px;
 import android.widget.RemoteViews;
 
+import com.alexstyl.android.widget.AppWidgetId;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -13,7 +14,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.List;
 
-public class WidgetImageLoader {
+class WidgetImageLoader {
 
     private final AppWidgetManager appWidgetManager;
     private final ImageLoader imageLoader;
