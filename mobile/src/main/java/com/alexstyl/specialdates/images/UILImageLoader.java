@@ -39,7 +39,7 @@ public class UILImageLoader implements ImageLoader {
                                           .build());
     }
 
-    UILImageLoader(DisplayImageOptions circleImageOptions) {
+    private UILImageLoader(DisplayImageOptions circleImageOptions) {
         this.displayImageOptions = circleImageOptions;
         this.uil = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
     }
@@ -70,7 +70,7 @@ public class UILImageLoader implements ImageLoader {
     }
 
     @Override
-    public Optional<Bitmap> loadBitmap(Uri imagePath, ImageSize imageSize) {
+    public Optional<Bitmap> loadBitmapSync(Uri imagePath, ImageSize imageSize) {
         Bitmap bitmap = uil.loadImageSync(imagePath.toString(), imageSize);
         if (bitmap == null) {
             return absent();
