@@ -20,11 +20,11 @@ public class UpcomingEventsWidgetRefresher implements WidgetRefresher {
 
     @Override
     public void refreshWidget() {
-        Intent intent = new Intent(context, UpcomingEventsAppWidgetProvider.class);
+        Intent intent = new Intent(context, UpcomingEventsScrollingAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
         int ids[] = widgetManager.getAppWidgetIds(
-                new ComponentName(context, UpcomingEventsAppWidgetProvider.class)
+                new ComponentName(context, UpcomingEventsScrollingAppWidgetProvider.class)
         );
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
