@@ -9,8 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
@@ -104,9 +102,6 @@ public class UpcomingWidgetConfigureActivity extends ThemedActivity {
         if (item.getItemId() == R.id.action_done) {
             saveConfigurations();
             finishAsSuccess();
-            if (BuildConfig.DEBUG) {
-                ExternalWidgetRefresher.get(this).refreshAllWidgets();
-            }
             return true;
         }
         return super.onOptionsItemSelected(item);

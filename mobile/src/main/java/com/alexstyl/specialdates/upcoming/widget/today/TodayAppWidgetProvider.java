@@ -17,6 +17,7 @@ import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
@@ -42,7 +43,16 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     @Override
-    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+        if (new PermissionChecker(context).canReadAndWriteContacts()) {
+            updateTodayWidget(context, appWidgetManager, appWidgetIds);
+        } else {
+            promptForContactPermission(context, appWidgetManager, appWidgetIds);
+        }
+    }
+
+    private void updateTodayWidget(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context)) {
             @Override
             void onNextDateLoaded(ContactEventsOnADate events) {
@@ -94,7 +104,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
-            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_simple);
+            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_today);
 
             remoteViews.setTextViewText(R.id.upcoming_widget_header, title);
             remoteViews.setTextViewText(R.id.upcoming_widget_events_text, label);
@@ -118,16 +128,12 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     public void onUpdateNoEventsFound(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
-
-        for (int i = 0; i < N; i++) {
-            int appWidgetId = appWidgetIds[i];
-
+        for (int appWidgetId : appWidgetIds) {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             RemoteViews views = new RemoteViews(
                     context.getPackageName(),
-                    R.layout.widget_simple_nocontacts
+                    R.layout.widget_today_nocontacts
             );
             Intent intent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -140,6 +146,17 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
+    }
+
+    private void promptForContactPermission(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_prompt_permissions);
+        remoteViews.setOnClickPendingIntent(R.id.widget_prompt_permission_background, pendingIntentToMain(context));
+        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+    }
+
+    private PendingIntent pendingIntentToMain(Context context) {
+        Intent clickIntent = new Intent(context, MainActivity.class);
+        return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }

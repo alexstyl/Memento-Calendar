@@ -4,7 +4,7 @@ import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 
-public interface UpcomingEventViewBinder<T extends UpcomingRowViewModel> {
+interface UpcomingEventViewBinder<T extends UpcomingRowViewModel> {
 
     void bind(T viewModel);
 
