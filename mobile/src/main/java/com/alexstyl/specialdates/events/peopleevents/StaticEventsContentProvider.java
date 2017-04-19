@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
@@ -51,13 +52,15 @@ public class StaticEventsContentProvider extends ContentProvider {
         ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_MEMENTO);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
+        ExternalWidgetRefresher widgetRefresher = ExternalWidgetRefresher.get(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
                 new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
                 new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, mementoMarshaller, calculator),
                 new EventPreferences(context),
                 new ContactsObserver(contentResolver, new Handler()),
                 new NamedaySettingsMonitor(namedayPreferences),
-                new PermissionChecker(context)
+                new PermissionChecker(context),
+                widgetRefresher
         );
         peopleEventsUpdater.register();
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
