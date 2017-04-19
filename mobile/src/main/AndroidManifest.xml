@@ -177,7 +177,7 @@
     </receiver>
 
     <receiver
-      android:name=".upcoming.widget.list.UpcomingEventsAppWidgetProvider"
+      android:name=".upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider"
       android:label="@string/widget_upcoming_title_list">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
