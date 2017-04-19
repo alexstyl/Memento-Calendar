@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,11 +11,6 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.CircularAvatarFactory;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.MonthBinder;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventViewBinder;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsBinder;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsProvider;
 
 import java.util.List;
 

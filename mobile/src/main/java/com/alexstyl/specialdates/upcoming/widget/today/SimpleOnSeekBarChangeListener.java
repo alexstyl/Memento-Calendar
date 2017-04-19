@@ -1,8 +1,8 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.today;
 
 import android.widget.SeekBar;
 
-public class SimpleOnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+class SimpleOnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

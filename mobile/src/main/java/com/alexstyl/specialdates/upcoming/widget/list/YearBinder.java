@@ -1,10 +1,9 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.upcoming.YearHeaderViewModel;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventViewBinder;
 
 class YearBinder implements UpcomingEventViewBinder<YearHeaderViewModel> {
 

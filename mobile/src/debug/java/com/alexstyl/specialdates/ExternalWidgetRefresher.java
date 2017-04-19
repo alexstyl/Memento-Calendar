@@ -5,8 +5,8 @@ import android.content.Context;
 
 import com.alexstyl.specialdates.wear.WearSyncWidgetRefresher;
 import com.alexstyl.specialdates.wear.WidgetRefresher;
-import com.alexstyl.specialdates.widgetprovider.TodayWidgetRefresher;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsWidgetRefresher;
+import com.alexstyl.specialdates.upcoming.widget.today.TodayWidgetRefresher;
+import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsWidgetRefresher;
 
 import java.util.Arrays;
 import java.util.List;

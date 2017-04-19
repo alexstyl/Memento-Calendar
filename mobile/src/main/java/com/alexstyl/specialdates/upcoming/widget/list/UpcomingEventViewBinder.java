@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider.upcomingevents;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.widget.RemoteViews;
 
