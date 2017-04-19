@@ -52,7 +52,7 @@ public class AndroidContactsProvider implements ContactsProvider {
     }
 
     @Override
-    public List<Contact> fetchAllDeviceContacts() {
+    public List<Contact> getAllContacts() {
         cache.evictAll();
         List<Contact> allContacts = deviceContactsQuery.getAllContacts();
         for (Contact allContact : allContacts) {
