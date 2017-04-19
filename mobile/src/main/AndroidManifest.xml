@@ -122,7 +122,7 @@
     </activity>
 
     <activity
-      android:name="com.alexstyl.specialdates.widgetprovider.UpcomingWidgetConfigureActivity"
+      android:name=".upcoming.widget.today.UpcomingWidgetConfigureActivity"
       android:label="@string/Configure_widget"
       android:noHistory="true">
       <intent-filter>
@@ -164,7 +164,7 @@
     </receiver>
 
     <receiver
-      android:name="com.alexstyl.specialdates.widgetprovider.TodayAppWidgetProvider"
+      android:name=".upcoming.widget.today.TodayAppWidgetProvider"
       android:exported="false"
       android:label="@string/label_widget_textonly">
       <intent-filter>
@@ -177,7 +177,7 @@
     </receiver>
 
     <receiver
-      android:name="com.alexstyl.specialdates.widgetprovider.UpcomingEventsAppWidgetProvider"
+      android:name=".upcoming.widget.list.UpcomingEventsAppWidgetProvider"
       android:label="@string/widget_upcoming_title">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -189,7 +189,7 @@
     </receiver>
 
     <service
-      android:name=".widgetprovider.UpcomingEventsRemoteViewService"
+      android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
       android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     <provider

@@ -1,8 +1,8 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import com.alexstyl.specialdates.upcoming.UpcomingEventsAdRules;
 
-class NoAdRules implements UpcomingEventsAdRules {
+class NoAds implements UpcomingEventsAdRules {
 
     @Override
     public boolean shouldAppendAdForEndOfMonth(int index) {

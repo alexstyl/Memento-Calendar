@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;
@@ -23,8 +23,6 @@ import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModelFactory;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.alexstyl.specialdates.upcoming.UpcomingEventRowViewModelFactory;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.CircularAvatarFactory;
-import com.alexstyl.specialdates.widgetprovider.upcomingevents.UpcomingEventsProvider;
 
 import java.util.Locale;
 
@@ -65,7 +63,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
                         new NamedaysViewModelFactory(today),
                         MonthLabels.forLocale(Locale.getDefault())
                 ),
-                new NoAdRules()
+                new NoAds()
         );
     }
 
