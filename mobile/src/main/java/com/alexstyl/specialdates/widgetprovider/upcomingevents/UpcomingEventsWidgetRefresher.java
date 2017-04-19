@@ -20,7 +20,7 @@ public class UpcomingEventsWidgetRefresher implements WidgetRefresher {
     }
 
     @Override
-    public void refreshView() {
+    public void refreshWidget() {
         Intent intent = new Intent(context, UpcomingEventsAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

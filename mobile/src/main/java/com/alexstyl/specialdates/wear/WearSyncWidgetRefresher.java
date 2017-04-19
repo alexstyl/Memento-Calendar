@@ -12,7 +12,7 @@ public class WearSyncWidgetRefresher implements WidgetRefresher {
     }
 
     @Override
-    public void refreshView() {
+    public void refreshWidget() {
         Intent service = new Intent(context, WearSyncService.class);
         context.startService(service);
     }
