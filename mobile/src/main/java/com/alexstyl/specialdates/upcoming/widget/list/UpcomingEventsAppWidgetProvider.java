@@ -59,8 +59,8 @@ public class UpcomingEventsAppWidgetProvider extends AppWidgetProvider {
     private void askForContactReadPermission(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
 
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events_need_permissions);
-            remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_permission_background, pendingIntentToMain(context));
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_prompt_permissions);
+            remoteViews.setOnClickPendingIntent(R.id.widget_prompt_permission_background, pendingIntentToMain(context));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
 
