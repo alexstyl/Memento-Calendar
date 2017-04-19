@@ -8,12 +8,12 @@ import android.widget.RemoteViews;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.OnImageLoadedCallback;
+import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.List;
 
-class WidgetImageLoader {
+public class WidgetImageLoader {
 
     private final AppWidgetManager appWidgetManager;
     private final ImageLoader imageLoader;
@@ -29,10 +29,10 @@ class WidgetImageLoader {
 
     private void tryToFetchImageFor(final List<Contact> contacts,
                                     final int contactIndex,
-                                    final int appWidgetId,
+                                    @AppWidgetId final int appWidgetId,
                                     final RemoteViews views,
                                     @Px final int size) {
-        imageLoader.loadImage(contacts.get(contactIndex).getImagePath(), new ImageSize(size, size), new OnImageLoadedCallback() {
+        imageLoader.loadImage(contacts.get(contactIndex).getImagePath(), new ImageSize(size, size), new SimpleOnImageLoadedCallback() {
 
             @Override
             public void onLoadingFailed() {

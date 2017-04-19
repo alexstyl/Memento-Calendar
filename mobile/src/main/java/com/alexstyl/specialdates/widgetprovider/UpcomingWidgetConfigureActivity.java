@@ -10,9 +10,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
@@ -104,7 +105,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedActivity {
             saveConfigurations();
             finishAsSuccess();
             if (BuildConfig.DEBUG) {
-                TodayWidgetProvider.updateWidgets(this);
+                ExternalWidgetRefresher.get(this).refreshAllWidgets();
             }
             return true;
         }
@@ -117,10 +118,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedActivity {
     }
 
     private void finishAsSuccess() {
-
         setResult(RESULT_OK, new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId));
-
-//        setResult(RESULT_OK);
         finish();
     }
 

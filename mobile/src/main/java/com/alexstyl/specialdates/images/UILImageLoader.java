@@ -6,12 +6,15 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.alexstyl.specialdates.Optional;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import static com.alexstyl.specialdates.Optional.absent;
 
 public class UILImageLoader implements ImageLoader {
 
@@ -36,7 +39,7 @@ public class UILImageLoader implements ImageLoader {
                                           .build());
     }
 
-    UILImageLoader(DisplayImageOptions circleImageOptions) {
+    private UILImageLoader(DisplayImageOptions circleImageOptions) {
         this.displayImageOptions = circleImageOptions;
         this.uil = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
     }
@@ -67,9 +70,13 @@ public class UILImageLoader implements ImageLoader {
     }
 
     @Override
-    public Bitmap loadBitmap(Uri imagePath, int width, int height) {
-        ImageSize imageSize = new ImageSize(width, height);
-        return uil.loadImageSync(imagePath.toString(), imageSize);
+    public Optional<Bitmap> loadBitmapSync(Uri imagePath, ImageSize imageSize) {
+        Bitmap bitmap = uil.loadImageSync(imagePath.toString(), imageSize);
+        if (bitmap == null) {
+            return absent();
+        } else {
+            return new Optional<>(bitmap);
+        }
     }
 
     @Override

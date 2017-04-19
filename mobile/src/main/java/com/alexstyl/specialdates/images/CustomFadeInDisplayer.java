@@ -15,11 +15,11 @@ import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 class CustomFadeInDisplayer implements BitmapDisplayer {
 
     private static final int FADE_IN_TIME = 200;
-    private final Resources mResources;
+    private final Resources resources;
     private final ColorDrawable transparent;
 
     CustomFadeInDisplayer(Resources resources) {
-        this.mResources = resources;
+        this.resources = resources;
         this.transparent = new ColorDrawable(resources.getColor(android.R.color.transparent));
     }
 
@@ -36,7 +36,7 @@ class CustomFadeInDisplayer implements BitmapDisplayer {
                     new TransitionDrawable(
                             new Drawable[]{
                                     previous,
-                                    new BitmapDrawable(mResources, bitmap)
+                                    new BitmapDrawable(resources, bitmap)
                             }
                     );
 
