@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
@@ -16,20 +17,22 @@ class PeopleEventsUpdater {
     private final ContactsObserver contactsObserver;
     private final PermissionChecker permissionChecker;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
+    private final ExternalWidgetRefresher widgetRefresher;
 
     PeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher,
                         NamedayDatabaseRefresher namedayDatabaseRefresher,
                         EventPreferences eventPreferences,
                         ContactsObserver contactsObserver,
                         NamedaySettingsMonitor namedayMonitor,
-                        PermissionChecker permissionChecker
-    ) {
+                        PermissionChecker permissionChecker,
+                        ExternalWidgetRefresher widgetRefresher) {
         this.peopleEventsDatabaseRefresher = peopleEventsDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
         this.eventPreferences = eventPreferences;
         this.contactsObserver = contactsObserver;
         this.namedayMonitor = namedayMonitor;
         this.permissionChecker = permissionChecker;
+        this.widgetRefresher = widgetRefresher;
     }
 
     void updateEventsIfNeeded() {
@@ -41,6 +44,7 @@ class PeopleEventsUpdater {
         synchronized (REFRESH_LOCK) {
             if (isFirstTimeRunning()) {
                 peopleEventsDatabaseRefresher.refreshEvents();
+                widgetRefresher.refreshAllWidgets();
                 namedayDatabaseRefresher.refreshNamedaysIfEnabled();
                 eventPreferences.markEventsAsInitialised();
             } else {
@@ -59,6 +63,7 @@ class PeopleEventsUpdater {
 
         if (wereContactsUpdated) {
             peopleEventsDatabaseRefresher.refreshEvents();
+            widgetRefresher.refreshAllWidgets();
         }
         if (wereContactsUpdated || wereNamedaysSettingsUpdated) {
             namedayDatabaseRefresher.refreshNamedaysIfEnabled();
