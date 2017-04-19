@@ -166,7 +166,7 @@
     <receiver
       android:name=".upcoming.widget.today.TodayAppWidgetProvider"
       android:exported="false"
-      android:label="@string/label_widget_textonly">
+      android:label="@string/widget_upcoming_title_simple">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
@@ -178,7 +178,7 @@
 
     <receiver
       android:name=".upcoming.widget.list.UpcomingEventsAppWidgetProvider"
-      android:label="@string/widget_upcoming_title">
+      android:label="@string/widget_upcoming_title_list">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
