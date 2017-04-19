@@ -40,6 +40,7 @@
 
   <style name="Widget.Upcoming.DateTitle"
     parent="None">
+    <item name="android:textColor">@color/widget_upcoming_text_color</item>
     <item name="android:fontFamily">sans-serif-condensed</item>
     <item name="android:textSize">18sp</item>
     <item name="android:paddingTop">@dimen/widget_upcoming_vertical_padding</item>
