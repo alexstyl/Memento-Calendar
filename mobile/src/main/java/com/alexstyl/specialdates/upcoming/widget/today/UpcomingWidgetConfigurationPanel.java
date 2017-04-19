@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.widgetprovider;
+package com.alexstyl.specialdates.upcoming.widget.today;
 
 import android.content.Context;
 import android.util.AttributeSet;
