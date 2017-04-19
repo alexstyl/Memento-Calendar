@@ -15,7 +15,7 @@ public interface ImageLoader {
 
     void loadImage(Uri imagePath, ImageSize targetImageSize, OnImageLoadedCallback callback);
 
-    Optional<Bitmap> loadBitmap(Uri imagePath, ImageSize imageSize);
+    Optional<Bitmap> loadBitmapSync(Uri imagePath, ImageSize imageSize);
 
     void resume();
 

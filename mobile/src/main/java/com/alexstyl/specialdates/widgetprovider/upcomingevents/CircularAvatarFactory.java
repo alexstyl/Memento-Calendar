@@ -32,7 +32,7 @@ public final class CircularAvatarFactory {
     }
 
     Optional<Bitmap> circularAvatarFor(Contact contact, @Px int targetSize) {
-        Optional<Bitmap> bitmapOptional = imageLoader.loadBitmap(contact.getImagePath(), new ImageSize(targetSize, targetSize));
+        Optional<Bitmap> bitmapOptional = imageLoader.loadBitmapSync(contact.getImagePath(), new ImageSize(targetSize, targetSize));
         if (!bitmapOptional.isPresent()) {
             return Optional.absent();
         }
