@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ui.base.ThemedActivity;
 import com.novoda.notils.caster.Views;
@@ -45,6 +46,7 @@ public class ContactPermissionActivity extends ThemedActivity {
         if (requestCode == REQUEST_CONTACT_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             setResult(RESULT_OK);
             finish();
+            ExternalWidgetRefresher.get(getApplicationContext()).refreshAllWidgets();
         }
     }
 }
