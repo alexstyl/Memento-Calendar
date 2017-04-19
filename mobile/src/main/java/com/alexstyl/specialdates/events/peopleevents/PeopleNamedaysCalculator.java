@@ -38,7 +38,7 @@ public class PeopleNamedaysCalculator {
 
     public List<ContactEvent> loadDeviceStaticNamedays() {
         List<ContactEvent> namedayEvents = new ArrayList<>();
-        List<Contact> contacts = contactsProvider.fetchAllDeviceContacts();
+        List<Contact> contacts = contactsProvider.getAllContacts();
         for (Contact contact : contacts) {
             DisplayName displayName = contact.getDisplayName();
             HashSet<Date> namedays = new HashSet<>();
@@ -70,7 +70,7 @@ public class PeopleNamedaysCalculator {
 
     public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {
         List<ContactEvent> namedayEvents = new ArrayList<>();
-        for (Contact contact : contactsProvider.fetchAllDeviceContacts()) {
+        for (Contact contact : contactsProvider.getAllContacts()) {
             for (String firstName : contact.getDisplayName().getFirstNames()) {
                 NameCelebrations nameDays = getSpecialNamedaysOf(firstName);
                 if (nameDays.containsNoDate()) {

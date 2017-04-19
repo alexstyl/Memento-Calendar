@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.contact;
 import java.util.List;
 
 public interface ContactsProvider {
-    List<Contact> fetchAllDeviceContacts();
+    List<Contact> getAllContacts();
 
     Contact getOrCreateContact(long contactId) throws ContactNotFoundException;
 }
