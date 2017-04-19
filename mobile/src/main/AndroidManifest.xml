@@ -166,26 +166,26 @@
     <receiver
       android:name=".upcoming.widget.today.TodayAppWidgetProvider"
       android:exported="false"
-      android:label="@string/label_widget_textonly">
+      android:label="@string/widget_upcoming_title_simple">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
 
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/widget_info_simple" />
+        android:resource="@xml/widget_info_upcoming_events_simple" />
     </receiver>
 
     <receiver
       android:name=".upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider"
-      android:label="@string/widget_upcoming_title">
+      android:label="@string/widget_upcoming_title_list">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
 
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/widget_provider_upcoming_events" />
+        android:resource="@xml/widget_info_upcoming_events_list" />
     </receiver>
 
     <service

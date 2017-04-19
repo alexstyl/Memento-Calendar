@@ -4,8 +4,8 @@
   android:initialLayout="@layout/widget_upcoming_events"
   android:minHeight="180dp"
   android:minWidth="180dp"
-  android:previewImage="@mipmap/ic_launcher"
+  android:previewImage="@drawable/widget_preview_upcoming_scrolling"
   android:resizeMode="horizontal|vertical"
   android:updatePeriodMillis="43200000"
-  android:widgetCategory="home_screen" />
+  android:widgetCategory="home_screen|keyguard" />
 
