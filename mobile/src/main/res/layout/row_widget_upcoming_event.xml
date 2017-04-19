@@ -12,7 +12,6 @@
     style="@style/Widget.Upcoming.DateTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="#000"
     tools:text="Monday, 13 January" />
 
 
