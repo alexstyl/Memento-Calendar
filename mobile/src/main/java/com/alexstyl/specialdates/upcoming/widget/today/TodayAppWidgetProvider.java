@@ -11,6 +11,8 @@ import android.widget.RemoteViews;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
@@ -26,6 +28,18 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private WidgetImageLoader imageLoader;
     private StringResources stringResources;
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {

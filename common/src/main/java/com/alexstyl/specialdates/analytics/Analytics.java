@@ -4,8 +4,10 @@ import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 public interface Analytics {
+    @Deprecated
     void trackAction(Action action);
 
+    @Deprecated
     void trackAction(ActionWithParameters event);
 
     void trackScreen(Screen screen);
@@ -35,4 +37,8 @@ public interface Analytics {
     void trackDailyReminderDisabled();
 
     void trackDailyReminderTimeUpdated(TimeOfDay timeOfDay);
+
+    void trackWidgetAdded(Widget widget);
+
+    void trackWidgetRemoved(Widget widget);
 }

@@ -9,13 +9,27 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
 
-public class UpcomingEventsAppWidgetProvider extends AppWidgetProvider {
+public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider {
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SCROLLING);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SCROLLING);
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
