@@ -24,7 +24,7 @@ public class ContactsSearchTest {
     @Test
     public void ensureThatCounterIsRespected() {
         ContactsProvider contactsProvider = mock(ContactsProvider.class);
-        when(contactsProvider.fetchAllDeviceContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin"));
+        when(contactsProvider.getAllContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin"));
         ContactsSearch search = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
 
         List<Contact> oneContact = search.searchForContacts("Alex", 1);
@@ -37,7 +37,7 @@ public class ContactsSearchTest {
     @Test
     public void canFindFirstname() {
         ContactsProvider contactsProvider = mock(ContactsProvider.class);
-        when(contactsProvider.fetchAllDeviceContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou"));
+        when(contactsProvider.getAllContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou"));
         ContactsSearch search = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
 
         List<Contact> oneContact = search.searchForContacts("Anna", 1);
@@ -48,7 +48,7 @@ public class ContactsSearchTest {
     @Test
     public void canFindSurname() {
         ContactsProvider contactsProvider = mock(ContactsProvider.class);
-        when(contactsProvider.fetchAllDeviceContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou"));
+        when(contactsProvider.getAllContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou"));
         ContactsSearch search = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
 
         List<Contact> oneContact = search.searchForContacts("Papadopoulou", 1);
@@ -59,7 +59,7 @@ public class ContactsSearchTest {
     @Test
     public void returnEmptyForNoMatches() {
         ContactsProvider contactsProvider = mock(ContactsProvider.class);
-        when(contactsProvider.fetchAllDeviceContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou"));
+        when(contactsProvider.getAllContacts()).thenReturn(contacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou"));
         ContactsSearch search = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
         List<Contact> results = search.searchForContacts("there is no contact with a name like this", 1);
         assertThat(results).isEmpty();
@@ -68,7 +68,7 @@ public class ContactsSearchTest {
     @Test
     public void returnEmptyForNoContacts() {
         ContactsProvider contactsProvider = mock(ContactsProvider.class);
-        when(contactsProvider.fetchAllDeviceContacts()).thenReturn(Collections.<Contact>emptyList());
+        when(contactsProvider.getAllContacts()).thenReturn(Collections.<Contact>emptyList());
         ContactsSearch search = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
         List<Contact> results = search.searchForContacts("there is no contact with a name like this", 1);
         assertThat(results).isEmpty();
