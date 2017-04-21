@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
+import com.alexstyl.specialdates.util.ContactsObserver;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     private boolean mustScrollToPosition = true;
     private Analytics analytics;
     private ContactPermissionRequest permissions;
+    private ContactsObserver contactsObserver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,13 @@ public class UpcomingEventsFragment extends MementoFragment {
             @Override
             public void onSettingUpdated() {
                 mustScrollToPosition = true;
+                startLoadingData();
+            }
+        });
+        contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
+        contactsObserver.registerWith(new ContactsObserver.Callback() {
+            @Override
+            public void onContactsUpdated() {
                 startLoadingData();
             }
         });
@@ -187,5 +197,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     public void onDestroy() {
         super.onDestroy();
         monitor.unregister();
+        contactsObserver.unregister();
     }
 }

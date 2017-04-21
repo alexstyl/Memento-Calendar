@@ -24,7 +24,7 @@ final class ContactsSearch {
             return matchedContacts;
         }
         searchQuery = searchQuery.trim();
-        List<Contact> allContacts = contactsProvider.fetchAllDeviceContacts();
+        List<Contact> allContacts = contactsProvider.getAllContacts();
         if (allContacts.size() == 0) {
             return matchedContacts;
         }
