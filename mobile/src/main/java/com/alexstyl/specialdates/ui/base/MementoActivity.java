@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public class MementoActivity extends AppCompatActivity {
     }
 
     protected boolean supportsTransitions() {
-        return Utils.hasKitKat();
+        return Version.hasKitKat();
     }
 
 }

@@ -4,7 +4,8 @@ package com.alexstyl.specialdates.entity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
+import com.alexstyl.specialdates.util.AppUtils;
 
 public class Email extends DataType {
 
@@ -13,7 +14,7 @@ public class Email extends DataType {
         if (o == null)
             return false;
 
-        DataType other = Utils.as(DataType.class, o);
+        DataType other = Version.as(DataType.class, o);
 
         if (other == null)
             return false;
@@ -33,7 +34,7 @@ public class Email extends DataType {
     }
 
     public void sendMail(Context context) {
-        Intent emailIntent = Utils.getEmailIntent(data, null, null);
+        Intent emailIntent = AppUtils.getEmailIntent(data, null, null);
         context.startActivity(emailIntent);
     }
 

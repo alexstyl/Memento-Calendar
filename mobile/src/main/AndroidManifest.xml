@@ -122,7 +122,7 @@
     </activity>
 
     <activity
-      android:name="com.alexstyl.specialdates.widgetprovider.UpcomingWidgetConfigureActivity"
+      android:name=".upcoming.widget.today.UpcomingWidgetConfigureActivity"
       android:label="@string/Configure_widget"
       android:noHistory="true">
       <intent-filter>
@@ -147,7 +147,7 @@
       android:exported="false" />
 
     <receiver
-      android:name="com.alexstyl.specialdates.receiver.EventReceiver"
+      android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver"
       android:exported="false">
       <intent-filter>
         <action android:name="android.intent.action.LOCALE_CHANGED" />
@@ -164,22 +164,38 @@
     </receiver>
 
     <receiver
-      android:name="com.alexstyl.specialdates.widgetprovider.TodayWidgetProvider"
+      android:name=".upcoming.widget.today.TodayAppWidgetProvider"
       android:exported="false"
-      android:label="@string/label_widget_textonly">
+      android:label="@string/widget_upcoming_title_simple">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
 
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/widget_info_simple" />
+        android:resource="@xml/widget_info_upcoming_events_simple" />
     </receiver>
+
+    <receiver
+      android:name=".upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider"
+      android:label="@string/widget_upcoming_title_list">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/widget_info_upcoming_events_list" />
+    </receiver>
+
+    <service
+      android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
+      android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     <provider
       android:name=".events.peopleevents.StaticEventsContentProvider"
       android:authorities="com.alexstyl.specialdates.peopleeventsprovider"
-      android:exported="false"
+      android:exported="true"
       android:grantUriPermissions="true"
       android:label="Events Provider" />
 

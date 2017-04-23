@@ -9,6 +9,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.widget.ActionButton;
 
 import java.util.List;

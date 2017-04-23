@@ -1,5 +1,10 @@
 ext {
-    android_support_version = '25.1.1'
+    android_support_version = '25.3.1'
     play_services_version = '10.0.1'
+
+    androidCompileSdkVersion = 25
+    androidBuildToolsVersion = '25.0.2'
+    androidVersionCode = 70
+    androidVersionName = '8.0'
 }
 

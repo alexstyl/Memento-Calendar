@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.AndroidContactsProvider;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
-import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.search.NameMatcher;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
@@ -39,7 +39,7 @@ public class ContactSuggestionView extends LinearLayout {
         }
         ContactsProvider contactsProvider = AndroidContactsProvider.get(getContext());
         ContactsSearch contactsSearch = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
-        final ContactsAdapter adapter = new ContactsAdapter(contactsSearch, ImageLoader.createCircleThumbnailLoader(getResources()));
+        final ContactsAdapter adapter = new ContactsAdapter(contactsSearch, UILImageLoader.createCircleLoader(getResources()));
         autoCompleteView.setAdapter(adapter);
         autoCompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

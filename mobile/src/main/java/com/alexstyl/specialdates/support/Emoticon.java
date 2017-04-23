@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.support;
 
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 
 public enum Emoticon {
     SMILEY("\uD83D\uDE03", ":)");
@@ -21,7 +21,7 @@ public enum Emoticon {
     }
 
     private boolean supportsEmojis() {
-        return Utils.hasKitKat();
+        return Version.hasKitKat();
     }
 
 }

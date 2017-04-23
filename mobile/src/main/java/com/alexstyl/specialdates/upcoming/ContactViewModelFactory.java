@@ -9,11 +9,11 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 
-final class ContactViewModelFactory {
+public final class ContactViewModelFactory {
     private final ColorResources colorResources;
     private final StringResources stringResources;
 
-    ContactViewModelFactory(ColorResources colorResources, StringResources stringResources) {
+    public ContactViewModelFactory(ColorResources colorResources, StringResources stringResources) {
         this.colorResources = colorResources;
         this.stringResources = stringResources;
     }
@@ -21,11 +21,12 @@ final class ContactViewModelFactory {
     ContactEventViewModel createViewModelFor(Typeface typeface, Date date, ContactEvent contactEvent) {
         Contact contact = contactEvent.getContact();
         return new ContactEventViewModel(
-                contact, View.VISIBLE,
+                contact,
+                View.VISIBLE,
                 contact.getDisplayName().toString(),
                 contactEvent.getLabel(date, stringResources),
                 colorResources.getColor(contactEvent.getType().getColorRes()),
-                ((int) contact.getContactID()),
+                (int) contact.getContactID(),
                 contact.getImagePath(),
                 typeface
         );

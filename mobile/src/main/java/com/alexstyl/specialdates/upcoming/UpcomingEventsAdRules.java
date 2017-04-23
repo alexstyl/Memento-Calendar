@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
-interface UpcomingEventsAdRules {
+public interface UpcomingEventsAdRules {
     boolean shouldAppendAdForEndOfMonth(int index);
 
     void onNewMonthAdded(int index);

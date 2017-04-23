@@ -100,6 +100,27 @@ class MixPanel implements Analytics {
         mixpanel.track("daily reminder time updated", properties);
     }
 
+    @Override
+    public void trackWidgetAdded(Widget widget) {
+        mixpanel.track("widget_added", widgetNameOf(widget));
+    }
+
+    private static JSONObject widgetNameOf(Widget widget) {
+        JSONObject properties = new JSONObject();
+        try {
+            properties.put("widget_name", widget.getWidgetName());
+            return properties;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
+
+    @Override
+    public void trackWidgetRemoved(Widget widget) {
+        mixpanel.track("widget_removed", widgetNameOf(widget));
+    }
+
     private static JSONObject createJSONfor(ActionWithParameters event) {
         JSONObject properties = new JSONObject();
         try {
