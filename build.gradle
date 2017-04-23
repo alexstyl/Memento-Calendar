@@ -2,6 +2,7 @@
 
 buildscript {
     apply from: 'secret.gradle'
+    apply from: 'versions.gradle'
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
