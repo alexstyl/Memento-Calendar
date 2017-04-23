@@ -5,15 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.alexstyl.android.AndroidColorResources;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
+import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
+import java.util.Locale;
 
 class UpcomingEventsFetcher {
 
@@ -42,13 +48,28 @@ class UpcomingEventsFetcher {
             if (loaderID == LOADER_ID_DATES) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(context);
                 NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
-                BankHolidayProvider bankHolidayProvider = new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE));
+                AndroidStringResources stringResources = new AndroidStringResources(context.getResources());
+                AndroidColorResources colorResources = new AndroidColorResources(context.getResources());
                 return new UpcomingEventsLoader(
                         context,
                         startingDate,
-                        peopleEventsProvider,
-                        bankHolidayProvider,
-                        namedayCalendarProvider
+                        new UpcomingEventsProvider(
+                                peopleEventsProvider,
+                                NamedayPreferences.newInstance(context),
+                                BankHolidaysPreferences.newInstance(context),
+                                new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                                namedayCalendarProvider,
+                                new UpcomingEventRowViewModelFactory(
+                                        startingDate,
+                                        new UpcomingDateStringCreator(stringResources, startingDate),
+                                        new ContactViewModelFactory(colorResources, stringResources),
+                                        stringResources,
+                                        new BankHolidayViewModelFactory(),
+                                        new NamedaysViewModelFactory(startingDate),
+                                        MonthLabels.forLocale(Locale.getDefault())
+                                ),
+                                new UpcomingEventsFreeUserAdRules()
+                        )
                 );
             }
             throw new DeveloperError("Unhandled loaderID: " + loaderID);
