@@ -42,7 +42,7 @@ public class UpcomingEventsFragment extends MementoFragment {
     private ProgressBar progressBar;
     private TextView emptyView;
     private EventsSettingsMonitor monitor;
-    private UpcomingEventsProvider upcomingEventsProvider;
+    private UpcomingEventsAsyncProvider upcomingEventsAsyncProvider;
     private boolean mustScrollToPosition = true;
     private Analytics analytics;
     private ContactPermissionRequest permissions;
@@ -53,7 +53,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         analytics = AnalyticsProvider.getAnalytics(getActivity());
-        upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
+        upcomingEventsAsyncProvider = UpcomingEventsAsyncProvider.newInstance(getActivity(), onEventsLoadedListener);
         PermissionChecker checker = new PermissionChecker(getActivity());
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         permissions = new ContactPermissionRequest(navigator, checker, callbacks);
@@ -119,7 +119,7 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private void startLoadingData() {
         showLoading();
-        upcomingEventsProvider.reloadData();
+        upcomingEventsAsyncProvider.reloadData();
     }
 
     private void showLoading() {
@@ -180,7 +180,7 @@ public class UpcomingEventsFragment extends MementoFragment {
         }
     };
 
-    private final UpcomingEventsProvider.LoadingListener onEventsLoadedListener = new UpcomingEventsProvider.LoadingListener() {
+    private final UpcomingEventsAsyncProvider.LoadingListener onEventsLoadedListener = new UpcomingEventsAsyncProvider.LoadingListener() {
         @Override
         public void onUpcomingEventsLoaded(List<UpcomingRowViewModel> dates) {
             upcomingEventsListView.updateWith(dates, listClickListener);

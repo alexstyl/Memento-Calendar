@@ -6,18 +6,18 @@ import com.alexstyl.specialdates.date.Date;
 
 import java.util.List;
 
-class UpcomingEventsProvider {
+class UpcomingEventsAsyncProvider {
 
     private final UpcomingEventsFetcher fetcher;
 
     private LoadingListener listener;
 
-    static UpcomingEventsProvider newInstance(FragmentActivity activity, LoadingListener onEventsLoadedListener) {
+    static UpcomingEventsAsyncProvider newInstance(FragmentActivity activity, LoadingListener onEventsLoadedListener) {
         UpcomingEventsFetcher upcomingEventsFetcher = new UpcomingEventsFetcher(activity.getSupportLoaderManager(), activity, Date.today());
-        return new UpcomingEventsProvider(upcomingEventsFetcher, onEventsLoadedListener);
+        return new UpcomingEventsAsyncProvider(upcomingEventsFetcher, onEventsLoadedListener);
     }
 
-    private UpcomingEventsProvider(UpcomingEventsFetcher fetcher, LoadingListener listener) {
+    private UpcomingEventsAsyncProvider(UpcomingEventsFetcher fetcher, LoadingListener listener) {
         this.fetcher = fetcher;
         this.listener = listener;
     }
