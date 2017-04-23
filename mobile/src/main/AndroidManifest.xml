@@ -12,6 +12,9 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <uses-permission android:name="android.permission.VIBRATE" />
 
+  <!-- The BLUETOOTH permission is used for mixpanel-->
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+
   <uses-feature
     android:name="android.hardware.camera"
     android:required="false" />
