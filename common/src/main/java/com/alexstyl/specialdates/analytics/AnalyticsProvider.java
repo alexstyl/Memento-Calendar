@@ -11,7 +11,7 @@ public class AnalyticsProvider {
 
     public static Analytics getAnalytics(Context context) {
         if (ANALYTICS == null) {
-            ANALYTICS = createMixpanelAnalytics(context);
+            ANALYTICS = createMixpanelAnalytics(context.getApplicationContext());
         }
         return ANALYTICS;
     }
