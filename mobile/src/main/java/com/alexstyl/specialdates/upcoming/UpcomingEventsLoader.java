@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Handler;
 
 import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
@@ -21,7 +20,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
-import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +29,9 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
 
     private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
+    private final Date startingPeriod;
     private final PeopleEventsProvider peopleEventsProvider;
     private final NamedayPreferences namedayPreferences;
-    private final Date startingPeriod;
-    private final ContactsObserver contactsObserver;
     private final BankHolidaysPreferences bankHolidaysPreferences;
     private final BankHolidayProvider bankHolidayProvider;
     private final NamedayCalendarProvider namedayCalendarProvider;
@@ -43,23 +40,14 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
                          Date startingPeriod,
                          PeopleEventsProvider peopleEventsProvider,
                          BankHolidayProvider bankHolidayProvider,
-                         NamedayCalendarProvider namedayCalendarProvider
-    ) {
+                         NamedayCalendarProvider namedayCalendarProvider) {
         super(context);
         this.peopleEventsProvider = peopleEventsProvider;
         this.namedayPreferences = NamedayPreferences.newInstance(context);
         this.startingPeriod = startingPeriod;
         this.bankHolidayProvider = bankHolidayProvider;
         this.namedayCalendarProvider = namedayCalendarProvider;
-        this.contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
         this.bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
-        setupContactsObserver();
-    }
-
-    @Override
-    protected void onUnregisterObserver() {
-        super.onUnregisterObserver();
-        contactsObserver.unregister();
     }
 
     @Override
@@ -79,19 +67,23 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
         ContactViewModelFactory contactViewModelFactory = new ContactViewModelFactory(colorResources, stringResources);
         Date today = Date.today();
         UpcomingDateStringCreator dateCreator = new UpcomingDateStringCreator(stringResources, today);
+        BankHolidayViewModelFactory bankHolidayViewModelFactory = new BankHolidayViewModelFactory();
+        NamedaysViewModelFactory namedaysViewModelFactory = new NamedaysViewModelFactory(today);
         UpcomingEventRowViewModelFactory upcomingRowViewModelFactory = new UpcomingEventRowViewModelFactory(
                 today,
                 dateCreator,
                 contactViewModelFactory,
                 stringResources,
-                new BankHolidayViewModelFactory(),
-                new NamedaysViewModelFactory(today),
+                bankHolidayViewModelFactory,
+                namedaysViewModelFactory,
                 MonthLabels.forLocale(Locale.getDefault())
         );
+
+        UpcomingEventsAdRules adRules = new UpcomingEventsFreeUserAdRules();
         UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(
                 period,
                 upcomingRowViewModelFactory,
-                new UpcomingEventsFreeUserAdRules()
+                adRules
         )
                 .withContactEvents(contactEvents);
 
@@ -131,17 +123,6 @@ class UpcomingEventsLoader extends SimpleAsyncTaskLoader<List<UpcomingRowViewMod
 
     private boolean shouldLoadNamedays() {
         return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
-    }
-
-    private void setupContactsObserver() {
-        contactsObserver.registerWith(
-                new ContactsObserver.Callback() {
-                    @Override
-                    public void onContactsUpdated() {
-                        onContentChanged();
-                    }
-                }
-        );
     }
 
     public ContentResolver getContentResolver() {

@@ -2,6 +2,8 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +17,18 @@ import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
+import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
+import com.alexstyl.specialdates.util.ContactsObserver;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;
@@ -36,23 +41,37 @@ public class UpcomingEventsFragment extends MementoFragment {
     private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
     private TextView emptyView;
-    private SettingsMonitor monitor;
+    private EventsSettingsMonitor monitor;
     private UpcomingEventsProvider upcomingEventsProvider;
     private boolean mustScrollToPosition = true;
     private Analytics analytics;
     private ContactPermissionRequest permissions;
+    private ContactsObserver contactsObserver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         analytics = AnalyticsProvider.getAnalytics(getActivity());
-        monitor = SettingsMonitor.newInstance(getActivity());
-        monitor.initialise();
         upcomingEventsProvider = UpcomingEventsProvider.newInstance(getActivity(), onEventsLoadedListener);
         PermissionChecker checker = new PermissionChecker(getActivity());
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         permissions = new ContactPermissionRequest(navigator, checker, callbacks);
+        monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));
+        monitor.register(new EventsSettingsMonitor.Listener() {
+            @Override
+            public void onSettingUpdated() {
+                mustScrollToPosition = true;
+                startLoadingData();
+            }
+        });
+        contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
+        contactsObserver.registerWith(new ContactsObserver.Callback() {
+            @Override
+            public void onContactsUpdated() {
+                startLoadingData();
+            }
+        });
     }
 
     @Override
@@ -93,17 +112,8 @@ public class UpcomingEventsFragment extends MementoFragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkIfUserSettingsChanged();
         if (!permissions.permissionIsPresent()) {
             permissions.requestForPermission();
-        }
-    }
-
-    private void checkIfUserSettingsChanged() {
-        if (monitor.dataWasUpdated()) {
-            mustScrollToPosition = true;
-            startLoadingData();
-            monitor.refreshData();
         }
     }
 
@@ -183,4 +193,10 @@ public class UpcomingEventsFragment extends MementoFragment {
         }
     };
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        monitor.unregister();
+        contactsObserver.unregister();
+    }
 }

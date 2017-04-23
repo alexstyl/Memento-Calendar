@@ -24,9 +24,9 @@ public class PermissionChecker {
         return hasPermission(context, READ_EXTERNAL_STORAGE);
     }
 
-    private static boolean hasPermission(Context context, String readContacts) {
+    private static boolean hasPermission(Context context, String permission) {
         try {
-            return ActivityCompat.checkSelfPermission(context, readContacts) == PackageManager.PERMISSION_GRANTED;
+            return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
         } catch (RuntimeException ex) {
             // some devices randomly throw an exception to this point. just treat as if the permission is not there
             ErrorTracker.track(ex);

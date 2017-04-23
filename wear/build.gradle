@@ -22,7 +22,6 @@ android {
             minifyEnabled false
         }
     }
-    buildToolsVersion '25.0.0'
 }
 
 dependencies {

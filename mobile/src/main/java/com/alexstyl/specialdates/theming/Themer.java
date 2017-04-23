@@ -5,7 +5,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.alexstyl.specialdates.ui.base.MementoActivity;
-import com.alexstyl.specialdates.util.Utils;
+import com.alexstyl.android.Version;
 
 public class Themer {
 
@@ -31,7 +31,7 @@ public class Themer {
         MementoTheme theme = preferences.getSelectedTheme();
         activity.setTheme(theme.androidTheme());
 
-        if (Utils.hasLollipop()) {
+        if (Version.hasLollipop()) {
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 

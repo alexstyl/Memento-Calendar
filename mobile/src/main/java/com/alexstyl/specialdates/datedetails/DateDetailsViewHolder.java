@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.R;
-import com.alexstyl.resources.StringResources;
 import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -37,7 +37,7 @@ abstract class DateDetailsViewHolder extends RecyclerView.ViewHolder {
         String displayNameString = contact.getDisplayName().toString();
         avatar.setLetter(displayNameString);
         displayName.setText(displayNameString);
-        imageLoader.displayThumbnail(contact.getImagePath(), avatar.getImageView());
+        imageLoader.loadImage(contact.getImagePath(), avatar.getImageView());
         eventLabel.setVisibility(View.GONE);
         itemView.setOnClickListener(
                 new View.OnClickListener() {

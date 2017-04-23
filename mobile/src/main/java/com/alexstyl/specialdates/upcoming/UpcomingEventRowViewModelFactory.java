@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-final class UpcomingEventRowViewModelFactory {
+public final class UpcomingEventRowViewModelFactory {
     private final Date today;
     private final UpcomingDateStringCreator dateCreator;
     private final ContactViewModelFactory contactViewModelFactory;
@@ -24,13 +24,13 @@ final class UpcomingEventRowViewModelFactory {
     private final NamedaysViewModelFactory namedaysViewModelFactory;
     private final MonthLabels monthLabels;
 
-    UpcomingEventRowViewModelFactory(Date today,
-                                     UpcomingDateStringCreator dateCreator,
-                                     ContactViewModelFactory contactViewModelFactory,
-                                     StringResources stringResources,
-                                     BankHolidayViewModelFactory bankHolidayViewModelFactory,
-                                     NamedaysViewModelFactory namedaysViewModelFactory,
-                                     MonthLabels monthLabels) {
+    public UpcomingEventRowViewModelFactory(Date today,
+                                            UpcomingDateStringCreator dateCreator,
+                                            ContactViewModelFactory contactViewModelFactory,
+                                            StringResources stringResources,
+                                            BankHolidayViewModelFactory bankHolidayViewModelFactory,
+                                            NamedaysViewModelFactory namedaysViewModelFactory,
+                                            MonthLabels monthLabels) {
         this.today = today;
         this.dateCreator = dateCreator;
         this.contactViewModelFactory = contactViewModelFactory;

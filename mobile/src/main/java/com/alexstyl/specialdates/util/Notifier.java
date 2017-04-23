@@ -24,9 +24,11 @@ import android.text.style.StyleSpan;
 
 import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.android.AndroidDimensionResources;
+import com.alexstyl.android.Version;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
@@ -36,6 +38,8 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -57,7 +61,7 @@ public class Notifier {
 
     public static Notifier newInstance(Context context) {
         Resources resources = context.getResources();
-        ImageLoader imageLoader = ImageLoader.createSquareThumbnailLoader(resources);
+        ImageLoader imageLoader = UILImageLoader.createLoader(resources);
         StringResources stringResources = new AndroidStringResources(resources);
         DimensionResources dimensions = new AndroidDimensionResources(resources);
         ColorResources colorResources = new AndroidColorResources(resources);
@@ -87,14 +91,13 @@ public class Notifier {
         int contactCount = events.size();
 
         if (shouldDisplayContactImage(contactCount)) {
-            int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
             Contact displayingContact = events.get(0).getContact();
-            largeIcon = loadImageAsync(displayingContact, size, size);
-            if (Utils.hasLollipop() && largeIcon != null) {
+            int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
+            Optional<Bitmap> loadedIcon = imageLoader.loadBitmapSync(displayingContact.getImagePath(), new ImageSize(size, size));
+            if (Version.hasLollipop() && loadedIcon.isPresent()) {
                 // in Lollipop the notifications is the default to use Rounded Images
-                largeIcon = getCircleBitmap(largeIcon);
+                largeIcon = getCircleBitmap(loadedIcon.get());
             }
-
         }
 
         Intent startIntent = DateDetailsActivity.getStartIntentFromExternal(context, date);
@@ -206,12 +209,8 @@ public class Notifier {
         return output;
     }
 
-    private Bitmap loadImageAsync(Contact displayingContact, int width, int height) {
-        return imageLoader.loadBitmap(displayingContact.getImagePath(), width, height);
-    }
-
     private boolean supportsPublicNotifications() {
-        return Utils.hasLollipop();
+        return Version.hasLollipop();
     }
 
     private boolean shouldDisplayContactImage(int contactCount) {

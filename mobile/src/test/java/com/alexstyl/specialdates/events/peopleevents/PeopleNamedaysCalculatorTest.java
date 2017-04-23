@@ -62,7 +62,7 @@ public class PeopleNamedaysCalculatorTest {
     public void gettingSpecialNamedaysOnSpecificDateOnlyReturnsTheEventsForThatDate() {
         List<Contact> testContacts = createSomeContacts();
         testContacts.add(EASTER_CELEBRATING_CONTACT);
-        when(mockContactsProvider.fetchAllDeviceContacts()).thenReturn(testContacts);
+        when(mockContactsProvider.getAllContacts()).thenReturn(testContacts);
 
         Date easterDate = OrthodoxEasterCalculator.INSTANCE.calculateEasterForYear(YEAR);
         List<ContactEvent> contactEvents = calculator.loadSpecialNamedaysBetween(TimePeriod.between(easterDate, easterDate));
