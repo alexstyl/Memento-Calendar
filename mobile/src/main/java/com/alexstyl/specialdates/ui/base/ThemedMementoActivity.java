@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.Themer;
 
-public class ThemedActivity extends MementoActivity {
+public class ThemedMementoActivity extends MementoActivity {
 
     private Themer themer;
     private AttributeExtractor attributeExtractor;
@@ -26,12 +26,12 @@ public class ThemedActivity extends MementoActivity {
     protected void onCreate(Bundle savedInstanceState) {
         themer = Themer.get(this);
         attributeExtractor = new AttributeExtractor();
+        themer.initialiseActivity(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
-        themer.initialiseActivity(this);
         super.setContentView(layoutResID);
     }
 

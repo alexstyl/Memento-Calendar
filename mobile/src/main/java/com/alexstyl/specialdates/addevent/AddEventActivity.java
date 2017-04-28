@@ -35,13 +35,13 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class AddEventActivity extends ThemedActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
+public class AddEventActivity extends ThemedMementoActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
     private static final int CODE_TAKE_PICTURE = 404;
     private static final int CODE_PICK_A_FILE = 405;

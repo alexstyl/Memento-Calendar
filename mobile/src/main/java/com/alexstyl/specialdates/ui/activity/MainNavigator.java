@@ -12,9 +12,12 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
@@ -35,16 +38,28 @@ class MainNavigator {
     }
 
     void toDonate() {
-        SimpleChromeCustomTabs.getInstance()
-                .withFallback(new NavigationFallback() {
-                    @Override
-                    public void onFallbackNavigateTo(Uri url) {
-                        navigateToDonateWebsite();
-                    }
-                })
-                .withIntentCustomizer(intentCustomizer)
-                .navigateTo(SUPPORT_URL, activity);
+        if (hasPlayStoreInstalled()) {
+            Intent intent = DonateActivity.createIntent(activity);
+            activity.startActivity(intent);
+        } else {
+            SimpleChromeCustomTabs.getInstance()
+                    .withFallback(new NavigationFallback() {
+                        @Override
+                        public void onFallbackNavigateTo(Uri url) {
+                            navigateToDonateWebsite();
+                        }
+                    })
+                    .withIntentCustomizer(intentCustomizer)
+                    .navigateTo(SUPPORT_URL, activity);
+
+        }
         analytics.trackScreen(Screen.DONATE);
+    }
+
+    private boolean hasPlayStoreInstalled() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(activity);
+        return resultCode == ConnectionResult.SUCCESS;
     }
 
     private void navigateToDonateWebsite() {

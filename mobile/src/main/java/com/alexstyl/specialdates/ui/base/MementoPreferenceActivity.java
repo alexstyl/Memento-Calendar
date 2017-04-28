@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 
 import java.util.List;
 
-public class MementoPreferenceActivity extends ThemedActivity {
+public class MementoPreferenceActivity extends ThemedMementoActivity {
 
     @Override
     protected boolean shouldUseHomeAsUp() {

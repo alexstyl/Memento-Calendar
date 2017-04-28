@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.ui.CheatsSheat;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
-import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.alexstyl.specialdates.util.AppUtils;
 import com.novoda.notils.caster.Views;
@@ -26,7 +26,7 @@ import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntent
 
 import de.psdev.licensesdialog.LicensesDialog;
 
-public class AboutActivity extends ThemedActivity {
+public class AboutActivity extends ThemedMementoActivity {
 
     private ExternalNavigator externalNavigator;
 
