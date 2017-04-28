@@ -39,7 +39,7 @@ import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
-import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
@@ -56,7 +56,7 @@ import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.Per
  * suggestion bar on top of the keyboard is going to be given to the user with names.
  * <p>Created by alexstyl on 20/04/15.</p>
  */
-public class SearchActivity extends ThemedActivity {
+public class SearchActivity extends ThemedMementoActivity {
 
     private static final String KEY_QUERY = "alexstyl:key_query";
     private static final int ID_CONTACTS = 31;

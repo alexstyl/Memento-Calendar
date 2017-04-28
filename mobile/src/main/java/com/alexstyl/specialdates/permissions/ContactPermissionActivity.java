@@ -11,11 +11,11 @@ import android.widget.Button;
 
 import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 
 @TargetApi(Build.VERSION_CODES.M) // Runtime permissions were added in M (SDK 23)
-public class ContactPermissionActivity extends ThemedActivity {
+public class ContactPermissionActivity extends ThemedMementoActivity {
 
     private static final int REQUEST_CONTACT_PERMISSION = 5;
 

@@ -15,14 +15,14 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.activity.MainActivity;
-import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;
 
-public class DateDetailsActivity extends ThemedActivity {
+public class DateDetailsActivity extends ThemedMementoActivity {
 
     private static final String EXTRA_DAY = BuildConfig.APPLICATION_ID + ".dayOfMonth";
     private static final String EXTRA_MONTH = BuildConfig.APPLICATION_ID + ".month";

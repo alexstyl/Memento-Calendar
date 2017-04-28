@@ -7,10 +7,10 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.theming.Themer;
-import com.alexstyl.specialdates.ui.base.ThemedActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 
-public class SupportTranslateDialog extends ThemedActivity {
+public class SupportTranslateDialog extends ThemedMementoActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
