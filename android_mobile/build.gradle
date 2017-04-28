@@ -73,7 +73,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', exclude: 'android-support-v4.jar', include: ['*.jar'])
-    compile project(':common')
+    compile project(':android_common')
     compile "com.android.support:design:$android_support_version"
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
