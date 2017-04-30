@@ -26,4 +26,6 @@
 -keepattributes SourceFile,LineNumberTable,Annotation
 -keep class com.crashlytics.android.**
 -keep class com.android.vending.billing.**
+-keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }
+
 
