@@ -25,5 +25,4 @@ dependencies {
     compile 'net.danlew:android.joda:2.9.4.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile project(path: ':memento')
-    compile project(path: ':memento')
 }
