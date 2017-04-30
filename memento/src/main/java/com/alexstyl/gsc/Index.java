@@ -1,7 +1,5 @@
 package com.alexstyl.gsc;
 
-import com.novoda.notils.exception.DeveloperError;
-
 public class Index {
 
     private static final int NOT_STARTED = -1;
@@ -28,7 +26,7 @@ public class Index {
 
     public void stepUp() {
         if (hasEnded()) {
-            throw new DeveloperError("Tried to step up even when Index has ended");
+            throw new IllegalStateException("Tried to step up even when Index has ended");
         }
         ++index;
 
@@ -36,7 +34,7 @@ public class Index {
 
     public void stepDown() {
         if (hasNotStarted()) {
-            throw new DeveloperError("Tried to step down even when Index has not started");
+            throw new IllegalStateException("Tried to step down even when Index has not started");
 
         }
         --index;

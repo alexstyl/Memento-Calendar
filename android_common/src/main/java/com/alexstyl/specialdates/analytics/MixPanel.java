@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.analytics;
 
 import com.alexstyl.specialdates.TimeOfDay;
+import com.alexstyl.specialdates.donate.Donation;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -119,6 +120,18 @@ class MixPanel implements Analytics {
     @Override
     public void trackWidgetRemoved(Widget widget) {
         mixpanel.track("widget_removed", widgetNameOf(widget));
+    }
+
+    @Override
+    public void trackDonationStarted(Donation donation) {
+        JSONObject properties = new JSONObject();
+        try {
+            properties.put("id", donation.getIdentifier());
+            properties.put("amount", donation.getAmount());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mixpanel.track("donation started", properties);
     }
 
     private static JSONObject createJSONfor(ActionWithParameters event) {

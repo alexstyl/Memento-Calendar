@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.analytics;
 
 import com.alexstyl.specialdates.TimeOfDay;
+import com.alexstyl.specialdates.donate.Donation;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 public interface Analytics {
@@ -41,4 +42,6 @@ public interface Analytics {
     void trackWidgetAdded(Widget widget);
 
     void trackWidgetRemoved(Widget widget);
+
+    void trackDonationStarted(Donation donation);
 }

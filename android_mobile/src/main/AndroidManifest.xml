@@ -15,6 +15,8 @@
   <!-- The BLUETOOTH permission is used for mixpanel-->
   <uses-permission android:name="android.permission.BLUETOOTH" />
 
+  <uses-permission android:name="com.android.vending.BILLING" />
+
   <uses-feature
     android:name="android.hardware.camera"
     android:required="false" />
@@ -202,7 +204,12 @@
       android:grantUriPermissions="true"
       android:label="Events Provider" />
 
-    <activity android:name=".donate.DonateActivity" />
+    <activity
+      android:name=".donate.DonateActivity"
+      android:exported="true"
+      android:label="@string/donate_welcome"
+      android:parentActivityName=".ui.activity.MainActivity"
+      android:theme="@style/Theme.Donate" />
 
     <meta-data
       android:name="io.fabric.ApiKey"
