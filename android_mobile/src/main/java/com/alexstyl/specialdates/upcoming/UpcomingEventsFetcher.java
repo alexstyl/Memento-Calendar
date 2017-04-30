@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import com.alexstyl.android.AndroidColorResources;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
@@ -15,6 +16,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.upcoming.widget.list.NoAds;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider;
 import com.novoda.notils.exception.DeveloperError;
 
@@ -50,6 +52,9 @@ class UpcomingEventsFetcher {
                 NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
                 AndroidStringResources stringResources = new AndroidStringResources(context.getResources());
                 AndroidColorResources colorResources = new AndroidColorResources(context.getResources());
+
+                UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
+
                 return new UpcomingEventsLoader(
                         context,
                         startingDate,
@@ -68,7 +73,7 @@ class UpcomingEventsFetcher {
                                         new NamedaysViewModelFactory(startingDate),
                                         MonthLabels.forLocale(Locale.getDefault())
                                 ),
-                                new UpcomingEventsFreeUserAdRules()
+                                adRules
                         )
                 );
             }
