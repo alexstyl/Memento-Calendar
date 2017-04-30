@@ -13,7 +13,7 @@ public class FadeOutTransition extends AutoTransition {
 
     /**
      * Creates a AutoTransition that calls the {@linkplain Transition.TransitionListener#onTransitionEnd(Transition)}
-     * of the passing Listener when complete
+     * of the passing DonationCallbacks when complete
      */
     public static Transition withAction(TransitionListener finishingAction) {
         AutoTransition transition = new AutoTransition();

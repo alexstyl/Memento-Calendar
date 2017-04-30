@@ -24,4 +24,6 @@ dependencies {
     compile "com.android.support:support-annotations:$android_support_version"
     compile 'net.danlew:android.joda:2.9.4.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile project(path: ':memento')
+    compile project(path: ':memento')
 }

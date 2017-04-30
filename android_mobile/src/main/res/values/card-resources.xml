@@ -49,7 +49,6 @@
 
   <style name="Card.Text.Action"
     parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-    <item name="android:background">@null</item>
     <item name="android:capitalize">characters</item>
   </style>
 

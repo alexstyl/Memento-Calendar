@@ -59,6 +59,14 @@
     <item name="colorSecondary">#80CBC4</item>
   </style>
 
+  <style name="Theme.Memento.Modern"
+    parent="@style/Theme.Memento.Light.DarkToolbar">
+    <item name="colorPrimary">#55B2A5</item>
+    <item name="colorPrimaryDark">#1C8778</item>
+    <item name="colorSecondary">#F15454</item>
+    <item name="colorAccent">#F1B554</item>
+  </style>
+
 
 
   <attr name="useDarkIcons" format="boolean" />

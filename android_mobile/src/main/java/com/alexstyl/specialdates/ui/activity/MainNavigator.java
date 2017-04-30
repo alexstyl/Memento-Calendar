@@ -25,7 +25,7 @@ import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntent
 
 class MainNavigator {
 
-    private static final Uri SUPPORT_URL = Uri.parse("http://paypal.me/alexstyl");
+    private static final Uri SUPPORT_URL = Uri.parse("https://g3mge.app.goo.gl/jdF1");
 
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
