@@ -29,7 +29,6 @@ public class DonateActivity extends MementoActivity {
     private static final Uri DEV_IMAGE_URI = Uri.parse("http://alexstyl.com/memento-calendar/dev.jpg");
 
     private DonatePresenter donatePresenter;
-    private SeekBar donateBar;
 
     @Override
     protected boolean shouldUseHomeAsUp() {
@@ -39,7 +38,6 @@ public class DonateActivity extends MementoActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_donate);
 
@@ -72,7 +70,7 @@ public class DonateActivity extends MementoActivity {
     }
 
     private void setupDonateBar() {
-        donateBar = Views.findById(this, R.id.donation_bar);
+        SeekBar donateBar = Views.findById(this, R.id.donation_bar);
         donateBar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
