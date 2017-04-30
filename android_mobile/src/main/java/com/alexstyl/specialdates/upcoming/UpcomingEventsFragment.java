@@ -20,6 +20,8 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.donate.DonateMonitor;
+import com.alexstyl.specialdates.donate.DonateMonitor.DonateMonitorListener;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -72,6 +74,8 @@ public class UpcomingEventsFragment extends MementoFragment {
                 startLoadingData();
             }
         });
+
+        DonateMonitor.getInstance().addListener(onDonationListener);
     }
 
     @Override
@@ -198,5 +202,13 @@ public class UpcomingEventsFragment extends MementoFragment {
         super.onDestroy();
         monitor.unregister();
         contactsObserver.unregister();
+        DonateMonitor.getInstance().removeListener(onDonationListener);
     }
+
+    private final DonateMonitorListener onDonationListener = new DonateMonitorListener() {
+        @Override
+        public void onUserDonated() {
+            startLoadingData();
+        }
+    };
 }
