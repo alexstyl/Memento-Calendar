@@ -8,6 +8,8 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.StringRes;
 import android.support.v4.util.Pair;
 
+import com.securepreferences.SecurePreferences;
+
 public class EasyPreferences {
 
     private final SharedPreferences prefs;
@@ -19,13 +21,19 @@ public class EasyPreferences {
         return new EasyPreferences(preferences, resources);
     }
 
+    public static EasyPreferences createForSecureDefaultPreferences(Context context) {
+        SharedPreferences preferences = new SecurePreferences(context);
+        Resources resources = context.getResources();
+        return new EasyPreferences(preferences, resources);
+    }
+
     public static EasyPreferences createForPrivatePreferences(Context context, @StringRes int fileName) {
         SharedPreferences preferences = context.getSharedPreferences(context.getString(fileName), Context.MODE_PRIVATE);
         Resources resources = context.getResources();
         return new EasyPreferences(preferences, resources);
     }
 
-    EasyPreferences(SharedPreferences preferences, Resources resources) {
+    private EasyPreferences(SharedPreferences preferences, Resources resources) {
         this.prefs = preferences;
         this.res = resources;
     }
