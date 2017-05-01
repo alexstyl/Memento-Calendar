@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,7 @@ public class DonateActivity extends MementoActivity {
 
     private DonatePresenter donatePresenter;
     private SeekBar donateBar;
+    private CoordinatorLayout coordinator;
 
     @Override
     protected boolean shouldUseHomeAsUp() {
@@ -46,10 +49,12 @@ public class DonateActivity extends MementoActivity {
         final Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        coordinator = Views.findById(this, R.id.donate_coordinator);
         ImageView avatar = Views.findById(this, R.id.donate_avatar);
         UILImageLoader.createLoader(getResources()).loadImage(DEV_IMAGE_URI, avatar);
 
-        AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
+        final AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
+        final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
         appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
 
@@ -57,7 +62,9 @@ public class DonateActivity extends MementoActivity {
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
 
         DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this);
-        Button donateButton = Views.findById(this, R.id.donate_place_donation);
+        final Button donateButton = Views.findById(this, R.id.donate_place_donation);
+        donateButton.requestFocus();
+
         donatePresenter = new DonatePresenter(analytics, donationService, new TextViewLabelSetter(donateButton), stringResources);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +76,20 @@ public class DonateActivity extends MementoActivity {
         setupDonateBar();
 
         donatePresenter.startPresenting(donationCallbacks());
+
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollToDonate();
+
+            }
+
+            private void scrollToDonate() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+                behavior.onNestedFling(coordinator, appBarLayout, null, 0, 50, true);
+            }
+        }, 2000);
 
     }
 
