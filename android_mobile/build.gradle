@@ -74,10 +74,12 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', exclude: 'android-support-v4.jar', include: ['*.jar'])
     compile project(':android_common')
+
     compile "com.android.support:design:$android_support_version"
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:transition:$android_support_version"
+
     compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
         exclude module: 'support-v4'
     }
@@ -89,7 +91,6 @@ dependencies {
     }
     compile "com.google.android.gms:play-services-wearable:$play_services_version"
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
-
     compile "com.google.firebase:firebase-core:$play_services_version"
     compile "com.google.firebase:firebase-ads:$play_services_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -103,7 +104,7 @@ dependencies {
     testCompile 'joda-time:joda-time:2.9.4'
     testCompile 'org.json:json:20140107'
     androidTestCompile 'junit:junit:4.12'
-    compile project(path: ':memento')
+
 }
 
 // This must be applied after the dependencies closure in order to avoid conflicts ¯\_(ツ)_/¯

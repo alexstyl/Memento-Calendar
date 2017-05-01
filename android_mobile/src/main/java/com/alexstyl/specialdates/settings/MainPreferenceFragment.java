@@ -15,6 +15,12 @@ import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.donate.AndroidDonationConstants;
+import com.alexstyl.specialdates.donate.AndroidDonationService;
+import com.alexstyl.specialdates.donate.Donation;
+import com.alexstyl.specialdates.donate.DonationCallbacks;
+import com.alexstyl.specialdates.donate.DonationService;
+import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.theming.MementoTheme;
@@ -102,6 +108,31 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         StringResources stringResources = new AndroidStringResources(getResources());
         monitor = new EventsSettingsMonitor(sharedPreferences, stringResources);
         refresher = ExternalWidgetRefresher.get(getActivity());
+
+        final Preference restore = findPreference("key_donate_restore");
+        final DonationService donationService = new AndroidDonationService(
+                new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
+                getActivity()
+        );
+        donationService.setup(new DonationCallbacks() {
+            @Override
+            public void onDonateException(String message) {
+                getPreferenceScreen().removePreference(restore);
+            }
+
+            @Override
+            public void onDonationFinished(Donation donation) {
+                getPreferenceScreen().removePreference(restore);
+            }
+        });
+        restore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                donationService.checkForDonations();
+                return true;
+            }
+        });
+
         reattachThemeDialogIfNeeded();
     }
 

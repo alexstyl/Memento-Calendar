@@ -1,22 +1,24 @@
 package com.alexstyl.specialdates.donate;
 
 import android.app.Activity;
+import android.widget.Toast;
 
+import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.donate.util.IabResult;
+import com.alexstyl.specialdates.donate.util.Inventory;
 import com.alexstyl.specialdates.donate.util.Purchase;
 
-class AndroidDonationService implements DonationService {
+public class AndroidDonationService implements DonationService {
 
     private final IabHelper iabHelper;
     private final Activity activity;
-    private final int requestCode;
     private DonationCallbacks listener;
 
-    AndroidDonationService(IabHelper iabHelper, Activity activity, int requestCode) {
+    public AndroidDonationService(IabHelper iabHelper, Activity activity) {
         this.iabHelper = iabHelper;
         this.activity = activity;
-        this.requestCode = requestCode;
     }
 
     @Override
@@ -33,7 +35,11 @@ class AndroidDonationService implements DonationService {
     }
 
     @Override
-    public void placeDonation(final Donation donation) {
+    public void placeDonation(final Donation donation, int requestCode) {
+        if(1==1){
+            listener.onDonationFinished(donation);
+            return;
+        }
         try {
             iabHelper.launchPurchaseFlow(
                     activity, donation.getIdentifier(), requestCode, new IabHelper.OnIabPurchaseFinishedListener() {
@@ -46,7 +52,6 @@ class AndroidDonationService implements DonationService {
         } catch (IabHelper.IabAsyncInProgressException e) {
             e.printStackTrace();
             listener.onDonateException(e.getMessage());
-
         }
     }
 
@@ -57,5 +62,35 @@ class AndroidDonationService implements DonationService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void checkForDonations() {
+        try {
+            iabHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener() {
+                @Override
+                public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                    boolean hasDonated = containsDonations(inv);
+                    if (hasDonated) {
+                        Toast.makeText(activity, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
+                        DonateMonitor.getInstance().onDonationPlaced();
+                    } else {
+                        Toast.makeText(activity, R.string.donate_no_donation_found, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            });
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            ErrorTracker.track(e);
+        }
+    }
+
+    private static boolean containsDonations(Inventory inventory) {
+        for (AndroidDonation donation : AndroidDonation.values()) {
+            if (inventory.hasPurchase(donation.getIdentifier())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

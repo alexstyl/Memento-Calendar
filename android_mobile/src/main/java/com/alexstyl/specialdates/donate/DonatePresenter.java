@@ -32,8 +32,8 @@ class DonatePresenter {
         donationService.setup(donationCallbacks);
     }
 
-    void placeDonation(Donation donation) {
-        donationService.placeDonation(donation);
+    void placeDonation(Donation donation, int requestCode) {
+        donationService.placeDonation(donation, requestCode);
         analytics.trackDonationStarted(donation);
     }
 
