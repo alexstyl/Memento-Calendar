@@ -134,6 +134,11 @@ class MixPanel implements Analytics {
         mixpanel.track("donation started", properties);
     }
 
+    @Override
+    public void trackAppInviteRequested() {
+        mixpanel.track("app_invite_requested");
+    }
+
     private static JSONObject createJSONfor(ActionWithParameters event) {
         JSONObject properties = new JSONObject();
         try {

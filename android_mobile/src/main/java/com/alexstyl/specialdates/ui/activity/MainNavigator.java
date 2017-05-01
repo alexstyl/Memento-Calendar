@@ -5,7 +5,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -30,10 +33,12 @@ class MainNavigator {
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
     private final Activity activity;
+    private final StringResources stringResource;
 
-    MainNavigator(Analytics analytics, Activity activity) {
+    MainNavigator(Analytics analytics, Activity activity, StringResources stringResource) {
         this.analytics = analytics;
         this.activity = activity;
+        this.stringResource = stringResource;
         this.attributeExtractor = new AttributeExtractor();
     }
 
@@ -105,5 +110,12 @@ class MainNavigator {
     void toDateDetails(Date dateSelected) {
         Intent intent = DateDetailsActivity.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
+    }
+
+    void toAppInvite() {
+        Intent intent = new ShareAppIntentCreator(activity, stringResource).buildIntent();
+        String shareTitle = stringResource.getString(R.string.invite_title);
+        activity.startActivity(Intent.createChooser(intent, shareTitle));
+        analytics.trackAppInviteRequested();
     }
 }

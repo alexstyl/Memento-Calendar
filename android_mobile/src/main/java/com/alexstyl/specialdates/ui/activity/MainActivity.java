@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
@@ -53,7 +54,7 @@ public class MainActivity extends ThemedMementoActivity implements DatePickerDia
         analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this);
+        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()));
         externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -107,6 +108,9 @@ public class MainActivity extends ThemedMementoActivity implements DatePickerDia
                 return true;
             case R.id.action_about:
                 navigator.toAbout();
+                return true;
+            case R.id.action_app_invite:
+                navigator.toAppInvite();
                 return true;
             case R.id.action_donate:
                 navigator.toDonate();

@@ -21,7 +21,6 @@ public class MementoApplication extends Application {
 
     private static Context context;
     public static final String DEV_EMAIL = "alexstyl.dev@gmail.com";
-    public static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";
 
     public static String getVersionName(Context context) {
         String versionName = null;

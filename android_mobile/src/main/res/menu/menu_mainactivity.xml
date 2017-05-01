@@ -17,6 +17,12 @@
   <item
     android:id="@+id/action_about"
     android:title="@string/about"
+    android:visible="false"
+    app:showAsAction="never" />
+
+  <item
+    android:id="@+id/action_app_invite"
+    android:title="@string/invite_action_title"
     app:showAsAction="never" />
 
   <item

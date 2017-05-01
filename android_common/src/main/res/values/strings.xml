@@ -175,5 +175,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Pick_existing_photo">Pick existing photo</string>
   <string name="Discard_changes">Discard changes?</string>
   <string name="No_events_on_this_date">No events on this date</string>
+  <string name="Invite_friend">Invite friend</string>
 
 </resources>
