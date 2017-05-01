@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class DonateActivity extends MementoActivity {
     private static final Uri DEV_IMAGE_URI = Uri.parse("http://alexstyl.com/memento-calendar/dev.jpg");
 
     private DonatePresenter donatePresenter;
+    private SeekBar donateBar;
 
     @Override
     protected boolean shouldUseHomeAsUp() {
@@ -41,26 +43,27 @@ public class DonateActivity extends MementoActivity {
 
         setContentView(R.layout.activity_donate);
 
-        Toolbar toolbar = Views.findById(this, R.id.toolbar);
+        final Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ImageView avatar = Views.findById(this, R.id.donate_avatar);
         UILImageLoader.createLoader(getResources()).loadImage(DEV_IMAGE_URI, avatar);
 
+        AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
+
+        appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+
         StringResources stringResources = new AndroidStringResources(getResources());
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
-        String key =
-                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsYY0f8jTzL1RkaxI6RgasYZ1anbjHo3uOrSecriRJdQtTtiynmnjSqg0mh79gJunqbqtJtQQaFYo" +
-                        "wm1D5uTWkZ30CmZqrKAz8PILbF7andUNECZRuUENfsptHhaBQHYcDucXLP2QDuerEaYPcBW4kQoyv4Jyfm/" +
-                        "vDou04VwMADcFQ4vZ/Rj6tvt+KNXvMbJorQslDSmA3Ul+oDqDJ1K0TFPFOv3ECjuw+J/g0TX6yAcS9LR8xHVppWE9fW0+qPWd2tTo0CIb3W3h+lgREkDZEGRlWvGijWmND7qFbhCv2jURen851trNSLIvyOQwraCVku6VkxSxwCeS2E26q7B5mQIDAQAB";
 
-        DonationService donationService = new AndroidDonationService(new IabHelper(this, key), this, REQUEST_CODE);
+        DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this);
         Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donatePresenter = new DonatePresenter(analytics, donationService, new TextViewLabelSetter(donateButton), stringResources);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                donatePresenter.placeDonation(AndroidDonation.SKU_DONATE_1);
+                Donation donation = AndroidDonation.valueOfIndex(donateBar.getProgress());
+                donatePresenter.placeDonation(donation, REQUEST_CODE);
             }
         });
         setupDonateBar();
@@ -70,7 +73,7 @@ public class DonateActivity extends MementoActivity {
     }
 
     private void setupDonateBar() {
-        SeekBar donateBar = Views.findById(this, R.id.donation_bar);
+        donateBar = Views.findById(this, R.id.donation_bar);
         donateBar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -80,7 +83,6 @@ public class DonateActivity extends MementoActivity {
         });
         AndroidDonation[] values = AndroidDonation.values();
         donateBar.setMax(values.length - 1);
-        donateBar.setProgress(3);
     }
 
     @Override

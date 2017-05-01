@@ -2,6 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
   <Preference
+    android:key="@string/key_donate_restore"
+    android:summary="@string/donate_restore_summary"
+    android:title="@string/donate_restore_title" />
+
+  <Preference
     android:key="@string/key_app_theme"
     android:title="@string/theme_preference_title" />
 
@@ -60,6 +65,5 @@
       android:summaryOn="@string/main_preferences_full_name_summary_on"
       android:title="@string/main_preferences_full_name_title" />
   </PreferenceCategory>
-
 
 </PreferenceScreen>

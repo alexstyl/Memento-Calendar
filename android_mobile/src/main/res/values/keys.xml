@@ -40,5 +40,6 @@
   <string name="key_bankholidays_language">key_bankholidays_language</string>
   <string name="key_namedays_full_name">key_namedays_full_name</string>
   <string name="key_has_donated">key_has_donated</string>
+  <string name="key_donate_restore">key_donate_restore</string>
 
 </resources>
