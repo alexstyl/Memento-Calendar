@@ -106,9 +106,6 @@ public class MainActivity extends ThemedMementoActivity implements DatePickerDia
             case R.id.action_settings:
                 navigator.toSettings();
                 return true;
-            case R.id.action_about:
-                navigator.toAbout();
-                return true;
             case R.id.action_app_invite:
                 navigator.toAppInvite();
                 return true;
