@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.donate.util.IabResult;
 import com.alexstyl.specialdates.donate.util.Inventory;
@@ -14,11 +15,15 @@ public class AndroidDonationService implements DonationService {
 
     private final IabHelper iabHelper;
     private final Activity activity;
+    private final DonationPreferences donationPreferences;
     private DonationCallbacks listener;
+    private final Analytics analytics;
 
-    public AndroidDonationService(IabHelper iabHelper, Activity activity) {
+    public AndroidDonationService(IabHelper iabHelper, Activity activity, DonationPreferences donationPreferences, Analytics analytics) {
         this.iabHelper = iabHelper;
         this.activity = activity;
+        this.donationPreferences = donationPreferences;
+        this.analytics = analytics;
     }
 
     @Override
@@ -41,12 +46,16 @@ public class AndroidDonationService implements DonationService {
                     activity, donation.getIdentifier(), requestCode, new IabHelper.OnIabPurchaseFinishedListener() {
                         @Override
                         public void onIabPurchaseFinished(IabResult result, Purchase info) {
-                            listener.onDonationFinished(donation);
+                            if (result.isSuccess()) {
+                                analytics.trackDonationPlaced(donation);
+                                listener.onDonationFinished(donation);
+                                donationPreferences.markAsDonated();
+                            }
                         }
                     }
             );
         } catch (IabHelper.IabAsyncInProgressException e) {
-            e.printStackTrace();
+            ErrorTracker.track(e);
             listener.onDonateException(e.getMessage());
         }
     }
@@ -61,7 +70,7 @@ public class AndroidDonationService implements DonationService {
     }
 
     @Override
-    public void checkForDonations() {
+    public void restoreDonations() {
         try {
             iabHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener() {
                 @Override
@@ -69,7 +78,9 @@ public class AndroidDonationService implements DonationService {
                     boolean hasDonated = containsDonations(inv);
                     if (hasDonated) {
                         Toast.makeText(activity, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
+                        donationPreferences.markAsDonated();
                         DonateMonitor.getInstance().onDonationUpdated();
+                        analytics.trackDonationRestored();
                     } else {
                         Toast.makeText(activity, R.string.donate_no_donation_found, Toast.LENGTH_SHORT).show();
                     }

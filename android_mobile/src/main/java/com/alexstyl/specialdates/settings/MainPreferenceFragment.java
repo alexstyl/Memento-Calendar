@@ -19,6 +19,7 @@ import com.alexstyl.specialdates.donate.AndroidDonationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationService;
 import com.alexstyl.specialdates.donate.Donation;
 import com.alexstyl.specialdates.donate.DonationCallbacks;
+import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.donate.DonationService;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -112,7 +113,9 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         final Preference restore = findPreference("key_donate_restore");
         final DonationService donationService = new AndroidDonationService(
                 new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
-                getActivity()
+                getActivity(),
+                DonationPreferences.newInstance(getActivity()),
+                analytics
         );
         donationService.setup(new DonationCallbacks() {
             @Override
@@ -122,13 +125,13 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
             @Override
             public void onDonationFinished(Donation donation) {
-                getPreferenceScreen().removePreference(restore);
+                // do nothing
             }
         });
         restore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                donationService.checkForDonations();
+                donationService.restoreDonations();
                 return true;
             }
         });
