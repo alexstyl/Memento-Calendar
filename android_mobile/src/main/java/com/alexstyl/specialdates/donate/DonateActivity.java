@@ -105,7 +105,7 @@ public class DonateActivity extends MementoActivity {
                 DonationPreferences prefs = DonationPreferences.newInstance(DonateActivity.this);
                 prefs.markAsDonated();
 
-                DonateMonitor.getInstance().onDonationPlaced();
+                DonateMonitor.getInstance().onDonationUpdated();
 
                 Toast.makeText(DonateActivity.this, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);

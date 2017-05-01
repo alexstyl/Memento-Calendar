@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.contact.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.AppUtils;
@@ -93,6 +94,14 @@ public class DebugFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 new WearSyncWidgetRefresher(getActivity()).refreshWidget();
+                return true;
+            }
+        });
+        findPreference(R.string.key_debug_reset_donations).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                DebugDonationPreferences.newInstance(preference.getContext()).reset();
+                Toast.makeText(preference.getContext(), "Donations reset. You should see ads from now on", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

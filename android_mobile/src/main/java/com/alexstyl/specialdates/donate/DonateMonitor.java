@@ -13,7 +13,7 @@ public final class DonateMonitor {
         return INSTANCE;
     }
 
-    void onDonationPlaced() {
+    void onDonationUpdated() {
         for (DonateMonitorListener listener : listeners) {
             listener.onUserDonated();
         }
