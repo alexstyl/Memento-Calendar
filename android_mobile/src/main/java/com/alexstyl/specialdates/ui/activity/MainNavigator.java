@@ -9,7 +9,6 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
-import com.alexstyl.specialdates.about.AboutActivity;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
@@ -80,12 +79,6 @@ class MainNavigator {
     void toAddEvent() {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
-    }
-
-    void toAbout() {
-        Intent intent = new Intent(activity, AboutActivity.class);
-        activity.startActivity(intent);
-        analytics.trackScreen(Screen.ABOUT);
     }
 
     void toSettings() {

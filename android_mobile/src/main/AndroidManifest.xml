@@ -60,7 +60,6 @@
 
     <activity
       android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
-      android:exported="false"
       android:label="@string/action_settings"
       android:parentActivityName=".ui.activity.MainActivity">
       <meta-data
@@ -68,19 +67,9 @@
         android:value=".ui.activity.MainActivity" />
     </activity>
 
-    <activity
-      android:name="com.alexstyl.specialdates.about.AboutActivity"
-      android:exported="false"
-      android:label="@string/about"
-      android:parentActivityName=".ui.activity.MainActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
-    </activity>
 
     <activity
       android:name="com.alexstyl.specialdates.search.SearchActivity"
-      android:exported="false"
       android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
       android:windowSoftInputMode="stateVisible|adjustResize">
       <meta-data
@@ -144,24 +133,19 @@
     <!-- Services -->
     <service
       android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"
-      android:exported="false"
       android:label="@string/service_dailyreminder" />
 
     <service
       android:name="com.alexstyl.specialdates.wear.WearSyncService"
       android:exported="false" />
 
-    <receiver
-      android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver"
-      android:exported="false">
+    <receiver android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver">
       <intent-filter>
         <action android:name="android.intent.action.LOCALE_CHANGED" />
       </intent-filter>
     </receiver>
 
-    <receiver
-      android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver"
-      android:exported="false">
+    <receiver android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver">
       <intent-filter>
         <action android:name="android.intent.action.TIME_SET" />
         <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -170,7 +154,6 @@
 
     <receiver
       android:name=".upcoming.widget.today.TodayAppWidgetProvider"
-      android:exported="false"
       android:label="@string/widget_upcoming_title_simple">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -206,7 +189,6 @@
 
     <activity
       android:name=".donate.DonateActivity"
-      android:exported="true"
       android:label="@string/donate_welcome"
       android:parentActivityName=".ui.activity.MainActivity"
       android:theme="@style/Theme.Donate" />

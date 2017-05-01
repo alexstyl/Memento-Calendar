@@ -7,7 +7,6 @@ public enum Screen {
     SETTINGS("settings"),
     DATE_DETAILS("date details"),
     DONATE("donate"),
-    ABOUT("about"),
     CONTACT_PERMISSION_REQUESTED("contact permission"),
     WEAR_CONTACT_EVENTS("wear: contacts events"),
     PLAY_STORE("playstore"),
