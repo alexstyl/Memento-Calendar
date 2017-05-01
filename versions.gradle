@@ -4,7 +4,7 @@ ext {
     kotlin_version = '1.1.1'
     androidCompileSdkVersion = 25
     androidBuildToolsVersion = '25.0.2'
-    androidVersionCode = 70
-    androidVersionName = '8.0'
+    androidVersionCode = 71
+    androidVersionName = '9.0'
 }
 
