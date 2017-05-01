@@ -36,10 +36,6 @@ public class AndroidDonationService implements DonationService {
 
     @Override
     public void placeDonation(final Donation donation, int requestCode) {
-        if(1==1){
-            listener.onDonationFinished(donation);
-            return;
-        }
         try {
             iabHelper.launchPurchaseFlow(
                     activity, donation.getIdentifier(), requestCode, new IabHelper.OnIabPurchaseFinishedListener() {
