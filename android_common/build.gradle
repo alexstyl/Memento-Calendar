@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        buildConfigField 'String', 'MIXPANEL_TOKEN', '\"' + mixpanelKey + "\""
+        buildConfigField 'String', 'MIXPANEL_TOKEN', '\"' + mixpanelToken + "\""
     }
 }
 
