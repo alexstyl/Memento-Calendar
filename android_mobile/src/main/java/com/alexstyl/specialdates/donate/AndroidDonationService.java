@@ -73,7 +73,7 @@ public class AndroidDonationService implements DonationService {
                     boolean hasDonated = containsDonations(inv);
                     if (hasDonated) {
                         Toast.makeText(activity, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
-                        DonateMonitor.getInstance().onDonationPlaced();
+                        DonateMonitor.getInstance().onDonationUpdated();
                     } else {
                         Toast.makeText(activity, R.string.donate_no_donation_found, Toast.LENGTH_SHORT).show();
                     }
