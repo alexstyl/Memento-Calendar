@@ -7,5 +7,5 @@ public interface DonationService {
 
     void dispose();
 
-    void checkForDonations();
+    void restoreDonations();
 }

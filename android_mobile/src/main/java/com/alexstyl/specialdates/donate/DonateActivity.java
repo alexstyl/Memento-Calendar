@@ -61,7 +61,7 @@ public class DonateActivity extends MementoActivity {
         StringResources stringResources = new AndroidStringResources(getResources());
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
 
-        DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this);
+        DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this, DonationPreferences.newInstance(this), analytics);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
@@ -123,9 +123,6 @@ public class DonateActivity extends MementoActivity {
 
             @Override
             public void onDonationFinished(Donation donation) {
-                DonationPreferences prefs = DonationPreferences.newInstance(DonateActivity.this);
-                prefs.markAsDonated();
-
                 DonateMonitor.getInstance().onDonationUpdated();
 
                 Toast.makeText(DonateActivity.this, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();

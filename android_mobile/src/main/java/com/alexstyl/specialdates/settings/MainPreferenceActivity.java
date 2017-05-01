@@ -22,7 +22,6 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
         toolbar.displayAsUp();
-
     }
 
     @Override
@@ -34,10 +33,8 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
                 startActivity(up);
                 finish();
                 return true;
-
             default:
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }

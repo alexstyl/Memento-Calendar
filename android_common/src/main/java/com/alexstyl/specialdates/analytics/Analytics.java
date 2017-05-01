@@ -47,4 +47,7 @@ public interface Analytics {
 
     void trackAppInviteRequested();
 
+    void trackDonationRestored();
+
+    void trackDonationPlaced(Donation donation);
 }
