@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.ShareAppIntentCreator;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.actions.IntentAction;
 
 public class AppUtils {
@@ -60,13 +63,9 @@ public class AppUtils {
                 context, new IntentAction() {
                     @Override
                     public void onStartAction(Context context) throws ActivityNotFoundException {
-                        String appName = context.getString(R.string.app_name);
-                        String shareText = String.format(context.getString(R.string.share_text), appName, MementoApplication.MARKET_LINK_SHORT);
-
-                        Intent intent2 = new Intent(Intent.ACTION_SEND);
-                        intent2.setType("text/plain");
-                        intent2.putExtra(Intent.EXTRA_TEXT, shareText);
-                        context.startActivity(Intent.createChooser(intent2, context.getString(R.string.share_via)));
+                        StringResources stringResource = new AndroidStringResources(context.getResources());
+                        Intent intent = new ShareAppIntentCreator(context, stringResource).buildIntent();
+                        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)));
                     }
 
                     @Override

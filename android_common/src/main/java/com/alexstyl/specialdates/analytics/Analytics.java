@@ -44,4 +44,7 @@ public interface Analytics {
     void trackWidgetRemoved(Widget widget);
 
     void trackDonationStarted(Donation donation);
+
+    void trackAppInviteRequested();
+
 }
