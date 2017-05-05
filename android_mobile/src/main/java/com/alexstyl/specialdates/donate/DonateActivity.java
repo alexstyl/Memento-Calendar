@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
@@ -56,7 +57,9 @@ public class DonateActivity extends MementoActivity {
         final AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
-        appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+        if (Version.hasLollipop()) {
+            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+        }
 
         StringResources stringResources = new AndroidStringResources(getResources());
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
@@ -81,7 +84,6 @@ public class DonateActivity extends MementoActivity {
             @Override
             public void run() {
                 scrollToDonate();
-
             }
 
             private void scrollToDonate() {
