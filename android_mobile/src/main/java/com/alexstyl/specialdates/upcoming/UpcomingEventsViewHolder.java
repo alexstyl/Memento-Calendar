@@ -1,10 +1,11 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
+import com.alexstyl.specialdates.upcoming.view.UpcomingEventsView;
 
 class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewModel> {
 

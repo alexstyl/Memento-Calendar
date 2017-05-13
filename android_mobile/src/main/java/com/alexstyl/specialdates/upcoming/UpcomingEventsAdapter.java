@@ -1,11 +1,10 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,4 +54,7 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         diffResult.dispatchUpdatesTo(this);
     }
 
+    boolean isDisplayingEvents() {
+        return viewModels.size() > 0;
+    }
 }
