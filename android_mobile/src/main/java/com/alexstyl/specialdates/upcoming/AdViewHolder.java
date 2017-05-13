@@ -1,8 +1,8 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.view.View;
 
-import com.alexstyl.specialdates.upcoming.AdViewModel;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
 

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.transition.TransitionManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +24,15 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonateMonitor.DonateMonitorListener;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
+import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
-import com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView;
 import com.alexstyl.specialdates.util.ContactsObserver;
 import com.novoda.notils.caster.Views;
 
@@ -40,7 +43,6 @@ public class UpcomingEventsFragment extends MementoFragment {
     private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
 
     private ViewGroup root;
-    private UpcomingEventsListView upcomingEventsListView;
     private ProgressBar progressBar;
     private TextView emptyView;
     private EventsSettingsMonitor monitor;
@@ -49,6 +51,8 @@ public class UpcomingEventsFragment extends MementoFragment {
     private Analytics analytics;
     private ContactPermissionRequest permissions;
     private ContactsObserver contactsObserver;
+    private UpcomingEventsAdapter adapter;
+    private RecyclerView upcomingList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,14 +87,17 @@ public class UpcomingEventsFragment extends MementoFragment {
         View view = inflater.inflate(R.layout.fragment_upcoming_events, container, false);
         root = Views.findById(view, R.id.root);
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
-        upcomingEventsListView = Views.findById(view, R.id.upcoming_eventslist);
+
+        upcomingList = Views.findById(view, R.id.upcoming_events_list);
+        upcomingList.setHasFixedSize(true);
+        upcomingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        upcomingList.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards), 1));
+
+        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, UILImageLoader.createCircleLoader(getResources())));
+        upcomingList.setAdapter(adapter);
+
         emptyView = Views.findById(view, R.id.upcoming_events_emptyview);
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        upcomingEventsListView.setHasFixedSize(true);
     }
 
     private final PermissionCallbacks callbacks = new PermissionCallbacks() {
@@ -128,7 +135,7 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
-        upcomingEventsListView.setVisibility(View.GONE);
+        upcomingList.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
     }
 
@@ -144,11 +151,11 @@ public class UpcomingEventsFragment extends MementoFragment {
 
     private void showData() {
         TransitionManager.beginDelayedTransition(root);
-        if (upcomingEventsListView.isDisplayingEvents()) {
-            upcomingEventsListView.setVisibility(View.VISIBLE);
+        if (adapter.isDisplayingEvents()) {
+            upcomingList.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         } else {
-            upcomingEventsListView.setVisibility(View.GONE);
+            upcomingList.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
     }
@@ -187,9 +194,9 @@ public class UpcomingEventsFragment extends MementoFragment {
     private final UpcomingEventsAsyncProvider.LoadingListener onEventsLoadedListener = new UpcomingEventsAsyncProvider.LoadingListener() {
         @Override
         public void onUpcomingEventsLoaded(List<UpcomingRowViewModel> dates) {
-            upcomingEventsListView.updateWith(dates, listClickListener);
+            adapter.displayUpcomingEvents(dates, listClickListener);
             if (mustScrollToPosition) {
-                upcomingEventsListView.scrollToPosition(0);
+                upcomingList.scrollToPosition(0);
                 mustScrollToPosition = false;
             }
             hideLoading();

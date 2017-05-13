@@ -13,8 +13,8 @@
     android:layout_gravity="center"
     android:visibility="gone" />
 
-  <com.alexstyl.specialdates.upcoming.view.UpcomingEventsListView
-    android:id="@+id/upcoming_eventslist"
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/upcoming_events_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
