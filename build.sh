@@ -24,9 +24,9 @@ if [ ! -f secret.gradle ]; then
 fi
 
 # Copy mock google-services file if necessary
-if [ ! -f ./mobile/google-services.json ]; then
-  echo "Using mock google-services.json for free"
-  cp mock-google-services.json ./mobile/google-services.json
+if [ ! -f ./android_mobile/google-services.json ]; then
+  echo "Using mock google-services.json"
+  cp mock-google-services.json ./android_mobile/google-services.json
 fi
 # Build
 if [ $TRAVIS_PULL_REQUEST = false ] ; then
@@ -35,5 +35,5 @@ if [ $TRAVIS_PULL_REQUEST = false ] ; then
 else
   # On a pull request, just build debug which is much faster and catches
   # obvious errors.
-  GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
+  GRADLE_OPTS=$OPTS ./gradlew clean :android_mobile:assembleDebug
 fi
