@@ -35,5 +35,5 @@ if [ $TRAVIS_PULL_REQUEST = false ] ; then
 else
   # On a pull request, just build debug which is much faster and catches
   # obvious errors.
-  GRADLE_OPTS=$OPTS ./gradlew clean :mobile:assembleDebug
+  GRADLE_OPTS=$OPTS ./gradlew clean :android_mobile:assembleDebug
 fi
