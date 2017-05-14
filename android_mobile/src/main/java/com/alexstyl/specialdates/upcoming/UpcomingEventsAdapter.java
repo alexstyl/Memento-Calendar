@@ -14,10 +14,11 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
     private final UpcomingViewHolderFactory viewHolderFactory;
 
     private final List<UpcomingRowViewModel> viewModels = new ArrayList<>();
-    private OnUpcomingEventClickedListener listener;
+    private final OnUpcomingEventClickedListener listener;
 
-    UpcomingEventsAdapter(UpcomingViewHolderFactory viewHolderFactory) {
+    UpcomingEventsAdapter(UpcomingViewHolderFactory viewHolderFactory, OnUpcomingEventClickedListener listener) {
         this.viewHolderFactory = viewHolderFactory;
+        this.listener = listener;
     }
 
     @Override
@@ -43,9 +44,7 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         return viewModels.size();
     }
 
-    void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows, OnUpcomingEventClickedListener listener) {
-        this.listener = listener;
-
+    void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows) {
         final UpcomingDiffCallback diffCallback = new UpcomingDiffCallback(viewModels, upcomingEventRows);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
@@ -54,7 +53,4 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         diffResult.dispatchUpdatesTo(this);
     }
 
-    boolean isDisplayingEvents() {
-        return viewModels.size() > 0;
-    }
 }
