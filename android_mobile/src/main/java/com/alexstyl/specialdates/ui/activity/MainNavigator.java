@@ -25,7 +25,7 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-class MainNavigator {
+public class MainNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("https://g3mge.app.goo.gl/jdF1");
 
@@ -34,7 +34,7 @@ class MainNavigator {
     private final Activity activity;
     private final StringResources stringResource;
 
-    MainNavigator(Analytics analytics, Activity activity, StringResources stringResource) {
+    public MainNavigator(Analytics analytics, Activity activity, StringResources stringResource) {
         this.analytics = analytics;
         this.activity = activity;
         this.stringResource = stringResource;
@@ -100,7 +100,7 @@ class MainNavigator {
         }
     };
 
-    void toDateDetails(Date dateSelected) {
+    public void toDateDetails(Date dateSelected) {
         Intent intent = DateDetailsActivity.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
     }

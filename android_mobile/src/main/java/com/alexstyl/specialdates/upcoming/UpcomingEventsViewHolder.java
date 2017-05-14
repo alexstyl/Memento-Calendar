@@ -33,7 +33,7 @@ class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewM
         View.OnClickListener listener1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCardPressed(viewModel);
+                listener.onEventClicked(viewModel);
             }
         };
         itemView.setOnClickListener(listener1);
