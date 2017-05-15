@@ -87,7 +87,7 @@ final class SearchTransitioner {
         return Version.hasKitKat();
     }
 
-    public void onActivityResumed() {
+    void onActivityResumed() {
         if (supportsTransitions()) {
             TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
