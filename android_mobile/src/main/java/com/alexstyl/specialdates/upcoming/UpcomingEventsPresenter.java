@@ -55,15 +55,15 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
         contactsObserver.registerWith(new ContactsObserver.Callback() {
             @Override
             public void onContactsUpdated() {
-                startLoadingData();
+                refreshData();
             }
         });
         if (permissions.permissionIsPresent()) {
-            startLoadingData();
+            refreshData();
         }
     }
 
-    private void startLoadingData() {
+    void refreshData() {
         view.showLoading();
 
         upcomingEventsAsyncProvider.reloadData(new UpcomingEventsAsyncProvider.Callback() {
@@ -87,7 +87,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     private final DonateMonitorListener donationListener = new DonateMonitorListener() {
         @Override
         public void onUserDonated() {
-            startLoadingData();
+            refreshData();
         }
     };
 
@@ -95,13 +95,9 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
         @Override
         public void onSettingUpdated() {
             mustScrollToPosition = true;
-            startLoadingData();
+            refreshData();
         }
     };
-
-    void refreshData() {
-        startLoadingData();
-    }
 
     void requestForPermissionIfNeeded() {
         if (!permissions.permissionIsPresent()) {

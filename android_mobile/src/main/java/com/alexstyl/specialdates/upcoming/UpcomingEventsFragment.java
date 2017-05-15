@@ -50,7 +50,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         Analytics analytics = AnalyticsProvider.getAnalytics(getActivity());
         UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today()));
-        ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), callbacks);
+        ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), permissionCallbacks);
         EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));
         ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
         MainNavigator navigator = new MainNavigator(analytics, getActivity(), new AndroidStringResources(getResources()));
@@ -82,7 +82,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         super.onActivityCreated(savedInstanceState);
         presenter.startPresenting();
     }
-
 
     @Override
     public void onResume() {
@@ -130,7 +129,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         presenter.stopPresenting();
     }
 
-    private final PermissionCallbacks callbacks = new PermissionCallbacks() {
+    private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
             presenter.refreshData();
