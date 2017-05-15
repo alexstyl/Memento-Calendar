@@ -36,7 +36,7 @@ public class ErrorTracker {
         if (hasBeenInitialised) {
             Crashlytics.logException(e);
         }
-        Log.e(e);
+        Log.w(e);
     }
 
     public static void onNamedayLocaleChanged(NamedayLocale locale) {
