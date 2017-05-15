@@ -79,6 +79,7 @@ public class MainNavigator {
     void toAddEvent() {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
+        analytics.trackScreen(Screen.ADD_EVENT);
     }
 
     void toSettings() {
@@ -90,6 +91,7 @@ public class MainNavigator {
     void toSearch() {
         Intent intent = new Intent(activity, SearchActivity.class);
         activity.startActivity(intent);
+        analytics.trackScreen(Screen.SEARCH);
     }
 
     private final IntentCustomizer intentCustomizer = new IntentCustomizer() {
@@ -103,6 +105,7 @@ public class MainNavigator {
     public void toDateDetails(Date dateSelected) {
         Intent intent = DateDetailsActivity.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
+        analytics.trackScreen(Screen.DATE_DETAILS);
     }
 
     void toAppInvite() {

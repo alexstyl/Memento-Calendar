@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonateMonitor.DonateMonitorListener;
@@ -125,7 +124,6 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
             List<ContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
             onContactClicked(contactViewModels.get(0).getContact());
         } else {
-            analytics.trackScreen(Screen.DATE_DETAILS);
             navigator.toDateDetails(viewModel.getDate());
         }
     }
