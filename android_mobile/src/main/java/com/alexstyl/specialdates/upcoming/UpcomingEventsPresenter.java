@@ -29,9 +29,9 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     private final EventsSettingsMonitor monitor;
     private final ContactsObserver contactsObserver;
     private final MainNavigator navigator;
-    private boolean mustScrollToPosition;
-
     private final Context context;
+
+    private boolean mustScrollToPosition;
 
     UpcomingEventsPresenter(UpcomingListMVPView view,
                             Analytics analytics,
@@ -71,6 +71,10 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
             @Override
             public void onUpcomingEventsLoaded(List<UpcomingRowViewModel> events) {
                 view.display(events);
+                if (mustScrollToPosition) {
+                    view.showFirstEvent();
+                    mustScrollToPosition = false;
+                }
             }
         });
     }
