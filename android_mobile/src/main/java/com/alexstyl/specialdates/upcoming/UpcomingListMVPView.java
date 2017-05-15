@@ -7,4 +7,6 @@ interface UpcomingListMVPView {
     void showLoading();
 
     void display(List<UpcomingRowViewModel> events);
+
+    void showFirstEvent();
 }

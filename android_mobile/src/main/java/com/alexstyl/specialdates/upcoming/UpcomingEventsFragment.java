@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,28 +78,11 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         presenter.startPresenting();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.stopPresenting();
-    }
-
-    private final PermissionCallbacks callbacks = new PermissionCallbacks() {
-        @Override
-        public void onPermissionGranted() {
-            presenter.refreshData();
-        }
-
-        @Override
-        public void onPermissionDenied() {
-            getActivity().finishAffinity();
-        }
-    };
 
     @Override
     public void onResume() {
@@ -136,8 +120,25 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
+    public void showFirstEvent() {
+        upcomingList.scrollToPosition(0);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.stopPresenting();
     }
+
+    private final PermissionCallbacks callbacks = new PermissionCallbacks() {
+        @Override
+        public void onPermissionGranted() {
+            presenter.refreshData();
+        }
+
+        @Override
+        public void onPermissionDenied() {
+            getActivity().finishAffinity();
+        }
+    };
 }
