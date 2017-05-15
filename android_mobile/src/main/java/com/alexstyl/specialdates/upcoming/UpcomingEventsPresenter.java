@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates.upcoming;
 
-import android.content.Context;
 import android.content.Intent;
 
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -19,8 +19,6 @@ import java.util.List;
 
 class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
 
-    private static final ActionWithParameters action = new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external");
-
     private final UpcomingListMVPView view;
     private final Analytics analytics;
     private final UpcomingEventsAsyncProvider upcomingEventsAsyncProvider;
@@ -28,7 +26,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     private final EventsSettingsMonitor monitor;
     private final ContactsObserver contactsObserver;
     private final MainNavigator navigator;
-    private final Context context;
+    private final ExternalNavigator externalNavigator;
 
     private boolean mustScrollToPosition;
 
@@ -38,7 +36,8 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
                             ContactPermissionRequest permissions,
                             EventsSettingsMonitor monitor,
                             ContactsObserver contactsObserver,
-                            MainNavigator navigator, Context context) {
+                            MainNavigator navigator,
+                            ExternalNavigator externalNavigator) {
         this.view = view;
         this.analytics = analytics;
         this.upcomingEventsAsyncProvider = upcomingEventsAsyncProvider;
@@ -46,7 +45,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
         this.monitor = monitor;
         this.contactsObserver = contactsObserver;
         this.navigator = navigator;
-        this.context = context;
+        this.externalNavigator = externalNavigator;
     }
 
     void startPresenting() {
@@ -132,7 +131,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
 
     @Override
     public void onContactClicked(Contact contact) {
-        analytics.trackAction(action);
-        contact.displayQuickInfo(context);
+        analytics.trackAction(new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external"));
+        externalNavigator.toContactDetails(contact);
     }
 }
