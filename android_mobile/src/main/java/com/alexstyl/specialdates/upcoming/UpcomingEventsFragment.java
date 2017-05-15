@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
@@ -54,7 +55,16 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));
         ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
         MainNavigator navigator = new MainNavigator(analytics, getActivity(), new AndroidStringResources(getResources()));
-        presenter = new UpcomingEventsPresenter(this, analytics, upcomingEventsAsyncProvider, permissions, monitor, contactsObserver, navigator, getActivity());
+        presenter = new UpcomingEventsPresenter(
+                this,
+                analytics,
+                upcomingEventsAsyncProvider,
+                permissions,
+                monitor,
+                contactsObserver,
+                navigator,
+                new ExternalNavigator(getActivity(), analytics)
+        );
     }
 
     @Override
