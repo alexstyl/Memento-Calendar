@@ -5,7 +5,7 @@ import android.content.Intent;
 
 public class ContactPermissionRequest {
 
-    public static final int CONTACT_REQUEST = 1990;
+    static final int CONTACT_REQUEST = 1990;
 
     private final PermissionNavigator navigator;
     private final PermissionCallbacks callbacks;

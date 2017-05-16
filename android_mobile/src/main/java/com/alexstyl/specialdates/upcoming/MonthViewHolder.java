@@ -1,9 +1,9 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.view.View;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.upcoming.MonthHeaderViewModel;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 
 final class MonthViewHolder extends UpcomingRowViewHolder<MonthHeaderViewModel> {
 

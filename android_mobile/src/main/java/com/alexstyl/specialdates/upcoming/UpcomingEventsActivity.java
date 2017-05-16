@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.ui.activity;
+package com.alexstyl.specialdates.upcoming;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +22,6 @@ import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
-import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.caster.Views;
@@ -30,11 +29,7 @@ import com.novoda.notils.meta.AndroidUtils;
 
 import static android.view.View.OnClickListener;
 
-/*
- * The activity was first launched with MainActivity being in package.ui.activity
-  * For that reason, it needs to stay here so that we don't remove ourselves from the user's desktop
- */
-public class MainActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
+public class UpcomingEventsActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
     private Notifier notifier;
     private AskForSupport askForSupport;

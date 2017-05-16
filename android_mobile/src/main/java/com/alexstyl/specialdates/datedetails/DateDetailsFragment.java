@@ -98,7 +98,7 @@ public class DateDetailsFragment extends MementoFragment {
         @Override
         public void onCardClicked(Contact contact) {
             analytics.trackAction(CONTACT_INTERACT_EXTERNAL);
-            contact.displayQuickInfo(getActivity());
+            externalNavigator.toContactDetails(contact);
         }
 
         @Override

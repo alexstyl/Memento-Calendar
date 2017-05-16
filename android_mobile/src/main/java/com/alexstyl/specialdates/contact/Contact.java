@@ -54,11 +54,6 @@ public abstract class Contact {
     public abstract Uri getLookupUri();
 
     /**
-     * Displays the contact information of this contact
-     */
-    public abstract void displayQuickInfo(Context context);
-
-    /**
      * Returns the image path of the avatar of this contact
      */
     public abstract Uri getImagePath();
