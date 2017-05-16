@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.ui.activity.MainActivity;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
@@ -149,7 +149,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
                     context.getPackageName(),
                     R.layout.widget_today_nocontacts
             );
-            Intent intent = new Intent(context, MainActivity.class);
+            Intent intent = new Intent(context, UpcomingEventsActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT
@@ -169,7 +169,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private PendingIntent pendingIntentToMain(Context context) {
-        Intent clickIntent = new Intent(context, MainActivity.class);
+        Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

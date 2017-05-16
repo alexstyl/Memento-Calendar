@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.ui.activity;
+package com.alexstyl.specialdates.upcoming;
 
 import android.app.Activity;
 import android.support.transition.Fade;

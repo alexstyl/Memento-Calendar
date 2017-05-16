@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonateMonitor.DonateMonitorListener;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
-import com.alexstyl.specialdates.ui.activity.MainNavigator;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.util.ContactsObserver;
 

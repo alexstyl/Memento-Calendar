@@ -26,7 +26,6 @@ import com.alexstyl.specialdates.permissions.ContactPermissionRequest.Permission
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
-import com.alexstyl.specialdates.ui.activity.MainNavigator;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.util.ContactsObserver;

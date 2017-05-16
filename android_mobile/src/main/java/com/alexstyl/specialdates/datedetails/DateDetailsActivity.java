@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.support.AskForSupport;
-import com.alexstyl.specialdates.ui.activity.MainActivity;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
@@ -105,7 +105,7 @@ public class DateDetailsActivity extends ThemedMementoActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent i = new Intent(DateDetailsActivity.this, MainActivity.class);
+                Intent i = new Intent(DateDetailsActivity.this, UpcomingEventsActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 finish();
