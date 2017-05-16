@@ -45,11 +45,6 @@ public class ContactTest {
         }
 
         @Override
-        public void displayQuickInfo(Context context) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public Uri getImagePath() {
             throw new UnsupportedOperationException();
         }
