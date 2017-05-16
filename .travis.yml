@@ -7,6 +7,11 @@ environment:
      # ADB options
     ADB_INSTALL_TIMEOUT: 5000
 sudo: false
+dependencies:
+  pre:
+    # Install the android packages
+    - echo y | android update sdk --no-ui --all --filter "extra-google-market_licensing,extra-google-play_billing"
+    #  [HINT] Almost packages are pre installed: https://circleci.com/docs/build-image-precise/#android
 cache:
   directories:
     - $HOME/.gradle/caches/3.3
