@@ -27,7 +27,7 @@ class JavaJSONResourceLoader implements NamedayJSONResourceLoader {
 
     private static String getPathTo(NamedayLocale locale) {
         String prefix = locale.getCountryCode();
-        return String.format("mobile" + File.separator +
+        return String.format("android_mobile" + File.separator +
                                      "src" + File.separator +
                                      "main" + File.separator +
                                      "res" + File.separator +

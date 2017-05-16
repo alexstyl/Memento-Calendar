@@ -2,12 +2,10 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import android.content.res.Resources;
 
-import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 public class NamedayCalendarProvider {
@@ -54,8 +52,7 @@ public class NamedayCalendarProvider {
         try {
             return jsonProvider.getNamedayJSONFor(locale);
         } catch (JSONException e) {
-            ErrorTracker.track(e);
-            return new NamedayJSON(new JSONArray(), new JSONArray());
+            throw new IllegalStateException("Could not load nameday JSON for " + locale);
         }
     }
 
