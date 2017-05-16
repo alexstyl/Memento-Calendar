@@ -1,11 +1,10 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +14,11 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
     private final UpcomingViewHolderFactory viewHolderFactory;
 
     private final List<UpcomingRowViewModel> viewModels = new ArrayList<>();
-    private OnUpcomingEventClickedListener listener;
+    private final OnUpcomingEventClickedListener listener;
 
-    UpcomingEventsAdapter(UpcomingViewHolderFactory viewHolderFactory) {
+    UpcomingEventsAdapter(UpcomingViewHolderFactory viewHolderFactory, OnUpcomingEventClickedListener listener) {
         this.viewHolderFactory = viewHolderFactory;
+        this.listener = listener;
     }
 
     @Override
@@ -44,9 +44,7 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         return viewModels.size();
     }
 
-    void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows, OnUpcomingEventClickedListener listener) {
-        this.listener = listener;
-
+    void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows) {
         final UpcomingDiffCallback diffCallback = new UpcomingDiffCallback(viewModels, upcomingEventRows);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 

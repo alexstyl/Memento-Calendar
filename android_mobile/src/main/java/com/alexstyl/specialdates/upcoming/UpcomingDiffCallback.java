@@ -1,8 +1,6 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.support.v7.util.DiffUtil;
-
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 
 import java.util.List;
 

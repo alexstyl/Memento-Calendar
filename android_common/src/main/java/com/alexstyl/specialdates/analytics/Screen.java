@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.analytics;
 
 public enum Screen {
     HOME("upcoming"),
-    ADD_BIRTHDAY("add birthday"),
+    ADD_EVENT("add event"),
     SEARCH("search"),
     SETTINGS("settings"),
     DATE_DETAILS("date details"),

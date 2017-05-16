@@ -4,9 +4,9 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
 
 public interface OnUpcomingEventClickedListener {
-    void onCardPressed(UpcomingEventsViewModel date);
+    void onEventClicked(UpcomingEventsViewModel viewModel);
 
-    void onContactEventPressed(Contact contact);
+    void onContactClicked(Contact contact);
 
-    void onMoreButtonPressed(UpcomingEventsViewModel date);
+    void onMoreEventsClicked(UpcomingEventsViewModel viewModel);
 }

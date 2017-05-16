@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
@@ -77,6 +78,7 @@ public class SearchActivity extends ThemedMementoActivity {
     private RecyclerView resultView;
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
+    private ExternalNavigator externalNavigator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
+        externalNavigator = new ExternalNavigator(this, analytics);
         namedayPreferences = NamedayPreferences.newInstance(this);
 
         searchbar = Views.findById(this, R.id.search_searchbar);
@@ -297,7 +300,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onContactClicked(Contact contact) {
-            contact.displayQuickInfo(context());
+            externalNavigator.toContactDetails(contact);
         }
 
         @Override

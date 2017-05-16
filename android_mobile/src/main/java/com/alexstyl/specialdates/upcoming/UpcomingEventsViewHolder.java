@@ -1,10 +1,11 @@
-package com.alexstyl.specialdates.upcoming.view;
+package com.alexstyl.specialdates.upcoming;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
+import com.alexstyl.specialdates.upcoming.view.UpcomingEventsView;
 
 class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewModel> {
 
@@ -32,7 +33,7 @@ class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewM
         View.OnClickListener listener1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCardPressed(viewModel);
+                listener.onEventClicked(viewModel);
             }
         };
         itemView.setOnClickListener(listener1);

@@ -51,7 +51,7 @@ public class UpcomingEventsView extends FrameLayout {
         moreContacts.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onMoreButtonPressed(viewModel);
+                listener.onMoreEventsClicked(viewModel);
             }
         });
     }
