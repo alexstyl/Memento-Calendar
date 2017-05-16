@@ -1,17 +1,6 @@
-machine:
-  java:
-    version: oraclejdk8
-environment:
-    # Java options
-    JAVA_OPTS: "-Xms512m -Xmx2048m"
-     # ADB options
-    ADB_INSTALL_TIMEOUT: 5000
+language: android
+jdk: oraclejdk8
 sudo: false
-dependencies:
-  pre:
-    # Install the android packages
-    - echo y | android update sdk --no-ui --all --filter "extra-google-market_licensing,extra-google-play_billing"
-    #  [HINT] Almost packages are pre installed: https://circleci.com/docs/build-image-precise/#android
 cache:
   directories:
     - $HOME/.gradle/caches/3.3
