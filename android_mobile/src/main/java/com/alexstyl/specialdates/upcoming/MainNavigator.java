@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.ui.activity;
+package com.alexstyl.specialdates.upcoming;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -25,7 +25,7 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-public class MainNavigator {
+final class MainNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("https://g3mge.app.goo.gl/jdF1");
 
@@ -34,7 +34,7 @@ public class MainNavigator {
     private final Activity activity;
     private final StringResources stringResource;
 
-    public MainNavigator(Analytics analytics, Activity activity, StringResources stringResource) {
+    MainNavigator(Analytics analytics, Activity activity, StringResources stringResource) {
         this.analytics = analytics;
         this.activity = activity;
         this.stringResource = stringResource;
@@ -102,7 +102,7 @@ public class MainNavigator {
         }
     };
 
-    public void toDateDetails(Date dateSelected) {
+    void toDateDetails(Date dateSelected) {
         Intent intent = DateDetailsActivity.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.DATE_DETAILS);

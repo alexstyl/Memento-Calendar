@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.theming.Themer;
-import com.alexstyl.specialdates.ui.activity.MainActivity;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
@@ -28,7 +28,7 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent up = new Intent(this, MainActivity.class);
+                Intent up = new Intent(this, UpcomingEventsActivity.class);
                 up.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(up);
                 finish();

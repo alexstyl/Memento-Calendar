@@ -27,22 +27,23 @@
     android:icon="@mipmap/ic_launcher"
     android:label="@string/localised_app_name">
 
-    <activity
-      android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
-      android:exported="true"
-      android:launchMode="singleTop"
-      android:windowSoftInputMode="adjustPan">
+    <activity android:name="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
 
+    <!-- Activity alias used so that we can modify the UpcomingEventsActivity file without worrying about the name -->
+    <activity-alias
+      android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:targetActivity=".upcoming.UpcomingEventsActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-    </activity>
+    </activity-alias>
+
 
     <activity
       android:name=".datedetails.DateDetailsActivity"
       android:exported="true"
-      android:parentActivityName=".ui.activity.MainActivity">
+      android:parentActivityName=".upcoming.UpcomingEventsActivity">
 
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
@@ -55,26 +56,26 @@
 
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".ui.activity.MainActivity" />
+        android:value=".upcoming.UpcomingEventsActivity" />
     </activity>
 
     <activity
       android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
       android:label="@string/action_settings"
-      android:parentActivityName=".ui.activity.MainActivity">
+      android:parentActivityName=".upcoming.UpcomingEventsActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".ui.activity.MainActivity" />
+        android:value=".upcoming.UpcomingEventsActivity" />
     </activity>
 
 
     <activity
       android:name="com.alexstyl.specialdates.search.SearchActivity"
-      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:parentActivityName="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity"
       android:windowSoftInputMode="stateVisible|adjustResize">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+        android:value="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
     </activity>
 
 
@@ -95,12 +96,12 @@
       android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
       android:exported="true"
       android:label="@string/add_event_title"
-      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:parentActivityName="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity"
       android:screenOrientation="portrait"
       android:windowSoftInputMode="stateHidden">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+        android:value="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
     </activity>
 
 
@@ -108,11 +109,11 @@
       android:name="com.alexstyl.specialdates.support.RateDialog"
       android:label="@string/support_app"
       android:noHistory="true"
-      android:parentActivityName="com.alexstyl.specialdates.ui.activity.MainActivity"
+      android:parentActivityName="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity"
       android:theme="@style/Theme.Dayslight.DialogNoTitle">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.ui.activity.MainActivity" />
+        android:value="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
     </activity>
 
     <activity
@@ -190,7 +191,7 @@
     <activity
       android:name=".donate.DonateActivity"
       android:label="@string/donate_welcome"
-      android:parentActivityName=".ui.activity.MainActivity"
+      android:parentActivityName=".upcoming.UpcomingEventsActivity"
       android:theme="@style/Theme.Donate" />
 
     <meta-data
