@@ -1,5 +1,11 @@
-language: android
-jdk: oraclejdk8
+machine:
+  java:
+    version: oraclejdk8
+environment:
+    # Java options
+    JAVA_OPTS: "-Xms512m -Xmx2048m"
+     # ADB options
+    ADB_INSTALL_TIMEOUT: 5000
 sudo: false
 cache:
   directories:
