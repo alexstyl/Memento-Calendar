@@ -25,11 +25,6 @@ public class TestContact extends Contact {
     }
 
     @Override
-    public void displayQuickInfo(Context context) {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    @Override
     public Uri getImagePath() {
         throw new UnsupportedOperationException("Not supported");
     }
