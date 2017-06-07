@@ -8,23 +8,26 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.util.ContactsObserver;
 
-import java.text.Collator;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>> {
+class DateDetailsLoader extends SimpleAsyncTaskLoader<List<DateDetailsViewModel>> {
 
     private final Date date;
     private final ContactsObserver contactsObserver;
+    private final ContactEventViewModelFactory contactEventViewModelFactory;
 
     private final PeopleEventsProvider peopleEventsProvider;
 
-    DateDetailsLoader(Context context, Date date, PeopleEventsProvider peopleEventsProvider, ContactsObserver contactsObserver) {
+    DateDetailsLoader(Context context,
+                      Date date,
+                      PeopleEventsProvider peopleEventsProvider,
+                      ContactsObserver contactsObserver,
+                      ContactEventViewModelFactory contactEventViewModelFactory) {
         super(context);
         this.date = date;
         this.contactsObserver = contactsObserver;
         this.peopleEventsProvider = peopleEventsProvider;
+        this.contactEventViewModelFactory = contactEventViewModelFactory;
 
         contactsObserver.registerWith(
                 new ContactsObserver.Callback() {
@@ -43,26 +46,10 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<List<ContactEvent>> {
     }
 
     @Override
-    public List<ContactEvent> loadInBackground() {
+    public List<DateDetailsViewModel> loadInBackground() {
+        // TODO append namedays, bankholidays and support
         List<ContactEvent> celebrationDates = peopleEventsProvider.getCelebrationDateOn(date);
-        Collections.sort(celebrationDates, displayNameComparator);
-        return celebrationDates;
+
+        return contactEventViewModelFactory.convertToViewModels(celebrationDates);
     }
-
-    private final Comparator<ContactEvent> displayNameComparator = new Comparator<ContactEvent>() {
-        private Collator collator;
-
-        {
-            collator = Collator.getInstance();
-            collator.setStrength(Collator.SECONDARY);
-        }
-
-        @Override
-        public int compare(ContactEvent lhs, ContactEvent rhs) {
-            return collator.compare(
-                    lhs.getContact().getDisplayName().toString(),
-                    rhs.getContact().getDisplayName().toString()
-            );
-        }
-    };
 }
