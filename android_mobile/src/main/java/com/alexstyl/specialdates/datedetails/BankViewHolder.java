@@ -1,11 +1,8 @@
 package com.alexstyl.specialdates.datedetails;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
-
-class BankViewHolder extends RecyclerView.ViewHolder {
+class BankViewHolder extends DateDetailsViewHolder<BankHolidayViewModel> {
 
     private final BankCardView bankCardView;
 
@@ -14,8 +11,10 @@ class BankViewHolder extends RecyclerView.ViewHolder {
         bankCardView = (BankCardView) itemView;
     }
 
-    void bind(BankHoliday holiday) {
-        bankCardView.display(holiday);
+    @Override
+    void bind(BankHolidayViewModel viewModel, DateDetailsClickListener listener) {
+        bankCardView.display(viewModel.getBankHoliday());
+
     }
 
 }

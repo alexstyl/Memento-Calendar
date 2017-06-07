@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
-import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
+import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
 import com.novoda.notils.caster.Views;
@@ -67,7 +67,7 @@ public class UpcomingEventsView extends FrameLayout {
         namedaysCard.setTextLines(viewModel.getMaxLines());
     }
 
-    private void bindContactEvents(List<ContactEventViewModel> viewModels, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+    private void bindContactEvents(List<UpcomingContactEventViewModel> viewModels, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
         if (viewModels.size() >= 1) {
             contactEventCardViewOne.bind(viewModels.get(0), listener, imageLoader);
         } else {
