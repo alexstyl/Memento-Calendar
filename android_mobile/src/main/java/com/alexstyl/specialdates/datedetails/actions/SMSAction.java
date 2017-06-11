@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Telephony;
-import android.widget.Toast;
 
 import com.alexstyl.android.Version;
-import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.entity.Phone;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.dialog.ActionDialog;
@@ -35,12 +32,7 @@ class SMSAction implements IntentAction {
         MementoActivity activity = (MementoActivity) context;
         ArrayList<Phone> phones = (ArrayList<Phone>) ContactUtils.getAllPhones(context.getContentResolver(), contactId);
         if (phones.size() == 1) {
-            try {
-                phones.get(0).sendText(context);
-            } catch (Exception e) {
-                ErrorTracker.track(e);
-                Toast.makeText(context, R.string.no_app_found, Toast.LENGTH_SHORT).show();
-            }
+            phones.get(0).sendText(context);
         } else {
             ActionDialog dialog = ActionDialog.newSMSInstance(phones);
             dialog.show(activity.getSupportFragmentManager(), null);

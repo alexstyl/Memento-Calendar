@@ -5,10 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.widget.Toast;
 
-import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.entity.Email;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.dialog.ActionDialog;
@@ -29,12 +26,7 @@ class EMailAction implements IntentAction {
         MementoActivity activity = (MementoActivity) context;
         ArrayList<Email> emails = (ArrayList<Email>) ContactUtils.getAllEMails(context.getContentResolver(), contactId);
         if (emails.size() == 1) {
-            try {
-                emails.get(0).sendMail(context);
-            } catch (Exception e) {
-                ErrorTracker.track(e);
-                Toast.makeText(context, R.string.no_app_found, Toast.LENGTH_SHORT).show();
-            }
+            emails.get(0).sendMail(context);
         } else {
             ActionDialog dialog = ActionDialog.newEmailInstance(emails);
             dialog.show(activity.getSupportFragmentManager(), null);
