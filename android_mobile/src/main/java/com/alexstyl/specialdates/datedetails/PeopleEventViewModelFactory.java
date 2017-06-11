@@ -9,12 +9,12 @@ import com.alexstyl.specialdates.date.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-class ContactEventViewModelFactory {
+final class PeopleEventViewModelFactory {
 
     private final Date todayDate;
     private final StringResources stringResources;
 
-    ContactEventViewModelFactory(Date todayDate, StringResources stringResources) {
+    PeopleEventViewModelFactory(Date todayDate, StringResources stringResources) {
         this.todayDate = todayDate;
         this.stringResources = stringResources;
     }
