@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.contact.actions;
+package com.alexstyl.specialdates.datedetails.actions;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;

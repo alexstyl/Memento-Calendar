@@ -3,8 +3,10 @@ package com.alexstyl.specialdates.datedetails;
 import android.view.View;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.actions.LabeledAction;
+import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+
+import java.util.List;
 
 interface DateDetailsClickListener {
 
@@ -12,7 +14,7 @@ interface DateDetailsClickListener {
 
     void onActionClicked(View v, LabeledAction action);
 
-    void onContactActionsMenuClicked(View v, Contact contact);
+    void onContactActionsMenuClicked(View v, Contact contact, List<LabeledAction> actions);
 
     void onNamedayShared(NamesInADate namedays);
 

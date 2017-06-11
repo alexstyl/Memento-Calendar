@@ -1,9 +1,14 @@
-package com.alexstyl.specialdates.contact.actions;
+package com.alexstyl.specialdates.datedetails.actions;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Telephony;
 import android.widget.Toast;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.entity.Phone;
@@ -17,7 +22,7 @@ import java.util.ArrayList;
  * LabeledAction that displays a dialog wih
  * <p>Created by Alex on 9/5/2014.</p>
  */
-public class SMSAction implements IntentAction {
+class SMSAction implements IntentAction {
 
     private final long contactId;
 
@@ -48,4 +53,23 @@ public class SMSAction implements IntentAction {
         return "SMS";
     }
 
+    static boolean isSupported(Context context, PackageManager packageManager) {
+        Intent smsIntent = createSMSIntent(context);
+        return smsIntent.resolveActivity(packageManager) != null;
+    }
+
+    private static Intent createSMSIntent(Context context) {
+        if (Version.hasKitKat()) {
+            String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context);
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:555"));
+            if (defaultSmsPackageName != null) {
+                smsIntent.setPackage(defaultSmsPackageName);
+            }
+            return smsIntent;
+        } else {
+            Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+            smsIntent.setData(Uri.fromParts("sms", "555", null));
+            return smsIntent;
+        }
+    }
 }

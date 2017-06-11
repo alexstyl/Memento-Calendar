@@ -13,17 +13,19 @@ class CompactDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVie
     private final ColorImageView avatar;
     private final TextView displayName;
     private final TextView eventLabel;
+    private final View actions;
 
-    CompactDateDetailsViewHolder(View itemView, ImageLoader imageLoader, ColorImageView avatar, TextView displayName, TextView eventLabel) {
+    CompactDateDetailsViewHolder(View itemView, ImageLoader imageLoader, ColorImageView avatar, TextView displayName, TextView eventLabel, View actions) {
         super(itemView);
         this.imageLoader = imageLoader;
         this.avatar = avatar;
         this.displayName = displayName;
         this.eventLabel = eventLabel;
+        this.actions = actions;
     }
 
     @Override
-    void bind(ContactEventViewModel viewModel, final DateDetailsClickListener listener) {
+    void bind(final ContactEventViewModel viewModel, final DateDetailsClickListener listener) {
         final Contact contact = viewModel.getContact();
         avatar.setBackgroundVariant((int) contact.getContactID());
         String displayNameString = contact.getDisplayName().toString();
@@ -41,8 +43,16 @@ class CompactDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVie
         );
 
         eventLabel.setTextColor(viewModel.getEventLabelColor());
-        eventLabel.setVisibility(View.VISIBLE);
+        eventLabel.setVisibility(viewModel.getEventLabelVisibility());
         eventLabel.setText(viewModel.getEventLabel());
+
+        actions.setVisibility(viewModel.getActionsVisibility());
+        actions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onContactActionsMenuClicked(v, contact, viewModel.getActions());
+            }
+        });
     }
 
 }

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.actions.IntentAction;
+import com.alexstyl.specialdates.datedetails.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;

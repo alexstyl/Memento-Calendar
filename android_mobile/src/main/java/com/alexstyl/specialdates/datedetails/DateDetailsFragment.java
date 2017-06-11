@@ -32,7 +32,8 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.actions.LabeledAction;
+import com.alexstyl.specialdates.datedetails.actions.ContactActionFactory;
+import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.MonthInt;
@@ -186,6 +187,7 @@ public class DateDetailsFragment extends MementoFragment {
             if (loaderID == LOADER_ID_EVENTS) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(getActivity());
                 ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
+                ContactActionFactory factory = new ContactActionFactory(getActivity(), getContentResolver(), getActivity().getPackageManager());
                 return new DateDetailsLoader(
                         getActivity(),
                         date,
@@ -195,7 +197,7 @@ public class DateDetailsFragment extends MementoFragment {
                         NamedayPreferences.newInstance(getContext()),
                         new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                         new SupportViewModelFactory(getContext(), new AndroidStringResources(getResources())),
-                        new PeopleEventViewModelFactory(date, stringResources, getResources()),
+                        new PeopleEventViewModelFactory(date, stringResources, getResources(), factory),
                         new BankHolidayViewModelFactory(),
                         new NamedayViewModelFactory(),
                         NamedayCalendarProvider.newInstance(getResources())
@@ -247,25 +249,20 @@ public class DateDetailsFragment extends MementoFragment {
         }
 
         @Override
-        public void onContactActionsMenuClicked(View view, Contact contact) {
-            final List<LabeledAction> actions = contact.getUserActions(getActivity());
-            if (actions == null) {
-                return;
-            }
+        public void onContactActionsMenuClicked(View view, Contact contact, final List<LabeledAction> actions) {
             int size = actions.size();
             PopupMenu popup = new PopupMenu(getActivity(), view);
+            Menu menu = popup.getMenu();
             for (int i = 0; i < size; i++) {
                 LabeledAction action = actions.get(i);
-                popup.getMenu().add(contact.hashCode(), i, 0, getString(action.getName()));
+                menu.add(contact.hashCode(), i, 0, getString(action.getName()));
             }
-
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     return actions.get(menuItem.getItemId()).fire(getActivity());
                 }
             });
-
             popup.show();
         }
 
