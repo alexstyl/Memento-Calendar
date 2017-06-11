@@ -180,10 +180,10 @@ public class DateDetailsFragment extends MementoFragment {
     }
 
     private EventsSpacingDecoration spacingDecoration;
-    private LoaderManager.LoaderCallbacks<List<DateDetailsViewModel>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<DateDetailsViewModel>>() {
+    private LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel> loaderCallbacks = new LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel>() {
 
         @Override
-        public Loader<List<DateDetailsViewModel>> onCreateLoader(int loaderID, Bundle bundle) {
+        public Loader<DateDetailsScreenViewModel> onCreateLoader(int loaderID, Bundle bundle) {
             if (loaderID == LOADER_ID_EVENTS) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(getActivity());
                 ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
@@ -207,14 +207,9 @@ public class DateDetailsFragment extends MementoFragment {
         }
 
         @Override
-        public void onLoadFinished(Loader<List<DateDetailsViewModel>> EventItemLoader, List<DateDetailsViewModel> result) {
-            adapter.displayEvents(result);
-            if (adapter.getHeaderCount() == 0) {
-                layoutManager.setSpanCount(1); // display everything in one row
-            } else {
-                layoutManager.setSpanCount(getResources().getInteger(R.integer.grid_card_columns));
-            }
-
+        public void onLoadFinished(Loader<DateDetailsScreenViewModel> EventItemLoader, DateDetailsScreenViewModel result) {
+            adapter.displayEvents(result.getViewModels());
+            layoutManager.setSpanCount(result.getSpanCount());
             spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
             showData();
             hideLoading();
@@ -235,7 +230,7 @@ public class DateDetailsFragment extends MementoFragment {
         }
 
         @Override
-        public void onLoaderReset(Loader<List<DateDetailsViewModel>> EventItemLoader) {
+        public void onLoaderReset(Loader<DateDetailsScreenViewModel> EventItemLoader) {
             // do nothing
         }
     };
