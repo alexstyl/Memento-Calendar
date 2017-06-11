@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
@@ -66,7 +67,6 @@ public class DateDetailsFragment extends MementoFragment {
 
     private static final int LOADER_ID_EVENTS = 503;
 
-    private static final int SPAN_SIZE = 1;
     private Date date;
     private ProgressBar progress;
     private GridLayoutManager layoutManager;
@@ -75,10 +75,11 @@ public class DateDetailsFragment extends MementoFragment {
     private ContactPermissionRequest permissions;
     private ExternalNavigator externalNavigator;
     private RecyclerView recyclerView;
+    private View emptyView;
+    private StringResources stringResources;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
-
         Bundle args = new Bundle(3);
         args.putInt(KEY_DISPLAYING_YEAR, date.getYear());
         args.putInt(KEY_DISPLAYING_MONTH, date.getMonth());
@@ -147,49 +148,37 @@ public class DateDetailsFragment extends MementoFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            date = getDateFrom(savedInstanceState);
+            date = extractDateFrom(savedInstanceState);
         } else {
-            date = getDate();
+            date = extractDateFrom(getArguments());
         }
-        recyclerView = (RecyclerView) view.findViewById(R.id.contacts_grid);
-        progress = (ProgressBar) view.findViewById(android.R.id.progress);
-        emptyView = Views.findById(view, R.id.date_details_empty);
-        layoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
 
-        layoutManager.setSpanSizeLookup(
-                new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        // TODO
-                        return SPAN_SIZE;
-                    }
-                }
-        );
+        recyclerView = Views.findById(view, R.id.contacts_grid);
+        progress = Views.findById(view, android.R.id.progress);
+        emptyView = Views.findById(view, R.id.date_details_empty);
+        layoutManager = new GridLayoutManager(getActivity(), DateDetailsSpanLookup.FULL_SPAN, LinearLayoutManager.VERTICAL, false);
 
         adapter = new DateDetailsAdapter(DateDetailsViewHolderFactory.createCompactFactory(LayoutInflater.from(getActivity()), UILImageLoader.createLoader(getResources())), dateDetailsClickListener);
+        DateDetailsSpanLookup spanSizeLookup = new DateDetailsSpanLookup(adapter);
+        layoutManager.setSpanSizeLookup(spanSizeLookup);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        spacingDecoration = new EventsSpacingDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter, spanSizeLookup);
+        recyclerView.addItemDecoration(spacingDecoration);
     }
 
-    private Date getDate() {
-        int year = getArguments().getInt(KEY_DISPLAYING_YEAR);
-        @MonthInt int month = getArguments().getInt(KEY_DISPLAYING_MONTH);
-        int dayOfMonth = getArguments().getInt(KEY_DISPLAYING_DAY_OF_MONTH);
+    private Date extractDateFrom(Bundle arguments) {
+        int year = arguments.getInt(KEY_DISPLAYING_YEAR);
+        @MonthInt int month = arguments.getInt(KEY_DISPLAYING_MONTH);
+        int dayOfMonth = arguments.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
         return Date.on(dayOfMonth, month, year);
     }
 
-    private Date getDateFrom(Bundle savedInstanceState) {
-        int year = savedInstanceState.getInt(KEY_DISPLAYING_YEAR);
-        @MonthInt int month = savedInstanceState.getInt(KEY_DISPLAYING_MONTH);
-        int dayOfMonth = savedInstanceState.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
-        return Date.on(dayOfMonth, month, year);
-    }
-
-    private View emptyView;
-    private AndroidStringResources stringResources;
+    private EventsSpacingDecoration spacingDecoration;
     private LoaderManager.LoaderCallbacks<List<DateDetailsViewModel>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<DateDetailsViewModel>>() {
 
         @Override
@@ -206,18 +195,25 @@ public class DateDetailsFragment extends MementoFragment {
                         NamedayPreferences.newInstance(getContext()),
                         new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                         new SupportViewModelFactory(getContext(), new AndroidStringResources(getResources())),
-                        new PeopleEventViewModelFactory(date, stringResources),
+                        new PeopleEventViewModelFactory(date, stringResources, getResources()),
                         new BankHolidayViewModelFactory(),
                         new NamedayViewModelFactory(),
                         NamedayCalendarProvider.newInstance(getResources())
                 );
             }
-            return null;
+            throw new IllegalArgumentException("Requested loader with unknown ID " + loaderID);
         }
 
         @Override
         public void onLoadFinished(Loader<List<DateDetailsViewModel>> EventItemLoader, List<DateDetailsViewModel> result) {
             adapter.displayEvents(result);
+            if (adapter.getHeaderCount() == 0) {
+                layoutManager.setSpanCount(1); // display everything in one row
+            } else {
+                layoutManager.setSpanCount(getResources().getInteger(R.integer.grid_card_columns));
+            }
+
+            spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
             showData();
             hideLoading();
         }

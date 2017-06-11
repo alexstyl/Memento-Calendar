@@ -14,7 +14,6 @@ class BankViewHolder extends DateDetailsViewHolder<BankHolidayViewModel> {
     @Override
     void bind(BankHolidayViewModel viewModel, DateDetailsClickListener listener) {
         bankCardView.display(viewModel.getBankHoliday());
-
     }
 
 }

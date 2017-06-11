@@ -47,6 +47,25 @@ class DateDetailsAdapter extends RecyclerView.Adapter<DateDetailsViewHolder> {
     void displayEvents(List<DateDetailsViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
+        updateHeaderCount();
         notifyDataSetChanged();
+    }
+
+    private int headerCount = 0;
+
+    private void updateHeaderCount() {
+        int sum = 0;
+        for (DateDetailsViewModel viewModel : viewModels) {
+            int viewType = viewModel.getViewType();
+            if (viewType == DateDetailsViewType.BANKHOLIDAY
+                    || viewType == DateDetailsViewType.NAMEDAY) {
+                sum++;
+            }
+        }
+        this.headerCount = sum;
+    }
+
+    int getHeaderCount() {
+        return headerCount;
     }
 }
