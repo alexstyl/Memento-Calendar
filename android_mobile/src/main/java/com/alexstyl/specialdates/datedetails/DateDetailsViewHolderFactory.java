@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.exception.DeveloperError;
 
 final class DateDetailsViewHolderFactory {
 
@@ -48,6 +47,6 @@ final class DateDetailsViewHolderFactory {
             TextView textDescription = Views.findById(view, R.id.support_card_description);
             return new SupportViewHolder(view, heartView, textDescription);
         }
-        throw new DeveloperError("Invalid viewType " + viewType);
+        throw new IllegalStateException("Invalid viewType " + viewType);
     }
 }

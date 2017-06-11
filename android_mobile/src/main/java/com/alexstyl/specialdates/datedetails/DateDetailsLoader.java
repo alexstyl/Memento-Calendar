@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.datedetails;
 import android.content.Context;
 
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
@@ -21,7 +22,7 @@ import com.alexstyl.specialdates.util.ContactsObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-class DateDetailsLoader extends SimpleAsyncTaskLoader<List<DateDetailsViewModel>> {
+class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel> {
 
     private final Date date;
     private final ContactsObserver contactsObserver;
@@ -79,13 +80,15 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<List<DateDetailsViewModel>
     }
 
     @Override
-    public List<DateDetailsViewModel> loadInBackground() {
+    public DateDetailsScreenViewModel loadInBackground() {
         List<DateDetailsViewModel> viewModels = new ArrayList<>();
         addSupportCardIfNeeded(viewModels);
         addBankholidaysIfEnabled(viewModels);
         addNamedaysIfEnabled(viewModels);
         addPeopleEvents(viewModels);
-        return viewModels;
+
+        int spanCount = (viewModels.size() <= 2) ? 1 : getContext().getResources().getInteger(R.integer.grid_card_columns);
+        return new DateDetailsScreenViewModel(viewModels, spanCount);
     }
 
     private void addSupportCardIfNeeded(List<DateDetailsViewModel> viewModels) {
