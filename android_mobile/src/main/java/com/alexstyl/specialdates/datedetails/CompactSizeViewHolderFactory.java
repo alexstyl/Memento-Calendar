@@ -25,7 +25,8 @@ class CompactSizeViewHolderFactory implements FlexibleSizeViewHolderFactory {
         TextView displayName = Views.findById(view, R.id.search_result_contact_name);
         TextView eventLabel = Views.findById(view, R.id.event_label);
         ColorImageView avatar = Views.findById(view, R.id.search_result_avatar);
-        return new CompactDateDetailsViewHolder(view, imageLoader, avatar, displayName, eventLabel);
+        View actions = Views.findById(view, R.id.more_actions);
+        return new CompactDateDetailsViewHolder(view, imageLoader, avatar, displayName, eventLabel, actions);
     }
 
 }

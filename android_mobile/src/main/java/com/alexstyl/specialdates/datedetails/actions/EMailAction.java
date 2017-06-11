@@ -1,7 +1,10 @@
-package com.alexstyl.specialdates.contact.actions;
+package com.alexstyl.specialdates.datedetails.actions;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.ErrorTracker;
@@ -13,11 +16,7 @@ import com.alexstyl.specialdates.util.ContactUtils;
 
 import java.util.ArrayList;
 
-/**
- * LabeledAction that displays a dialog wih
- * <p>Created by Alex on 9/5/2014.</p>
- */
-public class EMailAction implements IntentAction {
+class EMailAction implements IntentAction {
 
     private final long contactId;
 
@@ -46,6 +45,11 @@ public class EMailAction implements IntentAction {
     @Override
     public String getName() {
         return "email";
+    }
+
+    static boolean isSupported(PackageManager packageManager) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "email@gmail.com", null));
+        return intent.resolveActivity(packageManager) != null;
     }
 
 }
