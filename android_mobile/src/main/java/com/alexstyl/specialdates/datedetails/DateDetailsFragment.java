@@ -35,7 +35,12 @@ import com.alexstyl.specialdates.contact.actions.LabeledAction;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
+import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
+import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -192,7 +197,20 @@ public class DateDetailsFragment extends MementoFragment {
             if (loaderID == LOADER_ID_EVENTS) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(getActivity());
                 ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
-                return new DateDetailsLoader(getActivity(), date, peopleEventsProvider, contactsObserver, new ContactEventViewModelFactory(date, stringResources));
+                return new DateDetailsLoader(
+                        getActivity(),
+                        date,
+                        new AskForSupport(getContext()),
+                        peopleEventsProvider,
+                        contactsObserver,
+                        NamedayPreferences.newInstance(getContext()),
+                        new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                        new SupportViewModelFactory(getContext(), new AndroidStringResources(getResources())),
+                        new PeopleEventViewModelFactory(date, stringResources),
+                        new BankHolidayViewModelFactory(),
+                        new NamedayViewModelFactory(),
+                        NamedayCalendarProvider.newInstance(getResources())
+                );
             }
             return null;
         }
