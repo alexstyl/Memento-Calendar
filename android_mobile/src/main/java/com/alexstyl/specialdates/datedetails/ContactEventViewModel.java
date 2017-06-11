@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.datedetails;
 
-import android.support.annotation.ColorRes;
+import android.support.annotation.ColorInt;
 
 import com.alexstyl.android.ViewVisibility;
 import com.alexstyl.specialdates.contact.Contact;
@@ -11,10 +11,10 @@ class ContactEventViewModel implements DateDetailsViewModel {
     private final String eventLabel;
     @ViewVisibility
     private int eventLabelVisibility;
-    @ColorRes
+    @ColorInt
     private final int eventLabelColor;
 
-    ContactEventViewModel(Contact contact, String eventLabel, @ViewVisibility int eventLabelVisibility, @ColorRes int eventLabelColor) {
+    ContactEventViewModel(Contact contact, String eventLabel, @ViewVisibility int eventLabelVisibility, @ColorInt int eventLabelColor) {
         this.contact = contact;
         this.eventLabel = eventLabel;
         this.eventLabelVisibility = eventLabelVisibility;
@@ -25,7 +25,7 @@ class ContactEventViewModel implements DateDetailsViewModel {
         return contact;
     }
 
-    @ColorRes
+    @ColorInt
     public int getEventLabelColor() {
         return eventLabelColor;
     }
