@@ -31,12 +31,14 @@
   <PreferenceScreen
     android:key="@string/key_debug_reset_donations"
     android:title="Reset Donations" />
+  <PreferenceScreen
+    android:key="@string/key_debug_trigger_support"
+    android:title="Trigger support dialog time" />
 
   <PreferenceCategory android:title="Wear">
     <Preference
       android:key="@string/key_debug_trigger_wear_service"
       android:title="Trigger WearSyncService" />
-
   </PreferenceCategory>
 
 </PreferenceScreen>
