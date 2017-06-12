@@ -44,7 +44,7 @@ class ContactEventViewModel implements DateDetailsViewModel {
     }
 
     @ViewVisibility
-    public int getEventLabelVisibility() {
+    int getEventLabelVisibility() {
         return eventLabelVisibility;
     }
 
