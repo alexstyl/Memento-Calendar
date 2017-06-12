@@ -162,7 +162,7 @@ public class DateDetailsFragment extends MementoFragment {
         layoutManager = new GridLayoutManager(getActivity(), DateDetailsSpanLookup.FULL_SPAN, LinearLayoutManager.VERTICAL, false);
 
         adapter = new DateDetailsAdapter(DateDetailsViewHolderFactory.createCompactFactory(LayoutInflater.from(getActivity()), UILImageLoader.createLoader(getResources())), dateDetailsClickListener);
-        DateDetailsSpanLookup spanSizeLookup = new DateDetailsSpanLookup(adapter);
+        DateDetailsSpanLookup spanSizeLookup = new DateDetailsSpanLookup(adapter, layoutManager);
         layoutManager.setSpanSizeLookup(spanSizeLookup);
 
         recyclerView.setHasFixedSize(true);
