@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.datedetails;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -14,6 +15,8 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
@@ -23,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel> {
+
+    private static final int DETAILED_CARDS_NUMBER_LIMIT = 2;
+    private static final int SINGLE_COLUMN = 1;
 
     private final Date date;
     private final ContactsObserver contactsObserver;
@@ -87,8 +93,19 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
         addNamedaysIfEnabled(viewModels);
         addPeopleEvents(viewModels);
 
-        int spanCount = (viewModels.size() <= 2) ? 1 : getContext().getResources().getInteger(R.integer.grid_card_columns);
-        return new DateDetailsScreenViewModel(viewModels, spanCount);
+        int spanCount = (viewModels.size() <= DETAILED_CARDS_NUMBER_LIMIT) ? SINGLE_COLUMN : getContext().getResources().getInteger(R.integer.grid_card_columns);
+
+        DateDetailsViewHolderFactory viewHolderFactory = createViewHolderFactory(viewModels);
+        return new DateDetailsScreenViewModel(viewModels, spanCount, viewHolderFactory);
+    }
+
+    private DateDetailsViewHolderFactory createViewHolderFactory(List<DateDetailsViewModel> viewModels) {
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        ImageLoader imageLoader = UILImageLoader.createLoader(getContext().getResources());
+
+        return (viewModels.size() <= 2) ?
+                DateDetailsViewHolderFactory.createDetailedFactory(layoutInflater, imageLoader) :
+                DateDetailsViewHolderFactory.createCompactFactory(layoutInflater, imageLoader);
     }
 
     private void addSupportCardIfNeeded(List<DateDetailsViewModel> viewModels) {

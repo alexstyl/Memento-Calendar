@@ -6,10 +6,12 @@ class DateDetailsScreenViewModel {
 
     private final List<DateDetailsViewModel> viewModels;
     private final int spanCount;
+    private final DateDetailsViewHolderFactory viewHolderFactory;
 
-    DateDetailsScreenViewModel(List<DateDetailsViewModel> viewModels, int spanCount) {
+    DateDetailsScreenViewModel(List<DateDetailsViewModel> viewModels, int spanCount, DateDetailsViewHolderFactory viewHolderFactory) {
         this.viewModels = viewModels;
         this.spanCount = spanCount;
+        this.viewHolderFactory = viewHolderFactory;
     }
 
     public List<DateDetailsViewModel> getViewModels() {
@@ -18,5 +20,9 @@ class DateDetailsScreenViewModel {
 
     int getSpanCount() {
         return spanCount;
+    }
+
+    DateDetailsViewHolderFactory getViewHolderFactory() {
+        return viewHolderFactory;
     }
 }
