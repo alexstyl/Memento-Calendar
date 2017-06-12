@@ -32,18 +32,17 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.datedetails.actions.ContactActionFactory;
-import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.datedetails.actions.ContactActionFactory;
+import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -157,19 +156,11 @@ public class DateDetailsFragment extends MementoFragment {
         }
 
         recyclerView = Views.findById(view, R.id.contacts_grid);
+        recyclerView.setHasFixedSize(true);
         progress = Views.findById(view, android.R.id.progress);
         emptyView = Views.findById(view, R.id.date_details_empty);
         layoutManager = new GridLayoutManager(getActivity(), DateDetailsSpanLookup.FULL_SPAN, LinearLayoutManager.VERTICAL, false);
 
-        adapter = new DateDetailsAdapter(DateDetailsViewHolderFactory.createCompactFactory(LayoutInflater.from(getActivity()), UILImageLoader.createLoader(getResources())), dateDetailsClickListener);
-        DateDetailsSpanLookup spanSizeLookup = new DateDetailsSpanLookup(adapter, layoutManager);
-        layoutManager.setSpanSizeLookup(spanSizeLookup);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-        spacingDecoration = new EventsSpacingDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter, spanSizeLookup);
-        recyclerView.addItemDecoration(spacingDecoration);
     }
 
     private Date extractDateFrom(Bundle arguments) {
@@ -208,6 +199,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onLoadFinished(Loader<DateDetailsScreenViewModel> EventItemLoader, DateDetailsScreenViewModel result) {
+            updateList(result);
             adapter.displayEvents(result.getViewModels());
             layoutManager.setSpanCount(result.getSpanCount());
             spacingDecoration.setNumberOfColumns(layoutManager.getSpanCount());
@@ -234,6 +226,18 @@ public class DateDetailsFragment extends MementoFragment {
             // do nothing
         }
     };
+
+    private void updateList(DateDetailsScreenViewModel result) {
+        adapter = new DateDetailsAdapter(result.getViewHolderFactory(), dateDetailsClickListener);
+        DateDetailsSpanLookup spanSizeLookup = new DateDetailsSpanLookup(adapter, layoutManager);
+        layoutManager.setSpanSizeLookup(spanSizeLookup);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.removeItemDecoration(spacingDecoration);
+        spacingDecoration = new EventsSpacingDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), adapter, spanSizeLookup);
+        recyclerView.addItemDecoration(spacingDecoration);
+    }
 
     private final DateDetailsClickListener dateDetailsClickListener = new DateDetailsClickListener() {
 
