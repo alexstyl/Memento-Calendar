@@ -5,7 +5,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.ui.widget.ActionButton;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
 class DetailedDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventViewModel> {
@@ -14,20 +16,23 @@ class DetailedDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVi
     private final ColorImageView avatar;
     private final TextView displayName;
     private final TextView eventLabel;
-    private final LinearLayout actions;
+    private final LinearLayout actionsLayout;
+    private final CardActionFactory factory;
 
     DetailedDateDetailsViewHolder(View itemView,
                                   ImageLoader imageLoader,
                                   ColorImageView avatar,
                                   TextView displayName,
                                   TextView eventLabel,
-                                  LinearLayout actions) {
+                                  LinearLayout actionsLayout,
+                                  CardActionFactory factory) {
         super(itemView);
         this.imageLoader = imageLoader;
         this.avatar = avatar;
         this.displayName = displayName;
         this.eventLabel = eventLabel;
-        this.actions = actions;
+        this.actionsLayout = actionsLayout;
+        this.factory = factory;
     }
 
     @Override
@@ -51,5 +56,24 @@ class DetailedDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVi
         eventLabel.setTextColor(viewModel.getEventLabelColor());
         eventLabel.setVisibility(View.VISIBLE);
         eventLabel.setText(viewModel.getEventLabel());
+
+        actionsLayout.setVisibility(viewModel.getActionsVisibility());
+        actionsLayout.removeAllViews();
+
+        bindActions(viewModel, listener);
+    }
+
+    private void bindActions(ContactEventViewModel viewModel, final DateDetailsClickListener listener) {
+        for (final LabeledAction action : viewModel.getActions()) {
+            ActionButton button = factory.inflateActionButton(actionsLayout);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onActionClicked(action);
+                }
+            });
+            button.bind(action);
+            actionsLayout.addView(button);
+        }
     }
 }

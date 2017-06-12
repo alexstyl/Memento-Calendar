@@ -12,7 +12,7 @@ interface DateDetailsClickListener {
 
     void onCardClicked(Contact contact);
 
-    void onActionClicked(View v, LabeledAction action);
+    void onActionClicked(LabeledAction action);
 
     void onContactActionsMenuClicked(View v, Contact contact, List<LabeledAction> actions);
 

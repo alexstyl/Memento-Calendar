@@ -286,7 +286,7 @@ public class DateDetailsFragment extends MementoFragment {
         }
 
         @Override
-        public void onActionClicked(View v, LabeledAction action) {
+        public void onActionClicked(LabeledAction action) {
             // an action on the card was pressed. The action might open a different app that takes ages to load.
             // display the Loading progress
             if (action.hasSlowStart()) {
