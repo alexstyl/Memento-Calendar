@@ -48,12 +48,12 @@ public final class UpcomingEventRowViewModelFactory {
         NamedaysViewModel namedaysViewModel = namedaysViewModelFactory.createViewModelFor(date, namedays);
 
         if (contactEvents.size() > 0) {
-            List<ContactEventViewModel> contactEventViewModels = new ArrayList<>();
-            ContactEventViewModel viewModel = contactViewModelFactory.createViewModelFor(typeface, date, contactEvents.get(0));
-            contactEventViewModels.add(viewModel);
+            List<UpcomingContactEventViewModel> upcomingContactEventViewModels = new ArrayList<>();
+            UpcomingContactEventViewModel viewModel = contactViewModelFactory.createViewModelFor(typeface, date, contactEvents.get(0));
+            upcomingContactEventViewModels.add(viewModel);
             if (contactEvents.size() > 1) {
-                ContactEventViewModel secondViewModel = contactViewModelFactory.createViewModelFor(typeface, date, contactEvents.get(1));
-                contactEventViewModels.add(secondViewModel);
+                UpcomingContactEventViewModel secondViewModel = contactViewModelFactory.createViewModelFor(typeface, date, contactEvents.get(1));
+                upcomingContactEventViewModels.add(secondViewModel);
             }
             int remainingContactSize = contactEvents.size() > 2 ? contactEvents.size() - 2 : 0;
             String moreLabel = stringResources.getString(R.string.plus_x_more, remainingContactSize);
@@ -63,7 +63,7 @@ public final class UpcomingEventRowViewModelFactory {
                     typeface,
                     bankHolidayViewModel,
                     namedaysViewModel,
-                    contactEventViewModels,
+                    upcomingContactEventViewModels,
                     moreLabel,
                     remainingContactSize == 0 ? View.GONE : View.VISIBLE
             );
@@ -74,7 +74,7 @@ public final class UpcomingEventRowViewModelFactory {
                     typeface,
                     bankHolidayViewModel,
                     namedaysViewModel,
-                    Collections.<ContactEventViewModel>emptyList(),
+                    Collections.<UpcomingContactEventViewModel>emptyList(),
                     "",
                     View.GONE
             );
