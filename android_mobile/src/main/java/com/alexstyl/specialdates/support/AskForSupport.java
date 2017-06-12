@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
 
-import com.alexstyl.specialdates.Features;
-
 public class AskForSupport {
 
     private static final long RETRY_INTERVAL = DateUtils.DAY_IN_MILLIS * 1;
@@ -16,10 +14,7 @@ public class AskForSupport {
     }
 
     public boolean shouldAskForRating() {
-        if (Features.RATE_CARD) {
-            return !preferences.hasUserRated() && isTimeToAskAgain();
-        }
-        return false;
+        return !preferences.hasUserRated() && isTimeToAskAgain();
     }
 
     private boolean isTimeToAskAgain() {
