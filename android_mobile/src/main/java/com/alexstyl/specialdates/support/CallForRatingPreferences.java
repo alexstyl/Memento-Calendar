@@ -29,11 +29,15 @@ public class CallForRatingPreferences {
         return previousTime;
     }
 
-    public void saveToDisplayRating() {
+    public void triggerNextTime() {
         preferences.setBoolean(R.string.key_rate_triggered, true);
     }
 
-    public boolean triggered() {
+    public void resetTrigger() {
+        preferences.setBoolean(R.string.key_rate_triggered, false);
+    }
+
+    public boolean isTriggered() {
         return preferences.getBoolean(R.string.key_rate_triggered, false);
     }
 
