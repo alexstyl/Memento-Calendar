@@ -1,9 +1,12 @@
 package com.alexstyl.specialdates.datedetails;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -17,22 +20,19 @@ class DetailedDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVi
     private final TextView displayName;
     private final TextView eventLabel;
     private final LinearLayout actionsLayout;
-    private final CardActionFactory factory;
 
     DetailedDateDetailsViewHolder(View itemView,
                                   ImageLoader imageLoader,
                                   ColorImageView avatar,
                                   TextView displayName,
                                   TextView eventLabel,
-                                  LinearLayout actionsLayout,
-                                  CardActionFactory factory) {
+                                  LinearLayout actionsLayout) {
         super(itemView);
         this.imageLoader = imageLoader;
         this.avatar = avatar;
         this.displayName = displayName;
         this.eventLabel = eventLabel;
         this.actionsLayout = actionsLayout;
-        this.factory = factory;
     }
 
     @Override
@@ -65,7 +65,7 @@ class DetailedDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVi
 
     private void bindActions(ContactEventViewModel viewModel, final DateDetailsClickListener listener) {
         for (final LabeledAction action : viewModel.getActions()) {
-            ActionButton button = factory.inflateActionButton(actionsLayout);
+            ActionButton button = inflateActionButton(actionsLayout);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,5 +75,9 @@ class DetailedDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVi
             button.bind(action);
             actionsLayout.addView(button);
         }
+    }
+
+    private ActionButton inflateActionButton(ViewGroup viewGroup) {
+        return (ActionButton) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_card_action, viewGroup, false);
     }
 }

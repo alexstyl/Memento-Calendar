@@ -16,8 +16,7 @@ final class DateDetailsViewHolderFactory {
     private final FlexibleSizeViewHolderFactory factory;
 
     static DateDetailsViewHolderFactory createDetailedFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
-        CardActionFactory factory = new CardActionFactory(layoutInflater);
-        return new DateDetailsViewHolderFactory(layoutInflater, new DetailedSizeViewHolderFactory(layoutInflater, imageLoader, factory));
+        return new DateDetailsViewHolderFactory(layoutInflater, new DetailedSizeViewHolderFactory(layoutInflater, imageLoader));
     }
 
     static DateDetailsViewHolderFactory createCompactFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
