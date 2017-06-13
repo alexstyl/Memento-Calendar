@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <Preference
+    android:key="@string/key_donate_restore"
+    android:summary="@string/donate_restore_summary"
+    android:title="@string/donate_restore_title" />
+
+  <Preference
+    android:key="@string/key_app_theme"
+    android:title="@string/theme_preference_title" />
+
+  <Preference
+    android:summary="@string/daily_reminder_summary"
+    android:title="@string/daily_reminder">
+
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetClass="com.alexstyl.specialdates.settings.DailyReminderActivity"
+      android:targetPackage="com.alexstyl.specialdates" />
+
+  </Preference>
+
+  <PreferenceCategory android:title="@string/Bank_holidays">
+
+    <CheckBoxPreference
+      android:defaultValue="@bool/isBankholidaysSupported"
+      android:key="@string/key_enable_bank_holidays"
+      android:title="@string/bankholidays_preferences_title" />
+
+    <Preference
+      android:dependency="@string/key_enable_bank_holidays"
+      android:key="@string/key_bankholidays_language"
+      android:summary="@string/Greek"
+      android:title="@string/bankholidays_preferences_language_title" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/namedays">
+    <CheckBoxPreference
+      android:defaultValue="@bool/isNamedaySupported"
+      android:key="@string/key_enable_namedays"
+      android:summaryOff="@string/display_namedays_off"
+      android:summaryOn="@string/display_namedays_on"
+      android:title="@string/display_namedays" />
+
+    <com.alexstyl.specialdates.settings.NamedayListPreference
+      android:dependency="@string/key_enable_namedays"
+      android:key="@string/key_namedays_language"
+      android:title="@string/nameday_language_title" />
+
+    <CheckBoxPreference
+      android:defaultValue="false"
+      android:dependency="@string/key_enable_namedays"
+      android:key="@string/key_namedays_contacts_only"
+      android:summaryOff="@string/namedays_contacts_only_off"
+      android:summaryOn="@string/namedays_contacts_only_on"
+      android:title="@string/namedays_contacts_only" />
+
+    <CheckBoxPreference
+      android:defaultValue="false"
+      android:dependency="@string/key_enable_namedays"
+      android:key="@string/key_namedays_full_name"
+      android:summaryOff="@string/main_preferences_full_name_summary_off"
+      android:summaryOn="@string/main_preferences_full_name_summary_on"
+      android:title="@string/main_preferences_full_name_title" />
+  </PreferenceCategory>
+
+</PreferenceScreen>
