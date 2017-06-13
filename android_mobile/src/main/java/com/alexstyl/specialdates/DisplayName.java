@@ -83,4 +83,37 @@ public class DisplayName {
     public Names getAllNames() {
         return allNames;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DisplayName that = (DisplayName) o;
+
+        if (!displayName.equals(that.displayName)) {
+            return false;
+        }
+        if (!allNames.equals(that.allNames)) {
+            return false;
+        }
+        if (!firstNames.equals(that.firstNames)) {
+            return false;
+        }
+        return lastName.equals(that.lastName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = displayName.hashCode();
+        result = 31 * result + allNames.hashCode();
+        result = 31 * result + firstNames.hashCode();
+        result = 31 * result + lastName.hashCode();
+        return result;
+    }
 }

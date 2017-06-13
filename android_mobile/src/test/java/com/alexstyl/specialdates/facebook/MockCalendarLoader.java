@@ -7,12 +7,8 @@ import java.io.IOException;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.data.UnfoldingReader;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.ParameterFactoryRegistry;
-import net.fortuna.ical4j.model.PropertyFactoryRegistry;
-import net.fortuna.ical4j.model.TimeZone;
-import net.fortuna.ical4j.model.TimeZoneRegistry;
-import net.fortuna.ical4j.model.component.VTimeZone;
 
 class MockCalendarLoader implements CalendarLoader {
 
@@ -20,34 +16,9 @@ class MockCalendarLoader implements CalendarLoader {
     public Calendar loadCalendar() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(getPathToCalendar()));
-            CalendarBuilder builder = new CalendarBuilder(
-                    new FacebookCalendarParser(),
-                    new PropertyFactoryRegistry(),
-                    new ParameterFactoryRegistry(),
-                    new TimeZoneRegistry() {
-                        @Override
-                        public void register(TimeZone timezone) {
-                            "".toCharArray();
-                        }
-
-                        @Override
-                        public void register(TimeZone timezone, boolean update) {
-                            "".toCharArray();
-                        }
-
-                        @Override
-                        public void clear() {
-                            "".toCharArray();
-                        }
-
-                        @Override
-                        public TimeZone getTimeZone(String id) {
-                            return new TimeZone(new VTimeZone());
-                        }
-                    }
-            );
+            CalendarBuilder builder = new CalendarBuilder();
             // TODO close the reader
-            return builder.build(reader);
+            return builder.build(new UnfoldingReader(reader));
         } catch (ParserException | IOException e) {
             e.printStackTrace();
         }
