@@ -115,7 +115,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     @Override
     public void onEventClicked(UpcomingEventsViewModel viewModel) {
         if (isDisplayingOnlyOneContact(viewModel)) {
-            List<ContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
+            List<UpcomingContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
             onContactClicked(contactViewModels.get(0).getContact());
         } else {
             navigator.toDateDetails(viewModel.getDate());

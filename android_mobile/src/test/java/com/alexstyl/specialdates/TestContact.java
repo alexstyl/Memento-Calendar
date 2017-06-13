@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.actions.LabeledAction;
+import com.alexstyl.specialdates.datedetails.actions.LabeledAction;
 
 import java.util.List;
 

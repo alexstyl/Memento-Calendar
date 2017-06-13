@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.android.AndroidStringResources;
-import com.alexstyl.specialdates.contact.actions.IntentAction;
+import com.alexstyl.specialdates.datedetails.actions.IntentAction;
 
 public class AppUtils {
 
