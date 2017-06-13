@@ -3,11 +3,10 @@ package com.alexstyl.specialdates.support;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
-import android.util.Log;
 
 public class AskForSupport {
 
-    private static final long RETRY_INTERVAL = DateUtils.DAY_IN_MILLIS * 1;
+    private static final long RETRY_INTERVAL = DateUtils.DAY_IN_MILLIS;
     private CallForRatingPreferences preferences;
 
     public AskForSupport(Context context) {

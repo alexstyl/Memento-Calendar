@@ -14,7 +14,7 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
     private final Typeface dateTypeFace;
     private final BankHolidayViewModel bankHolidayViewModel;
     private final NamedaysViewModel namedaysViewModel;
-    private final List<ContactEventViewModel> contactViewModels;
+    private final List<UpcomingContactEventViewModel> contactViewModels;
     private final String moreLabel;
     private final int moreLabelVisibility;
 
@@ -23,7 +23,7 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
                             Typeface dateTypeFace,
                             BankHolidayViewModel bankHolidayViewModel,
                             NamedaysViewModel namedaysViewModel,
-                            List<ContactEventViewModel> contactViewModels,
+                            List<UpcomingContactEventViewModel> contactViewModels,
                             String moreLabel,
                             @ViewVisibility int moreLabelVisibility
     ) {
@@ -67,7 +67,7 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
         return date;
     }
 
-    public List<ContactEventViewModel> getContactViewModels() {
+    public List<UpcomingContactEventViewModel> getContactViewModels() {
         return contactViewModels;
     }
 
