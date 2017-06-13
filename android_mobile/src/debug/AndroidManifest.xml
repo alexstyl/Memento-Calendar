@@ -18,6 +18,18 @@
       </intent-filter>
     </activity>
 
+    <activity
+      android:name="com.alexstyl.specialdates.debug.FacebookDebugActivity"
+      android:icon="@drawable/ic_cake"
+      android:label="Facebook Import"
+      android:taskAffinity="com.alexstyl.debug">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+
   </application>
 
 </manifest>
