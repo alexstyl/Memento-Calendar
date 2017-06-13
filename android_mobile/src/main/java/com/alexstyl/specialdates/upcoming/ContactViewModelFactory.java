@@ -18,9 +18,9 @@ public final class ContactViewModelFactory {
         this.stringResources = stringResources;
     }
 
-    ContactEventViewModel createViewModelFor(Typeface typeface, Date date, ContactEvent contactEvent) {
+    UpcomingContactEventViewModel createViewModelFor(Typeface typeface, Date date, ContactEvent contactEvent) {
         Contact contact = contactEvent.getContact();
-        return new ContactEventViewModel(
+        return new UpcomingContactEventViewModel(
                 contact,
                 View.VISIBLE,
                 contact.getDisplayName().toString(),

@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
-import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
+import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
 
@@ -74,7 +74,7 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
         remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_namedays, viewModel.getNamedaysVisibility());
     }
 
-    private void bind(List<ContactEventViewModel> viewModels) {
+    private void bind(List<UpcomingContactEventViewModel> viewModels) {
         if (viewModels.size() >= 1) {
             bindContact(viewModels.get(0), R.id.row_widget_upcoming_event_contact_name_1, R.id.row_widget_upcoming_event_contact_event_type_1, R.id.widget_upcoming_events_avatar_1);
             remoteViews.setViewVisibility(R.id.row_widget_upcoming_contact_1, VISIBLE);
@@ -90,14 +90,14 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
         }
     }
 
-    private void bindContact(final ContactEventViewModel contactEventViewModel,
+    private void bindContact(final UpcomingContactEventViewModel upcomingContactEventViewModel,
                              @IdRes int contactNameViewId,
                              @IdRes int eventTypeViewId,
                              @IdRes final int avatarViewId) {
-        remoteViews.setTextViewText(contactNameViewId, contactEventViewModel.getContactName());
-        remoteViews.setTextViewText(eventTypeViewId, contactEventViewModel.getEventLabel());
-        remoteViews.setTextColor(eventTypeViewId, contactEventViewModel.getEventColor());
-        Bitmap image = createAvatarFor(contactEventViewModel.getContact());
+        remoteViews.setTextViewText(contactNameViewId, upcomingContactEventViewModel.getContactName());
+        remoteViews.setTextViewText(eventTypeViewId, upcomingContactEventViewModel.getEventLabel());
+        remoteViews.setTextColor(eventTypeViewId, upcomingContactEventViewModel.getEventColor());
+        Bitmap image = createAvatarFor(upcomingContactEventViewModel.getContact());
         remoteViews.setImageViewBitmap(avatarViewId, image);
     }
 
