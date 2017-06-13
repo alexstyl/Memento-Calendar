@@ -58,7 +58,7 @@ public class NamedayCardView extends MementoCardView {
         return !namedays.contains(names);
     }
 
-    public interface OnShareClickListener {
+    interface OnShareClickListener {
         void onNamedaysShared(NamesInADate namedays);
     }
 

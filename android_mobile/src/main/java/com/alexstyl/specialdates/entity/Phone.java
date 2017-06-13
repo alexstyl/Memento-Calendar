@@ -15,16 +15,19 @@ public class Phone extends DataType {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null)
+        if (o == null) {
             return false;
+        }
 
         DataType other = Version.as(DataType.class, o);
 
-        if (other == null)
+        if (other == null) {
             return false;
+        }
 
-        if (this.dataType != other.dataType)
+        if (this.dataType != other.dataType) {
             return false;
+        }
 
         return PhoneNumberUtils.compare(data, other.data);
     }
@@ -47,7 +50,6 @@ public class Phone extends DataType {
 
     }
 
-
     /**
      * Fires up an intent with the request to send an sms to the msisdn that of
      * this Phone
@@ -63,8 +65,10 @@ public class Phone extends DataType {
             // forward to the default sms app if we're in kitkat
 
             String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context);
-            Intent sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"
-                    + Uri.encode(getNumber())));
+            Intent sendIntent = new Intent(
+                    Intent.ACTION_SENDTO,
+                    Uri.parse("smsto:" + Uri.encode(getNumber()))
+            );
 
             if (defaultSmsPackageName != null) {
                 sendIntent.setPackage(defaultSmsPackageName);
@@ -72,9 +76,7 @@ public class Phone extends DataType {
             context.startActivity(sendIntent);
 
         } else {
-            Intent textIntent = new Intent();
-
-            textIntent.setAction(Intent.ACTION_VIEW);
+            Intent textIntent = new Intent(Intent.ACTION_VIEW);
             textIntent.setData(Uri.fromParts("sms", getNumber(), null));
             context.startActivity(textIntent);
         }
