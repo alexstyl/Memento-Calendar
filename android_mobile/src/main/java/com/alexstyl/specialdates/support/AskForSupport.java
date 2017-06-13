@@ -3,8 +3,7 @@ package com.alexstyl.specialdates.support;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
-
-import com.alexstyl.specialdates.Features;
+import android.util.Log;
 
 public class AskForSupport {
 
@@ -16,14 +15,12 @@ public class AskForSupport {
     }
 
     public boolean shouldAskForRating() {
-        if (Features.RATE_CARD) {
-            return !preferences.hasUserRated() && isTimeToAskAgain();
-        }
-        return false;
+        return !preferences.hasUserRated() && isTimeToAskAgain();
     }
 
     private boolean isTimeToAskAgain() {
-        if (preferences.triggered()) {
+        if (preferences.isTriggered()) {
+            preferences.resetTrigger();
             return true;
         }
         long timeSinceLastRate = System.currentTimeMillis() - preferences.lastAskTimeAsked();
@@ -35,7 +32,7 @@ public class AskForSupport {
     }
 
     public void requestForRatingSooner() {
-        preferences.saveToDisplayRating();
+        preferences.triggerNextTime();
     }
 
     public void askForRatingFromUser(Context context) {
