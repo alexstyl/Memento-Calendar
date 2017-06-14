@@ -69,12 +69,18 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (askForSupport.shouldAskForRating()) {
+            askForSupport.askForRatingFromUser(this);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (themeMonitor.hasThemeChanged()) {
             reapplyTheme();
-        } else if (askForSupport.shouldAskForRating()) {
-            askForSupport.askForRatingFromUser(this);
         }
         searchTransitioner.onActivityResumed();
         externalNavigator.connectTo(this);

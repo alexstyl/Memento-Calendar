@@ -35,4 +35,24 @@ public class Names implements Iterable<String> {
     public Iterator<String> iterator() {
         return names.iterator();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Names strings = (Names) o;
+
+        return names.equals(strings.names);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return names.hashCode();
+    }
 }

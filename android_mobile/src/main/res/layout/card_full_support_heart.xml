@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/parent"
   style="@style/CardViewStyle"
   android:layout_width="match_parent"
@@ -48,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_tight"
         android:fontFamily="sans-serif-light"
-        android:text="@string/support_app_description_short"
-        android:textSize="@dimen/card_text_size_body" />
+        android:textSize="@dimen/card_text_size_body"
+        tools:text="@string/support_app_description_short" />
 
     </LinearLayout>
 

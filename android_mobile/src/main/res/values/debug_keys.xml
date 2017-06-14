@@ -13,4 +13,5 @@
   <string name="key_debug_start_calendar">key_debug_start_calendar</string>
   <string name="key_debug_trigger_wear_service">key_debug_trigger_wear_service</string>
   <string name="key_debug_reset_donations">key_debug_reset_donations</string>
+  <string name="key_debug_trigger_support">key_debug_trigger_support</string>
 </resources>
