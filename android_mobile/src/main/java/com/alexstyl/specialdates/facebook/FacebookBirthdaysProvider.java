@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateParseException;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,23 +16,20 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 
 import org.apache.log4j.BasicConfigurator;
 
-class FacebookBirthdaysImporter {
+class FacebookBirthdaysProvider {
 
-    private final CalendarLoader fileLoader;
+    private final CalendarFetcher fileLoader;
     private final FacebookContactFactory factory;
 
-    static {
-        BasicConfigurator.configure();
-    }
 
-    FacebookBirthdaysImporter(CalendarLoader fileLoader, FacebookContactFactory factory) {
+
+    FacebookBirthdaysProvider(CalendarFetcher fileLoader, FacebookContactFactory factory) {
         this.fileLoader = fileLoader;
         this.factory = factory;
     }
 
-    List<ContactEvent> fetchFriends() {
-
-        Calendar calendar = fileLoader.loadCalendar();
+    List<ContactEvent> providerBirthdays(URL url) throws CalendarFetcherException {
+        Calendar calendar = fileLoader.fetchCalendarFrom(url);
         List<ContactEvent> contacts = new ArrayList<>();
         for (CalendarComponent component : calendar.getComponents()) {
             Map<String, String> contactValues = new HashMap<>();
@@ -42,6 +40,7 @@ class FacebookBirthdaysImporter {
                 ContactEvent contactFrom = factory.createContactFrom(contactValues);
                 contacts.add(contactFrom);
             } catch (DateParseException e) {
+                // do not throw an exception just for one exception
                 ErrorTracker.track(e);
             }
         }
