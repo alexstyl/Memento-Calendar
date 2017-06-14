@@ -1,12 +1,8 @@
 package com.alexstyl.specialdates.contact;
 
-import android.content.Context;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.contact.actions.LabeledAction;
-
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,11 +28,6 @@ public class ContactTest {
 
         TestableContact(long id, DisplayName displayName) {
             super(id, displayName);
-        }
-
-        @Override
-        protected List<LabeledAction> onBuildActions(Context context) {
-            throw new UnsupportedOperationException();
         }
 
         @Override

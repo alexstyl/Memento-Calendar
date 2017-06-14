@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.facebook;
 
-import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.ContactEvent;
 
 import java.util.List;
 
@@ -13,12 +13,15 @@ public class FacebookBirthdaysImporterTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new FacebookBirthdaysImporter(new MockCalendarLoader());
+        importer = new FacebookBirthdaysImporter(new MockCalendarLoader(), new FacebookContactFactory());
 
     }
 
     @Test
     public void testTestYo() {
-        List<Contact> contacts = importer.fetchFriends();
+        List<ContactEvent> contacts = importer.fetchFriends();
+        for (ContactEvent contact : contacts) {
+            System.out.println(contact.getContact());
+        }
     }
 }

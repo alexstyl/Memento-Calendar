@@ -40,7 +40,8 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="daily_reminder_time_summary">Κάθε μέρα στις %s</string>
     <string name="set_time">Ρύθμιση Ώρας</string>
     <string name="set">Τέλος</string>
-    <string name="Discard">Ακύρωση</string>
+    <string name="Discard_changes">Να διαφραφούν οι αλλαγές;</string>
+    <string name="Discard">Διαγραφή</string>
     <string name="contact_added">Η επαφή δημιουργήθηκε</string>
     <string name="failed_to_add_contact">Η επαφή δεν προστέθηκε</string>
     <string name="contact_updated">Η επαφή ανανεώθηκε</string>

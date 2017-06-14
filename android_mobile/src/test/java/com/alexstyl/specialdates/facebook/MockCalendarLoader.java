@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.data.UnfoldingReader;
 import net.fortuna.ical4j.model.Calendar;
 
 class MockCalendarLoader implements CalendarLoader {

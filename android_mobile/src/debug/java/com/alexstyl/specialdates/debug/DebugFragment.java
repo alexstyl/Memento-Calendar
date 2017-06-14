@@ -14,12 +14,13 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.actions.IntentAction;
+import com.alexstyl.specialdates.datedetails.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
+import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.AppUtils;
 import com.alexstyl.specialdates.wear.WearSyncWidgetRefresher;
@@ -102,6 +103,15 @@ public class DebugFragment extends MementoPreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 DebugDonationPreferences.newInstance(preference.getContext()).reset();
                 Toast.makeText(preference.getContext(), "Donations reset. You should see ads from now on", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        findPreference(R.string.key_debug_trigger_support).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                DebugPreferences.newInstance(preference.getContext(), R.string.pref_call_to_rate).wipe();
+                new AskForSupport(preference.getContext()).requestForRatingSooner();
+                Toast.makeText(preference.getContext(), "Support triggered. You should now see a prompt to rate the app when you launch it", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

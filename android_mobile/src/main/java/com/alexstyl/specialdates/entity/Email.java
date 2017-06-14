@@ -11,26 +11,25 @@ public class Email extends DataType {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null)
+        if (o == null) {
             return false;
+        }
 
         DataType other = Version.as(DataType.class, o);
 
-        if (other == null)
+        if (other == null) {
             return false;
+        }
 
-        if (this.dataType != other.dataType)
+        if (this.dataType != other.dataType) {
             return false;
+        }
 
         return data.equals(other.data);
     }
 
     public Email(String address, Integer type, String label) {
         super(address, type, label, TYPE_EMAIL);
-    }
-
-    public String getEmail() {
-        return data;
     }
 
     public void sendMail(Context context) {

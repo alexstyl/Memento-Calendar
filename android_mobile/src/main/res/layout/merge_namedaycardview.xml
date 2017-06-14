@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/card_content_padding"
         android:layout_marginTop="@dimen/card_content_padding"
-        tools:text="@string/namedays_no_names"
-        android:textAppearance="@style/Card" />
+        android:textAppearance="@style/Card"
+        tools:text="@string/namedays_no_names" />
     </LinearLayout>
 
     <com.alexstyl.specialdates.ui.HorizontalDivider style="@style/Divider" />

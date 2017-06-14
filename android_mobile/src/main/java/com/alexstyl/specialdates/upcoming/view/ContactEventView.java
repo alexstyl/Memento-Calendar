@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
-import com.alexstyl.specialdates.upcoming.ContactEventViewModel;
+import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel;
 import com.novoda.notils.caster.Views;
 
 public class ContactEventView extends LinearLayout {
@@ -32,19 +32,19 @@ public class ContactEventView extends LinearLayout {
         super.setGravity(Gravity.CENTER_VERTICAL);
     }
 
-    public void bind(final ContactEventViewModel contactEventViewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
-        contactNameView.setText(contactEventViewModel.getContactName());
-        eventTypeView.setText(contactEventViewModel.getEventLabel());
-        eventTypeView.setTextColor(contactEventViewModel.getEventColor());
-        avatarView.setBackgroundVariant(contactEventViewModel.getBackgroundVariant());
-        avatarView.setLetter(contactEventViewModel.getContactName());
-        contactNameView.setTypeface(contactEventViewModel.getTypeface());
-        imageLoader.loadImage(contactEventViewModel.getContactImagePath(), avatarView.getImageView());
-        setVisibility(contactEventViewModel.getContactEventVisibility());
+    public void bind(final UpcomingContactEventViewModel upcomingContactEventViewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+        contactNameView.setText(upcomingContactEventViewModel.getContactName());
+        eventTypeView.setText(upcomingContactEventViewModel.getEventLabel());
+        eventTypeView.setTextColor(upcomingContactEventViewModel.getEventColor());
+        avatarView.setBackgroundVariant(upcomingContactEventViewModel.getBackgroundVariant());
+        avatarView.setLetter(upcomingContactEventViewModel.getContactName());
+        contactNameView.setTypeface(upcomingContactEventViewModel.getTypeface());
+        imageLoader.loadImage(upcomingContactEventViewModel.getContactImagePath(), avatarView.getImageView());
+        setVisibility(upcomingContactEventViewModel.getContactEventVisibility());
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onContactClicked(contactEventViewModel.getContact());
+                listener.onContactClicked(upcomingContactEventViewModel.getContact());
             }
         });
     }
