@@ -1,9 +1,10 @@
 package com.alexstyl.specialdates.facebook;
 
-import java.net.URL;
+import com.alexstyl.specialdates.date.ContactEvent;
 
-import net.fortuna.ical4j.model.Calendar;
+import java.net.URL;
+import java.util.List;
 
 interface CalendarFetcher {
-    Calendar fetchCalendarFrom(URL url) throws CalendarFetcherException;
+    List<ContactEvent> fetchCalendarFrom(URL url) throws CalendarFetcherException;
 }
