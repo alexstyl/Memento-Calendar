@@ -1,23 +1,26 @@
 package com.alexstyl.specialdates.facebook;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 
-class MockCalendarLoader implements CalendarLoader {
+import static com.alexstyl.specialdates.facebook.StreamUtil.normaliseDate;
+import static com.alexstyl.specialdates.facebook.StreamUtil.streamFrom;
+
+class MockCalendarFetcher implements CalendarFetcher {
 
     @Override
-    public Calendar loadCalendar() {
+    public Calendar fetchCalendarFrom(URL url) {
         try {
             String normalised = readNormalisedCalendar();
-            InputStream is = new ByteArrayInputStream(normalised.getBytes());
+            InputStream is = streamFrom(normalised);
 
             CalendarBuilder builder = new CalendarBuilder();
             Calendar build = builder.build(is);
@@ -39,8 +42,8 @@ class MockCalendarLoader implements CalendarLoader {
             line = reader.readLine();
         }
         reader.close();
-
-        return sb.toString().replaceAll("DTSTART", "DTSTART;VALUE=DATE");
+        String rawCalendar = sb.toString();
+        return normaliseDate(rawCalendar);
     }
 
     private static String getPathToCalendar() {
