@@ -16,23 +16,31 @@ class FacebookContactFactory {
     ContactEvent createContactFrom(Map<String, String> map) throws DateParseException {
         Date date = dateFrom(map);
         DisplayName name = nameFrom(map);
-        long uid = idOf(map.get("UID"));
+        long uid = idOf(map);
         return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebokContact(uid, name));
     }
 
     private Date dateFrom(Map<String, String> map) throws DateParseException {
-        String dateString = map.get("DTSTART");
+        String dateString = getOrThrow(map, "DTSTART");
         return parser.parseWithoutYear(dateString);
     }
 
     private DisplayName nameFrom(Map<String, String> map) {
-        String summary = map.get("SUMMARY");
+        String summary = getOrThrow(map, "SUMMARY");
         int endOfName = summary.indexOf("'s birthday");
         return DisplayName.from(summary.substring(0, endOfName));
     }
 
-    private long idOf(String uid) {
+    private long idOf(Map<String, String> map) {
+        String uid = getOrThrow(map, "UID");
         int facebookMail = uid.indexOf("@facebook.com");
         return Long.valueOf(uid.substring(1, facebookMail));
+    }
+
+    private static String getOrThrow(Map<String, String> map, String key) {
+        if (map.containsKey(key)) {
+            return map.get(key);
+        }
+        throw new IllegalArgumentException("Map did not contain " + key);
     }
 }

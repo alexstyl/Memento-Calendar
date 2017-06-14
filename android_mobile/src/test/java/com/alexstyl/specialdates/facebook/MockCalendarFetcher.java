@@ -1,36 +1,35 @@
 package com.alexstyl.specialdates.facebook;
 
+import com.alexstyl.specialdates.date.ContactEvent;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-
-import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.model.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.alexstyl.specialdates.facebook.StreamUtil.normaliseDate;
-import static com.alexstyl.specialdates.facebook.StreamUtil.streamFrom;
 
 class MockCalendarFetcher implements CalendarFetcher {
 
     @Override
-    public Calendar fetchCalendarFrom(URL url) {
-        try {
-            String normalised = readNormalisedCalendar();
-            InputStream is = streamFrom(normalised);
-
-            CalendarBuilder builder = new CalendarBuilder();
-            Calendar build = builder.build(is);
-
-            is.close();
-            return build;
-        } catch (ParserException | IOException e) {
-            e.printStackTrace();
-        }
-        throw new RuntimeException("Unable to create mock calendar");
+    public List<ContactEvent> fetchCalendarFrom(URL url) {
+//        try {
+//            String normalised = readNormalisedCalendar();
+//            InputStream is = streamFrom(normalised);
+//
+//            CalendarBuilder builder = new CalendarBuilder();
+//            Calendar build = builder.build(is);
+//
+//            is.close();
+//            return build;
+//        } catch (ParserException | IOException e) {
+//            e.printStackTrace();
+//        }
+//        throw new RuntimeException("Unable to create mock calendar");
+        return new ArrayList<>();
     }
 
     private String readNormalisedCalendar() throws IOException {
