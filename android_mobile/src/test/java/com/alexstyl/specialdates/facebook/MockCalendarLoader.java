@@ -1,57 +1,46 @@
 package com.alexstyl.specialdates.facebook;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.ParameterFactoryRegistry;
-import net.fortuna.ical4j.model.PropertyFactoryRegistry;
-import net.fortuna.ical4j.model.TimeZone;
-import net.fortuna.ical4j.model.TimeZoneRegistry;
-import net.fortuna.ical4j.model.component.VTimeZone;
 
 class MockCalendarLoader implements CalendarLoader {
 
     @Override
     public Calendar loadCalendar() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(getPathToCalendar()));
-            CalendarBuilder builder = new CalendarBuilder(
-                    new FacebookCalendarParser(),
-                    new PropertyFactoryRegistry(),
-                    new ParameterFactoryRegistry(),
-                    new TimeZoneRegistry() {
-                        @Override
-                        public void register(TimeZone timezone) {
-                            "".toCharArray();
-                        }
+            String normalised = readNormalisedCalendar();
+            InputStream is = new ByteArrayInputStream(normalised.getBytes());
 
-                        @Override
-                        public void register(TimeZone timezone, boolean update) {
-                            "".toCharArray();
-                        }
+            CalendarBuilder builder = new CalendarBuilder();
+            Calendar build = builder.build(is);
 
-                        @Override
-                        public void clear() {
-                            "".toCharArray();
-                        }
-
-                        @Override
-                        public TimeZone getTimeZone(String id) {
-                            return new TimeZone(new VTimeZone());
-                        }
-                    }
-            );
-            // TODO close the reader
-            return builder.build(reader);
+            is.close();
+            return build;
         } catch (ParserException | IOException e) {
             e.printStackTrace();
         }
-        throw new UnsupportedOperationException("Unhandled case");
+        throw new RuntimeException("Unable to create mock calendar");
+    }
+
+    private String readNormalisedCalendar() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(getPathToCalendar()));
+        String line = reader.readLine();
+        StringBuilder sb = new StringBuilder();
+        while (line != null) {
+            sb.append(line).append("\n");
+            line = reader.readLine();
+        }
+        reader.close();
+
+        return sb.toString().replaceAll("DTSTART", "DTSTART;VALUE=DATE");
     }
 
     private static String getPathToCalendar() {
