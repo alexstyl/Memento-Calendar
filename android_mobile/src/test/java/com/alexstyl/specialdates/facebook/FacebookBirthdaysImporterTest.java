@@ -20,8 +20,8 @@ public class FacebookBirthdaysImporterTest {
     @Test
     public void testTestYo() {
         List<ContactEvent> contacts = importer.fetchFriends();
-        for (ContactEvent contact : contacts) {
-            System.out.println(contact.getContact());
+        for (ContactEvent event : contacts) {
+            System.out.println(event.getContact() + " on " + event.getDate());
         }
     }
 }

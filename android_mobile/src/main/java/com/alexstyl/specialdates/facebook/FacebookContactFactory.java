@@ -22,7 +22,7 @@ class FacebookContactFactory {
 
     private Date dateFrom(Map<String, String> map) throws DateParseException {
         String dateString = map.get("DTSTART");
-        return parser.parse(dateString);
+        return parser.parseWithoutYear(dateString);
     }
 
     private DisplayName nameFrom(Map<String, String> map) {

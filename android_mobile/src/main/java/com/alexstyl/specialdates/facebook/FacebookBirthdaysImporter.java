@@ -20,26 +20,26 @@ class FacebookBirthdaysImporter {
     private final CalendarLoader fileLoader;
     private final FacebookContactFactory factory;
 
+    static {
+        BasicConfigurator.configure();
+    }
+
     FacebookBirthdaysImporter(CalendarLoader fileLoader, FacebookContactFactory factory) {
         this.fileLoader = fileLoader;
         this.factory = factory;
     }
 
     List<ContactEvent> fetchFriends() {
-        BasicConfigurator.configure();
 
         Calendar calendar = fileLoader.loadCalendar();
         List<ContactEvent> contacts = new ArrayList<>();
         for (CalendarComponent component : calendar.getComponents()) {
-            System.out.println("Component [" + component.getName() + "]");
-            // new contact
-            Map<String, String> map = new HashMap<>();
+            Map<String, String> contactValues = new HashMap<>();
             for (Property property : component.getProperties()) {
-                System.out.println("Property [" + property.getName() + ", " + property.getValue() + "]");
-                map.put(property.getName(), property.getValue());
+                contactValues.put(property.getName(), property.getValue());
             }
             try {
-                ContactEvent contactFrom = factory.createContactFrom(map);
+                ContactEvent contactFrom = factory.createContactFrom(contactValues);
                 contacts.add(contactFrom);
             } catch (DateParseException e) {
                 ErrorTracker.track(e);
