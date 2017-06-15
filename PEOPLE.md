@@ -9,7 +9,7 @@ Memento Calendar could not be in the amazing shape it is today if it wasn't for 
 
 You can find all contributors at https://github.com/alexstyl/Memento-Calendar/graphs/contributors
 
-Additionally, many thanks to all the translators via [OneSky](https://memento.oneskyapp.com/collaboration/project/85177):
+Big thanks to all the translators via [OneSky](https://memento.oneskyapp.com/collaboration/project/85177):
 
 * Andrejs Kotovs for the 🇱🇻 Latvian translations
 * Aggela Styl for the 🇫🇷 French translations
