@@ -13,7 +13,7 @@ Big thanks to all the translators via [OneSky](https://memento.oneskyapp.com/col
 
 * Andrejs Kotovs for the 🇱🇻 Latvian translations
 * Aggela Styl for the 🇫🇷 French translations
-* Bert for the 🇸🇽 Dutch translations
+* Bert for the 🇳🇱 Dutch translations
 * Denis Mone for the 🇬🇷 Greek translations (corrections and improvements)
 * Giangi for the 🇮🇹 Italian translations
 * janfelcman for the 🇨🇿 Czech translations
