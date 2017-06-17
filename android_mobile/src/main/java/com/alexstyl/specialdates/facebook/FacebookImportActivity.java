@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,8 +25,6 @@ import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 
 public class FacebookImportActivity extends ThemedMementoActivity {
-
-    public static final String ACTION_SIGNED_IN = "ACTION_SIGNED_IN";
 
     private FacebookWebView webView;
     private ImageView avatar;
@@ -44,52 +44,11 @@ public class FacebookImportActivity extends ThemedMementoActivity {
 
         clearAllCookies();
         webView = Views.findById(this, R.id.facebook_import_webview);
-        webView.setListener(new FacebookCallback() {
-            @Override
-            public void onCalendarFound(UserCredentials userCredentials) {
-                FacebookImportActivity.this.onCalendarFound();
-
-                // we did it! let's store it and call it a day
-                helloView.setVisibility(View.VISIBLE);
-                avatar.setVisibility(View.VISIBLE);
-                moreText.setVisibility(View.VISIBLE);
-
-                Uri uri = ImagePathCreator.INSTANCE.forUid(userCredentials.getUid());
-                UILImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
-                imageLoader.loadImage(uri, new ImageSize(avatar.getWidth(), avatar.getWidth()), new SimpleOnImageLoadedCallback() {
-                    @Override
-                    public void onImageLoaded(Bitmap loadedImage) {
-                        // TODO start bounce animation
-                        avatar.setVisibility(View.VISIBLE);
-
-                        avatar.setImageDrawable(new CircleBitmapDisplayer.CircleDrawable(
-                                loadedImage,
-                                Color.WHITE,
-                                getResources().getDimensionPixelSize(R.dimen.facebook_avatar_stroke)
-                        ));
-                    }
-                });
-
-                helloView.setText(getString(R.string.facebook_hi, userCredentials.getName()));
-            }
-
-            @Override
-            public void onSignInComplete() {
-                AndroidUtils.requestHideKeyboard(FacebookImportActivity.this, webView);
-                webView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError() {
-                Log.e("Fail");
-                // update the UI and exit
-                // we failed :-1:
-            }
-        });
+        webView.setListener(facebookCallback);
     }
 
-    private void onCalendarFound() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(FacebookImportActivity.ACTION_SIGNED_IN));
+    private void broadcastUserSignedIn() {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(FacebookConstants.ACTION_SIGNED_IN));
         // TODO start update service
     }
 
@@ -121,7 +80,66 @@ public class FacebookImportActivity extends ThemedMementoActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        webView.loadSignInPage();
+//        webView.loadSignInPage();
+        UserCredentials userCredentials = new UserCredentials(1358181263l, "AQCg1OoTtQTSzywU", "Alexandros");
+        facebookCallback.onCalendarFound(userCredentials);
     }
+
+    private final FacebookCallback facebookCallback = new FacebookCallback() {
+        @Override
+        public void onCalendarFound(UserCredentials userCredentials) {
+            FacebookImportActivity.this.broadcastUserSignedIn();
+
+            webView.setVisibility(View.GONE);
+            helloView.setVisibility(View.VISIBLE);
+            avatar.setVisibility(View.VISIBLE);
+            moreText.setVisibility(View.VISIBLE);
+
+            Uri uri = ImagePathCreator.INSTANCE.forUid(userCredentials.getUid());
+            UILImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
+            imageLoader.loadImage(uri, new ImageSize(avatar.getWidth(), avatar.getWidth()), new SimpleOnImageLoadedCallback() {
+                @Override
+                public void onImageLoaded(Bitmap loadedImage) {
+                    setCircularAvatarFrom(loadedImage);
+
+                    final Animation animation = AnimationUtils.loadAnimation(FacebookImportActivity.this, R.anim.bounce);
+                    BounceInterpolator interpolator = new BounceInterpolator(0.4, 20);
+                    animation.setInterpolator(interpolator);
+                    avatar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            avatar.startAnimation(animation);
+                        }
+                    });
+
+                    avatar.setVisibility(View.VISIBLE);
+                    avatar.startAnimation(animation);
+                }
+
+                private void setCircularAvatarFrom(Bitmap loadedImage) {
+                    avatar.setImageDrawable(new CircleBitmapDisplayer.CircleDrawable(
+                            loadedImage,
+                            Color.WHITE,
+                            getResources().getDimensionPixelSize(R.dimen.facebook_avatar_stroke)
+                    ));
+                }
+            });
+
+            helloView.setText(getString(R.string.facebook_hi, userCredentials.getName()));
+        }
+
+        @Override
+        public void onSignInComplete() {
+            AndroidUtils.requestHideKeyboard(FacebookImportActivity.this, webView);
+            webView.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onError() {
+            Log.e("Fail");
+            // update the UI and exit
+            // we failed :-1:
+        }
+    };
 
 }
