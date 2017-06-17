@@ -6,17 +6,23 @@ import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 
 class FacebokContact extends Contact {
-    FacebokContact(long uid, DisplayName name) {
+
+    private final Uri imagePath;
+    private final Uri lookupUri;
+
+    FacebokContact(long uid, DisplayName name, Uri imagePath) {
         super(uid, name);
+        this.imagePath = imagePath;
+        this.lookupUri = Uri.parse("https://www.facebook.com/" + uid);
     }
 
     @Override
     public Uri getLookupUri() {
-        return null;
+        return lookupUri;
     }
 
     @Override
     public Uri getImagePath() {
-        return null;
+        return imagePath;
     }
 }

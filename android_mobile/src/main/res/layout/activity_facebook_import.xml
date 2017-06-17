@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="?colorPrimary"
   android:orientation="vertical">
 
   <com.alexstyl.specialdates.ui.widget.MementoToolbar
@@ -11,8 +13,51 @@
     android:layout_height="wrap_content" />
 
 
-  <WebView
+  <com.alexstyl.specialdates.facebook.FacebookWebView
     android:id="@+id/facebook_import_webview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-</LinearLayout>
+    android:layout_height="match_parent"
+    android:layout_below="@id/memento_toolbar" />
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <ImageView
+      android:id="@+id/facebook_import_avatar"
+      android:layout_width="@dimen/facebook_avatar_width"
+      android:layout_height="@dimen/facebook_avatar_height"
+      android:elevation="4dp"
+      android:importantForAccessibility="no"
+      android:visibility="invisible"
+      tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+      android:id="@+id/facebook_import_hello"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:fontFamily="sans-serif-light"
+      android:textColor="?primaryTextColorInverse"
+      android:textSize="24sp"
+      android:visibility="gone"
+      tools:text="@string/facebook_hi" />
+
+    <TextView
+      android:id="@+id/facebook_import_description"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:fontFamily="sans-serif-light"
+      android:text="@string/facebook_more_description"
+      android:textColor="?primaryTextColorInverse"
+      android:textSize="18sp"
+      android:visibility="gone" />
+  </LinearLayout>
+
+</RelativeLayout>
