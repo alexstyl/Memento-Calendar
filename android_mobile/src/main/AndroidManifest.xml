@@ -194,6 +194,11 @@
       android:parentActivityName=".upcoming.UpcomingEventsActivity"
       android:theme="@style/Theme.Donate" />
 
+    <activity
+      android:name=".facebook.FacebookImportActivity"
+      android:label="@string/title_facebook_import"
+      android:exported="true" />
+
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="${crashlyticsApiKey}" />

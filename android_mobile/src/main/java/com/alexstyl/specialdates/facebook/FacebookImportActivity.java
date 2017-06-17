@@ -1,35 +1,127 @@
 package com.alexstyl.specialdates.facebook;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.webkit.CookieManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
+import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.logger.simple.Log;
+import com.novoda.notils.meta.AndroidUtils;
 
 public class FacebookImportActivity extends ThemedMementoActivity {
 
-    private WebView webView;
+    public static final String ACTION_SIGNED_IN = "ACTION_SIGNED_IN";
+
+    private FacebookWebView webView;
+    private ImageView avatar;
+    private TextView helloView;
+    private TextView moreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_import);
 
+        Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
+        setSupportActionBar(toolbar);
+        avatar = Views.findById(this, R.id.facebook_import_avatar);
+        helloView = Views.findById(this, R.id.facebook_import_hello);
+        moreText = Views.findById(this, R.id.facebook_import_description);
+
+        clearAllCookies();
         webView = Views.findById(this, R.id.facebook_import_webview);
-        webView.setWebViewClient(new WebViewClient() {
+        webView.setListener(new FacebookCallback() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return super.shouldOverrideUrlLoading(view, url);
+            public void onCalendarFound(UserCredentials userCredentials) {
+                FacebookImportActivity.this.onCalendarFound();
+
+                // we did it! let's store it and call it a day
+                helloView.setVisibility(View.VISIBLE);
+                avatar.setVisibility(View.VISIBLE);
+                moreText.setVisibility(View.VISIBLE);
+
+                Uri uri = ImagePathCreator.INSTANCE.forUid(userCredentials.getUid());
+                UILImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
+                imageLoader.loadImage(uri, new ImageSize(avatar.getWidth(), avatar.getWidth()), new SimpleOnImageLoadedCallback() {
+                    @Override
+                    public void onImageLoaded(Bitmap loadedImage) {
+                        // TODO start bounce animation
+                        avatar.setVisibility(View.VISIBLE);
+
+                        avatar.setImageDrawable(new CircleBitmapDisplayer.CircleDrawable(
+                                loadedImage,
+                                Color.WHITE,
+                                getResources().getDimensionPixelSize(R.dimen.facebook_avatar_stroke)
+                        ));
+                    }
+                });
+
+                helloView.setText(getString(R.string.facebook_hi, userCredentials.getName()));
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return super.shouldOverrideUrlLoading(view, request);
+            public void onSignInComplete() {
+                AndroidUtils.requestHideKeyboard(FacebookImportActivity.this, webView);
+                webView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+                Log.e("Fail");
+                // update the UI and exit
+                // we failed :-1:
             }
         });
-        webView.loadUrl("https://m.facebook.com/login");
     }
+
+    private void onCalendarFound() {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(FacebookImportActivity.ACTION_SIGNED_IN));
+        // TODO start update service
+    }
+
+    private void clearAllCookies() {
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setCookie(".facebook.com", "locale=");
+        cookieManager.setCookie(".facebook.com", "datr=");
+        cookieManager.setCookie(".facebook.com", "s=");
+        cookieManager.setCookie(".facebook.com", "csm=");
+        cookieManager.setCookie(".facebook.com", "fr=");
+        cookieManager.setCookie(".facebook.com", "lu=");
+        cookieManager.setCookie(".facebook.com", "c_user=");
+        cookieManager.setCookie(".facebook.com", "xs=");
+        cookieManager.setCookie(".facebook.com", "wd");
+        cookieManager.setCookie(".facebook.com", "presence");
+        cookieManager.setCookie(".facebook.com", "act");
+        cookieManager.setCookie(".facebook.com", "lu");
+        cookieManager.setCookie(".facebook.com", "pl");
+        cookieManager.setCookie(".facebook.com", "fr");
+        cookieManager.setCookie(".facebook.com", "xs");
+        cookieManager.setCookie(".facebook.com", "c_user");
+        cookieManager.setCookie(".facebook.com", "sb");
+        cookieManager.setCookie(".facebook.com", "dats");
+        cookieManager.setCookie(".facebook.com", "datr");
+        cookieManager.setCookie(".facebook.com", "locale");
+        cookieManager.setCookie(".facebook.com", "x-referer");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        webView.loadSignInPage();
+    }
+
 }

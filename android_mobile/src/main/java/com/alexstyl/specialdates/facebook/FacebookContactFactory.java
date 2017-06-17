@@ -12,12 +12,13 @@ import java.util.Map;
 
 class FacebookContactFactory {
     private DateParser parser = DateParser.INSTANCE;
+    private ImagePathCreator imagePathCreator = ImagePathCreator.INSTANCE;
 
     ContactEvent createContactFrom(Map<String, String> map) throws DateParseException {
         Date date = dateFrom(map);
         DisplayName name = nameFrom(map);
         long uid = idOf(map);
-        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebokContact(uid, name));
+        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebokContact(uid, name, imagePathCreator.forUid(uid)));
     }
 
     private Date dateFrom(Map<String, String> map) throws DateParseException {
