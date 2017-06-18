@@ -5,5 +5,5 @@ interface FacebookCallback {
 
     void onError();
 
-    void onSignInComplete();
+    void onSignedInThroughWebView();
 }

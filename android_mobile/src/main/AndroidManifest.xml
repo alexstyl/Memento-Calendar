@@ -197,7 +197,10 @@
 
     <activity
       android:name=".facebook.FacebookImportActivity"
-      android:label="@string/title_facebook_import" />
+      android:label="@string/title_facebook_import"
+      android:theme="@style/Theme.Donate">
+
+    </activity>
 
     <meta-data
       android:name="io.fabric.ApiKey"
