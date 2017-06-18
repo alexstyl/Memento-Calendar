@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 
 import java.util.List;
 
-class PeopleEventsDatabaseRefresher {
+public class PeopleEventsDatabaseRefresher {
 
     private final PeopleEventsRepository repository;
     private final PeopleEventsPersister persister;

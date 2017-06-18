@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
-class CalendarFetcherException extends Throwable {
+class CalendarFetcherException extends Exception {
     CalendarFetcherException(String message) {
         super(message);
     }
