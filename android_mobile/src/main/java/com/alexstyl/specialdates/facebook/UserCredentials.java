@@ -8,7 +8,7 @@ public class UserCredentials {
     private final String key;
     private final String name;
 
-    UserCredentials(long userID, String key, String name) {
+    public UserCredentials(long userID, String key, String name) {
         this.userID = userID;
         this.key = key;
         this.name = name;
