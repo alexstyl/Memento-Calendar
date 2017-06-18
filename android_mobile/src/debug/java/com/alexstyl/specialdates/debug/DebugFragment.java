@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
-import com.alexstyl.specialdates.facebook.FacebookImportActivity;
+import com.alexstyl.specialdates.facebook.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.AppUtils;
@@ -119,7 +119,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_facebook).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(getActivity(), FacebookImportActivity.class);
+                Intent intent = new Intent(getActivity(), FacebookLogInActivity.class);
                 startActivity(intent);
                 return true;
             }

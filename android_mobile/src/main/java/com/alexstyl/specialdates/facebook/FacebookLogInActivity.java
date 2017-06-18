@@ -27,7 +27,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
-public class FacebookImportActivity extends ThemedMementoActivity implements FacebookImportView {
+public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
 
     private FacebookWebView webView;
     private ImageView avatar;
@@ -100,7 +100,7 @@ public class FacebookImportActivity extends ThemedMementoActivity implements Fac
 
         @Override
         public void onCalendarFound(UserCredentials userCredentials) {
-            FacebookImportActivity.this.broadcastUserSignedIn();
+            FacebookLogInActivity.this.broadcastUserSignedIn();
             showData(userCredentials);
         }
 
@@ -149,7 +149,7 @@ public class FacebookImportActivity extends ThemedMementoActivity implements Fac
     }
 
     private void animateAvatarWithBounce() {
-        final Animation animation = AnimationUtils.loadAnimation(FacebookImportActivity.this, R.anim.bounce);
+        final Animation animation = AnimationUtils.loadAnimation(FacebookLogInActivity.this, R.anim.bounce);
         animation.setInterpolator(new BounceInterpolator());
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override

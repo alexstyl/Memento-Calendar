@@ -176,7 +176,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Discard_changes">Discard changes?</string>
   <string name="No_events_on_this_date">No events on this date</string>
   <string name="Invite_friend">Invite friend</string>
-  <string name="Facebook_Import">Facebook Import</string>
+  <string name="Facebook_Log_In">Facebook Log In</string>
   <string name="Your_Friends_will_be_here_shortly_smiley">Your Friends will be here shortly :)</string>
   <string name="An_error_came_up">An error came up</string>
   <string name="Try_again_in_a_bit">Try again in a bit</string>
