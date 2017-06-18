@@ -80,9 +80,7 @@ public class FacebookImportActivity extends ThemedMementoActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        webView.loadSignInPage();
-        UserCredentials userCredentials = new UserCredentials(1358181263l, "AQCg1OoTtQTSzywU", "Alexandros");
-        facebookCallback.onCalendarFound(userCredentials);
+        webView.loadSignInPage();
     }
 
     private final FacebookCallback facebookCallback = new FacebookCallback() {
