@@ -46,11 +46,16 @@ public class FacebookWebView extends WebView {
     }
 
     class FacebookJavaScriptInterface {
+
+        private UserCredentialsExtractorTask userCredentialsExtractorTask;
+
         @JavascriptInterface
         @SuppressWarnings("unused")
         public void processHTML(String html) {
-            new UserCredentialsExtractorTask(html, FacebookPreferences.newInstance(getContext()), listener)
-                    .execute();
+            if (userCredentialsExtractorTask == null) {
+                userCredentialsExtractorTask = new UserCredentialsExtractorTask(html, FacebookPreferences.newInstance(getContext()), listener);
+                userCredentialsExtractorTask.execute();
+            }
         }
     }
 }
