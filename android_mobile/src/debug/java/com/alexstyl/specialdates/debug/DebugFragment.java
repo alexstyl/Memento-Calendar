@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
@@ -121,6 +122,14 @@ public class DebugFragment extends MementoPreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(getActivity(), FacebookLogInActivity.class);
                 startActivity(intent);
+                return true;
+            }
+        });
+        findPreference(R.string.key_debug_facebook_fetch_friends).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), FacebookFriendsIntentService.class);
+                getActivity().startService(intent);
                 return true;
             }
         });
