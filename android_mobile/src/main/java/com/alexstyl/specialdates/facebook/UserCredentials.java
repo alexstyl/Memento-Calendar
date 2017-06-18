@@ -1,25 +1,25 @@
 package com.alexstyl.specialdates.facebook;
 
-class UserCredentials {
+public class UserCredentials {
 
-    static final UserCredentials ANNONYMOUS = new UserCredentials(-1, "", "");
+    public static final UserCredentials ANNONYMOUS = new UserCredentials(-1, "", "");
 
     private final long userID;
     private final String key;
     private final String name;
 
-    UserCredentials(long userID, String key, String name) {
+    public UserCredentials(long userID, String key, String name) {
         this.userID = userID;
         this.key = key;
         this.name = name;
     }
 
-    long getUid() {
+    public long getUid() {
         return userID;
 
     }
 
-    String getKey() {
+    public String getKey() {
         return key;
 
     }

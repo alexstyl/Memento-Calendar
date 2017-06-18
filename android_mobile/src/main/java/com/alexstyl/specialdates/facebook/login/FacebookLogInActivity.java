@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.login;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +20,9 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.facebook.FacebookConstants;
+import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
+import com.alexstyl.specialdates.facebook.UserCredentials;
 import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;

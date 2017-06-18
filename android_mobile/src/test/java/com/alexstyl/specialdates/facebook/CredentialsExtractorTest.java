@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.facebook;
 
+import com.alexstyl.specialdates.facebook.login.CredentialsExtractor;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;

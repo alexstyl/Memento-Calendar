@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.login;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

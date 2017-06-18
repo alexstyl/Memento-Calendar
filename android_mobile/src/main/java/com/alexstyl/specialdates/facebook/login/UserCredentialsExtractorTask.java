@@ -1,6 +1,9 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.login;
 
 import android.os.AsyncTask;
+
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.UserCredentials;
 
 class UserCredentialsExtractorTask extends AsyncTask<Void, Void, UserCredentials> {
 
