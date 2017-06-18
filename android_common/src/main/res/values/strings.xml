@@ -181,4 +181,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="An_error_came_up">An error came up</string>
   <string name="Try_again_in_a_bit">Try again in a bit</string>
   <string name="Hi_X">Hi, %s!</string>
+  <string name="Facebook_Friends_Import">Facebook Friends Import</string>
 </resources>

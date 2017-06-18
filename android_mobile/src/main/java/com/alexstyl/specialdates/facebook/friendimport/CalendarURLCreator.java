@@ -10,7 +10,7 @@ class CalendarURLCreator {
 
     public URL createFrom(UserCredentials user) {
         try {
-            return new URL("www.facebook.com/ical/b.php?uid=" + user.getUid() + "&key=" + user.getKey());
+            return new URL("https://www.facebook.com/ical/b.php?uid=" + user.getUid() + "&key=" + user.getKey());
         } catch (MalformedURLException e) {
             ErrorTracker.track(e);
             throw new IllegalArgumentException(e);
