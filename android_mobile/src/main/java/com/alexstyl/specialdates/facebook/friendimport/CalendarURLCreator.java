@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.facebook.UserCredentials;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FacebookCalendarURLCreator {
+class CalendarURLCreator {
 
     public URL createFrom(UserCredentials user) {
         try {

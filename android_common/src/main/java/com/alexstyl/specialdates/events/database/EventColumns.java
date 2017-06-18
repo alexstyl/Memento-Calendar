@@ -18,4 +18,5 @@ public interface EventColumns {
     String SOURCE = "source";
     int SOURCE_MEMENTO = 0;
     int SOURCE_DEVICE = 1;
+    int SOURCE_FACEBOOK = 2;
 }
