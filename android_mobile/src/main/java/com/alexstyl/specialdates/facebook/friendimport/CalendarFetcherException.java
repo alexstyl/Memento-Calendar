@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
 
 class CalendarFetcherException extends Throwable {
     CalendarFetcherException(String message) {

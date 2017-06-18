@@ -1,4 +1,6 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
+
+import com.alexstyl.specialdates.facebook.UserCredentials;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
