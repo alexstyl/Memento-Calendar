@@ -9,7 +9,7 @@ public class DebugActivity extends ThemedMementoActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_debug);
+        setContentView(R.layout.activity_debug);
     }
 
 }
