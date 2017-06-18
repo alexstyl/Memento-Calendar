@@ -195,8 +195,8 @@
       android:theme="@style/Theme.Donate" />
 
     <activity
-      android:name=".facebook.FacebookImportActivity"
-      android:label="@string/title_facebook_import" />
+      android:name=".facebook.FacebookLogInActivity"
+      android:label="@string/title_facebook_log_in" />
 
     <meta-data
       android:name="io.fabric.ApiKey"
