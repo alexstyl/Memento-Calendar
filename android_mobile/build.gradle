@@ -12,10 +12,6 @@ buildscript {
     }
 }
 
-configurations {
-    // referenced in some portable lib. use android internal instead
-    compile.exclude group: 'commons-logging'
-}
 
 android {
     compileSdkVersion androidCompileSdkVersion
@@ -54,8 +50,6 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
-
-        exclude('org/apache/commons/codec/language/bm/*.txt')
     }
 
     lintOptions {
