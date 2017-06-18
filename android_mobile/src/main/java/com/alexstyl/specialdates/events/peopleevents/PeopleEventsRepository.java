@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
@@ -41,10 +41,10 @@ class PeopleEventsRepository {
     private static final List<ContactEvent> NO_EVENTS = Collections.emptyList();
 
     private final ContentResolver contentResolver;
-    private final AndroidContactsProvider contactsProvider;
+    private final ContactsProvider contactsProvider;
     private final DateParser dateParser;
 
-    PeopleEventsRepository(ContentResolver contentResolver, AndroidContactsProvider contactsProvider, DateParser dateParser) {
+    PeopleEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
         this.contentResolver = contentResolver;
         this.contactsProvider = contactsProvider;
         this.dateParser = dateParser;
