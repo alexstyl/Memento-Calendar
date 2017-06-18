@@ -35,6 +35,10 @@
     android:key="@string/key_debug_trigger_support"
     android:title="Trigger support dialog time" />
 
+  <PreferenceScreen
+    android:key="@string/key_debug_facebook"
+    android:title="Open Facebook Sign in" />
+
   <PreferenceCategory android:title="Wear">
     <Preference
       android:key="@string/key_debug_trigger_wear_service"

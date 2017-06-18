@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
+import com.alexstyl.specialdates.facebook.FacebookImportActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.AppUtils;
@@ -112,6 +113,14 @@ public class DebugFragment extends MementoPreferenceFragment {
                 DebugPreferences.newInstance(preference.getContext(), R.string.pref_call_to_rate).wipe();
                 new AskForSupport(preference.getContext()).requestForRatingSooner();
                 Toast.makeText(preference.getContext(), "Support triggered. You should now see a prompt to rate the app when you launch it", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        findPreference(R.string.key_debug_facebook).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), FacebookImportActivity.class);
+                startActivity(intent);
                 return true;
             }
         });
