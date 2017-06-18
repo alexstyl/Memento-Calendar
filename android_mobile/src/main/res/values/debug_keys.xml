@@ -15,4 +15,5 @@
   <string name="key_debug_reset_donations">key_debug_reset_donations</string>
   <string name="key_debug_trigger_support">key_debug_trigger_support</string>
   <string name="key_debug_facebook">key_debug_facebook</string>
+  <string name="key_debug_facebook_fetch_friends">key_debug_facebook_fetch_friends</string>
 </resources>

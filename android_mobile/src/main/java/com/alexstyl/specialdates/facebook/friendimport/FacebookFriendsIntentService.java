@@ -31,6 +31,10 @@ public class FacebookFriendsIntentService extends IntentService {
 
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         UserCredentials userCredentials = preferences.retrieveCredentials();
+        if (isAnnonymous(userCredentials)) {
+            ErrorTracker.track(new RuntimeException("Tried to fetch events, but was anonymous"));
+            return;
+        }
         CalendarURLCreator calendarURLCreator = new CalendarURLCreator();
 
         URL calendarUrl = calendarURLCreator.createFrom(userCredentials);
@@ -42,5 +46,9 @@ public class FacebookFriendsIntentService extends IntentService {
         } catch (CalendarFetcherException e) {
             ErrorTracker.track(e);
         }
+    }
+
+    private boolean isAnnonymous(UserCredentials userCredentials) {
+        return userCredentials == UserCredentials.ANNONYMOUS;
     }
 }
