@@ -21,12 +21,12 @@ import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
 import com.alexstyl.specialdates.images.UILImageLoader;
-import com.alexstyl.specialdates.ui.base.MementoActivity;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
-public class FacebookImportActivity extends MementoActivity implements FacebookImportView {
+public class FacebookImportActivity extends ThemedMementoActivity implements FacebookImportView {
 
     private FacebookWebView webView;
     private ImageView avatar;

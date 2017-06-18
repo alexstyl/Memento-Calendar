@@ -6,8 +6,8 @@
     parent="@style/Theme.Memento.Light.DarkToolbar">
     <item name="colorPrimary">@color/primary_red</item>
     <item name="colorPrimaryDark">@color/primary_dark_red</item>
-    <item name="colorSecondary">#EF9A9A</item>
-    <item name="colorAccent">@color/primary_red</item>
+    <item name="colorSecondary">#F15454</item>
+    <item name="colorAccent">#F1B554</item>
   </style>
 
   <style name="Theme.Memento.Monochrome"
@@ -68,10 +68,12 @@
   </style>
 
 
-
-  <attr name="useDarkIcons" format="boolean" />
-  <attr name="colorSecondary" format="color" />
-  <attr name="toolbarTheme" format="reference" />
+  <attr name="useDarkIcons"
+    format="boolean" />
+  <attr name="colorSecondary"
+    format="color" />
+  <attr name="toolbarTheme"
+    format="reference" />
 
   <string name="theme_BloodyCherry">Bloody Cherry</string>
   <string name="theme_NavyBlue">Navy Blue</string>
@@ -80,7 +82,6 @@
   <string name="theme_Eggplant">Eggplant</string>
   <string name="theme_Systemo">Systemo</string>
   <string name="theme_Amber">Amber</string>
-
 
 
 </resources>
