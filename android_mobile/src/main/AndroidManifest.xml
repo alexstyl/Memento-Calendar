@@ -194,6 +194,10 @@
       android:parentActivityName=".upcoming.UpcomingEventsActivity"
       android:theme="@style/Theme.Donate" />
 
+    <activity
+      android:name=".facebook.login.FacebookLogInActivity"
+      android:label="@string/title_facebook_log_in" />
+
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="${crashlyticsApiKey}" />

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="?colorPrimary"
+  android:orientation="vertical">
+
+  <com.alexstyl.specialdates.ui.widget.MementoToolbar
+    android:id="@+id/memento_toolbar"
+    style="@style/Widget.Memento.Toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+
+  <com.alexstyl.specialdates.facebook.login.FacebookWebView
+    android:id="@+id/facebook_import_webview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/memento_toolbar"
+    tools:visibility="gone" />
+
+  <ProgressBar
+    android:id="@+id/progress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone" />
+
+  <LinearLayout
+    android:id="@+id/facebook_cta_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <Button
+      android:id="@+id/facebook_import_close"
+      style="@style/FacebookImport.CTAButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/Done"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
+    <View
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
+
+    <Button
+      android:id="@+id/facebook_import_share"
+      style="@style/FacebookImport.CTAButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/share"
+      android:textColor="?colorAccent"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/facebook_cta_bar"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <ImageView
+      android:id="@+id/facebook_import_avatar"
+      android:layout_width="@dimen/facebook_avatar_width"
+      android:layout_height="@dimen/facebook_avatar_height"
+      android:elevation="4dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/ic_facebook_like"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
+    <TextView
+      android:id="@+id/facebook_import_hello"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:fontFamily="sans-serif-light"
+      android:textColor="?primaryTextColorInverse"
+      android:textSize="24sp"
+      android:visibility="gone"
+      tools:text="@string/facebook_hi"
+      tools:visibility="visible" />
+
+    <TextView
+      android:id="@+id/facebook_import_description"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:fontFamily="sans-serif-light"
+      android:text="@string/facebook_more_description"
+      android:textColor="?primaryTextColorInverse"
+      android:textSize="18sp"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
+  </LinearLayout>
+
+
+</RelativeLayout>
