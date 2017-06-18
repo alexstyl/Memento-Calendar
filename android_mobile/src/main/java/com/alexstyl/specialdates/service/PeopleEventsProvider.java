@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
@@ -29,7 +29,7 @@ public class PeopleEventsProvider {
     private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
 
     public static PeopleEventsProvider newInstance(Context context) {
-        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         ContentResolver resolver = context.getContentResolver();
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());

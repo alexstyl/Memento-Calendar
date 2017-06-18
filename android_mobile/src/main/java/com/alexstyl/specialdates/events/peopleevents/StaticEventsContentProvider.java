@@ -14,7 +14,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.ExternalWidgetRefresher;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -42,7 +42,7 @@ public class StaticEventsContentProvider extends ContentProvider {
         Resources resources = context.getResources();
         ContentResolver contentResolver = context.getContentResolver();
 
-        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
         PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
