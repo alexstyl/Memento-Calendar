@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.login;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,6 +7,8 @@ import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
 
 public class FacebookWebView extends WebView {
 
