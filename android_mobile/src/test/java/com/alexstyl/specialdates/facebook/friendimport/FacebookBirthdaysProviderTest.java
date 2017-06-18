@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
 
 import com.alexstyl.specialdates.date.ContactEvent;
 
@@ -22,7 +22,7 @@ public class FacebookBirthdaysProviderTest {
 
         List<ContactEvent> contacts = importer.providerBirthdays(url);
         for (ContactEvent contactEvent : contacts) {
-            System.out.println(contactEvent.getContact()+" on "+contactEvent.getDate());
+            System.out.println(contactEvent.getContact() + " on " + contactEvent.getDate());
         }
         assertThat(contacts).isNotEmpty();
     }

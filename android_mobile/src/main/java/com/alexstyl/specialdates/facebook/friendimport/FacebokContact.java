@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
 
 import android.net.Uri;
 

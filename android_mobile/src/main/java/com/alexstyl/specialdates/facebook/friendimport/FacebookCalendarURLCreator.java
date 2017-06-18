@@ -1,6 +1,7 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.facebook.UserCredentials;
 
 import java.net.MalformedURLException;
 import java.net.URL;

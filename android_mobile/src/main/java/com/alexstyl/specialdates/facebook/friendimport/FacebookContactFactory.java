@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
+import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
 import com.alexstyl.specialdates.util.DateParser;
 
 import java.util.Map;

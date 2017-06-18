@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.facebook;
 
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.facebook.friendimport.CalendarFetcher;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.alexstyl.specialdates.facebook.StreamUtil.normaliseDate;
+import static com.alexstyl.specialdates.facebook.friendimport.StreamUtil.normaliseDate;
 
 class MockCalendarFetcher implements CalendarFetcher {
 
