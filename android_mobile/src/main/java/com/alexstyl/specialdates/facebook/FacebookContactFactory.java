@@ -12,7 +12,7 @@ import java.util.Map;
 
 class FacebookContactFactory {
     private DateParser parser = DateParser.INSTANCE;
-    private ImagePathCreator imagePathCreator = ImagePathCreator.INSTANCE;
+    private FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
 
     ContactEvent createContactFrom(Map<String, String> map) throws DateParseException {
         Date date = dateFrom(map);

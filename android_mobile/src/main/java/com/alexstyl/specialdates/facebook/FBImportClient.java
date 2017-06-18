@@ -36,7 +36,7 @@ class FBImportClient extends WebViewClient {
     private void internalOnUserLoggedIn() {
         switchToDesktopBrowsing();
         webView.loadUrl("http://www.facebook.com/events/birthdays");
-        listener.onSignInComplete();
+        listener.onSignedInThroughWebView();
     }
 
     private void switchToDesktopBrowsing() {
