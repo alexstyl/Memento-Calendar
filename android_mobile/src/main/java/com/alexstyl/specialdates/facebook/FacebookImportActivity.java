@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
 import android.webkit.CookieManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -149,8 +150,7 @@ public class FacebookImportActivity extends ThemedMementoActivity implements Fac
 
     private void animateAvatarWithBounce() {
         final Animation animation = AnimationUtils.loadAnimation(FacebookImportActivity.this, R.anim.bounce);
-        BounceInterpolator interpolator = new BounceInterpolator(0.4, 20);
-        animation.setInterpolator(interpolator);
+        animation.setInterpolator(new BounceInterpolator());
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
