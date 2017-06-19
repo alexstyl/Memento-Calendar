@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.util.DateParser;
 import java.util.Map;
 
 class FacebookContactFactory {
+
     private DateParser parser = DateParser.INSTANCE;
     private FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
 
