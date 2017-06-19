@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.contact;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
@@ -18,17 +19,26 @@ class FacebookContactsSource implements ContactsProviderSource {
     private static final String IS_A_FACEBOOK_CONTACT = AnnualEventsContract.SOURCE + "== " + AnnualEventsContract.SOURCE_FACEBOOK;
 
     private final EventSQLiteOpenHelper eventSQLHelper;
+    private final ContactCache<Contact> cache;
 
-    FacebookContactsSource(EventSQLiteOpenHelper eventSQLHelper) {
+    FacebookContactsSource(EventSQLiteOpenHelper eventSQLHelper, ContactCache<Contact> cache) {
         this.eventSQLHelper = eventSQLHelper;
+        this.cache = cache;
     }
 
     @Override
     public Contact getOrCreateContact(long contactID) throws ContactNotFoundException {
+        Contact contact = cache.getContact(contactID);
+        if (contact == null) {
+            contact = queryContactWith(contactID);
+        }
+        return contact;
+    }
+
+    private Contact queryContactWith(long contactID) throws ContactNotFoundException {
         SQLiteDatabase readableDatabase = eventSQLHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
-
             cursor = readableDatabase.query(
                     AnnualEventsContract.TABLE_NAME,
                     null,
@@ -46,12 +56,21 @@ class FacebookContactsSource implements ContactsProviderSource {
                 cursor.close();
             }
         }
-
-        return null;
+        throw new ContactNotFoundException(contactID);
     }
 
     @Override
     public List<Contact> getAllContacts() {
+        List<Contact> allContacts = queryAllContacts();
+        cache.evictAll();
+        for (Contact allContact : allContacts) {
+            cache.addContact(allContact);
+        }
+        return allContacts;
+    }
+
+    @NonNull
+    private List<Contact> queryAllContacts() {
         SQLiteDatabase readableDatabase = eventSQLHelper.getReadableDatabase();
         Cursor cursor = null;
         List<Contact> contacts = new ArrayList<>();

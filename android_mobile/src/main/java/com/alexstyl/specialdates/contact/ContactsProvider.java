@@ -18,21 +18,21 @@ public class ContactsProvider {
 
     private static ContactsProvider INSTANCE;
 
-    private static final int CACHE_SIZE = 2 * 1024;
+    private static final int CACHE_SIZE = 1024;
     private final Map<Integer, ContactsProviderSource> sources;
 
     public static ContactsProvider get(Context context) {
         if (INSTANCE == null) {
             Map<Integer, ContactsProviderSource> sources = new HashMap<>();
             sources.put(AnnualEventsContract.SOURCE_DEVICE, buildAndroidSource(context));
-            sources.put(AnnualEventsContract.SOURCE_FACEBOOK, new FacebookContactsSource(new EventSQLiteOpenHelper(context)));
+            sources.put(AnnualEventsContract.SOURCE_FACEBOOK, buildFacebookSource(context));
             INSTANCE = new ContactsProvider(sources);
 
         }
         return INSTANCE;
     }
 
-    private static AndroidContactsProviderSource buildAndroidSource(Context context) {
+    private static ContactsProviderSource buildAndroidSource(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         DeviceContactFactory factory = new DeviceContactFactory(contentResolver);
         ContactCache<Contact> contactCache = new ContactCache<>(CACHE_SIZE);
@@ -40,7 +40,12 @@ public class ContactsProvider {
         return new AndroidContactsProviderSource(contactCache, factory, deviceContactsQuery);
     }
 
-    public ContactsProvider(Map<Integer, ContactsProviderSource> sources) {
+    private static ContactsProviderSource buildFacebookSource(Context context) {
+        ContactCache<Contact> contactCache = new ContactCache<>(CACHE_SIZE);
+        return new FacebookContactsSource(new EventSQLiteOpenHelper(context), contactCache);
+    }
+
+    private ContactsProvider(Map<Integer, ContactsProviderSource> sources) {
         this.sources = sources;
     }
 

@@ -19,7 +19,7 @@ class CredentialsExtractor {
             String url = matcher
                     .group(1)
                     .replace("&amp;", "&");
-            String name = obtainName(pageSource);
+            String name = getUserNameFrom(pageSource);
             return createFrom(url, name);
         } else {
             return UserCredentials.ANNONYMOUS;
@@ -38,7 +38,7 @@ class CredentialsExtractor {
 
     }
 
-    String obtainName(String pageSource) {
+    String getUserNameFrom(String pageSource) {
         try {
             String[] splits = pageSource.split("data-testid=\"blue_bar_profile_link\">");
             return splits[1].substring(splits[1].indexOf("span") + 5, splits[1].indexOf("/span") - 1);

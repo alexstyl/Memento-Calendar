@@ -49,13 +49,12 @@ public class StaticEventsContentProvider extends ContentProvider {
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
-        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_MEMENTO);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
         ExternalWidgetRefresher widgetRefresher = ExternalWidgetRefresher.get(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
                 new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, mementoMarshaller, calculator),
+                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator),
                 new EventPreferences(context),
                 new ContactsObserver(contentResolver, new Handler()),
                 new NamedaySettingsMonitor(namedayPreferences),

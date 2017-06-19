@@ -21,15 +21,12 @@ class FacebookMessengerAction implements IntentAction {
         try {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(DATA_COMPOSE + contactID));
-
             context.startActivity(i);
-
         } catch (ActivityNotFoundException e) {
             // the fb app is not installed. open the browser instead
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(URL_MESSENGER + contactID));
             context.startActivity(i);
-
         }
     }
 
