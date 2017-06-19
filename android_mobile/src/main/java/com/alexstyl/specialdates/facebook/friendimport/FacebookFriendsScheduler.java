@@ -11,6 +11,8 @@ import com.alexstyl.specialdates.date.DateAndTime;
 
 public final class FacebookFriendsScheduler {
 
+    private static final TimeOfDay EIGHT_O_CLOCK = new TimeOfDay(8, 0);
+
     private final AlarmManager alarmManager;
     private final Context context;
 
@@ -20,7 +22,7 @@ public final class FacebookFriendsScheduler {
     }
 
     public void scheduleNext() {
-        DateAndTime dateAndTime = new DateAndTime(Date.today().addDay(1), new TimeOfDay(8, 0));
+        DateAndTime dateAndTime = new DateAndTime(Date.today().addDay(1), EIGHT_O_CLOCK);
         PendingIntent pi = PendingIntent.getService(
                 context,
                 0,
