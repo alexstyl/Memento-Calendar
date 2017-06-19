@@ -1,10 +1,15 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 
+import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
@@ -48,9 +53,17 @@ public class FacebookFriendsIntentService extends IntentService {
         } catch (CalendarFetcherException e) {
             ErrorTracker.track(e);
         }
+
+        if (BuildConfig.DEBUG) {
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setContentTitle("Friends fetched")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .build();
+            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(123, notification);
+        }
     }
 
     private boolean isAnnonymous(UserCredentials userCredentials) {
-        return userCredentials == UserCredentials.ANNONYMOUS;
+        return UserCredentials.ANNONYMOUS.equals(userCredentials);
     }
 }
