@@ -19,7 +19,7 @@ class FacebookContactFactory {
         Date date = dateFrom(map);
         DisplayName name = nameFrom(map);
         long uid = idOf(map);
-        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebokContact(uid, name, imagePathCreator.forUid(uid)));
+        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePathCreator.forUid(uid)));
     }
 
     private Date dateFrom(Map<String, String> map) throws DateParseException {
