@@ -26,8 +26,10 @@ public class FacebookFriendsIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        FacebookContactFactory factory = new FacebookContactFactory();
-        FacebookBirthdaysProvider facebookBirthdaysProvider = new FacebookBirthdaysProvider(new FacebookCalendarFetcher(factory), factory);
+        FacebookContactFactory contactFactory = new FacebookContactFactory();
+        FacebookCalendarLoader calendarLoader = new FacebookCalendarLoader();
+        ContactEventSerialiser serialiser = new ContactEventSerialiser(new FacebookContactFactory());
+        FacebookBirthdaysProvider calendarFetcher = new FacebookBirthdaysProvider(calendarLoader, serialiser);
 
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         UserCredentials userCredentials = preferences.retrieveCredentials();
@@ -41,7 +43,7 @@ public class FacebookFriendsIntentService extends IntentService {
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller(SOURCE_FACEBOOK);
         FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
         try {
-            List<ContactEvent> friends = facebookBirthdaysProvider.providerBirthdays(calendarUrl);
+            List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
             persister.keepOnly(friends);
         } catch (CalendarFetcherException e) {
             ErrorTracker.track(e);
