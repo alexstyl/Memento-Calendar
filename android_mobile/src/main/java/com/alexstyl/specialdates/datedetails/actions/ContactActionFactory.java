@@ -45,8 +45,7 @@ public class ContactActionFactory {
     }
 
     private List<LabeledAction> createFacebookActionsFor(Contact contact) {
-        List<LabeledAction> actions = new ArrayList<>();
-        actions.add(new LabeledAction(R.string.facebook_profile, new FacebookProfileAction(contact.getContactID()), R.drawable.ic_action_facebook_profile));
+        List<LabeledAction> actions = new ArrayList<>(1);
         actions.add(new LabeledAction(R.string.facebook_send_message, new FacebookMessengerAction(contact.getContactID()), R.drawable.ic_communication_chat));
         return actions;
     }
