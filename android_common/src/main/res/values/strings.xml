@@ -134,7 +134,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="copy_link">Copy Link</string>
   <string name="copied_to_clipboard">Link copied to clipboard</string>
   <string name="select_donation_amount">Select the amount you would like to donate</string>
-  <string name="go_to_wall">Open Wall</string>
+  <string name="Open_wall">Open Wall</string>
   <string name="view_contact">View contact</string>
   <string name="no_birthday_set">No birthday set</string>
   <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"No contacts with special events found.\nTap the '+' to add some"</string>

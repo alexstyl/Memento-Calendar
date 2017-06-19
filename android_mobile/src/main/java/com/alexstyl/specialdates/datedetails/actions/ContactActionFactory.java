@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
 import com.alexstyl.specialdates.util.ContactUtils;
 
 import java.util.ArrayList;
@@ -24,18 +25,29 @@ public class ContactActionFactory {
     }
 
     public List<LabeledAction> createActionsFor(Contact contact) {
-        long contactId = contact.getContactID();
-        boolean hasPhoneNumber = ContactUtils.hasPhoneNumber(resolver, contactId);
         List<LabeledAction> actions = new ArrayList<>(2);
-        if (hasPhoneNumber) {
-            addCallActionIfSupported(actions, contactId);
-            createSMSActionIfSupported(actions, contactId);
-        }
+        if (contact instanceof FacebookContact) {
+            return createFacebookActionsFor(contact);
+        } else {
+            long contactId = contact.getContactID();
+            boolean hasPhoneNumber = ContactUtils.hasPhoneNumber(resolver, contactId);
+            if (hasPhoneNumber) {
+                addCallActionIfSupported(actions, contactId);
+                createSMSActionIfSupported(actions, contactId);
+            }
 
-        boolean hasEmails = ContactUtils.hasEmail(resolver, contactId);
-        if (hasEmails) {
-            addEmailActionIfSupported(actions, contactId);
+            boolean hasEmails = ContactUtils.hasEmail(resolver, contactId);
+            if (hasEmails) {
+                addEmailActionIfSupported(actions, contactId);
+            }
         }
+        return actions;
+    }
+
+    private List<LabeledAction> createFacebookActionsFor(Contact contact) {
+        List<LabeledAction> actions = new ArrayList<>();
+        actions.add(new LabeledAction(R.string.facebook_profile, new FacebookProfileAction(contact.getContactID()), R.drawable.ic_action_facebook_profile));
+        actions.add(new LabeledAction(R.string.facebook_send_message, new FacebookMessengerAction(contact.getContactID()), R.drawable.ic_communication_chat));
         return actions;
     }
 

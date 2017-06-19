@@ -41,7 +41,7 @@ class SMSAction implements IntentAction {
     }
 
     @Override
-    public String getName() {
+    public String getAnalyticsName() {
         return "SMS";
     }
 

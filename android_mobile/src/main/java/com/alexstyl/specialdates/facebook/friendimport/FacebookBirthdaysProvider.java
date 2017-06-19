@@ -22,7 +22,7 @@ class FacebookBirthdaysProvider {
 //        for (CalendarComponent component : calendar.getComponents()) {
 //            Map<String, String> contactValues = new HashMap<>();
 //            for (Property property : component.getProperties()) {
-//                contactValues.put(property.getName(), property.getValue());
+//                contactValues.put(property.getAnalyticsName(), property.getValue());
 //            }
 //            try {
 //                ContactEvent contactFrom = factory.createContactFrom(contactValues);
