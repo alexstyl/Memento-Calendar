@@ -28,4 +28,8 @@ public class FacebookPreferences {
         String name = preferences.getString(R.string.key_facebook_user_name, "");
         return new UserCredentials(uid, key, name);
     }
+
+    public boolean isLoggedIn() {
+        return UserCredentials.ANNONYMOUS.equals(retrieveCredentials());
+    }
 }

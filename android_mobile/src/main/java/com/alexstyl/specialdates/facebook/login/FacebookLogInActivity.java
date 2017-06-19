@@ -1,11 +1,11 @@
 package com.alexstyl.specialdates.facebook.login;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,10 +20,11 @@ import android.widget.TextView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.android.AndroidStringResources;
-import com.alexstyl.specialdates.facebook.FacebookConstants;
 import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
 import com.alexstyl.specialdates.facebook.UserCredentials;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -33,14 +34,16 @@ import com.novoda.notils.meta.AndroidUtils;
 
 public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
 
+    private FacebookFriendsScheduler facebookFriendsScheduler;
+    private final FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
+    private CircularDrawableFactory circularDrawableFactory;
+
     private FacebookWebView webView;
     private ImageView avatar;
     private TextView helloView;
     private TextView moreText;
     private ScreenOrientationLock orientationLock;
     private ProgressBar progress;
-    private final FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
-    private CircularDrawableFactory circularDrawableFactory;
     private Button shareButton;
     private Button closeButton;
 
@@ -52,6 +55,10 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         orientationLock = new ScreenOrientationLock();
         int dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.facebook_avatar_stroke);
         circularDrawableFactory = new CircularDrawableFactory(getResources(), dimensionPixelSize);
+        facebookFriendsScheduler = new FacebookFriendsScheduler(
+                thisActivity(),
+                (AlarmManager) getSystemService(ALARM_SERVICE)
+        );
 
         Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
@@ -104,8 +111,19 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
         @Override
         public void onCalendarFound(UserCredentials userCredentials) {
-            FacebookLogInActivity.this.broadcastUserSignedIn();
+            fetchFacebookFriends();
             showData(userCredentials);
+        }
+
+        private void fetchFacebookFriends() {
+            facebookFriendsScheduler.scheduleNext();
+
+            startFacebookFetchService();
+        }
+
+        private void startFacebookFetchService() {
+            Intent intent = new Intent(thisActivity(), FacebookFriendsIntentService.class);
+            startService(intent);
         }
 
         @Override
@@ -178,10 +196,5 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         progress.setVisibility(View.GONE);
         webView.setVisibility(View.GONE);
         shareButton.setVisibility(View.GONE);
-    }
-
-    private void broadcastUserSignedIn() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(FacebookConstants.ACTION_SIGNED_IN));
-        // TODO start update service
     }
 }
