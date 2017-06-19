@@ -6,7 +6,6 @@
   <string name="facebook_more_description">@string/Your_Friends_will_be_here_shortly_smiley</string>
   <string name="facebook_error">@string/An_error_came_up</string>
   <string name="facebook_try_again">@string/Try_again_in_a_bit</string>
-  <string name="facebook_profile">@string/Open_wall</string>
   <string name="facebook_send_message">@string/message</string>
 
   <dimen name="facebook_avatar_width">120dp</dimen>

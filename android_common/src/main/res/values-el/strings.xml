@@ -130,8 +130,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="copy_link">Αντιγραφή</string>
     <string name="copied_to_clipboard">Το URL αντιγράφθηκε στο πρόχειρο</string>
     <string name="select_donation_amount">Επιλέξτε το ποσό που θα θέλατε να προσφέρετε</string>
-    <string name="Open_wall">Άνοιγμα Τοίχου</string>
-    <string name="view_contact">Προβολή επαφής</string>
+  <string name="view_contact">Προβολή επαφής</string>
     <string name="no_birthday_set">Δεν έχει οριστεί ημερομηνία γενεθλίων</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Δεν βρέθηκαν επαφές με εορτές. Πατήστε το '+' για προσθήκη"</string>
     <string name="No_contacts_with_events_found">"Δεν βρέθηκαν επαφές με εορτές"</string>
