@@ -151,7 +151,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             }
 
             @Override
-            public String getName() {
+            public String getAnalyticsName() {
                 return "date debug";
             }
         };

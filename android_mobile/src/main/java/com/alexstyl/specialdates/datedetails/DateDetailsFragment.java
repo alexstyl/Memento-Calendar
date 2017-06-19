@@ -303,7 +303,7 @@ public class DateDetailsFragment extends MementoFragment {
                 }, DateUtils.SECOND_IN_MILLIS);
             }
             action.fire(getActivity());
-            ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getName());
+            ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getAnalyticsName());
             analytics.trackAction(actionWithParameters);
         }
 

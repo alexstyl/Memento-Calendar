@@ -19,11 +19,11 @@ public class LabeledAction {
     private final boolean slowStart;
     private final IntentAction action;
 
-    public LabeledAction(int nameResId, IntentAction action, @DrawableRes int iconResId) {
+    LabeledAction(@StringRes int nameResId, IntentAction action, @DrawableRes int iconResId) {
         this(nameResId, action, iconResId, false);
     }
 
-    public LabeledAction(int nameResId, IntentAction action, @DrawableRes int iconResId, boolean slowStart) {
+    LabeledAction(@StringRes int nameResId, IntentAction action, @DrawableRes int iconResId, boolean slowStart) {
         this.nameResId = nameResId;
         this.action = action;
         this.iconResId = iconResId;

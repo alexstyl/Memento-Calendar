@@ -69,7 +69,7 @@ public class AppUtils {
                     }
 
                     @Override
-                    public String getName() {
+                    public String getAnalyticsName() {
                         return "share";
                     }
                 }
