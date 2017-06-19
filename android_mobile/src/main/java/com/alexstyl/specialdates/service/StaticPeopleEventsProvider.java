@@ -191,7 +191,7 @@ class StaticPeopleEventsProvider {
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
         long contactId = getContactIdFrom(cursor);
         int source = getContactSourceFrom(cursor);
-        Contact contact = contactsProvider.getOrCreateContact(contactId, source);
+        Contact contact = contactsProvider.getContact(contactId, source);
         Date date = getDateFrom(cursor);
         EventType eventType = getEventType(cursor);
 

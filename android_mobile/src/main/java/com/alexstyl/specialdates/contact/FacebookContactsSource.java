@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.events.database.DatabaseContract;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
@@ -13,10 +13,13 @@ import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
 import java.util.ArrayList;
 import java.util.List;
 
-class FacebookSource implements ContactsProviderSource {
+class FacebookContactsSource implements ContactsProviderSource {
+
+    private static final String IS_A_FACEBOOK_CONTACT = AnnualEventsContract.SOURCE + "== " + AnnualEventsContract.SOURCE_FACEBOOK;
+
     private final EventSQLiteOpenHelper eventSQLHelper;
 
-    FacebookSource(EventSQLiteOpenHelper eventSQLHelper) {
+    FacebookContactsSource(EventSQLiteOpenHelper eventSQLHelper) {
         this.eventSQLHelper = eventSQLHelper;
     }
 
@@ -25,11 +28,11 @@ class FacebookSource implements ContactsProviderSource {
         SQLiteDatabase readableDatabase = eventSQLHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
+
             cursor = readableDatabase.query(
-                    DatabaseContract.AnnualEventsContract.TABLE_NAME,
+                    AnnualEventsContract.TABLE_NAME,
                     null,
-                    DatabaseContract.AnnualEventsContract.SOURCE + "== " + DatabaseContract.AnnualEventsContract.SOURCE_FACEBOOK + " AND "
-                            + DatabaseContract.AnnualEventsContract.CONTACT_ID + " == " + contactID,
+                    IS_A_FACEBOOK_CONTACT + " AND " + AnnualEventsContract.CONTACT_ID + " == " + contactID,
                     null,
                     null,
                     null,
@@ -54,9 +57,9 @@ class FacebookSource implements ContactsProviderSource {
         List<Contact> contacts = new ArrayList<>();
         try {
             cursor = readableDatabase.query(
-                    DatabaseContract.AnnualEventsContract.TABLE_NAME,
+                    AnnualEventsContract.TABLE_NAME,
                     null,
-                    DatabaseContract.AnnualEventsContract.SOURCE + "== " + DatabaseContract.AnnualEventsContract.SOURCE_FACEBOOK,
+                    IS_A_FACEBOOK_CONTACT,
                     null,
                     null,
                     null,
@@ -74,9 +77,9 @@ class FacebookSource implements ContactsProviderSource {
         return contacts;
     }
 
-    private Contact createContactFrom(Cursor cursor) {
-        long uid = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseContract.AnnualEventsContract.CONTACT_ID));
-        DisplayName displayName = DisplayName.from(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.AnnualEventsContract.DISPLAY_NAME)));
+    private static Contact createContactFrom(Cursor cursor) {
+        long uid = cursor.getLong(cursor.getColumnIndexOrThrow(AnnualEventsContract.CONTACT_ID));
+        DisplayName displayName = DisplayName.from(cursor.getString(cursor.getColumnIndexOrThrow(AnnualEventsContract.DISPLAY_NAME)));
         Uri imagePath = FacebookImagePathCreator.INSTANCE.forUid(uid);
         return new FacebookContact(uid, displayName, imagePath);
     }
