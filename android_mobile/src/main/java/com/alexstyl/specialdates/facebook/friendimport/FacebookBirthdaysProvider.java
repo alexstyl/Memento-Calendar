@@ -1,38 +1,36 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.DateParseException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
+import static com.alexstyl.specialdates.facebook.friendimport.StreamUtil.closeStream;
+
 class FacebookBirthdaysProvider {
 
-    private final CalendarFetcher fileLoader;
-    private final FacebookContactFactory factory;
+    private final CalendarLoader calendarLoader;
+    private final ContactEventSerialiser serialiser;
 
-    FacebookBirthdaysProvider(CalendarFetcher fileLoader, FacebookContactFactory factory) {
-        this.fileLoader = fileLoader;
-        this.factory = factory;
+    FacebookBirthdaysProvider(CalendarLoader calendarLoader, ContactEventSerialiser serialiser) {
+        this.calendarLoader = calendarLoader;
+        this.serialiser = serialiser;
     }
 
-    List<ContactEvent> providerBirthdays(URL url) throws CalendarFetcherException {
-        List<ContactEvent> calendar = fileLoader.fetchCalendarFrom(url);
-        return calendar;
-//        List<ContactEvent> contacts = new ArrayList<>();
-//        for (CalendarComponent component : calendar.getComponents()) {
-//            Map<String, String> contactValues = new HashMap<>();
-//            for (Property property : component.getProperties()) {
-//                contactValues.put(property.getAnalyticsName(), property.getValue());
-//            }
-//            try {
-//                ContactEvent contactFrom = factory.createContactFrom(contactValues);
-//                contacts.add(contactFrom);
-//            } catch (DateParseException e) {
-//                // do not throw an exception just for one exception
-//                ErrorTracker.track(e);
-//            }
-//        }
-//        return contacts;
+    List<ContactEvent> fetchCalendarFrom(URL url) throws CalendarFetcherException {
+        InputStream inputStream = null;
+        try {
+            inputStream = calendarLoader.loadFrom(url);
+            return serialiser.serialiseEventsFrom(inputStream);
+        } catch (IOException | DateParseException e) {
+            throw new CalendarFetcherException(e);
+        } finally {
+            closeStream(inputStream);
+        }
+
     }
 
 }

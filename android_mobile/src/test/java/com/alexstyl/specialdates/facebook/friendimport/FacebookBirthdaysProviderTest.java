@@ -17,23 +17,24 @@ public class FacebookBirthdaysProviderTest {
     @Test
     public void parseMockCalendar() throws CalendarFetcherException, MalformedURLException {
         FacebookContactFactory factory = new FacebookContactFactory();
-        FacebookBirthdaysProvider importer = new FacebookBirthdaysProvider(new FacebookCalendarFetcher(factory), factory);
+        FacebookBirthdaysProvider fetcher = new FacebookBirthdaysProvider(new FacebookCalendarLoader(), new ContactEventSerialiser(factory));
         URL url = new URL(CALENDAR_URL);
 
-        List<ContactEvent> contacts = importer.providerBirthdays(url);
+        List<ContactEvent> contacts = fetcher.fetchCalendarFrom(url);
         for (ContactEvent contactEvent : contacts) {
             System.out.println(contactEvent.getContact() + " on " + contactEvent.getDate());
         }
         assertThat(contacts).isNotEmpty();
     }
 
-    @Test(expected = CalendarFetcherException.class)
-    public void parsingRandomURLThrowsException() throws CalendarFetcherException, MalformedURLException {
+    @Test
+    public void parsingRandomURLreturnsNoEvents() throws CalendarFetcherException, MalformedURLException {
         FacebookContactFactory factory = new FacebookContactFactory();
-        FacebookBirthdaysProvider importer = new FacebookBirthdaysProvider(new FacebookCalendarFetcher(factory), factory);
+        FacebookBirthdaysProvider fetcher = new FacebookBirthdaysProvider(new FacebookCalendarLoader(), new ContactEventSerialiser(factory));
         URL url = new URL("https://www.google.com");
 
-        importer.providerBirthdays(url);
+        List<ContactEvent> contactEvents = fetcher.fetchCalendarFrom(url);
+        assertThat(contactEvents.isEmpty());
 
     }
 }
