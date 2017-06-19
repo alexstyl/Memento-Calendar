@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.logger.simple.Log;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 
-class PeopleEventsRepository {
+class AndroidEventsRepository {
 
     private static final Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
     private static final String[] PROJECTION = {
@@ -44,7 +45,7 @@ class PeopleEventsRepository {
     private final ContactsProvider contactsProvider;
     private final DateParser dateParser;
 
-    PeopleEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
+    AndroidEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
         this.contentResolver = contentResolver;
         this.contactsProvider = contactsProvider;
         this.dateParser = dateParser;
@@ -63,7 +64,7 @@ class PeopleEventsRepository {
                 try {
                     Date eventDate = getEventDateFrom(cursor);
                     long eventId = getEventIdFrom(cursor);
-                    Contact contact = contactsProvider.getOrCreateContact(contactId);
+                    Contact contact = contactsProvider.getOrCreateContact(contactId, AnnualEventsContract.SOURCE_DEVICE);
                     events.add(new ContactEvent(new Optional<>(eventId), eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);

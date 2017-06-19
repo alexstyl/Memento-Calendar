@@ -8,11 +8,11 @@ import java.util.List;
 
 public class PeopleEventsDatabaseRefresher {
 
-    private final PeopleEventsRepository repository;
+    private final AndroidEventsRepository repository;
     private final PeopleEventsPersister persister;
     private final ContactEventsMarshaller marshaller;
 
-    PeopleEventsDatabaseRefresher(PeopleEventsRepository repository, ContactEventsMarshaller marshaller, PeopleEventsPersister persister) {
+    PeopleEventsDatabaseRefresher(AndroidEventsRepository repository, ContactEventsMarshaller marshaller, PeopleEventsPersister persister) {
         this.persister = persister;
         this.marshaller = marshaller;
         this.repository = repository;

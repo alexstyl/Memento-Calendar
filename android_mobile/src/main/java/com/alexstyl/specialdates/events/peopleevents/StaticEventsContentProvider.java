@@ -44,7 +44,7 @@ public class StaticEventsContentProvider extends ContentProvider {
 
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
-        PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, contactsProvider, dateParser);
+        AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);

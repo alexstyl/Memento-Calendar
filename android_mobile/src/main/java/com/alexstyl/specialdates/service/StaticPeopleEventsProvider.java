@@ -42,6 +42,7 @@ class StaticPeopleEventsProvider {
             PeopleEventsContract.PeopleEvents.DEVICE_EVENT_ID,
             PeopleEventsContract.PeopleEvents.DATE,
             PeopleEventsContract.PeopleEvents.EVENT_TYPE,
+            PeopleEventsContract.PeopleEvents.SOURCE,
     };
 
     /*
@@ -189,8 +190,8 @@ class StaticPeopleEventsProvider {
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
         long contactId = getContactIdFrom(cursor);
-//        int source = getContactSourceFrom(cursor);
-        Contact contact = contactsProvider.getOrCreateContact(contactId);
+        int source = getContactSourceFrom(cursor);
+        Contact contact = contactsProvider.getOrCreateContact(contactId, source);
         Date date = getDateFrom(cursor);
         EventType eventType = getEventType(cursor);
 

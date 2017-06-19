@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.contact;
 
-import com.alexstyl.specialdates.events.database.SourceType;
 import com.alexstyl.specialdates.events.peopleevents.DeviceContactsQuery;
 
 import java.util.List;
@@ -18,7 +17,7 @@ class AndroidContactsProviderSource implements ContactsProviderSource {
     }
 
     @Override
-    public Contact getOrCreateContact(long contactID, @SourceType int sourceDevice) throws ContactNotFoundException {
+    public Contact getOrCreateContact(long contactID) throws ContactNotFoundException {
         Contact deviceContact = cache.getContact(contactID);
         if (deviceContact == null) {
             deviceContact = factory.createContactWithId(contactID);
