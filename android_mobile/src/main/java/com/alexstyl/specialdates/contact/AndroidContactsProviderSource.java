@@ -29,6 +29,7 @@ class AndroidContactsProviderSource implements ContactsProviderSource {
     @Override
     public List<Contact> getAllContacts() {
         List<Contact> allContacts = deviceContactsQuery.getAllContacts();
+        cache.evictAll();
         for (Contact allContact : allContacts) {
             cache.addContact(allContact);
         }

@@ -24,7 +24,7 @@ class FacebookBirthdaysProvider {
         InputStream inputStream = null;
         try {
             inputStream = calendarLoader.loadFrom(url);
-            return serialiser.serialiseEventsFrom(inputStream);
+            return serialiser.createEventsFrom(inputStream);
         } catch (IOException | DateParseException e) {
             throw new CalendarFetcherException(e);
         } finally {

@@ -30,8 +30,7 @@ public class ContactActionFactory {
             return createFacebookActionsFor(contact);
         } else {
             long contactId = contact.getContactID();
-            boolean hasPhoneNumber = ContactUtils.hasPhoneNumber(resolver, contactId);
-            if (hasPhoneNumber) {
+            if (ContactUtils.hasPhoneNumber(resolver, contactId)) {
                 addCallActionIfSupported(actions, contactId);
                 createSMSActionIfSupported(actions, contactId);
             }

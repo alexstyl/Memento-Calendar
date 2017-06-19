@@ -26,9 +26,9 @@ public class FacebookFriendsIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        FacebookContactFactory contactFactory = new FacebookContactFactory();
         FacebookCalendarLoader calendarLoader = new FacebookCalendarLoader();
-        ContactEventSerialiser serialiser = new ContactEventSerialiser(new FacebookContactFactory());
+        FacebookContactFactory factory = new FacebookContactFactory();
+        ContactEventSerialiser serialiser = new ContactEventSerialiser(factory);
         FacebookBirthdaysProvider calendarFetcher = new FacebookBirthdaysProvider(calendarLoader, serialiser);
 
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);

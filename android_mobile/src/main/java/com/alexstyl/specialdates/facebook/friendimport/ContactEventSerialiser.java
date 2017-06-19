@@ -26,7 +26,7 @@ class ContactEventSerialiser {
         this.factory = factory;
     }
 
-    List<ContactEvent> serialiseEventsFrom(InputStream inputStream) throws IOException, DateParseException {
+    List<ContactEvent> createEventsFrom(InputStream inputStream) throws IOException, DateParseException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         List<ContactEvent> contactEvents = new ArrayList<>();

@@ -25,11 +25,10 @@ public class DebugPeopleEventsUpdater {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
-        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_MEMENTO);
         return new DebugPeopleEventsUpdater(refresher, new NamedayDatabaseRefresher(
                 namedayPreferences,
                 databaseProvider,
-                mementoMarshaller,
+                deviceMarshaller,
                 peopleNamedaysCalculator
         ));
     }
