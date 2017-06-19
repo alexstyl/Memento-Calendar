@@ -64,7 +64,7 @@ class AndroidEventsRepository {
                 try {
                     Date eventDate = getEventDateFrom(cursor);
                     long eventId = getEventIdFrom(cursor);
-                    Contact contact = contactsProvider.getOrCreateContact(contactId, AnnualEventsContract.SOURCE_DEVICE);
+                    Contact contact = contactsProvider.getContact(contactId, AnnualEventsContract.SOURCE_DEVICE);
                     events.add(new ContactEvent(new Optional<>(eventId), eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);

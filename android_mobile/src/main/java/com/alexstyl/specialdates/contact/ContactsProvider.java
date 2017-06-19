@@ -25,15 +25,11 @@ public class ContactsProvider {
         if (INSTANCE == null) {
             Map<Integer, ContactsProviderSource> sources = new HashMap<>();
             sources.put(AnnualEventsContract.SOURCE_DEVICE, buildAndroidSource(context));
-            sources.put(AnnualEventsContract.SOURCE_FACEBOOK, new FacebookSource(new EventSQLiteOpenHelper(context)));
+            sources.put(AnnualEventsContract.SOURCE_FACEBOOK, new FacebookContactsSource(new EventSQLiteOpenHelper(context)));
             INSTANCE = new ContactsProvider(sources);
 
         }
         return INSTANCE;
-    }
-
-    public ContactsProvider(Map<Integer, ContactsProviderSource> sources) {
-        this.sources = sources;
     }
 
     private static AndroidContactsProviderSource buildAndroidSource(Context context) {
@@ -44,7 +40,11 @@ public class ContactsProvider {
         return new AndroidContactsProviderSource(contactCache, factory, deviceContactsQuery);
     }
 
-    public Contact getOrCreateContact(long contactID, @SourceType int source) throws ContactNotFoundException {
+    public ContactsProvider(Map<Integer, ContactsProviderSource> sources) {
+        this.sources = sources;
+    }
+
+    public Contact getContact(long contactID, @SourceType int source) throws ContactNotFoundException {
         if (sources.containsKey(source)) {
             ContactsProviderSource contactsProviderSource = sources.get(source);
             return contactsProviderSource.getOrCreateContact(contactID);
