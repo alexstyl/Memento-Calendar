@@ -15,12 +15,12 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
-import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,6 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
     private static final int SINGLE_COLUMN = 1;
 
     private final Date date;
-    private final ContactsObserver contactsObserver;
     private final AskForSupport askForSupport;
     private final BankHolidaysPreferences bankHolidaysPreferences;
     private final NamedayPreferences namedayPreferences;
@@ -42,12 +41,13 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
     private final BankHolidayViewModelFactory bankHolidayViewModelFactory;
     private final NamedayViewModelFactory namedayViewModelFactory;
     private final PeopleEventViewModelFactory peopleEventViewModelFactory;
+    private final PeopleEventsObserver peopleEventsObserver;
 
     DateDetailsLoader(Context context,
                       Date date,
                       AskForSupport askForSupport,
                       PeopleEventsProvider peopleEventsProvider,
-                      ContactsObserver contactsObserver,
+                      PeopleEventsObserver peopleEventsObserver,
                       NamedayPreferences namedayPreferences,
                       BankHolidayProvider bankHolidayProvider,
                       SupportViewModelFactory supportViewModelFactory,
@@ -58,8 +58,8 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
         super(context);
         this.date = date;
         this.askForSupport = askForSupport;
-        this.contactsObserver = contactsObserver;
         this.peopleEventsProvider = peopleEventsProvider;
+        this.peopleEventsObserver = peopleEventsObserver;
         this.namedayPreferences = namedayPreferences;
         this.bankHolidayProvider = bankHolidayProvider;
         this.supportViewModelFactory = supportViewModelFactory;
@@ -67,22 +67,20 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
         this.bankHolidayViewModelFactory = bankHolidayViewModelFactory;
         this.namedayViewModelFactory = namedayViewModelFactory;
         this.namedayCalendarProvider = namedayCalendarProvider;
-
         this.bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
-        contactsObserver.registerWith(
-                new ContactsObserver.Callback() {
-                    @Override
-                    public void onContactsUpdated() {
-                        onContentChanged();
-                    }
-                }
-        );
+
+        peopleEventsObserver.startObserving(new PeopleEventsObserver.OnPeopleEventsChanged() {
+            @Override
+            public void onPeopleEventsUpdated() {
+                onContentChanged();
+            }
+        });
     }
 
     @Override
     protected void onUnregisterObserver() {
         super.onUnregisterObserver();
-        contactsObserver.unregister();
+        peopleEventsObserver.stopObserving();
     }
 
     @Override
