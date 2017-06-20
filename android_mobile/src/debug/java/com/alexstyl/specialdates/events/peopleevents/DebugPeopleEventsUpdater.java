@@ -19,7 +19,7 @@ public class DebugPeopleEventsUpdater {
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE);
         ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
-        PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
+        PeopleEventsPersister databaseProvider = new PeopleEventsPersister(context.getContentResolver(), new EventSQLiteOpenHelper(context));
         PeopleEventsDatabaseRefresher refresher = new PeopleEventsDatabaseRefresher(repository, deviceMarshaller, databaseProvider);
 
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);

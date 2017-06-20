@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
@@ -20,6 +19,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -28,7 +28,6 @@ import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
-import com.alexstyl.specialdates.util.ContactsObserver;
 import com.novoda.notils.caster.Views;
 
 import java.util.List;
@@ -52,7 +51,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today()));
         ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), permissionCallbacks);
         EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));
-        ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
         MainNavigator navigator = new MainNavigator(analytics, getActivity(), new AndroidStringResources(getResources()));
         presenter = new UpcomingEventsPresenter(
                 this,
@@ -60,7 +58,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 upcomingEventsAsyncProvider,
                 permissions,
                 monitor,
-                contactsObserver,
+                new PeopleEventsObserver(getContentResolver()),
                 navigator,
                 new ExternalNavigator(getActivity(), analytics)
         );
