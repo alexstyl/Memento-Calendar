@@ -5,7 +5,6 @@ import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
-import com.alexstyl.specialdates.util.ContactsObserver;
 
 class PeopleEventsUpdater {
 

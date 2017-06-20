@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
-final public class Event {
+public final class Event {
 
     private final EventType eventType;
     private final Date date;

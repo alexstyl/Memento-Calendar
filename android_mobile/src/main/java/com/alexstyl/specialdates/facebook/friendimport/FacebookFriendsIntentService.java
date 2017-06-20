@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.ExternalWidgetRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -46,7 +47,7 @@ public class FacebookFriendsIntentService extends IntentService {
 
         URL calendarUrl = calendarURLCreator.createFrom(userCredentials);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller(SOURCE_FACEBOOK);
-        FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
+        FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(getContentResolver(), new EventSQLiteOpenHelper(this)), marshaller);
         try {
             List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
             persister.keepOnly(friends);
@@ -54,13 +55,19 @@ public class FacebookFriendsIntentService extends IntentService {
             ErrorTracker.track(e);
         }
 
+        ExternalWidgetRefresher.get(this).refreshAllWidgets();
+
         if (BuildConfig.DEBUG) {
-            Notification notification = new NotificationCompat.Builder(this)
-                    .setContentTitle("Friends fetched")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .build();
-            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(123, notification);
+            notifyServiceRan();
         }
+    }
+
+    private void notifyServiceRan() {
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentTitle("Friends fetched")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .build();
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(123, notification);
     }
 
     private boolean isAnnonymous(UserCredentials userCredentials) {

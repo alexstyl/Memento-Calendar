@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.ExternalWidgetRefresher;
@@ -25,11 +24,13 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
-import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 
 public class StaticEventsContentProvider extends ContentProvider {
+
+    // TODO observe contact changes and notify that MY Uri was updated
+    private ContactsObserver observer;
 
     private static final int CODE_PEOPLE_EVENTS = 10;
     private EventSQLiteOpenHelper eventSQLHelper;
@@ -40,13 +41,13 @@ public class StaticEventsContentProvider extends ContentProvider {
     public boolean onCreate() {
         Context context = getContext();
         Resources resources = context.getResources();
-        ContentResolver contentResolver = context.getContentResolver();
+        final ContentResolver contentResolver = context.getContentResolver();
 
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
         AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
-        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
+        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(contentResolver, eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
@@ -56,7 +57,7 @@ public class StaticEventsContentProvider extends ContentProvider {
                 new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
                 new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator),
                 new EventPreferences(context),
-                new ContactsObserver(contentResolver, new Handler()),
+                new ContactsObserver(contentResolver),
                 new NamedaySettingsMonitor(namedayPreferences),
                 new PermissionChecker(context),
                 widgetRefresher
@@ -64,6 +65,15 @@ public class StaticEventsContentProvider extends ContentProvider {
         peopleEventsUpdater.register();
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, CODE_PEOPLE_EVENTS);
+
+        observer = new ContactsObserver(contentResolver);
+        observer.startObserving(new ContactsObserver.Callback() {
+            @Override
+            public void onContactsUpdated() {
+                contentResolver.notifyChange(PeopleEventsContract.CONTENT_URI, null);
+            }
+        });
+
         return true;
     }
 

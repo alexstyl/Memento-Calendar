@@ -10,7 +10,8 @@ import java.util.List;
 
 import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
 
-class FacebookFriendsPersister {
+final class FacebookFriendsPersister {
+
     private final PeopleEventsPersister persister;
     private final ContactEventsMarshaller marshaller;
 
