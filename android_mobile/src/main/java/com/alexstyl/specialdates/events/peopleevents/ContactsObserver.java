@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.ContactsContract;
 
-final class ContactsObserver extends ContentObserver {
+import com.alexstyl.specialdates.Monitor;
+
+final class ContactsObserver extends ContentObserver implements Monitor {
 
     private static final Uri URI = ContactsContract.Contacts.CONTENT_URI;
     private final ContentResolver resolver;
@@ -18,7 +20,8 @@ final class ContactsObserver extends ContentObserver {
         this.resolver = resolver;
     }
 
-    void startObserving(Callback callback) {
+    @Override
+    public void startObserving(Callback callback) {
         this.callback = callback;
         resolver.registerContentObserver(URI, false, this);
     }
@@ -26,20 +29,18 @@ final class ContactsObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-        callback.onContactsUpdated();
+        callback.onMonitorTriggered();
     }
 
     @Override
     public void onChange(boolean selfChange, Uri uri) {
         super.onChange(selfChange, uri);
-        callback.onContactsUpdated();
+        callback.onMonitorTriggered();
     }
 
+    @Override
     public void stopObserving() {
         resolver.unregisterContentObserver(this);
     }
 
-    public interface Callback {
-        void onContactsUpdated();
-    }
 }

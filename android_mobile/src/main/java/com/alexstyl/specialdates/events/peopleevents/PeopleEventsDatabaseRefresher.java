@@ -23,7 +23,7 @@ class PeopleEventsDatabaseRefresher {
         this.refresher = refresher;
     }
 
-    void refreshEvents() {
+    void rebuildEvents() {
         persister.deleteAllDeviceEvents();
         List<ContactEvent> contacts = repository.fetchPeopleWithEvents();
         storeContactsToProvider(contacts);

@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.alexstyl.specialdates.Monitor;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
@@ -22,17 +23,17 @@ import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
+import com.novoda.notils.logger.simple.Log;
 
 public class StaticEventsContentProvider extends ContentProvider {
 
     private static final int CODE_PEOPLE_EVENTS = 10;
+
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
-    private PeopleEventsUpdater peopleEventsUpdater;
-    private ContactsObserver observer;
+    private PeopleEventsMonitor monitor;
 
     @Override
     public boolean onCreate() {
@@ -49,23 +50,24 @@ public class StaticEventsContentProvider extends ContentProvider {
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
-        PeopleEventsViewRefresher refresher = PeopleEventsViewRefresher.get(context);
-        peopleEventsUpdater = new PeopleEventsUpdater(
+        final PeopleEventsViewRefresher refresher = PeopleEventsViewRefresher.get(context);
+
+        PeopleEventsUpdater peopleEventsUpdater = new PeopleEventsUpdater(
                 new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister, refresher),
                 new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator),
                 new EventPreferences(context),
-                new NamedaySettingsMonitor(namedayPreferences),
                 new PermissionChecker(context)
         );
 
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, CODE_PEOPLE_EVENTS);
 
-        observer = new ContactsObserver(contentResolver);
-        observer.startObserving(new ContactsObserver.Callback() {
+        monitor = PeopleEventsMonitor.newInstance(context);
+        monitor.startObserving(new Monitor.Callback() {
             @Override
-            public void onContactsUpdated() {
-                contentResolver.notifyChange(PeopleEventsContract.CONTENT_URI, null);
+            public void onMonitorTriggered() {
+                Log.d("An update happened. I'll update the database now!");
+                // TODO refresh the db in the background
             }
         });
 
@@ -74,8 +76,6 @@ public class StaticEventsContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        peopleEventsUpdater.updateEvents();
-
         if (isAboutPeopleEvents(uri)) {
             UriQuery query = new UriQuery(uri, projection, selection, selectionArgs, sortOrder);
             SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
@@ -132,7 +132,7 @@ public class StaticEventsContentProvider extends ContentProvider {
     @Override
     public void shutdown() {
         super.shutdown();
-        observer.stopObserving();
+        monitor.stopObserving();
     }
 
 }
