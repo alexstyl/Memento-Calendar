@@ -1,10 +1,10 @@
-package com.alexstyl.specialdates;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.Context;
 
-import com.alexstyl.specialdates.events.peopleevents.ContentResolverPeopleEventsView;
+import com.alexstyl.specialdates.PeopleEventsView;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingWidgetView;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayPeopleEventsView;
 import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;

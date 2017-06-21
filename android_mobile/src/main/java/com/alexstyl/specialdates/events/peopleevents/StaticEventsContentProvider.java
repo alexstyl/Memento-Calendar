@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
@@ -45,19 +44,18 @@ public class StaticEventsContentProvider extends ContentProvider {
         DateParser dateParser = DateParser.INSTANCE;
         AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
-        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(contentResolver, eventSQLHelper);
+        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
-        PeopleEventsViewRefresher widgetRefresher = PeopleEventsViewRefresher.get(context);
+        PeopleEventsViewRefresher refresher = PeopleEventsViewRefresher.get(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
                 new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister, refresher),
                 new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator),
                 new EventPreferences(context),
                 new NamedaySettingsMonitor(namedayPreferences),
-                new PermissionChecker(context),
-                widgetRefresher
+                new PermissionChecker(context)
         );
 
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
