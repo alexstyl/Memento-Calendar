@@ -14,7 +14,10 @@ class PeopleEventsMonitor implements Monitor {
     public static PeopleEventsMonitor newInstance(Context context) {
         // contacts changed
         // events settings changed
-        List<Monitor> contactsObservers = Arrays.asList((Monitor) new ContactsObserver(context.getContentResolver()));
+        List<Monitor> contactsObservers = Arrays.asList(
+                new ContactsObserver(context.getContentResolver()),
+                PeopleSettingsMonitor.newInstance(context)
+        );
         return new PeopleEventsMonitor(contactsObservers);
     }
 

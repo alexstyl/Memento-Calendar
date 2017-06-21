@@ -38,7 +38,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
     private MainPreferenceActivity activity;
-    private EventsSettingsMonitor monitor;
+    private EventsSettingsMonitor monitor; // TODO this probably has to go
     private Analytics analytics;
     private PeopleEventsViewRefresher refresher;
 
