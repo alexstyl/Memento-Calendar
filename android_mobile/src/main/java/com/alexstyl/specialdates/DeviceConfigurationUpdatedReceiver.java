@@ -11,14 +11,14 @@ public class DeviceConfigurationUpdatedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        ExternalWidgetRefresher externalWidgetRefresher = ExternalWidgetRefresher.get(context.getApplicationContext());
+        PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context.getApplicationContext());
 
         String action = intent.getAction();
         if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
             ErrorTracker.updateLocaleUsed();
-            externalWidgetRefresher.refreshAllWidgets();
+            viewRefresher.updateAllViews();
         } else if (Intent.ACTION_DATE_CHANGED.equals(action)) {
-            externalWidgetRefresher.refreshAllWidgets();
+            viewRefresher.updateAllViews();
         }
     }
 

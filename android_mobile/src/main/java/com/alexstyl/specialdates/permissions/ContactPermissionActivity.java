@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
+import com.alexstyl.specialdates.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
@@ -46,7 +46,7 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
         if (requestCode == REQUEST_CONTACT_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             setResult(RESULT_OK);
             finish();
-            ExternalWidgetRefresher.get(getApplicationContext()).refreshAllWidgets();
+            PeopleEventsViewRefresher.get(getApplicationContext()).updateAllViews();
         }
     }
 }
