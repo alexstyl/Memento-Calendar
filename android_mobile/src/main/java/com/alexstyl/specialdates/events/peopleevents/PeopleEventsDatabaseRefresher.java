@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentValues;
 
-import com.alexstyl.specialdates.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.date.ContactEvent;
 
 import java.util.List;

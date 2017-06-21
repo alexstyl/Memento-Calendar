@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;

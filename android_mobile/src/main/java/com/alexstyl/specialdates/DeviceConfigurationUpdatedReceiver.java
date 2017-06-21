@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+
 /**
  * A {@linkplain BroadcastReceiver} that keeps track whether the user has updated some option on their device external to Memento which can affect the app.
  */

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
-import com.alexstyl.specialdates.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 
