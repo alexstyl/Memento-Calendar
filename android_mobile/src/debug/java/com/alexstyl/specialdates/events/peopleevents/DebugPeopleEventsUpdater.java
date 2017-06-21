@@ -41,7 +41,7 @@ public class DebugPeopleEventsUpdater {
     }
 
     public void refresh() {
-        peopleEventsDatabaseRefresher.refreshEvents();
+        peopleEventsDatabaseRefresher.rebuildEvents();
         namedayDatabaseRefresher.refreshNamedaysIfEnabled();
     }
 }

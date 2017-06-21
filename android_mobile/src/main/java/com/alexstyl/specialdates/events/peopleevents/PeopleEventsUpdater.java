@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.events.peopleevents;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
 
 class PeopleEventsUpdater {
 
@@ -11,19 +10,16 @@ class PeopleEventsUpdater {
 
     private final PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher;
     private final EventPreferences eventPreferences;
-    private final NamedaySettingsMonitor namedayMonitor;
     private final PermissionChecker permissionChecker;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     PeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher,
                         NamedayDatabaseRefresher namedayDatabaseRefresher,
                         EventPreferences eventPreferences,
-                        NamedaySettingsMonitor namedayMonitor,
                         PermissionChecker permissionChecker) {
         this.peopleEventsDatabaseRefresher = peopleEventsDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
         this.eventPreferences = eventPreferences;
-        this.namedayMonitor = namedayMonitor;
         this.permissionChecker = permissionChecker;
     }
 
@@ -35,7 +31,7 @@ class PeopleEventsUpdater {
 
         synchronized (REFRESH_LOCK) {
             if (isFirstTimeRunning()) {
-                peopleEventsDatabaseRefresher.refreshEvents();
+                peopleEventsDatabaseRefresher.rebuildEvents();
                 namedayDatabaseRefresher.refreshNamedaysIfEnabled();
                 eventPreferences.markEventsAsInitialised();
             } else {
@@ -49,20 +45,15 @@ class PeopleEventsUpdater {
     }
 
     private void updateEventsIfSettingsChanged() {
-        boolean wereContactsUpdated = false;
-        boolean wereNamedaysSettingsUpdated = namedayMonitor.dataWasUpdated();
+        boolean wereContactsUpdated = false;// we know this as it happens
+        boolean wereNamedaysSettingsUpdated = false;//namedayMonitor.dataWasUpdated();
 
         if (wereContactsUpdated) {
-            peopleEventsDatabaseRefresher.refreshEvents();
+            peopleEventsDatabaseRefresher.rebuildEvents();
         }
         if (wereContactsUpdated || wereNamedaysSettingsUpdated) {
             namedayDatabaseRefresher.refreshNamedaysIfEnabled();
         }
-        resetMonitorFlags();
-    }
-
-    private void resetMonitorFlags() {
-        namedayMonitor.refreshData();
     }
 
 }
