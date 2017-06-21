@@ -5,20 +5,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.wear.WidgetRefresher;
+import com.alexstyl.specialdates.PeopleEventsView;
 
-public class TodayWidgetRefresher implements WidgetRefresher {
+public class TodayPeopleEventsView implements PeopleEventsView {
 
     private final Context context;
     private final AppWidgetManager instance;
 
-    public TodayWidgetRefresher(Context context, AppWidgetManager instance) {
+    public TodayPeopleEventsView(Context context, AppWidgetManager instance) {
         this.context = context;
         this.instance = instance;
     }
 
     @Override
-    public void refreshWidget() {
+    public void requestUpdate() {
         Intent intent = new Intent(context, TodayAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

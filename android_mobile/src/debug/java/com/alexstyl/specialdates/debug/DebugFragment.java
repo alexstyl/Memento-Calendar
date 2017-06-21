@@ -12,7 +12,7 @@ import android.provider.CalendarContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
+import com.alexstyl.specialdates.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.datedetails.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
@@ -25,7 +25,7 @@ import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.AppUtils;
-import com.alexstyl.specialdates.wear.WearSyncWidgetRefresher;
+import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
 import java.util.Calendar;
 
@@ -49,7 +49,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_widget).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ExternalWidgetRefresher.get(getActivity()).refreshAllWidgets();
+                PeopleEventsViewRefresher.get(getActivity()).updateAllViews();
                 Toast.makeText(getActivity(), "Widget(s) refreshed", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -96,7 +96,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new WearSyncWidgetRefresher(getActivity()).refreshWidget();
+                new WearSyncPeopleEventsView(getActivity()).requestUpdate();
                 return true;
             }
         });

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
+import com.alexstyl.specialdates.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 
@@ -18,7 +18,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)) {
             rescheduleDailyReminder(context, DailyReminderPreferences.newInstance(context));
-            ExternalWidgetRefresher.get(context).refreshAllWidgets();
+            PeopleEventsViewRefresher.get(context).updateAllViews();
         }
     }
 

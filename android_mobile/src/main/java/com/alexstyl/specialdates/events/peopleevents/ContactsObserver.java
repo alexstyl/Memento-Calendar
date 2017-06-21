@@ -13,12 +13,12 @@ final class ContactsObserver extends ContentObserver {
 
     private Callback callback;
 
-    public ContactsObserver(ContentResolver resolver) {
+    ContactsObserver(ContentResolver resolver) {
         super(new Handler());
         this.resolver = resolver;
     }
 
-    public void startObserving(Callback callback) {
+    void startObserving(Callback callback) {
         this.callback = callback;
         resolver.registerContentObserver(URI, false, this);
     }
