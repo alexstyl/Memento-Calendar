@@ -45,15 +45,8 @@ class PeopleEventsUpdater {
     }
 
     private void updateEventsIfSettingsChanged() {
-        boolean wereContactsUpdated = false;// we know this as it happens
-        boolean wereNamedaysSettingsUpdated = false;//namedayMonitor.dataWasUpdated();
-
-        if (wereContactsUpdated) {
-            peopleEventsDatabaseRefresher.rebuildEvents();
-        }
-        if (wereContactsUpdated || wereNamedaysSettingsUpdated) {
-            namedayDatabaseRefresher.refreshNamedaysIfEnabled();
-        }
+        peopleEventsDatabaseRefresher.rebuildEvents();
+        namedayDatabaseRefresher.refreshNamedaysIfEnabled();
     }
 
 }

@@ -45,14 +45,14 @@ public class StaticEventsContentProvider extends ContentProvider {
         DateParser dateParser = DateParser.INSTANCE;
         AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
-        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
+        final PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
         final PeopleEventsViewRefresher refresher = PeopleEventsViewRefresher.get(context);
 
-        PeopleEventsUpdater peopleEventsUpdater = new PeopleEventsUpdater(
+        final PeopleEventsUpdater peopleEventsUpdater = new PeopleEventsUpdater(
                 new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister, refresher),
                 new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator),
                 new EventPreferences(context),
@@ -66,7 +66,8 @@ public class StaticEventsContentProvider extends ContentProvider {
         monitor.startObserving(new Monitor.Callback() {
             @Override
             public void onMonitorTriggered() {
-                Log.d("An update happened. I'll update the database now!");
+                peopleEventsUpdater.updateEvents();
+                Log.e("An update happened. I'll update the database now!");
                 // TODO refresh the db in the background
             }
         });
