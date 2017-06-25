@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -36,7 +35,6 @@ public class StaticEventsContentProvider extends ContentProvider {
     private UriMatcher uriMatcher;
 
     private EventPreferences eventPreferences;
-
     private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;
 
@@ -44,18 +42,17 @@ public class StaticEventsContentProvider extends ContentProvider {
     public boolean onCreate() {
         Context context = getContext();
         Resources resources = context.getResources();
-        final ContentResolver contentResolver = context.getContentResolver();
 
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
-        AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, dateParser);
+        AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
-        final PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
+        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
-        final PeopleEventsViewRefresher refresher = PeopleEventsViewRefresher.get(context);
+        PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);
 
         eventPreferences = new EventPreferences(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
@@ -65,8 +62,10 @@ public class StaticEventsContentProvider extends ContentProvider {
         );
 
         presenter = new PeopleEventsPresenter(
-                AndroidSchedulers.mainThread(), EventsRefreshRequestsMonitor.newInstance(context), peopleEventsUpdater,
-                refresher
+                AndroidSchedulers.mainThread(),
+                EventsRefreshRequestsMonitor.newInstance(context),
+                peopleEventsUpdater,
+                viewRefresher
         );
         presenter.present();
 
