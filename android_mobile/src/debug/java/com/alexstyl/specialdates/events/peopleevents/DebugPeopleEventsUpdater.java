@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.util.DateParser;
 
 public class DebugPeopleEventsUpdater {
 
-    private final PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher;
+    private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     public static DebugPeopleEventsUpdater newInstance(Context context) {
@@ -22,7 +22,7 @@ public class DebugPeopleEventsUpdater {
         PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
 
         PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);
-        PeopleEventsDatabaseRefresher databaseRefresher = new PeopleEventsDatabaseRefresher(repository, deviceMarshaller, databaseProvider, viewRefresher);
+        DeviceEventsDatabaseRefresher databaseRefresher = new DeviceEventsDatabaseRefresher(repository, deviceMarshaller, databaseProvider);
 
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
@@ -35,13 +35,13 @@ public class DebugPeopleEventsUpdater {
         ));
     }
 
-    private DebugPeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
-        this.peopleEventsDatabaseRefresher = peopleEventsDatabaseRefresher;
+    private DebugPeopleEventsUpdater(DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
+        this.deviceEventsDatabaseRefresher = deviceEventsDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
     }
 
     public void refresh() {
-        peopleEventsDatabaseRefresher.rebuildEvents();
+        deviceEventsDatabaseRefresher.rebuildEvents();
         namedayDatabaseRefresher.refreshNamedaysIfEnabled();
     }
 }

@@ -6,20 +6,15 @@ import com.alexstyl.specialdates.permissions.PermissionChecker;
 
 class PeopleEventsUpdater {
 
-    private static final Object REFRESH_LOCK = new Object();
-
-    private final PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher;
-    private final EventPreferences eventPreferences;
     private final PermissionChecker permissionChecker;
+    private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
-    PeopleEventsUpdater(PeopleEventsDatabaseRefresher peopleEventsDatabaseRefresher,
-                        NamedayDatabaseRefresher namedayDatabaseRefresher,
-                        EventPreferences eventPreferences,
-                        PermissionChecker permissionChecker) {
-        this.peopleEventsDatabaseRefresher = peopleEventsDatabaseRefresher;
+    PeopleEventsUpdater(PermissionChecker permissionChecker,
+                        DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher,
+                        NamedayDatabaseRefresher namedayDatabaseRefresher) {
+        this.deviceEventsDatabaseRefresher = deviceEventsDatabaseRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
-        this.eventPreferences = eventPreferences;
         this.permissionChecker = permissionChecker;
     }
 
@@ -28,25 +23,7 @@ class PeopleEventsUpdater {
             ErrorTracker.track(new RuntimeException("Tried to update events without permission"));
             return;
         }
-
-        synchronized (REFRESH_LOCK) {
-            if (isFirstTimeRunning()) {
-                peopleEventsDatabaseRefresher.rebuildEvents();
-                namedayDatabaseRefresher.refreshNamedaysIfEnabled();
-                eventPreferences.markEventsAsInitialised();
-            } else {
-                updateEventsIfSettingsChanged();
-            }
-        }
-    }
-
-    private boolean isFirstTimeRunning() {
-        return !eventPreferences.hasBeenInitialised();
-    }
-
-    private void updateEventsIfSettingsChanged() {
-        peopleEventsDatabaseRefresher.rebuildEvents();
+        deviceEventsDatabaseRefresher.rebuildEvents();
         namedayDatabaseRefresher.refreshNamedaysIfEnabled();
     }
-
 }
