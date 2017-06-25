@@ -7,12 +7,13 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.Monitor;
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
@@ -24,8 +25,8 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.util.DateParser;
-import com.novoda.notils.exception.DeveloperError;
-import com.novoda.notils.logger.simple.Log;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class StaticEventsContentProvider extends ContentProvider {
 
@@ -33,7 +34,11 @@ public class StaticEventsContentProvider extends ContentProvider {
 
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
-    private PeopleEventsMonitor monitor;
+
+    private EventPreferences eventPreferences;
+
+    private PeopleEventsPresenter presenter;
+    private PeopleEventsUpdater peopleEventsUpdater;
 
     @Override
     public boolean onCreate() {
@@ -52,39 +57,43 @@ public class StaticEventsContentProvider extends ContentProvider {
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
         final PeopleEventsViewRefresher refresher = PeopleEventsViewRefresher.get(context);
 
-        final PeopleEventsUpdater peopleEventsUpdater = new PeopleEventsUpdater(
-                new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister, refresher),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator),
-                new EventPreferences(context),
-                new PermissionChecker(context)
+        eventPreferences = new EventPreferences(context);
+        peopleEventsUpdater = new PeopleEventsUpdater(
+                new PermissionChecker(context),
+                new DeviceEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
+                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator)
         );
+
+        presenter = new PeopleEventsPresenter(
+                AndroidSchedulers.mainThread(), EventsRefreshRequestsMonitor.newInstance(context), peopleEventsUpdater,
+                refresher
+        );
+        presenter.present();
 
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, CODE_PEOPLE_EVENTS);
-
-        monitor = PeopleEventsMonitor.newInstance(context);
-        monitor.startObserving(new Monitor.Callback() {
-            @Override
-            public void onMonitorTriggered() {
-                peopleEventsUpdater.updateEvents();
-                Log.e("An update happened. I'll update the database now!");
-                // TODO refresh the db in the background
-            }
-        });
-
         return true;
     }
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         if (isAboutPeopleEvents(uri)) {
+            if (!eventPreferences.hasBeenInitialised()) {
+                peopleEventsUpdater.updateEvents();
+                eventPreferences.markEventsAsInitialised();
+            }
+
             UriQuery query = new UriQuery(uri, projection, selection, selectionArgs, sortOrder);
             SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
             Cursor cursor = queryAnnualEvents(query, db);
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
             return cursor;
         }
-        return null;
+        return emptyCursorWith(projection);
+    }
+
+    private MatrixCursor emptyCursorWith(String[] projection) {
+        return new MatrixCursor(projection, 0);
     }
 
     private boolean isAboutPeopleEvents(Uri uri) {
@@ -114,10 +123,6 @@ public class StaticEventsContentProvider extends ContentProvider {
         return null;
     }
 
-    private void throwUnsupportedOperation(String insert) {
-        throw new DeveloperError(insert + " is not supported by the " + getClass().getSimpleName());
-    }
-
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         throwUnsupportedOperation("delete");
@@ -133,7 +138,11 @@ public class StaticEventsContentProvider extends ContentProvider {
     @Override
     public void shutdown() {
         super.shutdown();
-        monitor.stopObserving();
+        presenter.stopPresenting();
+    }
+
+    private void throwUnsupportedOperation(String operation) {
+        ErrorTracker.log(operation + " is not supported by the " + getClass().getSimpleName());
     }
 
 }
