@@ -40,7 +40,7 @@ class CallAction implements IntentAction {
     }
 
     @Override
-    public String getName() {
+    public String getAnalyticsName() {
         return "call";
     }
 

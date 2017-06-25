@@ -6,19 +6,22 @@ import com.alexstyl.specialdates.date.ContactEvent;
 
 import java.util.List;
 
-class PeopleEventsDatabaseRefresher {
+class DeviceEventsDatabaseRefresher {
 
-    private final PeopleEventsRepository repository;
+    private final AndroidEventsRepository repository;
     private final PeopleEventsPersister persister;
     private final ContactEventsMarshaller marshaller;
 
-    PeopleEventsDatabaseRefresher(PeopleEventsRepository repository, ContactEventsMarshaller marshaller, PeopleEventsPersister persister) {
+    DeviceEventsDatabaseRefresher(
+            AndroidEventsRepository repository,
+            ContactEventsMarshaller marshaller,
+            PeopleEventsPersister persister) {
         this.persister = persister;
         this.marshaller = marshaller;
         this.repository = repository;
     }
 
-    void refreshEvents() {
+    void rebuildEvents() {
         persister.deleteAllDeviceEvents();
         List<ContactEvent> contacts = repository.fetchPeopleWithEvents();
         storeContactsToProvider(contacts);

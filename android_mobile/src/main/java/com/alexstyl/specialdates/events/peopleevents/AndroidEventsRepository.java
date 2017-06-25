@@ -9,10 +9,11 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.logger.simple.Log;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 
-class PeopleEventsRepository {
+class AndroidEventsRepository {
 
     private static final Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
     private static final String[] PROJECTION = {
@@ -41,10 +42,10 @@ class PeopleEventsRepository {
     private static final List<ContactEvent> NO_EVENTS = Collections.emptyList();
 
     private final ContentResolver contentResolver;
-    private final AndroidContactsProvider contactsProvider;
+    private final ContactsProvider contactsProvider;
     private final DateParser dateParser;
 
-    PeopleEventsRepository(ContentResolver contentResolver, AndroidContactsProvider contactsProvider, DateParser dateParser) {
+    AndroidEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
         this.contentResolver = contentResolver;
         this.contactsProvider = contactsProvider;
         this.dateParser = dateParser;
@@ -63,7 +64,7 @@ class PeopleEventsRepository {
                 try {
                     Date eventDate = getEventDateFrom(cursor);
                     long eventId = getEventIdFrom(cursor);
-                    Contact contact = contactsProvider.getOrCreateContact(contactId);
+                    Contact contact = contactsProvider.getContact(contactId, AnnualEventsContract.SOURCE_DEVICE);
                     events.add(new ContactEvent(new Optional<>(eventId), eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);

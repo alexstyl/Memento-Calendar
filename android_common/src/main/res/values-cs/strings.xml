@@ -132,8 +132,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="copy_link">Zkopírovat odkaz</string>
     <string name="copied_to_clipboard">Odkaz zkopírován do schránky</string>
     <string name="select_donation_amount">Vyber částku, kterou chcete darovat</string>
-    <string name="go_to_wall">Otevřít tabuli</string>
-    <string name="view_contact">Zobrazit kontakt</string>
+  <string name="view_contact">Zobrazit kontakt</string>
     <string name="no_birthday_set">Žádné narozeniny nastaveny</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Nenalezeny žádné kontakty se zvláštními událostmi\nPoklepejte na '+' pro přidání"</string>
     <string name="No_contacts_with_events_found">"Nenalezeny žádné kontakty se zvláštními událostmi"</string>

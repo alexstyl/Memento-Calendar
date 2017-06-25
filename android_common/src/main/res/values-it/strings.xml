@@ -132,8 +132,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="copy_link">Copia il link</string>
     <string name="copied_to_clipboard">Link copiato negli appunti</string>
     <string name="select_donation_amount">Scegli l\'importo che vuoi donare</string>
-    <string name="go_to_wall">Apri il diario</string>
-    <string name="view_contact">Visualizza il contatto</string>
+  <string name="view_contact">Visualizza il contatto</string>
     <string name="no_birthday_set">Compleanno non impostato</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Non ho trovato contatti con eventi speciali.\nTocca il '+' per aggiungerne"</string>
     <string name="No_contacts_with_events_found">"Non ho trovato contatti con eventi speciali"</string>

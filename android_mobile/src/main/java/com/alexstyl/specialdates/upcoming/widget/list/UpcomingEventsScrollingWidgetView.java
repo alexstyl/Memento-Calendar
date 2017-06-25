@@ -6,20 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.wear.WidgetRefresher;
+import com.alexstyl.specialdates.PeopleEventsView;
 
-public class UpcomingEventsWidgetRefresher implements WidgetRefresher {
+public class UpcomingEventsScrollingWidgetView implements PeopleEventsView {
 
     private final AppWidgetManager widgetManager;
     private final Context context;
 
-    public UpcomingEventsWidgetRefresher(Context context, AppWidgetManager widgetManager) {
+    public UpcomingEventsScrollingWidgetView(Context context, AppWidgetManager widgetManager) {
         this.widgetManager = widgetManager;
         this.context = context;
     }
 
     @Override
-    public void refreshWidget() {
+    public void requestUpdate() {
         Intent intent = new Intent(context, UpcomingEventsScrollingAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
