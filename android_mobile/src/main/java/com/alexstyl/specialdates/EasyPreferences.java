@@ -94,4 +94,12 @@ public class EasyPreferences {
         }
         edit.apply();
     }
+
+    public void addOnPreferenceChangedListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        prefs.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void removeOnPreferenceChagnedListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        prefs.unregisterOnSharedPreferenceChangeListener(listener);
+    }
 }

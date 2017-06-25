@@ -43,6 +43,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -50,7 +51,6 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
-import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 import com.novoda.notils.caster.Views;
 
@@ -177,14 +177,13 @@ public class DateDetailsFragment extends MementoFragment {
         public Loader<DateDetailsScreenViewModel> onCreateLoader(int loaderID, Bundle bundle) {
             if (loaderID == LOADER_ID_EVENTS) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(getActivity());
-                ContactsObserver contactsObserver = new ContactsObserver(getContentResolver(), new Handler());
                 ContactActionFactory factory = new ContactActionFactory(getActivity(), getContentResolver(), getActivity().getPackageManager());
                 return new DateDetailsLoader(
                         getActivity(),
                         date,
                         new AskForSupport(getContext()),
                         peopleEventsProvider,
-                        contactsObserver,
+                        new PeopleEventsObserver(getContentResolver()),
                         NamedayPreferences.newInstance(getContext()),
                         new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                         new SupportViewModelFactory(getContext(), new AndroidStringResources(getResources())),
@@ -303,7 +302,7 @@ public class DateDetailsFragment extends MementoFragment {
                 }, DateUtils.SECOND_IN_MILLIS);
             }
             action.fire(getActivity());
-            ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getName());
+            ActionWithParameters actionWithParameters = new ActionWithParameters(Action.INTERACT_CONTACT, "source", action.getAction().getAnalyticsName());
             analytics.trackAction(actionWithParameters);
         }
 

@@ -30,6 +30,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
@@ -356,7 +357,8 @@ public class SearchActivity extends ThemedMementoActivity {
         @Override
         public Loader<SearchResults> onCreateLoader(int id, Bundle args) {
             adapter.notifyIsLoadingMore();
-            return new SearchLoader(context(), peopleEventsSearch, searchQuery, searchCounter, viewModelFactory);
+            PeopleEventsObserver observer = new PeopleEventsObserver(getContentResolver());
+            return new SearchLoader(context(), peopleEventsSearch, observer, searchQuery, searchCounter, viewModelFactory);
         }
 
         @Override

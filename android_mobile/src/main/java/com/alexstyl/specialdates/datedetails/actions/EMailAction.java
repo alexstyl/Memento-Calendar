@@ -35,7 +35,7 @@ class EMailAction implements IntentAction {
     }
 
     @Override
-    public String getName() {
+    public String getAnalyticsName() {
         return "email";
     }
 

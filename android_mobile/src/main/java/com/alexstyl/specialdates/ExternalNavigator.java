@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
 import com.alexstyl.specialdates.util.AppUtils;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
@@ -104,6 +105,24 @@ public class ExternalNavigator {
     }
 
     public void toContactDetails(Contact contact) {
+        if (contact instanceof FacebookContact) {
+            toFacebookContactDetails(contact);
+        } else {
+            toDeviceContactDetails(contact);
+        }
+    }
+
+    private void toFacebookContactDetails(Contact contact) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://www.facebook.com/" + contact.getContactID()));
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void toDeviceContactDetails(Contact contact) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contact.getContactID()));

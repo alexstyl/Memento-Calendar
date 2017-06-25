@@ -1,6 +1,6 @@
-package com.alexstyl.specialdates.facebook;
+package com.alexstyl.specialdates.facebook.friendimport;
 
-import com.alexstyl.specialdates.facebook.login.CredentialsExtractor;
+import com.alexstyl.specialdates.facebook.UserCredentials;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
