@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
@@ -49,7 +50,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()));
+        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()), FacebookPreferences.newInstance(this));
         externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -62,7 +63,13 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         notifier = Notifier.newInstance(this);
 
         FloatingActionButton addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
-        addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
+        addBirthdayFAB.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                navigator.toAddEvent();
+                navigator.toFacebookImport();
+            }
+        });
         askForSupport = new AskForSupport(this);
         SearchHintCreator hintCreator = new SearchHintCreator(getResources(), NamedayPreferences.newInstance(this));
         setTitle(hintCreator.createHint());
@@ -150,10 +157,4 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     };
 
-    private final OnClickListener startAddBirthdayOnClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            navigator.toAddEvent();
-        }
-    };
 }

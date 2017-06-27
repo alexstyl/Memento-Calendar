@@ -50,7 +50,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_facebook_import);
+        setContentView(R.layout.activity_facebook_log_in);
 
         orientationLock = new ScreenOrientationLock();
         int dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.facebook_avatar_stroke);
