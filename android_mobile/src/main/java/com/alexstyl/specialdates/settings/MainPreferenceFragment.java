@@ -41,6 +41,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private EventsSettingsMonitor monitor; // TODO this probably has to go
     private Analytics analytics;
     private PeopleEventsViewRefresher refresher;
+    private DonationService donationService;
 
     @Override
     public void onAttach(Activity activity) {
@@ -111,7 +112,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         refresher = PeopleEventsViewRefresher.get(getActivity());
 
         final Preference restore = findPreference("key_donate_restore");
-        final DonationService donationService = new AndroidDonationService(
+        donationService = new AndroidDonationService(
                 new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
                 getActivity(),
                 DonationPreferences.newInstance(getActivity()),
@@ -162,6 +163,12 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     public void onPause() {
         super.onPause();
         monitor.unregister();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        donationService.dispose();
     }
 
     private final ThemeSelectDialog.OnThemeSelectedListener themeSelectedListener = new ThemeSelectDialog.OnThemeSelectedListener() {
