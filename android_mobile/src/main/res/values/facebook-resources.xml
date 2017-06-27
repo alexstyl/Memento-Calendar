@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="title_facebook_log_in">@string/Facebook_Log_In</string>
-  <string name="title_facebook_friends_import">@string/Facebook_Friends_Import</string>
+  <string name="title_facebook_friends_import">@string/Import_from_Facebook</string>
   <string name="facebook_hi">@string/Hi_X</string>
   <string name="facebook_more_description">@string/Your_Friends_will_be_here_shortly_smiley</string>
   <string name="facebook_error">@string/An_error_came_up</string>

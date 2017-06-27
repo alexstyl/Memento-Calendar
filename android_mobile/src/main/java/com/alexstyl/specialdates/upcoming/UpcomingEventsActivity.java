@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
+import com.github.clans.fab.FloatingActionMenu;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -62,12 +62,20 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
         notifier = Notifier.newInstance(this);
 
-        FloatingActionButton addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
-        addBirthdayFAB.setOnClickListener(new OnClickListener() {
+        final FloatingActionMenu fam = Views.findById(this, R.id.upcoming_events_fab);
+        Views.findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                navigator.toAddEvent();
+                navigator.toAddEvent();
+                fam.close(true);
+            }
+        });
+
+        Views.findById(this, R.id.upcoming_events_facebook).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 navigator.toFacebookImport();
+                fam.close(true);
             }
         });
         askForSupport = new AskForSupport(this);
