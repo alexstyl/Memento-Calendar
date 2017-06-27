@@ -11,7 +11,8 @@ public enum Screen {
     WEAR_CONTACT_EVENTS("wear: contacts events"),
     PLAY_STORE("playstore"),
     GOOGLE_PLUS_COMMUNITY("google plus community"),
-    EMAIL_SUPPORT("email support");
+    EMAIL_SUPPORT("email support"),
+    FACEBOOK_PROFILE("facebook_profile");
 
     private final String screenName;
 
