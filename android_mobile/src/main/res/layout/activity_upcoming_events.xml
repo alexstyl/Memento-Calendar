@@ -71,8 +71,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:src="@drawable/ic_person_light_24dp"
-      app:fab_colorNormal="?colorPrimary"
-      app:fab_colorPressed="?colorPrimary"
+      app:fab_colorNormal="?colorAccent"
+      app:fab_colorPressed="?colorAccent"
       app:fab_label="@string/add_event_title"
       app:fab_size="mini" />
 
