@@ -49,10 +49,11 @@
     android:layout_alignParentRight="true"
     android:layout_margin="@dimen/fab_margin"
     android:src="@drawable/ic_content_add"
-    app:menu_animationDelayPerItem="50"
+    app:menu_animationDelayPerItem="55"
     app:menu_colorNormal="?colorAccent"
     app:menu_colorPressed="?colorAccent"
-    app:menu_fab_size="normal">
+    app:menu_fab_size="normal"
+    app:menu_showShadow="true">
 
 
     <com.github.clans.fab.FloatingActionButton

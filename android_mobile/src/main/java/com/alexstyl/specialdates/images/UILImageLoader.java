@@ -31,6 +31,11 @@ public class UILImageLoader implements ImageLoader {
         return createLoader(displayer);
     }
 
+    public static UILImageLoader createCircleLoaderWithBorder(Resources resources) {
+        BitmapDisplayer displayer = FadeInRoundedBorderedBitmapDisplayer.newInstance(resources);
+        return createLoader(displayer);
+    }
+
     private static UILImageLoader createLoader(BitmapDisplayer displayer) {
         return new UILImageLoader(new DisplayImageOptions.Builder()
                                           .displayer(displayer)
