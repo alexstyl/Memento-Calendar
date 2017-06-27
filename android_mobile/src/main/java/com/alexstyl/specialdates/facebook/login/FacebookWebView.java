@@ -36,7 +36,7 @@ public class FacebookWebView extends WebView {
         setWebViewClient(client);
     }
 
-    public void loadSignInPage() {
+    public void loadLogInPage() {
         loadUrl("https://m.facebook.com/login");
     }
 

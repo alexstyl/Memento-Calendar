@@ -19,6 +19,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
@@ -49,13 +50,6 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_log_in);
 
-        orientationLock = new ScreenOrientationLock();
-        imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
-        facebookFriendsScheduler = new FacebookFriendsScheduler(
-                thisActivity(),
-                (AlarmManager) getSystemService(ALARM_SERVICE)
-        );
-
         Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
         avatar = Views.findById(this, R.id.facebook_import_avatar);
@@ -66,10 +60,23 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         shareButton.setOnClickListener(shareAppIntentOnClick());
         closeButton = Views.findById(this, R.id.facebook_import_close);
         closeButton.setOnClickListener(finishActivityOnClick());
-
-        new CookieResetter(CookieManager.getInstance()).clearAll();
         webView = Views.findById(this, R.id.facebook_import_webview);
+        orientationLock = new ScreenOrientationLock();
+        imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
+        facebookFriendsScheduler = new FacebookFriendsScheduler(
+                thisActivity(),
+                (AlarmManager) getSystemService(ALARM_SERVICE)
+        );
+
         webView.setCallback(facebookCallback);
+
+        UserCredentials userCredentials = FacebookPreferences.newInstance(this).retrieveCredentials();
+        if (savedInstanceState == null || userCredentials.equals(UserCredentials.ANNONYMOUS)) {
+            new CookieResetter(CookieManager.getInstance()).clearAll();
+            webView.loadLogInPage();
+        } else {
+            showData(userCredentials);
+        }
     }
 
     private View.OnClickListener finishActivityOnClick() {
@@ -90,12 +97,6 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
                 startActivity(intent);
             }
         };
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        webView.loadSignInPage();
     }
 
     private final FacebookLogInCallback facebookCallback = new FacebookLogInCallback() {
