@@ -10,10 +10,10 @@ class UserCredentialsExtractorTask extends AsyncTask<Void, Void, UserCredentials
     private final CredentialsExtractor extractor = new CredentialsExtractor();
 
     private final String pageSource;
-    private final FacebookCallback callback;
+    private final FacebookLogInCallback callback;
     private final FacebookPreferences preferences;
 
-    UserCredentialsExtractorTask(String pageSource, FacebookPreferences preferences, FacebookCallback callback) {
+    UserCredentialsExtractorTask(String pageSource, FacebookPreferences preferences, FacebookLogInCallback callback) {
         this.pageSource = pageSource;
         this.preferences = preferences;
         this.callback = callback;
@@ -33,7 +33,7 @@ class UserCredentialsExtractorTask extends AsyncTask<Void, Void, UserCredentials
         if (userCredentials == UserCredentials.ANNONYMOUS) {
             callback.onError();
         } else {
-            callback.onCalendarFound(userCredentials);
+            callback.onUserLoggedIn(userCredentials);
         }
 
     }

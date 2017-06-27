@@ -69,7 +69,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
         new CookieResetter(CookieManager.getInstance()).clearAll();
         webView = Views.findById(this, R.id.facebook_import_webview);
-        webView.setListener(facebookCallback);
+        webView.setCallback(facebookCallback);
     }
 
     private View.OnClickListener finishActivityOnClick() {
@@ -98,17 +98,17 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         webView.loadSignInPage();
     }
 
-    private final FacebookCallback facebookCallback = new FacebookCallback() {
+    private final FacebookLogInCallback facebookCallback = new FacebookLogInCallback() {
         @Override
-        public void onSignedInThroughWebView() {
+        public void onUserCredentialsSubmitted() {
             AndroidUtils.requestHideKeyboard(thisActivity(), webView);
             showLoading();
         }
 
         @Override
-        public void onCalendarFound(UserCredentials userCredentials) {
+        public void onUserLoggedIn(UserCredentials credentials) {
             fetchFacebookFriends();
-            showData(userCredentials);
+            showData(credentials);
         }
 
         private void fetchFacebookFriends() {
@@ -185,5 +185,11 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         progress.setVisibility(View.GONE);
         webView.setVisibility(View.GONE);
         shareButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.destroy();
     }
 }
