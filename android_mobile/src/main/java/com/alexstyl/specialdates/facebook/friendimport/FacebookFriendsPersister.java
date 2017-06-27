@@ -10,12 +10,12 @@ import java.util.List;
 
 import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
 
-final class FacebookFriendsPersister {
+final public class FacebookFriendsPersister {
 
     private final PeopleEventsPersister persister;
     private final ContactEventsMarshaller marshaller;
 
-    FacebookFriendsPersister(PeopleEventsPersister persister, ContactEventsMarshaller marshaller) {
+    public FacebookFriendsPersister(PeopleEventsPersister persister, ContactEventsMarshaller marshaller) {
         this.persister = persister;
         this.marshaller = marshaller;
     }
@@ -24,5 +24,9 @@ final class FacebookFriendsPersister {
         ContentValues[] contentValues = marshaller.marshall(friends);
         persister.deleteAllEventsOfSource(SOURCE_FACEBOOK);
         persister.insertAnnualEvents(contentValues);
+    }
+
+    public void removeAllFriends() {
+        persister.deleteAllEventsOfSource(SOURCE_FACEBOOK);
     }
 }
