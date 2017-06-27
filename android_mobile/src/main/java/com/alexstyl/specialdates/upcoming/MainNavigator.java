@@ -84,7 +84,6 @@ final class MainNavigator {
     void toAddEvent() {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
-        analytics.trackScreen(Screen.ADD_EVENT);
     }
 
     void toFacebookImport() {
