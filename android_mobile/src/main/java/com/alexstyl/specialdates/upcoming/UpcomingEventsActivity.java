@@ -44,7 +44,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_upcoming_events);
 
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics = AnalyticsProvider.getAnalytics(this);

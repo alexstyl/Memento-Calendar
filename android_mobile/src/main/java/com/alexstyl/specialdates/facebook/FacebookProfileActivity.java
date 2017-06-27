@@ -31,7 +31,6 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
     private static final int LOGOUT_ID = 40444;
 
     private ExternalNavigator navigator;
-
     private FacebookProfilePresenter presenter;
 
     @Override
@@ -67,7 +66,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
                 service,
                 profilePicture,
                 userName,
-                UILImageLoader.createLoader(getResources()),
+                UILImageLoader.createCircleLoaderWithBorder(getResources()),
                 preferences
         );
         presenter.startPresenting();

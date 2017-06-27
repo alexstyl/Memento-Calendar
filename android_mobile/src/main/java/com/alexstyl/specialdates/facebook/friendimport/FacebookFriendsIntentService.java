@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 
@@ -50,6 +51,7 @@ public class FacebookFriendsIntentService extends IntentService {
         try {
             List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
             persister.keepOnly(friends);
+            PeopleEventsViewRefresher.get(this).updateAllViews();
         } catch (CalendarFetcherException e) {
             ErrorTracker.track(e);
         }
