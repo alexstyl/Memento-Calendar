@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import static com.alexstyl.specialdates.Optional.absent;
@@ -52,6 +53,11 @@ public class UILImageLoader implements ImageLoader {
     @Override
     public void loadImage(Uri imagePath, ImageAware imageAware, final OnImageLoadedCallback callback) {
         loadImage(imagePath, new ImageSize(imageAware.getWidth(), imageAware.getHeight()), callback);
+    }
+
+    @Override
+    public void loadImage(Uri imagePath, ImageView avatarView, OnImageLoadedCallback callback) {
+        loadImage(imagePath, new ImageViewAware(avatarView), callback);
     }
 
     @Override

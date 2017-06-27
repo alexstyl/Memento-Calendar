@@ -137,7 +137,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         orientationLock.lock(thisActivity());
 
         progress.setVisibility(View.VISIBLE);
-//        webView.setVisibility(View.GONE);
+        //  TODO webView.setVisibility(View.GONE);
         avatar.setVisibility(View.GONE);
         helloView.setVisibility(View.GONE);
         moreText.setVisibility(View.GONE);

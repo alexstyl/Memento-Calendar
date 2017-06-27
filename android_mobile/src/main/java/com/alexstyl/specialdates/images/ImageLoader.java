@@ -13,6 +13,8 @@ public interface ImageLoader {
 
     void loadImage(Uri imagePath, ImageAware avatarView, OnImageLoadedCallback callback);
 
+    void loadImage(Uri imagePath, ImageView avatarView, OnImageLoadedCallback callback);
+
     void loadImage(Uri imagePath, ImageSize targetImageSize, OnImageLoadedCallback callback);
 
     Optional<Bitmap> loadBitmapSync(Uri imagePath, ImageSize imageSize);

@@ -198,6 +198,10 @@
       android:name=".facebook.login.FacebookLogInActivity"
       android:label="@string/title_facebook_log_in" />
 
+    <activity
+      android:name=".facebook.FacebookProfileActivity"
+      android:exported="true" />
+
     <service
       android:name=".facebook.friendimport.FacebookFriendsIntentService"
       android:label="@string/title_facebook_friends_import" />

@@ -9,12 +9,12 @@ import android.support.annotation.DrawableRes;
 
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 
-class CircularDrawableFactory {
+public class CircularDrawableFactory {
 
     private final float strokeWidth;
     private final Resources resources;
 
-    CircularDrawableFactory(Resources resources, float strokeWidth) {
+    public CircularDrawableFactory(Resources resources, float strokeWidth) {
         this.resources = resources;
         this.strokeWidth = strokeWidth;
     }
