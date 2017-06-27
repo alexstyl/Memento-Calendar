@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
@@ -61,6 +62,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         setContentView(R.layout.activity_add_event);
 
         analytics = AnalyticsProvider.getAnalytics(this);
+        analytics.trackScreen(Screen.ADD_EVENT);
         ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
