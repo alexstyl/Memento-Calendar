@@ -13,7 +13,7 @@ class FBImportClient extends WebViewClient {
     private static final String DESKTOP_HOME = "www.facebook.com/home.php";
 
     private final WebView webView;
-    private FacebookCallback listener;
+    private FacebookLogInCallback listener;
 
     FBImportClient(WebView webview) {
         this.webView = webview;
@@ -36,7 +36,7 @@ class FBImportClient extends WebViewClient {
     private void internalOnUserLoggedIn() {
         switchToDesktopBrowsing();
         webView.loadUrl("http://www.facebook.com/events/birthdays");
-        listener.onSignedInThroughWebView();
+        listener.onUserCredentialsSubmitted();
     }
 
     private void switchToDesktopBrowsing() {
@@ -52,7 +52,7 @@ class FBImportClient extends WebViewClient {
         }
     }
 
-    public void setListener(FacebookCallback listener) {
+    public void setListener(FacebookLogInCallback listener) {
         this.listener = listener;
     }
 }
