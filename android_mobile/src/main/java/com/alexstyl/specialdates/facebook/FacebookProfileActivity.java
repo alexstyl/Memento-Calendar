@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.facebook;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,11 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alexstyl.android.AndroidDimensionResources;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
@@ -22,7 +20,6 @@ import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -33,23 +30,21 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
 
     private static final int LOGOUT_ID = 40444;
 
-    private ImageView profilePicture;
-    private TextView userName;
-    private BorderImageLoader imageLoader;
     private ExternalNavigator navigator;
 
-    private FacebookLogoutService service;
+    private FacebookProfilePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Analytics analytics = AnalyticsProvider.getAnalytics(this);
+        analytics.trackScreen(Screen.FACEBOOK_PROFILE);
         setContentView(R.layout.activity_facebook_profile);
 
-        MementoToolbar toolbar = findById(this, R.id.memento_toolbar);
-        toolbar.setNavigationAsClose();
+        setupToolbar();
+        ImageView profilePicture = findById(this, R.id.facebook_profile_avatar);
+        TextView userName = findById(this, R.id.facebook_profile_name);
 
-        profilePicture = findById(this, R.id.facebook_profile_avatar);
-        userName = findById(this, R.id.facebook_profile_name);
         findById(this, R.id.facebook_profile_fb_page).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,24 +52,41 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
             }
         });
 
-        FacebookPreferences preferences = FacebookPreferences.newInstance(this);
-        UserCredentials userCredentials = new UserCredentials(1499868106L, "", "Alexandros"); // preferences.retrieveCredentials();
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
-        navigator = new ExternalNavigator(this, analytics);
-
-        imageLoader = BorderImageLoader.newInstance(getResources(), new AndroidDimensionResources(getResources()), UILImageLoader.createLoader(getResources()));
-
-        loadProfilePicture(userCredentials);
-        displayName(userCredentials);
-
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller(SOURCE_FACEBOOK);
         FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
-        service = new FacebookLogoutService(AndroidSchedulers.mainThread(), preferences, persister, PeopleEventsViewRefresher.get(this), new OnFacebookLogOutCallback() {
+        FacebookPreferences preferences = FacebookPreferences.newInstance(this);
+        navigator = new ExternalNavigator(this, analytics);
+
+        FacebookLogoutService service = new FacebookLogoutService(
+                AndroidSchedulers.mainThread(),
+                preferences,
+                persister,
+                PeopleEventsViewRefresher.get(this), onLogOut()
+        );
+        presenter = new FacebookProfilePresenter(
+                service,
+                profilePicture,
+                userName,
+                UILImageLoader.createLoader(getResources()),
+                preferences
+        );
+        presenter.startPresenting();
+    }
+
+    private void setupToolbar() {
+        MementoToolbar toolbar = findById(this, R.id.memento_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationAsClose();
+        setTitle(null);
+    }
+
+    private OnFacebookLogOutCallback onLogOut() {
+        return new OnFacebookLogOutCallback() {
             @Override
             public void onUserLogOut() {
                 finish();
             }
-        });
+        };
     }
 
     @Override
@@ -85,30 +97,19 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == LOGOUT_ID) {
-            service.logOut();
+        int itemId = item.getItemId();
+        if (itemId == LOGOUT_ID) {
+            presenter.logOut();
             return true;
-        } else if (item.getItemId() == android.R.id.home) {
-            Intent i = new Intent(thisActivity(), UpcomingEventsActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
+        } else if (itemId == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayName(UserCredentials userCredentials) {
-        userName.setText(userCredentials.getName());
-    }
-
-    private void loadProfilePicture(UserCredentials userCredentials) {
-        Uri uri = FacebookImagePathCreator.INSTANCE.forUid(userCredentials.getUid());
-        imageLoader.loadImage(profilePicture, uri);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        service.dispose();
+        presenter.stopPresenting();
     }
 }
