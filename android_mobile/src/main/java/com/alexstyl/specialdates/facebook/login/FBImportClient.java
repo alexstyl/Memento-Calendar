@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.facebook.login;
 
 import android.graphics.Bitmap;
-import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,7 +22,6 @@ class FBImportClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         if (isHomePage(url)) {
             view.stopLoading();
-            CookieManager.getInstance().setAcceptCookie(true);
             internalOnUserLoggedIn();
         }
     }

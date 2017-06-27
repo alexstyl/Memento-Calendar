@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.facebook.login;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,7 +26,6 @@ public class FacebookWebView extends WebView {
 
     private void setup() {
         clearCache(false);
-        CookieManager.getInstance().setAcceptCookie(false);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         WebSettings settings = getSettings();
