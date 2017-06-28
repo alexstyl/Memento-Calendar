@@ -184,4 +184,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Friends_update_daily">Friends update daily</string>
   <string name="Memento_on_Facebook">Memento on Facebook</string>
   <string name="log_out">Log out</string>
+  <string name="Facebook_profile">Facebook Profile</string>
 </resources>

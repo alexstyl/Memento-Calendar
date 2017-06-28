@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.facebook;
 
-import android.support.annotation.NonNull;
-
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 
@@ -43,7 +41,6 @@ class FacebookLogoutService {
         );
     }
 
-    @NonNull
     private Action refreshAllUI() {
         return new Action() {
             @Override
