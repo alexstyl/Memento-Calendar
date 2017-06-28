@@ -50,4 +50,10 @@ public interface Analytics {
     void trackDonationRestored();
 
     void trackDonationPlaced(Donation donation);
+
+    void trackFacebookLoggedIn();
+
+    void trackOnAvatarBounce();
+
+    void trackFacebookLoggedOut();
 }

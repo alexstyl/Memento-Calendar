@@ -39,4 +39,5 @@
 
   <drawable name="dark_variant">#263238</drawable>
   <color name="bankholiday_green">#ff669900</color>
+  <color name="facebook_blue">#3b5998</color>
 </resources>

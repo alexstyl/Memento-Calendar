@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="?attr/colorSecondary"
+  android:orientation="vertical">
+
+  <com.alexstyl.specialdates.ui.widget.MementoToolbar
+    android:id="@+id/memento_toolbar"
+    style="@style/Widget.Memento.Toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent" />
+
+
+  <LinearLayout
+    android:id="@+id/facebook_profile_group"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <ImageView
+      android:id="@+id/facebook_profile_avatar"
+      android:layout_width="@dimen/facebook_avatar_width"
+      android:layout_height="@dimen/facebook_avatar_height"
+      android:elevation="4dp"
+      android:importantForAccessibility="no" />
+
+    <TextView
+      android:id="@+id/facebook_profile_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:textColor="?android:textColorPrimaryInverse"
+      android:textSize="24sp"
+      tools:text="Alex Styl" />
+
+    <TextView
+      android:id="@+id/facebook_profile_friends_update_daily"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:fontFamily="sans-serif-light"
+      android:text="@string/facebook_friends_update_daily"
+      android:textColor="?android:textColorPrimaryInverse"
+      android:textSize="18sp" />
+
+  </LinearLayout>
+
+  <android.support.v7.widget.AppCompatButton
+    android:id="@+id/facebook_profile_fb_page"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:minHeight="64dp"
+    android:text="@string/facebook_profile_fb_page"
+    android:textColor="?primaryTextColorInverse"
+    app:backgroundTint="?colorAccent" />
+
+
+</RelativeLayout>

@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.facebook.login;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,7 +11,7 @@ import com.alexstyl.specialdates.facebook.FacebookPreferences;
 
 public class FacebookWebView extends WebView {
 
-    private FacebookCallback listener;
+    private FacebookLogInCallback callback;
     private FBImportClient client;
 
     public FacebookWebView(Context context, AttributeSet attrs) {
@@ -27,7 +26,6 @@ public class FacebookWebView extends WebView {
 
     private void setup() {
         clearCache(false);
-        CookieManager.getInstance().setAcceptCookie(false);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         WebSettings settings = getSettings();
@@ -38,16 +36,16 @@ public class FacebookWebView extends WebView {
         setWebViewClient(client);
     }
 
-    public void loadSignInPage() {
+    public void loadLogInPage() {
         loadUrl("https://m.facebook.com/login");
     }
 
-    public void setListener(FacebookCallback listener) {
-        this.listener = listener;
-        client.setListener(listener);
+    public void setCallback(FacebookLogInCallback callback) {
+        this.callback = callback;
+        client.setListener(callback);
     }
 
-    class FacebookJavaScriptInterface {
+    private class FacebookJavaScriptInterface {
 
         private UserCredentialsExtractorTask userCredentialsExtractorTask;
 
@@ -55,7 +53,7 @@ public class FacebookWebView extends WebView {
         @SuppressWarnings("unused")
         public void processHTML(String html) {
             if (userCredentialsExtractorTask == null) {
-                userCredentialsExtractorTask = new UserCredentialsExtractorTask(html, FacebookPreferences.newInstance(getContext()), listener);
+                userCredentialsExtractorTask = new UserCredentialsExtractorTask(html, FacebookPreferences.newInstance(getContext()), callback);
                 userCredentialsExtractorTask.execute();
             }
         }

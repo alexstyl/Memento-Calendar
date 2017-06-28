@@ -30,6 +30,6 @@ public class FacebookPreferences {
     }
 
     public boolean isLoggedIn() {
-        return UserCredentials.ANNONYMOUS.equals(retrieveCredentials());
+        return !UserCredentials.ANNONYMOUS.equals(retrieveCredentials());
     }
 }

@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
@@ -24,6 +24,7 @@ import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
+import com.github.clans.fab.FloatingActionMenu;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -43,13 +44,13 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_upcoming_events);
 
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()));
+        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()), FacebookPreferences.newInstance(this));
         externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -61,8 +62,22 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
         notifier = Notifier.newInstance(this);
 
-        FloatingActionButton addBirthdayFAB = Views.findById(this, R.id.main_birthday_add_fab);
-        addBirthdayFAB.setOnClickListener(startAddBirthdayOnClick);
+        final FloatingActionMenu fam = Views.findById(this, R.id.upcoming_events_fab);
+        Views.findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigator.toAddEvent();
+                fam.close(true);
+            }
+        });
+
+        Views.findById(this, R.id.upcoming_events_facebook).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigator.toFacebookImport();
+                fam.close(true);
+            }
+        });
         askForSupport = new AskForSupport(this);
         SearchHintCreator hintCreator = new SearchHintCreator(getResources(), NamedayPreferences.newInstance(this));
         setTitle(hintCreator.createHint());
@@ -150,10 +165,4 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     };
 
-    private final OnClickListener startAddBirthdayOnClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            navigator.toAddEvent();
-        }
-    };
 }

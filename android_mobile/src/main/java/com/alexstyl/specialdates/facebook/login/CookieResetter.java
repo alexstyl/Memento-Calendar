@@ -1,6 +1,9 @@
 package com.alexstyl.specialdates.facebook.login;
 
 import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
+
+import com.alexstyl.android.Version;
 
 class CookieResetter {
     private final CookieManager cookieManager;
@@ -10,6 +13,8 @@ class CookieResetter {
     }
 
     void clearAll() {
+        removeAllCookies();
+
         cookieManager.setCookie(".facebook.com", "locale=");
         cookieManager.setCookie(".facebook.com", "datr=");
         cookieManager.setCookie(".facebook.com", "s=");
@@ -31,5 +36,18 @@ class CookieResetter {
         cookieManager.setCookie(".facebook.com", "datr");
         cookieManager.setCookie(".facebook.com", "locale");
         cookieManager.setCookie(".facebook.com", "x-referer");
+    }
+
+    private void removeAllCookies() {
+        if (Version.hasLollipop()) {
+            cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
+                @Override
+                public void onReceiveValue(Boolean value) {
+
+                }
+            });
+        } else {
+            cookieManager.removeAllCookie();
+        }
     }
 }

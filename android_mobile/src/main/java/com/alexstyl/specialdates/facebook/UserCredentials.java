@@ -56,4 +56,8 @@ public class UserCredentials {
         result = 31 * result + name.hashCode();
         return result;
     }
+
+    public boolean isAnnonymous() {
+        return equals(ANNONYMOUS);
+    }
 }
