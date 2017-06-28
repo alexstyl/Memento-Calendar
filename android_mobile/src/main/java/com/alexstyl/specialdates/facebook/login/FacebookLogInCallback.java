@@ -10,5 +10,5 @@ interface FacebookLogInCallback {
      */
     void onUserCredentialsSubmitted();
 
-    void onError();
+    void onError(Exception e);
 }

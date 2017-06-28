@@ -32,11 +32,12 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
 
     private ExternalNavigator navigator;
     private FacebookProfilePresenter presenter;
+    private Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
+        analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.FACEBOOK_PROFILE);
         setContentView(R.layout.activity_facebook_profile);
 
@@ -99,6 +100,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity {
         int itemId = item.getItemId();
         if (itemId == LOGOUT_ID) {
             presenter.logOut();
+            analytics.trackFacebookLoggedOut();
             return true;
         } else if (itemId == android.R.id.home) {
             finish();

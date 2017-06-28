@@ -15,8 +15,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
@@ -44,10 +48,13 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private Button shareButton;
     private Button closeButton;
     private ImageLoader imageLoader;
+    private Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        analytics = AnalyticsProvider.getAnalytics(this);
+        analytics.trackScreen(Screen.FACEBOOK_LOG_IN);
         setContentView(R.layout.activity_facebook_log_in);
 
         Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -59,7 +66,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         shareButton = Views.findById(this, R.id.facebook_import_share);
         shareButton.setOnClickListener(shareAppIntentOnClick());
         closeButton = Views.findById(this, R.id.facebook_import_close);
-        closeButton.setOnClickListener(finishActivityOnClick());
+        closeButton.setOnClickListener(onCloseButtonPressed());
         webView = Views.findById(this, R.id.facebook_import_webview);
         orientationLock = new ScreenOrientationLock();
         imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
@@ -79,7 +86,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         }
     }
 
-    private View.OnClickListener finishActivityOnClick() {
+    private View.OnClickListener onCloseButtonPressed() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +102,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
                 ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), new AndroidStringResources(getResources()));
                 Intent intent = appIntentCreator.buildIntent();
                 startActivity(intent);
+                analytics.trackAppInviteRequested();
             }
         };
     }
@@ -110,6 +118,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         public void onUserLoggedIn(UserCredentials credentials) {
             fetchFacebookFriends();
             showData(credentials);
+            analytics.trackFacebookLoggedIn();
         }
 
         private void fetchFacebookFriends() {
@@ -124,8 +133,9 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         }
 
         @Override
-        public void onError() {
+        public void onError(Exception e) {
             showError();
+            ErrorTracker.track(e);
         }
     };
 
@@ -167,6 +177,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
             @Override
             public void onClick(View v) {
                 avatar.startAnimation(animation);
+                analytics.trackOnAvatarBounce();
             }
         });
         avatar.startAnimation(animation);
