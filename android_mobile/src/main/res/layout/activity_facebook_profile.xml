@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="?attr/colorPrimary"
+  android:background="?attr/colorSecondary"
   android:orientation="vertical">
 
   <com.alexstyl.specialdates.ui.widget.MementoToolbar
@@ -36,8 +36,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
-      android:fontFamily="sans-serif-light"
-      android:textColor="?android:textColorPrimary"
+      android:textColor="?android:textColorPrimaryInverse"
       android:textSize="24sp"
       tools:text="Alex Styl" />
 
@@ -48,7 +47,7 @@
       android:layout_marginTop="10dp"
       android:fontFamily="sans-serif-light"
       android:text="@string/facebook_friends_update_daily"
-      android:textColor="?android:textColorPrimary"
+      android:textColor="?android:textColorPrimaryInverse"
       android:textSize="18sp" />
 
   </LinearLayout>

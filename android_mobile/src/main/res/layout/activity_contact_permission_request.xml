@@ -52,7 +52,7 @@
       android:layout_marginTop="24dp"
       android:gravity="center"
       android:text="@string/contact_permission_message_request"
-      android:textColor="?android:textColorPrimary" />
+      android:textColor="?android:textColorPrimaryInverse" />
 
     <TextView
       android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
       android:layout_marginTop="36dp"
       android:gravity="center"
       android:text="@string/contact_permission_fact"
-      android:textColor="?android:textColorPrimary" />
+      android:textColor="?android:textColorPrimaryInverse" />
   </LinearLayout>
 
   <android.support.v7.widget.AppCompatButton
