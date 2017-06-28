@@ -7,9 +7,9 @@ import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsCo
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.SourceType;
 import com.alexstyl.specialdates.events.peopleevents.DeviceContactsQuery;
-import com.squareup.haha.guava.collect.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,6 @@ public class ContactsProvider {
             sources.put(AnnualEventsContract.SOURCE_DEVICE, buildAndroidSource(context));
             sources.put(AnnualEventsContract.SOURCE_FACEBOOK, buildFacebookSource(context));
             INSTANCE = new ContactsProvider(sources);
-
         }
         return INSTANCE;
     }
@@ -63,7 +62,7 @@ public class ContactsProvider {
         for (ContactsProviderSource providerSource : sources.values()) {
             contacts.addAll(providerSource.getAllContacts());
         }
-        return ImmutableList.copyOf(contacts);
+        return Collections.unmodifiableList(contacts);
     }
 
 }
