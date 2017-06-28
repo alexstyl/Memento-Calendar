@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -51,7 +52,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today()));
         ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), permissionCallbacks);
         EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));
-        MainNavigator navigator = new MainNavigator(analytics, getActivity(), new AndroidStringResources(getResources()));
+        MainNavigator navigator = new MainNavigator(analytics, getActivity(), new AndroidStringResources(getResources()), FacebookPreferences.newInstance(getActivity()));
         presenter = new UpcomingEventsPresenter(
                 this,
                 analytics,

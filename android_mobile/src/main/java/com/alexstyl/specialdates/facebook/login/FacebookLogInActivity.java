@@ -2,8 +2,6 @@ package com.alexstyl.specialdates.facebook.login;
 
 import android.app.AlarmManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,18 +15,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
+import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
-import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -36,7 +38,6 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
     private FacebookFriendsScheduler facebookFriendsScheduler;
     private final FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
-    private CircularDrawableFactory circularDrawableFactory;
 
     private FacebookWebView webView;
     private ImageView avatar;
@@ -46,19 +47,15 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private ProgressBar progress;
     private Button shareButton;
     private Button closeButton;
+    private ImageLoader imageLoader;
+    private Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_facebook_import);
-
-        orientationLock = new ScreenOrientationLock();
-        int dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.facebook_avatar_stroke);
-        circularDrawableFactory = new CircularDrawableFactory(getResources(), dimensionPixelSize);
-        facebookFriendsScheduler = new FacebookFriendsScheduler(
-                thisActivity(),
-                (AlarmManager) getSystemService(ALARM_SERVICE)
-        );
+        analytics = AnalyticsProvider.getAnalytics(this);
+        analytics.trackScreen(Screen.FACEBOOK_LOG_IN);
+        setContentView(R.layout.activity_facebook_log_in);
 
         Toolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
@@ -69,14 +66,27 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         shareButton = Views.findById(this, R.id.facebook_import_share);
         shareButton.setOnClickListener(shareAppIntentOnClick());
         closeButton = Views.findById(this, R.id.facebook_import_close);
-        closeButton.setOnClickListener(finishActivityOnClick());
-
-        new CookieResetter(CookieManager.getInstance()).clearAll();
+        closeButton.setOnClickListener(onCloseButtonPressed());
         webView = Views.findById(this, R.id.facebook_import_webview);
-        webView.setListener(facebookCallback);
+        orientationLock = new ScreenOrientationLock();
+        imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
+        facebookFriendsScheduler = new FacebookFriendsScheduler(
+                thisActivity(),
+                (AlarmManager) getSystemService(ALARM_SERVICE)
+        );
+
+        webView.setCallback(facebookCallback);
+
+        UserCredentials userCredentials = FacebookPreferences.newInstance(this).retrieveCredentials();
+        if (savedInstanceState == null || userCredentials.equals(UserCredentials.ANNONYMOUS)) {
+            new CookieResetter(CookieManager.getInstance()).clearAll();
+            webView.loadLogInPage();
+        } else {
+            showData(userCredentials);
+        }
     }
 
-    private View.OnClickListener finishActivityOnClick() {
+    private View.OnClickListener onCloseButtonPressed() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,27 +102,23 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
                 ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), new AndroidStringResources(getResources()));
                 Intent intent = appIntentCreator.buildIntent();
                 startActivity(intent);
+                analytics.trackAppInviteRequested();
             }
         };
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        webView.loadSignInPage();
-    }
-
-    private final FacebookCallback facebookCallback = new FacebookCallback() {
+    private final FacebookLogInCallback facebookCallback = new FacebookLogInCallback() {
         @Override
-        public void onSignedInThroughWebView() {
+        public void onUserCredentialsSubmitted() {
             AndroidUtils.requestHideKeyboard(thisActivity(), webView);
             showLoading();
         }
 
         @Override
-        public void onCalendarFound(UserCredentials userCredentials) {
+        public void onUserLoggedIn(UserCredentials credentials) {
             fetchFacebookFriends();
-            showData(userCredentials);
+            showData(credentials);
+            analytics.trackFacebookLoggedIn();
         }
 
         private void fetchFacebookFriends() {
@@ -127,8 +133,9 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         }
 
         @Override
-        public void onError() {
+        public void onError(Exception e) {
             showError();
+            ErrorTracker.track(e);
         }
     };
 
@@ -137,7 +144,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         orientationLock.lock(thisActivity());
 
         progress.setVisibility(View.VISIBLE);
-//        webView.setVisibility(View.GONE);
+        webView.setVisibility(View.GONE);
         avatar.setVisibility(View.GONE);
         helloView.setVisibility(View.GONE);
         moreText.setVisibility(View.GONE);
@@ -156,14 +163,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         shareButton.setVisibility(View.VISIBLE);
 
         Uri uri = imagePathCreator.forUid(userCredentials.getUid());
-        UILImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
-        imageLoader.loadImage(uri, new ImageSize(avatar.getWidth(), avatar.getWidth()), new SimpleOnImageLoadedCallback() {
-            @Override
-            public void onImageLoaded(Bitmap loadedImage) {
-                Drawable drawable = circularDrawableFactory.from(loadedImage);
-                avatar.setImageDrawable(drawable);
-            }
-        });
+        imageLoader.loadImage(uri, avatar);
 
         animateAvatarWithBounce();
         avatar.setVisibility(View.VISIBLE);
@@ -177,6 +177,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
             @Override
             public void onClick(View v) {
                 avatar.startAnimation(animation);
+                analytics.trackOnAvatarBounce();
             }
         });
         avatar.startAnimation(animation);
@@ -196,5 +197,11 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         progress.setVisibility(View.GONE);
         webView.setVisibility(View.GONE);
         shareButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.destroy();
     }
 }

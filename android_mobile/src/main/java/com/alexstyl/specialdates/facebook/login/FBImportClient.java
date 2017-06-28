@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.facebook.login;
 
 import android.graphics.Bitmap;
-import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,7 +12,7 @@ class FBImportClient extends WebViewClient {
     private static final String DESKTOP_HOME = "www.facebook.com/home.php";
 
     private final WebView webView;
-    private FacebookCallback listener;
+    private FacebookLogInCallback listener;
 
     FBImportClient(WebView webview) {
         this.webView = webview;
@@ -23,7 +22,6 @@ class FBImportClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         if (isHomePage(url)) {
             view.stopLoading();
-            CookieManager.getInstance().setAcceptCookie(true);
             internalOnUserLoggedIn();
         }
     }
@@ -36,7 +34,7 @@ class FBImportClient extends WebViewClient {
     private void internalOnUserLoggedIn() {
         switchToDesktopBrowsing();
         webView.loadUrl("http://www.facebook.com/events/birthdays");
-        listener.onSignedInThroughWebView();
+        listener.onUserCredentialsSubmitted();
     }
 
     private void switchToDesktopBrowsing() {
@@ -52,7 +50,13 @@ class FBImportClient extends WebViewClient {
         }
     }
 
-    public void setListener(FacebookCallback listener) {
+    @Override
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        super.onReceivedError(view, errorCode, description, failingUrl);
+        listener.onError(new FacebookLogInException(description));
+    }
+
+    public void setListener(FacebookLogInCallback listener) {
         this.listener = listener;
     }
 }
