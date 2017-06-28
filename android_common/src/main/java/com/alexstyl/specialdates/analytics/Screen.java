@@ -12,7 +12,9 @@ public enum Screen {
     PLAY_STORE("playstore"),
     GOOGLE_PLUS_COMMUNITY("google plus community"),
     EMAIL_SUPPORT("email support"),
-    FACEBOOK_PROFILE("facebook_profile");
+    FACEBOOK_PROFILE("facebook_profile"),
+    FACEBOOK_LOG_IN("facebook_login"),
+    FACEBOOK_PAGE("facebook_page_url");
 
     private final String screenName;
 

@@ -84,6 +84,7 @@ public class ExternalNavigator {
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
         }
+        analytics.trackScreen(Screen.FACEBOOK_PAGE);
     }
 }
 

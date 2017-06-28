@@ -5,8 +5,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.alexstyl.specialdates.ErrorTracker;
-
 class FBImportClient extends WebViewClient {
     private static final String HTTPS = "https://";
     private static final String HTTP = "http://";
@@ -55,8 +53,7 @@ class FBImportClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
-        listener.onError();
-        ErrorTracker.track(new RuntimeException(description));
+        listener.onError(new FacebookLogInException(description));
     }
 
     public void setListener(FacebookLogInCallback listener) {
