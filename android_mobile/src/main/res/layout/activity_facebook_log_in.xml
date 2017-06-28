@@ -86,8 +86,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
-      android:fontFamily="sans-serif-light"
-      android:textColor="?android:textColorPrimary"
+      android:textColor="?android:textColorPrimaryInverse"
       android:textSize="24sp"
       android:visibility="gone"
       tools:text="@string/facebook_hi"
@@ -100,7 +99,7 @@
       android:layout_marginTop="10dp"
       android:fontFamily="sans-serif-light"
       android:text="@string/facebook_more_description"
-      android:textColor="?android:textColorPrimary"
+      android:textColor="?android:textColorPrimaryInverse"
       android:textSize="18sp"
       android:visibility="gone"
       tools:visibility="visible" />
