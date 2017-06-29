@@ -2,8 +2,6 @@ package com.alexstyl.specialdates.contact;
 
 import android.net.Uri;
 
-import com.alexstyl.specialdates.DisplayName;
-
 public abstract class Contact {
 
     private final long contactID;

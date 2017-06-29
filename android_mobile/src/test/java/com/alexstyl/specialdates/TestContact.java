@@ -3,6 +3,7 @@ package com.alexstyl.specialdates;
 import android.net.Uri;
 
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.DisplayName;
 
 public class TestContact extends Contact {
 

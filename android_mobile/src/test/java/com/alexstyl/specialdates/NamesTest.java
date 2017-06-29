@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates;
 
+import com.alexstyl.specialdates.contact.Names;
+
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;

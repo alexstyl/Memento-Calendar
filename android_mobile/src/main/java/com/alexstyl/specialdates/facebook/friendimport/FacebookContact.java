@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.facebook.friendimport;
 
 import android.net.Uri;
 
-import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 
 public class FacebookContact extends Contact {

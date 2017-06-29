@@ -4,8 +4,6 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 
-import com.alexstyl.specialdates.DisplayName;
-
 public class DeviceContact extends Contact {
 
     private final String lookupKey;

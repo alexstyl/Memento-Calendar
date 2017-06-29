@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
-import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.DeviceContact;
 import com.alexstyl.specialdates.date.ContactEvent;

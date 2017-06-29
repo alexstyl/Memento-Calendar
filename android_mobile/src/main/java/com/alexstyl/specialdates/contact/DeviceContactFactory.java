@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.provider.ContactsContract.Contacts;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.DisplayName;
-
 import static com.alexstyl.specialdates.contact.ContactsQuery.SORT_ORDER;
 
 class DeviceContactFactory {
