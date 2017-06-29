@@ -2,7 +2,7 @@
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
 as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
-    <string name="localised_app_name">Calendario Compleanni e Onomastici</string>
+    <string name="localised_app_name">Memento Calendar</string>
     <string name="today">Oggi</string>
     <string name="tomorrow">Domani</string>
     <string name="birthday">Compleanno</string>
@@ -83,11 +83,9 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="contact_no_birthday">Compleanno non impostato</string>
     <string name="contact_no_nameday">Nessun onomastico per il nome %s</string>
     <string name="edit">Modifica</string>
-    <string name="Add_birthday">Aggiungi compleanno</string>
     <string name="search">Cerca</string>
     <string name="and">e</string>
     <string name="Greek">Greco</string>
-    <string name="Italian">Italiano</string>
     <string name="Czech">Ceco</string>
     <string name="Slovak">Slovacco</string>
     <string name="Russian">Russo</string>
@@ -132,7 +130,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="copy_link">Copia il link</string>
     <string name="copied_to_clipboard">Link copiato negli appunti</string>
     <string name="select_donation_amount">Scegli l\'importo che vuoi donare</string>
-  <string name="view_contact">Visualizza il contatto</string>
+    <string name="view_contact">Visualizza il contatto</string>
     <string name="no_birthday_set">Compleanno non impostato</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Non ho trovato contatti con eventi speciali.\nTocca il '+' per aggiungerne"</string>
     <string name="No_contacts_with_events_found">"Non ho trovato contatti con eventi speciali"</string>
@@ -140,7 +138,6 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Birthday_date">Compleanno</string>
     <string name="Contact_name">Nome contatto</string>
     <string name="Themes">Temi</string>
-    <string name="Romanian">Rumeno</string>
     <string name="Configure_widget">Configura il widget</string>
     <string name="Done">Fatto</string>
     <string name="Transparency">Trasparenza</string>
@@ -158,5 +155,13 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Memento_requires_your_permission_to_read_your_contacts_in_order_to_display_when_they_celebrate">L\'app necessita il tuo permesso di leggere i contatti per poter visualizzare le date.</string>
     <string name="Fact_Some_people_give_free_cake_to_those_who_wish_them_Happy_Birthday._Use_Memento_to_keep_track_of_potential_cake_givers">Alcune persone offrono una torta a chi gli augura Buon Compleanno. Usa questa app per tenere traccia dei potenziali donatori di torta.</string>
     <string name="Grant_permission">Concedi il permesso</string>
-    <string name="eventlabel_on_dateLabel">%1$s il %2$s</string>
+    <string name="Use_all_parts_of_names">Usa sia il nome che il cognome</string>
+    <string name="The_app_will_lookup_namedays_for_all_names_in_a_contact_including_surname">"L'app cercherà gli onomastici per il nome completo dei contatti (cognome incluso)"</string>
+    <string name="The_app_will_lookup_namedays_only_in_contacts_given_names_excluding_surname">"L\'app cercherà gli onomastici per il solo nome dei contatti (cognome escluso)"</string>
+    <string name="has_nameday_on">Onomastico il %s</string>
+    <string name="has_birthday_on">Compleanno il %s</string>
+    <string name="has_birthday_on_age">compie %1$d il %2$s</string>
+    <string name="title_add_birthday">Aggiungi compleanno</string>
+    <string name="go_to_wall">Apri il diario</string>
+    <string name="romanian">Rumeno</string>
 </resources>

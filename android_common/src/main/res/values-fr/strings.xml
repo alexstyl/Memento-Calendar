@@ -57,7 +57,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="you">Vous</string>
     <string name="thanks_for_support">Merci de supporter l\'application</string>
     <!-- The name for contacts with empty Display name-->
-    <string name="Add_birthday">Ajouter anniversaire</string>
     <string name="search">Rechercher</string>
     <string name="and">et</string>
     <string name="no_sound">Silencieux</string>
@@ -74,5 +73,8 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="message">Message</string>
     <string name="no_results_found">Aucun résultat trouvé</string>
     <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
-    <string name="eventlabel_on_dateLabel">%1$s est %2$s</string>
+    <string name="has_nameday_on">Sa fête est %s</string>
+    <string name="has_birthday_on">Son anniversaire est %s</string>
+    <string name="has_birthday_on_age">Aura %1$d ans %2$s</string>
+    <string name="title_add_birthday">Ajouter anniversaire</string>
 </resources>
