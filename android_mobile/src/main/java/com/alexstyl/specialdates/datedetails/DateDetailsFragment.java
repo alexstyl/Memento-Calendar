@@ -160,7 +160,6 @@ public class DateDetailsFragment extends MementoFragment {
         progress = Views.findById(view, android.R.id.progress);
         emptyView = Views.findById(view, R.id.date_details_empty);
         layoutManager = new GridLayoutManager(getActivity(), DateDetailsSpanLookup.FULL_SPAN, LinearLayoutManager.VERTICAL, false);
-
     }
 
     private Date extractDateFrom(Bundle arguments) {

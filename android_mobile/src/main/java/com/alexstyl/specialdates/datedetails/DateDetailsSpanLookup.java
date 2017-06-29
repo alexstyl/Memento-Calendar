@@ -17,7 +17,8 @@ final class DateDetailsSpanLookup extends GridLayoutManager.SpanSizeLookup {
     public int getSpanSize(int position) {
         int viewType = adapter.getItemViewType(position);
         if (viewType == DateDetailsViewType.BANKHOLIDAY ||
-                viewType == DateDetailsViewType.NAMEDAY) {
+                viewType == DateDetailsViewType.NAMEDAY ||
+                viewType == DateDetailsViewType.RATE_APP) {
             return layoutManager.getSpanCount();
         }
         return HALF_SPAN;
