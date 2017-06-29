@@ -1,12 +1,14 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
+import android.net.Uri;
+
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
-import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
+import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.util.DateParser;
 
 import java.util.Map;
@@ -14,13 +16,13 @@ import java.util.Map;
 class FacebookContactFactory {
 
     private DateParser parser = DateParser.INSTANCE;
-    private FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
 
     ContactEvent createContactFrom(Map<String, String> map) throws DateParseException {
         Date date = dateFrom(map);
         DisplayName name = nameFrom(map);
         long uid = idOf(map);
-        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePathCreator.forUid(uid)));
+        Uri imagePath = FacebookImagePath.forUid(uid);
+        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePath));
     }
 
     private Date dateFrom(Map<String, String> map) throws DateParseException {

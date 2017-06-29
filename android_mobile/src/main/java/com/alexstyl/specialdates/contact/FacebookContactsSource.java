@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import com.alexstyl.specialdates.DisplayName;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
+import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
 
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ class FacebookContactsSource implements ContactsProviderSource {
     private static Contact createContactFrom(Cursor cursor) {
         long uid = cursor.getLong(cursor.getColumnIndexOrThrow(AnnualEventsContract.CONTACT_ID));
         DisplayName displayName = DisplayName.from(cursor.getString(cursor.getColumnIndexOrThrow(AnnualEventsContract.DISPLAY_NAME)));
-        Uri imagePath = FacebookImagePathCreator.INSTANCE.forUid(uid);
+        Uri imagePath = FacebookImagePath.forUid(uid);
         return new FacebookContact(uid, displayName, imagePath);
     }
 }
