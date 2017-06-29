@@ -45,5 +45,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <!-- The name for contacts with empty Display name-->
     <string name="message">Nachricht</string>
     <!-- Neutral button on a dialog, saying that pressing the button will copy to clipboard the url to translate the app -->
-    <string name="eventlabel_on_dateLabel">%1$s am %2$s</string>
+    <string name="has_nameday_on">Namenstag am %s</string>
+    <string name="has_birthday_on">Geburtstag am %s</string>
+    <string name="has_birthday_on_age">Wird %1$d am %2$s</string>
 </resources>

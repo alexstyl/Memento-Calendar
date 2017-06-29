@@ -84,7 +84,6 @@ Bert Van Dooren voor de Nederlandse vertaling"</string>
     <string name="contact_no_birthday">Geen verjaardag gezet</string>
     <string name="contact_no_nameday">Geen naamdag voor de naam %s</string>
     <string name="edit">Bewerken</string>
-    <string name="Add_birthday">Verjaardag toevoegen</string>
     <string name="search">Zoeken</string>
     <string name="and">en</string>
     <string name="nameday_language_title">Naamdag kalender</string>
@@ -126,7 +125,7 @@ Bert Van Dooren voor de Nederlandse vertaling"</string>
     <string name="copy_link">Kopiëer de link</string>
     <string name="copied_to_clipboard">Link gekopiëerd naar het klembord</string>
     <string name="select_donation_amount">Selecteer hoeveel je wil doneren</string>
-  <string name="view_contact">Toon contactpersoon</string>
+    <string name="view_contact">Toon contactpersoon</string>
     <string name="no_birthday_set">Geen verjaardag gevonden</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Geen contactpersonen met speciale gebeurtenissen gevonden. \nDuw op de '+' om er toe te voegen"</string>
     <string name="No_contacts_with_events_found">"Geen contacten met speciale gebeurtenissen gevonden"</string>
@@ -134,11 +133,15 @@ Bert Van Dooren voor de Nederlandse vertaling"</string>
     <string name="Birthday_date">Geboortedatum</string>
     <string name="Contact_name">Naam contactpersoon</string>
     <string name="Themes">Thema\'s</string>
-    <string name="Romanian">Roemeens</string>
     <string name="Configure_widget">Stel widget in</string>
     <string name="Done">Klaar</string>
     <string name="Transparency">Transparantie</string>
     <string name="Dark_themeQ">Donker thema?</string>
     <string name="Contact_names">Namen contactpersonen</string>
-    <string name="eventlabel_on_dateLabel">%1$s op %2$s</string>
+    <string name="has_nameday_on">Naamdag op %s</string>
+    <string name="has_birthday_on">Verjaardag op %s</string>
+    <string name="has_birthday_on_age">Wordt %1$d op %2$s</string>
+    <string name="title_add_birthday">Verjaardag toevoegen</string>
+    <string name="go_to_wall">Open Prikbord</string>
+    <string name="romanian">Roemeens</string>
 </resources>
