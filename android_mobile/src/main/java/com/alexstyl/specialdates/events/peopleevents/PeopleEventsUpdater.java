@@ -10,6 +10,8 @@ class PeopleEventsUpdater {
     private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
+    private static final Object LOCK = new Object();
+
     PeopleEventsUpdater(PermissionChecker permissionChecker,
                         DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher,
                         NamedayDatabaseRefresher namedayDatabaseRefresher) {
@@ -23,7 +25,9 @@ class PeopleEventsUpdater {
             ErrorTracker.track(new RuntimeException("Tried to update events without permission"));
             return;
         }
-        deviceEventsDatabaseRefresher.rebuildEvents();
-        namedayDatabaseRefresher.refreshNamedaysIfEnabled();
+        synchronized (LOCK) {
+            deviceEventsDatabaseRefresher.rebuildEvents();
+            namedayDatabaseRefresher.refreshNamedaysIfEnabled();
+        }
     }
 }
