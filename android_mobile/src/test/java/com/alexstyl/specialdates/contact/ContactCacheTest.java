@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.contact;
 
-import com.alexstyl.specialdates.DisplayName;
-
 import org.junit.Before;
 import org.junit.Test;
 

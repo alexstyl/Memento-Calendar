@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates;
+package com.alexstyl.specialdates.contact;
 
 import android.support.annotation.Nullable;
 

@@ -30,7 +30,7 @@ public class AppUtils {
 
     public static Intent getSupportEmailIntent(Context context) {
         String subject = context.getString(R.string.app_name) + " " + MementoApplication.getVersionName(context);
-        return getEmailIntent(MementoApplication.DEV_EMAIL, subject, getDeviceDetailsInfo());
+        return getEmailIntent("alexstyl.dev@gmail.com", subject, getDeviceDetailsInfo());
 
     }
 

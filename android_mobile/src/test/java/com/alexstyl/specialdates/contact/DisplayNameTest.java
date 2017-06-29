@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates;
+package com.alexstyl.specialdates.contact;
 
 import java.util.ArrayList;
 import java.util.List;
