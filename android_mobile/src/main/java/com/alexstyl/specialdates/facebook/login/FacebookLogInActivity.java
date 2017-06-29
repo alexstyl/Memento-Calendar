@@ -22,7 +22,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
-import com.alexstyl.specialdates.facebook.FacebookImagePathCreator;
+import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
 import com.alexstyl.specialdates.facebook.UserCredentials;
@@ -37,7 +37,6 @@ import com.novoda.notils.meta.AndroidUtils;
 public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
 
     private FacebookFriendsScheduler facebookFriendsScheduler;
-    private final FacebookImagePathCreator imagePathCreator = FacebookImagePathCreator.INSTANCE;
 
     private FacebookWebView webView;
     private ImageView avatar;
@@ -162,7 +161,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        Uri uri = imagePathCreator.forUid(userCredentials.getUid());
+        Uri uri = FacebookImagePath.forUid(userCredentials.getUid());
         imageLoader.loadImage(uri, avatar);
 
         animateAvatarWithBounce();
