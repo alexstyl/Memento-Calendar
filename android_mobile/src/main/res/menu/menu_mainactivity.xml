@@ -5,9 +5,15 @@
   <item
     android:id="@+id/action_select_date"
     android:icon="@drawable/ic_action_select_date"
-    android:orderInCategory="100"
+    android:orderInCategory="0"
     android:title="@string/upcoming_select_date"
-    app:showAsAction="always" />
+    app:showAsAction="ifRoom" />
+
+  <item
+    android:id="@+id/action_import_facebook"
+    android:title="@string/title_facebook_friends_import"
+    app:showAsAction="never" />
+
 
   <item
     android:id="@+id/action_settings"

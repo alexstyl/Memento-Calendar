@@ -40,8 +40,8 @@
       tools:layout="@layout/fragment_upcoming_events" />
   </LinearLayout>
 
-  <com.github.clans.fab.FloatingActionMenu
-    android:id="@+id/upcoming_events_fab"
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/upcoming_events_add_event"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
@@ -49,35 +49,7 @@
     android:layout_alignParentRight="true"
     android:layout_margin="@dimen/fab_margin"
     android:src="@drawable/ic_content_add"
-    app:menu_animationDelayPerItem="55"
-    app:menu_colorNormal="?colorAccent"
-    app:menu_colorPressed="?colorAccent"
-    app:menu_fab_size="normal"
-    app:menu_showShadow="true">
-
-
-    <com.github.clans.fab.FloatingActionButton
-      android:id="@+id/upcoming_events_facebook"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:src="@drawable/ic_facebook_logo_f"
-      app:fab_colorNormal="@color/facebook_blue"
-      app:fab_colorPressed="@color/facebook_blue"
-      app:fab_label="@string/title_facebook_friends_import"
-      app:fab_size="mini" />
-
-    <com.github.clans.fab.FloatingActionButton
-      android:id="@+id/upcoming_events_add_event"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:src="@drawable/ic_person_light_24dp"
-      app:fab_colorNormal="?colorAccent"
-      app:fab_colorPressed="?colorAccent"
-      app:fab_label="@string/add_event_title"
-      app:fab_size="mini" />
-
-  </com.github.clans.fab.FloatingActionMenu>
-
+    app:fabSize="normal" />
 
 </RelativeLayout>
 
