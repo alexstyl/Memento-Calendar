@@ -24,7 +24,6 @@ import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.alexstyl.specialdates.util.Notifier;
-import com.github.clans.fab.FloatingActionMenu;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -62,20 +61,10 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
         notifier = Notifier.newInstance(this);
 
-        final FloatingActionMenu fam = Views.findById(this, R.id.upcoming_events_fab);
         Views.findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 navigator.toAddEvent();
-                fam.close(true);
-            }
-        });
-
-        Views.findById(this, R.id.upcoming_events_facebook).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigator.toFacebookImport();
-                fam.close(true);
             }
         });
         askForSupport = new AskForSupport(this);
@@ -128,8 +117,12 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
             case R.id.action_donate:
                 navigator.toDonate();
                 return true;
+            case R.id.action_import_facebook:
+                navigator.toFacebookImport();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void showSelectDateDialog() {
