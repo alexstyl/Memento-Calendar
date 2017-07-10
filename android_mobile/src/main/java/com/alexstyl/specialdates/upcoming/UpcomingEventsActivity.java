@@ -1,6 +1,10 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +32,7 @@ import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
 import static android.view.View.OnClickListener;
+import static com.novoda.notils.caster.Views.findById;
 
 public class UpcomingEventsActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
@@ -39,6 +44,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
     private Analytics analytics;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +58,16 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()), FacebookPreferences.newInstance(this));
         externalNavigator = new ExternalNavigator(this, analytics);
 
-        ExposedSearchToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
+        ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
-        ViewGroup activityContent = Views.findById(this, R.id.main_content);
+        ViewGroup activityContent = findById(this, R.id.main_content);
         searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
 
         notifier = Notifier.newInstance(this);
 
-        Views.findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
+        findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 navigator.toAddEvent();
@@ -70,6 +76,44 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         askForSupport = new AskForSupport(this);
         SearchHintCreator hintCreator = new SearchHintCreator(getResources(), NamedayPreferences.newInstance(this));
         setTitle(hintCreator.createHint());
+
+        final NavigationView navigationView = Views.findById(this, R.id.navigation_view);
+        drawerLayout = Views.findById(this, R.id.drawer);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                boolean handled = handleNavigationItem(itemId);
+                if (handled) {
+                    drawerLayout.closeDrawer(Gravity.START);
+                }
+
+                // returning true highlights the row - we don't want that
+                return false;
+            }
+
+            private boolean handleNavigationItem(int itemId) {
+                switch (itemId) {
+                    case R.id.nav_github_link:
+                        navigator.toGithubPage();
+                        return true;
+                    case R.id.nav_settings:
+                        navigator.toSettings();
+                        return true;
+                    case R.id.nav_invite_friend:
+                        navigator.toAppInvite();
+                        return true;
+                    case R.id.nav_donate:
+                        navigator.toDonate();
+                        return true;
+                    case R.id.nav_import_facebook:
+                        navigator.toFacebookImport();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -107,18 +151,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         switch (item.getItemId()) {
             case R.id.action_select_date:
                 showSelectDateDialog();
-                return true;
-            case R.id.action_settings:
-                navigator.toSettings();
-                return true;
-            case R.id.action_app_invite:
-                navigator.toAppInvite();
-                return true;
-            case R.id.action_donate:
-                navigator.toDonate();
-                return true;
-            case R.id.action_import_facebook:
-                navigator.toFacebookImport();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -158,4 +190,12 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     };
 
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

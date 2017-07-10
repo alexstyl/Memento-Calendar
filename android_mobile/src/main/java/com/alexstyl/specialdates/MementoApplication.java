@@ -3,8 +3,6 @@ package com.alexstyl.specialdates;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
@@ -23,20 +21,6 @@ import net.danlew.android.joda.JodaTimeAndroid;
 public class MementoApplication extends Application {
 
     private static Context context;
-    public static final String DEV_EMAIL = "alexstyl.dev@gmail.com";
-
-    public static String getVersionName(Context context) {
-        String versionName = null;
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0
-            );
-            versionName = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            ErrorTracker.track(e);
-        }
-        return versionName;
-    }
 
     public static Context getContext() {
         return context;

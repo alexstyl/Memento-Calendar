@@ -56,4 +56,7 @@ public interface Analytics {
     void trackOnAvatarBounce();
 
     void trackFacebookLoggedOut();
+
+    void trackVisitGithub();
+
 }

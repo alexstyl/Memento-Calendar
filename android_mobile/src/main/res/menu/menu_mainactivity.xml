@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto/android">
-
   <item
     android:id="@+id/action_select_date"
     android:icon="@drawable/ic_action_select_date"
     android:orderInCategory="0"
     android:title="@string/upcoming_select_date"
     app:showAsAction="ifRoom" />
-
-  <item
-    android:id="@+id/action_import_facebook"
-    android:title="@string/title_facebook_friends_import"
-    app:showAsAction="never" />
-
-
-  <item
-    android:id="@+id/action_settings"
-    android:title="@string/action_settings"
-    app:showAsAction="never" />
-
-  <item
-    android:id="@+id/action_app_invite"
-    android:title="@string/invite_action_title"
-    app:showAsAction="never" />
-
-  <item
-    android:id="@+id/action_donate"
-    android:title="@string/donate"
-    app:showAsAction="never" />
-
 </menu>
