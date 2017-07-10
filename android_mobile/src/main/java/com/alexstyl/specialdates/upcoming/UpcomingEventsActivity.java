@@ -18,9 +18,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
-import com.alexstyl.specialdates.search.SearchHintCreator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
@@ -74,8 +72,8 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
             }
         });
         askForSupport = new AskForSupport(this);
-        SearchHintCreator hintCreator = new SearchHintCreator(getResources(), NamedayPreferences.newInstance(this));
-        setTitle(hintCreator.createHint());
+
+        setTitle(R.string.app_name);
 
         final NavigationView navigationView = Views.findById(this, R.id.navigation_view);
         drawerLayout = Views.findById(this, R.id.drawer);
