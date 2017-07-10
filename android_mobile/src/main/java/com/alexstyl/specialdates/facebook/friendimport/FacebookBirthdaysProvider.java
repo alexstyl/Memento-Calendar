@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DateParseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +24,7 @@ class FacebookBirthdaysProvider {
         try {
             inputStream = calendarLoader.loadFrom(url);
             return serialiser.createEventsFrom(inputStream);
-        } catch (IOException | DateParseException e) {
+        } catch (IOException e) {
             throw new CalendarFetcherException(e);
         } finally {
             closeStream(inputStream);

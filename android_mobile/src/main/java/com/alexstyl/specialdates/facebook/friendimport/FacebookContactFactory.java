@@ -17,12 +17,16 @@ class FacebookContactFactory {
 
     private DateParser parser = DateParser.INSTANCE;
 
-    ContactEvent createContactFrom(Map<String, String> map) throws DateParseException {
-        Date date = dateFrom(map);
-        DisplayName name = nameFrom(map);
-        long uid = idOf(map);
-        Uri imagePath = FacebookImagePath.forUid(uid);
-        return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePath));
+    ContactEvent createContactFrom(Map<String, String> map) throws InvalidFacebookContactException {
+        try {
+            Date date = dateFrom(map);
+            DisplayName name = nameFrom(map);
+            long uid = idOf(map);
+            Uri imagePath = FacebookImagePath.forUid(uid);
+            return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePath));
+        } catch (DateParseException | IndexOutOfBoundsException ex) {
+            throw new InvalidFacebookContactException(ex);
+        }
     }
 
     private Date dateFrom(Map<String, String> map) throws DateParseException {
