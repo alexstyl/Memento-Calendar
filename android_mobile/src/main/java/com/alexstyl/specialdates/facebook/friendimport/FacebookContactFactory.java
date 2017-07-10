@@ -2,8 +2,8 @@ package com.alexstyl.specialdates.facebook.friendimport;
 
 import android.net.Uri;
 
-import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
