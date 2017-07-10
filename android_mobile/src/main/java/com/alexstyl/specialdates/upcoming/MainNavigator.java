@@ -128,4 +128,12 @@ final class MainNavigator {
         activity.startActivity(Intent.createChooser(intent, shareTitle));
         analytics.trackAppInviteRequested();
     }
+
+    void toGithubPage() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://github.com/alexstyl/Memento-Calendar"));
+        analytics.trackVisitGithub();
+        activity.startActivity(intent);
+    }
+
 }

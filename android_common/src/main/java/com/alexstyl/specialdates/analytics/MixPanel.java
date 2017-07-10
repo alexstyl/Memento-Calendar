@@ -171,6 +171,11 @@ class MixPanel implements Analytics {
         mixpanel.track("facebook_log_out");
     }
 
+    @Override
+    public void trackVisitGithub() {
+        mixpanel.track("visit_github");
+    }
+
     private static JSONObject createJSONfor(ActionWithParameters event) {
         JSONObject properties = new JSONObject();
         try {

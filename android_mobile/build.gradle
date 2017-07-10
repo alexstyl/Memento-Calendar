@@ -81,9 +81,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:transition:$android_support_version"
 
-    compile('de.psdev.licensesdialog:licensesdialog:1.5.0') {
-        exclude module: 'support-v4'
-    }
     compile 'com.novoda:notils:2.2.15'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.novoda:simple-chrome-custom-tabs:0.1.4'
