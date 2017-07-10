@@ -44,6 +44,8 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private Analytics analytics;
     private DrawerLayout drawerLayout;
 
+    private UpcomingEventsPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +114,17 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
                 }
             }
         });
+        preferences = UpcomingEventsPreferences.newInstance(thisActivity());
+
+        if (!preferences.isTheUserAwareOfNavigationDrawer()) {
+            drawerLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawerLayout.openDrawer(Gravity.START, true);
+                    preferences.triggerNavigationDrawerDisplayed();
+                }
+            }, 400L);
+        }
     }
 
     @Override

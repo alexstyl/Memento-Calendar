@@ -46,5 +46,6 @@
   <string name="key_facebook_user_id">key_facebook_user_id</string>
   <string name="key_facebook_user_key">key_facebook_user_key</string>
   <string name="key_facebook_user_name">key_facebook_user_name</string>
+  <string name="key_navigation_times_viewed">key_times_viewed_navigation</string>
 
 </resources>
