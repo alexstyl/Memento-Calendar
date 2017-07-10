@@ -12,7 +12,7 @@ public class ExposedSearchToolbar extends Toolbar {
         super(context, attrs);
 
         setBackgroundResource(R.drawable.card_noshadow);
-        setNavigationIcon(R.drawable.ic_action_search);
+        setNavigationIcon(R.drawable.ic_menu);
     }
 
 }
