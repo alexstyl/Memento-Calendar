@@ -1,83 +1,70 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/drawer"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true">
 
-  <FrameLayout
-    android:id="@+id/toolbar_holder"
+  <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_semi_expanded_height"
-    android:background="?attr/colorPrimary"
-    android:elevation="@dimen/toolbar_elevation">
+    android:layout_height="match_parent">
 
-    <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
-      android:id="@+id/memento_toolbar"
+    <FrameLayout
+      android:id="@+id/toolbar_holder"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/toolbar_semi_expanded_height"
+      android:background="?attr/colorPrimary"
+      android:elevation="@dimen/toolbar_elevation">
+
+      <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
+        android:id="@+id/memento_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/padding_tight"
+        app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
+
+    </FrameLayout>
+
+    <LinearLayout
+      android:id="@+id/main_content"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="center"
-      android:layout_margin="@dimen/padding_tight"
-      app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
+      android:layout_below="@id/toolbar_holder"
+      android:baselineAligned="false"
+      android:gravity="center_horizontal"
+      android:orientation="horizontal"
+      android:weightSum="1">
 
-  </FrameLayout>
+      <fragment
+        android:id="@+id/upcoming"
+        android:name="com.alexstyl.specialdates.upcoming.UpcomingEventsFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/landscape_weight"
+        tools:layout="@layout/fragment_upcoming_events" />
+    </LinearLayout>
 
-  <LinearLayout
-    android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@id/toolbar_holder"
-    android:baselineAligned="false"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal"
-    android:weightSum="1">
-
-    <fragment
-      android:id="@+id/upcoming"
-      android:name="com.alexstyl.specialdates.upcoming.UpcomingEventsFragment"
-      android:layout_width="0dp"
-      android:layout_height="match_parent"
-      android:layout_weight="@dimen/landscape_weight"
-      tools:layout="@layout/fragment_upcoming_events" />
-  </LinearLayout>
-
-  <com.github.clans.fab.FloatingActionMenu
-    android:id="@+id/upcoming_events_fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true"
-    android:layout_margin="@dimen/fab_margin"
-    android:src="@drawable/ic_content_add"
-    app:menu_animationDelayPerItem="55"
-    app:menu_colorNormal="?colorAccent"
-    app:menu_colorPressed="?colorAccent"
-    app:menu_fab_size="normal"
-    app:menu_showShadow="true">
-
-
-    <com.github.clans.fab.FloatingActionButton
-      android:id="@+id/upcoming_events_facebook"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:src="@drawable/ic_facebook_logo_f"
-      app:fab_colorNormal="@color/facebook_blue"
-      app:fab_colorPressed="@color/facebook_blue"
-      app:fab_label="@string/title_facebook_friends_import"
-      app:fab_size="mini" />
-
-    <com.github.clans.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
       android:id="@+id/upcoming_events_add_event"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@drawable/ic_person_light_24dp"
-      app:fab_colorNormal="?colorAccent"
-      app:fab_colorPressed="?colorAccent"
-      app:fab_label="@string/add_event_title"
-      app:fab_size="mini" />
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_margin="@dimen/fab_margin"
+      android:src="@drawable/ic_content_add"
+      app:fabSize="normal" />
 
-  </com.github.clans.fab.FloatingActionMenu>
+  </RelativeLayout>
 
+  <android.support.design.widget.NavigationView
+    android:id="@+id/navigation_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    app:headerLayout="@layout/navigation_header"
+    app:menu="@menu/menu_nav_drawer" />
 
-</RelativeLayout>
-
+</android.support.v4.widget.DrawerLayout>
