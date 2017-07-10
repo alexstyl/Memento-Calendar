@@ -149,6 +149,9 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(Gravity.START);
+                return true;
             case R.id.action_select_date:
                 showSelectDateDialog();
                 return true;
