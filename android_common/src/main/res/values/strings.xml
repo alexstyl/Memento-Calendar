@@ -196,4 +196,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Donate_Remove_ads">Donate - Remove ads</string>
   <string name="Memento_on_Github">Memento on Github</string>
   <string name="Import_Birthdays">Import Birthdays</string>
+  <string name="New">New</string>
 </resources>
