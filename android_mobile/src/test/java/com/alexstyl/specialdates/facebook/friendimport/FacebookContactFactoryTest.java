@@ -25,7 +25,7 @@ public class FacebookContactFactoryTest {
     }
 
     @Test
-    public void name() throws DateParseException {
+    public void name() throws DateParseException, InvalidFacebookContactException {
         HashMap<String, String> map = new HashMap<>();
         map.put("UID", "b123124@facebook.com");
         map.put("DTSTART", "20180612");
