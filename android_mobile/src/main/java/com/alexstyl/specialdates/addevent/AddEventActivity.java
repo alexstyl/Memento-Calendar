@@ -30,6 +30,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -89,7 +90,12 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         );
 
         WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
-        ContactOperations contactOperations = new ContactOperations(getContentResolver(), accountsProvider, peopleEventsProvider);
+        ContactOperations contactOperations = new ContactOperations(
+                getContentResolver(),
+                accountsProvider,
+                peopleEventsProvider,
+                DateDisplayStringCreator.INSTANCE
+        );
         MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
         ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
         ImageDecoder imageDecoder = new ImageDecoder();

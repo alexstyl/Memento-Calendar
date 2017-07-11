@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.date;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.contact.ShortDate;
 
 import java.util.Locale;
 
@@ -9,14 +8,11 @@ import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
-import static com.alexstyl.specialdates.date.DateConstants.*;
-
 /**
  * A specific date on a specific year
  */
-public class Date implements ShortDate {
+public class Date {
 
-    public static final Date BEGINNING_OF_TIME = Date.on(1, JANUARY, NO_YEAR);
     private final LocalDate localDate;
     private final Optional<Integer> year;
 
@@ -32,7 +28,7 @@ public class Date implements ShortDate {
     }
 
     public static Date on(int dayOfMonth, @MonthInt int month) {
-        LocalDate localDate = new LocalDate(NO_YEAR, month, dayOfMonth);
+        LocalDate localDate = new LocalDate(DateConstants.NO_YEAR, month, dayOfMonth);
         return new Date(localDate, Optional.<Integer>absent());
     }
 
@@ -83,11 +79,11 @@ public class Date implements ShortDate {
     }
 
     public static Date startOfTheYear(int currentYear) {
-        return Date.on(1, JANUARY, currentYear);
+        return Date.on(1, DateConstants.JANUARY, currentYear);
     }
 
     public static Date endOfYear(int currentYear) {
-        return Date.on(31, DECEMBER, currentYear);
+        return Date.on(31, DateConstants.DECEMBER, currentYear);
     }
 
     public Date minusDay(int days) {
@@ -108,11 +104,6 @@ public class Date implements ShortDate {
         int otherDayOfYear = otherEvent.localDate.dayOfYear().get();
         int daysOfYearsDifference = (getYear() - otherEvent.getYear()) * 365;
         return (otherDayOfYear - dayOfYear) - daysOfYearsDifference;
-    }
-
-    @Override
-    public String toShortDate() {
-        return DateDisplayStringCreator.INSTANCE.stringOf(this);
     }
 
     public boolean hasYear() {
@@ -142,11 +133,6 @@ public class Date implements ShortDate {
         int result = localDate.hashCode();
         result = 31 * result + year.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return DateDisplayStringCreator.INSTANCE.stringOf(this);
     }
 
 }
