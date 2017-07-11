@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.addevent;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.alexstyl.specialdates.R;
@@ -10,6 +9,8 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.DecodedImage;
 import com.novoda.notils.logger.simple.Log;
+
+import java.net.URI;
 
 class AddContactEventsPresenter {
 
@@ -70,7 +71,7 @@ class AddContactEventsPresenter {
         modified = true;
     }
 
-    void presentAvatar(Uri photoUri) {
+    void presentAvatar(URI photoUri) {
         analytics.trackAvatarSelected();
         avatarPresenter.presentAvatar(photoUri);
         modified = true;

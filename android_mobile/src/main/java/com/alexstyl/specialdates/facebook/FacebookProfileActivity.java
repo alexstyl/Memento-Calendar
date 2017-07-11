@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.facebook;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +21,8 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
+
+import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -96,7 +97,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Override
     public void display(UserCredentials userCredentials) {
         userName.setText(userCredentials.getName());
-        Uri uri = FacebookImagePath.forUid(userCredentials.getUid());
+        URI uri = FacebookImagePath.forUid(userCredentials.getUid());
         imageLoader.loadImage(uri, profilePicture);
     }
 

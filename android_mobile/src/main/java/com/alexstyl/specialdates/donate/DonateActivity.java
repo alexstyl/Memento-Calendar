@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.donate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -27,10 +26,12 @@ import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
+import java.net.URI;
+
 public class DonateActivity extends MementoActivity {
 
     private static final int REQUEST_CODE = 1004;
-    private static final Uri DEV_IMAGE_URI = Uri.parse("http://alexstyl.com/memento-calendar/dev.jpg");
+    private static final URI DEV_IMAGE_URI = URI.create("http://alexstyl.com/memento-calendar/dev.jpg");
 
     private DonatePresenter donatePresenter;
     private SeekBar donateBar;
