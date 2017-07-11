@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "events.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private final EventPreferences eventPreferences;
 
     public EventSQLiteOpenHelper(Context context) {
@@ -43,7 +43,6 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // drop everything. we're quite fast at rebuilding the entire db anyway
         db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
         db.execSQL("DROP TABLE IF EXISTS annual_events;");
         onCreate(db);
