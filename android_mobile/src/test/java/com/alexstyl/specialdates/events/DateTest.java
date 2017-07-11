@@ -62,12 +62,6 @@ public class DateTest {
     }
 
     @Test
-    public void toShortDateWithYear() {
-        Date date = Date.on(1, JANUARY, 1990);
-        assertThat(date.toShortDate()).isEqualTo("1990-01-01");
-    }
-
-    @Test
     public void compareFutureDayDate() {
         int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(2, JANUARY, 1990));
         assertThat(result).isNegative();
