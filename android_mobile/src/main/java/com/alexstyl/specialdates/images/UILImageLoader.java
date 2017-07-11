@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.images;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +13,8 @@ import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import java.net.URI;
 
 import static com.alexstyl.specialdates.Optional.absent;
 
@@ -51,22 +52,22 @@ public class UILImageLoader implements ImageLoader {
     }
 
     @Override
-    public void loadImage(Uri imagePath, ImageView imageView) {
+    public void loadImage(URI imagePath, ImageView imageView) {
         uil.displayImage(imagePath.toString(), imageView, displayImageOptions);
     }
 
     @Override
-    public void loadImage(Uri imagePath, ImageAware imageAware, final OnImageLoadedCallback callback) {
+    public void loadImage(URI imagePath, ImageAware imageAware, final OnImageLoadedCallback callback) {
         loadImage(imagePath, new ImageSize(imageAware.getWidth(), imageAware.getHeight()), callback);
     }
 
     @Override
-    public void loadImage(Uri imagePath, ImageView avatarView, OnImageLoadedCallback callback) {
+    public void loadImage(URI imagePath, ImageView avatarView, OnImageLoadedCallback callback) {
         loadImage(imagePath, new ImageViewAware(avatarView), callback);
     }
 
     @Override
-    public void loadImage(Uri imagePath, ImageSize targetImageSize, final OnImageLoadedCallback callback) {
+    public void loadImage(URI imagePath, ImageSize targetImageSize, final OnImageLoadedCallback callback) {
         uil.loadImage(imagePath.toString(), targetImageSize, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
@@ -81,7 +82,7 @@ public class UILImageLoader implements ImageLoader {
     }
 
     @Override
-    public Optional<Bitmap> loadBitmapSync(Uri imagePath, ImageSize imageSize) {
+    public Optional<Bitmap> loadBitmapSync(URI imagePath, ImageSize imageSize) {
         Bitmap bitmap = uil.loadImageSync(imagePath.toString(), imageSize);
         if (bitmap == null) {
             return absent();
