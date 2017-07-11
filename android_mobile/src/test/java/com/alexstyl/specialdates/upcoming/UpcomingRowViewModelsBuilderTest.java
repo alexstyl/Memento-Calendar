@@ -6,7 +6,7 @@ import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.contact.DeviceContact;
+import com.alexstyl.specialdates.contact.AndroidContact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
@@ -159,7 +159,7 @@ public class UpcomingRowViewModelsBuilderTest {
     }
 
     private static ContactEvent aContactEventOn(Date date) {
-        DeviceContact contact = new DeviceContact(1, DisplayName.NO_NAME, "lookup_key");
+        AndroidContact contact = new AndroidContact(1, DisplayName.NO_NAME, "lookup_key");
         return new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, date, contact);
     }
 

@@ -6,7 +6,6 @@ import android.content.Context;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.SourceType;
-import com.alexstyl.specialdates.events.peopleevents.DeviceContactsQuery;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,10 +32,9 @@ public class ContactsProvider {
 
     private static ContactsProviderSource buildAndroidSource(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
-        DeviceContactFactory factory = new DeviceContactFactory(contentResolver);
+        AndroidContactFactory factory = new AndroidContactFactory(contentResolver);
         ContactCache<Contact> contactCache = new ContactCache<>(CACHE_SIZE);
-        DeviceContactsQuery deviceContactsQuery = new DeviceContactsQuery(contentResolver);
-        return new AndroidContactsProviderSource(contactCache, factory, deviceContactsQuery);
+        return new AndroidContactsProviderSource(contactCache, factory);
     }
 
     private static ContactsProviderSource buildFacebookSource(Context context) {

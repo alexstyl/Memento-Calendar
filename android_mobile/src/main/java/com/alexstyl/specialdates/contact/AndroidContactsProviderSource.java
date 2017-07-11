@@ -1,19 +1,15 @@
 package com.alexstyl.specialdates.contact;
 
-import com.alexstyl.specialdates.events.peopleevents.DeviceContactsQuery;
-
 import java.util.List;
 
 class AndroidContactsProviderSource implements ContactsProviderSource {
 
     private final ContactCache<Contact> cache;
-    private final DeviceContactFactory factory;
-    private final DeviceContactsQuery deviceContactsQuery;
+    private final AndroidContactFactory factory;
 
-    AndroidContactsProviderSource(ContactCache<Contact> contactCache, DeviceContactFactory factory, DeviceContactsQuery deviceContactsQuery) {
+    AndroidContactsProviderSource(ContactCache<Contact> contactCache, AndroidContactFactory factory) {
         this.cache = contactCache;
         this.factory = factory;
-        this.deviceContactsQuery = deviceContactsQuery;
     }
 
     @Override
@@ -28,7 +24,7 @@ class AndroidContactsProviderSource implements ContactsProviderSource {
 
     @Override
     public List<Contact> getAllContacts() {
-        List<Contact> allContacts = deviceContactsQuery.getAllContacts();
+        List<Contact> allContacts = factory.getAllContacts();
         cache.evictAll();
         for (Contact allContact : allContacts) {
             cache.addContact(allContact);

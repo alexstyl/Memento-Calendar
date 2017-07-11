@@ -1,11 +1,12 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.annotation.ColorInt;
 
 import com.alexstyl.android.ViewVisibility;
 import com.alexstyl.specialdates.contact.Contact;
+
+import java.net.URI;
 
 public final class UpcomingContactEventViewModel {
     private final Contact contact;
@@ -16,7 +17,7 @@ public final class UpcomingContactEventViewModel {
     @ColorInt
     private final int eventColor;
     private final int backgroundVariant;
-    private final Uri contactImagePath;
+    private final URI contactImagePath;
     private final Typeface typeface;
 
     UpcomingContactEventViewModel(Contact contact,
@@ -25,7 +26,7 @@ public final class UpcomingContactEventViewModel {
                                   String eventLabel,
                                   @ColorInt int eventColor,
                                   int backgroundVariant,
-                                  Uri contactImagePath,
+                                  URI contactImagePath,
                                   Typeface typeface
     ) {
         this.contact = contact;
@@ -59,7 +60,7 @@ public final class UpcomingContactEventViewModel {
         return typeface;
     }
 
-    public Uri getContactImagePath() {
+    public URI getContactImagePath() {
         return contactImagePath;
     }
 
