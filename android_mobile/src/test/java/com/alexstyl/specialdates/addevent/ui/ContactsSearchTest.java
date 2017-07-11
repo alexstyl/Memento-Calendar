@@ -77,10 +77,10 @@ public class ContactsSearchTest {
     private static List<Contact> contacts(String firstName, String... names) {
         long id = 0;
         ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(new TestContact(id, DisplayName.from(firstName)));
+        contacts.add(new TestContact(id, DisplayName.from(firstName), getImagePath()));
         id++;
         for (String name : names) {
-            contacts.add(new TestContact(id, DisplayName.from(name)));
+            contacts.add(new TestContact(id, DisplayName.from(name), getImagePath()));
         }
         return contacts;
     }

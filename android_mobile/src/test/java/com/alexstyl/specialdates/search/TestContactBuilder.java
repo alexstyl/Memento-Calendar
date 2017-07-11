@@ -14,7 +14,7 @@ class TestContactBuilder {
         long idIndex = 0;
         List<Contact> contacts = new ArrayList<>(names.length);
         for (String name : names) {
-            TestContact testContact = new TestContact(idIndex, DisplayName.from(name));
+            TestContact testContact = new TestContact(idIndex, DisplayName.from(name), getImagePath());
             contacts.add(testContact);
             idIndex++;
         }

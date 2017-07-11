@@ -1,15 +1,17 @@
 package com.alexstyl.specialdates.contact;
 
-import android.net.Uri;
+import java.net.URI;
 
 public abstract class Contact {
 
     private final long contactID;
     private final DisplayName displayName;
+    private final URI imagePath;
 
-    public Contact(long id, DisplayName displayName) {
+    protected Contact(long id, DisplayName displayName, URI imagePath) {
         this.contactID = id;
         this.displayName = displayName;
+        this.imagePath = imagePath;
     }
 
     @Override
@@ -29,8 +31,8 @@ public abstract class Contact {
         return displayName.getFirstNames().getPrimary();
     }
 
-    public abstract Uri getLookupUri();
-
-    public abstract Uri getImagePath();
+    public URI getImagePath() {
+        return imagePath;
+    }
 
 }

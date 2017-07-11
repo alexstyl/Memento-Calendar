@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.contact;
 
-import android.net.Uri;
+import com.alexstyl.specialdates.TestContact;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class ContactTest {
 
     @Before
     public void setUp() {
-        contact = new TestableContact(0, displayName);
+        contact = new TestContact(0, displayName);
     }
 
     @Test
@@ -22,20 +22,4 @@ public class ContactTest {
         assertThat(contact.toString()).isEqualTo(displayName.toString());
     }
 
-    private final class TestableContact extends Contact {
-
-        TestableContact(long id, DisplayName displayName) {
-            super(id, displayName);
-        }
-
-        @Override
-        public Uri getLookupUri() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Uri getImagePath() {
-            throw new UnsupportedOperationException();
-        }
-    }
 }

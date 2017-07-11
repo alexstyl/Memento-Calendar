@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.facebook.login;
 
 import android.app.AlarmManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,6 +32,8 @@ import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
+
+import java.net.URI;
 
 public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
 
@@ -161,7 +162,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        Uri uri = FacebookImagePath.forUid(userCredentials.getUid());
+        URI uri = FacebookImagePath.forUid(userCredentials.getUid());
         imageLoader.loadImage(uri, avatar);
 
         animateAvatarWithBounce();

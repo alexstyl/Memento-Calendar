@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
-import android.net.Uri;
-
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -11,6 +9,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.util.DateParser;
 
+import java.net.URI;
 import java.util.Map;
 
 class FacebookContactFactory {
@@ -22,7 +21,7 @@ class FacebookContactFactory {
             Date date = dateFrom(map);
             DisplayName name = nameFrom(map);
             long uid = idOf(map);
-            Uri imagePath = FacebookImagePath.forUid(uid);
+            URI imagePath = FacebookImagePath.forUid(uid);
             return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePath));
         } catch (DateParseException | IndexOutOfBoundsException ex) {
             throw new InvalidFacebookContactException(ex);

@@ -20,10 +20,10 @@ public class ContactActionTest {
 
     private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
-    private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"));
+    private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"), getImagePath());
     private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.on(1, 1, 1990), CONTACT_ONE);
 
-    private final TestContact CONTACT_TWO = new TestContact(2, DisplayName.from("George Peterson"));
+    private final TestContact CONTACT_TWO = new TestContact(2, DisplayName.from("George Peterson"), getImagePath());
     private final ContactEvent EVENT_TWO = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.on(1, 1, 1970), CONTACT_TWO);
 
     @Test
