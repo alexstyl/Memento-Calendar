@@ -50,5 +50,11 @@ public class ErrorTracker {
             Crashlytics.setString(KEY_LOCALE, String.valueOf(Locale.getDefault()));
         }
     }
+
+    public static void log(String message) {
+        if (hasBeenInitialised) {
+            Crashlytics.log(message);
+        }
+    }
 }
 

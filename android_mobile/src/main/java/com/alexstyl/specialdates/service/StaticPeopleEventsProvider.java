@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.SourceType;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -41,6 +42,7 @@ class StaticPeopleEventsProvider {
             PeopleEventsContract.PeopleEvents.DEVICE_EVENT_ID,
             PeopleEventsContract.PeopleEvents.DATE,
             PeopleEventsContract.PeopleEvents.EVENT_TYPE,
+            PeopleEventsContract.PeopleEvents.SOURCE,
     };
 
     /*
@@ -173,11 +175,6 @@ class StaticPeopleEventsProvider {
         }
     }
 
-    private static long getContactIdFrom(Cursor cursor) {
-        int contactIdIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.CONTACT_ID);
-        return cursor.getLong(contactIdIndex);
-    }
-
     private EventType getEventType(Cursor cursor) {
         int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.EVENT_TYPE);
         @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
@@ -193,12 +190,24 @@ class StaticPeopleEventsProvider {
 
     private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
         long contactId = getContactIdFrom(cursor);
-        Contact contact = contactsProvider.getOrCreateContact(contactId);
+        int source = getContactSourceFrom(cursor);
+        Contact contact = contactsProvider.getContact(contactId, source);
         Date date = getDateFrom(cursor);
         EventType eventType = getEventType(cursor);
 
         Optional<Long> eventId = getDeviceEventIdFrom(cursor);
         return new ContactEvent(eventId, eventType, date, contact);
+    }
+
+    private static long getContactIdFrom(Cursor cursor) {
+        int contactIdIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.CONTACT_ID);
+        return cursor.getLong(contactIdIndex);
+    }
+
+    @SourceType
+    private int getContactSourceFrom(Cursor cursor) {
+        int sourceTypeIdex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.SOURCE);
+        return cursor.getInt(sourceTypeIdex);
     }
 
     private static Optional<Long> getDeviceEventIdFrom(Cursor cursor) {

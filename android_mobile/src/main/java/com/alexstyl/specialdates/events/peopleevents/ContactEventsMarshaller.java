@@ -17,7 +17,7 @@ public class ContactEventsMarshaller {
     @SourceType
     private final int source;
 
-    ContactEventsMarshaller(@SourceType int source) {
+    public ContactEventsMarshaller(@SourceType int source) {
         this.source = source;
         instance = DateDisplayStringCreator.INSTANCE;
     }

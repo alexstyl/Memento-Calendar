@@ -9,10 +9,10 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonateMonitor.DonateMonitorListener;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
-import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     private final UpcomingEventsAsyncProvider upcomingEventsAsyncProvider;
     private final ContactPermissionRequest permissions;
     private final EventsSettingsMonitor monitor;
-    private final ContactsObserver contactsObserver;
+    private PeopleEventsObserver observer;
     private final MainNavigator navigator;
     private final ExternalNavigator externalNavigator;
 
@@ -34,7 +34,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
                             UpcomingEventsAsyncProvider upcomingEventsAsyncProvider,
                             ContactPermissionRequest permissions,
                             EventsSettingsMonitor monitor,
-                            ContactsObserver contactsObserver,
+                            PeopleEventsObserver observer,
                             MainNavigator navigator,
                             ExternalNavigator externalNavigator) {
         this.view = view;
@@ -42,7 +42,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
         this.upcomingEventsAsyncProvider = upcomingEventsAsyncProvider;
         this.permissions = permissions;
         this.monitor = monitor;
-        this.contactsObserver = contactsObserver;
+        this.observer = observer;
         this.navigator = navigator;
         this.externalNavigator = externalNavigator;
     }
@@ -50,9 +50,9 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     void startPresenting() {
         DonateMonitor.getInstance().addListener(donationListener);
         monitor.register(onSettingsChangedListener);
-        contactsObserver.registerWith(new ContactsObserver.Callback() {
+        observer.startObserving(new PeopleEventsObserver.OnPeopleEventsChanged() {
             @Override
-            public void onContactsUpdated() {
+            public void onPeopleEventsUpdated() {
                 refreshData();
             }
         });
@@ -78,7 +78,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
 
     void stopPresenting() {
         monitor.unregister();
-        contactsObserver.unregister();
+        observer.stopObserving();
         DonateMonitor.getInstance().removeListener(donationListener);
     }
 
@@ -115,7 +115,7 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     @Override
     public void onEventClicked(UpcomingEventsViewModel viewModel) {
         if (isDisplayingOnlyOneContact(viewModel)) {
-            List<ContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
+            List<UpcomingContactEventViewModel> contactViewModels = viewModel.getContactViewModels();
             onContactClicked(contactViewModels.get(0).getContact());
         } else {
             navigator.toDateDetails(viewModel.getDate());

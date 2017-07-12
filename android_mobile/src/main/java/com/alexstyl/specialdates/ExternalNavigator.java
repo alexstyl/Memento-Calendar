@@ -10,20 +10,10 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.util.AppUtils;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 public class ExternalNavigator {
-
-    public static final Uri GOOGLE_PLUS_COMMUNITY = Uri.parse("https://plus.google.com/u/0/communities/112144353599130693487");
-    private static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
-    private static final String NO_FRAGMENT = null;
-    private static final Intent PLAY_STORE_INTENT;
-
-    static {
-        Uri playstoreUri = createPlayStoreUri();
-        PLAY_STORE_INTENT = new Intent(Intent.ACTION_VIEW, playstoreUri);
-    }
 
     private static Uri createPlayStoreUri() {
         String packageName = MementoApplication.getContext().getPackageName();
@@ -39,56 +29,14 @@ public class ExternalNavigator {
         SimpleChromeCustomTabs.initialize(activity);
     }
 
-    public boolean canGoToPlayStore() {
-        return canResolveIntent(PLAY_STORE_INTENT);
-    }
-
     public void toPlayStore() {
         try {
-            activity.startActivity(PLAY_STORE_INTENT);
+            Intent intent = new Intent(Intent.ACTION_VIEW, createPlayStoreUri());
+            activity.startActivity(intent);
             analytics.trackScreen(Screen.PLAY_STORE);
         } catch (ActivityNotFoundException e) {
             ErrorTracker.track(e);
         }
-    }
-
-    public void toGooglePlusCommunityBrowser() {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(GOOGLE_PLUS_COMMUNITY);
-            activity.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            ErrorTracker.track(e);
-        }
-    }
-
-    public void toGooglePlusCommunityApp() {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setPackage(GOOGLE_PLUS_PACKAGE_NAME);
-            intent.setData(GOOGLE_PLUS_COMMUNITY);
-            activity.startActivity(intent);
-            analytics.trackScreen(Screen.GOOGLE_PLUS_COMMUNITY);
-        } catch (ActivityNotFoundException e) {
-            ErrorTracker.track(e);
-        }
-    }
-
-    public boolean canGoToEmailSupport() {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "to", NO_FRAGMENT));
-        return canResolveIntent(emailIntent);
-    }
-
-    public void toEmailSupport() {
-        try {
-            Intent intent = AppUtils.getSupportEmailIntent(activity);
-            activity.startActivity(intent);
-            analytics.trackScreen(Screen.EMAIL_SUPPORT);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
-            ErrorTracker.track(ex);
-        }
-
     }
 
     public void connectTo(Activity activity) {
@@ -99,11 +47,25 @@ public class ExternalNavigator {
         SimpleChromeCustomTabs.getInstance().disconnectFrom(activity);
     }
 
-    private boolean canResolveIntent(Intent intent) {
-        return activity.getPackageManager().resolveActivity(intent, 0) != null;
+    public void toContactDetails(Contact contact) {
+        if (contact instanceof FacebookContact) {
+            toFacebookContactDetails(contact);
+        } else {
+            toDeviceContactDetails(contact);
+        }
     }
 
-    public void toContactDetails(Contact contact) {
+    private void toFacebookContactDetails(Contact contact) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://www.facebook.com/" + contact.getContactID()));
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void toDeviceContactDetails(Contact contact) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contact.getContactID()));
@@ -113,4 +75,16 @@ public class ExternalNavigator {
             Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void toFacebookPage() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://www.facebook.com/memento.calendar/"));
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
+        }
+        analytics.trackScreen(Screen.FACEBOOK_PAGE);
+    }
 }
+

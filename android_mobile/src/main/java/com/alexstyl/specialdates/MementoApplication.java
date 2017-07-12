@@ -1,13 +1,14 @@
 package com.alexstyl.specialdates;
 
+import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -20,20 +21,6 @@ import net.danlew.android.joda.JodaTimeAndroid;
 public class MementoApplication extends Application {
 
     private static Context context;
-    public static final String DEV_EMAIL = "alexstyl.dev@gmail.com";
-
-    public static String getVersionName(Context context) {
-        String versionName = null;
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0
-            );
-            versionName = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            ErrorTracker.track(e);
-        }
-        return versionName;
-    }
 
     public static Context getContext() {
         return context;
@@ -50,6 +37,11 @@ public class MementoApplication extends Application {
         if (preferences.isEnabled()) {
             AlarmManagerCompat alarmManager = AlarmManagerCompat.from(this);
             new DailyReminderScheduler(alarmManager, this).setupReminder(preferences);
+        }
+        if (FacebookPreferences.newInstance(this).isLoggedIn()) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
+
         }
     }
 

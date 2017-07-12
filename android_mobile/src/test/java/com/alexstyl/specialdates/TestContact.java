@@ -1,32 +1,15 @@
 package com.alexstyl.specialdates;
 
-import android.content.Context;
-import android.net.Uri;
-
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.actions.LabeledAction;
+import com.alexstyl.specialdates.contact.DisplayName;
 
-import java.util.List;
+import java.net.URI;
 
 public class TestContact extends Contact {
+    private static final URI SOME_IMAGE = URI.create("https://www.google.com/image/to/something.jpg");
 
     public TestContact(long id, DisplayName displayName) {
-        super(id, displayName);
-    }
-
-    @Override
-    protected List<LabeledAction> onBuildActions(Context context) {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    @Override
-    public Uri getLookupUri() {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    @Override
-    public Uri getImagePath() {
-        throw new UnsupportedOperationException("Not supported");
+        super(id, displayName, SOME_IMAGE);
     }
 
 }

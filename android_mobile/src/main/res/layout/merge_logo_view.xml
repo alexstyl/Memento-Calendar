@@ -1,43 +1,28 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  tools:showIn="@layout/activity_about">
-
-  <ImageView
-    android:id="@+id/logo_view_icon"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:importantForAccessibility="no"
-    android:src="@mipmap/ic_launcher" />
-
-  <TextView
-    android:id="@+id/logo_view_app_name"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/logo_view_icon"
-    android:layout_centerHorizontal="true"
-    android:layout_marginLeft="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="4dp"
-    android:drawablePadding="8dp"
-    android:gravity="bottom"
-    android:includeFontPadding="false"
-    android:text="@string/app_name"
-    android:textColor="?primaryTextColorInverse"
-    android:textSize="24sp" />
-
+  tools:layout_height="wrap_content"
+  tools:layout_width="wrap_content"
+  tools:orientation="vertical"
+  tools:parentTag="RelativeLayout">
 
   <TextView
     android:id="@+id/logo_view_app_version"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_above="@id/logo_view_app_name"
-    android:layout_alignEnd="@id/logo_view_app_name"
-    android:layout_alignRight="@id/logo_view_app_name"
+    android:layout_alignRight="@+id/logo_view_app_name"
     android:fontFamily="sans-serif-light"
-    android:includeFontPadding="false"
     android:lines="1"
-    android:textColor="?primaryTextColorInverse"
     android:textSize="12sp"
     tools:text="v1.2.3" />
+
+  <TextView
+    android:id="@id/logo_view_app_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/logo_view_app_version"
+    android:includeFontPadding="false"
+    android:text="memento"
+    android:textColor="?colorPrimary"
+    android:textSize="36sp" />
+
 </merge>

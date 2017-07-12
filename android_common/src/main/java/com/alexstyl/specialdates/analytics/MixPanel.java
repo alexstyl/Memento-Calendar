@@ -156,6 +156,26 @@ class MixPanel implements Analytics {
         mixpanel.track("donation_placed", properties);
     }
 
+    @Override
+    public void trackFacebookLoggedIn() {
+        mixpanel.track("facebook_log_in");
+    }
+
+    @Override
+    public void trackOnAvatarBounce() {
+        mixpanel.track("avatar bounce");
+    }
+
+    @Override
+    public void trackFacebookLoggedOut() {
+        mixpanel.track("facebook_log_out");
+    }
+
+    @Override
+    public void trackVisitGithub() {
+        mixpanel.track("visit_github");
+    }
+
     private static JSONObject createJSONfor(ActionWithParameters event) {
         JSONObject properties = new JSONObject();
         try {

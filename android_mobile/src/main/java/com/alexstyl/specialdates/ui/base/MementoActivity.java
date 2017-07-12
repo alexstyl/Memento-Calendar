@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.ui.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,6 +81,10 @@ public class MementoActivity extends AppCompatActivity {
 
     protected boolean supportsTransitions() {
         return Version.hasKitKat();
+    }
+
+    protected Activity thisActivity() {
+        return this;
     }
 
 }

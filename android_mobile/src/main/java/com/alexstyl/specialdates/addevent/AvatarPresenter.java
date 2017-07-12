@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.addevent;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.view.View;
 
 import com.alexstyl.specialdates.Optional;
@@ -12,6 +11,8 @@ import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.OnImageLoadedCallback;
 import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
+
+import java.net.URI;
 
 final class AvatarPresenter {
 
@@ -64,7 +65,7 @@ final class AvatarPresenter {
         });
     }
 
-    void presentAvatar(final Uri imageUri) {
+    void presentAvatar(URI imageUri) {
         imageLoader.loadImage(imageUri, avatarView, onImageLoadedCallback);
     }
 

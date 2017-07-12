@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply from: '../versions.gradle'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
 
@@ -23,6 +21,5 @@ dependencies {
     compile project(path: ':memento')
     compile 'com.mixpanel.android:mixpanel-android:4.9.2'
     compile "com.android.support:support-annotations:$android_support_version"
-    compile 'net.danlew:android.joda:2.9.4.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'net.danlew:android.joda:2.9.9'
 }

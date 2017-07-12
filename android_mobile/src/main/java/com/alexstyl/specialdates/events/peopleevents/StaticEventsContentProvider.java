@@ -1,20 +1,19 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
-import com.alexstyl.specialdates.contact.AndroidContactsProvider;
+import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -24,45 +23,52 @@ import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.upcoming.NamedaySettingsMonitor;
-import com.alexstyl.specialdates.util.ContactsObserver;
 import com.alexstyl.specialdates.util.DateParser;
-import com.novoda.notils.exception.DeveloperError;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class StaticEventsContentProvider extends ContentProvider {
 
     private static final int CODE_PEOPLE_EVENTS = 10;
+
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
+
+    private EventPreferences eventPreferences;
+    private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
         Resources resources = context.getResources();
-        ContentResolver contentResolver = context.getContentResolver();
 
-        AndroidContactsProvider contactsProvider = AndroidContactsProvider.get(context);
+        ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
-        PeopleEventsRepository repository = new PeopleEventsRepository(contentResolver, contactsProvider, dateParser);
+        AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
-        ContactEventsMarshaller mementoMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_MEMENTO);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
-        ExternalWidgetRefresher widgetRefresher = ExternalWidgetRefresher.get(context);
+        PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);
+
+        eventPreferences = new EventPreferences(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
-                new PeopleEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, mementoMarshaller, calculator),
-                new EventPreferences(context),
-                new ContactsObserver(contentResolver, new Handler()),
-                new NamedaySettingsMonitor(namedayPreferences),
                 new PermissionChecker(context),
-                widgetRefresher
+                new DeviceEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
+                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator)
         );
-        peopleEventsUpdater.register();
+
+        presenter = new PeopleEventsPresenter(
+                AndroidSchedulers.mainThread(),
+                EventsRefreshRequestsMonitor.newInstance(context),
+                peopleEventsUpdater,
+                viewRefresher
+        );
+        presenter.present();
+
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PeopleEventsContract.AUTHORITY, PeopleEventsContract.PeopleEvents.PATH, CODE_PEOPLE_EVENTS);
         return true;
@@ -70,16 +76,23 @@ public class StaticEventsContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        peopleEventsUpdater.updateEventsIfNeeded();
-
         if (isAboutPeopleEvents(uri)) {
+            if (!eventPreferences.hasBeenInitialised()) {
+                peopleEventsUpdater.updateEvents();
+                eventPreferences.markEventsAsInitialised();
+            }
+
             UriQuery query = new UriQuery(uri, projection, selection, selectionArgs, sortOrder);
             SQLiteDatabase db = eventSQLHelper.getReadableDatabase();
             Cursor cursor = queryAnnualEvents(query, db);
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
             return cursor;
         }
-        return null;
+        return emptyCursorWith(projection);
+    }
+
+    private MatrixCursor emptyCursorWith(String[] projection) {
+        return new MatrixCursor(projection, 0);
     }
 
     private boolean isAboutPeopleEvents(Uri uri) {
@@ -109,10 +122,6 @@ public class StaticEventsContentProvider extends ContentProvider {
         return null;
     }
 
-    private void throwUnsupportedOperation(String insert) {
-        throw new DeveloperError(insert + " is not supported by the " + getClass().getSimpleName());
-    }
-
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         throwUnsupportedOperation("delete");
@@ -123,6 +132,16 @@ public class StaticEventsContentProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         throwUnsupportedOperation("update");
         return -1;
+    }
+
+    @Override
+    public void shutdown() {
+        super.shutdown();
+        presenter.stopPresenting();
+    }
+
+    private void throwUnsupportedOperation(String operation) {
+        ErrorTracker.log(operation + " is not supported by the " + getClass().getSimpleName());
     }
 
 }

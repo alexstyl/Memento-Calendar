@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.contact.DisplayName;
 
 import org.junit.Test;
 
