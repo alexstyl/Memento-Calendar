@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class ContactEventTest {
 
     private static final Optional<Long> NO_DEVICE_ID = Optional.absent();
-    private static final Contact ANY_CONTACT = new TestContact(1, DisplayName.from("Peter"), getImagePath());
+    private static final Contact ANY_CONTACT = new TestContact(1, DisplayName.from("Peter"));
     private static final Date SOME_DATE = Date.on(1, JANUARY, 1990);
     private static final Date SOME_DATE_WITHOUT_YEAR = Date.on(1, JANUARY);
     private static final int CURRENT_YEAR = Date.CURRENT_YEAR;

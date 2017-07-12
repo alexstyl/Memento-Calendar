@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsProviderTest {
 
-    private static final Contact PETER = new TestContact(1, DisplayName.from("Peter"), getImagePath());
+    private static final Contact PETER = new TestContact(1, DisplayName.from("Peter"));
 
     @Mock
     private ContactsProvider mockContactsProvider;
