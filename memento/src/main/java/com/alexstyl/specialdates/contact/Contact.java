@@ -19,19 +19,19 @@ public abstract class Contact {
         return displayName.toString();
     }
 
-    public long getContactID() {
+    final public long getContactID() {
         return contactID;
     }
 
-    public DisplayName getDisplayName() {
+    final public DisplayName getDisplayName() {
         return displayName;
     }
 
-    public String getGivenName() {
+    final public String getGivenName() {
         return displayName.getFirstNames().getPrimary();
     }
 
-    public URI getImagePath() {
+    final public URI getImagePath() {
         return imagePath;
     }
 

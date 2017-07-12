@@ -117,16 +117,4 @@ public class DateTest {
     public void throwsException_whenInvalidDateIsCreated() {
         Date.on(31, FEBRUARY, 1991);
     }
-
-    @Test
-    public void toStringWithYear() {
-        Date date = Date.on(1, JANUARY, 2016);
-        assertThat(date.toString()).isEqualTo("2016-01-01");
-    }
-
-    @Test
-    public void toStringWithoutYearIs() {
-        Date date = Date.on(1, JANUARY);
-        assertThat(date.toString()).isEqualTo("--01-01");
-    }
 }

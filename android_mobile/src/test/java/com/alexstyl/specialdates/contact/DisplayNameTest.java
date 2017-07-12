@@ -8,60 +8,50 @@ import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DisplayNameTest {
-    private static final String FIRST_NAME = "Alex";
-    private static final String LAST_NAME = "Styl";
-
-    private static final int ONE_FIRSTNAME = 1;
-
-    private static final String FIRST_AND_LAST_NAME = FIRST_NAME + " " + LAST_NAME;
-    private static final String TWO_FIRST_NAMES_AND_LASTNAME = "John Peters Jackson";
-    private static final String TWO_FIRST_NAMES_AND_LASTNAME_WITH_SEMICOLUMN = "John-Peters Jackson";
-
-    private static final int TWO_FIRSTNAMES = 2;
 
     @Test
     public void givenFirstName_thenDisplayNameHasOneFirstNameAndNoLastName() {
-        DisplayName name = DisplayName.from(FIRST_NAME);
+        DisplayName name = DisplayName.from("Alex");
 
-        assertThat(name.getFirstNames().getCount()).isEqualTo(ONE_FIRSTNAME);
+        assertThat(name.getFirstNames().getCount()).isEqualTo(1);
         assertThat(name.getLastName()).isEmpty();
     }
 
     @Test
     public void givenFirstAndLastName_thenFirstNameIsCorrect() {
-        DisplayName displayName = DisplayName.from(FIRST_AND_LAST_NAME);
-        assertThat(displayName.getFirstNames().getPrimary()).isEqualTo(FIRST_NAME);
+        DisplayName displayName = DisplayName.from("Alex Styl");
+        assertThat(displayName.getFirstNames().getPrimary()).isEqualTo("Alex");
     }
 
     @Test
     public void givenFirstAndLastName_thenLastNameIsCorrect() {
-        DisplayName displayName = DisplayName.from(FIRST_AND_LAST_NAME);
-        assertThat(displayName.getLastName()).isEqualTo(LAST_NAME);
+        DisplayName displayName = DisplayName.from("Alex Styl");
+        assertThat(displayName.getLastName()).isEqualTo("Styl");
     }
 
     @Test
     public void givenFirstAndLastName_thenDisplayNameHasOneFirstAndLastName() {
-        DisplayName displayName = DisplayName.from(FIRST_AND_LAST_NAME);
+        DisplayName displayName = DisplayName.from("Alex Styl");
 
-        assertThat(displayName.getFirstNames().getCount()).isEqualTo(ONE_FIRSTNAME);
+        assertThat(displayName.getFirstNames().getCount()).isEqualTo(1);
         assertThat(displayName.getLastName()).isNotEmpty();
     }
 
     @Test
     public void givenMultipleFirstNames_thenDisplayNameHasMultipleNamesAndLastName() {
-        DisplayName displayName = DisplayName.from(TWO_FIRST_NAMES_AND_LASTNAME);
+        DisplayName displayName = DisplayName.from("John Peters Jackson");
 
         assertThat(displayName.hasMultipleFirstNames()).isTrue();
-        assertThat(displayName.getFirstNames().getCount()).isEqualTo(TWO_FIRSTNAMES);
+        assertThat(displayName.getFirstNames().getCount()).isEqualTo(2);
         assertThat(displayName.getLastName()).isNotEmpty();
     }
 
     @Test
     public void givenFirstNameWithSemicolumnAndLastName_thenDisplayNameHasTwoFirstNameAndLastName() {
-        DisplayName displayName = DisplayName.from(TWO_FIRST_NAMES_AND_LASTNAME_WITH_SEMICOLUMN);
+        DisplayName displayName = DisplayName.from("John-Peters Jackson");
 
         assertThat(displayName.hasMultipleFirstNames()).isTrue();
-        assertThat(displayName.getFirstNames().getCount()).isEqualTo(TWO_FIRSTNAMES);
+        assertThat(displayName.getFirstNames().getCount()).isEqualTo(2);
         assertThat(displayName.getLastName()).isNotEmpty();
     }
 
@@ -93,18 +83,18 @@ public class DisplayNameTest {
         assertThat(namesList).contains("Alex", "Bob", "Derek", "Styl");
     }
 
+    @Test
+    public void toStringReturnsTheFullName() {
+        String nameRaw = "Alex Styl";
+        String toString = DisplayName.from(nameRaw).toString();
+        assertThat(nameRaw).isEqualTo(toString);
+    }
+
     private static List<String> asList(Names names) {
         List<String> namesList = new ArrayList<>();
         for (String name : names) {
             namesList.add(name);
         }
         return namesList;
-    }
-
-    @Test
-    public void toStringReturnsTheFullName() {
-        String nameRaw = "Alex Styl";
-        String toString = DisplayName.from(nameRaw).toString();
-        assertThat(nameRaw).isEqualTo(toString);
     }
 }

@@ -25,9 +25,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsSearchTest {
 
-    private static final Contact ALEX = new TestContact(1, DisplayName.from("Alex Styl"), getImagePath());
-    private static final Contact MARIA = new TestContact(2, DisplayName.from("Maria Papadopoulou"), getImagePath());
-    private static final Contact MIMOZA = new TestContact(3, DisplayName.from("Mimoza Dereks"), getImagePath());
+    private static final Contact ALEX = new TestContact(1, DisplayName.from("Alex Styl"));
+    private static final Contact MARIA = new TestContact(2, DisplayName.from("Maria Papadopoulou"));
+    private static final Contact MIMOZA = new TestContact(3, DisplayName.from("Mimoza Dereks"));
     private static final Date JANUARY_1st = Date.startOfTheYear(2016);
 
     private PeopleEventsSearch search;

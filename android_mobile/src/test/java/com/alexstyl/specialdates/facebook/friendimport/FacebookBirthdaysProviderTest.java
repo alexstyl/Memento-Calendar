@@ -21,9 +21,6 @@ public class FacebookBirthdaysProviderTest {
         URL url = new URL(CALENDAR_URL);
 
         List<ContactEvent> contacts = fetcher.fetchCalendarFrom(url);
-        for (ContactEvent contactEvent : contacts) {
-            System.out.println(contactEvent.getContact() + " on " + contactEvent.getDate());
-        }
         assertThat(contacts).isNotEmpty();
     }
 
