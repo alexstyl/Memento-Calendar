@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="title_facebook_log_in">@string/Facebook_Log_In</string>
+  <string name="title_facebook_friends_import">@string/Import_from_Facebook</string>
+  <string name="facebook_hi">@string/Hi_X</string>
+  <string name="facebook_more_description">@string/Your_Friends_will_be_here_shortly_smiley</string>
+  <string name="facebook_error">@string/An_error_came_up</string>
+  <string name="facebook_try_again">@string/Try_again_in_a_bit</string>
+  <string name="facebook_send_message">@string/message</string>
+  <string name="facebook_friends_update_daily">@string/Friends_update_daily</string>
+  <string name="facebook_profile_fb_page">@string/Memento_on_Facebook</string>
+  <string name="title_facebook_profile">@string/Facebook_profile</string>
+
+  <dimen name="facebook_avatar_width">120dp</dimen>
+  <dimen name="facebook_avatar_height">120dp</dimen>
+  <dimen name="facebook_avatar_stroke">2dp</dimen>
+
+  <style name="FacebookImport.CTAButton"
+    parent="ActionButton">
+    <item name="android:textColor">?colorAccent</item>
+    <item name="android:background">@drawable/selectable_background_dayslight</item>
+  </style>
+
+</resources>

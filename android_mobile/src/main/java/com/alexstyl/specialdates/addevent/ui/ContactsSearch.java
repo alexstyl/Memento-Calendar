@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.addevent.ui;
 
-import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.search.NameMatcher;

@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
@@ -38,9 +38,10 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
     private MainPreferenceActivity activity;
-    private EventsSettingsMonitor monitor;
+    private EventsSettingsMonitor monitor; // TODO this probably has to go
     private Analytics analytics;
-    private ExternalWidgetRefresher refresher;
+    private PeopleEventsViewRefresher refresher;
+    private DonationService donationService;
 
     @Override
     public void onAttach(Activity activity) {
@@ -108,10 +109,10 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         StringResources stringResources = new AndroidStringResources(getResources());
         monitor = new EventsSettingsMonitor(sharedPreferences, stringResources);
-        refresher = ExternalWidgetRefresher.get(getActivity());
+        refresher = PeopleEventsViewRefresher.get(getActivity());
 
         final Preference restore = findPreference("key_donate_restore");
-        final DonationService donationService = new AndroidDonationService(
+        donationService = new AndroidDonationService(
                 new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
                 getActivity(),
                 DonationPreferences.newInstance(getActivity()),
@@ -164,6 +165,12 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         monitor.unregister();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        donationService.dispose();
+    }
+
     private final ThemeSelectDialog.OnThemeSelectedListener themeSelectedListener = new ThemeSelectDialog.OnThemeSelectedListener() {
         @Override
         public void onThemeSelected(MementoTheme theme) {
@@ -184,7 +191,7 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private final EventsSettingsMonitor.Listener onSettingUpdatedListener = new EventsSettingsMonitor.Listener() {
         @Override
         public void onSettingUpdated() {
-            refresher.refreshAllWidgets();
+            refresher.updateAllViews();
         }
     };
 }

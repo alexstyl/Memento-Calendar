@@ -31,6 +31,7 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.contact.AndroidContact;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -169,8 +170,8 @@ public class Notifier {
         }
 
         for (Contact contact : contacts) {
-            Uri uri = contact.getLookupUri();
-            if (uri != null) {
+            if (contact instanceof AndroidContact) {
+                Uri uri = ((AndroidContact) contact).getLookupUri();
                 builder.addPerson(uri.toString());
             }
         }

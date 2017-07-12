@@ -16,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -26,9 +25,12 @@ import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -40,6 +42,8 @@ import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.net.URI;
 
 public class AddEventActivity extends ThemedMementoActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
@@ -61,6 +65,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         setContentView(R.layout.activity_add_event);
 
         analytics = AnalyticsProvider.getAnalytics(this);
+        analytics.trackScreen(Screen.ADD_EVENT);
         ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -87,7 +92,12 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         );
 
         WriteableAccountsProvider accountsProvider = WriteableAccountsProvider.from(this);
-        ContactOperations contactOperations = new ContactOperations(getContentResolver(), accountsProvider, peopleEventsProvider);
+        ContactOperations contactOperations = new ContactOperations(
+                getContentResolver(),
+                accountsProvider,
+                peopleEventsProvider,
+                DateDisplayStringCreator.INSTANCE
+        );
         MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
         ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
         ImageDecoder imageDecoder = new ImageDecoder();
@@ -180,7 +190,8 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         } else if (requestCode == CODE_CROP_IMAGE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                presenter.presentAvatar(result.getUri());
+                presenter.presentAvatar(result.getUri() == null ? null : URI.create(result.getUri().toString()));
+
             } else if (resultCode == RESULT_CANCELED && result != null) {
                 ErrorTracker.track(result.getError());
             }

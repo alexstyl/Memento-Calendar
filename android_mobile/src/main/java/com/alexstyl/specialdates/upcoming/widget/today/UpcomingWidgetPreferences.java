@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.upcoming.widget.today;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
@@ -28,5 +29,13 @@ class UpcomingWidgetPreferences {
     void storeUserOptions(UpcomingWidgetConfigurationPanel.UserOptions userOptions) {
         preferences.setFloat(R.string.key_upcoming_widget_opacity, userOptions.getOpacityLevel());
         preferences.setInteger(R.string.key_upcoming_widget_variant, userOptions.getWidgetVariant().getId());
+    }
+
+    void addListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        preferences.addOnPreferenceChangedListener(listener);
+    }
+
+    public void removeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        preferences.removeOnPreferenceChagnedListener(listener);
     }
 }

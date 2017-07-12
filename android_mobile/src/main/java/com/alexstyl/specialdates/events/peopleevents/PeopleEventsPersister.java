@@ -8,12 +8,13 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
+import com.alexstyl.specialdates.events.database.SourceType;
 
 public final class PeopleEventsPersister {
 
     private final EventSQLiteOpenHelper helper;
 
-    PeopleEventsPersister(EventSQLiteOpenHelper helper) {
+    public PeopleEventsPersister(EventSQLiteOpenHelper helper) {
         this.helper = helper;
     }
 
@@ -24,6 +25,11 @@ public final class PeopleEventsPersister {
     private void deleteAllEventsOfType(@EventTypeId int eventType) {
         SQLiteDatabase database = helper.getWritableDatabase();
         database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "==" + eventType, null);
+    }
+
+    public void deleteAllEventsOfSource(@SourceType int source) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + "==" + source, null);
     }
 
     void deleteAllDeviceEvents() {

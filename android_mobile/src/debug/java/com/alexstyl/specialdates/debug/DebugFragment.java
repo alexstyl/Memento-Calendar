@@ -12,18 +12,20 @@ import android.provider.CalendarContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.ExternalWidgetRefresher;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.actions.IntentAction;
+import com.alexstyl.specialdates.datedetails.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
+import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.util.AppUtils;
-import com.alexstyl.specialdates.wear.WearSyncWidgetRefresher;
+import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
 import java.util.Calendar;
 
@@ -47,7 +49,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_widget).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ExternalWidgetRefresher.get(getActivity()).refreshAllWidgets();
+                PeopleEventsViewRefresher.get(getActivity()).updateAllViews();
                 Toast.makeText(getActivity(), "Widget(s) refreshed", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -94,7 +96,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new WearSyncWidgetRefresher(getActivity()).refreshWidget();
+                new WearSyncPeopleEventsView(getActivity()).requestUpdate();
                 return true;
             }
         });
@@ -112,6 +114,22 @@ public class DebugFragment extends MementoPreferenceFragment {
                 DebugPreferences.newInstance(preference.getContext(), R.string.pref_call_to_rate).wipe();
                 new AskForSupport(preference.getContext()).requestForRatingSooner();
                 Toast.makeText(preference.getContext(), "Support triggered. You should now see a prompt to rate the app when you launch it", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        findPreference(R.string.key_debug_facebook).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), FacebookLogInActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+        findPreference(R.string.key_debug_facebook_fetch_friends).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), FacebookFriendsIntentService.class);
+                getActivity().startService(intent);
                 return true;
             }
         });
@@ -133,7 +151,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             }
 
             @Override
-            public String getName() {
+            public String getAnalyticsName() {
                 return "date debug";
             }
         };

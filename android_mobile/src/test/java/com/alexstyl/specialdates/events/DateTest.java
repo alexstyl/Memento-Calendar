@@ -62,12 +62,6 @@ public class DateTest {
     }
 
     @Test
-    public void toShortDateWithYear() {
-        Date date = Date.on(1, JANUARY, 1990);
-        assertThat(date.toShortDate()).isEqualTo("1990-01-01");
-    }
-
-    @Test
     public void compareFutureDayDate() {
         int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(2, JANUARY, 1990));
         assertThat(result).isNegative();
@@ -122,17 +116,5 @@ public class DateTest {
     @Test(expected = IllegalArgumentException.class)
     public void throwsException_whenInvalidDateIsCreated() {
         Date.on(31, FEBRUARY, 1991);
-    }
-
-    @Test
-    public void toStringWithYear() {
-        Date date = Date.on(1, JANUARY, 2016);
-        assertThat(date.toString()).isEqualTo("2016-01-01");
-    }
-
-    @Test
-    public void toStringWithoutYearIs() {
-        Date date = Date.on(1, JANUARY);
-        assertThat(date.toString()).isEqualTo("--01-01");
     }
 }

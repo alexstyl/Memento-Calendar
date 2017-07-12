@@ -10,6 +10,7 @@ import android.provider.ContactsContract.Data;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.DecodedImage;
@@ -23,13 +24,15 @@ final class OperationsFactory {
     private static final int NO_RAW_CONTACT_ID = 0;
 
     private final int rawContactID;
+    private final DateDisplayStringCreator displayStringCreator;
 
     static OperationsFactory forNewContact() {
-        return new OperationsFactory(NO_RAW_CONTACT_ID);
+        return new OperationsFactory(NO_RAW_CONTACT_ID, DateDisplayStringCreator.INSTANCE);
     }
 
-    OperationsFactory(int rawContactID) {
+    OperationsFactory(int rawContactID, DateDisplayStringCreator displayStringCreator) {
         this.rawContactID = rawContactID;
+        this.displayStringCreator = displayStringCreator;
     }
 
     ContentProviderOperation newInsertFor(EventType eventType, Date date) {
@@ -37,7 +40,7 @@ final class OperationsFactory {
                 .newInsert(Data.CONTENT_URI)
                 .withValue(Data.MIMETYPE, CommonDataKinds.Event.CONTENT_ITEM_TYPE)
                 .withValue(CommonDataKinds.Event.TYPE, eventType.getAndroidType())
-                .withValue(CommonDataKinds.Event.START_DATE, date.toShortDate());
+                .withValue(CommonDataKinds.Event.START_DATE, displayStringCreator.stringOf(date));
         addRawContactID(builder);
         return builder.build();
     }

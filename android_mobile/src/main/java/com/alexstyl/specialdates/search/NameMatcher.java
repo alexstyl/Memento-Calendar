@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.specialdates.DisplayName;
-import com.alexstyl.specialdates.Names;
+import com.alexstyl.specialdates.contact.DisplayName;
+import com.alexstyl.specialdates.contact.Names;
 
 import java.text.Collator;
 import java.util.Locale;

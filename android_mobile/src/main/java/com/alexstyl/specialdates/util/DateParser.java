@@ -39,10 +39,15 @@ public enum DateParser {
 
     };
 
-    /**
-     * Parses the given date using the default date formats
-     */
     public Date parse(String rawDate) throws DateParseException {
+        return parse(rawDate, false);
+    }
+
+    public Date parseWithoutYear(String rawDate) throws DateParseException {
+        return parse(rawDate, true);
+    }
+
+    private Date parse(String rawDate, boolean removeYear) throws DateParseException {
         for (Locale locale : LOCALES) {
             for (String format : DATE_FORMATS) {
                 DateTimeFormatter formatter = DateTimeFormat.forPattern(format)
@@ -54,7 +59,7 @@ public enum DateParser {
                     @MonthInt int month = parsedDate.getMonthOfYear();
                     int year = parsedDate.getYear();
 
-                    if (year == DateConstants.NO_YEAR) {
+                    if (year == DateConstants.NO_YEAR || removeYear) {
                         return Date.on(dayOfMonth, month);
                     } else {
                         return Date.on(dayOfMonth, month, year);

@@ -1,10 +1,9 @@
 package com.alexstyl.specialdates.search;
 
 import android.content.Context;
-import android.os.Handler;
 
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
-import com.alexstyl.specialdates.util.ContactsObserver;
 
 import java.util.List;
 
@@ -13,26 +12,27 @@ class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
     private final String searchQuery;
     private final int searchCounter;
 
-    private final ContactsObserver observer;
+    private final PeopleEventsObserver observer;
     private final PeopleEventsSearch peopleEventsSearch;
     private final ContactEventViewModelFactory viewModelFactory;
 
     SearchLoader(Context context,
                  PeopleEventsSearch peopleEventsSearch,
+                 PeopleEventsObserver observer,
                  String query,
                  int searchCounter,
                  ContactEventViewModelFactory viewModelFactory
     ) {
         super(context);
+        this.observer = observer;
         this.searchQuery = query;
         this.searchCounter = searchCounter;
         this.peopleEventsSearch = peopleEventsSearch;
-        this.observer = new ContactsObserver(context.getContentResolver(), new Handler());
         this.viewModelFactory = viewModelFactory;
 
-        this.observer.registerWith(new ContactsObserver.Callback() {
+        this.observer.startObserving(new PeopleEventsObserver.OnPeopleEventsChanged() {
             @Override
-            public void onContactsUpdated() {
+            public void onPeopleEventsUpdated() {
                 onContentChanged();
             }
         });
@@ -41,7 +41,7 @@ class SearchLoader extends SimpleAsyncTaskLoader<SearchResults> {
     @Override
     protected void onUnregisterObserver() {
         super.onUnregisterObserver();
-        observer.unregister();
+        observer.stopObserving();
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.alexstyl.specialdates.search;
 
-import android.net.Uri;
 import android.support.annotation.ColorRes;
 
 import com.alexstyl.specialdates.contact.Contact;
+
+import java.net.URI;
 
 class ContactEventViewModel {
 
@@ -27,7 +28,7 @@ class ContactEventViewModel {
         return contact.getDisplayName().toString();
     }
 
-    Uri getContactAvatarURI() {
+    URI getContactAvatarURI() {
         return contact.getImagePath();
     }
 

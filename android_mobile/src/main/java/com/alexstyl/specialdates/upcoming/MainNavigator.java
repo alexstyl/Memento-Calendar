@@ -15,6 +15,9 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.donate.DonateActivity;
+import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
+import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
@@ -33,11 +36,13 @@ final class MainNavigator {
     private final Analytics analytics;
     private final Activity activity;
     private final StringResources stringResource;
+    private final FacebookPreferences facebookPreferences;
 
-    MainNavigator(Analytics analytics, Activity activity, StringResources stringResource) {
+    MainNavigator(Analytics analytics, Activity activity, StringResources stringResource, FacebookPreferences facebookPreferences) {
         this.analytics = analytics;
         this.activity = activity;
         this.stringResource = stringResource;
+        this.facebookPreferences = facebookPreferences;
         this.attributeExtractor = new AttributeExtractor();
     }
 
@@ -79,7 +84,16 @@ final class MainNavigator {
     void toAddEvent() {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
-        analytics.trackScreen(Screen.ADD_EVENT);
+    }
+
+    void toFacebookImport() {
+        if (facebookPreferences.isLoggedIn()) {
+            Intent intent = new Intent(activity, FacebookProfileActivity.class);
+            activity.startActivity(intent);
+        } else {
+            Intent intent = new Intent(activity, FacebookLogInActivity.class);
+            activity.startActivity(intent);
+        }
     }
 
     void toSettings() {
@@ -114,4 +128,12 @@ final class MainNavigator {
         activity.startActivity(Intent.createChooser(intent, shareTitle));
         analytics.trackAppInviteRequested();
     }
+
+    void toGithubPage() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://github.com/alexstyl/Memento-Calendar"));
+        analytics.trackVisitGithub();
+        activity.startActivity(intent);
+    }
+
 }

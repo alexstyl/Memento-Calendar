@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="?attr/colorSecondary">
+  android:background="?attr/colorSecondary"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -47,7 +52,7 @@
       android:layout_marginTop="24dp"
       android:gravity="center"
       android:text="@string/contact_permission_message_request"
-      android:textColor="?android:attr/textColorPrimaryInverse" />
+      android:textColor="?android:textColorPrimaryInverse" />
 
     <TextView
       android:layout_width="wrap_content"
@@ -55,14 +60,17 @@
       android:layout_marginTop="36dp"
       android:gravity="center"
       android:text="@string/contact_permission_fact"
-      android:textColor="?android:attr/textColorPrimaryInverse" />
+      android:textColor="?android:textColorPrimaryInverse" />
   </LinearLayout>
 
-  <Button
+  <android.support.v7.widget.AppCompatButton
     android:id="@+id/contact_permission_grant_button"
-    style="@style/ContactPermission.GrantPermission"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:text="@string/contact_permission_button_label" />
+    android:minHeight="64dp"
+    android:text="@string/contact_permission_button_label"
+    android:textColor="?primaryTextColorInverse"
+    app:backgroundTint="?colorAccent" />
+
 </FrameLayout>

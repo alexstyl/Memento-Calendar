@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
-import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;

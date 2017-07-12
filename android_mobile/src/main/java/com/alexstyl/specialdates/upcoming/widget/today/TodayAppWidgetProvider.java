@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.widget.RemoteViews;
@@ -28,17 +29,30 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private WidgetImageLoader imageLoader;
     private StringResources stringResources;
+    private UpcomingWidgetPreferences preferences;
+    private TodayPeopleEventsView todayPeopleEventsView;
+    private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            todayPeopleEventsView.requestUpdate();
+        }
+    };
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
         AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
+        preferences = new UpcomingWidgetPreferences(context);
+        todayPeopleEventsView = new TodayPeopleEventsView(context, AppWidgetManager.getInstance(context));
+        preferences.addListener(listener);
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
         AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
+        preferences.removeListener(listener);
     }
 
     @Override
@@ -104,7 +118,6 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         String label = NaturalLanguageUtils.joinContacts(getOrCreateStringResources(context.getResources()), contactEvents.getContacts(), 2);
 
-        UpcomingWidgetPreferences preferences = new UpcomingWidgetPreferences(context);
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
         float opacity = preferences.getOppacityLevel();

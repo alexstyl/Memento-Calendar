@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.alexstyl.specialdates"
-  android:installLocation="auto">
+  android:installLocation="internalOnly">
 
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -131,6 +131,21 @@
 
 
     <activity android:name=".permissions.ContactPermissionActivity" />
+
+    <activity
+      android:name=".donate.DonateActivity"
+      android:label="@string/donate_welcome"
+      android:parentActivityName=".upcoming.UpcomingEventsActivity"
+      android:theme="@style/Theme.Donate" />
+
+    <activity
+      android:name=".facebook.login.FacebookLogInActivity"
+      android:label="@string/title_facebook_log_in" />
+
+    <activity
+      android:name=".facebook.FacebookProfileActivity"
+      android:label="@string/title_facebook_profile" />
+
     <!-- Services -->
     <service
       android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"
@@ -188,11 +203,9 @@
       android:grantUriPermissions="true"
       android:label="Events Provider" />
 
-    <activity
-      android:name=".donate.DonateActivity"
-      android:label="@string/donate_welcome"
-      android:parentActivityName=".upcoming.UpcomingEventsActivity"
-      android:theme="@style/Theme.Donate" />
+    <service
+      android:name=".facebook.friendimport.FacebookFriendsIntentService"
+      android:label="@string/title_facebook_friends_import" />
 
     <meta-data
       android:name="io.fabric.ApiKey"

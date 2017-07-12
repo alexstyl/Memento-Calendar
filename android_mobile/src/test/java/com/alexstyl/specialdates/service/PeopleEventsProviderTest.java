@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.service;
 
-import com.alexstyl.specialdates.DisplayName;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
