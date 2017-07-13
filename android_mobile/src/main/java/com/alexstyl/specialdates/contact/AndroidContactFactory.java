@@ -16,12 +16,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
 class AndroidContactFactory {
 
     private static final String WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + "=1";
     private static final String SELECTION_CONTACT_WITH_ID = Contacts._ID + " = ?";
-
 
     private final ContentResolver resolver;
 
@@ -69,9 +69,9 @@ class AndroidContactFactory {
     private Contact createContactFrom(Cursor cursor) {
         long contactID = getContactIdFrom(cursor);
         DisplayName displayName = getDisplayNameFrom(cursor);
-        Uri lookupKey = getLookupKeyFrom(cursor);
+        // TODO Uri lookupKey = getLookupKeyFrom(cursor);
         URI imagePath = URI.create(ContentUris.withAppendedId(Contacts.CONTENT_URI, contactID).toString());
-        return new AndroidContact(contactID, displayName, imagePath, lookupKey);
+        return new Contact(contactID, displayName, imagePath, SOURCE_DEVICE);
     }
 
     private Cursor queryContactsWithContactId(long contactID) {

@@ -15,7 +15,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -31,7 +30,6 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.android.AndroidStringResources;
-import com.alexstyl.specialdates.contact.AndroidContact;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -169,12 +167,13 @@ public class Notifier {
             builder.setPublicVersion(publicNotification.build());
         }
 
-        for (Contact contact : contacts) {
-            if (contact instanceof AndroidContact) {
-                Uri uri = ((AndroidContact) contact).getLookupUri();
-                builder.addPerson(uri.toString());
-            }
-        }
+        // TODO add Lookup URI for Android
+//        for (Contact contact : contacts) {
+//            if (contact instanceof AndroidContact) {
+//                Uri uri = ((AndroidContact) contact).getLookupUri();
+//                builder.addPerson(uri.toString());
+//            }
+//        }
 
         if (preferences.getVibrationSet()) {
             builder.setDefaults(Notification.DEFAULT_VIBRATE);
