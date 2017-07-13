@@ -8,7 +8,9 @@ import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.events.database.SourceType;
+import com.alexstyl.specialdates.contact.ContactSource;
+
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
 public final class PeopleEventsPersister {
 
@@ -27,14 +29,14 @@ public final class PeopleEventsPersister {
         database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "==" + eventType, null);
     }
 
-    public void deleteAllEventsOfSource(@SourceType int source) {
+    public void deleteAllEventsOfSource(@ContactSource int source) {
         SQLiteDatabase database = helper.getWritableDatabase();
         database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + "==" + source, null);
     }
 
     void deleteAllDeviceEvents() {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + " == " + AnnualEventsContract.SOURCE_DEVICE, null);
+        database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + " == " + SOURCE_DEVICE, null);
     }
 
     public void insertAnnualEvents(ContentValues[] values) {

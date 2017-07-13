@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.contact;
 
-import com.alexstyl.specialdates.TestContact;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +20,7 @@ public class ContactCacheTest {
 
     @Test
     public void givenOneContactIsAdded_thenSizeIsIncreasedByOne() {
-        Contact anyContact = anyContact();
+        Contact anyContact = ContactFixture.aContact();
 
         contactCache.addContact(anyContact);
 
@@ -31,7 +29,7 @@ public class ContactCacheTest {
 
     @Test
     public void givenOneContactIsAdded_thenSameContactIsReturned() {
-        Contact anyContact = anyContact();
+        Contact anyContact = ContactFixture.aContact();
 
         contactCache.addContact(anyContact);
         long contactID = anyContact.getContactID();
@@ -40,10 +38,6 @@ public class ContactCacheTest {
 
         assertThat(returnedContact).isEqualTo(anyContact);
 
-    }
-
-    private static Contact anyContact() {
-        return new TestContact(5, ANY_DISPLAY_NAME);
     }
 
 }

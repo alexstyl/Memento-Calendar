@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
@@ -26,6 +25,8 @@ import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.util.DateParser;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
 public class StaticEventsContentProvider extends ContentProvider {
 
@@ -49,7 +50,7 @@ public class StaticEventsContentProvider extends ContentProvider {
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
+        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
         PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);

@@ -13,9 +13,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
+
 class FacebookContactsSource implements ContactsProviderSource {
 
-    private static final String IS_A_FACEBOOK_CONTACT = AnnualEventsContract.SOURCE + "== " + AnnualEventsContract.SOURCE_FACEBOOK;
+    private static final String IS_A_FACEBOOK_CONTACT = AnnualEventsContract.SOURCE + "== " + SOURCE_FACEBOOK;
 
     private final EventSQLiteOpenHelper eventSQLHelper;
     private final ContactCache<Contact> cache;

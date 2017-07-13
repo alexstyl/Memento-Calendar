@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 
 import java.util.List;
 
-import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 final public class FacebookFriendsPersister {
 

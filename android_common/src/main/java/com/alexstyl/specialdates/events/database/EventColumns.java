@@ -16,6 +16,4 @@ public interface EventColumns {
 
     String DATE = "date";
     String SOURCE = "source";
-    int SOURCE_DEVICE = 1;
-    int SOURCE_FACEBOOK = 2;
 }

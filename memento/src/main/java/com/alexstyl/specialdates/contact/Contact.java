@@ -2,16 +2,19 @@ package com.alexstyl.specialdates.contact;
 
 import java.net.URI;
 
-public abstract class Contact {
+public class Contact {
 
     private final long contactID;
     private final DisplayName displayName;
     private final URI imagePath;
+    @ContactSource
+    private final int source;
 
-    protected Contact(long id, DisplayName displayName, URI imagePath) {
+    protected Contact(long id, DisplayName displayName, URI imagePath, int source) {
         this.contactID = id;
         this.displayName = displayName;
         this.imagePath = imagePath;
+        this.source = source;
     }
 
     @Override
@@ -35,4 +38,8 @@ public abstract class Contact {
         return imagePath;
     }
 
+    @ContactSource
+    public int getSource() {
+        return source;
+    }
 }

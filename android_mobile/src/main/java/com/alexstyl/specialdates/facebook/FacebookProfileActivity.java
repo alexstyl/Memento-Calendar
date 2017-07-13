@@ -26,7 +26,7 @@ import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 import static com.novoda.notils.caster.Views.findById;
 
 public class FacebookProfileActivity extends ThemedMementoActivity implements FacebookProfileView {

@@ -1,9 +1,8 @@
 package com.alexstyl.specialdates.events;
 
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.DisplayName;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
@@ -21,10 +20,10 @@ public class ContactActionTest {
 
     private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
-    private final TestContact CONTACT_ONE = new TestContact(1, DisplayName.from("Alex Styl"));
+    private final Contact CONTACT_ONE = ContactFixture.withName("Alex Styl");
     private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.on(1, JANUARY, 1990), CONTACT_ONE);
 
-    private final TestContact CONTACT_TWO = new TestContact(2, DisplayName.from("George Peterson"));
+    private final Contact CONTACT_TWO = ContactFixture.withName("George Peterson");
     private final ContactEvent EVENT_TWO = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.on(1, JANUARY, 1970), CONTACT_TWO);
 
     @Test

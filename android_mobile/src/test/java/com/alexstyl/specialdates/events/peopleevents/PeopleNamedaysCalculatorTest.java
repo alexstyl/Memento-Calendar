@@ -1,18 +1,17 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
-import com.alexstyl.specialdates.contact.DisplayName;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.TestNamedayCalendarBuilder;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.TestNamedayCalendarBuilder;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class PeopleNamedaysCalculatorTest {
     private NamedayPreferences mockPreferences;
     @Mock
     private ContactsProvider mockContactsProvider;
-    private final TestContact EASTER_CELEBRATING_CONTACT = new TestContact(1, DisplayName.from("Λάμπρος"));
+    private final Contact EASTER_CELEBRATING_CONTACT = ContactFixture.withName("Λάμπρος");
 
     @Before
     public void setUp() {
@@ -72,8 +71,8 @@ public class PeopleNamedaysCalculatorTest {
 
     private List<Contact> createSomeContacts() {
         ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(new TestContact(12, DisplayName.from("Αβδηρος")));
-        contacts.add(new TestContact(13, DisplayName.from("Αγις")));
+        contacts.add(ContactFixture.withName("Αβδηρος"));
+        contacts.add(ContactFixture.withName(("Αγις")));
         return contacts;
     }
 

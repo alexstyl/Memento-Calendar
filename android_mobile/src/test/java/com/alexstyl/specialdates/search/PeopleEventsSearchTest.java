@@ -1,13 +1,12 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.specialdates.contact.DisplayName;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.service.PeopleEventsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +24,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsSearchTest {
 
-    private static final Contact ALEX = new TestContact(1, DisplayName.from("Alex Styl"));
-    private static final Contact MARIA = new TestContact(2, DisplayName.from("Maria Papadopoulou"));
-    private static final Contact MIMOZA = new TestContact(3, DisplayName.from("Mimoza Dereks"));
+    private static final Contact ALEX = ContactFixture.withName("Alex Styl");
+    private static final Contact MARIA = ContactFixture.withName("Maria Papadopoulou");
+    private static final Contact MIMOZA = ContactFixture.withName("Mimoza Dereks");
     private static final Date JANUARY_1st = Date.startOfTheYear(2016);
 
     private PeopleEventsSearch search;

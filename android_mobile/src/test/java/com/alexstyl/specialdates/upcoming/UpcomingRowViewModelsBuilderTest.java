@@ -5,9 +5,6 @@ import android.support.annotation.NonNull;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.TestContact;
-import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
@@ -25,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.alexstyl.specialdates.contact.ContactFixture.aContact;
 import static com.alexstyl.specialdates.date.DateConstants.*;
 import static com.alexstyl.specialdates.date.TimePeriod.between;
 import static java.util.Arrays.asList;
@@ -160,8 +158,7 @@ public class UpcomingRowViewModelsBuilderTest {
     }
 
     private static ContactEvent aContactEventOn(Date date) {
-        Contact contact = new TestContact(1, DisplayName.NO_NAME);
-        return new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, date, contact);
+        return new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, date, aContact());
     }
 
     private static TimePeriod timeOf(ContactEvent event) {
