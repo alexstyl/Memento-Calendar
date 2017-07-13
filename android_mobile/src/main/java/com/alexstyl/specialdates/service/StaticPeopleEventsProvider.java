@@ -9,16 +9,19 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.SQLArgumentBuilder;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
+import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+<<<<<<< Updated upstream
 import com.alexstyl.specialdates.contact.ContactSource;
+=======
+>>>>>>> Stashed changes
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -84,12 +87,43 @@ class StaticPeopleEventsProvider {
         return Collections.unmodifiableList(contactEvents);
     }
 
+    List<ContactEvent> fetchEventsFor(Contact contact) {
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        Cursor cursor = queryEventsOf(contact);
+        while (cursor.moveToNext()) {
+            try {
+                ContactEvent contactEvent = getContactEventFrom(cursor);
+                contactEvents.add(contactEvent);
+            } catch (ContactNotFoundException e) {
+                Log.w(e);
+            }
+        }
+        cursor.close();
+        return Collections.unmodifiableList(contactEvents);
+    }
+
     private Cursor queryEventsFor(TimePeriod timeDuration) {
         if (isWithinTheSameYear(timeDuration)) {
             return queryPeopleEvents(timeDuration, PeopleEventsContract.PeopleEvents.DATE + " ASC");
         } else {
             return queryAllYearsIn(timeDuration);
         }
+    }
+
+    private Cursor queryEventsOf(Contact contact) {
+        String[] selectArgs = new String[]{
+                String.valueOf(contact.getContactID()),
+                String.valueOf(contact.getSource())
+        };
+
+        return resolver.query(
+                PeopleEventsContract.PeopleEvents.CONTENT_URI,
+                PROJECTION,
+                PeopleEventsContract.PeopleEvents.CONTACT_ID + " = ? " +
+                        "AND " + PeopleEventsContract.PeopleEvents.SOURCE + " = ?",
+                selectArgs,
+                "ASC LIMIT "
+        );
     }
 
     private Cursor queryPeopleEvents(TimePeriod timePeriod, String sortOrder) {
@@ -207,6 +241,10 @@ class StaticPeopleEventsProvider {
     }
 
     @ContactSource
+<<<<<<< Updated upstream
+=======
+    @SuppressWarnings("WrongConstant")
+>>>>>>> Stashed changes
     private int getContactSourceFrom(Cursor cursor) {
         int sourceTypeIdex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.SOURCE);
         return cursor.getInt(sourceTypeIdex);

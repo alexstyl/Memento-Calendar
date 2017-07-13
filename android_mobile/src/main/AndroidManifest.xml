@@ -146,6 +146,8 @@
       android:name=".facebook.FacebookProfileActivity"
       android:label="@string/title_facebook_profile" />
 
+    <activity android:name=".profile.PersonActivity" />
+
     <!-- Services -->
     <service
       android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"

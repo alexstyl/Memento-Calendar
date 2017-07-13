@@ -3,8 +3,6 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.ExternalNavigator;
-import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.donate.DonateMonitor;
@@ -130,7 +128,6 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
 
     @Override
     public void onContactClicked(Contact contact) {
-        analytics.trackAction(new ActionWithParameters(Action.INTERACT_CONTACT, "source", "external"));
-        externalNavigator.toContactDetails(contact);
+        navigator.toContactDetails(contact);
     }
 }

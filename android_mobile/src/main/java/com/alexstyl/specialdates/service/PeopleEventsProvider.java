@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Observable;
 
 public class PeopleEventsProvider {
 
@@ -77,6 +81,21 @@ public class PeopleEventsProvider {
             contactEvents.addAll(namedaysContactEvents);
         }
         return Collections.unmodifiableList(contactEvents);
+    }
+
+    public Observable<List<ContactEvent>> getContactEventsFor(final Contact contact) {
+        return Observable.fromCallable(new Callable<List<ContactEvent>>() {
+            @Override
+            public List<ContactEvent> call() throws Exception {
+                List<ContactEvent> contactEvents = new ArrayList<>();
+                contactEvents.addAll(staticEventsProvider.fetchEventsFor(contact));
+                if (namedayPreferences.isEnabled()) {
+                    List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysFor(contact);
+                    contactEvents.addAll(namedaysContactEvents);
+                }
+                return Collections.unmodifiableList(contactEvents);
+            }
+        });
     }
 
     public Optional<ContactEventsOnADate> getCelebrationsClosestTo(Date date) {
@@ -179,5 +198,4 @@ public class PeopleEventsProvider {
             throw new IllegalArgumentException("Date must contain year");
         }
     }
-
 }
