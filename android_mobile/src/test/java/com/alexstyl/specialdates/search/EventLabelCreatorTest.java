@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.search;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestDateLabelCreator;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.CustomEventType;
@@ -11,7 +12,6 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
@@ -22,8 +22,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class EventLabelCreatorTest {
 
     private ContactEventLabelCreator creator;
-    @Mock
-    private Contact mockContact;
+    private Contact mockContact = ContactFixture.aContact();
 
     @Before
     public void setUp() {

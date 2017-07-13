@@ -5,25 +5,26 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-import com.alexstyl.specialdates.R;
 import com.alexstyl.resources.StringResources;
-import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
+import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.alexstyl.specialdates.events.database.EventTypeId.*;
+
 public enum StandardEventType implements EventType {
-    BIRTHDAY(AnnualEventsContract.TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red, R.drawable.ic_cake, Event.TYPE_BIRTHDAY),
-    NAMEDAY(AnnualEventsContract.TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue, R.drawable.ic_face, -1) {
+    BIRTHDAY(TYPE_BIRTHDAY, R.string.birthday, R.color.birthday_red, R.drawable.ic_cake, Event.TYPE_BIRTHDAY),
+    NAMEDAY(TYPE_NAMEDAY, R.string.nameday, R.color.nameday_blue, R.drawable.ic_face, -1) {
         @Override
         public int getAndroidType() {
             throw new UnsupportedOperationException("Namedays are not an Android supported event");
         }
     },
-    ANNIVERSARY(AnnualEventsContract.TYPE_ANNIVERSARY, R.string.Anniversary, R.color.anniversary_yellow, R.drawable.ic_anniversary, Event.TYPE_ANNIVERSARY),
-    OTHER(AnnualEventsContract.TYPE_OTHER, R.string.Other, R.color.past_date_grey, R.drawable.ic_other, Event.TYPE_OTHER),
-    CUSTOM(AnnualEventsContract.TYPE_CUSTOM, R.string.Custom, R.color.past_date_grey, R.drawable.ic_custom, Event.TYPE_CUSTOM);
+    ANNIVERSARY(TYPE_ANNIVERSARY, R.string.Anniversary, R.color.anniversary_yellow, R.drawable.ic_anniversary, Event.TYPE_ANNIVERSARY),
+    OTHER(TYPE_OTHER, R.string.Other, R.color.past_date_grey, R.drawable.ic_other, Event.TYPE_OTHER),
+    CUSTOM(TYPE_CUSTOM, R.string.Custom, R.color.past_date_grey, R.drawable.ic_custom, Event.TYPE_CUSTOM);
 
     @EventTypeId
     private final int eventTypeId;

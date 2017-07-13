@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
+
 class StaticPeopleEventsProvider {
 
     private static final String DATE_FROM = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) >= ?";
@@ -178,7 +180,7 @@ class StaticPeopleEventsProvider {
     private EventType getEventType(Cursor cursor) {
         int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.EVENT_TYPE);
         @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
-        if (rawEventType == EventColumns.TYPE_CUSTOM) {
+        if (rawEventType == TYPE_CUSTOM) {
             Optional<Long> deviceEventIdFrom = getDeviceEventIdFrom(cursor);
             if (deviceEventIdFrom.isPresent()) {
                 return queryCustomEvent(deviceEventIdFrom.get());

@@ -4,7 +4,8 @@ import android.provider.ContactsContract.CommonDataKinds.Event;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.events.database.EventColumns;
+
+import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
 
 public class CustomEventType implements EventType {
 
@@ -26,7 +27,7 @@ public class CustomEventType implements EventType {
 
     @Override
     public int getId() {
-        return EventColumns.TYPE_CUSTOM;
+        return TYPE_CUSTOM;
     }
 
     @Override
