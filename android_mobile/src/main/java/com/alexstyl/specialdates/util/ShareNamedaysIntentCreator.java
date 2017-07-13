@@ -29,7 +29,7 @@ public class ShareNamedaysIntentCreator {
 
     private String buildSharingTextFor(NamesInADate namesInADate, Date date) {
         StringBuilder str = new StringBuilder();
-        String dateString = stringCreator.fullyFormattedDate(date);
+        String dateString = stringCreator.fullyFormattedDate(date, appContext);
         str
                 .append(context.getString(R.string.days_namedays, dateString))
                 .append("\n").append("\n")

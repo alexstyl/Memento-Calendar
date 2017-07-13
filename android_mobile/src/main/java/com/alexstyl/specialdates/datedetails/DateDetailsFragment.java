@@ -72,7 +72,7 @@ public class DateDetailsFragment extends MementoFragment {
     private DateDetailsAdapter adapter;
     private Analytics analytics;
     private ContactPermissionRequest permissions;
-    private ExternalNavigator externalNavigator;
+    private DateDetailsNavigator dateDetailsNavigator;
     private RecyclerView recyclerView;
     private View emptyView;
     private StringResources stringResources;
@@ -119,7 +119,7 @@ public class DateDetailsFragment extends MementoFragment {
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         PermissionChecker checker = new PermissionChecker(getActivity());
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
-        externalNavigator = new ExternalNavigator(getActivity(), analytics);
+        dateDetailsNavigator = new DateDetailsNavigator(getActivity(), new ExternalNavigator(getActivity(), analytics));
         stringResources = new AndroidStringResources(getResources());
     }
 
@@ -234,8 +234,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onCardClicked(Contact contact) {
-            analytics.trackAction(CONTACT_INTERACT_EXTERNAL);
-            externalNavigator.toContactDetails(contact);
+            dateDetailsNavigator.toContactDetails(contact);
         }
 
         @Override
@@ -272,7 +271,7 @@ public class DateDetailsFragment extends MementoFragment {
             Toast.makeText(getActivity(), R.string.support_thanks_for_rating, Toast.LENGTH_SHORT).show();
             AskForSupport askForSupport = new AskForSupport(getActivity());
             askForSupport.onRateEnd();
-            externalNavigator.toPlayStore();
+            dateDetailsNavigator.toPlayStore();
             adapter.notifyDataSetChanged();
         }
 
