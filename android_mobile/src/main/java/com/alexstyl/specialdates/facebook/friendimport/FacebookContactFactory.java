@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -12,6 +13,8 @@ import com.alexstyl.specialdates.util.DateParser;
 import java.net.URI;
 import java.util.Map;
 
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
+
 class FacebookContactFactory {
 
     private DateParser parser = DateParser.INSTANCE;
@@ -22,7 +25,7 @@ class FacebookContactFactory {
             DisplayName name = nameFrom(map);
             long uid = idOf(map);
             URI imagePath = FacebookImagePath.forUid(uid);
-            return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new FacebookContact(uid, name, imagePath));
+            return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new Contact(uid, name, imagePath, SOURCE_FACEBOOK));
         } catch (DateParseException | IndexOutOfBoundsException ex) {
             throw new InvalidFacebookContactException(ex);
         }

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
-import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -101,6 +100,6 @@ class FacebookContactsSource implements ContactsProviderSource {
         long uid = cursor.getLong(cursor.getColumnIndexOrThrow(AnnualEventsContract.CONTACT_ID));
         DisplayName displayName = DisplayName.from(cursor.getString(cursor.getColumnIndexOrThrow(AnnualEventsContract.DISPLAY_NAME)));
         URI imagePath = FacebookImagePath.forUid(uid);
-        return new FacebookContact(uid, displayName, imagePath);
+        return new Contact(uid, displayName, imagePath, SOURCE_FACEBOOK);
     }
 }

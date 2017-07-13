@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
+import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.util.ContactUtils;
 
 import java.util.ArrayList;
@@ -26,9 +26,10 @@ public class ContactActionFactory {
 
     public List<LabeledAction> createActionsFor(Contact contact) {
         List<LabeledAction> actions = new ArrayList<>(2);
-        if (contact instanceof FacebookContact) {
+        int contactSource = contact.getSource();
+        if (contactSource == ContactSource.SOURCE_FACEBOOK) {
             return createFacebookActionsFor(contact);
-        } else {
+        } else if (contactSource == ContactSource.SOURCE_DEVICE) {
             long contactId = contact.getContactID();
             if (ContactUtils.hasPhoneNumber(resolver, contactId)) {
                 addCallActionIfSupported(actions, contactId);
@@ -39,8 +40,10 @@ public class ContactActionFactory {
             if (hasEmails) {
                 addEmailActionIfSupported(actions, contactId);
             }
+            return actions;
+        } else {
+            throw new IllegalStateException("Unknown contact source " + contactSource);
         }
-        return actions;
     }
 
     private List<LabeledAction> createFacebookActionsFor(Contact contact) {
