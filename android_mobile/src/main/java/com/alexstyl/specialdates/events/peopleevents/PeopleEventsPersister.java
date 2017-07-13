@@ -11,6 +11,7 @@ import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.contact.ContactSource;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
+import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_NAMEDAY;
 
 public final class PeopleEventsPersister {
 
@@ -21,7 +22,7 @@ public final class PeopleEventsPersister {
     }
 
     public void deleteAllNamedays() {
-        deleteAllEventsOfType(AnnualEventsContract.TYPE_NAMEDAY);
+        deleteAllEventsOfType(TYPE_NAMEDAY);
     }
 
     private void deleteAllEventsOfType(@EventTypeId int eventType) {

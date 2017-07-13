@@ -4,6 +4,7 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 import org.junit.Before;
@@ -23,8 +24,8 @@ public class ContactEventTest {
     private static final Date SOME_DATE = Date.on(1, JANUARY, 1990);
     private static final Date SOME_DATE_WITHOUT_YEAR = Date.on(1, JANUARY);
     private static final int CURRENT_YEAR = Date.CURRENT_YEAR;
-    @Mock
-    private Contact ANY_CONTACT;
+
+    private Contact ANY_CONTACT = ContactFixture.aContact();
 
     @Mock
     private StringResources mockResources;
