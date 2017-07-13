@@ -7,17 +7,17 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.events.database.SourceType;
+import com.alexstyl.specialdates.contact.ContactSource;
 
 import java.util.List;
 
 public class ContactEventsMarshaller {
 
     private final DateDisplayStringCreator instance;
-    @SourceType
+    @ContactSource
     private final int source;
 
-    public ContactEventsMarshaller(@SourceType int source) {
+    public ContactEventsMarshaller(@ContactSource int source) {
         this.source = source;
         instance = DateDisplayStringCreator.INSTANCE;
     }

@@ -3,15 +3,16 @@ package com.alexstyl.specialdates.contact;
 import android.content.ContentResolver;
 import android.content.Context;
 
-import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.database.SourceType;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 public class ContactsProvider {
 
@@ -23,8 +24,8 @@ public class ContactsProvider {
     public static ContactsProvider get(Context context) {
         if (INSTANCE == null) {
             Map<Integer, ContactsProviderSource> sources = new HashMap<>();
-            sources.put(AnnualEventsContract.SOURCE_DEVICE, buildAndroidSource(context));
-            sources.put(AnnualEventsContract.SOURCE_FACEBOOK, buildFacebookSource(context));
+            sources.put(SOURCE_DEVICE, buildAndroidSource(context));
+            sources.put(SOURCE_FACEBOOK, buildFacebookSource(context));
             INSTANCE = new ContactsProvider(sources);
         }
         return INSTANCE;
@@ -46,7 +47,7 @@ public class ContactsProvider {
         this.sources = sources;
     }
 
-    public Contact getContact(long contactID, @SourceType int source) throws ContactNotFoundException {
+    public Contact getContact(long contactID, @ContactSource int source) throws ContactNotFoundException {
         if (sources.containsKey(source)) {
             ContactsProviderSource contactsProviderSource = sources.get(source);
             return contactsProviderSource.getOrCreateContact(contactID);

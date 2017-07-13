@@ -1,10 +1,9 @@
 package com.alexstyl.specialdates.service;
 
-import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -34,7 +33,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsProviderTest {
 
-    private static final Contact PETER = new TestContact(1, DisplayName.from("Peter"));
+    private static final Contact PETER = ContactFixture.withName("Peter");
 
     @Mock
     private ContactsProvider mockContactsProvider;

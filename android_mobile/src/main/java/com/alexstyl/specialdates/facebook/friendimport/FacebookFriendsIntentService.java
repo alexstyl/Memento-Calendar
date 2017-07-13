@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.facebook.UserCredentials;
 import java.net.URL;
 import java.util.List;
 
-import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();

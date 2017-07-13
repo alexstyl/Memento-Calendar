@@ -18,7 +18,7 @@ import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.events.database.SourceType;
+import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -204,7 +204,7 @@ class StaticPeopleEventsProvider {
         return cursor.getLong(contactIdIndex);
     }
 
-    @SourceType
+    @ContactSource
     private int getContactSourceFrom(Cursor cursor) {
         int sourceTypeIdex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.SOURCE);
         return cursor.getInt(sourceTypeIdex);

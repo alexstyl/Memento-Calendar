@@ -5,10 +5,10 @@ import com.alexstyl.specialdates.contact.DisplayName;
 
 import java.net.URI;
 
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
+
 public class FacebookContact extends Contact {
-
     public FacebookContact(long uid, DisplayName name, URI imagePath) {
-        super(uid, name, imagePath);
+        super(uid, name, imagePath, SOURCE_FACEBOOK);
     }
-
 }
