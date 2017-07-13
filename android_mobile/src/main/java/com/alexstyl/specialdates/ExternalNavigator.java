@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.facebook.friendimport.FacebookContact;
+import com.alexstyl.specialdates.contact.ContactSource;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 public class ExternalNavigator {
@@ -48,10 +48,12 @@ public class ExternalNavigator {
     }
 
     public void toContactDetails(Contact contact) {
-        if (contact instanceof FacebookContact) {
+        if (contact.getSource() == ContactSource.SOURCE_FACEBOOK) {
             toFacebookContactDetails(contact);
-        } else {
+        } else if (contact.getSource() == ContactSource.SOURCE_DEVICE) {
             toDeviceContactDetails(contact);
+        } else {
+            throw new IllegalStateException("Invalid contact source " + contact.getSource());
         }
     }
 

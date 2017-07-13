@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.contact;
 
 import java.net.URI;
 
-public class Contact {
+public final class Contact {
 
     private final long contactID;
     private final DisplayName displayName;
@@ -10,7 +10,7 @@ public class Contact {
     @ContactSource
     private final int source;
 
-    protected Contact(long id, DisplayName displayName, URI imagePath, int source) {
+    public Contact(long id, DisplayName displayName, URI imagePath, int source) {
         this.contactID = id;
         this.displayName = displayName;
         this.imagePath = imagePath;
