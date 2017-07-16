@@ -119,7 +119,7 @@ public class DateDetailsFragment extends MementoFragment {
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         PermissionChecker checker = new PermissionChecker(getActivity());
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
-        dateDetailsNavigator = new DateDetailsNavigator(getActivity(), new ExternalNavigator(getActivity(), analytics));
+        dateDetailsNavigator = new DateDetailsNavigator(getActivity(), analytics, new ExternalNavigator(getActivity(), analytics));
         stringResources = new AndroidStringResources(getResources());
     }
 

@@ -18,10 +18,6 @@ import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-<<<<<<< Updated upstream
-import com.alexstyl.specialdates.contact.ContactSource;
-=======
->>>>>>> Stashed changes
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -241,10 +237,7 @@ class StaticPeopleEventsProvider {
     }
 
     @ContactSource
-<<<<<<< Updated upstream
-=======
     @SuppressWarnings("WrongConstant")
->>>>>>> Stashed changes
     private int getContactSourceFrom(Cursor cursor) {
         int sourceTypeIdex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.SOURCE);
         return cursor.getInt(sourceTypeIdex);
