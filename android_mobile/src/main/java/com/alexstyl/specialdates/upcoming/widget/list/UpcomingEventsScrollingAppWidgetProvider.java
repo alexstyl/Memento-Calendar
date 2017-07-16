@@ -45,7 +45,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
 
     private void showUpcomingEvents(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Date date = Date.today();
-        String dateLabel = DateDisplayStringCreator.INSTANCE.fullyFormattedDate(date, context);
+        String dateLabel = DateDisplayStringCreator.INSTANCE.fullyFormattedDate(date);
 
         for (int appWidgetId : appWidgetIds) {
             Intent intent = new Intent(context, UpcomingEventsRemoteViewService.class);
