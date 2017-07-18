@@ -36,7 +36,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
 
-        presenter = new PersonPresenter(this, PeopleEventsProvider.newInstance(thisActivity()), Schedulers.io(), AndroidSchedulers.mainThread(), new PersonDetailsViewModelFactory());
+        presenter = new PersonPresenter(this, PeopleEventsProvider.newInstance(thisActivity()), Schedulers.io(), AndroidSchedulers.mainThread());
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);

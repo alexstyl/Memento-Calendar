@@ -5,38 +5,29 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.service.PeopleEventsProvider
 import io.reactivex.Scheduler
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 internal class PersonPresenter(private val personView: PersonView,
                                private val provider: PeopleEventsProvider,
                                private val workScheduler: Scheduler,
-                               private val resultScheduler: Scheduler,
-                               private val toViewModel: PersonDetailsViewModelFactory) {
+                               private val resultScheduler: Scheduler) {
 
-    private val disposable = CompositeDisposable()
 
+    private var disposable: Disposable? = null
+    private var toViewModel = PersonDetailsViewModelFactory()
 
     fun startPresenting(contact: Contact) {
-//        val viewModelObservable: Observable<PersonDetailsViewModel> =
-//                Observable.combineLatest<Contact, ContactEvent?, PersonDetailsViewModel>(
-//                        Observable.just(contact),
-//                        provider.getContactEventsFor(contact)
-//                                .map { keepOnlyBirthday(it) },
-//                        toViewModel
-//                )
-//
-//        disposable.add(
-//                viewModelObservable
-//                        .observeOn(resultScheduler)
-//                        .subscribeOn(workScheduler)
-//                        .subscribe({ personView.displayInfoFor(it) })
-//        )
-
+        disposable =
+                provider.getContactEventsFor(contact)
+                        .map { toViewModel(contact, it.keepOnlyBirthday()) }
+                        .observeOn(resultScheduler)
+                        .subscribeOn(workScheduler)
+                        .subscribe({ personView.displayInfoFor(it) })
     }
 
-    private fun keepOnlyBirthday(it: MutableList<ContactEvent>) = it.find { it.type == StandardEventType.BIRTHDAY }
+    private fun List<ContactEvent>.keepOnlyBirthday() = find { it.type == StandardEventType.BIRTHDAY }
 
     fun stopPresenting() {
-        disposable.dispose()
+        disposable?.dispose()
     }
 }

@@ -3,11 +3,10 @@ package com.alexstyl.specialdates.person
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
-import java.util.function.BiFunction
 
-internal class PersonDetailsViewModelFactory : BiFunction<Contact, ContactEvent?, PersonDetailsViewModel> {
+internal class PersonDetailsViewModelFactory {
 
-    override fun apply(contact: Contact, contactEvent: ContactEvent?): PersonDetailsViewModel {
+    operator fun invoke(contact: Contact, contactEvent: ContactEvent?): PersonDetailsViewModel {
         val ageAndStarSignBuilder = StringBuilder()
         if (contactEvent != null) {
             ageAndStarSignBuilder.append(ageOf(contactEvent.date!!))
