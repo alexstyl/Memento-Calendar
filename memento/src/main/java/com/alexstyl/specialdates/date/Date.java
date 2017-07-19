@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.Optional;
 
 import java.util.Locale;
 
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
@@ -11,7 +12,7 @@ import org.joda.time.LocalDate;
 /**
  * A specific date on a specific year
  */
-public class Date {
+public class Date implements Comparable<Date> {
 
     private final LocalDate localDate;
     private final Optional<Integer> year;
@@ -133,5 +134,24 @@ public class Date {
         int result = localDate.hashCode();
         result = 31 * result + year.hashCode();
         return result;
+    }
+
+    @Override
+    public int compareTo(@NotNull Date right) {
+        if (this.hasYear() && right.hasYear()) {
+            int yearOne = this.getYear();
+            int yearTwo = right.getYear();
+            if (yearOne > yearTwo) {
+                return 1;
+            } else if (yearOne < yearTwo) {
+                return -1;
+            }
+        }
+        if (this.getMonth() < right.getMonth()) {
+            return -1;
+        } else if (this.getMonth() > right.getMonth()) {
+            return 1;
+        }
+        return this.getDayOfMonth() - right.getDayOfMonth();
     }
 }
