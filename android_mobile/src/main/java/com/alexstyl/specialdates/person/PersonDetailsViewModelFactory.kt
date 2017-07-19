@@ -1,10 +1,11 @@
 package com.alexstyl.specialdates.person
 
+import com.alexstyl.resources.StringResources
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 
-internal class PersonDetailsViewModelFactory {
+internal class PersonDetailsViewModelFactory(val stringResources: StringResources) {
 
     operator fun invoke(contact: Contact, contactEvent: ContactEvent?): PersonDetailsViewModel {
         val ageAndStarSignBuilder = StringBuilder()
@@ -26,8 +27,8 @@ internal class PersonDetailsViewModelFactory {
     }
 
     private fun starSignOf(birthday: Date): String {
-        // TODO
-        return "Sagittarius"
+        val starSign = StarSign.forDateOfBirth(birthday)
+        return stringResources.getString(starSign.labelStringRes);
     }
 }
 

@@ -197,4 +197,16 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Memento_on_Github">Memento on Github</string>
   <string name="Import_Birthdays">Import Birthdays</string>
   <string name="New">New</string>
+  <string name="starsigns_aquarius">Aquarius</string>
+  <string name="starsigns_pisces">Pisces</string>
+  <string name="starsigns_aries">Aries</string>
+  <string name="starsigns_taurus">Taurus</string>
+  <string name="starsigns_gemini">Gemini</string>
+  <string name="starsigns_cancer">Cancer</string>
+  <string name="starsigns_leo">Leo</string>
+  <string name="starsigns_virgo">Virgo</string>
+  <string name="starsigns_libra">Libra</string>
+  <string name="starsigns_scorpio">Scorpio</string>
+  <string name="starsigns_sagittarius">Sagittarius</string>
+  <string name="starsigns_capricorn">Capricorn</string>
 </resources>
