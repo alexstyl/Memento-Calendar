@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.person
 
+import com.alexstyl.resources.StringResources
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent
@@ -9,12 +10,13 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
 import org.mockito.runners.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class PersonDetailsViewModelFactoryTest {
 
-    private val toViewModel = PersonDetailsViewModelFactory()
+    private val toViewModel = PersonDetailsViewModelFactory(mock(StringResources::class.java));
 
     @Test
     fun whenPassingAContact_thenAlwaysReturnItsName() {

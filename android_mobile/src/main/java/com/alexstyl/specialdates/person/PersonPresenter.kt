@@ -10,11 +10,11 @@ import io.reactivex.disposables.Disposable
 internal class PersonPresenter(private val personView: PersonView,
                                private val provider: PeopleEventsProvider,
                                private val workScheduler: Scheduler,
-                               private val resultScheduler: Scheduler) {
+                               private val resultScheduler: Scheduler,
+                               private val toViewModel: PersonDetailsViewModelFactory) {
 
 
     private var disposable: Disposable? = null
-    private var toViewModel = PersonDetailsViewModelFactory()
 
     fun startPresenting(contact: Contact) {
         disposable =

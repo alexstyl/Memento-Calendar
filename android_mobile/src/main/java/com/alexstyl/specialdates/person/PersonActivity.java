@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
@@ -30,19 +32,33 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private PersonPresenter presenter;
     private ImageView avatarView;
     private ImageLoader imageLoader;
+    private TextView personNameView;
+    private TextView ageAndSignView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
 
-        presenter = new PersonPresenter(this, PeopleEventsProvider.newInstance(thisActivity()), Schedulers.io(), AndroidSchedulers.mainThread());
+        presenter = new PersonPresenter(
+                this,
+                PeopleEventsProvider.newInstance(thisActivity()),
+                Schedulers.io(),
+                AndroidSchedulers.mainThread(),
+                new PersonDetailsViewModelFactory(
+                        new AndroidStringResources(getResources()) // TODO inject this
+                )
+        );
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
         avatarView = Views.findById(this, R.id.person_avatar);
+        personNameView = Views.findById(this, R.id.person_name);
+        ageAndSignView = Views.findById(this, R.id.person_age_and_sign);
 
         imageLoader = UILImageLoader.createLoader(getResources()); // TODO inject this
+
+        setTitle(null);
 
         Optional<Contact> contact = extractContactFrom(getIntent());
         if (contact.isPresent()) {
@@ -80,7 +96,8 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     @Override
     public void displayInfoFor(PersonDetailsViewModel viewModel) {
         imageLoader.loadImage(viewModel.getImage(), avatarView);
-        setTitle(viewModel.getDisplayName());
+        personNameView.setText(viewModel.getDisplayName());
+        ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
     }
 
     @Override
