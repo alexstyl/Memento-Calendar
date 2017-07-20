@@ -146,7 +146,7 @@
       android:name=".facebook.FacebookProfileActivity"
       android:label="@string/title_facebook_profile" />
 
-    <activity android:name=".profile.PersonActivity" />
+    <activity android:name=".person.PersonActivity" />
 
     <!-- Services -->
     <service

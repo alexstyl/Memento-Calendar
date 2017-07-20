@@ -118,7 +118,7 @@ class StaticPeopleEventsProvider {
                 PeopleEventsContract.PeopleEvents.CONTACT_ID + " = ? " +
                         "AND " + PeopleEventsContract.PeopleEvents.SOURCE + " = ?",
                 selectArgs,
-                "ASC LIMIT "
+                null
         );
     }
 

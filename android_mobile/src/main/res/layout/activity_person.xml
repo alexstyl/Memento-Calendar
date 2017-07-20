@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true">
@@ -35,7 +36,6 @@
         android:rotation="180"
         android:src="@drawable/black_to_transparent_gradient_facing_down" />
 
-
       <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -53,17 +53,54 @@
     android:clipToPadding="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical">
 
-      <View
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:background="#caf9eb" />
 
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimary"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:id="@+id/person_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/Person.Name"
+          tools:text="Cora Fernandez" />
+
+        <TextView
+          android:id="@+id/person_age_and_sign"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          style="@style/Person.AgeAndSign"
+          tools:text="26, Pisces" />
+
+      </LinearLayout>
+
+
+      <android.support.design.widget.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      </android.support.design.widget.TabLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#F6F6F6" />
+
+      </LinearLayout>
     </LinearLayout>
   </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
