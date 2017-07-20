@@ -3,10 +3,13 @@ package com.alexstyl.specialdates.person;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -15,11 +18,13 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.logger.simple.Log;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -34,20 +39,22 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private ImageLoader imageLoader;
     private TextView personNameView;
     private TextView ageAndSignView;
+    private ViewPager viewPager;
+    private ContactItemsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
 
+        StringResources stringResources = new AndroidStringResources(getResources());// TODO inject this
         presenter = new PersonPresenter(
                 this,
                 PeopleEventsProvider.newInstance(thisActivity()),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
-                new PersonDetailsViewModelFactory(
-                        new AndroidStringResources(getResources()) // TODO inject this
-                )
+                new PersonDetailsViewModelFactory(stringResources),
+                new EventViewModelFactory(stringResources)
         );
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
@@ -55,7 +62,16 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         avatarView = Views.findById(this, R.id.person_avatar);
         personNameView = Views.findById(this, R.id.person_name);
         ageAndSignView = Views.findById(this, R.id.person_age_and_sign);
+        viewPager = Views.findById(this, R.id.person_viewpager);
 
+        adapter = new ContactItemsAdapter(LayoutInflater.from(thisActivity()), new EventPressedListener() {
+            @Override
+            public void onEventPressed(Date date) {
+                Log.d("onEventPressed: " + date);
+            }
+        });
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
         imageLoader = UILImageLoader.createLoader(getResources()); // TODO inject this
 
         setTitle(null);
@@ -94,10 +110,15 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     }
 
     @Override
-    public void displayInfoFor(PersonDetailsViewModel viewModel) {
+    public void displayInfoFor(PersonInfoViewModel viewModel) {
         imageLoader.loadImage(viewModel.getImage(), avatarView);
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
+    }
+
+    @Override
+    public void displayContactMethods(PersonContactViewModel viewModel) {
+        adapter.displayEvents(viewModel);
     }
 
     @Override

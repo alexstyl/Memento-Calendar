@@ -68,39 +68,54 @@
 
         <TextView
           android:id="@+id/person_name"
+          style="@style/Person.Name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          style="@style/Person.Name"
           tools:text="Cora Fernandez" />
 
         <TextView
           android:id="@+id/person_age_and_sign"
+          style="@style/Person.AgeAndSign"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-          style="@style/Person.AgeAndSign"
           tools:text="26, Pisces" />
 
       </LinearLayout>
 
 
-      <android.support.design.widget.TabLayout
+      <android.support.v4.view.ViewPager
+        android:id="@+id/person_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="360dp">
+        <!-- TODO make 360dp go match_parent/wrap_content-->
 
-      </android.support.design.widget.TabLayout>
+        <android.support.design.widget.TabLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="?colorPrimaryDark"
+          app:tabMinWidth="52dp">
 
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+          <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_gift" />
 
-        <View
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:background="#F6F6F6" />
+          <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_call" />
 
-      </LinearLayout>
+          <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_message" />
+
+
+        </android.support.design.widget.TabLayout>
+
+      </android.support.v4.view.ViewPager>
+
     </LinearLayout>
   </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
