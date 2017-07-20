@@ -14,7 +14,7 @@ import org.mockito.Mockito.mock
 import org.mockito.runners.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class PersonDetailsViewModelFactoryTest {
+class PersonInfoViewModelFactoryTest {
 
     private val toViewModel = PersonDetailsViewModelFactory(mock(StringResources::class.java));
 

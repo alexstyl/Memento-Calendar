@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.person;
 
 interface PersonView {
-    void displayInfoFor(PersonDetailsViewModel viewModel);
+    void displayInfoFor(PersonInfoViewModel viewModel);
+
+    void displayContactMethods(PersonContactViewModel viewModel);
 }
