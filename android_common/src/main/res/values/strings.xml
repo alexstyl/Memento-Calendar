@@ -94,7 +94,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Slovak">Slovak</string>
   <string name="Russian">Russian</string>
   <string name="Latvian">Latvian Traditional</string>
-  <string name="LatvianExt">Latvian Extended</string>
+  <string name="Latvian_Extended">Latvian Extended</string>
   <string name="Hungarian">Hungarian</string>
   <string name="nameday_language_title">Nameday Calendar</string>
   <string name="no_sound">Silent</string>
