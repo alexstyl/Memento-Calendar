@@ -11,6 +11,7 @@ public enum NamedayLocale {
     ROMANIAN("ro", false, R.string.Romanian, R.raw.ro_namedays),
     RUSSIAN("ru", false, R.string.Russian, R.raw.ru_namedays),
     LATVIAN("lv", false, R.string.Latvian, R.raw.lv_namedays),
+    LATVIAN_EXTENDED("lv_LV", false, R.string.Latvian_Extended, R.raw.lv_ext_namedays),
     SLOVAK("sk", false, R.string.Slovak, R.raw.sk_namedays),
     ITALIAN("it", false, R.string.Italian, R.raw.it_namedays),
     CZECH("cs", false, R.string.Czech, R.raw.cs_namedays);
