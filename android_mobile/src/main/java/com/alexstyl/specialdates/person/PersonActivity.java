@@ -1,8 +1,11 @@
 package com.alexstyl.specialdates.person;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -26,8 +29,11 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 
+import java.net.URI;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.jvm.functions.Function1;
 
 public class PersonActivity extends ThemedMementoActivity implements PersonView {
 
@@ -48,10 +54,26 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         setContentView(R.layout.activity_person);
 
         StringResources stringResources = new AndroidStringResources(getResources());// TODO inject this
+        Function1<URI, Runnable> androidRunActions = new Function1<URI, Runnable>() {
+            @Override
+            public Runnable invoke(final URI uri) {
+                return new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri.toString()));
+                        thisActivity().startActivity(intent);
+                    }
+                };
+            }
+        };
+
         presenter = new PersonPresenter(
                 this,
                 PeopleEventsProvider.newInstance(thisActivity()),
-                new PersonCallProvider(getResources(), getContentResolver(), thisActivity()),
+                new PersonCallProvider(getResources(), getContentResolver(), thisActivity(),
+                                       new AndroidContactActionsProvider(),
+                                       new FacebookContactActionsProvider(this, stringResources, getResources(), androidRunActions)
+                ),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
                 new PersonDetailsViewModelFactory(stringResources),
@@ -64,6 +86,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         personNameView = Views.findById(this, R.id.person_name);
         ageAndSignView = Views.findById(this, R.id.person_age_and_sign);
         viewPager = Views.findById(this, R.id.person_viewpager);
+        TabLayout tabLayout = Views.findById(this, R.id.person_tabs);
 
         adapter = new ContactItemsAdapter(LayoutInflater.from(thisActivity()), new EventPressedListener() {
             @Override
@@ -79,6 +102,8 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
         imageLoader = UILImageLoader.createLoader(getResources()); // TODO inject this
+
+        tabLayout.setupWithViewPager(viewPager);
 
         setTitle(null);
 
