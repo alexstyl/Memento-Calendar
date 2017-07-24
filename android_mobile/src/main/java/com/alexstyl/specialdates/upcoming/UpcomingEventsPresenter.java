@@ -60,7 +60,9 @@ class UpcomingEventsPresenter implements OnUpcomingEventClickedListener {
     }
 
     void refreshData() {
-        view.showLoading();
+        if (view.isDisplayingNoData()) {
+            view.showLoading();
+        }
 
         upcomingEventsAsyncProvider.reloadData(new UpcomingEventsAsyncProvider.Callback() {
             @Override

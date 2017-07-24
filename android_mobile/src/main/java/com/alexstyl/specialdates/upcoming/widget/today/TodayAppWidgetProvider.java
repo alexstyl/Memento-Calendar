@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Widget;
@@ -30,11 +31,12 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private WidgetImageLoader imageLoader;
     private StringResources stringResources;
     private UpcomingWidgetPreferences preferences;
-    private TodayPeopleEventsView todayPeopleEventsView;
     private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Context context = MementoApplication.getContext();
+            TodayPeopleEventsView todayPeopleEventsView = new TodayPeopleEventsView(context, AppWidgetManager.getInstance(context));
             todayPeopleEventsView.requestUpdate();
         }
     };
@@ -43,31 +45,31 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
-        preferences = new UpcomingWidgetPreferences(context);
-        todayPeopleEventsView = new TodayPeopleEventsView(context, AppWidgetManager.getInstance(context));
-        preferences.addListener(listener);
+        preferences(context).addListener(listener);
+    }
+
+    private UpcomingWidgetPreferences preferences(Context context) {
+        if (preferences == null) {
+            preferences = new UpcomingWidgetPreferences(context);
+        }
+        return preferences;
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
         AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
-        preferences.removeListener(listener);
+        preferences(context).removeListener(listener);
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        getOrCreateImageLoader(context);
-        super.onReceive(context, intent);
-    }
-
-    private void getOrCreateImageLoader(Context context) {
+    private WidgetImageLoader imageLoader(Context context) {
         if (imageLoader == null) {
             imageLoader = new WidgetImageLoader(
                     AppWidgetManager.getInstance(context),
                     UILImageLoader.createLoader(context.getResources())
             );
         }
+        return imageLoader;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         }.execute();
     }
 
-    StringResources getOrCreateStringResources(Resources resources) {
+    StringResources stringResources(Resources resources) {
         if (stringResources == null) {
             stringResources = new AndroidStringResources(resources);
         }
@@ -116,11 +118,11 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         final int N = appWidgetIds.length;
 
-        String label = NaturalLanguageUtils.joinContacts(getOrCreateStringResources(context.getResources()), contactEvents.getContacts(), 2);
+        String label = NaturalLanguageUtils.joinContacts(stringResources(context.getResources()), contactEvents.getContacts(), 2);
 
-        WidgetVariant selectedVariant = preferences.getSelectedVariant();
+        WidgetVariant selectedVariant = preferences(context).getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
-        float opacity = preferences.getOppacityLevel();
+        float opacity = preferences(context).getOppacityLevel();
         int selectedTextColor = context.getResources().getColor(selectedVariant.getTextColor());
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
@@ -146,7 +148,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
-            imageLoader.loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
+            imageLoader(context).loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
         }
     }
 
