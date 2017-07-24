@@ -9,4 +9,6 @@ interface UpcomingListMVPView {
     void display(List<UpcomingRowViewModel> events);
 
     void showFirstEvent();
+
+    boolean isDisplayingNoData();
 }

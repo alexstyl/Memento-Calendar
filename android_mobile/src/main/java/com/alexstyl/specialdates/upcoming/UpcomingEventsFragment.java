@@ -132,6 +132,11 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
+    public boolean isDisplayingNoData() {
+        return upcomingList.getChildCount() == 0;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.stopPresenting();
