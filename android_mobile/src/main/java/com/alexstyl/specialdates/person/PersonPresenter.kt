@@ -28,7 +28,7 @@ internal class PersonPresenter(private val personView: PersonView,
                         .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
                         .subscribe({
-                            personView.displayInfoFor(it)
+                            personView.displayPersonInfo(it)
                         }))
 
 
@@ -36,16 +36,16 @@ internal class PersonPresenter(private val personView: PersonView,
                 Observable.zip(
                         eventsOf(contact),
                         personCallProvider.getCallsFor(contact),
-                        BiFunction<List<ContactEventViewModel>, List<ContactActionViewModel>, PersonContactViewModel>
+                        BiFunction<List<ContactEventViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
                         {
                             t1, t2 ->
-                            PersonContactViewModel(t1, t2, ArrayList())
+                            PersonAvailableActionsViewModel(t1, t2, ArrayList())
                         }
                 )
                         .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
                         .subscribe({
-                            personView.displayContactMethods(it)
+                            personView.displayAvailableActions(it)
                         }))
     }
 
