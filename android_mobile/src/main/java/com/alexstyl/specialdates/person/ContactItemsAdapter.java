@@ -20,7 +20,7 @@ class ContactItemsAdapter extends PagerAdapter {
     private final LayoutInflater inflater;
     private final EventPressedListener listener;
 
-    private PersonContactViewModel viewModel;
+    private PersonAvailableActionsViewModel viewModel;
 
     ContactItemsAdapter(LayoutInflater inflater, EventPressedListener listener) {
         this.inflater = inflater;
@@ -66,7 +66,7 @@ class ContactItemsAdapter extends PagerAdapter {
         return view == object;
     }
 
-    void displayEvents(PersonContactViewModel viewModel) {
+    void displayEvents(PersonAvailableActionsViewModel viewModel) {
         this.viewModel = viewModel;
         notifyDataSetChanged();
     }

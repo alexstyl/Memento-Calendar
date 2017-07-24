@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.person;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,11 +27,8 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 
-import java.net.URI;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import kotlin.jvm.functions.Function1;
 
 public class PersonActivity extends ThemedMementoActivity implements PersonView {
 
@@ -120,14 +116,14 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     }
 
     @Override
-    public void displayInfoFor(PersonInfoViewModel viewModel) {
+    public void displayPersonInfo(PersonInfoViewModel viewModel) {
         imageLoader.loadImage(viewModel.getImage(), avatarView);
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
     }
 
     @Override
-    public void displayContactMethods(PersonContactViewModel viewModel) {
+    public void displayAvailableActions(PersonAvailableActionsViewModel viewModel) {
         adapter.displayEvents(viewModel);
     }
 
