@@ -51,6 +51,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         presenter = new PersonPresenter(
                 this,
                 PeopleEventsProvider.newInstance(thisActivity()),
+                new PersonCallProvider(getResources()),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
                 new PersonDetailsViewModelFactory(stringResources),
@@ -68,6 +69,12 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
             @Override
             public void onEventPressed(Date date) {
                 Log.d("onEventPressed: " + date);
+            }
+
+            @Override
+            public void onContactMethodPressed(Intent intent) {
+                Log.d("onContactMethodPressed: " + intent);
+                startActivity(intent);
             }
         });
         viewPager.setAdapter(adapter);
