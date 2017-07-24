@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CallAdapter extends RecyclerView.Adapter<CallViewHolder> {
 
-    private final List<ContactCallViewModel> viewModels = new ArrayList<>();
+    private final List<ContactActionViewModel> viewModels = new ArrayList<>();
     private final EventPressedListener listener;
 
     CallAdapter(EventPressedListener listener) {
@@ -41,7 +41,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallViewHolder> {
         return viewModels.size();
     }
 
-    public void displayCallMethods(List<ContactCallViewModel> viewModels) {
+    public void displayCallMethods(List<ContactActionViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyItemRangeChanged(0, viewModels.size());

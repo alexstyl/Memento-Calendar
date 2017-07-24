@@ -66,7 +66,7 @@ class ContactItemsAdapter extends PagerAdapter {
     @SuppressWarnings("unchecked")
     void displayEvents(PersonContactViewModel events) {
         viewHolders.get(PAGE_EVENTS).bind(events.getEvents());
-        viewHolders.get(PAGE_CALLS).bind(events.getCalls());
+        viewHolders.get(PAGE_CALLS).bind(events.getActions());
 //        viewHolders.get(PAGE_MESSAGES).bind(events.getMessages());
     }
 

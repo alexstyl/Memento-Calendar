@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates.person
 
-class CallPageViewHolder(val adapter: CallAdapter) : PageViewHolder<ContactCallViewModel> {
+class CallPageViewHolder(val adapter: CallAdapter) : PageViewHolder<ContactActionViewModel> {
 
-    override fun bind(viewModel: List<ContactCallViewModel>) {
+    override fun bind(viewModel: List<ContactActionViewModel>) {
         adapter.displayCallMethods(viewModel)
     }
 }
