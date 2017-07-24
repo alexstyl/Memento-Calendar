@@ -2,12 +2,14 @@ package com.alexstyl.specialdates.person;
 
 import android.os.Bundle;
 
+import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayGroundActivity extends ThemedMementoActivity {
@@ -16,10 +18,19 @@ public class PlayGroundActivity extends ThemedMementoActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AndroidContactActionsProvider actionsProvider = new AndroidContactActionsProvider(getContentResolver());
+        AndroidContactCallActionsProvider actionsProvider = new AndroidContactCallActionsProvider(
+                getContentResolver(),
+                new AndroidStringResources(getResources()),
+                new AndroidContactActionsFactory(thisActivity())
+        );
 
-        List<ContactActionViewModel> actions = actionsProvider.buildActionsFor(new Contact(250L, DisplayName.NO_NAME, URI.create(""), ContactSource.SOURCE_DEVICE));
-
+        Contact contact = new Contact(250L, DisplayName.NO_NAME, URI.create(""), ContactSource.SOURCE_DEVICE);
+        List<ContactAction> actions = new ArrayList<>();
+        actions.addAll(actionsProvider.callActionsFor(contact));
+        actions.addAll(actionsProvider.customActionsFor(contact));
+        for (ContactAction action : actions) {
+            print(action.toString());
+        }
         print("done");
 
     }
