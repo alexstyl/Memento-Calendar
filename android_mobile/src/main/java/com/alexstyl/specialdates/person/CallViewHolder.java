@@ -17,14 +17,14 @@ class CallViewHolder extends RecyclerView.ViewHolder {
         this.iconView = iconView;
     }
 
-    public void bind(final ContactCallViewModel viewModel, final EventPressedListener listener) {
-        callTypeView.setText(viewModel.getPhoneLabel());
-        numberView.setText(viewModel.getPhoneNumber());
-        iconView.setImageDrawable(viewModel.getPhoneicon());
+    public void bind(final ContactActionViewModel viewModel, final EventPressedListener listener) {
+        callTypeView.setText(viewModel.getLabel());
+        numberView.setText(viewModel.getIdentifier());
+        iconView.setImageDrawable(viewModel.getIcon());
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onContactMethodPressed(viewModel.getStartIntent());
+                listener.onContactActionPressed(viewModel);
             }
         });
     }
