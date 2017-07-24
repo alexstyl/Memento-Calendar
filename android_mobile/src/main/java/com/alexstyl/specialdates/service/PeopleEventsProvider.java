@@ -82,24 +82,29 @@ public class PeopleEventsProvider {
     public Optional<ContactEventsOnADate> getCelebrationsClosestTo(Date date) {
         ensureDateHasYear(date);
 
-        Optional<ContactEventsOnADate> staticEvents = findNextStaticEventsOn(date);
-        Optional<ContactEventsOnADate> dynamicEvents;
-        if (namedayPreferences.isEnabled()) {
-            dynamicEvents = findNextDynamicEventsOn(date);
-        } else {
-            dynamicEvents = Optional.absent();
-        }
+        Optional<ContactEventsOnADate> staticEvents = findNextStaticEventsFor(date);
+        Optional<ContactEventsOnADate> dynamicEvents = findNextDynamicEventFor(date);
         return returnClosestEventsOrMerge(staticEvents, dynamicEvents);
 
     }
 
-    private Optional<ContactEventsOnADate> findNextStaticEventsOn(Date date) {
+    private Optional<ContactEventsOnADate> findNextStaticEventsFor(Date date) {
         try {
             Date closestStaticDate = staticEventsProvider.findClosestStaticEventDateFrom(date);
             return new Optional<>(staticEventsProvider.fetchEventsOn(closestStaticDate));
         } catch (NoEventsFoundException e) {
             return Optional.absent();
         }
+    }
+
+    private Optional<ContactEventsOnADate> findNextDynamicEventFor(Date date) {
+        Optional<ContactEventsOnADate> dynamicEvents;
+        if (namedayPreferences.isEnabled()) {
+            dynamicEvents = findNextDynamicEventsOn(date);
+        } else {
+            dynamicEvents = Optional.absent();
+        }
+        return dynamicEvents;
     }
 
     private Optional<ContactEventsOnADate> findNextDynamicEventsOn(Date date) {
@@ -127,7 +132,7 @@ public class PeopleEventsProvider {
                 return contactEventDate;
             }
         }
-        return date;
+        throw new NoEventsFoundException("No dynamic even found after or on " + date);
     }
 
     private Optional<ContactEventsOnADate> returnClosestEventsOrMerge(Optional<ContactEventsOnADate> staticEvents, Optional<ContactEventsOnADate> dynamicEvents) {

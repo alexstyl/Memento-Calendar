@@ -144,7 +144,7 @@ class StaticPeopleEventsProvider {
                                date.getYear()
                 );
             }
-            throw new NoEventsFoundException();
+            throw new NoEventsFoundException("No static even found after or on " + date);
         } finally {
             cursor.close();
         }
