@@ -20,9 +20,8 @@ internal class PersonDetailsViewModelFactory(val stringResources: StringResource
     }
 
     private fun ageOf(birthday: Date): String {
-        // TODO
         if (birthday.hasYear()) {
-            return 24.toString()
+            return (Date.CURRENT_YEAR - birthday.year).toString()
         }
         return ""
     }
