@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.person;
 
-import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,29 +20,33 @@ class ContactItemsAdapter extends PagerAdapter {
     private final LayoutInflater inflater;
     private final EventPressedListener listener;
 
-    private final SparseArrayCompat<PageViewHolder> viewHolders = new SparseArrayCompat<>(PAGE_COUNT);
+    private PersonContactViewModel viewModel;
 
     ContactItemsAdapter(LayoutInflater inflater, EventPressedListener listener) {
         this.inflater = inflater;
         this.listener = listener;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object instantiateItem(ViewGroup viewGroup, int position) {
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.page_person_items, viewGroup, false);
         viewGroup.addView(layout);
         RecyclerView recyclerView = Views.findById(layout, R.id.page_person_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(viewGroup.getContext(), LinearLayoutManager.VERTICAL, false));
+        if (viewModel == null) {
+            return layout;
+        }
         if (position == PAGE_EVENTS) {
             EventAdapter adapter = new EventAdapter(listener);
             PageViewHolder viewHolder = new EventPageViewHolder(adapter);
-            viewHolders.put(position, viewHolder);
             recyclerView.setAdapter(adapter);
-        } else if (position == PAGE_CALLS) {
+            viewHolder.bind(viewModel.getEvents());
+        } else if (position == PAGE_CALLS || position == PAGE_MESSAGES) {
             CallAdapter adapter = new CallAdapter(listener);
             PageViewHolder viewHolder = new CallPageViewHolder(adapter);
-            viewHolders.put(position, viewHolder);
             recyclerView.setAdapter(adapter);
+            viewHolder.bind(viewModel.getCalls());
         }
         return layout;
     }
@@ -63,11 +66,9 @@ class ContactItemsAdapter extends PagerAdapter {
         return view == object;
     }
 
-    @SuppressWarnings("unchecked")
-    void displayEvents(PersonContactViewModel events) {
-        viewHolders.get(PAGE_EVENTS).bind(events.getEvents());
-        viewHolders.get(PAGE_CALLS).bind(events.getActions());
-//        viewHolders.get(PAGE_MESSAGES).bind(events.getMessages());
+    void displayEvents(PersonContactViewModel viewModel) {
+        this.viewModel = viewModel;
+        notifyDataSetChanged();
     }
 
 }

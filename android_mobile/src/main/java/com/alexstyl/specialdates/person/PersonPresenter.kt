@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.service.PeopleEventsProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 
 internal class PersonPresenter(private val personView: PersonView,
@@ -18,29 +18,35 @@ internal class PersonPresenter(private val personView: PersonView,
                                private val toEventViewModel: EventViewModelFactory) {
 
 
-    private var disposable: Disposable? = null
+    private var disposable = CompositeDisposable()
 
     fun startPresenting(contact: Contact) {
-        disposable =
+
+        disposable.add(
                 provider.getContactEventsFor(contact)
                         .map { toPersonViewModel(contact, it.keepOnlyBirthday()) }
                         .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
                         .subscribe({
-                            disposable?.dispose()
                             personView.displayInfoFor(it)
-                            presentEventsFor(contact)
-                        })
-    }
+                        }))
 
-    private fun presentEventsFor(contact: Contact) {
-        disposable =
-                personCallProvider.getCallsFor(contact)
+
+        disposable.add(
+                Observable.zip(
+                        eventsOf(contact),
+                        personCallProvider.getCallsFor(contact),
+                        BiFunction<List<ContactEventViewModel>, List<ContactActionViewModel>, PersonContactViewModel>
+                        {
+                            t1, t2 ->
+                            PersonContactViewModel(t1, t2, ArrayList())
+                        }
+                )
                         .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
                         .subscribe({
-                            personView.displayContactMethods(PersonContactViewModel(ArrayList(), it, ArrayList()))
-                        })
+                            personView.displayContactMethods(it)
+                        }))
     }
 
 
@@ -50,7 +56,7 @@ internal class PersonPresenter(private val personView: PersonView,
     private fun List<ContactEvent>.keepOnlyBirthday() = find { it.type == StandardEventType.BIRTHDAY }
 
     fun stopPresenting() {
-        disposable?.dispose()
+        disposable.dispose()
     }
 }
 

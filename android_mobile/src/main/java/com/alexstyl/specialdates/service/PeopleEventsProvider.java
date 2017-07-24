@@ -86,7 +86,7 @@ public class PeopleEventsProvider {
     public Observable<List<ContactEvent>> getContactEventsFor(final Contact contact) {
         return Observable.fromCallable(new Callable<List<ContactEvent>>() {
             @Override
-            public List<ContactEvent> call() throws Exception {
+            public List<ContactEvent> call() {
                 List<ContactEvent> contactEvents = new ArrayList<>();
                 contactEvents.addAll(staticEventsProvider.fetchEventsFor(contact));
                 if (namedayPreferences.isEnabled()) {
