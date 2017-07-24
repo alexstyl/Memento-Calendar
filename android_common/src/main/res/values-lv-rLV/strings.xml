@@ -90,7 +90,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Czech">Čehu</string>
     <string name="Slovak">Slovāku</string>
     <string name="Russian">Krievu</string>
-    <string name="Latvian">Latviešu</string>
+    <string name="Latvian_Traditional">Latviešu</string>
     <string name="Hungarian">Ungāru</string>
     <string name="nameday_language_title">Vārda dienu kalendārs</string>
     <string name="no_sound">Klusums</string>

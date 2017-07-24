@@ -88,7 +88,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Czech">Τσέχικα</string>
     <string name="Slovak">Σλοβάκικα</string>
     <string name="Russian">Ρώσικα</string>
-    <string name="Latvian">Λατβικά</string>
+    <string name="Latvian_Traditional">Λατβικά</string>
     <string name="Hungarian">Ουγγρικά</string>
     <string name="nameday_language_title">Γλώσσα Εορτολογίου</string>
     <string name="no_sound">Αθόρυβο</string>
