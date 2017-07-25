@@ -67,20 +67,23 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(null);
         avatarView = Views.findById(this, R.id.person_avatar);
         personNameView = Views.findById(this, R.id.person_name);
         ageAndSignView = Views.findById(this, R.id.person_age_and_sign);
         viewPager = Views.findById(this, R.id.person_viewpager);
-        TabLayout tabLayout = Views.findById(this, R.id.person_tabs);
 
         adapter = new ContactItemsAdapter(LayoutInflater.from(thisActivity()), onEventPressed);
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
         imageLoader = UILImageLoader.createLoader(getResources()); // TODO inject this
 
-        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
 
-        setTitle(null);
+        TabLayout tabLayout = Views.findById(this, R.id.person_tabs);
+        tabLayout.setupWithViewPager(viewPager, false);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_gift);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_call);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_message);
 
         Optional<Contact> contact = extractContactFrom(getIntent());
         if (contact.isPresent()) {
