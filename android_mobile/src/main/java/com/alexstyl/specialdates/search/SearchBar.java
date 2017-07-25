@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
-import com.alexstyl.specialdates.theming.ViewTinter;
+import com.alexstyl.specialdates.theming.DrawableTinter;
 import com.novoda.notils.caster.Views;
 
 public class SearchBar extends Toolbar {
@@ -33,9 +33,9 @@ public class SearchBar extends Toolbar {
     }
 
     private void addTintedUpNavigation() {
-        ViewTinter viewTinter = new ViewTinter(new AttributeExtractor());
+        DrawableTinter drawableTinter = new DrawableTinter(new AttributeExtractor());
         Drawable backDrawable = getResources().getDrawable(R.drawable.ic_action_arrow_light_back).mutate();
-        Drawable tintedUpDrawable = viewTinter.createAccentTintedDrawable(backDrawable, getContext());
+        Drawable tintedUpDrawable = drawableTinter.createAccentTintedDrawable(backDrawable, getContext());
         setNavigationIcon(tintedUpDrawable);
     }
 
