@@ -26,8 +26,10 @@ public class PlayGroundActivity extends ThemedMementoActivity {
 
         Contact contact = new Contact(250L, DisplayName.NO_NAME, URI.create(""), ContactSource.SOURCE_DEVICE);
         List<ContactAction> actions = new ArrayList<>();
-        actions.addAll(actionsProvider.callActionsFor(contact));
-        actions.addAll(actionsProvider.customActionsFor(contact));
+        List<ContactAction> callActions = actionsProvider.callActionsFor(contact);
+        actions.addAll(callActions);
+        List<ContactAction> customActions = actionsProvider.customActionsFor(contact);
+        actions.addAll(customActions);
         for (ContactAction action : actions) {
             print(action.toString());
         }
