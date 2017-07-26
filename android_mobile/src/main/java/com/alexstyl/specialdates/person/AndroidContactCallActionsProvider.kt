@@ -51,8 +51,8 @@ class AndroidContactCallActionsProvider(
                 if (Phone.CONTENT_ITEM_TYPE == mimeType) {
                     val phoneNumber = getPhoneNumberFrom(cursor)
                     val customLabel = getCallLabelFrom(cursor)
-                    val icon = tinter.tintWithPrimaryColor(R.drawable.ic_call, context)
-                    viewModels.add(ContactActionViewModel(ContactAction(phoneNumber, customLabel, actionsFactory.dialNumber(phoneNumber)), icon))
+                    val icon = tinter.tintWithAccentColor(R.drawable.ic_call, context)
+                    viewModels.add(ContactActionViewModel(ContactAction(phoneNumber, customLabel, actionsFactory.dial(phoneNumber)), icon))
                 } else if (WHATSAPP_VOIP_CALL == mimeType || WHATSAPP_VIDEO_CALL == mimeType) {
                     val label = cursor.getString(cursor.getColumnIndex(Phone.LABEL))
                     val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
@@ -61,7 +61,7 @@ class AndroidContactCallActionsProvider(
                     intent.setDataAndType(uri, mimeType)
                     val resolveInfos = packageManager.queryIntentActivities(intent, 0)
                     if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-                        val icon = resolveInfos.get(0).loadIcon(packageManager)
+                        val icon = resolveInfos[0].loadIcon(packageManager)
                         viewModels.add(ContactActionViewModel(action, icon))
                     }
                 }
