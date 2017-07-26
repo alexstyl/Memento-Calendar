@@ -38,18 +38,18 @@ class ContactItemsAdapter extends PagerAdapter {
             return layout;
         }
         if (position == PAGE_EVENTS) {
-            EventAdapter adapter = new EventAdapter(listener);
+            EventAdapter adapter = new EventAdapter();
             PageViewHolder viewHolder = new EventPageViewHolder(adapter);
             recyclerView.setAdapter(adapter);
             viewHolder.bind(viewModel.getEvents());
         } else if (position == PAGE_CALLS) {
-            CallAdapter adapter = new CallAdapter(listener);
-            PageViewHolder viewHolder = new CallPageViewHolder(adapter);
+            ContactActionsAdapter adapter = new ContactActionsAdapter(listener);
+            PageViewHolder viewHolder = new ContactActionsPageViewHolder(adapter);
             recyclerView.setAdapter(adapter);
             viewHolder.bind(viewModel.getCalls());
         } else if (position == PAGE_MESSAGES) {
-            CallAdapter adapter = new CallAdapter(listener);
-            PageViewHolder viewHolder = new CallPageViewHolder(adapter);
+            ContactActionsAdapter adapter = new ContactActionsAdapter(listener);
+            PageViewHolder viewHolder = new ContactActionsPageViewHolder(adapter);
             recyclerView.setAdapter(adapter);
             viewHolder.bind(viewModel.getMessages());
         }
