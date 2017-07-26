@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="sans-serif-condensed"
-        android:textColor="#000"
+        android:textColor="#a0000000"
         android:textSize="18sp"
         tools:text="Home" />
     </LinearLayout>
