@@ -10,8 +10,8 @@ public class PlayGroundActivity extends ThemedMementoActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AndroidContactCallActionsProvider actionsProvider = null;
-//        new AndroidContactCallActionsProvider(
+        AndroidContactActionsProvider actionsProvider = null;
+//        new AndroidContactActionsProvider(
 //                getContentResolver(),
 //                new AndroidStringResources(getResources()),
 //                new AndroidContactActionsFactory(thisActivity())

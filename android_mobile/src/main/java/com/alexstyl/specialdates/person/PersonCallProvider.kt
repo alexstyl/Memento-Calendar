@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.contact.ContactSource
 import io.reactivex.Observable
 
 class PersonCallProvider(
-        private val androidActionsProvider: AndroidContactCallActionsProvider,
+        private val androidActionsProvider: AndroidContactActionsProvider,
         private val facebookContactActionsProvider: FacebookContactActionsProvider) {
 
 

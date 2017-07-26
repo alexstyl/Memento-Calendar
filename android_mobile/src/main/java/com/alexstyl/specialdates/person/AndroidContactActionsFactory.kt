@@ -26,7 +26,7 @@ class AndroidContactActionsFactory(val activity: Activity) : ContactActionsFacto
     override fun email(emailAdress: String) = {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:")
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("mahendrarajdhami@gmail.com"))
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailAdress))
         activity.startActivity(intent)
     }
 
