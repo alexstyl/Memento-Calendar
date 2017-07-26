@@ -7,7 +7,7 @@ data class ContactEventViewModel(val evenName: String, val dateLabel: String, va
         return evenName
     }
 
-    override fun getIdentifier(): String {
+    override fun getValue(): String {
         return dateLabel
     }
 }

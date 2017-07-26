@@ -18,8 +18,10 @@ class CallViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final ContactActionViewModel viewModel, final EventPressedListener listener) {
+        numberView.setText(viewModel.getValue());
         callTypeView.setText(viewModel.getLabel());
-        numberView.setText(viewModel.getIdentifier());
+        callTypeView.setVisibility(viewModel.getLabelVisibility());
+
         iconView.setImageDrawable(viewModel.getIcon());
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

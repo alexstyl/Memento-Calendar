@@ -21,4 +21,16 @@ class PersonCallProvider(
         }
     }
 
+    fun getMessagesFor(contact: Contact): Observable<List<ContactActionViewModel>> {
+        return Observable.fromCallable {
+            if (contact.source == ContactSource.SOURCE_FACEBOOK) {
+                facebookContactActionsProvider.messagingActionsFor(contact)
+            } else if (contact.source == ContactSource.SOURCE_DEVICE) {
+                androidActionsProvider.messagingActionsFor(contact)
+            } else {
+                throw IllegalArgumentException("unknown contact type " + contact.source)
+            }
+        }
+    }
+
 }

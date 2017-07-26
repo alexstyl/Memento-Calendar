@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.person
 
 import android.content.res.Resources
+import android.view.View
 import com.alexstyl.resources.StringResources
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
@@ -15,6 +16,7 @@ class FacebookContactActionsProvider(val stringResources: StringResources, priva
         )
         return ContactActionViewModel(
                 action,
+                View.GONE,
                 resources.getDrawable(R.drawable.ic_facebook_messenger))
                 .toList()
     }
@@ -25,6 +27,7 @@ class FacebookContactActionsProvider(val stringResources: StringResources, priva
                 actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID)))
         return ContactActionViewModel(
                 action,
+                View.GONE,
                 resources.getDrawable(R.drawable.ic_facebook_messenger))
                 .toList()
     }

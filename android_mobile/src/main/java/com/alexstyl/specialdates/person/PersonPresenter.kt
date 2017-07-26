@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 
 internal class PersonPresenter(private val personView: PersonView,
                                private val provider: PeopleEventsProvider,
@@ -33,13 +33,15 @@ internal class PersonPresenter(private val personView: PersonView,
 
 
         disposable.add(
-                Observable.zip(
+
+                Observable.combineLatest(
                         eventsOf(contact),
                         personCallProvider.getCallsFor(contact),
-                        BiFunction<List<ContactEventViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
+                        personCallProvider.getMessagesFor(contact),
+                        Function3<List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
                         {
-                            t1, t2 ->
-                            PersonAvailableActionsViewModel(t1, t2, ArrayList())
+                            t1, t2, t3 ->
+                            PersonAvailableActionsViewModel(t1, t2, t3)
                         }
                 )
                         .observeOn(resultScheduler)
