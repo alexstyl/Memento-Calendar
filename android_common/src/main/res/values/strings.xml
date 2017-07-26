@@ -214,4 +214,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="phone_type_home">Home</string>
   <string name="phone_type_mobile">Mobile</string>
   <string name="phone_type_work">Work</string>
+  <string name="View_conversation">View conversation</string>
 </resources>

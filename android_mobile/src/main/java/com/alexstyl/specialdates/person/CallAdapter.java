@@ -24,8 +24,8 @@ public class CallAdapter extends RecyclerView.Adapter<CallViewHolder> {
 
     @Override
     public CallViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_person_call, parent, false);
-        TextView callTypeView = Views.findById(view, R.id.row_person_call_type);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_person_action, parent, false);
+        TextView callTypeView = Views.findById(view, R.id.row_person_action_type);
         TextView numberView = Views.findById(view, R.id.row_person_call_number);
         ImageView iconView = Views.findById(view, R.id.row_person_call_icon);
         return new CallViewHolder(view, callTypeView, numberView, iconView);

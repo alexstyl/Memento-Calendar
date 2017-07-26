@@ -32,6 +32,7 @@ class AndroidContactActionsFactory(val activity: Activity) : ContactActionsFacto
 
     override fun view(data: URI) = {
         val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(data.toString())
         activity.startActivity(intent)
     }
 

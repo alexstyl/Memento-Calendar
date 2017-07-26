@@ -11,23 +11,27 @@ class FacebookContactActionsProvider(val stringResources: StringResources, priva
     : ContactCallActionsProvider, ContactMessagingActionsProvider {
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
-        val action = ContactAction(contact.contactID.toString(), stringResources.getString(R.string.facebook_messenger),
-                actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
+        val action = ContactAction(
+                stringResources.getString(R.string.View_conversation),
+                stringResources.getString(R.string.facebook_messenger),
+                actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
         )
         return ContactActionViewModel(
                 action,
-                View.GONE,
+                View.VISIBLE,
                 resources.getDrawable(R.drawable.ic_facebook_messenger))
                 .toList()
     }
 
     override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> {
-        val action = ContactAction(contact.contactID.toString(),
+        val action = ContactAction(
+                stringResources.getString(R.string.View_conversation),
                 stringResources.getString(R.string.facebook_messenger),
-                actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID)))
+                actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
+        )
         return ContactActionViewModel(
                 action,
-                View.GONE,
+                View.VISIBLE,
                 resources.getDrawable(R.drawable.ic_facebook_messenger))
                 .toList()
     }
