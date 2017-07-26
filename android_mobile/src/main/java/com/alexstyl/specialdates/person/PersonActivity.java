@@ -3,7 +3,9 @@ package com.alexstyl.specialdates.person;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +40,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.R.attr.handle;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
 public class PersonActivity extends ThemedMementoActivity implements PersonView {
 
@@ -116,20 +119,31 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     }
 
     private Optional<Contact> extractContactFrom(Intent intent) {
+        Uri data = intent.getData();
+        if (data != null) {
+            Long contactId = Long.valueOf(data.getLastPathSegment());
+            return contactFor(contactId, SOURCE_DEVICE);
+        }
+
         long contactID = intent.getLongExtra(EXTRA_CONTACT_ID, -1);
         if (contactID == -1) {
-            throw new IllegalArgumentException("Intent must contain a contact ID");
+            return Optional.absent();
         }
         @ContactSource int contactSource = intent.getIntExtra(EXTRA_CONTACT_SOURCE, -1);
         if (contactSource == -1) {
-            throw new IllegalArgumentException("Intent must contain a contact source");
+            return Optional.absent();
         }
+        return contactFor(contactID, contactSource);
+    }
+
+    private Optional<Contact> contactFor(long contactID, int contactSource) {
         try {
-            return new Optional<>(ContactsProvider.get(this).getContact(contactID, contactSource));
+            ContactsProvider contactsProvider = ContactsProvider.get(this);
+            return new Optional<>(contactsProvider.getContact(contactID, contactSource));
         } catch (ContactNotFoundException e) {
             ErrorTracker.track(e);
+            return Optional.absent();
         }
-        return Optional.absent();
     }
 
     public static Intent buildIntentFor(Context context, Contact contact) {
