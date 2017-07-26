@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.person;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.ErrorTracker;
@@ -184,7 +186,12 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private EventPressedListener onEventPressed = new EventPressedListener() {
         @Override
         public void onContactActionPressed(ContactActionViewModel intent) {
-            intent.getAction().run();
+            try {
+                intent.getAction().run();
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show();
+                ErrorTracker.track(ex);
+            }
         }
     };
 
