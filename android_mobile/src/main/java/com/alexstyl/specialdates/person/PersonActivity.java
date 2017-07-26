@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.person;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -56,7 +55,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                 this,
                 PeopleEventsProvider.newInstance(this),
                 new PersonCallProvider(
-                        new AndroidContactCallActionsProvider(getContentResolver(), stringResources, thisActivity(), getPackageManager(), getResources(), actionsFactory),
+                        new AndroidContactCallActionsProvider(getContentResolver(), stringResources, thisActivity(), getPackageManager(), actionsFactory),
                         new FacebookContactActionsProvider(stringResources, getResources(), actionsFactory)
                 ),
                 Schedulers.io(),

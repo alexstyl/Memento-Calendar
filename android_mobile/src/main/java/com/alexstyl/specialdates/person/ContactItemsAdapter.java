@@ -42,11 +42,16 @@ class ContactItemsAdapter extends PagerAdapter {
             PageViewHolder viewHolder = new EventPageViewHolder(adapter);
             recyclerView.setAdapter(adapter);
             viewHolder.bind(viewModel.getEvents());
-        } else if (position == PAGE_CALLS || position == PAGE_MESSAGES) {
+        } else if (position == PAGE_CALLS) {
             CallAdapter adapter = new CallAdapter(listener);
             PageViewHolder viewHolder = new CallPageViewHolder(adapter);
             recyclerView.setAdapter(adapter);
             viewHolder.bind(viewModel.getCalls());
+        } else if (position == PAGE_MESSAGES) {
+            CallAdapter adapter = new CallAdapter(listener);
+            PageViewHolder viewHolder = new CallPageViewHolder(adapter);
+            recyclerView.setAdapter(adapter);
+            viewHolder.bind(viewModel.getMessages());
         }
         return layout;
     }
