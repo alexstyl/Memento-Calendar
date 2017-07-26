@@ -14,14 +14,8 @@ class EventViewHolder extends RecyclerView.ViewHolder {
         this.eventDateView = eventDateView;
     }
 
-    public void bind(final ContactEventViewModel viewModel, final EventPressedListener listener) {
+    public void bind(ContactEventViewModel viewModel) {
         eventDateView.setText(viewModel.getDateLabel());
         eventNameView.setText(viewModel.getEvenName());
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onEventPressed(viewModel.getDate());
-            }
-        });
     }
 }

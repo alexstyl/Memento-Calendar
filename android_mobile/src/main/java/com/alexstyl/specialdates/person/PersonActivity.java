@@ -183,11 +183,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
 
     private EventPressedListener onEventPressed = new EventPressedListener() {
         @Override
-        public void onEventPressed(Date date) {
-            Log.d("onEventPressed: " + date);
-        }
-
-        @Override
         public void onContactActionPressed(ContactActionViewModel intent) {
             intent.getAction().run();
         }

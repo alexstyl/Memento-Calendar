@@ -17,11 +17,6 @@ import org.jetbrains.annotations.NotNull;
 public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     private final List<ContactEventViewModel> viewModels = new ArrayList<>();
-    private final EventPressedListener listener;
-
-    EventAdapter(EventPressedListener listener) {
-        this.listener = listener;
-    }
 
     @Override
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,7 +28,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        holder.bind(viewModels.get(position), listener);
+        holder.bind(viewModels.get(position));
     }
 
     @Override

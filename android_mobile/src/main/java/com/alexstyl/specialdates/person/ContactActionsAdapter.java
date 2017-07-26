@@ -13,12 +13,12 @@ import com.novoda.notils.caster.Views;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CallAdapter extends RecyclerView.Adapter<CallViewHolder> {
+public class ContactActionsAdapter extends RecyclerView.Adapter<CallViewHolder> {
 
     private final List<ContactActionViewModel> viewModels = new ArrayList<>();
     private final EventPressedListener listener;
 
-    CallAdapter(EventPressedListener listener) {
+    ContactActionsAdapter(EventPressedListener listener) {
         this.listener = listener;
     }
 
