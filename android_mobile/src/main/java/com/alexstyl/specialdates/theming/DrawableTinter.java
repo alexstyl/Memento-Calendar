@@ -12,10 +12,9 @@ public class DrawableTinter {
         this.extractor = extractor;
     }
 
-
-    public Drawable tintWithPrimaryColor(@DrawableRes int drawableResId, Context context) {
+    public Drawable tintWithAccentColor(@DrawableRes int drawableResId, Context context) {
         Drawable mutateableDrawable = context.getResources().getDrawable(drawableResId).mutate();
-        int accentColor = extractor.extractPrimaryColorFrom(context);
+        int accentColor = extractor.extractAccentColorFrom(context);
         mutateableDrawable.setColorFilter(accentColor, PorterDuff.Mode.SRC_IN);
         return mutateableDrawable;
     }

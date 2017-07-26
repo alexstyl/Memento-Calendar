@@ -7,7 +7,7 @@ import java.net.URI
 
 class AndroidContactActionsFactory(val activity: Activity) : ContactActionsFactory {
 
-    override fun dialNumber(phoneNumber: String) = {
+    override fun dial(phoneNumber: String) = {
         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber))
         activity.startActivity(intent)
     }
@@ -26,8 +26,7 @@ class AndroidContactActionsFactory(val activity: Activity) : ContactActionsFacto
 }
 
 interface ContactActionsFactory {
-
-    fun dialNumber(phoneNumber: String): () -> Unit
+    fun dial(phoneNumber: String): () -> Unit
     fun view(data: URI, mimetype: String): () -> Unit
     fun view(data: URI): () -> Unit
 }
