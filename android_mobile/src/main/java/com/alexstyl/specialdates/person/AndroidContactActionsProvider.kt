@@ -15,10 +15,11 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.theming.AttributeExtractor
 import com.alexstyl.specialdates.theming.DrawableTinter
+import com.novoda.notils.exception.DeveloperError
 import java.net.URI
 
 
-class AndroidContactCallActionsProvider(
+class AndroidContactActionsProvider(
         private val contentResolver: ContentResolver,
         private val strings: StringResources,
         private val context: Context,
@@ -30,6 +31,7 @@ class AndroidContactCallActionsProvider(
     private val WHATSAPP_VIDEO_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.video.call"
     private val WHATSAPP_VOIP_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.voip.call"
     private val WHATSAPP_MESSAGE = "vnd.android.cursor.item/vnd.com.whatsapp.profile"
+    private val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
 
     private val tinter = DrawableTinter(AttributeExtractor())
 
@@ -57,16 +59,18 @@ class AndroidContactCallActionsProvider(
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
                 } else if (WHATSAPP_VOIP_CALL == mimeType || WHATSAPP_VIDEO_CALL == mimeType) {
-                    val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(uri, mimeType)
-                    val resolveInfos = packageManager.queryIntentActivities(intent, 0)
-                    if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-                        val label = cursor.getString(cursor.getColumnIndex(Data.DATA3))
-                        val action = ContactAction(label, "", actionsFactory.view(URI.create(uri.toString()), mimeType))
-                        val icon = resolveInfos[0].loadIcon(packageManager)
-                        viewModels.add(ContactActionViewModel(action, View.GONE, icon))
-                    }
+
+                    viewModels.add(createActionFor(cursor, mimeType))
+//                    val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
+//                    val intent = Intent(Intent.ACTION_VIEW)
+//                    intent.setDataAndType(uri, mimeType)
+//                    val resolveInfos = packageManager.queryIntentActivities(intent, 0)
+//                    if (resolveInfos != null && resolveInfos.isNotEmpty()) {
+//                        val label = cursor.getString(cursor.getColumnIndex(Data.DATA3))
+//                        val action = ContactAction(label, "", actionsFactory.view(URI.create(uri.toString()), mimeType))
+//                        val icon = resolveInfos[0].loadIcon(packageManager)
+//                        viewModels.add(ContactActionViewModel(action, View.GONE, icon))
+//                    }
                 }
             }
             cursor.close()
@@ -101,26 +105,33 @@ class AndroidContactCallActionsProvider(
                     val phoneNumber = getPhoneNumberFrom(cursor)
                     val customLabel = getCallLabelFrom(cursor)
                     val action = ContactAction(phoneNumber, customLabel, actionsFactory.email(phoneNumber))
-                    val icon = tinter.tintWithAccentColor(R.drawable.ic_message, context)
+                    val icon = tinter.tintWithAccentColor(R.drawable.ic_email, context)
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
-                } else if (WHATSAPP_MESSAGE == mimeType) {
-                    val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(uri, mimeType)
-                    val resolveInfos = packageManager.queryIntentActivities(intent, 0)
-                    if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-                        val label = cursor.getString(cursor.getColumnIndex(Data.DATA3))
-                        val action = ContactAction(label, "", actionsFactory.view(URI.create(uri.toString()), mimeType))
-                        val icon = resolveInfos[0].loadIcon(packageManager)
-                        viewModels.add(ContactActionViewModel(action, View.GONE, icon))
-                    }
+                } else if (WHATSAPP_MESSAGE == mimeType || TELEGRAM_MESSAGE == mimeType) {
+                    val element = createActionFor(cursor, mimeType)
+                    viewModels.add(element)
                 }
             }
             cursor.close()
         }
         return viewModels
     }
+
+    private fun createActionFor(cursor: Cursor, mimeType: String): ContactActionViewModel {
+        val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, mimeType)
+        val resolveInfos = packageManager.queryIntentActivities(intent, 0)
+        if (resolveInfos != null && resolveInfos.isNotEmpty()) {
+            val label = cursor.getString(cursor.getColumnIndex(Data.DATA3))
+            val action = ContactAction(label, resolveInfos[0].loadLabel(packageManager).toString(), actionsFactory.view(URI.create(uri.toString()), mimeType))
+            val icon = resolveInfos[0].loadIcon(packageManager)
+            return ContactActionViewModel(action, View.VISIBLE, icon)
+        }
+        throw DeveloperError("HANDLE THIS CASE DUDE")
+    }
+
 
     private fun getPhoneNumberFrom(cursor: Cursor) = cursor.getString(cursor.getColumnIndex(Phone.DATA1))
 
