@@ -146,7 +146,13 @@
       android:name=".facebook.FacebookProfileActivity"
       android:label="@string/title_facebook_profile" />
 
-    <activity android:name=".person.PersonActivity" />
+    <activity
+      android:name=".person.PersonActivity"
+      android:parentActivityName=".upcoming.UpcomingEventsActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".upcoming.UpcomingEventsActivity" />
+    </activity>
 
     <!-- Services -->
     <service
