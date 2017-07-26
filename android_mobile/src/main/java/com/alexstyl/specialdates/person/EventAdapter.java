@@ -12,8 +12,6 @@ import com.novoda.notils.caster.Views;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-
 public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     private final List<ContactEventViewModel> viewModels = new ArrayList<>();
@@ -36,7 +34,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
         return viewModels.size();
     }
 
-    public void displayEvents(@NotNull List<ContactEventViewModel> viewModels) {
+    public void displayEvents(List<ContactEventViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyItemRangeChanged(0, viewModels.size());
