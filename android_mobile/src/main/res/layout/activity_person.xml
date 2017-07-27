@@ -34,10 +34,19 @@
           app:layout_collapseMode="parallax"
           tools:background="#007c87" />
 
+        <ImageView
+          android:id="@+id/person_toolbar_gradient"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="@dimen/toolbar_minHeight"
+          android:visibility="gone"
+          tools:src="@drawable/black_to_transparent_gradient_facing_down" />
+
         <android.support.v7.widget.Toolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:minHeight="@dimen/toolbar_minHeight"
           app:layout_collapseMode="pin"
           app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
