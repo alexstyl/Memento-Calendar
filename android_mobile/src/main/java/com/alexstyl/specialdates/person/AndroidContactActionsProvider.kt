@@ -30,6 +30,7 @@ class AndroidContactActionsProvider(
 
     private val WHATSAPP_VIDEO_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.video.call"
     private val WHATSAPP_VOIP_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.voip.call"
+
     private val WHATSAPP_MESSAGE = "vnd.android.cursor.item/vnd.com.whatsapp.profile"
     private val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
 
@@ -59,18 +60,8 @@ class AndroidContactActionsProvider(
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
                 } else if (WHATSAPP_VOIP_CALL == mimeType || WHATSAPP_VIDEO_CALL == mimeType) {
-
-                    viewModels.add(createActionFor(cursor, mimeType))
-//                    val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
-//                    val intent = Intent(Intent.ACTION_VIEW)
-//                    intent.setDataAndType(uri, mimeType)
-//                    val resolveInfos = packageManager.queryIntentActivities(intent, 0)
-//                    if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-//                        val label = cursor.getString(cursor.getColumnIndex(Data.DATA3))
-//                        val action = ContactAction(label, "", actionsFactory.view(URI.create(uri.toString()), mimeType))
-//                        val icon = resolveInfos[0].loadIcon(packageManager)
-//                        viewModels.add(ContactActionViewModel(action, View.GONE, icon))
-//                    }
+                    val customAction = createActionFor(cursor, mimeType)
+                    viewModels.add(customAction)
                 }
             }
             cursor.close()
@@ -93,7 +84,6 @@ class AndroidContactActionsProvider(
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 val mimeType = cursor.getString(cursor.getColumnIndex(Data.MIMETYPE))
-                // TODO email
                 if (Phone.CONTENT_ITEM_TYPE == mimeType) {
                     val phoneNumber = getPhoneNumberFrom(cursor)
                     val customLabel = getCallLabelFrom(cursor)
