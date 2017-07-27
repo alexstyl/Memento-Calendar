@@ -7,18 +7,18 @@ import com.alexstyl.specialdates.date.Date.on
 import com.alexstyl.specialdates.date.DateConstants.*
 
 enum class StarSign(@StringRes val labelStringRes: Int, val emoji: String, val from: Date, val to: Date) {
-    AQUARIUS(R.string.starsigns_aquarius, "\u2652", on(20, JANUARY), on(18, FEBRUARY)),
-    PISCES(R.string.starsigns_pisces, "\u2653", on(19, FEBRUARY), on(20, MARCH)),
-    ARIES(R.string.starsigns_aries, "\u2648", on(21, MARCH), on(19, APRIL)),
-    TAURUS(R.string.starsigns_taurus, "\u2649", on(20, APRIL), on(20, MAY)),
-    GEMINI(R.string.starsigns_gemini, "\u264a", on(21, MAY), on(20, JUNE)),
-    CANCER(R.string.starsigns_cancer, "\u264b", on(21, JUNE), on(22, JULY)),
-    LEO(R.string.starsigns_leo, "\u264c", on(23, JULY), on(22, AUGUST)),
-    VIRGO(R.string.starsigns_virgo, "\u264d", on(23, AUGUST), on(22, SEPTEMBER)),
-    LIBRA(R.string.starsigns_libra, "\u264e", on(23, SEPTEMBER), on(22, OCTOBER)),
-    SCORPIO(R.string.starsigns_scorpio, "\u264f", on(23, OCTOBER), on(21, NOVEMBER)),
-    SAGITTARIUS(R.string.starsigns_sagittarius, "\u2650", on(22, NOVEMBER), on(21, DECEMBER)),
-    CAPRICORN(R.string.starsigns_capricorn, "\u2651", on(22, DECEMBER), on(19, JANUARY));
+    AQUARIUS(R.string.Aquarius, "\u2652", on(20, JANUARY), on(18, FEBRUARY)),
+    PISCES(R.string.Pisces, "\u2653", on(19, FEBRUARY), on(20, MARCH)),
+    ARIES(R.string.Aries, "\u2648", on(21, MARCH), on(19, APRIL)),
+    TAURUS(R.string.Taurus, "\u2649", on(20, APRIL), on(20, MAY)),
+    GEMINI(R.string.Gemini, "\u264a", on(21, MAY), on(20, JUNE)),
+    CANCER(R.string.Cancer, "\u264b", on(21, JUNE), on(22, JULY)),
+    LEO(R.string.Leo, "\u264c", on(23, JULY), on(22, AUGUST)),
+    VIRGO(R.string.Virgo, "\u264d", on(23, AUGUST), on(22, SEPTEMBER)),
+    LIBRA(R.string.Libra, "\u264e", on(23, SEPTEMBER), on(22, OCTOBER)),
+    SCORPIO(R.string.Scorpio, "\u264f", on(23, OCTOBER), on(21, NOVEMBER)),
+    SAGITTARIUS(R.string.Sagittarius, "\u2650", on(22, NOVEMBER), on(21, DECEMBER)),
+    CAPRICORN(R.string.Capricorn, "\u2651", on(22, DECEMBER), on(19, JANUARY));
 
     companion object {
         fun forDateOfBirth(birthday: Date): StarSign {
