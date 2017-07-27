@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply from: '../versions.gradle'
 
 android {
@@ -22,4 +23,10 @@ dependencies {
     compile 'com.mixpanel.android:mixpanel-android:4.9.2'
     compile "com.android.support:support-annotations:$android_support_version"
     compile 'net.danlew:android.joda:2.9.9'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+}
+repositories {
+    mavenCentral()
 }
