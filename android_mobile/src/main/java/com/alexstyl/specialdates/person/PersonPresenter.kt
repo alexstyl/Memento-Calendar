@@ -8,7 +8,6 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
-import javax.security.auth.Subject
 
 internal class PersonPresenter(private val personView: PersonView,
                                private val provider: PeopleEventsProvider,
@@ -20,7 +19,6 @@ internal class PersonPresenter(private val personView: PersonView,
 
 
     private var disposable = CompositeDisposable()
-    private var subject = Subject()
 
     fun startPresenting(contact: Contact) {
 
