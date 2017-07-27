@@ -8,7 +8,6 @@ class PersonCallProvider(
         private val androidActionsProvider: ContactActionsProvider,
         private val facebookContactActionsProvider: ContactActionsProvider) {
 
-
     fun getCallsFor(contact: Contact): Observable<List<ContactActionViewModel>> {
         return Observable.fromCallable {
             if (contact.source == ContactSource.SOURCE_FACEBOOK) {
