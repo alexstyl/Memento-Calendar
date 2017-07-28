@@ -1,9 +1,6 @@
 package com.alexstyl.specialdates.person
 
-import android.content.ContentResolver
-import android.content.ContentUris
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.provider.ContactsContract.CommonDataKinds.Email
@@ -11,11 +8,11 @@ import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.provider.ContactsContract.Data
 import android.view.View
 import com.alexstyl.resources.StringResources
+import com.alexstyl.specialdates.ErrorTracker
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.theming.AttributeExtractor
 import com.alexstyl.specialdates.theming.DrawableTinter
-import com.novoda.notils.exception.DeveloperError
 import java.net.URI
 
 
@@ -30,9 +27,14 @@ class AndroidContactActionsProvider(
 
     private val WHATSAPP_VIDEO_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.video.call"
     private val WHATSAPP_VOIP_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.voip.call"
+    private val VIBER_VOICE_MESSAGE = "vnd.android.cursor.item/vnd.com.viber.voip.google_voice_message"
+    private val VIBER_NUMBER_CALL = "vnd.android.cursor.item/vnd.com.viber.voip.viber_number_call"
+    private val VIBER_OUT_CALL = "vnd.android.cursor.item/vnd.com.viber.voip.viber_out_call_viber"
 
     private val WHATSAPP_MESSAGE = "vnd.android.cursor.item/vnd.com.whatsapp.profile"
     private val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
+    private val VIBER_NUMBER_MESSAGE = "vnd.android.cursor.item/vnd.com.viber.voip.viber_number_message"
+
 
     private val CUSTOM_LABEL = Data.DATA3
     private val PROJECTION = arrayOf(
@@ -68,8 +70,12 @@ class AndroidContactActionsProvider(
                     val viewModel = ContactActionViewModel(action, labelVisibility, icon)
                     viewModels.add(viewModel)
                 } else if (mimeType.isCustomCallType()) {
-                    val action = createActionFor(cursor, mimeType)
-                    viewModels.add(action)
+                    try {
+                        val action = createActionFor(cursor, mimeType)
+                        viewModels.add(action)
+                    } catch (ex: ActivityNotFoundException) {
+                        ErrorTracker.track(ex)
+                    }
                 }
             }
             cursor.close()
@@ -106,8 +112,12 @@ class AndroidContactActionsProvider(
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
                 } else if (mimeType.isCustomMessagingType()) {
-                    val element = createActionFor(cursor, mimeType)
-                    viewModels.add(element)
+                    try {
+                        val action = createActionFor(cursor, mimeType)
+                        viewModels.add(action)
+                    } catch (ex: ActivityNotFoundException) {
+                        ErrorTracker.track(ex)
+                    }
                 }
             }
             cursor.close()
@@ -115,6 +125,7 @@ class AndroidContactActionsProvider(
         return viewModels
     }
 
+    @Throws(ActivityNotFoundException::class)
     private fun createActionFor(cursor: Cursor, mimeType: String): ContactActionViewModel {
         val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
         val intent = Intent(Intent.ACTION_VIEW)
@@ -126,7 +137,7 @@ class AndroidContactActionsProvider(
             val icon = resolveInfos[0].loadIcon(packageManager)
             return ContactActionViewModel(action, View.VISIBLE, icon)
         }
-        throw DeveloperError("HANDLE THIS CASE DUDE")
+        throw ActivityNotFoundException()
     }
 
 
@@ -146,11 +157,15 @@ class AndroidContactActionsProvider(
 
     private val CUSTOM_CALL_ACTION_LIST = arrayOf(
             WHATSAPP_VIDEO_CALL,
-            WHATSAPP_VOIP_CALL
+            WHATSAPP_VOIP_CALL,
+            VIBER_VOICE_MESSAGE,
+            VIBER_NUMBER_CALL,
+            VIBER_OUT_CALL
     )
     private val CUSTOM_MESSAGING_ACTION_LIST = arrayOf(
             WHATSAPP_MESSAGE,
-            TELEGRAM_MESSAGE
+            TELEGRAM_MESSAGE,
+            VIBER_NUMBER_MESSAGE
     )
 
     private fun String.isCustomCallType(): Boolean {
