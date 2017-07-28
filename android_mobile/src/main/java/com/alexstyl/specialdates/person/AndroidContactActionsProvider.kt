@@ -34,13 +34,22 @@ class AndroidContactActionsProvider(
     private val WHATSAPP_MESSAGE = "vnd.android.cursor.item/vnd.com.whatsapp.profile"
     private val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
 
+    private val CUSTOM_LABEL = Data.DATA3
+
     private val tinter = DrawableTinter(AttributeExtractor())
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
 
         val viewModels = ArrayList<ContactActionViewModel>()
 
-        val projection = null // TODO pick up only the things you need
+        val projection = arrayOf(
+                Data._ID,
+                Phone.NUMBER, // works for Email.ADDRESS
+                Phone.TYPE, // works for Email.TYPE
+                CUSTOM_LABEL, // works for custom events label
+                Data.MIMETYPE
+
+        ) // TODO pick up only the things you need
         val cursor = contentResolver.query(Data.CONTENT_URI,
                 projection,
                 Data.CONTACT_ID + " = ? AND " + Data.IN_VISIBLE_GROUP + " = 1",
@@ -115,7 +124,7 @@ class AndroidContactActionsProvider(
         intent.setDataAndType(uri, mimeType)
         val resolveInfos = packageManager.queryIntentActivities(intent, 0)
         if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-            val label = cursor.getString(cursor.getColumnIndex(Data.DATA3))
+            val label = cursor.getString(cursor.getColumnIndex(CUSTOM_LABEL))
             val action = ContactAction(label, resolveInfos[0].loadLabel(packageManager).toString(), actionsFactory.view(URI.create(uri.toString()), mimeType))
             val icon = resolveInfos[0].loadIcon(packageManager)
             return ContactActionViewModel(action, View.VISIBLE, icon)
