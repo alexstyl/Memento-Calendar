@@ -5,7 +5,6 @@ import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.database.Cursor
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Phone
@@ -24,7 +23,6 @@ class AndroidContactActionsProvider(
         private val contentResolver: ContentResolver,
         private val strings: StringResources,
         private val context: Context,
-        private val resources: Resources,
         private val packageManager: PackageManager,
         private val actionsFactory: ContactActionsFactory)
     : ContactCallActionsProvider, ContactMessagingActionsProvider {
