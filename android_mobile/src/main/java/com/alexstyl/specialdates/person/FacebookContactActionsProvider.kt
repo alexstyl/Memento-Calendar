@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.contact.Contact
 import java.net.URI
 
 class FacebookContactActionsProvider(val stringResources: StringResources, private val resources: Resources, val actionsFactory: ContactActionsFactory)
-    : ContactCallActionsProvider, ContactMessagingActionsProvider {
+    : ContactActionsProvider {
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
         val action = ContactAction(

@@ -25,7 +25,7 @@ class AndroidContactActionsProvider(
         private val context: Context,
         private val packageManager: PackageManager,
         private val actionsFactory: ContactActionsFactory)
-    : ContactCallActionsProvider, ContactMessagingActionsProvider {
+    : ContactActionsProvider {
 
 
     private val WHATSAPP_VIDEO_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.video.call"
@@ -35,23 +35,21 @@ class AndroidContactActionsProvider(
     private val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
 
     private val CUSTOM_LABEL = Data.DATA3
+    private val PROJECTION = arrayOf(
+            Data._ID,
+            Phone.NUMBER, // works for Email.ADDRESS
+            Phone.TYPE, // works for Email.TYPE
+            CUSTOM_LABEL, // works for custom events label
+            Data.MIMETYPE
+    )
 
     private val tinter = DrawableTinter(AttributeExtractor())
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
 
         val viewModels = ArrayList<ContactActionViewModel>()
-
-        val projection = arrayOf(
-                Data._ID,
-                Phone.NUMBER, // works for Email.ADDRESS
-                Phone.TYPE, // works for Email.TYPE
-                CUSTOM_LABEL, // works for custom events label
-                Data.MIMETYPE
-
-        ) // TODO pick up only the things you need
         val cursor = contentResolver.query(Data.CONTENT_URI,
-                projection,
+                PROJECTION,
                 Data.CONTACT_ID + " = ? AND " + Data.IN_VISIBLE_GROUP + " = 1",
                 arrayOf(
                         contact.contactID.toString()
@@ -82,9 +80,8 @@ class AndroidContactActionsProvider(
     override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> {
         val viewModels = ArrayList<ContactActionViewModel>()
 
-        val projection = null // TODO pick up only the things you need
         val cursor = contentResolver.query(Data.CONTENT_URI,
-                projection,
+                PROJECTION,
                 Data.CONTACT_ID + " = ? AND " + Data.IN_VISIBLE_GROUP + " = 1",
                 arrayOf(
                         contact.contactID.toString()
