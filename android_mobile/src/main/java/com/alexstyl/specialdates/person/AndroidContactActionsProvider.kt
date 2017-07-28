@@ -5,6 +5,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.database.Cursor
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Phone
@@ -23,6 +24,7 @@ class AndroidContactActionsProvider(
         private val contentResolver: ContentResolver,
         private val strings: StringResources,
         private val context: Context,
+        private val resources: Resources,
         private val packageManager: PackageManager,
         private val actionsFactory: ContactActionsFactory)
     : ContactCallActionsProvider, ContactMessagingActionsProvider {
@@ -58,10 +60,11 @@ class AndroidContactActionsProvider(
                     val action = ContactAction(phoneNumber, customLabel, actionsFactory.dial(phoneNumber))
                     val icon = tinter.tintWithAccentColor(R.drawable.ic_call, context)
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
-                    viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
-                } else if (WHATSAPP_VOIP_CALL == mimeType || WHATSAPP_VIDEO_CALL == mimeType) {
-                    val customAction = createActionFor(cursor, mimeType)
-                    viewModels.add(customAction)
+                    val viewModel = ContactActionViewModel(action, labelVisibility, icon)
+                    viewModels.add(viewModel)
+                } else if (mimeType.isCustomCallType()) {
+                    val action = createActionFor(cursor, mimeType)
+                    viewModels.add(action)
                 }
             }
             cursor.close()
@@ -92,13 +95,13 @@ class AndroidContactActionsProvider(
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
                 } else if (Email.CONTENT_ITEM_TYPE == mimeType) {
-                    val phoneNumber = getPhoneNumberFrom(cursor)
-                    val customLabel = getCallLabelFrom(cursor)
+                    val phoneNumber = getEmailAddressFrom(cursor)
+                    val customLabel = getEmailLabelFrom(cursor)
                     val action = ContactAction(phoneNumber, customLabel, actionsFactory.email(phoneNumber))
                     val icon = tinter.tintWithAccentColor(R.drawable.ic_email, context)
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
-                } else if (WHATSAPP_MESSAGE == mimeType || TELEGRAM_MESSAGE == mimeType) {
+                } else if (mimeType.isCustomMessagingType()) {
                     val element = createActionFor(cursor, mimeType)
                     viewModels.add(element)
                 }
@@ -123,24 +126,37 @@ class AndroidContactActionsProvider(
     }
 
 
-    private fun getPhoneNumberFrom(cursor: Cursor) = cursor.getString(cursor.getColumnIndex(Phone.DATA1))
+    private fun getPhoneNumberFrom(cursor: Cursor) = cursor.getString(cursor.getColumnIndex(Phone.NUMBER))
+    private fun getEmailAddressFrom(cursor: Cursor) = cursor.getString(cursor.getColumnIndex(Email.ADDRESS))
 
 
     private fun getCallLabelFrom(cursor: Cursor): String {
         val type = cursor.getInt(cursor.getColumnIndex(Phone.TYPE))
-        if (type != Phone.TYPE_CUSTOM) {
-            when (type) {
-                Phone.TYPE_HOME -> return strings.getString(R.string.phone_type_home)
-                Phone.TYPE_WORK -> return strings.getString(R.string.phone_type_work)
-                Phone.TYPE_MOBILE -> return strings.getString(R.string.phone_type_mobile)
-                else -> {
-                    return strings.getString(R.string.Custom)
-                }
-            }
-        } else {
-            return cursor.getString(cursor.getColumnIndex(Phone.LABEL))
-        }
+        return strings.getString(Phone.getTypeLabelResource(type))
     }
+
+    private fun getEmailLabelFrom(cursor: Cursor): String {
+        val type = cursor.getInt(cursor.getColumnIndex(Phone.TYPE))
+        return strings.getString(Email.getTypeLabelResource(type))
+    }
+
+    private val CUSTOM_CALL_ACTION_LIST = arrayOf(
+            WHATSAPP_VIDEO_CALL,
+            WHATSAPP_VOIP_CALL
+    )
+    private val CUSTOM_MESSAGING_ACTION_LIST = arrayOf(
+            WHATSAPP_MESSAGE,
+            TELEGRAM_MESSAGE
+    )
+
+    private fun String.isCustomCallType(): Boolean {
+        return CUSTOM_CALL_ACTION_LIST.contains(this)
+    }
+
+    private fun String.isCustomMessagingType(): Boolean {
+        return CUSTOM_MESSAGING_ACTION_LIST.contains(this)
+    }
+
 }
 
 
