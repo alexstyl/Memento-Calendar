@@ -5,8 +5,8 @@ import com.alexstyl.specialdates.contact.ContactSource
 import io.reactivex.Observable
 
 class PersonCallProvider(
-        private val androidActionsProvider: AndroidContactActionsProvider,
-        private val facebookContactActionsProvider: FacebookContactActionsProvider) {
+        private val androidActionsProvider: ContactActionsProvider,
+        private val facebookContactActionsProvider: ContactActionsProvider) {
 
 
     fun getCallsFor(contact: Contact): Observable<List<ContactActionViewModel>> {
