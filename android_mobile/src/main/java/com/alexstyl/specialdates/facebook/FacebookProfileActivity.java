@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
@@ -22,6 +23,7 @@ import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,15 +37,17 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
     private ExternalNavigator navigator;
     private FacebookProfilePresenter presenter;
-    private Analytics analytics;
     private ImageLoader imageLoader;
     private ImageView profilePicture;
     private TextView userName;
+    @Inject
+    Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = AnalyticsProvider.getAnalytics(this);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         analytics.trackScreen(Screen.FACEBOOK_PROFILE);
         setContentView(R.layout.activity_facebook_profile);
 
