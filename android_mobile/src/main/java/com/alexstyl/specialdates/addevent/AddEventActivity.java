@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -27,7 +28,6 @@ import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
@@ -57,8 +57,8 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private AddContactEventsPresenter presenter;
     private PermissionChecker permissionChecker;
     private FilePathProvider filePathProvider;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
-        AndroidStringResources stringResources = new AndroidStringResources(getResources());
         AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
                 getSupportLoaderManager(),

@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -36,8 +36,8 @@ public class DateDetailsActivity extends ThemedMementoActivity {
      */
     private static final int SOURCE_NOTIFICATION = 1;
 
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class DateDetailsActivity extends ThemedMementoActivity {
 
         }
 
-        String titleDate = new UpcomingDateStringCreator(new AndroidStringResources(getResources()), Date.today())
+        String titleDate = new UpcomingDateStringCreator(stringResources, Date.today())
                 .createLabelFor(displayingDate);
 
         setTitle(titleDate);

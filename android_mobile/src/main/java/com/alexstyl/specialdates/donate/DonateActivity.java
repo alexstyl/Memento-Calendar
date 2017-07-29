@@ -21,7 +21,6 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
@@ -39,8 +38,8 @@ public class DonateActivity extends MementoActivity {
     private SeekBar donateBar;
     private CoordinatorLayout coordinator;
 
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
 
     @Override
     protected boolean shouldUseHomeAsUp() {
@@ -67,7 +66,6 @@ public class DonateActivity extends MementoActivity {
             appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
 
-        StringResources stringResources = new AndroidStringResources(getResources());
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 

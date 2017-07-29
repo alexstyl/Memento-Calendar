@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
-import com.alexstyl.specialdates.search.DumbTestResources;
+import com.alexstyl.resources.DumbTestResources;
 
 import java.util.List;
 import java.util.Locale;

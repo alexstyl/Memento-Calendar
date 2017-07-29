@@ -1,10 +1,8 @@
-package com.alexstyl.specialdates.android;
+package com.alexstyl.resources;
 
 import android.content.res.Resources;
 import android.support.annotation.PluralsRes;
 import android.support.annotation.StringRes;
-
-import com.alexstyl.resources.StringResources;
 
 /**
  * Wrapper class of Android's {@link Resources} string related methods
@@ -13,7 +11,7 @@ public final class AndroidStringResources implements StringResources {
 
     private final Resources resources;
 
-    public AndroidStringResources(Resources resources) {
+    AndroidStringResources(Resources resources) {
         this.resources = resources;
     }
 

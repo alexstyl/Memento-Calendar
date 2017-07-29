@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
@@ -21,10 +25,10 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.logger.simple.Log;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -32,12 +36,12 @@ import java.util.List;
  */
 public class DailyReminderIntentService extends IntentService {
 
-    private static final int REQUEST_CODE = 0;
     private NamedayPreferences namedayPreferences;
     private NamedayCalendarProvider namedayCalendarProvider;
-
     private BankHolidaysPreferences bankHolidaysPreferences;
     private PermissionChecker checker;
+
+    @Inject StringResources stringResources;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -45,15 +49,13 @@ public class DailyReminderIntentService extends IntentService {
 
     private Notifier notifier;
 
-    public static void startService(Context context) {
-        Intent service = new Intent(context, DailyReminderIntentService.class);
-        context.startService(service);
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        notifier = Notifier.newInstance(this);
+
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+        notifier = Notifier.newInstance(this, stringResources);
         namedayPreferences = NamedayPreferences.newInstance(this);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
@@ -135,6 +137,11 @@ public class DailyReminderIntentService extends IntentService {
 
     private boolean containsNames(NamesInADate names) {
         return names.nameCount() > 0;
+    }
+
+    public static void startService(Context context) {
+        Intent service = new Intent(context, DailyReminderIntentService.class);
+        context.startService(service);
     }
 
 }
