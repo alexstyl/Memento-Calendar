@@ -3,11 +3,11 @@ package com.alexstyl.specialdates.upcoming.widget.list;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
-import com.alexstyl.android.AndroidColorResources;
-import com.alexstyl.android.AndroidDimensionResources;
+import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
-import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
@@ -24,17 +24,28 @@ import com.alexstyl.specialdates.upcoming.NamedaysViewModelFactory;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
 import com.alexstyl.specialdates.upcoming.UpcomingEventRowViewModelFactory;
 
+import javax.inject.Inject;
 import java.util.Locale;
 
 public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
+    @Inject StringResources stringResources;
+    @Inject DimensionResources dimensResources;
+    @Inject ColorResources colorResources;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+    }
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         UpcomingEventsProvider peopleEventsProvider = createPeopleEventsProvider();
-        DimensionResources dimensResources = new AndroidDimensionResources(getResources());
         CircularAvatarFactory avatarFactory = new CircularAvatarFactory(
                 UILImageLoader.createLoader(getResources()),
-                new AndroidColorResources(getResources())
+                colorResources
         );
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
@@ -47,7 +58,6 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     private UpcomingEventsProvider createPeopleEventsProvider() {
         Date today = Date.today();
-        StringResources stringResources = new AndroidStringResources(getResources());
         return new UpcomingEventsProvider(
                 PeopleEventsProvider.newInstance(this),
                 NamedayPreferences.newInstance(this),
@@ -57,7 +67,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
                 new UpcomingEventRowViewModelFactory(
                         today,
                         new UpcomingDateStringCreator(stringResources, today),
-                        new ContactViewModelFactory(new AndroidColorResources(getResources()), stringResources),
+                        new ContactViewModelFactory(colorResources, stringResources),
                         stringResources,
                         new BankHolidayViewModelFactory(),
                         new NamedaysViewModelFactory(today),

@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
 
+import com.alexstyl.specialdates.MementoApplication;
 import com.novoda.notils.caster.Classes;
 
 public class MementoDialog extends DialogFragment {
@@ -27,5 +28,9 @@ public class MementoDialog extends DialogFragment {
 
     protected Context getThemedContext() {
         return getActivity();
+    }
+
+    protected MementoApplication getApplication() {
+        return ((MementoApplication) getActivity().getApplication());
     }
 }

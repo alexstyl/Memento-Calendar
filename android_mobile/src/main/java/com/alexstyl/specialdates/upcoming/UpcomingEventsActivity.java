@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.DimensionResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
@@ -17,7 +20,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -47,9 +49,10 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private DrawerLayout drawerLayout;
 
     private UpcomingEventsPreferences preferences;
-
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResource;
+    @Inject DimensionResources dimensions;
+    @Inject ColorResources colorResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()), FacebookPreferences.newInstance(this));
+        navigator = new MainNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
         externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
@@ -72,7 +75,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         ViewGroup activityContent = findById(this, R.id.main_content);
         searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
 
-        notifier = Notifier.newInstance(this);
+        notifier = Notifier.newInstance(this, stringResource, colorResources, dimensions);
 
         findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override

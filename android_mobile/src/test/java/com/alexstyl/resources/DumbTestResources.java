@@ -1,9 +1,8 @@
-package com.alexstyl.specialdates.search;
+package com.alexstyl.resources;
 
 import android.support.annotation.PluralsRes;
 import android.support.annotation.StringRes;
 
-import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 
 import java.util.Locale;
