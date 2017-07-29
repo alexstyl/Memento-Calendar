@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -21,7 +22,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
@@ -50,8 +50,8 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private Button shareButton;
     private Button closeButton;
     private ImageLoader imageLoader;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +101,10 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
     private View.OnClickListener shareAppIntentOnClick() {
         return new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), new AndroidStringResources(getResources()));
+                ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), stringResource);
                 Intent intent = appIntentCreator.buildIntent();
                 startActivity(intent);
                 analytics.trackAppInviteRequested();

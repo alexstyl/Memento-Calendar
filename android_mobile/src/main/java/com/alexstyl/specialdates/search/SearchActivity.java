@@ -24,7 +24,6 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
@@ -83,8 +82,8 @@ public class SearchActivity extends ThemedMementoActivity {
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
     private ExternalNavigator externalNavigator;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,6 @@ public class SearchActivity extends ThemedMementoActivity {
         setContentView(R.layout.activity_search);
 
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
-        StringResources stringResources = new AndroidStringResources(getResources());
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
 
@@ -167,7 +165,6 @@ public class SearchActivity extends ThemedMementoActivity {
         }
 
         if (!permissions.permissionIsPresent()) {
-            Log.d("requesting permission");
             permissions.requestForPermission();
         }
     }

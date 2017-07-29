@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
@@ -45,8 +46,9 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ColorResources colorResources;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +56,10 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today()));
+        UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today(), stringResources, colorResources));
         ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), permissionCallbacks);
-        EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));
-        MainNavigator navigator = new MainNavigator(analytics, getActivity(), new AndroidStringResources(getResources()), FacebookPreferences.newInstance(getActivity()));
+        EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
+        MainNavigator navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
         presenter = new UpcomingEventsPresenter(
                 this,
                 analytics,
