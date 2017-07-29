@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.alexstyl.resources.AndroidColorResources;
+import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonationPreferences;
@@ -31,13 +31,15 @@ class UpcomingEventsFetcher {
     private final Date startingDate;
     private final Context context;
     private final StringResources stringResources;
+    private final ColorResources colorResources;
     private Callback callback;
 
-    UpcomingEventsFetcher(LoaderManager loaderManager, Context context, Date startingDate, StringResources stringResources) {
+    UpcomingEventsFetcher(LoaderManager loaderManager, Context context, Date startingDate, StringResources stringResources, ColorResources colorResources) {
         this.loaderManager = loaderManager;
         this.context = context;
         this.startingDate = startingDate;
         this.stringResources = stringResources;
+        this.colorResources = colorResources;
     }
 
     void loadDatesStartingFromDate(Callback callback) {
@@ -52,7 +54,6 @@ class UpcomingEventsFetcher {
             if (loaderID == LOADER_ID_DATES) {
                 PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(context);
                 NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
-                AndroidColorResources colorResources = new AndroidColorResources(context.getResources());
 
                 UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
 

@@ -3,8 +3,7 @@ package com.alexstyl.specialdates.upcoming.widget.list;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
-import com.alexstyl.resources.AndroidColorResources;
-import com.alexstyl.resources.AndroidDimensionResources;
+import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
@@ -31,6 +30,8 @@ import java.util.Locale;
 public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     @Inject StringResources stringResources;
+    @Inject DimensionResources dimensResources;
+    @Inject ColorResources colorResources;
 
     @Override
     public void onCreate() {
@@ -42,10 +43,9 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         UpcomingEventsProvider peopleEventsProvider = createPeopleEventsProvider();
-        DimensionResources dimensResources = new AndroidDimensionResources(getResources());
         CircularAvatarFactory avatarFactory = new CircularAvatarFactory(
                 UILImageLoader.createLoader(getResources()),
-                new AndroidColorResources(getResources())
+                colorResources
         );
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
@@ -67,7 +67,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
                 new UpcomingEventRowViewModelFactory(
                         today,
                         new UpcomingDateStringCreator(stringResources, today),
-                        new ContactViewModelFactory(new AndroidColorResources(getResources()), stringResources),
+                        new ContactViewModelFactory(colorResources, stringResources),
                         stringResources,
                         new BankHolidayViewModelFactory(),
                         new NamedaysViewModelFactory(today),
