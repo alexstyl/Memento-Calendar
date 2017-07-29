@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
@@ -17,18 +19,29 @@ import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 
+import javax.inject.Inject;
+
 public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider {
+    @Inject
+    Analytics analytics;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
+        super.onReceive(context, intent);
+    }
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SCROLLING);
+        analytics.trackWidgetAdded(Widget.UPCOMING_EVENTS_SCROLLING);
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SCROLLING);
+        analytics.trackWidgetRemoved(Widget.UPCOMING_EVENTS_SCROLLING);
     }
 
     @Override
