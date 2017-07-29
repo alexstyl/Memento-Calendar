@@ -11,9 +11,10 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
@@ -25,6 +26,8 @@ import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
+
+import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
@@ -40,25 +43,27 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
             todayPeopleEventsView.requestUpdate();
         }
     };
+    @Inject
+    Analytics analytics;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
+        super.onReceive(context, intent);
+    }
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
+        analytics.trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
         preferences(context).addListener(listener);
-    }
-
-    private UpcomingWidgetPreferences preferences(Context context) {
-        if (preferences == null) {
-            preferences = new UpcomingWidgetPreferences(context);
-        }
-        return preferences;
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
+        analytics.trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
         preferences(context).removeListener(listener);
     }
 
@@ -186,6 +191,13 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private PendingIntent pendingIntentToMain(Context context) {
         Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private UpcomingWidgetPreferences preferences(Context context) {
+        if (preferences == null) {
+            preferences = new UpcomingWidgetPreferences(context);
+        }
+        return preferences;
     }
 
 }
