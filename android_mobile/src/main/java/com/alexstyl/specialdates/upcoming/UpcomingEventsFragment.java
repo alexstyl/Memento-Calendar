@@ -13,10 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
@@ -31,6 +32,7 @@ import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
@@ -43,12 +45,15 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
+    @Inject
+    Analytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Analytics analytics = AnalyticsProvider.getAnalytics(getActivity());
+        AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today()));
         ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), permissionCallbacks);
         EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), new AndroidStringResources(getResources()));

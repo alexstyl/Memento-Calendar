@@ -14,11 +14,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
@@ -33,6 +34,7 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
@@ -48,12 +50,14 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private Button shareButton;
     private Button closeButton;
     private ImageLoader imageLoader;
-    private Analytics analytics;
+    @Inject
+    Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = AnalyticsProvider.getAnalytics(this);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         analytics.trackScreen(Screen.FACEBOOK_LOG_IN);
         setContentView(R.layout.activity_facebook_log_in);
 

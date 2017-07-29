@@ -18,9 +18,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
@@ -46,6 +47,8 @@ import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 import com.novoda.notils.text.SimpleTextWatcher;
+
+import javax.inject.Inject;
 
 import static android.view.View.GONE;
 import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -79,18 +82,22 @@ public class SearchActivity extends ThemedMementoActivity {
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
     private SearchNavigator searchNavigator;
+    @Inject
+    Analytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
         StringResources stringResources = new AndroidStringResources(getResources());
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
 
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
         searchNavigator = new SearchNavigator(this, analytics);
         namedayPreferences = NamedayPreferences.newInstance(this);

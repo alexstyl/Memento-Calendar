@@ -7,13 +7,13 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.donate.AndroidDonationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationService;
@@ -24,10 +24,13 @@ import com.alexstyl.specialdates.donate.DonationService;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.novoda.notils.caster.Classes;
+
+import javax.inject.Inject;
 
 final public class MainPreferenceFragment extends MementoPreferenceFragment {
 
@@ -39,9 +42,10 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private Preference appThemePreference;
     private MainPreferenceActivity activity;
     private EventsSettingsMonitor monitor; // TODO this probably has to go
-    private Analytics analytics;
     private PeopleEventsViewRefresher refresher;
     private DonationService donationService;
+    @Inject
+    Analytics analytics;
 
     @Override
     public void onAttach(Activity activity) {
@@ -53,7 +57,8 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_main);
-        analytics = AnalyticsProvider.getAnalytics(getActivity());
+        AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         themingPreferences = ThemingPreferences.newInstance(getActivity());
         Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
         bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

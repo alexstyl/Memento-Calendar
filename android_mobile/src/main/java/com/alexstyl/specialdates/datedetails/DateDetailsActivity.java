@@ -6,20 +6,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.support.AskForSupport;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.novoda.notils.caster.Views;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class DateDetailsActivity extends ThemedMementoActivity {
@@ -33,12 +36,18 @@ public class DateDetailsActivity extends ThemedMementoActivity {
      */
     private static final int SOURCE_NOTIFICATION = 1;
 
+    @Inject
+    Analytics analytics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_details);
 
-        AnalyticsProvider.getAnalytics(this).trackScreen(Screen.DATE_DETAILS);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
+        analytics.trackScreen(Screen.DATE_DETAILS);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         toolbar.displayAsUp();
         setSupportActionBar(toolbar);
