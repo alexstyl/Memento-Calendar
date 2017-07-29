@@ -16,7 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
@@ -24,7 +26,6 @@ import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
@@ -43,6 +44,7 @@ import com.novoda.notils.caster.Views;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 public class AddEventActivity extends ThemedMementoActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
@@ -55,7 +57,8 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private AddContactEventsPresenter presenter;
     private PermissionChecker permissionChecker;
     private FilePathProvider filePathProvider;
-    private Analytics analytics;
+    @Inject
+    Analytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,8 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
 
-        analytics = AnalyticsProvider.getAnalytics(this);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         analytics.trackScreen(Screen.ADD_EVENT);
         ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);

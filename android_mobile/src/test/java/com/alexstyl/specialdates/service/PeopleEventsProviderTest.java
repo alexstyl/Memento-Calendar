@@ -111,7 +111,7 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void onlyDynamicEvents_returnsTheDynamicEvents() throws NoEventsFoundException {
-        when(mockStaticEventProvider.findClosestStaticEventDateFrom(any(Date.class))).thenThrow(NoEventsFoundException.class);
+        when(mockStaticEventProvider.findClosestStaticEventDateFrom(on(2, MARCH, 2017))).thenThrow(NoEventsFoundException.class);
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
 
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder()
@@ -119,6 +119,8 @@ public class PeopleEventsProviderTest {
                 .build();
         when(mockPeopleNamedaysCalculator.loadSpecialNamedaysOn(on(2, MARCH, 2017)))
                 .thenReturn(ContactEventsOnADate.createFrom(on(2, MARCH, 2017), expectedEvents));
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(on(2, MARCH, 2017), Date.endOfYear(2017))))
+                .thenReturn(expectedEvents);
 
         Optional<ContactEventsOnADate> actualEvents = peopleEventsProvider.getCelebrationsClosestTo(on(2, MARCH, 2017));
         assertThat(actualEvents.get()).isEqualTo(ContactEventsOnADate.createFrom(on(2, MARCH, 2017), expectedEvents));

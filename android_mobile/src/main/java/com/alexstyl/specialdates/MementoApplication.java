@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
@@ -22,6 +23,8 @@ public class MementoApplication extends Application {
 
     private static Context context;
 
+    private AppComponent appComponent;
+
     public static Context getContext() {
         return context;
     }
@@ -30,6 +33,12 @@ public class MementoApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
+
+        appComponent =
+                DaggerAppComponent.builder()
+                        .analyticsModule(new AnalyticsModule(this))
+                        .build();
+
         initialiseDependencies();
         ErrorTracker.startTracking(this);
 
@@ -62,4 +71,7 @@ public class MementoApplication extends Application {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
     }
 
+    public AppComponent getApplicationModule() {
+        return appComponent;
+    }
 }

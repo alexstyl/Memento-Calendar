@@ -22,13 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
@@ -53,6 +54,7 @@ import com.alexstyl.specialdates.ui.dialog.ProgressFragmentDialog;
 import com.alexstyl.specialdates.util.ShareNamedaysIntentCreator;
 import com.novoda.notils.caster.Views;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class DateDetailsFragment extends MementoFragment {
@@ -70,12 +72,14 @@ public class DateDetailsFragment extends MementoFragment {
     private ProgressBar progress;
     private GridLayoutManager layoutManager;
     private DateDetailsAdapter adapter;
-    private Analytics analytics;
     private ContactPermissionRequest permissions;
     private DateDetailsNavigator dateDetailsNavigator;
     private RecyclerView recyclerView;
     private View emptyView;
     private StringResources stringResources;
+
+    @Inject
+    Analytics analytics;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
@@ -115,7 +119,10 @@ public class DateDetailsFragment extends MementoFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = AnalyticsProvider.getAnalytics(getActivity());
+
+        AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         PermissionChecker checker = new PermissionChecker(getActivity());
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
