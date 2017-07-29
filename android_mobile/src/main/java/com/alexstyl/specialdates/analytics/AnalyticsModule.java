@@ -5,21 +5,25 @@ import android.content.Context;
 import com.alexstyl.specialdates.common.BuildConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
-public class AnalyticsProvider {
+import javax.inject.Singleton;
 
-    private static Analytics ANALYTICS;
+import dagger.Module;
+import dagger.Provides;
 
-    public static Analytics getAnalytics(Context context) {
-        if (ANALYTICS == null) {
-            ANALYTICS = createMixpanelAnalytics(context.getApplicationContext());
-        }
-        return ANALYTICS;
+@Module
+@Singleton
+public class AnalyticsModule {
+    private final Context context;
+
+    public AnalyticsModule(Context context) {
+        this.context = context;
     }
 
-    private static Analytics createMixpanelAnalytics(Context context) {
+    @Provides
+    @Singleton
+    Analytics providesAnalytics() {
         String projectToken = BuildConfig.MIXPANEL_TOKEN;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
         return new MixPanel(mixpanel);
     }
-
 }

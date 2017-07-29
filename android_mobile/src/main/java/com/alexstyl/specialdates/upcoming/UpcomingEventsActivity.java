@@ -10,11 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
@@ -29,6 +30,8 @@ import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
+import javax.inject.Inject;
+
 import static android.view.View.OnClickListener;
 import static com.novoda.notils.caster.Views.findById;
 
@@ -41,18 +44,22 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private MainNavigator navigator;
     private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
-    private Analytics analytics;
     private DrawerLayout drawerLayout;
 
     private UpcomingEventsPreferences preferences;
+
+    @Inject
+    Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming_events);
 
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
         navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()), FacebookPreferences.newInstance(this));
