@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
@@ -16,7 +15,6 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
@@ -32,7 +30,6 @@ import javax.inject.Inject;
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private WidgetImageLoader imageLoader;
-    private StringResources stringResources;
     private UpcomingWidgetPreferences preferences;
     private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
@@ -43,8 +40,8 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
             todayPeopleEventsView.requestUpdate();
         }
     };
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -102,13 +99,6 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         }.execute();
     }
 
-    StringResources stringResources(Resources resources) {
-        if (stringResources == null) {
-            stringResources = new AndroidStringResources(resources);
-        }
-        return stringResources;
-    }
-
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
         Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
@@ -123,7 +113,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         final int N = appWidgetIds.length;
 
-        String label = NaturalLanguageUtils.joinContacts(stringResources(context.getResources()), contactEvents.getContacts(), 2);
+        String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
 
         WidgetVariant selectedVariant = preferences(context).getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();

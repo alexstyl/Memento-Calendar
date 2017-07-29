@@ -21,15 +21,14 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
-import com.alexstyl.android.AndroidColorResources;
-import com.alexstyl.android.AndroidDimensionResources;
+import com.alexstyl.resources.AndroidColorResources;
+import com.alexstyl.resources.AndroidDimensionResources;
 import com.alexstyl.android.Version;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -58,10 +57,10 @@ public class Notifier {
     private final ColorResources colorResources;
     private final DailyReminderPreferences preferences;
 
-    public static Notifier newInstance(Context context) {
+    public static Notifier newInstance(Context context, StringResources stringResources) {
+        // TODO get rid of newInstance
         Resources resources = context.getResources();
         ImageLoader imageLoader = UILImageLoader.createLoader(resources);
-        StringResources stringResources = new AndroidStringResources(resources);
         DimensionResources dimensions = new AndroidDimensionResources(resources);
         ColorResources colorResources = new AndroidColorResources(resources);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

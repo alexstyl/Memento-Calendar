@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
@@ -30,14 +31,19 @@ public class MementoApplication extends Application {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        context = this;
-
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
         appComponent =
                 DaggerAppComponent.builder()
                         .analyticsModule(new AnalyticsModule(this))
+                        .resourcesModule(new ResourcesModule(getResources()))
                         .build();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = this;
 
         initialiseDependencies();
         ErrorTracker.startTracking(this);

@@ -9,10 +9,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.ui.EventDatePicker;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.database.EventTypeId;
@@ -23,6 +24,8 @@ import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.caster.Classes;
 import com.novoda.notils.caster.Views;
 
+import javax.inject.Inject;
+
 public class EventDatePickerDialogFragment extends MementoDialog {
 
     private static final String KEY_DATE = "key:date";
@@ -32,6 +35,8 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     private EventDatePicker datePicker;
 
     private Optional<Date> initialDate;
+    @Inject
+    StringResources stringResources;
 
     public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date) {
         EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
@@ -53,6 +58,9 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppComponent applicationModule = getApplication().getApplicationModule();
+        applicationModule.inject(this);
         initialDate = getDate();
     }
 
@@ -86,7 +94,6 @@ public class EventDatePickerDialogFragment extends MementoDialog {
             datePicker.setDisplayingDate(initialDate.get());
         }
 
-        AndroidStringResources stringResources = new AndroidStringResources(getResources());
         return new AlertDialog.Builder(getActivity())
                 .setTitle(eventType.getEventName(stringResources))
                 .setView(view)

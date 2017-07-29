@@ -1,4 +1,4 @@
-package com.alexstyl.android;
+package com.alexstyl.resources;
 
 import android.content.res.Resources;
 import android.support.annotation.ColorRes;
