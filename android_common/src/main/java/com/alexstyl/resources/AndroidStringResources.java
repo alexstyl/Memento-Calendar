@@ -7,7 +7,7 @@ import android.support.annotation.StringRes;
 /**
  * Wrapper class of Android's {@link Resources} string related methods
  */
-public final class AndroidStringResources implements StringResources {
+final class AndroidStringResources implements StringResources {
 
     private final Resources resources;
 

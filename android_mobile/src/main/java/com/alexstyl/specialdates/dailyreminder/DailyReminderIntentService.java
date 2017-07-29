@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
@@ -42,6 +44,8 @@ public class DailyReminderIntentService extends IntentService {
     private PermissionChecker checker;
 
     @Inject StringResources stringResources;
+    @Inject DimensionResources dimensions;
+    @Inject ColorResources colorResources;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -55,7 +59,7 @@ public class DailyReminderIntentService extends IntentService {
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        notifier = Notifier.newInstance(this, stringResources);
+        notifier = Notifier.newInstance(this, stringResources, colorResources, dimensions);
         namedayPreferences = NamedayPreferences.newInstance(this);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
