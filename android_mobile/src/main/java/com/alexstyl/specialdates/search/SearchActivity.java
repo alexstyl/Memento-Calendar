@@ -32,7 +32,6 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -84,6 +83,7 @@ public class SearchActivity extends ThemedMementoActivity {
     private ExternalNavigator externalNavigator;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,7 +124,6 @@ public class SearchActivity extends ThemedMementoActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
         adapter = new SearchResultAdapter(imageLoader);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);

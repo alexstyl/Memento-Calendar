@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModelFactory;
 import com.alexstyl.specialdates.upcoming.ContactViewModelFactory;
@@ -32,6 +32,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
     @Inject StringResources stringResources;
     @Inject DimensionResources dimensResources;
     @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate() {
@@ -44,7 +45,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         UpcomingEventsProvider peopleEventsProvider = createPeopleEventsProvider();
         CircularAvatarFactory avatarFactory = new CircularAvatarFactory(
-                UILImageLoader.createLoader(getResources()),
+                imageLoader,
                 colorResources
         );
         return new UpcomingEventsViewsFactory(

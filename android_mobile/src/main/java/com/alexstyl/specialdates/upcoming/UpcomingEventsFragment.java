@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -49,6 +49,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,10 +85,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         upcomingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         upcomingList.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards), 1));
 
-        adapter = new UpcomingEventsAdapter(
-                new UpcomingViewHolderFactory(inflater, UILImageLoader.createCircleLoader(getResources())),
-                presenter
-        );
+        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), presenter);
         upcomingList.setAdapter(adapter);
         return view;
     }

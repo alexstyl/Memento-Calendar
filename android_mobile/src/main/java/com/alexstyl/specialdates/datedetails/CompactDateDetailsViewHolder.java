@@ -31,7 +31,10 @@ class CompactDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVie
         String displayNameString = contact.getDisplayName().toString();
         avatar.setLetter(displayNameString);
         displayName.setText(displayNameString);
-        imageLoader.loadImage(contact.getImagePath(), avatar.getImageView());
+
+        imageLoader.load(contact.getImagePath())
+                .into(avatar.getImageView());
+
         eventLabel.setVisibility(View.GONE);
         itemView.setOnClickListener(
                 new View.OnClickListener() {
