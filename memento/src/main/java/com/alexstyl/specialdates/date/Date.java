@@ -111,6 +111,10 @@ public class Date implements Comparable<Date> {
         return year.isPresent();
     }
 
+    public boolean hasNoYear() {
+        return !year.isPresent();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -154,4 +158,5 @@ public class Date implements Comparable<Date> {
         }
         return this.getDayOfMonth() - right.getDayOfMonth();
     }
+
 }

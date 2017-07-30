@@ -5,12 +5,12 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 
-internal class PersonDetailsViewModelFactory(val stringResources: StringResources) {
+internal class PersonDetailsViewModelFactory(private val stringResources: StringResources, private val ageCalculator: AgeCalculator) {
 
     operator fun invoke(contact: Contact, contactEvent: ContactEvent?): PersonInfoViewModel {
         val ageAndStarSignBuilder = StringBuilder()
         if (contactEvent != null) {
-            ageAndStarSignBuilder.append(ageOf(contactEvent.date!!))
+            ageAndStarSignBuilder.append(ageCalculator.ageOf(contactEvent.date!!))
             if (ageAndStarSignBuilder.isNotEmpty()) {
                 ageAndStarSignBuilder.append(", ")
             }
@@ -19,16 +19,10 @@ internal class PersonDetailsViewModelFactory(val stringResources: StringResource
         return PersonInfoViewModel(contact.displayName.toString(), ageAndStarSignBuilder.toString(), contact.imagePath)
     }
 
-    private fun ageOf(birthday: Date): String {
-        if (birthday.hasYear()) {
-            return (Date.CURRENT_YEAR - birthday.year).toString()
-        }
-        return ""
-    }
-
     private fun starSignOf(birthday: Date): String {
         val starSign = StarSign.forDateOfBirth(birthday)
         return stringResources.getString(starSign.labelStringRes) + " " + starSign.emoji
     }
 }
+
 
