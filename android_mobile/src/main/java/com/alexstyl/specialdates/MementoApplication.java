@@ -5,12 +5,14 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
+import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -30,14 +32,20 @@ public class MementoApplication extends Application {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        context = this;
-
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
         appComponent =
                 DaggerAppComponent.builder()
                         .analyticsModule(new AnalyticsModule(this))
+                        .resourcesModule(new ResourcesModule(getResources()))
+                        .imageModule(new ImageModule(getResources()))
                         .build();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = this;
 
         initialiseDependencies();
         ErrorTracker.startTracking(this);

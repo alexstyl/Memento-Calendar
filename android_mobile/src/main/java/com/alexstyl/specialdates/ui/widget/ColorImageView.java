@@ -15,9 +15,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.util.GreekNameUtils;
-import com.alexstyl.android.Version;
 import com.novoda.notils.caster.Views;
 
 public class ColorImageView extends FrameLayout {
@@ -93,19 +93,13 @@ public class ColorImageView extends FrameLayout {
     /**
      * Returns the currently selected background variant of the view
      */
-    public void setBackgroundVariant(@Size(min = 1, max = 5) int i) {
+    public void setCircleColorVariant(@Size(min = 1, max = 5) int i) {
         int variant = LetterPainter.getVariant(getResources(), i);
         if (backgroundVariant != variant) {
             backgroundVariant = variant;
             paint.setColor(backgroundVariant);
             invalidate();
         }
-    }
-
-    @Override
-    public void setBackgroundColor(int color) {
-        paint.setColor(color);
-        invalidate();
     }
 
     @Override
@@ -122,11 +116,13 @@ public class ColorImageView extends FrameLayout {
             }
         }
         super.onDraw(canvas);
-
     }
 
     public void setLetter(String letter) {
         setLetter(letter, true);
     }
 
+    public void setText(String text) {
+        setLetter(text);
+    }
 }

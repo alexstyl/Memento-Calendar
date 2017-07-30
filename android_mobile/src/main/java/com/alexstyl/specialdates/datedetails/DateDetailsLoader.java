@@ -17,7 +17,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
@@ -42,6 +41,7 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
     private final NamedayViewModelFactory namedayViewModelFactory;
     private final PeopleEventViewModelFactory peopleEventViewModelFactory;
     private final PeopleEventsObserver peopleEventsObserver;
+    private final ImageLoader imageLoader;
 
     DateDetailsLoader(Context context,
                       Date date,
@@ -54,7 +54,8 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
                       PeopleEventViewModelFactory peopleEventViewModelFactory,
                       BankHolidayViewModelFactory bankHolidayViewModelFactory,
                       NamedayViewModelFactory namedayViewModelFactory,
-                      NamedayCalendarProvider namedayCalendarProvider) {
+                      NamedayCalendarProvider namedayCalendarProvider,
+                      ImageLoader imageLoader) {
         super(context);
         this.date = date;
         this.askForSupport = askForSupport;
@@ -67,6 +68,7 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
         this.bankHolidayViewModelFactory = bankHolidayViewModelFactory;
         this.namedayViewModelFactory = namedayViewModelFactory;
         this.namedayCalendarProvider = namedayCalendarProvider;
+        this.imageLoader = imageLoader;
         this.bankHolidaysPreferences = BankHolidaysPreferences.newInstance(getContext());
 
         peopleEventsObserver.startObserving(new PeopleEventsObserver.OnPeopleEventsChanged() {
@@ -99,7 +101,6 @@ class DateDetailsLoader extends SimpleAsyncTaskLoader<DateDetailsScreenViewModel
 
     private DateDetailsViewHolderFactory createViewHolderFactory(List<DateDetailsViewModel> viewModels) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        ImageLoader imageLoader = UILImageLoader.createLoader(getContext().getResources());
 
         return (viewModels.size() <= 2) ?
                 DateDetailsViewHolderFactory.createDetailedFactory(layoutInflater, imageLoader) :

@@ -12,7 +12,10 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -23,6 +26,8 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.util.DateParser;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -38,11 +43,15 @@ public class StaticEventsContentProvider extends ContentProvider {
     private EventPreferences eventPreferences;
     private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;
+    @Inject StringResources stringResources;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
         Resources resources = context.getResources();
+
+        AppComponent applicationModule = ((MementoApplication) getContext().getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
 
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
@@ -64,7 +73,7 @@ public class StaticEventsContentProvider extends ContentProvider {
 
         presenter = new PeopleEventsPresenter(
                 AndroidSchedulers.mainThread(),
-                EventsRefreshRequestsMonitor.newInstance(context),
+                EventsRefreshRequestsMonitor.newInstance(context, stringResources),
                 peopleEventsUpdater,
                 viewRefresher
         );

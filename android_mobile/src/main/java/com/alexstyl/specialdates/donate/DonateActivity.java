@@ -21,9 +21,8 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.donate.util.IabHelper;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -39,8 +38,9 @@ public class DonateActivity extends MementoActivity {
     private SeekBar donateBar;
     private CoordinatorLayout coordinator;
 
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     protected boolean shouldUseHomeAsUp() {
@@ -53,12 +53,17 @@ public class DonateActivity extends MementoActivity {
 
         setContentView(R.layout.activity_donate);
 
-        final Toolbar toolbar = Views.findById(this, R.id.toolbar);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
+        Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
 
         coordinator = Views.findById(this, R.id.donate_coordinator);
         ImageView avatar = Views.findById(this, R.id.donate_avatar);
-        UILImageLoader.createLoader(getResources()).loadImage(DEV_IMAGE_URI, avatar);
+        imageLoader
+                .load(DEV_IMAGE_URI)
+                .into(avatar);
 
         final AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
@@ -66,10 +71,6 @@ public class DonateActivity extends MementoActivity {
         if (Version.hasLollipop()) {
             appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
-
-        StringResources stringResources = new AndroidStringResources(getResources());
-        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
-        applicationModule.inject(this);
 
         DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this, DonationPreferences.newInstance(this), analytics);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
