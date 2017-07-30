@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,8 +33,6 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -55,10 +52,8 @@ public class Notifier {
     private final ColorResources colorResources;
     private final DailyReminderPreferences preferences;
 
-    public static Notifier newInstance(Context context, StringResources stringResources, ColorResources colorResources, DimensionResources dimensions) {
+    public static Notifier newInstance(Context context, StringResources stringResources, ColorResources colorResources, DimensionResources dimensions, ImageLoader imageLoader) {
         // TODO get rid of newInstance
-        Resources resources = context.getResources();
-        ImageLoader imageLoader = UILImageLoader.createLoader(resources);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(context);
         return new Notifier(context, notificationManager, imageLoader, stringResources, colorResources, dimensions, preferences);
@@ -87,7 +82,10 @@ public class Notifier {
         if (shouldDisplayContactImage(contactCount)) {
             Contact displayingContact = events.get(0).getContact();
             int size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width);
-            Optional<Bitmap> loadedIcon = imageLoader.loadBitmapSync(displayingContact.getImagePath(), new ImageSize(size, size));
+            Optional<Bitmap> loadedIcon =
+                    imageLoader.load(displayingContact.getImagePath())
+                            .withSize(size, size)
+                            .async();
             if (Version.hasLollipop() && loadedIcon.isPresent()) {
                 // in Lollipop the notifications is the default to use Rounded Images
                 largeIcon = getCircleBitmap(loadedIcon.get());

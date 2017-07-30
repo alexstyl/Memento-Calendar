@@ -12,43 +12,48 @@ import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
-class CustomFadeInDisplayer implements BitmapDisplayer {
-
-    private static final int FADE_IN_TIME = 200;
+/**
+ * A {@linkplain BitmapDisplayer} that cross fades the original set Drawable of the view with the newly loaded one.
+ */
+class CrossFadeBitmapDisplayer implements BitmapDisplayer {
+    private final int fadeInTime;
     private final Resources resources;
     private final ColorDrawable transparent;
 
-    CustomFadeInDisplayer(Resources resources) {
+    CrossFadeBitmapDisplayer(Resources resources, int duration) {
+        this.fadeInTime = duration;
         this.resources = resources;
         this.transparent = new ColorDrawable(resources.getColor(android.R.color.transparent));
     }
 
     @Override
     public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
-        if ((loadedFrom == LoadedFrom.NETWORK) || (loadedFrom == LoadedFrom.DISC_CACHE)) {
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(resources, bitmap);
+        display(imageAware, loadedFrom, bitmapDrawable);
+    }
+
+    protected void display(ImageAware imageAware, LoadedFrom loadedFrom, Drawable drawable) {
+        if (loadedFrom == LoadedFrom.MEMORY_CACHE) {
+            imageAware.setImageDrawable(drawable);
+        } else {
             ImageView imageView = (ImageView) imageAware.getWrappedView();
             Drawable previous = imageView.getDrawable();
             if (previous == null) {
                 previous = transparent;
             }
 
-            final TransitionDrawable td =
-                    new TransitionDrawable(
-                            new Drawable[]{
-                                    previous,
-                                    new BitmapDrawable(resources, bitmap)
-                            }
-                    );
+            TransitionDrawable transition = new TransitionDrawable(
+                    new Drawable[]{
+                            previous,
+                            drawable
+                    }
+            );
 
-            td.setCrossFadeEnabled(true);
+            transition.setCrossFadeEnabled(true);
+            imageAware.setImageDrawable(transition);
+            transition.startTransition(fadeInTime);
 
-            imageAware.setImageDrawable(td);
-            td.startTransition(FADE_IN_TIME);
-
-        } else {
-            imageAware.setImageBitmap(bitmap);
         }
-
     }
 
 }

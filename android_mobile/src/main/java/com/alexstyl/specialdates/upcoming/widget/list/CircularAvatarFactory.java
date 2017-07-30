@@ -9,16 +9,15 @@ import android.graphics.Typeface;
 import android.support.annotation.Px;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import static android.graphics.Shader.TileMode.CLAMP;
 
-public final class CircularAvatarFactory {
+final class CircularAvatarFactory {
 
     private static final String SMILEY_FACE = ":)";
     private static final Typeface ROBOTO_LIGHT = Typeface.create("sans-serif-light", Typeface.NORMAL);
@@ -26,13 +25,16 @@ public final class CircularAvatarFactory {
     private final ImageLoader imageLoader;
     private final ColorResources colorResources;
 
-    public CircularAvatarFactory(ImageLoader imageLoader, ColorResources colorResources) {
+    CircularAvatarFactory(ImageLoader imageLoader, ColorResources colorResources) {
         this.imageLoader = imageLoader;
         this.colorResources = colorResources;
     }
 
     Optional<Bitmap> circularAvatarFor(Contact contact, @Px int targetSize) {
-        Optional<Bitmap> bitmapOptional = imageLoader.loadBitmapSync(contact.getImagePath(), new ImageSize(targetSize, targetSize));
+        Optional<Bitmap> bitmapOptional = imageLoader
+                .load(contact.getImagePath())
+                .withSize(targetSize, targetSize)
+                .async();
         if (!bitmapOptional.isPresent()) {
             return Optional.absent();
         }

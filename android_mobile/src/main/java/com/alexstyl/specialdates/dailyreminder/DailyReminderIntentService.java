@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.util.Notifier;
@@ -46,6 +47,7 @@ public class DailyReminderIntentService extends IntentService {
     @Inject StringResources stringResources;
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -59,7 +61,7 @@ public class DailyReminderIntentService extends IntentService {
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        notifier = Notifier.newInstance(this, stringResources, colorResources, dimensions);
+        notifier = Notifier.newInstance(this, stringResources, colorResources, dimensions, imageLoader);
         namedayPreferences = NamedayPreferences.newInstance(this);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);

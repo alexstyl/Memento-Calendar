@@ -35,7 +35,6 @@ import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -59,6 +58,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private FilePathProvider filePathProvider;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,6 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         analytics.trackScreen(Screen.ADD_EVENT);
-        ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
