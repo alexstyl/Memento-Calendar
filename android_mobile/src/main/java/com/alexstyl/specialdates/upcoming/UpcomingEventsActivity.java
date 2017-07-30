@@ -22,6 +22,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
@@ -53,6 +54,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Inject StringResources stringResource;
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         ViewGroup activityContent = findById(this, R.id.main_content);
         searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
 
-        notifier = Notifier.newInstance(this, stringResource, colorResources, dimensions);
+        notifier = Notifier.newInstance(this, stringResource, colorResources, dimensions, imageLoader);
 
         findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override

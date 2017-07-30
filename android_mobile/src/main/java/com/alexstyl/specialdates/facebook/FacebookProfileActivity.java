@@ -19,7 +19,6 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 
@@ -37,11 +36,10 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
     private ExternalNavigator navigator;
     private FacebookProfilePresenter presenter;
-    private ImageLoader imageLoader;
     private ImageView profilePicture;
     private TextView userName;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +71,6 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
                 persister,
                 PeopleEventsViewRefresher.get(this), onLogOut()
         );
-        imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
         presenter = new FacebookProfilePresenter(
                 service,
                 this,
@@ -102,7 +99,10 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     public void display(UserCredentials userCredentials) {
         userName.setText(userCredentials.getName());
         URI uri = FacebookImagePath.forUid(userCredentials.getUid());
-        imageLoader.loadImage(uri, profilePicture);
+        imageLoader
+                .load(uri)
+                .asCircle()
+                .into(profilePicture);
     }
 
     @Override

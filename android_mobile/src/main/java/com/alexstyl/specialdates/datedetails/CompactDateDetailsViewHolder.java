@@ -27,11 +27,14 @@ class CompactDateDetailsViewHolder extends DateDetailsViewHolder<ContactEventVie
     @Override
     void bind(final ContactEventViewModel viewModel, final DateDetailsClickListener listener) {
         final Contact contact = viewModel.getContact();
-        avatar.setBackgroundVariant((int) contact.getContactID());
+        avatar.setCircleColorVariant((int) contact.getContactID());
         String displayNameString = contact.getDisplayName().toString();
         avatar.setLetter(displayNameString);
         displayName.setText(displayNameString);
-        imageLoader.loadImage(contact.getImagePath(), avatar.getImageView());
+
+        imageLoader.load(contact.getImagePath())
+                .into(avatar.getImageView());
+
         eventLabel.setVisibility(View.GONE);
         itemView.setOnClickListener(
                 new View.OnClickListener() {
