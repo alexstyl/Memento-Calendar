@@ -10,6 +10,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
@@ -57,7 +59,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private ImageView avatarView;
     private TextView personNameView;
     private TextView ageAndSignView;
-    private ViewPager viewPager;
     private ContactItemsAdapter adapter;
     private ExternalNavigator navigator;
     private ImageView toolbarGradient;
@@ -86,7 +87,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                 ),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
-                new PersonDetailsViewModelFactory(stringResources),
+                new PersonDetailsViewModelFactory(stringResources, new AgeCalculator(Date.today())),
                 new EventViewModelFactory(stringResources)
         );
 
@@ -101,7 +102,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         avatarView = Views.findById(this, R.id.person_avatar);
         personNameView = Views.findById(this, R.id.person_name);
         ageAndSignView = Views.findById(this, R.id.person_age_and_sign);
-        viewPager = Views.findById(this, R.id.person_viewpager);
+        ViewPager viewPager = Views.findById(this, R.id.person_viewpager);
         toolbarGradient = Views.findById(this, R.id.person_toolbar_gradient);
         adapter = new ContactItemsAdapter(LayoutInflater.from(thisActivity()), onEventPressed);
 
@@ -214,11 +215,10 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (wasCalledFromMemento()) {
-                    Intent intent = getParentActivityIntent();
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    NavUtils.navigateUpFromSameTask(this);
+                } else {
+                    finish();
                 }
-                finish();
                 return true;
             case R.id.action_view_contact:
                 if (displayingContact.isPresent()) {

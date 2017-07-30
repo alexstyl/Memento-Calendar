@@ -137,7 +137,7 @@ class AndroidContactActionsProvider(
             val icon = resolveInfos[0].loadIcon(packageManager)
             return ContactActionViewModel(action, View.VISIBLE, icon)
         }
-        throw ActivityNotFoundException()
+        throw ActivityNotFoundException("Couldn't find activity for "+mimeType)
     }
 
 
@@ -160,6 +160,7 @@ class AndroidContactActionsProvider(
             WHATSAPP_VOIP_CALL,
             VIBER_VOICE_MESSAGE,
             VIBER_NUMBER_CALL,
+            TELEGRAM_MESSAGE,
             VIBER_OUT_CALL
     )
     private val CUSTOM_MESSAGING_ACTION_LIST = arrayOf(
