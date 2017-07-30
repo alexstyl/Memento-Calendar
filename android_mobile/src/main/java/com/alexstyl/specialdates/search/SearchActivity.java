@@ -19,7 +19,6 @@ import android.view.ViewTreeObserver;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -80,7 +79,7 @@ public class SearchActivity extends ThemedMementoActivity {
     private RecyclerView resultView;
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
-    private ExternalNavigator externalNavigator;
+    private SearchNavigator searchNavigator;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
@@ -90,14 +89,15 @@ public class SearchActivity extends ThemedMementoActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
 
-        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
-        applicationModule.inject(this);
         analytics.trackScreen(Screen.SEARCH);
-        externalNavigator = new ExternalNavigator(this, analytics);
+        searchNavigator = new SearchNavigator(this, analytics);
         namedayPreferences = NamedayPreferences.newInstance(this);
 
         searchbar = Views.findById(this, R.id.search_searchbar);
@@ -303,7 +303,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onContactClicked(Contact contact) {
-            externalNavigator.toContactDetails(contact);
+            searchNavigator.toContactDetails(contact);
         }
 
         @Override

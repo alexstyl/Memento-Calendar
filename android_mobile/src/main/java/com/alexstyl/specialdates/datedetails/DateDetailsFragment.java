@@ -73,7 +73,7 @@ public class DateDetailsFragment extends MementoFragment {
     private GridLayoutManager layoutManager;
     private DateDetailsAdapter adapter;
     private ContactPermissionRequest permissions;
-    private ExternalNavigator externalNavigator;
+    private DateDetailsNavigator dateDetailsNavigator;
     private RecyclerView recyclerView;
     private View emptyView;
     @Inject StringResources stringResources;
@@ -126,7 +126,7 @@ public class DateDetailsFragment extends MementoFragment {
         PermissionNavigator navigator = new PermissionNavigator(getActivity(), analytics);
         PermissionChecker checker = new PermissionChecker(getActivity());
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
-        externalNavigator = new ExternalNavigator(getActivity(), analytics);
+        dateDetailsNavigator = new DateDetailsNavigator(getActivity(), analytics, new ExternalNavigator(getActivity(), analytics));
     }
 
     private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
@@ -167,7 +167,6 @@ public class DateDetailsFragment extends MementoFragment {
         int dayOfMonth = arguments.getInt(KEY_DISPLAYING_DAY_OF_MONTH);
         return Date.on(dayOfMonth, month, year);
     }
-
 
     private LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel> loaderCallbacks = new LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel>() {
 
@@ -241,8 +240,7 @@ public class DateDetailsFragment extends MementoFragment {
 
         @Override
         public void onCardClicked(Contact contact) {
-            analytics.trackAction(CONTACT_INTERACT_EXTERNAL);
-            externalNavigator.toContactDetails(contact);
+            dateDetailsNavigator.toContactDetails(contact);
         }
 
         @Override
@@ -279,7 +277,7 @@ public class DateDetailsFragment extends MementoFragment {
             Toast.makeText(getActivity(), R.string.support_thanks_for_rating, Toast.LENGTH_SHORT).show();
             AskForSupport askForSupport = new AskForSupport(getActivity());
             askForSupport.onRateEnd();
-            externalNavigator.toPlayStore();
+            dateDetailsNavigator.toPlayStore();
             adapter.notifyDataSetChanged();
         }
 

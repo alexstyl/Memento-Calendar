@@ -75,7 +75,11 @@ public enum DateDisplayStringCreator {
         Context appContext = MementoApplication.getContext();
 
         int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
-        format_flags |= DateUtils.FORMAT_SHOW_YEAR;
+        if (date.hasYear()) {
+            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
+        } else {
+            format_flags |= DateUtils.FORMAT_NO_YEAR;
+        }
         return DateUtils.formatDateTime(appContext, date.toMillis(), format_flags);
     }
 }

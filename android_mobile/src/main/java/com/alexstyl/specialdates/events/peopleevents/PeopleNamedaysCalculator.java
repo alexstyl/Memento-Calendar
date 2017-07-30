@@ -104,4 +104,8 @@ public class PeopleNamedaysCalculator {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR);
     }
+
+    public List<ContactEvent> loadSpecialNamedaysFor(Contact contact) {
+        throw new UnsupportedOperationException();
+    }
 }

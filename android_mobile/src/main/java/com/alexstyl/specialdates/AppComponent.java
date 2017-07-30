@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.images.ImageModule;
+import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
@@ -57,6 +58,8 @@ public interface AppComponent {
     void inject(UpcomingEventsScrollingAppWidgetProvider widgetProvider);
 
     void inject(TodayAppWidgetProvider widgetProvider);
+
+    void inject(PersonActivity activity);
 
     void inject(EventDatePickerDialogFragment fragment);
 
