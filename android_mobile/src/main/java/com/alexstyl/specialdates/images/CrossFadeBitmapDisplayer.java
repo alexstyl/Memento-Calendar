@@ -28,6 +28,9 @@ class CrossFadeBitmapDisplayer implements BitmapDisplayer {
 
     @Override
     public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+        if (imageAware == null || imageAware.getWrappedView() == null) {
+            throw new IllegalStateException("Cannot use this displayer without a target");
+        }
         BitmapDrawable bitmapDrawable = new BitmapDrawable(resources, bitmap);
         display(imageAware, loadedFrom, bitmapDrawable);
     }
