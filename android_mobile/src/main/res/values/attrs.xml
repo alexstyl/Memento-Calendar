@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
-  <declare-styleable name="InitialImageView">
-    <attr name="textSize"
-      format="dimension" />
-  </declare-styleable>
-
   <declare-styleable name="ColorImageView">
     <attr name="isCircle"
       format="boolean" />

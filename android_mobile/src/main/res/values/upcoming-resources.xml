@@ -39,7 +39,7 @@
   </style>
 
   <style name="Upcoming.Avatar">
-    <item name="textSize">@dimen/upcoming_initial_size</item>
+    <item name="letterSize">@dimen/upcoming_initial_size</item>
     <item name="isCircle">true</item>
     <item name="android:layout_width">@dimen/upcoming_contact_event_avatar_width</item>
     <item name="android:layout_height">@dimen/upcoming_contact_event_avatar_height</item>
