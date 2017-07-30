@@ -9,7 +9,6 @@ import com.alexstyl.specialdates.Optional;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.net.URI;
@@ -17,8 +16,12 @@ import java.net.URI;
 class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
     private final com.nostra13.universalimageloader.core.ImageLoader uil;
+    private final CrossFadeBitmapDisplayer displayer;
+    private final CrossFadeCircleBitmapDisplayer circleBitmapDisplayer;
 
-    UILImageLoader() {
+    UILImageLoader(CrossFadeBitmapDisplayer displayer, CrossFadeCircleBitmapDisplayer circleBitmapDisplayer) {
+        this.displayer = displayer;
+        this.circleBitmapDisplayer = circleBitmapDisplayer;
         this.uil = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
     }
 
@@ -30,6 +33,12 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
             @Override
             public void into(ImageView imageView) {
                 uil.displayImage(imagePath.toString(), imageView, builder.build());
+            }
+
+            @Override
+            public Request asCircle() {
+                builder.displayer(circleBitmapDisplayer);
+                return this;
             }
 
             @Override
@@ -66,10 +75,10 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
     private DisplayImageOptions.Builder standardBuilder() {
         return new DisplayImageOptions.Builder()
-                .displayer(new FadeInBitmapDisplayer(400, true, true, false))
+                .displayer(displayer)
                 .resetViewBeforeLoading(true)
-                .cacheInMemory(true)
-                ;
+                .cacheOnDisk(true)
+                .cacheInMemory(true);
     }
 
 }

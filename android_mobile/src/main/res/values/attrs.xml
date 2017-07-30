@@ -2,6 +2,11 @@
 <resources>
 
 
+  <declare-styleable name="InitialImageView">
+    <attr name="textSize"
+      format="dimension" />
+  </declare-styleable>
+
   <declare-styleable name="ColorImageView">
     <attr name="isCircle"
       format="boolean" />
@@ -17,7 +22,6 @@
     <attr name="secondaryText"
       format="string" />
   </declare-styleable>
-
 
 
   <declare-styleable name="TitledTextView">
