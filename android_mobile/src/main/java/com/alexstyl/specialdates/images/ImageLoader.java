@@ -17,6 +17,8 @@ public interface ImageLoader {
         FixedSizeRequest withSize(@Px int width, @Px int height);
 
         void into(ImageView imageView);
+
+        Request asCircle();
     }
 
     interface FixedSizeRequest {
