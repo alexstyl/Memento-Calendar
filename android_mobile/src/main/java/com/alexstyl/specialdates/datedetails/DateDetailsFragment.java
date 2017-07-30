@@ -30,7 +30,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
@@ -44,6 +43,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -76,10 +76,10 @@ public class DateDetailsFragment extends MementoFragment {
     private DateDetailsNavigator dateDetailsNavigator;
     private RecyclerView recyclerView;
     private View emptyView;
-    private StringResources stringResources;
-
-    @Inject
-    Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject Analytics analytics;
+    @Inject ImageLoader imageLoader;
+    private EventsSpacingDecoration spacingDecoration;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
@@ -127,7 +127,6 @@ public class DateDetailsFragment extends MementoFragment {
         PermissionChecker checker = new PermissionChecker(getActivity());
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
         dateDetailsNavigator = new DateDetailsNavigator(getActivity(), analytics, new ExternalNavigator(getActivity(), analytics));
-        stringResources = new AndroidStringResources(getResources());
     }
 
     private final ContactPermissionRequest.PermissionCallbacks permissionCallbacks = new ContactPermissionRequest.PermissionCallbacks() {
@@ -169,7 +168,6 @@ public class DateDetailsFragment extends MementoFragment {
         return Date.on(dayOfMonth, month, year);
     }
 
-    private EventsSpacingDecoration spacingDecoration;
     private LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel> loaderCallbacks = new LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel>() {
 
         @Override
@@ -185,11 +183,12 @@ public class DateDetailsFragment extends MementoFragment {
                         new PeopleEventsObserver(getContentResolver()),
                         NamedayPreferences.newInstance(getContext()),
                         new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                        new SupportViewModelFactory(getContext(), new AndroidStringResources(getResources())),
+                        new SupportViewModelFactory(getContext(), stringResources),
                         new PeopleEventViewModelFactory(date, stringResources, getResources(), factory),
                         new BankHolidayViewModelFactory(),
                         new NamedayViewModelFactory(),
-                        NamedayCalendarProvider.newInstance(getResources())
+                        NamedayCalendarProvider.newInstance(getResources()),
+                        imageLoader
                 );
             }
             throw new IllegalArgumentException("Requested loader with unknown ID " + loaderID);

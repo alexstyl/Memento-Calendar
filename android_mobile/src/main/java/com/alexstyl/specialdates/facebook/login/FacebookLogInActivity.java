@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -21,7 +22,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
@@ -29,7 +29,6 @@ import com.alexstyl.specialdates.facebook.UserCredentials;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
@@ -49,9 +48,9 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private ProgressBar progress;
     private Button shareButton;
     private Button closeButton;
-    private ImageLoader imageLoader;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResource;
+    @Inject ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,6 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setOnClickListener(onCloseButtonPressed());
         webView = Views.findById(this, R.id.facebook_import_webview);
         orientationLock = new ScreenOrientationLock();
-        imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
         facebookFriendsScheduler = new FacebookFriendsScheduler(
                 thisActivity(),
                 (AlarmManager) getSystemService(ALARM_SERVICE)
@@ -101,9 +99,10 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
     private View.OnClickListener shareAppIntentOnClick() {
         return new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), new AndroidStringResources(getResources()));
+                ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), stringResource);
                 Intent intent = appIntentCreator.buildIntent();
                 startActivity(intent);
                 analytics.trackAppInviteRequested();
@@ -167,7 +166,10 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         shareButton.setVisibility(View.VISIBLE);
 
         URI uri = FacebookImagePath.forUid(userCredentials.getUid());
-        imageLoader.loadImage(uri, avatar);
+        imageLoader
+                .load(uri)
+                .asCircle()
+                .into(avatar);
 
         animateAvatarWithBounce();
         avatar.setVisibility(View.VISIBLE);

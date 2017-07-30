@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -22,34 +21,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
-import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
-import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.OnImageLoadedCallback;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
-import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.R.attr.absListViewStyle;
-import static android.R.attr.handle;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
 public class PersonActivity extends ThemedMementoActivity implements PersonView {
@@ -59,13 +55,15 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
 
     private PersonPresenter presenter;
     private ImageView avatarView;
-    private ImageLoader imageLoader;
     private TextView personNameView;
     private TextView ageAndSignView;
     private ViewPager viewPager;
     private ContactItemsAdapter adapter;
     private ExternalNavigator navigator;
     private ImageView toolbarGradient;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     private Optional<Contact> displayingContact = Optional.absent();
 
@@ -73,9 +71,11 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
-        navigator = new ExternalNavigator(this, AnalyticsProvider.getAnalytics(this));
-        StringResources stringResources = new AndroidStringResources(getResources());// TODO inject this
 
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
+        navigator = new ExternalNavigator(this, analytics);
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
@@ -104,7 +104,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         viewPager = Views.findById(this, R.id.person_viewpager);
         toolbarGradient = Views.findById(this, R.id.person_toolbar_gradient);
         adapter = new ContactItemsAdapter(LayoutInflater.from(thisActivity()), onEventPressed);
-        imageLoader = UILImageLoader.createLoader(getResources()); // TODO inject this
 
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
@@ -166,33 +165,35 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
 
     @Override
     public void displayPersonInfo(PersonInfoViewModel viewModel) {
-        imageLoader.loadImage(viewModel.getImage(), avatarView, new OnImageLoadedCallback() {
+        imageLoader.load(viewModel.getImage())
+                .withSize(avatarView.getWidth(), avatarView.getHeight())
+                .into(new ImageLoadedConsumer() {
+                    private static final int ANIMATION_DURATION = 400;
 
-            private static final int ANIMATION_DURATION = 400;
+                    @Override
+                    public void onImageLoaded(Bitmap loadedImage) {
+                        new FadeInBitmapDisplayer(ANIMATION_DURATION).display(loadedImage, new ImageViewAware(avatarView), LoadedFrom.DISC_CACHE);
+                        Drawable[] layers = new Drawable[2];
+                        layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
+                        layers[1] = getResources().getDrawable(R.drawable.black_to_transparent_gradient_facing_down);
+                        TransitionDrawable transitionDrawable = new TransitionDrawable(layers);
+                        toolbarGradient.setImageDrawable(transitionDrawable);
+                        transitionDrawable.startTransition(ANIMATION_DURATION);
+                        toolbarGradient.setVisibility(View.VISIBLE);
+                    }
 
-            @Override
-            public void onImageLoaded(Bitmap loadedImage) {
-                new FadeInBitmapDisplayer(ANIMATION_DURATION).display(loadedImage, new ImageViewAware(avatarView), LoadedFrom.DISC_CACHE);
-                Drawable[] layers = new Drawable[2];
-                layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
-                layers[1] = getResources().getDrawable(R.drawable.black_to_transparent_gradient_facing_down);
-                TransitionDrawable transitionDrawable = new TransitionDrawable(layers);
-                toolbarGradient.setImageDrawable(transitionDrawable);
-                transitionDrawable.startTransition(ANIMATION_DURATION);
-                toolbarGradient.setVisibility(View.VISIBLE);
-            }
+                    @Override
+                    public void onLoadingFailed() {
+                        Drawable[] layers = new Drawable[2];
+                        layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
+                        layers[1] = getResources().getDrawable(R.drawable.ic_person_96dp);
+                        TransitionDrawable transitionDrawable = new TransitionDrawable(layers);
+                        avatarView.setImageDrawable(transitionDrawable);
+                        transitionDrawable.startTransition(ANIMATION_DURATION);
+                        toolbarGradient.setVisibility(View.GONE);
+                    }
+                });
 
-            @Override
-            public void onLoadingFailed() {
-                Drawable[] layers = new Drawable[2];
-                layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
-                layers[1] = getResources().getDrawable(R.drawable.ic_person_96dp);
-                TransitionDrawable transitionDrawable = new TransitionDrawable(layers);
-                avatarView.setImageDrawable(transitionDrawable);
-                transitionDrawable.startTransition(ANIMATION_DURATION);
-                toolbarGradient.setVisibility(View.GONE);
-            }
-        });
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
     }

@@ -14,7 +14,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.donate.AndroidDonationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationService;
 import com.alexstyl.specialdates.donate.Donation;
@@ -44,8 +43,8 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private EventsSettingsMonitor monitor; // TODO this probably has to go
     private PeopleEventsViewRefresher refresher;
     private DonationService donationService;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
 
     @Override
     public void onAttach(Activity activity) {
@@ -112,7 +111,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         );
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        StringResources stringResources = new AndroidStringResources(getResources());
         monitor = new EventsSettingsMonitor(sharedPreferences, stringResources);
         refresher = PeopleEventsViewRefresher.get(getActivity());
 

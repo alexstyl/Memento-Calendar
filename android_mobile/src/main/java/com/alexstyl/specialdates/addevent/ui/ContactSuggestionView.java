@@ -8,22 +8,32 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.search.NameMatcher;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 
+import javax.inject.Inject;
+
 public class ContactSuggestionView extends LinearLayout {
 
     private OnContactSelectedListener listener = OnContactSelectedListener.NO_CALLBACKS;
     private AutoCompleteTextView autoCompleteView;
+    @Inject ImageLoader imageLoader;
 
     public ContactSuggestionView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        if (!isInEditMode()) {
+            AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+            applicationModule.inject(this);
+        }
     }
 
     @Override
@@ -38,7 +48,7 @@ public class ContactSuggestionView extends LinearLayout {
         }
         ContactsProvider contactsProvider = ContactsProvider.get(getContext());
         ContactsSearch contactsSearch = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
-        final ContactsAdapter adapter = new ContactsAdapter(contactsSearch, UILImageLoader.createCircleLoader(getResources()));
+        final ContactsAdapter adapter = new ContactsAdapter(contactsSearch, imageLoader);
         autoCompleteView.setAdapter(adapter);
         autoCompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

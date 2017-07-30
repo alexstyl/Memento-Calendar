@@ -23,7 +23,6 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
@@ -32,7 +31,6 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -82,8 +80,9 @@ public class SearchActivity extends ThemedMementoActivity {
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
     private SearchNavigator searchNavigator;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +93,6 @@ public class SearchActivity extends ThemedMementoActivity {
         applicationModule.inject(this);
 
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
-        StringResources stringResources = new AndroidStringResources(getResources());
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
 
@@ -126,7 +124,6 @@ public class SearchActivity extends ThemedMementoActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
         adapter = new SearchResultAdapter(imageLoader);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);
@@ -167,7 +164,6 @@ public class SearchActivity extends ThemedMementoActivity {
         }
 
         if (!permissions.permissionIsPresent()) {
-            Log.d("requesting permission");
             permissions.requestForPermission();
         }
     }
