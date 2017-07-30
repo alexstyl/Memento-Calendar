@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.Optional;
+import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -56,6 +57,7 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
                     @Override
                     public void into(final ImageLoadedConsumer consumer) {
+                        builder.displayer(DefaultConfigurationFactory.createBitmapDisplayer());
                         uil.loadImage(imagePath.toString(), builder.build(), new SimpleImageLoadingListener() {
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
