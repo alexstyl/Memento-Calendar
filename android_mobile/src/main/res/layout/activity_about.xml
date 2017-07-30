@@ -55,7 +55,7 @@
           android:layout_weight="1"
           android:background="@drawable/selectable_back_no_bounds"
           android:minHeight="48dp"
-          android:src="@drawable/ic_email_white_36dp" />
+          android:src="@drawable/ic_email" />
 
 
         <ImageButton

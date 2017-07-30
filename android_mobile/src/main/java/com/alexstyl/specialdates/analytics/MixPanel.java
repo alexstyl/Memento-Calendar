@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.analytics;
 
 import com.alexstyl.specialdates.TimeOfDay;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.donate.Donation;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -174,6 +175,11 @@ class MixPanel implements Analytics {
     @Override
     public void trackVisitGithub() {
         mixpanel.track("visit_github");
+    }
+
+    @Override
+    public void trackContactDetailsViewed(Contact contact) {
+        mixpanel.track("view_contact_details");
     }
 
     private static JSONObject createJSONfor(ActionWithParameters event) {

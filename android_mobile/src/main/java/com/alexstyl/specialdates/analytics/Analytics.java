@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.analytics;
 
 import com.alexstyl.specialdates.TimeOfDay;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.donate.Donation;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 
@@ -59,4 +60,5 @@ public interface Analytics {
 
     void trackVisitGithub();
 
+    void trackContactDetailsViewed(Contact contact);
 }

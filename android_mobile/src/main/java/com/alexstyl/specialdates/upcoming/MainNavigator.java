@@ -12,12 +12,14 @@ import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
+import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
@@ -136,4 +138,9 @@ final class MainNavigator {
         activity.startActivity(intent);
     }
 
+    void toContactDetails(Contact contact) {
+        Intent intent = PersonActivity.buildIntentFor(activity, contact);
+        activity.startActivity(intent);
+        analytics.trackContactDetailsViewed(contact);
+    }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/selectable_back"
+  android:orientation="vertical"
+  android:paddingBottom="10dp"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  android:paddingTop="10dp">
+
+  <TextView
+    android:id="@+id/row_person_event_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fontFamily="sans-serif-condensed"
+    android:textColor="?colorAccent"
+    android:textSize="18sp"
+    tools:text="Birthday" />
+
+  <TextView
+    android:id="@+id/row_person_event_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:fontFamily="sans-serif-condensed"
+    android:textColor="#000"
+    android:textSize="18sp"
+    tools:text="29 March, 1990" />
+
+</LinearLayout>
