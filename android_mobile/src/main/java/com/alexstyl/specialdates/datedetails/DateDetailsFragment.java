@@ -43,6 +43,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -77,6 +78,8 @@ public class DateDetailsFragment extends MementoFragment {
     private View emptyView;
     @Inject StringResources stringResources;
     @Inject Analytics analytics;
+    @Inject ImageLoader imageLoader;
+    private EventsSpacingDecoration spacingDecoration;
 
     public static Fragment newInstance(Date date) {
         Fragment fragment = new DateDetailsFragment();
@@ -165,7 +168,7 @@ public class DateDetailsFragment extends MementoFragment {
         return Date.on(dayOfMonth, month, year);
     }
 
-    private EventsSpacingDecoration spacingDecoration;
+
     private LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel> loaderCallbacks = new LoaderManager.LoaderCallbacks<DateDetailsScreenViewModel>() {
 
         @Override
@@ -185,7 +188,8 @@ public class DateDetailsFragment extends MementoFragment {
                         new PeopleEventViewModelFactory(date, stringResources, getResources(), factory),
                         new BankHolidayViewModelFactory(),
                         new NamedayViewModelFactory(),
-                        NamedayCalendarProvider.newInstance(getResources())
+                        NamedayCalendarProvider.newInstance(getResources()),
+                        imageLoader
                 );
             }
             throw new IllegalArgumentException("Requested loader with unknown ID " + loaderID);

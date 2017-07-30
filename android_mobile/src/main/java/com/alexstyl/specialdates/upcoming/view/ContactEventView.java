@@ -39,7 +39,11 @@ public class ContactEventView extends LinearLayout {
         avatarView.setBackgroundVariant(upcomingContactEventViewModel.getBackgroundVariant());
         avatarView.setLetter(upcomingContactEventViewModel.getContactName());
         contactNameView.setTypeface(upcomingContactEventViewModel.getTypeface());
-        imageLoader.loadImage(upcomingContactEventViewModel.getContactImagePath(), avatarView.getImageView());
+
+        imageLoader
+                .load(upcomingContactEventViewModel.getContactImagePath())
+                .into(avatarView.getImageView());
+
         setVisibility(upcomingContactEventViewModel.getContactEventVisibility());
         setOnClickListener(new OnClickListener() {
             @Override

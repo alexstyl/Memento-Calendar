@@ -19,7 +19,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
@@ -29,7 +29,7 @@ import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private WidgetImageLoader imageLoader;
+    private WidgetImageLoader widgetImageLoader;
     private UpcomingWidgetPreferences preferences;
     private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
@@ -42,6 +42,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     };
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -65,13 +66,13 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private WidgetImageLoader imageLoader(Context context) {
-        if (imageLoader == null) {
-            imageLoader = new WidgetImageLoader(
+        if (widgetImageLoader == null) {
+            widgetImageLoader = new WidgetImageLoader(
                     AppWidgetManager.getInstance(context),
-                    UILImageLoader.createLoader(context.getResources())
+                    imageLoader
             );
         }
-        return imageLoader;
+        return widgetImageLoader;
     }
 
     @Override

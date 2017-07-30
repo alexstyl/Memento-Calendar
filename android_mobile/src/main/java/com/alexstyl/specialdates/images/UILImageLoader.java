@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.images;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.support.annotation.Px;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -9,95 +9,67 @@ import com.alexstyl.specialdates.Optional;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.net.URI;
 
-import static com.alexstyl.specialdates.Optional.absent;
+class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
-public class UILImageLoader implements ImageLoader {
-
-    private final DisplayImageOptions displayImageOptions;
     private final com.nostra13.universalimageloader.core.ImageLoader uil;
 
-    public static ImageLoader createLoader(Resources resources) {
-        return createLoader(new CustomFadeInDisplayer(resources));
-    }
-
-    public static UILImageLoader createCircleLoader(Resources resources) {
-        BitmapDisplayer displayer = new FadeInRoundedBitmapDisplayer(resources);
-        return createLoader(displayer);
-    }
-
-    public static UILImageLoader createCircleLoaderWithBorder(Resources resources) {
-        BitmapDisplayer displayer = FadeInRoundedBorderedBitmapDisplayer.newInstance(resources);
-        return createLoader(displayer);
-    }
-
-    private static UILImageLoader createLoader(BitmapDisplayer displayer) {
-        return new UILImageLoader(new DisplayImageOptions.Builder()
-                                          .displayer(displayer)
-                                          .showImageOnLoading(android.R.color.transparent)
-                                          .cacheInMemory(true)
-                                          .cacheOnDisk(false)
-                                          .build());
-    }
-
-    private UILImageLoader(DisplayImageOptions circleImageOptions) {
-        this.displayImageOptions = circleImageOptions;
+    UILImageLoader() {
         this.uil = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
     }
 
     @Override
-    public void loadImage(URI imagePath, ImageView imageView) {
-        uil.displayImage(imagePath.toString(), imageView, displayImageOptions);
-    }
+    public Request load(final URI imagePath) {
+        final DisplayImageOptions.Builder builder = standardBuilder();
+        return new Request() {
 
-    @Override
-    public void loadImage(URI imagePath, ImageAware imageAware, final OnImageLoadedCallback callback) {
-        loadImage(imagePath, new ImageSize(imageAware.getWidth(), imageAware.getHeight()), callback);
-    }
-
-    @Override
-    public void loadImage(URI imagePath, ImageView avatarView, OnImageLoadedCallback callback) {
-        loadImage(imagePath, new ImageViewAware(avatarView), callback);
-    }
-
-    @Override
-    public void loadImage(URI imagePath, ImageSize targetImageSize, final OnImageLoadedCallback callback) {
-        uil.loadImage(imagePath.toString(), targetImageSize, new SimpleImageLoadingListener() {
             @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                callback.onImageLoaded(loadedImage);
+            public void into(ImageView imageView) {
+                uil.displayImage(imagePath.toString(), imageView, builder.build());
             }
 
             @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                callback.onLoadingFailed();
+            public FixedSizeRequest withSize(@Px final int width, @Px final int height) {
+                return new FixedSizeRequest() {
+                    @Override
+                    public Optional<Bitmap> async() {
+                        Bitmap bitmap = uil.loadImageSync(imagePath.toString(), new ImageSize(width, height), builder.build());
+                        if (bitmap == null) {
+                            return Optional.absent();
+                        } else {
+                            return new Optional<>(bitmap);
+                        }
+                    }
+
+                    @Override
+                    public void into(final ImageLoadedConsumer consumer) {
+                        uil.loadImage(imagePath.toString(), builder.build(), new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                consumer.onImageLoaded(loadedImage);
+                            }
+
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                                consumer.onLoadingFailed();
+                            }
+                        });
+                    }
+                };
             }
-        });
+        };
     }
 
-    @Override
-    public Optional<Bitmap> loadBitmapSync(URI imagePath, ImageSize imageSize) {
-        Bitmap bitmap = uil.loadImageSync(imagePath.toString(), imageSize);
-        if (bitmap == null) {
-            return absent();
-        } else {
-            return new Optional<>(bitmap);
-        }
+    private DisplayImageOptions.Builder standardBuilder() {
+        return new DisplayImageOptions.Builder()
+                .displayer(new FadeInBitmapDisplayer(400, true, true, false))
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                ;
     }
 
-    @Override
-    public void resume() {
-        uil.resume();
-    }
-
-    @Override
-    public void pause() {
-        uil.pause();
-    }
 }
