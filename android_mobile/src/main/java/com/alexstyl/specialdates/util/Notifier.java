@@ -30,9 +30,9 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class Notifier {
             }
         }
 
-        Intent startIntent = DateDetailsActivity.getStartIntentFromExternal(context, date);
+        Intent startIntent = UpcomingEventsActivity.getStartIntent(context, date);
         PendingIntent intent =
                 PendingIntent.getActivity(
                         context, NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
@@ -217,7 +217,7 @@ public class Notifier {
         }
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS,
-                DateDetailsActivity.getStartIntentFromExternal(context, date),
+                UpcomingEventsActivity.getStartIntent(context, date),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
@@ -249,7 +249,7 @@ public class Notifier {
     public void forBankholiday(Date date, BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
-                DateDetailsActivity.getStartIntentFromExternal(context, date),
+                UpcomingEventsActivity.getStartIntent(context, date),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 

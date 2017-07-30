@@ -41,25 +41,6 @@
 
 
     <activity
-      android:name=".datedetails.DateDetailsActivity"
-      android:exported="true"
-      android:parentActivityName=".upcoming.UpcomingEventsActivity">
-
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-
-        <data android:mimeType="time/epoch" />
-        <data android:host="com.android.calendar" />
-        <data android:scheme="content" />
-      </intent-filter>
-
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".upcoming.UpcomingEventsActivity" />
-    </activity>
-
-    <activity
       android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
       android:label="@string/action_settings"
       android:parentActivityName=".upcoming.UpcomingEventsActivity">

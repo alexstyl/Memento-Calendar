@@ -6,8 +6,6 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
-import com.alexstyl.specialdates.datedetails.DateDetailsFragment;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
@@ -34,10 +32,6 @@ public interface AppComponent {
     void inject(UpcomingEventsActivity activity);
 
     void inject(UpcomingEventsFragment fragment);
-
-    void inject(DateDetailsActivity activity);
-
-    void inject(DateDetailsFragment fragment);
 
     void inject(AddEventActivity activity);
 
