@@ -26,7 +26,6 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
@@ -41,8 +40,8 @@ import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 import com.novoda.notils.text.SimpleTextWatcher;
 
@@ -309,7 +308,7 @@ public class SearchActivity extends ThemedMementoActivity {
         @Override
         public void onNamedayClicked(Date date) {
             Date currentYearDate = Date.on(date.getDayOfMonth(), date.getMonth(), Date.CURRENT_YEAR);
-            Intent intent = DateDetailsActivity.getStartIntent(context(), currentYearDate);
+            Intent intent = UpcomingEventsActivity.getStartIntent(context(), currentYearDate);
             startActivity(intent);
         }
 

@@ -15,7 +15,6 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 
@@ -66,7 +65,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events);
             remoteViews.setRemoteAdapter(R.id.widget_upcoming_events_list, intent);
-            Intent clickIntent = new Intent(context, DateDetailsActivity.class);
+            Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
             PendingIntent listPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, listPendingIntent);
 

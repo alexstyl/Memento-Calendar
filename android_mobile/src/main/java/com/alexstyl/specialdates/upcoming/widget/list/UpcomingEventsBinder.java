@@ -13,10 +13,10 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel;
-import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel;
 import com.alexstyl.specialdates.upcoming.NamedaysViewModel;
+import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
 
 import java.util.List;
@@ -59,7 +59,7 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
     }
 
     private Intent buildDateDetailsIntentFor(Date date) {
-        Intent startIntent = DateDetailsActivity.getStartIntent(context, date);
+        Intent startIntent = UpcomingEventsActivity.getStartIntent(context, date);
         startIntent.setData(Uri.parse(String.valueOf(date.hashCode())));
         return startIntent;
     }
