@@ -168,6 +168,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         URI uri = FacebookImagePath.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
+                .asCircle()
                 .into(avatar);
 
         animateAvatarWithBounce();

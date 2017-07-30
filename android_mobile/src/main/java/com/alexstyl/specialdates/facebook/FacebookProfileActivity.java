@@ -101,6 +101,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
         URI uri = FacebookImagePath.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
+                .asCircle()
                 .into(profilePicture);
     }
 
