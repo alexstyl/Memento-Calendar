@@ -35,7 +35,10 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
         avatar.setCircleColorVariant(viewModel.getBackgroundVariant());
         avatar.setLetter(viewModel.getDisplayName(), true);
         displayName.setText(viewModel.getDisplayName());
-        imageLoader.load(viewModel.getContactAvatarURI()).into(avatar.getImageView());
+        imageLoader
+                .load(viewModel.getContactAvatarURI())
+                .asCircle()
+                .into(avatar.getImageView());
         eventLabel.setText(viewModel.getEventLabel());
         eventLabel.setTextColor(eventLabel.getResources().getColor(viewModel.getEventColor()));
         itemView.setOnClickListener(
