@@ -71,6 +71,7 @@ class ContactsAdapter extends BaseAdapter implements Filterable {
 
         imageLoader
                 .load(contact.getImagePath())
+                .asCircle()
                 .into(vh.avatar.getImageView());
 
         return view;
