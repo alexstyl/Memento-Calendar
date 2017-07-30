@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -223,5 +225,11 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         } else {
             super.onBackPressed();
         }
+    }
+
+    public static Intent getStartIntent(Context context, Date date) {
+        // TODO actually use the date
+        Intent intent = new Intent(context, UpcomingEventsActivity.class);
+        return intent;
     }
 }
