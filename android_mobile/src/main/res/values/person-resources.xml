@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Person" />
+
+  <style name="Person.Name">
+    <item name="android:textSize">24sp</item>
+    <item name="android:textColor">#fff</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+  </style>
+
+  <style name="Person.AgeAndSign">
+    <item name="android:textSize">18sp</item>
+    <item name="android:textColor">#fff</item>
+  </style>
+</resources>

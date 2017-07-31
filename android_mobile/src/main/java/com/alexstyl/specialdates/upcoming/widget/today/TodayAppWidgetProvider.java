@@ -6,30 +6,29 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
+import javax.inject.Inject;
+
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private WidgetImageLoader imageLoader;
-    private StringResources stringResources;
+    private WidgetImageLoader widgetImageLoader;
     private UpcomingWidgetPreferences preferences;
     private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
@@ -40,36 +39,39 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
             todayPeopleEventsView.requestUpdate();
         }
     };
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
+        super.onReceive(context, intent);
+    }
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        AnalyticsProvider.getAnalytics(context).trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
+        analytics.trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
         preferences(context).addListener(listener);
-    }
-
-    private UpcomingWidgetPreferences preferences(Context context) {
-        if (preferences == null) {
-            preferences = new UpcomingWidgetPreferences(context);
-        }
-        return preferences;
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        AnalyticsProvider.getAnalytics(context).trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
+        analytics.trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
         preferences(context).removeListener(listener);
     }
 
     private WidgetImageLoader imageLoader(Context context) {
-        if (imageLoader == null) {
-            imageLoader = new WidgetImageLoader(
+        if (widgetImageLoader == null) {
+            widgetImageLoader = new WidgetImageLoader(
                     AppWidgetManager.getInstance(context),
-                    UILImageLoader.createLoader(context.getResources())
+                    imageLoader
             );
         }
-        return imageLoader;
+        return widgetImageLoader;
     }
 
     @Override
@@ -97,17 +99,10 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         }.execute();
     }
 
-    StringResources stringResources(Resources resources) {
-        if (stringResources == null) {
-            stringResources = new AndroidStringResources(resources);
-        }
-        return stringResources;
-    }
-
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
         Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
-        Intent intent = DateDetailsActivity.getStartIntent(context, date);
+        Intent intent = UpcomingEventsActivity.getStartIntent(context, date);
         intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -118,7 +113,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         final int N = appWidgetIds.length;
 
-        String label = NaturalLanguageUtils.joinContacts(stringResources(context.getResources()), contactEvents.getContacts(), 2);
+        String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
 
         WidgetVariant selectedVariant = preferences(context).getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
@@ -186,6 +181,13 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private PendingIntent pendingIntentToMain(Context context) {
         Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private UpcomingWidgetPreferences preferences(Context context) {
+        if (preferences == null) {
+            preferences = new UpcomingWidgetPreferences(context);
+        }
+        return preferences;
     }
 
 }

@@ -15,16 +15,18 @@ import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.android.preferences.widget.TimePreference;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.android.preferences.widget.TimePreference;
 
+import javax.inject.Inject;
 import java.util.Calendar;
 
 public class DailyReminderFragment extends MementoPreferenceFragment {
@@ -33,17 +35,19 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     private CheckBoxPreference enablePreference;
     private RingtonePreference ringtonePreference;
     private TimePreference timePreference;
-    private Analytics analytics;
     private PermissionChecker permissionChecker;
     private DailyReminderScheduler scheduler;
     private DailyReminderPreferences preferences;
+    @Inject
+    Analytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Context context = getActivity().getApplicationContext();
         scheduler = new DailyReminderScheduler(AlarmManagerCompat.from(context), context);
-        analytics = AnalyticsProvider.getAnalytics(getActivity());
+        AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
         permissionChecker = new PermissionChecker(getActivity());
         enablePreference = findPreference(R.string.key_daily_reminder);

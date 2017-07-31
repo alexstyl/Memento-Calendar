@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.ui.widget;
 
 import android.content.res.Resources;
+import android.support.annotation.ColorInt;
 
 import com.alexstyl.specialdates.R;
 
@@ -23,6 +24,7 @@ public class LetterPainter {
         VARIANT_COUNT = mVariants.length;
     }
 
+    @ColorInt
     public static int getVariant(Resources res, int i) {
         if (i < 0) {
             i = i * (-1);

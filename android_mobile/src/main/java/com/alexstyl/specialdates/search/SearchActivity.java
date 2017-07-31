@@ -17,22 +17,19 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.alexstyl.specialdates.ExternalNavigator;
-import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -43,10 +40,12 @@ import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 import com.novoda.notils.text.SimpleTextWatcher;
+
+import javax.inject.Inject;
 
 import static android.view.View.GONE;
 import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -79,21 +78,25 @@ public class SearchActivity extends ThemedMementoActivity {
     private RecyclerView resultView;
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
-    private ExternalNavigator externalNavigator;
+    private SearchNavigator searchNavigator;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
-        StringResources stringResources = new AndroidStringResources(getResources());
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
 
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.SEARCH);
-        externalNavigator = new ExternalNavigator(this, analytics);
+        searchNavigator = new SearchNavigator(this, analytics);
         namedayPreferences = NamedayPreferences.newInstance(this);
 
         searchbar = Views.findById(this, R.id.search_searchbar);
@@ -120,7 +123,6 @@ public class SearchActivity extends ThemedMementoActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
         adapter = new SearchResultAdapter(imageLoader);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);
@@ -161,7 +163,6 @@ public class SearchActivity extends ThemedMementoActivity {
         }
 
         if (!permissions.permissionIsPresent()) {
-            Log.d("requesting permission");
             permissions.requestForPermission();
         }
     }
@@ -301,13 +302,13 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onContactClicked(Contact contact) {
-            externalNavigator.toContactDetails(contact);
+            searchNavigator.toContactDetails(contact);
         }
 
         @Override
         public void onNamedayClicked(Date date) {
             Date currentYearDate = Date.on(date.getDayOfMonth(), date.getMonth(), Date.CURRENT_YEAR);
-            Intent intent = DateDetailsActivity.getStartIntent(context(), currentYearDate);
+            Intent intent = UpcomingEventsActivity.getStartIntent(context(), currentYearDate);
             startActivity(intent);
         }
 

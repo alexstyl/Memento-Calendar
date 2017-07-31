@@ -16,7 +16,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
@@ -24,9 +27,7 @@ import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
@@ -34,7 +35,6 @@ import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -43,6 +43,7 @@ import com.novoda.notils.caster.Views;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 public class AddEventActivity extends ThemedMementoActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
@@ -55,7 +56,9 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private AddContactEventsPresenter presenter;
     private PermissionChecker permissionChecker;
     private FilePathProvider filePathProvider;
-    private Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,9 +67,9 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
 
-        analytics = AnalyticsProvider.getAnalytics(this);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         analytics.trackScreen(Screen.ADD_EVENT);
-        ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
@@ -81,7 +84,6 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
-        AndroidStringResources stringResources = new AndroidStringResources(getResources());
         AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
                 getSupportLoaderManager(),
