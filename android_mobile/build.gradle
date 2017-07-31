@@ -1,16 +1,7 @@
 apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
 
 
 android {
@@ -81,6 +72,10 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:transition:$android_support_version"
 
+    compile 'com.google.dagger:dagger:2.9'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+    provided 'javax.annotation:jsr250-api:1.0'
+
     compile 'com.novoda:notils:2.2.15'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.novoda:simple-chrome-custom-tabs:0.1.4'
@@ -91,7 +86,6 @@ dependencies {
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
     compile "com.google.firebase:firebase-core:$play_services_version"
     compile "com.google.firebase:firebase-ads:$play_services_version"
-
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
 

@@ -9,8 +9,8 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.DecodedImage;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.OnImageLoadedCallback;
-import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
+import com.alexstyl.specialdates.images.ImageLoadedConsumer;
+import com.alexstyl.specialdates.images.SimpleImageLoadedConsumer;
 
 import java.net.URI;
 
@@ -34,10 +34,13 @@ final class AvatarPresenter {
     }
 
     void onContactSelected(Contact contact) {
-        imageLoader.loadImage(contact.getImagePath(), avatarView, onImageLoadedCallback);
+        imageLoader
+                .load(contact.getImagePath())
+                .withSize(avatarView.getWidth(), avatarView.getHeight())
+                .into(imageLoadedConsumer);
     }
 
-    private final OnImageLoadedCallback onImageLoadedCallback = new SimpleOnImageLoadedCallback() {
+    private final ImageLoadedConsumer imageLoadedConsumer = new SimpleImageLoadedConsumer() {
         @Override
         public void onImageLoaded(Bitmap loadedImage) {
             currentImageLoaded = new Optional<>(loadedImage);
@@ -66,7 +69,11 @@ final class AvatarPresenter {
     }
 
     void presentAvatar(URI imageUri) {
-        imageLoader.loadImage(imageUri, avatarView, onImageLoadedCallback);
+        imageLoader
+                .load(imageUri)
+                .withSize(avatarView.getWidth(), avatarView.getHeight())
+                .into(imageLoadedConsumer);
+
     }
 
     void removeAvatar() {

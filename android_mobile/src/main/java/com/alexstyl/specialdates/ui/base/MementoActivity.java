@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -62,17 +63,8 @@ public class MementoActivity extends AppCompatActivity {
         if (!shouldUseHomeAsUp()) {
             return false;
         }
-        Intent parent = getSupportParentActivityIntent();
-        complainForNoSetParent(parent);
-        parent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(parent);
+        NavUtils.navigateUpFromSameTask(this);
         return true;
-    }
-
-    private void complainForNoSetParent(Intent parent) {
-        if (parent == null) {
-            throw new DeveloperError("Make sure to set parent Activity through the AndroidManifest if you want to use shouldUseHomeAsUp()");
-        }
     }
 
     protected Context context() {

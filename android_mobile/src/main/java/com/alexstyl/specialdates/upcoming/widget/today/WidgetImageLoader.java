@@ -9,8 +9,7 @@ import com.alexstyl.android.widget.AppWidgetId;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.SimpleOnImageLoadedCallback;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.alexstyl.specialdates.images.SimpleImageLoadedConsumer;
 
 import java.util.List;
 
@@ -33,33 +32,36 @@ class WidgetImageLoader {
                                     @AppWidgetId final int appWidgetId,
                                     final RemoteViews views,
                                     @Px final int size) {
-        imageLoader.loadImage(contacts.get(contactIndex).getImagePath(), new ImageSize(size, size), new SimpleOnImageLoadedCallback() {
+        imageLoader
+                .load(contacts.get(contactIndex).getImagePath())
+                .withSize(size, size)
+                .into(new SimpleImageLoadedConsumer() {
 
-            @Override
-            public void onLoadingFailed() {
-                handleImageNotLoaded();
-            }
+                    @Override
+                    public void onLoadingFailed() {
+                        handleImageNotLoaded();
+                    }
 
-            private void handleImageNotLoaded() {
-                int contactSize = contacts.size();
-                if (contactIndex + 1 < contactSize) {
-                    tryToFetchImageFor(contacts, contactIndex + 1, appWidgetId, views, size);
-                } else {
-                    // no more pictures to load
-                    views.setImageViewResource(R.id.widget_avatar, R.drawable.ic_contact_picture);
-                    appWidgetManager.updateAppWidget(appWidgetId, views);
-                }
-            }
+                    private void handleImageNotLoaded() {
+                        int contactSize = contacts.size();
+                        if (contactIndex + 1 < contactSize) {
+                            tryToFetchImageFor(contacts, contactIndex + 1, appWidgetId, views, size);
+                        } else {
+                            // no more pictures to load
+                            views.setImageViewResource(R.id.widget_avatar, R.drawable.ic_contact_picture);
+                            appWidgetManager.updateAppWidget(appWidgetId, views);
+                        }
+                    }
 
-            @Override
-            public void onImageLoaded(Bitmap loadedImage) {
-                if (loadedImage == null) {
-                    handleImageNotLoaded();
-                } else {
-                    views.setImageViewBitmap(R.id.widget_avatar, loadedImage);
-                    appWidgetManager.updateAppWidget(appWidgetId, views);
-                }
-            }
-        });
+                    @Override
+                    public void onImageLoaded(Bitmap loadedImage) {
+                        if (loadedImage == null) {
+                            handleImageNotLoaded();
+                        } else {
+                            views.setImageViewBitmap(R.id.widget_avatar, loadedImage);
+                            appWidgetManager.updateAppWidget(appWidgetId, views);
+                        }
+                    }
+                });
     }
 }

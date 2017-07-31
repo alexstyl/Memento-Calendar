@@ -30,11 +30,6 @@ public class ThemedMementoActivity extends MementoActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-    }
-
     public void setContentView(@LayoutRes int layoutResID, MementoTheme theme) {
         ContextThemeWrapper wrapper = new ContextThemeWrapper(this, theme.androidTheme());
         View inflate = LayoutInflater.from(wrapper).inflate(layoutResID, null, false);

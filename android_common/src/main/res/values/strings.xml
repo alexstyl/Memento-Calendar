@@ -135,7 +135,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="copy_link">Copy Link</string>
   <string name="copied_to_clipboard">Link copied to clipboard</string>
   <string name="select_donation_amount">Select the amount you would like to donate</string>
-  <string name="view_contact">View contact</string>
+  <string name="View_contact">View contact</string>
   <string name="no_birthday_set">No birthday set</string>
   <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"No contacts with special events found.\nTap the '+' to add some"</string>
   <string name="No_contacts_with_events_found">"No contacts with special events found"</string>
@@ -198,4 +198,21 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Memento_on_Github">Memento on Github</string>
   <string name="Import_Birthdays">Import Birthdays</string>
   <string name="New">New</string>
+  <string name="starsigns_aquarius">Aquarius</string>
+  <string name="starsigns_pisces">Pisces</string>
+  <string name="starsigns_aries">Aries</string>
+  <string name="starsigns_taurus">Taurus</string>
+  <string name="starsigns_gemini">Gemini</string>
+  <string name="starsigns_cancer">Cancer</string>
+  <string name="starsigns_leo">Leo</string>
+  <string name="starsigns_virgo">Virgo</string>
+  <string name="starsigns_libra">Libra</string>
+  <string name="starsigns_scorpio">Scorpio</string>
+  <string name="starsigns_sagittarius">Sagittarius</string>
+  <string name="starsigns_capricorn">Capricorn</string>
+  <string name="facebook_messenger">Messenger</string>
+  <string name="phone_type_home">Home</string>
+  <string name="phone_type_mobile">Mobile</string>
+  <string name="phone_type_work">Work</string>
+  <string name="View_conversation">View conversation</string>
 </resources>

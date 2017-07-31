@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.debug;
 
 import android.app.DatePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,19 +10,17 @@ import android.provider.CalendarContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.datedetails.actions.IntentAction;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.specialdates.util.AppUtils;
 import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
 import java.util.Calendar;
@@ -136,26 +132,14 @@ public class DebugFragment extends MementoPreferenceFragment {
     }
 
     private void startDateIntent() {
-        IntentAction i = new IntentAction() {
-            @Override
-            public void onStartAction(Context context) throws ActivityNotFoundException {
-                Calendar cal = Calendar.getInstance();
-                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                builder.appendPath("time");
-                ContentUris.appendId(builder, cal.getTimeInMillis());
-                Intent intent = new Intent(Intent.ACTION_VIEW)
-                        .setData(builder.build());
+        Calendar cal = Calendar.getInstance();
+        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+        builder.appendPath("time");
+        ContentUris.appendId(builder, cal.getTimeInMillis());
+        Intent intent = new Intent(Intent.ACTION_VIEW)
+                .setData(builder.build());
 
-                startActivity(intent);
-
-            }
-
-            @Override
-            public String getAnalyticsName() {
-                return "date debug";
-            }
-        };
-        AppUtils.openIntentSafely(getActivity(), i);
+        startActivity(intent);
     }
 
     private final DatePickerDialog.OnDateSetListener onDailyReminderDateSelectedListener = new DatePickerDialog.OnDateSetListener() {
