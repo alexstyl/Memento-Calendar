@@ -75,7 +75,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         presenter = new UpcomingEventsPresenter(
                 this,
-                permissions, provider,
+                permissions,
+                provider,
                 monitor,
                 new PeopleEventsObserver(getContentResolver()),
                 Schedulers.io(),
@@ -158,7 +159,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     @Override
     public void askForContactPermission() {
-
+        Log.e("asking for permission is not yet implemented");
     }
 
     @Override
@@ -170,7 +171,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            presenter.refreshEvents();
+            Log.e("onPermissionGranted but this is not yet implemented");
         }
 
         @Override
