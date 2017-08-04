@@ -8,6 +8,7 @@ import com.alexstyl.specialdates.permissions.ContactPermissionRequest
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider
 import io.reactivex.schedulers.Schedulers
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -23,46 +24,47 @@ class UpcomingEventsPresenterTest {
     val mockObserver = Mockito.mock(PeopleEventsObserver::class.java)
     val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
 
-    @Test
-    fun whenStartPresentingWithoutPermission_askForPermission() {
+    private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
+
+    @Before
+    fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
+        upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, mockObserver, workScheduler, resultScheduler)
+    }
 
+    @Test
+    fun whenStartPresentingWithoutPermission_askForPermission() {
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(false)
-        val upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, mockObserver, workScheduler, resultScheduler)
 
         upcomingEventsPresenter.startPresenting(anyDate())
+
         Mockito.verify(mockView).askForContactPermission()
     }
 
     @Test
     fun whenStartPresentingWithPermission_showLoading() {
-        val workScheduler = Schedulers.trampoline()
-        val resultScheduler = Schedulers.trampoline()
-
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
-        val upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, mockObserver, workScheduler, resultScheduler)
 
         upcomingEventsPresenter.startPresenting(anyDate())
+
         Mockito.verify(mockView).showLoading()
     }
 
     @Test
     fun whenStartPresentingWithPermission_showEventsAfterDoneLoading() {
-        val workScheduler = Schedulers.trampoline()
-        val resultScheduler = Schedulers.trampoline()
-
         val theDate = Date.on(1, Months.MARCH, 2017)
-        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
         val expectedEvents = arrayListOf<UpcomingRowViewModel>()
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(expectedEvents)
-
-        val upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, mockObserver, workScheduler, resultScheduler)
+        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
 
         upcomingEventsPresenter.startPresenting(theDate)
+
         Mockito.verify(mockView).showLoading()
         Mockito.verify(mockView).display(expectedEvents)
     }
 
-    private fun anyDate() = Mockito.any<Date>()
 }
+
+private fun anyDate(): Date = Date.on(1, Months.APRIL, 2017)
+

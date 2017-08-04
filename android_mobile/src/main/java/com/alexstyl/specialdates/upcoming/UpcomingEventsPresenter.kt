@@ -10,12 +10,12 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-internal class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
-                                       private val permissions: ContactPermissionRequest,
-                                       private val provider: UpcomingEventsProvider,
-                                       private val monitor: EventsSettingsMonitor,
-                                       private val observer: PeopleEventsObserver,
-                                       private val workScheduler: Scheduler, private val resultScheduler: Scheduler) {
+class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
+                              private val permissions: ContactPermissionRequest,
+                              private val provider: UpcomingEventsProvider,
+                              private val monitor: EventsSettingsMonitor,
+                              private val observer: PeopleEventsObserver,
+                              private val workScheduler: Scheduler, private val resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
     private val subject = PublishSubject.create<Int>()
