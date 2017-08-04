@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.alexstyl.specialdates.date.DateConstants.*;
+import static com.alexstyl.specialdates.date.Months.*;
 
 public class GreekBankHolidaysCalculator {
     private final OrthodoxEasterCalculator easterCalculator;

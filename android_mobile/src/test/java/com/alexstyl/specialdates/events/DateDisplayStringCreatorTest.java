@@ -6,8 +6,8 @@ import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
-import static com.alexstyl.specialdates.date.DateConstants.MAY;
+import static com.alexstyl.specialdates.date.Months.JANUARY;
+import static com.alexstyl.specialdates.date.Months.MAY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateDisplayStringCreatorTest {

@@ -5,8 +5,8 @@ import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.DateConstants.JANUARY
-import com.alexstyl.specialdates.date.DateConstants.JULY
+import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.date.Months.JULY
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before

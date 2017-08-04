@@ -6,7 +6,7 @@ import android.support.v4.util.Pair;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 
 public final class DailyReminderDebugPreferences {
 
@@ -22,7 +22,7 @@ public final class DailyReminderDebugPreferences {
 
     public Date getSelectedDate() {
         int dayOfMonth = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_day, 1);
-        int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, DateConstants.JANUARY);
+        int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, Months.JANUARY);
         int year = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_year, 2016);
         return Date.Companion.on(dayOfMonth, month, year);
     }

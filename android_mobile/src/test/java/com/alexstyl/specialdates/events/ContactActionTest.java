@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
+import static com.alexstyl.specialdates.date.Months.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ContactActionTest {

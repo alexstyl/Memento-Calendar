@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.alexstyl.specialdates.contact.ContactFixture.aContact;
-import static com.alexstyl.specialdates.date.DateConstants.*;
+import static com.alexstyl.specialdates.date.Months.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.fest.assertions.api.Assertions.assertThat;

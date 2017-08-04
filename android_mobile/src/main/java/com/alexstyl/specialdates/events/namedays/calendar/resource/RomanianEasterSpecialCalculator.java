@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
-import static com.alexstyl.specialdates.date.DateConstants.SUNDAY;
+import static com.alexstyl.specialdates.date.Months.SUNDAY;
 
 class RomanianEasterSpecialCalculator {
 

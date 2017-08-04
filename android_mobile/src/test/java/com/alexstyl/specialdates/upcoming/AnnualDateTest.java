@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.alexstyl.specialdates.date.DateConstants.FEBRUARY;
-import static com.alexstyl.specialdates.date.DateConstants.MARCH;
+import static com.alexstyl.specialdates.date.Months.FEBRUARY;
+import static com.alexstyl.specialdates.date.Months.MARCH;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)

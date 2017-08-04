@@ -90,7 +90,7 @@ data class Date private constructor(private val localDate: LocalDate, private va
         }
 
         fun on(dayOfMonth: Int, @MonthInt month: Int): Date {
-            val localDate = LocalDate(DateConstants.NO_YEAR, month, dayOfMonth)
+            val localDate = LocalDate(Months.NO_YEAR, month, dayOfMonth)
             return Date(localDate, Optional.absent<Int>())
         }
 
@@ -109,11 +109,11 @@ data class Date private constructor(private val localDate: LocalDate, private va
         }
 
         fun startOfTheYear(currentYear: Int): Date {
-            return Date.on(1, DateConstants.JANUARY, currentYear)
+            return Date.on(1, Months.JANUARY, currentYear)
         }
 
         fun endOfYear(currentYear: Int): Date {
-            return Date.on(31, DateConstants.DECEMBER, currentYear)
+            return Date.on(31, Months.DECEMBER, currentYear)
         }
     }
 

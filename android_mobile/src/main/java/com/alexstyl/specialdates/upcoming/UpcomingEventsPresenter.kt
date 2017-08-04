@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming
 
+import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest
@@ -11,22 +12,23 @@ import io.reactivex.subjects.PublishSubject
 
 internal class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
                                        private val permissions: ContactPermissionRequest,
+                                       private val provider: UpcomingEventsProvider,
                                        private val monitor: EventsSettingsMonitor,
                                        private val observer: PeopleEventsObserver,
-                                       private val provider: UpcomingEventsProvider,
-                                       private val workScheduler: Scheduler,
-                                       private val resultScheduler: Scheduler) {
+                                       private val workScheduler: Scheduler, private val resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
     private val subject = PublishSubject.create<Int>()
 
-    fun startPresenting() {
+    private val TRIGGER = 1
+
+    fun startPresenting(firstDay: Date) {
         if (permissions.permissionIsPresent()) {
 
             disposable =
-                    subject.startWith(1)
-                            .flatMap<List<UpcomingRowViewModel>> {
-                                provider.calculateEventsBetweenRX(TimePeriod.aYearFromNow())
+                    subject
+                            .map<List<UpcomingRowViewModel>> {
+                                provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
                             }
                             .doOnSubscribe { view.showLoading() }
                             .subscribeOn(workScheduler)
@@ -40,8 +42,8 @@ internal class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
 
     }
 
-    private fun refreshEvents() {
-        subject.onNext(1)
+    fun refreshEvents() {
+        subject.onNext(TRIGGER)
     }
 
     fun stopPresenting() {
