@@ -15,35 +15,34 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
                               private val provider: UpcomingEventsProvider,
                               private val monitor: EventsSettingsMonitor,
                               private val observer: PeopleEventsObserver,
-                              private val workScheduler: Scheduler, private val resultScheduler: Scheduler) {
+                              private val workScheduler: Scheduler,
+                              private val resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
-    private val subject = PublishSubject.create<Int>()
-
-    private val TRIGGER = 1
+    private val subject = PublishSubject.create<Date>()
 
     fun startPresenting(firstDay: Date) {
         if (permissions.permissionIsPresent()) {
-
             disposable =
                     subject
                             .map<List<UpcomingRowViewModel>> {
-                                provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
+                                provider.calculateEventsBetween(TimePeriod.aYearFrom(it))
                             }
                             .doOnSubscribe { view.showLoading() }
-                            .subscribeOn(workScheduler)
                             .observeOn(resultScheduler)
+                            .subscribeOn(workScheduler)
                             .subscribe { upcomingRowViewModels -> view.display(upcomingRowViewModels) }
 
-            refreshEvents()
+            refreshEvents(firstDay)
+
+
         } else {
             view.askForContactPermission()
         }
-
     }
 
-    fun refreshEvents() {
-        subject.onNext(TRIGGER)
+    fun refreshEvents(firstDay: Date) {
+        subject.onNext(firstDay)
     }
 
     fun stopPresenting() {

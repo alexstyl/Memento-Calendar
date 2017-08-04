@@ -64,7 +64,7 @@ class UpcomingEventsPresenterTest {
         Mockito.verify(mockView).display(expectedEvents)
     }
 
+    private fun anyDate(): Date = Date.on(1, Months.APRIL, 2017)
 }
 
-private fun anyDate(): Date = Date.on(1, Months.APRIL, 2017)
 
