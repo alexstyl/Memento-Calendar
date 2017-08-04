@@ -10,7 +10,7 @@ import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.novoda.notils.caster.Views;
@@ -149,9 +149,9 @@ public class EventDatePicker extends LinearLayout {
     private final NumberPicker.OnValueChangeListener dateValidator = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            if (getMonth() == DateConstants.FEBRUARY && isDisplayingYear()) {
+            if (getMonth() == Months.FEBRUARY && isDisplayingYear()) {
 
-                if (isValidDate(29, DateConstants.FEBRUARY, getYear())) {
+                if (isValidDate(29, Months.FEBRUARY, getYear())) {
                     dayPicker.setMaxValue(29);
                 } else {
                     dayPicker.setMaxValue(28);

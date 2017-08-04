@@ -77,24 +77,7 @@ public class UpcomingEventsProvider {
         return Observable.fromCallable(new Callable<List<UpcomingRowViewModel>>() {
             @Override
             public List<UpcomingRowViewModel> call() {
-                List<ContactEvent> contactEvents = peopleEventsProvider.getContactEventsFor(period);
-                UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(
-                        period,
-                        upcomingRowViewModelFactory,
-                        adRules
-                )
-                        .withContactEvents(contactEvents);
-
-                if (shouldLoadBankHolidays()) {
-                    List<BankHoliday> bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(period);
-                    upcomingRowViewModelsBuilder.withBankHolidays(bankHolidays);
-                }
-
-                if (shouldLoadNamedays()) {
-                    List<NamesInADate> namedays = calculateNamedaysBetween(period);
-                    upcomingRowViewModelsBuilder.withNamedays(namedays);
-                }
-                return upcomingRowViewModelsBuilder.build();
+                return calculateEventsBetween(period);
             }
         });
     }

@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.date.MonthInt;
 
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.DateConstants.*;
+import static com.alexstyl.specialdates.date.Months.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateTest {

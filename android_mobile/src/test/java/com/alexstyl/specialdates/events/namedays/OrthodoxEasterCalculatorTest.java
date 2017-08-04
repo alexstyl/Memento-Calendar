@@ -8,8 +8,8 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.DateConstants.APRIL;
-import static com.alexstyl.specialdates.date.DateConstants.MAY;
+import static com.alexstyl.specialdates.date.Months.APRIL;
+import static com.alexstyl.specialdates.date.Months.MAY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class OrthodoxEasterCalculatorTest {

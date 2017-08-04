@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.service;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.alexstyl.specialdates.date.Date.Companion;
-import static com.alexstyl.specialdates.date.DateConstants.FEBRUARY;
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
+import static com.alexstyl.specialdates.date.Months.FEBRUARY;
+import static com.alexstyl.specialdates.date.Months.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -63,8 +63,8 @@ public class ClosestEventsComparatorTest {
 
     @Test
     public void sameDate_returnsZero() {
-        Optional<ContactEventsOnADate> optionalA = anOptional(Companion.on(5, DateConstants.APRIL, 2016));
-        Optional<ContactEventsOnADate> optionalB = anOptional(Companion.on(5, DateConstants.APRIL, 2016));
+        Optional<ContactEventsOnADate> optionalA = anOptional(Companion.on(5, Months.APRIL, 2016));
+        Optional<ContactEventsOnADate> optionalB = anOptional(Companion.on(5, Months.APRIL, 2016));
 
         assertThat(comparator.compare(optionalA, optionalB)).isZero();
     }

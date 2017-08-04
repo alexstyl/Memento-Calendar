@@ -24,8 +24,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.alexstyl.specialdates.date.Date.Companion;
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
-import static com.alexstyl.specialdates.date.DateConstants.MARCH;
+import static com.alexstyl.specialdates.date.Months.JANUARY;
+import static com.alexstyl.specialdates.date.Months.MARCH;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;

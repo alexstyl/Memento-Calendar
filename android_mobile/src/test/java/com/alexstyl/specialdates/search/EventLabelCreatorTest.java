@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
+import static com.alexstyl.specialdates.date.Months.DECEMBER;
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 

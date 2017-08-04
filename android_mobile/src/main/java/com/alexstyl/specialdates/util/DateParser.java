@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.util;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.MonthInt;
 
@@ -52,14 +52,14 @@ public enum DateParser {
             for (String format : DATE_FORMATS) {
                 DateTimeFormatter formatter = DateTimeFormat.forPattern(format)
                         .withLocale(locale)
-                        .withDefaultYear(DateConstants.NO_YEAR);
+                        .withDefaultYear(Months.NO_YEAR);
                 try {
                     LocalDate parsedDate = formatter.parseLocalDate(rawDate);
                     int dayOfMonth = parsedDate.getDayOfMonth();
                     @MonthInt int month = parsedDate.getMonthOfYear();
                     int year = parsedDate.getYear();
 
-                    if (year == DateConstants.NO_YEAR || removeYear) {
+                    if (year == Months.NO_YEAR || removeYear) {
                         return Date.Companion.on(dayOfMonth, month);
                     } else {
                         return Date.Companion.on(dayOfMonth, month, year);

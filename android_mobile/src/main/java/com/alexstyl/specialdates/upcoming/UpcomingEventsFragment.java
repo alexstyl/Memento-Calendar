@@ -19,6 +19,7 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -74,10 +75,9 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         presenter = new UpcomingEventsPresenter(
                 this,
-                permissions,
+                permissions, provider,
                 monitor,
                 new PeopleEventsObserver(getContentResolver()),
-                provider,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
@@ -120,7 +120,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter.startPresenting();
+        presenter.startPresenting(Date.Companion.today());
     }
 
     @Override
@@ -170,7 +170,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            presenter.startPresenting();
+            presenter.refreshEvents();
         }
 
         @Override
