@@ -101,7 +101,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
-        Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
+        Date date = Date.Companion.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.Companion.today().getYear());
         Intent intent = UpcomingEventsActivity.getStartIntent(context, date);
         intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
@@ -121,7 +121,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         int selectedTextColor = context.getResources().getColor(selectedVariant.getTextColor());
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
-        int finalHeaderColor = calculator.getColor(Date.today(), date);
+        int finalHeaderColor = calculator.getColor(Date.Companion.today(), date);
         int avatarSizeInPx = context.getResources().getDimensionPixelSize(R.dimen.widget_avatar_size);
         for (int i = 0; i < N; i++) {
             final int appWidgetId = appWidgetIds[i];

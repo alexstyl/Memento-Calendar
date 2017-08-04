@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.upcoming;
 
 import java.util.List;
 
-interface UpcomingListMVPView {
+public interface UpcomingListMVPView { // changed to public because of Kotlin complains
 
     void showLoading();
 
@@ -10,5 +10,7 @@ interface UpcomingListMVPView {
 
     void showFirstEvent();
 
-    boolean isDisplayingNoData();
+    boolean isEmpty();
+
+    void askForContactPermission();
 }

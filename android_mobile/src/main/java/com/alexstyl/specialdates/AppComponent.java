@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.support.RateDialog;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayAppWidgetProvider;
@@ -27,7 +28,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AnalyticsModule.class, ResourcesModule.class, ImageModule.class})
+@Component(modules = {AnalyticsModule.class, ResourcesModule.class, ImageModule.class, UpcomingEventsModule.class})
 public interface AppComponent {
     void inject(UpcomingEventsActivity activity);
 

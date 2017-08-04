@@ -27,7 +27,7 @@ public class PeopleEventsSearchTest {
     private static final Contact ALEX = ContactFixture.withName("Alex Styl");
     private static final Contact MARIA = ContactFixture.withName("Maria Papadopoulou");
     private static final Contact MIMOZA = ContactFixture.withName("Mimoza Dereks");
-    private static final Date JANUARY_1st = Date.startOfTheYear(2016);
+    private static final Date JANUARY_1st = Date.Companion.startOfTheYear(2016);
 
     private PeopleEventsSearch search;
     @Mock
@@ -46,9 +46,9 @@ public class PeopleEventsSearchTest {
     }
 
     private static TimePeriod aYearFromNow() {
-        Date today = Date.today();
+        Date today = Date.Companion.today();
         Date aYearFromNow = today.addDay(364);
-        return TimePeriod.between(today, aYearFromNow);
+        return TimePeriod.Companion.between(today, aYearFromNow);
     }
 
     @Test

@@ -21,9 +21,9 @@ import static org.mockito.Mockito.when;
 public class ContactEventTest {
 
     private static final Optional<Long> NO_DEVICE_ID = Optional.absent();
-    private static final Date SOME_DATE = Date.on(1, JANUARY, 1990);
-    private static final Date SOME_DATE_WITHOUT_YEAR = Date.on(1, JANUARY);
-    private static final int CURRENT_YEAR = Date.CURRENT_YEAR;
+    private static final Date SOME_DATE = Date.Companion.on(1, JANUARY, 1990);
+    private static final Date SOME_DATE_WITHOUT_YEAR = Date.Companion.on(1, JANUARY);
+    private static final int CURRENT_YEAR = Date.Companion.getCURRENT_YEAR();
 
     private Contact ANY_CONTACT = ContactFixture.aContact();
 
@@ -54,7 +54,7 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearAfterDate() {
-        Date eventDate = Date.on(1, JANUARY, CURRENT_YEAR + 50);
+        Date eventDate = Date.Companion.on(1, JANUARY, CURRENT_YEAR + 50);
         ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT);
         String label = contactEvent.getLabel(SOME_DATE, mockResources);
         assertThat(label).isEqualTo("Birthday");
@@ -62,7 +62,7 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearOnDate() {
-        Date eventDate = Date.on(1, JANUARY, CURRENT_YEAR);
+        Date eventDate = Date.Companion.on(1, JANUARY, CURRENT_YEAR);
         ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT);
         String label = contactEvent.getLabel(SOME_DATE, mockResources);
         assertThat(label).isEqualTo("Birthday");
@@ -70,10 +70,10 @@ public class ContactEventTest {
 
     @Test
     public void labelForBirthdayWithYearBeforeDate() {
-        Date eventDate = Date.on(1, JANUARY, CURRENT_YEAR - 10);
+        Date eventDate = Date.Companion.on(1, JANUARY, CURRENT_YEAR - 10);
 
         ContactEvent contactEvent = new ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT);
-        String label = contactEvent.getLabel(Date.on(1, JANUARY, Date.today().getYear()), mockResources);
+        String label = contactEvent.getLabel(Date.Companion.on(1, JANUARY, Date.Companion.today().getYear()), mockResources);
         assertThat(label).isEqualTo("Turns 10");
     }
 

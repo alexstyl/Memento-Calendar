@@ -21,21 +21,21 @@ public class DateDisplayStringCreatorTest {
 
     @Test
     public void givenDateWithYear_thenReturningStringIsCorrect() {
-        Date date = Date.on(5, MAY, 1995);
+        Date date = Date.Companion.on(5, MAY, 1995);
         String dateToString = creator.stringOf(date);
         assertThat(dateToString).isEqualTo("1995-05-05");
     }
 
     @Test
     public void givenDateWithNoYear_thenReturningStringIsCorrect() {
-        Date date = Date.on(5, MAY);
+        Date date = Date.Companion.on(5, MAY);
         String dateToString = creator.stringOf(date);
         assertThat(dateToString).isEqualTo("--05-05");
     }
 
     @Test
     public void toShortDateWithYear() {
-        Date date = Date.on(1, JANUARY, 1990);
+        Date date = Date.Companion.on(1, JANUARY, 1990);
         assertThat(creator.stringOf(date)).isEqualTo("1990-01-01");
     }
 

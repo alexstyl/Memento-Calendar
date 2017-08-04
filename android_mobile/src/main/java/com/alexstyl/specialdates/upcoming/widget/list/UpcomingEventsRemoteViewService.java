@@ -58,7 +58,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
     }
 
     private UpcomingEventsProvider createPeopleEventsProvider() {
-        Date today = Date.today();
+        Date today = Date.Companion.today();
         return new UpcomingEventsProvider(
                 PeopleEventsProvider.newInstance(this),
                 NamedayPreferences.newInstance(this),

@@ -96,12 +96,12 @@ class SpecialGreekNamedaysCalculator {
     }
 
     private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
-        int year = Date.today().getYear();
-        Date date = Date.on(23, DateConstants.APRIL, year);
+        int year = Date.Companion.today().getYear();
+        Date date = Date.Companion.on(23, DateConstants.APRIL, year);
         if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2);
         } else {
-            date = Date.on(25, DateConstants.APRIL, year);
+            date = Date.Companion.on(25, DateConstants.APRIL, year);
         }
 
         for (String variation : MARKOS_ALTS) {
@@ -125,7 +125,7 @@ class SpecialGreekNamedaysCalculator {
     );
 
     private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
-        Date date = Date.on(23, DateConstants.APRIL, Date.today().getYear());
+        Date date = Date.Companion.on(23, DateConstants.APRIL, Date.Companion.today().getYear());
 
         Date actualDate;
         if (COMPARATOR.compare(easter, date) > 0) {
@@ -157,7 +157,7 @@ class SpecialGreekNamedaysCalculator {
 
     private static Date createDayDateFrom(Calendar calendar) {
         @MonthInt int month = calendar.get(Calendar.MONTH);
-        return Date.on(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
+        return Date.Companion.on(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
     }
 
 }

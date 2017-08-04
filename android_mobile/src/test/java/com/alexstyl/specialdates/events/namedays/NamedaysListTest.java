@@ -22,18 +22,18 @@ public class NamedaysListTest {
     }
 
     private static void populateNamedays() {
-        namedays.addNameday(Date.on(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
-        namedays.addNameday(Date.on(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
-        namedays.addNameday(Date.on(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(Date.Companion.on(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(Date.Companion.on(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
+        namedays.addNameday(Date.Companion.on(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY);
 
-        namedays.addNameday(Date.on(4, FIXED_MONTH), RECURRING_NAMEDAY);
-        namedays.addNameday(Date.on(5, FIXED_MONTH), RECURRING_NAMEDAY);
+        namedays.addNameday(Date.Companion.on(4, FIXED_MONTH), RECURRING_NAMEDAY);
+        namedays.addNameday(Date.Companion.on(5, FIXED_MONTH), RECURRING_NAMEDAY);
 
     }
 
     @Test
     public void whenNoYearSpecified_thenRecurringEventIsReturned() {
-        Date dateWithNoYear = Date.on(4, FIXED_MONTH);
+        Date dateWithNoYear = Date.Companion.on(4, FIXED_MONTH);
 
         NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
@@ -42,7 +42,7 @@ public class NamedaysListTest {
 
     @Test
     public void whenNoYearSpecified_thenFixedYearEventIsNotReturned() {
-        Date dateWithNoYear = Date.on(1, FIXED_MONTH);
+        Date dateWithNoYear = Date.Companion.on(1, FIXED_MONTH);
 
         NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
@@ -51,7 +51,7 @@ public class NamedaysListTest {
 
     @Test
     public void whenYearSpecified_thenFixedYearEventIsReturned() {
-        Date dateWithNoYear = Date.on(1, FIXED_MONTH, FIXED_YEAR);
+        Date dateWithNoYear = Date.Companion.on(1, FIXED_MONTH, FIXED_YEAR);
 
         NamesInADate results = namedays.getNamedaysFor(dateWithNoYear);
 
@@ -60,7 +60,7 @@ public class NamedaysListTest {
 
     @Test
     public void whenYearSpecified_thenRecurringEventIsReturned() {
-        Date date = Date.on(4, FIXED_MONTH, FIXED_YEAR);
+        Date date = Date.Companion.on(4, FIXED_MONTH, FIXED_YEAR);
 
         NamesInADate results = namedays.getNamedaysFor(date);
 

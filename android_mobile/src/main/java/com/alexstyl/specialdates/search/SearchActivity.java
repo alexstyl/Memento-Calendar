@@ -93,7 +93,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
-        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), stringResources, dateLabelCreator));
 
         analytics.trackScreen(Screen.SEARCH);
         searchNavigator = new SearchNavigator(this, analytics);
@@ -132,7 +132,6 @@ public class SearchActivity extends ThemedMementoActivity {
         setupSearchbarHint(namedayPreferences);
 
         if (namedayPreferences.isEnabled()) {
-            // we are loading namedays as well
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
             namesAdapter = NameSuggestionsAdapter.newInstance(context(), onNameSelectedListener);
             namesSuggestionsView.setHasFixedSize(true);
@@ -307,7 +306,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onNamedayClicked(Date date) {
-            Date currentYearDate = Date.on(date.getDayOfMonth(), date.getMonth(), Date.CURRENT_YEAR);
+            Date currentYearDate = Date.Companion.on(date.getDayOfMonth(), date.getMonth(), Date.Companion.getCURRENT_YEAR());
             Intent intent = UpcomingEventsActivity.getStartIntent(context(), currentYearDate);
             startActivity(intent);
         }

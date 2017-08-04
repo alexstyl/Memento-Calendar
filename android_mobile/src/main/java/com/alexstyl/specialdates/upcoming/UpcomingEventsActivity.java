@@ -188,7 +188,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private void showSelectDateDialog() {
         analytics.trackAction(Action.SELECT_DATE);
         DatePickerDialogFragment
-                .newInstance(Date.today())
+                .newInstance(Date.Companion.today())
                 .show(getSupportFragmentManager(), "date_picker");
     }
 

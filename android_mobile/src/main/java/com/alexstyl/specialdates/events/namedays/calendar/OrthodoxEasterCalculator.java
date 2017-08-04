@@ -18,7 +18,7 @@ public enum OrthodoxEasterCalculator {
         @MonthInt int month = (int) Math.floor((d + e + 114) / 31);
         int day = ((d + e + 144) % 31) + 1;
         day++;
-        return Date.on(day, month, year)
+        return Date.Companion.on(day, month, year)
                 .addDay(13);
     }
 }

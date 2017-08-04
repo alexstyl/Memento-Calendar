@@ -20,6 +20,9 @@ import com.alexstyl.specialdates.upcoming.UpcomingRowViewModelsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Observable;
 
 public class UpcomingEventsProvider {
 
@@ -68,6 +71,32 @@ public class UpcomingEventsProvider {
             upcomingRowViewModelsBuilder.withNamedays(namedays);
         }
         return upcomingRowViewModelsBuilder.build();
+    }
+
+    public Observable<List<UpcomingRowViewModel>> calculateEventsBetweenRX(final TimePeriod period) {
+        return Observable.fromCallable(new Callable<List<UpcomingRowViewModel>>() {
+            @Override
+            public List<UpcomingRowViewModel> call() {
+                List<ContactEvent> contactEvents = peopleEventsProvider.getContactEventsFor(period);
+                UpcomingRowViewModelsBuilder upcomingRowViewModelsBuilder = new UpcomingRowViewModelsBuilder(
+                        period,
+                        upcomingRowViewModelFactory,
+                        adRules
+                )
+                        .withContactEvents(contactEvents);
+
+                if (shouldLoadBankHolidays()) {
+                    List<BankHoliday> bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(period);
+                    upcomingRowViewModelsBuilder.withBankHolidays(bankHolidays);
+                }
+
+                if (shouldLoadNamedays()) {
+                    List<NamesInADate> namedays = calculateNamedaysBetween(period);
+                    upcomingRowViewModelsBuilder.withNamedays(namedays);
+                }
+                return upcomingRowViewModelsBuilder.build();
+            }
+        });
     }
 
     private List<NamesInADate> calculateNamedaysBetween(TimePeriod timeDuration) {

@@ -45,8 +45,8 @@ internal class PersonPresenter(private val personView: PersonView,
                             PersonAvailableActionsViewModel(t1, t2, t3)
                         }
                 )
-                        .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
+                        .observeOn(resultScheduler)
                         .subscribe({
                             personView.displayAvailableActions(it)
                         }))

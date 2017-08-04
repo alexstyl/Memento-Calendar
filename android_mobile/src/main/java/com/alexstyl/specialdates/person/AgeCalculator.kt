@@ -8,7 +8,7 @@ class AgeCalculator(private val today: Date) {
             return ""
         }
 
-        var age = today.year - birthday.year
+        var age = today.getYear() - birthday.getYear()
         if (birthday.month > today.month || birthday.dayOfMonth > today.dayOfMonth) {
             age--
         }
