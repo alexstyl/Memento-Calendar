@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.person
 import android.support.annotation.StringRes
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.Date.on
+import com.alexstyl.specialdates.date.Date.Companion.on
 import com.alexstyl.specialdates.date.DateConstants.*
 
 enum class StarSign(@StringRes val labelStringRes: Int, val emoji: String, val from: Date, val to: Date) {

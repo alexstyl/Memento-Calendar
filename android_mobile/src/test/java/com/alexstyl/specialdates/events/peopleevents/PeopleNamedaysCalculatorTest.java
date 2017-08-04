@@ -64,7 +64,7 @@ public class PeopleNamedaysCalculatorTest {
         when(mockContactsProvider.getAllContacts()).thenReturn(testContacts);
 
         Date easterDate = OrthodoxEasterCalculator.INSTANCE.calculateEasterForYear(YEAR);
-        List<ContactEvent> contactEvents = calculator.loadSpecialNamedaysBetween(TimePeriod.between(easterDate, easterDate));
+        List<ContactEvent> contactEvents = calculator.loadSpecialNamedaysBetween(TimePeriod.Companion.between(easterDate, easterDate));
         assertThat(contactEvents).hasSize(1);
         assertThat(contactEvents.get(0).getContact()).isEqualTo(EASTER_CELEBRATING_CONTACT);
     }

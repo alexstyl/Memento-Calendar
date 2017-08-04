@@ -18,7 +18,7 @@ public class DateTest {
     @MonthInt
     int MONTH = 10;
 
-    private static final Date ANY_DATE = Date.on(DAY, MONTH, 1990);
+    private static final Date ANY_DATE = Date.Companion.on(DAY, MONTH, 1990);
 
     @Test
     public void whenAddingADayOfMonth_thenIncreaseNormally() {
@@ -31,7 +31,7 @@ public class DateTest {
 
     @Test
     public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOftheNextYearIsReturned() {
-        Date lastDayOfYear = Date.on(31, DECEMBER, 1990);
+        Date lastDayOfYear = Date.Companion.on(31, DECEMBER, 1990);
         Date firstDayOfNextYear = lastDayOfYear.addDay(1);
 
         assertThat(firstDayOfNextYear.getMonth()).isEqualTo(1);
@@ -42,79 +42,79 @@ public class DateTest {
 
     @Test
     public void testOneDayAhead() {
-        Date firstDayOfYear = Date.on(1, JANUARY, 1990);
-        Date secondDayOfYear = Date.on(2, JANUARY, 1990);
+        Date firstDayOfYear = Date.Companion.on(1, JANUARY, 1990);
+        Date secondDayOfYear = Date.Companion.on(2, JANUARY, 1990);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(1);
     }
 
     @Test
     public void testOneYearAhead() {
-        Date firstDayOfYear = Date.on(1, JANUARY, 1990);
-        Date secondDayOfYear = Date.on(1, JANUARY, 1991);
+        Date firstDayOfYear = Date.Companion.on(1, JANUARY, 1990);
+        Date secondDayOfYear = Date.Companion.on(1, JANUARY, 1991);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(365);
     }
 
     @Test
     public void testTwoYearAhead() {
-        Date firstDayOfYear = Date.on(1, JANUARY, 1990);
-        Date secondDayOfYear = Date.on(1, JANUARY, 1992);
+        Date firstDayOfYear = Date.Companion.on(1, JANUARY, 1990);
+        Date secondDayOfYear = Date.Companion.on(1, JANUARY, 1992);
         assertThat(firstDayOfYear.daysDifferenceTo(secondDayOfYear)).isEqualTo(365 * 2);
     }
 
     @Test
     public void compareFutureDayDate() {
-        int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(2, JANUARY, 1990));
+        int result = comparator.compare(Date.Companion.on(1, JANUARY, 1990), Date.Companion.on(2, JANUARY, 1990));
         assertThat(result).isNegative();
     }
 
     @Test
     public void compareSameDayDate() {
-        int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(1, JANUARY, 1990));
+        int result = comparator.compare(Date.Companion.on(1, JANUARY, 1990), Date.Companion.on(1, JANUARY, 1990));
         assertThat(result).isZero();
     }
 
     @Test
     public void comparePastDayDate() {
-        int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(1, JANUARY, 1980));
+        int result = comparator.compare(Date.Companion.on(1, JANUARY, 1990), Date.Companion.on(1, JANUARY, 1980));
         assertThat(result).isPositive();
     }
 
     @Test
     public void compareFutureDate() {
-        int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(2, JANUARY));
+        int result = comparator.compare(Date.Companion.on(1, JANUARY, 1990), Date.Companion.on(2, JANUARY));
         assertThat(result).isNegative();
     }
 
     @Test
     public void compareSameDate() {
-        int result = comparator.compare(Date.on(1, JANUARY, 1990), Date.on(1, JANUARY));
+        int result = comparator.compare(Date.Companion.on(1, JANUARY, 1990), Date.Companion.on(1, JANUARY));
         assertThat(result).isZero();
     }
 
     @Test
     public void comparePastDate() {
-        int result = comparator.compare(Date.on(2, JANUARY, 1990), Date.on(1, JANUARY));
+        int result = comparator.compare(Date.Companion.on(2, JANUARY, 1990), Date.Companion.on(1, JANUARY));
         assertThat(result).isPositive();
     }
 
     @Test
     public void whenComparingToSameDate_thenTheyAreEqual() {
-        Date firstDate = Date.on(16, APRIL, 1991);
-        Date secondDate = Date.on(16, APRIL, 1991);
+        Date firstDate = Date.Companion.on(16, APRIL, 1991);
+        Date secondDate = Date.Companion.on(16, APRIL, 1991);
 
         assertThat(firstDate.equals(secondDate)).isTrue();
     }
 
     @Test
     public void whenComparingToDateWithDifferentYear_thenTheyAreNotEqual() {
-        Date firstDate = Date.on(16, APRIL, 1991);
-        Date secondDate = Date.on(16, APRIL, 1987);
+        Date firstDate = Date.Companion.on(16, APRIL, 1991);
+        Date secondDate = Date.Companion.on(16, APRIL, 1987);
 
         assertThat(firstDate.equals(secondDate)).isFalse();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsException_whenInvalidDateIsCreated() {
-        Date.on(31, FEBRUARY, 1991);
+        Date.Companion.on(31, FEBRUARY, 1991);
     }
 }

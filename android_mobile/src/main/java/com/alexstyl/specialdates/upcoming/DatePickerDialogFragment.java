@@ -45,7 +45,7 @@ public final class DatePickerDialogFragment extends MementoDialog {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        listener.onDateSelected(Date.on(dayOfMonth, toOneIndexedMonth(month), year));
+                        listener.onDateSelected(Date.Companion.on(dayOfMonth, toOneIndexedMonth(month), year));
                     }
                 },
                 startingDate.getYear(),
@@ -69,7 +69,7 @@ public final class DatePickerDialogFragment extends MementoDialog {
         int dayOfMonth = getArguments().getInt(ARG_DAY_OF_MONTH);
         @MonthInt int month = getArguments().getInt(ARG_MONTH);
         int year = getArguments().getInt(ARG_YEAR);
-        return Date.on(dayOfMonth, month, year);
+        return Date.Companion.on(dayOfMonth, month, year);
     }
 
     public interface OnDateSetListener {

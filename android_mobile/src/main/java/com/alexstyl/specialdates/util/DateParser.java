@@ -60,9 +60,9 @@ public enum DateParser {
                     int year = parsedDate.getYear();
 
                     if (year == DateConstants.NO_YEAR || removeYear) {
-                        return Date.on(dayOfMonth, month);
+                        return Date.Companion.on(dayOfMonth, month);
                     } else {
-                        return Date.on(dayOfMonth, month, year);
+                        return Date.Companion.on(dayOfMonth, month, year);
                     }
 
                 } catch (IllegalArgumentException e) {

@@ -24,7 +24,7 @@ public final class DailyReminderDebugPreferences {
         int dayOfMonth = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_day, 1);
         int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, DateConstants.JANUARY);
         int year = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_year, 2016);
-        return Date.on(dayOfMonth, month, year);
+        return Date.Companion.on(dayOfMonth, month, year);
     }
 
     public boolean isFakeDateEnabled() {

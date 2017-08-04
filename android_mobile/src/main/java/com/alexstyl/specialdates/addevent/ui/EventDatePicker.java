@@ -33,7 +33,7 @@ public class EventDatePicker extends LinearLayout {
         super(context, attrs);
         super.setOrientation(HORIZONTAL);
         labels = MonthLabels.forLocale(Locale.getDefault());
-        today = Date.today();
+        today = Date.Companion.today();
         inflate(getContext(), R.layout.merge_birthday_picker, this);
 
         dayPicker = Views.findById(this, R.id.day_picker);
@@ -122,9 +122,9 @@ public class EventDatePicker extends LinearLayout {
         int month = getMonth();
         if (isDisplayingYear()) {
             int year = getYear();
-            return Date.on(dayOfMonth, month, year);
+            return Date.Companion.on(dayOfMonth, month, year);
         } else {
-            return Date.on(dayOfMonth, month);
+            return Date.Companion.on(dayOfMonth, month);
         }
     }
 
@@ -163,7 +163,7 @@ public class EventDatePicker extends LinearLayout {
 
         private boolean isValidDate(int dayOfMonth, int month, int year) {
             try {
-                Date.on(dayOfMonth, month, year);
+                Date.Companion.on(dayOfMonth, month, year);
                 return true;
             } catch (IllegalArgumentException ex) {
                 return false;

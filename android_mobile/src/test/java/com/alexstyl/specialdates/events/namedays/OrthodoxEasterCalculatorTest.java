@@ -19,13 +19,13 @@ public class OrthodoxEasterCalculatorTest {
 
     @Before
     public void initExpectedDates() {
-        addDay(2010, Date.on(4, APRIL, 2010));
-        addDay(2011, Date.on(24, APRIL, 2011));
-        addDay(2012, Date.on(15, APRIL, 2012));
-        addDay(2013, Date.on(5, MAY, 2013));
-        addDay(2014, Date.on(20, APRIL, 2014));
-        addDay(2015, Date.on(12, APRIL, 2015));
-        addDay(2016, Date.on(1, MAY, 2016));
+        addDay(2010, Date.Companion.on(4, APRIL, 2010));
+        addDay(2011, Date.Companion.on(24, APRIL, 2011));
+        addDay(2012, Date.Companion.on(15, APRIL, 2012));
+        addDay(2013, Date.Companion.on(5, MAY, 2013));
+        addDay(2014, Date.Companion.on(20, APRIL, 2014));
+        addDay(2015, Date.Companion.on(12, APRIL, 2015));
+        addDay(2016, Date.Companion.on(1, MAY, 2016));
     }
 
     private void addDay(int year, Date date) {

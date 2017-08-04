@@ -4,9 +4,12 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
 
 public interface OnUpcomingEventClickedListener {
+
+    @Deprecated
     void onEventClicked(UpcomingEventsViewModel viewModel);
 
-    void onContactClicked(Contact contact);
-
+    @Deprecated
     void onMoreEventsClicked(UpcomingEventsViewModel viewModel);
+
+    void onContactClicked(Contact contact);
 }

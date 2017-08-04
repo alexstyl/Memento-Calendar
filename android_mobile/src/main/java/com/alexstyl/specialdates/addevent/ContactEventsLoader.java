@@ -54,7 +54,7 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<AddEventConta
     private List<AddEventContactEventViewModel> createModelsFor(Contact contact) {
         List<AddEventContactEventViewModel> existingViewModels;
         List<ContactEvent> contactEvents = new ArrayList<>();
-        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getContactEventsFor(TimePeriod.aYearFromNow());
+        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getContactEventsFor(TimePeriod.Companion.aYearFromNow());
         List<EventType> existingTypes = new ArrayList<>();
         for (ContactEvent contactEvent : contactEventsOnDate) {
             if (contactEvent.getContact().getContactID() == contact.getContactID() && isEditable(contactEvent)) {

@@ -17,7 +17,7 @@ public class EventsSettingsMonitor {
         this.stringResources = stringResources;
     }
 
-    public void register(final Listener listener) {
+    public void register(Listener listener) {
         preferenceChangeListener = createPreferenceChangedListenerFrom(listener);
         sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }

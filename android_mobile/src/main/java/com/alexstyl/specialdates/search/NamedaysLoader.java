@@ -20,7 +20,7 @@ class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     public static NamedaysLoader newInstance(Context context, String searchQuery) {
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        int year = Date.today().getYear();
+        int year = Date.Companion.today().getYear();
         return new NamedaysLoader(context, namedayPreferences, searchQuery, year);
     }
 

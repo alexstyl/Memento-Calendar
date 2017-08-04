@@ -45,7 +45,7 @@ public class WearSyncService extends IntentService {
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
         PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this);
-        Date today = Date.today();
+        Date today = Date.Companion.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }
 
