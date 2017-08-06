@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming
 
+import android.content.ContentResolver
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
@@ -12,6 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.internal.verification.Times
 import org.mockito.runners.MockitoJUnitRunner
 
 
@@ -21,16 +23,17 @@ class UpcomingEventsPresenterTest {
     val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
     val mockEventsMonitor = Mockito.mock(EventsSettingsMonitor::class.java)
-    val mockObserver = Mockito.mock(PeopleEventsObserver::class.java)
     val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
 
+    private lateinit var peopleEventsObserver: PeopleEventsObserver
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 
     @Before
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, mockObserver, workScheduler, resultScheduler)
+        peopleEventsObserver = PeopleEventsObserver(Mockito.mock(ContentResolver::class.java))
+        upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, peopleEventsObserver, workScheduler, resultScheduler)
     }
 
     @Test
@@ -62,6 +65,24 @@ class UpcomingEventsPresenterTest {
 
         Mockito.verify(mockView).showLoading()
         Mockito.verify(mockView).display(expectedEvents)
+    }
+
+    @Test
+    fun whenEventPreferencesAreUpdated_thenUpdatedEventsArePushedToTheView() {
+        val theDate = Date.on(1, Months.MARCH, 2017)
+        val initialEvents = arrayListOf<UpcomingRowViewModel>()
+        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(initialEvents)
+        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
+
+        upcomingEventsPresenter.startPresenting(theDate)
+
+        val updatedEvents = arrayListOf<UpcomingRowViewModel>(YearHeaderViewModel("2017"))
+        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(updatedEvents)
+        peopleEventsObserver.onChange(false)
+
+        Mockito.verify(mockView, Times(1)).display(initialEvents)
+        Mockito.verify(mockView, Times(1)).display(updatedEvents)
+
     }
 
     private fun anyDate(): Date = Date.on(1, Months.APRIL, 2017)

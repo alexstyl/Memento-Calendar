@@ -25,16 +25,20 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
         if (permissions.permissionIsPresent()) {
             disposable =
                     subject
+                            .doOnSubscribe { view.showLoading() }
+                            .observeOn(workScheduler)
                             .map<List<UpcomingRowViewModel>> {
                                 provider.calculateEventsBetween(TimePeriod.aYearFrom(it))
                             }
-                            .doOnSubscribe { view.showLoading() }
                             .observeOn(resultScheduler)
-                            .subscribeOn(workScheduler)
-                            .subscribe { upcomingRowViewModels -> view.display(upcomingRowViewModels) }
-
+                            .subscribe {
+                                upcomingRowViewModels ->
+                                view.display(upcomingRowViewModels)
+                            }
             refreshEvents(firstDay)
 
+            monitor.register { refreshEvents(firstDay) }
+            observer.startObserving { refreshEvents(firstDay) }
 
         } else {
             view.askForContactPermission()
@@ -49,6 +53,8 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
         if (disposable != null) {
             disposable!!.dispose()
         }
+        monitor.unregister()
+        observer.stopObserving()
     }
 
 }
