@@ -1,7 +1,9 @@
 package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.Date
+
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.donate.DonateMonitor
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest
 import com.alexstyl.specialdates.settings.EventsSettingsMonitor
@@ -13,13 +15,17 @@ import io.reactivex.subjects.PublishSubject
 class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
                               private val permissions: ContactPermissionRequest,
                               private val provider: UpcomingEventsProvider,
-                              private val monitor: EventsSettingsMonitor,
-                              private val observer: PeopleEventsObserver,
+                              private val settingsMonitor: EventsSettingsMonitor,
+                              private val peopleEventsObserver: PeopleEventsObserver,
                               private val workScheduler: Scheduler,
                               private val resultScheduler: Scheduler) {
 
+    private val TRIGGER = 1
     private var disposable: Disposable? = null
-    private val subject = PublishSubject.create<Date>()
+    private val subject = PublishSubject.create<Int>()
+    private val donateListener = DonateMonitor.DonateMonitorListener {
+        refreshEvents()
+    }
 
     fun startPresenting(firstDay: Date) {
         if (permissions.permissionIsPresent()) {
@@ -28,33 +34,43 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
                             .doOnSubscribe { view.showLoading() }
                             .observeOn(workScheduler)
                             .map<List<UpcomingRowViewModel>> {
-                                provider.calculateEventsBetween(TimePeriod.aYearFrom(it))
+                                provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
                             }
                             .observeOn(resultScheduler)
                             .subscribe {
                                 upcomingRowViewModels ->
                                 view.display(upcomingRowViewModels)
                             }
-            refreshEvents(firstDay)
+            refreshEvents()
 
-            monitor.register { refreshEvents(firstDay) }
-            observer.startObserving { refreshEvents(firstDay) }
-
+            settingsMonitor.register {
+                refreshEventsAsNew()
+            }
+            peopleEventsObserver.startObserving { refreshEvents() }
+            DonateMonitor.getInstance().addListener { donateListener }
         } else {
             view.askForContactPermission()
         }
     }
 
-    fun refreshEvents(firstDay: Date) {
-        subject.onNext(firstDay)
+    fun refreshEvents() {
+        subject.onNext(TRIGGER)
     }
+
+    private fun refreshEventsAsNew() {
+        view.showLoading()
+        view.showFirstEvent()
+        refreshEvents()
+    }
+
 
     fun stopPresenting() {
         if (disposable != null) {
             disposable!!.dispose()
         }
-        monitor.unregister()
-        observer.stopObserving()
+        settingsMonitor.unregister()
+        peopleEventsObserver.stopObserving()
+        DonateMonitor.getInstance().removeListener(donateListener)
     }
 
 }
