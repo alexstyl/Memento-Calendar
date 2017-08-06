@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -57,6 +58,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     @Inject UpcomingEventsProvider provider;
     private MainNavigator navigator;
+    private ContactPermissionRequest permissions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        ContactPermissionRequest permissions = new ContactPermissionRequest(
+        permissions = new ContactPermissionRequest(
                 new PermissionNavigator(getActivity(), analytics),
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
@@ -159,7 +161,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     @Override
     public void askForContactPermission() {
-        Log.e("asking for permission is not yet implemented");
+        permissions.requestForPermission();
     }
 
     @Override
@@ -168,10 +170,16 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         presenter.stopPresenting();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
+    }
+
     private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            Log.e("onPermissionGranted but this is not yet implemented");
+            presenter.refreshEvents();
         }
 
         @Override
