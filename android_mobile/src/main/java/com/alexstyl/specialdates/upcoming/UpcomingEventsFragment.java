@@ -28,7 +28,6 @@ import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
-import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
@@ -72,14 +71,14 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
 
-        EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
+        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
         navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 this,
                 permissions,
                 provider,
-                monitor,
+                settingsMonitor,
                 new PeopleEventsObserver(getContentResolver()),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
@@ -147,11 +146,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
             upcomingList.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void showFirstEvent() {
-        upcomingList.scrollToPosition(0);
     }
 
     @Override

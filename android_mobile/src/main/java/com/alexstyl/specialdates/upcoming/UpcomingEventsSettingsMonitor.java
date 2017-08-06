@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.settings;
+package com.alexstyl.specialdates.upcoming;
 
 import android.content.SharedPreferences;
 
@@ -6,13 +6,13 @@ import com.alexstyl.android.preferences.PreferenceKeyId;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 
-public class EventsSettingsMonitor {
+public class UpcomingEventsSettingsMonitor {
 
     private final SharedPreferences sharedPreferences;
     private final StringResources stringResources;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    public EventsSettingsMonitor(SharedPreferences sharedPreferences, StringResources stringResources) {
+    UpcomingEventsSettingsMonitor(SharedPreferences sharedPreferences, StringResources stringResources) {
         this.sharedPreferences = sharedPreferences;
         this.stringResources = stringResources;
     }

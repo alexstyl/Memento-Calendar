@@ -8,8 +8,6 @@ public interface UpcomingListMVPView { // changed to public because of Kotlin co
 
     void display(List<UpcomingRowViewModel> events);
 
-    void showFirstEvent();
-
     boolean isEmpty();
 
     void askForContactPermission();
