@@ -74,7 +74,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
-                this,
+                Date.Companion.today(),
                 permissions,
                 provider,
                 settingsMonitor,
@@ -111,7 +111,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter.startPresenting(Date.Companion.today());
+        presenter.startPresentingInto(this);
     }
 
     @Override

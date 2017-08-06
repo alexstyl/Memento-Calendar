@@ -19,11 +19,13 @@ import org.mockito.runners.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class UpcomingEventsPresenterTest {
 
-    val mockView = Mockito.mock(UpcomingListMVPView::class.java)
-    val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
-    val mockEventsMonitor = Mockito.mock(UpcomingEventsSettingsMonitor::class.java)
-    val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
+    private val STARTING_DATE = Date.on(1, Months.APRIL, 2017)
 
+    private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
+    private val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
+    private val mockEventsMonitor = Mockito.mock(UpcomingEventsSettingsMonitor::class.java)
+    private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
+    
     private lateinit var peopleEventsObserver: PeopleEventsObserver
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 
@@ -32,14 +34,14 @@ class UpcomingEventsPresenterTest {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
         peopleEventsObserver = PeopleEventsObserver(Mockito.mock(ContentResolver::class.java))
-        upcomingEventsPresenter = UpcomingEventsPresenter(mockView, mockPermissions, mockProvider, mockEventsMonitor, peopleEventsObserver, workScheduler, resultScheduler)
+        upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider, mockEventsMonitor, peopleEventsObserver, workScheduler, resultScheduler)
     }
 
     @Test
     fun whenStartPresentingWithoutPermission_askForPermission() {
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(false)
 
-        upcomingEventsPresenter.startPresenting(anyDate())
+        upcomingEventsPresenter.startPresentingInto(mockView)
 
         Mockito.verify(mockView).askForContactPermission()
     }
@@ -48,7 +50,7 @@ class UpcomingEventsPresenterTest {
     fun whenStartPresentingWithPermission_showLoading() {
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
 
-        upcomingEventsPresenter.startPresenting(anyDate())
+        upcomingEventsPresenter.startPresentingInto(mockView)
 
         Mockito.verify(mockView).showLoading()
     }
@@ -60,7 +62,7 @@ class UpcomingEventsPresenterTest {
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(expectedEvents)
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
 
-        upcomingEventsPresenter.startPresenting(theDate)
+        upcomingEventsPresenter.startPresentingInto(mockView)
 
         Mockito.verify(mockView).showLoading()
         Mockito.verify(mockView).display(expectedEvents)
@@ -68,23 +70,20 @@ class UpcomingEventsPresenterTest {
 
     @Test
     fun whenEventPreferencesAreUpdated_thenUpdatedEventsArePushedToTheView() {
-        val theDate = Date.on(1, Months.MARCH, 2017)
         val initialEvents = arrayListOf<UpcomingRowViewModel>()
-        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(initialEvents)
+        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(initialEvents)
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
 
-        upcomingEventsPresenter.startPresenting(theDate)
+        upcomingEventsPresenter.startPresentingInto(mockView)
 
         val updatedEvents = arrayListOf<UpcomingRowViewModel>(YearHeaderViewModel("2017"))
-        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(updatedEvents)
+        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(updatedEvents)
         peopleEventsObserver.onChange(false)
 
         Mockito.verify(mockView, Times(1)).display(initialEvents)
         Mockito.verify(mockView, Times(1)).display(updatedEvents)
 
     }
-
-    private fun anyDate(): Date = Date.on(1, Months.APRIL, 2017)
 }
 
 

@@ -11,7 +11,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
+class UpcomingEventsPresenter(private val firstDay: Date,
                               private val permissions: ContactPermissionRequest,
                               private val provider: UpcomingEventsProvider,
                               private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
@@ -26,32 +26,36 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
     }
     private var disposable: Disposable? = null
 
-    fun startPresenting(firstDay: Date) {
-        if (permissions.permissionIsPresent()) {
-            disposable =
-                    subject
-                            .doOnSubscribe { view.showLoading() }
-                            .observeOn(workScheduler)
-                            .map<List<UpcomingRowViewModel>> {
-                                provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
-                            }
-                            .observeOn(resultScheduler)
-                            .subscribe {
-                                upcomingRowViewModels ->
-                                view.display(upcomingRowViewModels)
-                            }
-            refreshEvents()
+    fun startPresentingInto(view: UpcomingListMVPView) {
+        disposable =
+                subject
+                        .doOnSubscribe { view.showLoading() }
+                        .observeOn(workScheduler)
+                        .map<List<UpcomingRowViewModel>> {
+                            provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
+                        }
+                        .observeOn(resultScheduler)
+                        .subscribe {
+                            upcomingRowViewModels ->
+                            view.display(upcomingRowViewModels)
+                        }
 
-            settingsMonitorUpcoming.register {
-                refreshEvents()
-            }
-            peopleEventsObserver.startObserving {
-                refreshEvents()
-            }
-            DonateMonitor.getInstance().addListener { donateListener }
+        if (permissions.permissionIsPresent()) {
+            setupContentUpdatedListeners()
+            refreshEvents()
         } else {
             view.askForContactPermission()
         }
+    }
+
+    private fun setupContentUpdatedListeners() {
+        settingsMonitorUpcoming.register {
+            refreshEvents()
+        }
+        peopleEventsObserver.startObserving {
+            refreshEvents()
+        }
+        DonateMonitor.getInstance().addListener { donateListener }
     }
 
     fun refreshEvents() {
