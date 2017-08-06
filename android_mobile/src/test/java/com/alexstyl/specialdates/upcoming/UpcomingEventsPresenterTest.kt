@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest
-import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test

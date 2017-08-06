@@ -22,7 +22,7 @@ public interface ImageLoader {
     }
 
     interface FixedSizeRequest {
-        Optional<Bitmap> async();
+        Optional<Bitmap> synchronously();
 
         void into(ImageLoadedConsumer consumer);
     }

@@ -31,7 +31,6 @@ import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
-import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
@@ -49,14 +48,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
+    private MainNavigator navigator;
+    private ContactPermissionRequest permissions;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
-
     @Inject UpcomingEventsProvider provider;
-    private MainNavigator navigator;
-    private ContactPermissionRequest permissions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

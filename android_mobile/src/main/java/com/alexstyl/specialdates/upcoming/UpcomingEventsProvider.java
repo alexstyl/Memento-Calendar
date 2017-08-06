@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming.widget.list;
+package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -13,10 +13,6 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.UpcomingEventRowViewModelFactory;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsAdRules;
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewModelsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +29,13 @@ public class UpcomingEventsProvider {
     private final UpcomingEventRowViewModelFactory upcomingRowViewModelFactory;
     private final UpcomingEventsAdRules adRules;
 
-    public UpcomingEventsProvider(PeopleEventsProvider peopleEventsProvider,
-                                  NamedayPreferences namedayPreferences,
-                                  BankHolidaysPreferences bankHolidaysPreferences,
-                                  BankHolidayProvider bankHolidayProvider,
-                                  NamedayCalendarProvider namedayCalendarProvider,
-                                  UpcomingEventRowViewModelFactory upcomingRowViewModelFactory,
-                                  UpcomingEventsAdRules adRules) {
+    UpcomingEventsProvider(PeopleEventsProvider peopleEventsProvider,
+                           NamedayPreferences namedayPreferences,
+                           BankHolidaysPreferences bankHolidaysPreferences,
+                           BankHolidayProvider bankHolidayProvider,
+                           NamedayCalendarProvider namedayCalendarProvider,
+                           UpcomingEventRowViewModelFactory upcomingRowViewModelFactory,
+                           UpcomingEventsAdRules adRules) {
         this.peopleEventsProvider = peopleEventsProvider;
         this.namedayPreferences = namedayPreferences;
         this.bankHolidaysPreferences = bankHolidaysPreferences;

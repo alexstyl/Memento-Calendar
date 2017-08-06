@@ -5,6 +5,7 @@ import android.content.Context;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
@@ -13,8 +14,8 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.NoAds;
-import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider;
 
+import javax.inject.Named;
 import java.util.Locale;
 
 import dagger.Module;
@@ -30,9 +31,10 @@ public class UpcomingEventsModule {
     }
 
     @Provides
-    UpcomingEventsProvider providesUpcomingEventsProvider(StringResources stringResources, ColorResources colorResources) {
+    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources, ColorResources colorResources) {
         Date date = Date.Companion.today();
 
+        UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context),
                                           NamedayPreferences.newInstance(context),
                                           BankHolidaysPreferences.newInstance(context),
@@ -46,8 +48,30 @@ public class UpcomingEventsModule {
                                                   new BankHolidayViewModelFactory(),
                                                   new NamedaysViewModelFactory(date),
                                                   MonthLabels.forLocale(Locale.getDefault())
-                                          )
-                , new NoAds()
+                                          ), adRules
+        );
+    }
+
+    @Provides
+    @Named("widget")
+    UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources, ColorResources colorResources) {
+        Date date = Date.Companion.today();
+
+        UpcomingEventsAdRules adRules = new NoAds();
+        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context),
+                                          NamedayPreferences.newInstance(context),
+                                          BankHolidaysPreferences.newInstance(context),
+                                          new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                                          NamedayCalendarProvider.newInstance(context.getResources()),
+                                          new UpcomingEventRowViewModelFactory(
+                                                  date,
+                                                  new UpcomingDateStringCreator(stringResources, date),
+                                                  new ContactViewModelFactory(colorResources, stringResources),
+                                                  stringResources,
+                                                  new BankHolidayViewModelFactory(),
+                                                  new NamedaysViewModelFactory(date),
+                                                  MonthLabels.forLocale(Locale.getDefault())
+                                          ), adRules
         );
     }
 }

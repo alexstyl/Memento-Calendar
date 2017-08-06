@@ -44,9 +44,10 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
             @Override
             public FixedSizeRequest withSize(@Px final int width, @Px final int height) {
+                builder.displayer(DefaultConfigurationFactory.createBitmapDisplayer());
                 return new FixedSizeRequest() {
                     @Override
-                    public Optional<Bitmap> async() {
+                    public Optional<Bitmap> synchronously() {
                         Bitmap bitmap = uil.loadImageSync(imagePath.toString(), new ImageSize(width, height), builder.build());
                         if (bitmap == null) {
                             return Optional.absent();

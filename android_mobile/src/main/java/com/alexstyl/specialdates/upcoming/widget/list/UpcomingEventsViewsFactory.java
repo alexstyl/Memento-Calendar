@@ -9,6 +9,7 @@ import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
 
