@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.date
 
 import com.alexstyl.specialdates.TimeOfDay
 
-class DateAndTime(private val date: Date, private val timeOfDay: TimeOfDay) {
+data class DateAndTime(private val date: Date, private val timeOfDay: TimeOfDay) {
 
     fun toMilis(): Long {
         return date.toMillis() + timeOfDay.toMillis()
