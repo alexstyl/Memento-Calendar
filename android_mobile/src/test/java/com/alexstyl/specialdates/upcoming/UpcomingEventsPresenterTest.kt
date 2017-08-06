@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest
-import com.alexstyl.specialdates.settings.EventsSettingsMonitor
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -22,7 +21,7 @@ class UpcomingEventsPresenterTest {
 
     val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
-    val mockEventsMonitor = Mockito.mock(EventsSettingsMonitor::class.java)
+    val mockEventsMonitor = Mockito.mock(UpcomingEventsSettingsMonitor::class.java)
     val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
 
     private lateinit var peopleEventsObserver: PeopleEventsObserver

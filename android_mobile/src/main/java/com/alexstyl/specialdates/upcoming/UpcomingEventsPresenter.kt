@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.donate.DonateMonitor
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest
-import com.alexstyl.specialdates.settings.EventsSettingsMonitor
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -15,17 +14,17 @@ import io.reactivex.subjects.PublishSubject
 class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
                               private val permissions: ContactPermissionRequest,
                               private val provider: UpcomingEventsProvider,
-                              private val settingsMonitor: EventsSettingsMonitor,
+                              private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
                               private val peopleEventsObserver: PeopleEventsObserver,
                               private val workScheduler: Scheduler,
                               private val resultScheduler: Scheduler) {
 
     private val TRIGGER = 1
-    private var disposable: Disposable? = null
     private val subject = PublishSubject.create<Int>()
     private val donateListener = DonateMonitor.DonateMonitorListener {
         refreshEvents()
     }
+    private var disposable: Disposable? = null
 
     fun startPresenting(firstDay: Date) {
         if (permissions.permissionIsPresent()) {
@@ -43,10 +42,12 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
                             }
             refreshEvents()
 
-            settingsMonitor.register {
-                refreshEventsAsNew()
+            settingsMonitorUpcoming.register {
+                refreshEvents()
             }
-            peopleEventsObserver.startObserving { refreshEvents() }
+            peopleEventsObserver.startObserving {
+                refreshEvents()
+            }
             DonateMonitor.getInstance().addListener { donateListener }
         } else {
             view.askForContactPermission()
@@ -57,18 +58,12 @@ class UpcomingEventsPresenter(private val view: UpcomingListMVPView,
         subject.onNext(TRIGGER)
     }
 
-    private fun refreshEventsAsNew() {
-        view.showLoading()
-        view.showFirstEvent()
-        refreshEvents()
-    }
-
 
     fun stopPresenting() {
         if (disposable != null) {
             disposable!!.dispose()
         }
-        settingsMonitor.unregister()
+        settingsMonitorUpcoming.unregister()
         peopleEventsObserver.stopObserving()
         DonateMonitor.getInstance().removeListener(donateListener)
     }
