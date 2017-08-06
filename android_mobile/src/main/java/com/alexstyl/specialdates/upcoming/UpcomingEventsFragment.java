@@ -33,7 +33,6 @@ import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsProvider;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -98,16 +97,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         upcomingList.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards), 1));
 
         adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), new OnUpcomingEventClickedListener() {
-
-            @Override
-            public void onEventClicked(UpcomingEventsViewModel viewModel) {
-                Log.e("onEventClicked");
-            }
-
-            @Override
-            public void onMoreEventsClicked(UpcomingEventsViewModel viewModel) {
-                Log.e("onMoreEventsClicked");
-            }
 
             @Override
             public void onContactClicked(Contact contact) {

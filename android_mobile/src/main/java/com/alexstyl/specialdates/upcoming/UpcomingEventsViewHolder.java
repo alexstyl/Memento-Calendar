@@ -29,14 +29,5 @@ class UpcomingEventsViewHolder extends UpcomingRowViewHolder<UpcomingEventsViewM
         dateView.setTypeface(viewModel.getDateTypeFace());
 
         eventsView.bind(viewModel, listener, imageLoader);
-
-        View.OnClickListener listener1 = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onEventClicked(viewModel);
-            }
-        };
-        itemView.setOnClickListener(listener1);
-
     }
 }
