@@ -6,6 +6,8 @@ final class UpcomingEventsFreeUserAdRules implements UpcomingEventsAdRules {
     private boolean monthHandled = false;
     private int DAY_INTERVAL = 2;
 
+    // TODO add add only after first date
+
     @Override
     public boolean shouldAppendAdForEndOfMonth(int index) {
         return index - lastAdIndex >= DAY_INTERVAL;
