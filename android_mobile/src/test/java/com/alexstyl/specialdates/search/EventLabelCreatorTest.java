@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
+import static com.alexstyl.specialdates.date.Months.DECEMBER;
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -27,12 +27,12 @@ public class EventLabelCreatorTest {
 
     @Before
     public void setUp() {
-        creator = new ContactEventLabelCreator(Date.today(), new DumbTestResources(), TestDateLabelCreator.forUS());
+        creator = new ContactEventLabelCreator(Date.Companion.today(), new DumbTestResources(), TestDateLabelCreator.forUS());
     }
 
     @Test
     public void birthdayWithoutYearIsCalculatedCorrectly() {
-        Date date = Date.on(12, DECEMBER);
+        Date date = Date.Companion.on(12, DECEMBER);
         ContactEvent event = contactEventOn(date, BIRTHDAY);
         String label = creator.createFor(event);
 
@@ -41,8 +41,8 @@ public class EventLabelCreatorTest {
 
     @Test
     public void birthdayWithYearIsCalculatedCorrectly() {
-        int age = Date.CURRENT_YEAR - 1990;
-        Date date = Date.on(12, DECEMBER, 1990);
+        int age = Date.Companion.getCURRENT_YEAR() - 1990;
+        Date date = Date.Companion.on(12, DECEMBER, 1990);
 
         ContactEvent event = contactEventOn(date, BIRTHDAY);
         String label = creator.createFor(event);
@@ -52,7 +52,7 @@ public class EventLabelCreatorTest {
 
     @Test
     public void namedayIsCalculatedCorrectly() {
-        Date date = Date.on(12, DECEMBER);
+        Date date = Date.Companion.on(12, DECEMBER);
         ContactEvent event = contactEventOn(date, NAMEDAY);
         String label = creator.createFor(event);
 
@@ -61,7 +61,7 @@ public class EventLabelCreatorTest {
 
     @Test
     public void anniversaryIsCalculatedCorrectly() {
-        Date date = Date.on(12, DECEMBER);
+        Date date = Date.Companion.on(12, DECEMBER);
         ContactEvent event = contactEventOn(date, ANNIVERSARY);
         String label = creator.createFor(event);
 
@@ -70,7 +70,7 @@ public class EventLabelCreatorTest {
 
     @Test
     public void otherIsCalculatedCorrectly() {
-        Date date = Date.on(12, DECEMBER);
+        Date date = Date.Companion.on(12, DECEMBER);
         ContactEvent event = contactEventOn(date, OTHER);
         String label = creator.createFor(event);
 
@@ -79,7 +79,7 @@ public class EventLabelCreatorTest {
 
     @Test
     public void customIsCalculatedCorrectly() {
-        Date date = Date.on(12, DECEMBER);
+        Date date = Date.Companion.on(12, DECEMBER);
         ContactEvent event = contactEventOn(date, new CustomEventType("H4x"));
         String label = creator.createFor(event);
 

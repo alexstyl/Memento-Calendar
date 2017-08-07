@@ -26,7 +26,7 @@ final class PeopleEventsSearch {
 
         searchQuery = searchQuery.trim();
         HashMapList<Contact, ContactEvent> events = new HashMapList<>();
-        TimePeriod between = TimePeriod.aYearFromNow();
+        TimePeriod between = TimePeriod.Companion.aYearFromNow();
         List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getContactEventsFor(between);
         int size = 0;
         for (ContactEvent contactEvent : contactEventsOnDate) {

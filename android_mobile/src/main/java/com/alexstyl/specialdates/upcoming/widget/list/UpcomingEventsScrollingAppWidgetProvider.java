@@ -56,7 +56,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     }
 
     private void showUpcomingEvents(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Date date = Date.today();
+        Date date = Date.Companion.today();
         String dateLabel = DateDisplayStringCreator.INSTANCE.fullyFormattedDate(date);
 
         for (int appWidgetId : appWidgetIds) {

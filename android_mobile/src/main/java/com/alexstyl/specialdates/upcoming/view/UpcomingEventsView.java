@@ -47,13 +47,6 @@ public class UpcomingEventsView extends FrameLayout {
         moreContacts.setText(viewModel.getMoreButtonLabe());
         moreContacts.setVisibility(viewModel.getMoreButtonVisibility());
         showMoreDivider.setVisibility(viewModel.getMoreButtonVisibility());
-
-        moreContacts.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onMoreEventsClicked(viewModel);
-            }
-        });
     }
 
     private void bindBankHolidays(BankHolidayViewModel viewModel) {

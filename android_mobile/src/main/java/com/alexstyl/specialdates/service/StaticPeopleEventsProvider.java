@@ -65,7 +65,7 @@ class StaticPeopleEventsProvider {
     }
 
     ContactEventsOnADate fetchEventsOn(Date date) {
-        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.between(date, date)));
+        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
     }
 
     List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
@@ -147,15 +147,15 @@ class StaticPeopleEventsProvider {
     }
 
     private static TimePeriod firstHalfOf(TimePeriod timeDuration) {
-        return TimePeriod.between(
+        return TimePeriod.Companion.between(
                 timeDuration.getStartingDate(),
-                Date.endOfYear(timeDuration.getStartingDate().getYear())
+                Date.Companion.endOfYear(timeDuration.getStartingDate().getYear())
         );
     }
 
     private static TimePeriod secondHalfOf(TimePeriod timeDuration) {
-        return TimePeriod.between(
-                Date.startOfTheYear(timeDuration.getEndingDate().getYear()),
+        return TimePeriod.Companion.between(
+                Date.Companion.startOfTheYear(timeDuration.getEndingDate().getYear()),
                 timeDuration.getEndingDate()
         );
     }
@@ -170,8 +170,8 @@ class StaticPeopleEventsProvider {
             if (cursor.moveToFirst()) {
                 Date closestDate = getDateFrom(cursor);
 
-                return Date.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
-                               date.getYear()
+                return Date.Companion.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
+                                         date.getYear()
                 );
             }
             throw new NoEventsFoundException("No static even found after or on " + date);

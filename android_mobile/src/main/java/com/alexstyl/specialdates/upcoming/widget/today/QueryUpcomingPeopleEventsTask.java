@@ -17,7 +17,7 @@ abstract class QueryUpcomingPeopleEventsTask extends AsyncTask<Object, Object, O
 
     @Override
     protected Optional<ContactEventsOnADate> doInBackground(Object... params) {
-        Date today = Date.today();
+        Date today = Date.Companion.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }
 

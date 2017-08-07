@@ -1,10 +1,8 @@
 package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
@@ -23,7 +21,6 @@ import com.alexstyl.specialdates.donate.DonationService;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
@@ -40,8 +37,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
     private MainPreferenceActivity activity;
-    private EventsSettingsMonitor monitor; // TODO this probably has to go
-    private PeopleEventsViewRefresher refresher;
     private DonationService donationService;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
@@ -110,10 +105,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
                 }
         );
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        monitor = new EventsSettingsMonitor(sharedPreferences, stringResources);
-        refresher = PeopleEventsViewRefresher.get(getActivity());
-
         final Preference restore = findPreference("key_donate_restore");
         donationService = new AndroidDonationService(
                 new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
@@ -159,13 +150,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         super.onResume();
         namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getLanguageNameResId());
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
-        monitor.register(onSettingUpdatedListener);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        monitor.unregister();
     }
 
     @Override
@@ -188,13 +172,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             namedaysPreferences.setEnabledForContactsOnly((boolean) newValue);
             return true;
-        }
-    };
-
-    private final EventsSettingsMonitor.Listener onSettingUpdatedListener = new EventsSettingsMonitor.Listener() {
-        @Override
-        public void onSettingUpdated() {
-            refresher.updateAllViews();
         }
     };
 }

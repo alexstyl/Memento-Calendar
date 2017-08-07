@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
@@ -39,6 +40,7 @@ public class MementoApplication extends Application {
                         .analyticsModule(new AnalyticsModule(this))
                         .resourcesModule(new ResourcesModule(getResources()))
                         .imageModule(new ImageModule(getResources()))
+                        .upcomingEventsModule(new UpcomingEventsModule(this))
                         .build();
     }
 

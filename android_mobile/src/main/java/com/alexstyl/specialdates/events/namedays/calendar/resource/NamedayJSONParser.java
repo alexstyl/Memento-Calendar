@@ -61,6 +61,6 @@ class NamedayJSONParser {
         }
         int dayOfMonth = Integer.valueOf(date.substring(0, slashIndex));
         int month = Integer.valueOf(date.substring(slashIndex + 1));
-        return Date.on(dayOfMonth, month);
+        return Date.Companion.on(dayOfMonth, month);
     }
 }

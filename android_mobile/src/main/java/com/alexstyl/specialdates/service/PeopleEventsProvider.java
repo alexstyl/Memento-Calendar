@@ -61,7 +61,7 @@ public class PeopleEventsProvider {
     }
 
     public List<ContactEvent> getCelebrationDateOn(Date date) {
-        TimePeriod timeDuration = TimePeriod.between(date, date);
+        TimePeriod timeDuration = TimePeriod.Companion.between(date, date);
         List<ContactEvent> contactEvents = new ArrayList<>();
         contactEvents.addAll(staticEventsProvider.fetchEventsBetween(timeDuration));
         if (namedayPreferences.isEnabled()) {
@@ -137,7 +137,7 @@ public class PeopleEventsProvider {
     }
 
     private Date findNextDynamicEventDateAfter(final Date date) throws NoEventsFoundException {
-        List<ContactEvent> contactEvents = new ArrayList<>(peopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, Date.endOfYear(date.getYear()))));
+        List<ContactEvent> contactEvents = new ArrayList<>(peopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.Companion.between(date, Date.Companion.endOfYear(date.getYear()))));
         Collections.sort(contactEvents, new Comparator<ContactEvent>() {
             @Override
             public int compare(ContactEvent o1, ContactEvent o2) {

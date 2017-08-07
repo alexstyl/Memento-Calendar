@@ -10,7 +10,7 @@ import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.novoda.notils.caster.Views;
@@ -33,7 +33,7 @@ public class EventDatePicker extends LinearLayout {
         super(context, attrs);
         super.setOrientation(HORIZONTAL);
         labels = MonthLabels.forLocale(Locale.getDefault());
-        today = Date.today();
+        today = Date.Companion.today();
         inflate(getContext(), R.layout.merge_birthday_picker, this);
 
         dayPicker = Views.findById(this, R.id.day_picker);
@@ -122,9 +122,9 @@ public class EventDatePicker extends LinearLayout {
         int month = getMonth();
         if (isDisplayingYear()) {
             int year = getYear();
-            return Date.on(dayOfMonth, month, year);
+            return Date.Companion.on(dayOfMonth, month, year);
         } else {
-            return Date.on(dayOfMonth, month);
+            return Date.Companion.on(dayOfMonth, month);
         }
     }
 
@@ -149,9 +149,9 @@ public class EventDatePicker extends LinearLayout {
     private final NumberPicker.OnValueChangeListener dateValidator = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            if (getMonth() == DateConstants.FEBRUARY && isDisplayingYear()) {
+            if (getMonth() == Months.FEBRUARY && isDisplayingYear()) {
 
-                if (isValidDate(29, DateConstants.FEBRUARY, getYear())) {
+                if (isValidDate(29, Months.FEBRUARY, getYear())) {
                     dayPicker.setMaxValue(29);
                 } else {
                     dayPicker.setMaxValue(28);
@@ -163,7 +163,7 @@ public class EventDatePicker extends LinearLayout {
 
         private boolean isValidDate(int dayOfMonth, int month, int year) {
             try {
-                Date.on(dayOfMonth, month, year);
+                Date.Companion.on(dayOfMonth, month, year);
                 return true;
             } catch (IllegalArgumentException ex) {
                 return false;

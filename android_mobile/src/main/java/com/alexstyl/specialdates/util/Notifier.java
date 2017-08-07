@@ -85,7 +85,7 @@ public class Notifier {
             Optional<Bitmap> loadedIcon =
                     imageLoader.load(displayingContact.getImagePath())
                             .withSize(size, size)
-                            .async();
+                            .synchronously();
             if (Version.hasLollipop() && loadedIcon.isPresent()) {
                 // in Lollipop the notifications is the default to use Rounded Images
                 largeIcon = getCircleBitmap(loadedIcon.get());
