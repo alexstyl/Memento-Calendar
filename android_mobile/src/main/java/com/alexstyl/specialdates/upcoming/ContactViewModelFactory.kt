@@ -5,7 +5,7 @@ import com.alexstyl.resources.StringResources
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 
-class ContactViewModelFactory internal constructor(private val colorResources: ColorResources, private val stringResources: StringResources) {
+class ContactViewModelFactory(private val colorResources: ColorResources, private val stringResources: StringResources) {
 
     internal fun createViewModelFor(date: Date, contactEvent: ContactEvent): UpcomingContactEventViewModel {
         val contact = contactEvent.contact
