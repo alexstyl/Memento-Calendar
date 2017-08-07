@@ -58,10 +58,6 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
             val annualDate = AnnualDate(indexDate)
             if (containsAnyEventsOn(annualDate)) {
 
-                if (adRules.shouldAppendAdAt(index)) {
-                    rowsViewModels.add(AdViewModel(indexDate))
-                    adRules.onNewAdAdded(index)
-                }
                 rowsViewModels.add(viewModelFactory.createDateHeader(indexDate))
 
                 if (bankHolidays[annualDate] != null) {
@@ -74,6 +70,10 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
                 getEventsOn(annualDate).forEach {
                     rowsViewModels.add(viewModelFactory.createViewModelFor(it))
 
+                }
+                if (adRules.shouldAppendAd()) {
+                    rowsViewModels.add(AdViewModel(indexDate))
+                    adRules.onNewAdAdded()
                 }
                 index++
             }

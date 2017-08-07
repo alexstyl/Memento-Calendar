@@ -8,7 +8,6 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.service.PeopleEventsProvider
-import java.util.*
 
 class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
                              private val namedayPreferences: NamedayPreferences,
