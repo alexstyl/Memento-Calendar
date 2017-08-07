@@ -14,11 +14,11 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
 import java.util.List;
-import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -27,6 +27,8 @@ import static com.alexstyl.specialdates.date.Months.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpcomingRowViewModelsBuilderTest {
@@ -46,15 +48,14 @@ public class UpcomingRowViewModelsBuilderTest {
 
     @Before
     public void setUp() {
+        when(mockColorResources.getColor(anyInt())).thenReturn(5);
+        when(mockStringResources.getString(anyInt(), Matchers.any())).thenReturn("mock-string");
+
         Date today = Date.Companion.today();
         upcomingEventRowViewModelFactory = new UpcomingEventRowViewModelFactory(
                 today,
                 new UpcomingDateStringCreator(new DumbTestResources(), today),
-                new ContactViewModelFactory(mockColorResources, mockStringResources),
-                mockStringResources,
-                new BankHolidayViewModelFactory(),
-                new NamedaysViewModelFactory(today),
-                MonthLabels.forLocale(Locale.getDefault())
+                new ContactViewModelFactory(mockColorResources, mockStringResources)
         );
 
     }
@@ -69,6 +70,20 @@ public class UpcomingRowViewModelsBuilderTest {
                 .build();
 
         assertThat(dates.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void whenPassingASingleContactEvent_thenCreatesADateHeaderPlusAContactEvent() {
+        ContactEvent event = aContactEventOn(Date.Companion.on(1, JANUARY, 1990));
+        TimePeriod duration = TimePeriod.Companion.between(Date.Companion.on(1, JANUARY, 2016), Date.Companion.on(1, DECEMBER, 2016));
+
+        List<UpcomingRowViewModel> viewModels = builder(duration)
+                .withContactEvents(singletonList(event))
+                .build();
+
+        assertThat(viewModels.size()).isEqualTo(2);
+        assertThat(viewModels.get(0)).isInstanceOf(DateHeaderViewModel.class);
+        assertThat(viewModels.get(1)).isInstanceOf(UpcomingContactEventViewModel.class);
     }
 
     @Test
@@ -129,9 +144,9 @@ public class UpcomingRowViewModelsBuilderTest {
     @Test
     public void givenEventsOnDifferentMonths_thenACelebrationDatesForEachOneAreCreated() {
         List<UpcomingRowViewModel> dates = builder(TimePeriod.Companion.between(FEBRUARY_1st, MARCH_5th))
-                .withContactEvents(asList(aContactEventOn(FEBRUARY_1st)))
-                .withBankHolidays(asList(aBankHolidayOn(FEBRUARY_3rd)))
-                .withNamedays(asList(new NamesInADate(MARCH_5th, singletonList("Name"))))
+                .withContactEvents(singletonList(aContactEventOn(FEBRUARY_1st)))
+                .withBankHolidays(singletonList(aBankHolidayOn(FEBRUARY_3rd)))
+                .withNamedays(singletonList(new NamesInADate(MARCH_5th, singletonList("Name"))))
                 .build();
 
         int datesCount = 3;

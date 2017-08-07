@@ -38,14 +38,12 @@ public class ContactEventView extends LinearLayout {
         eventTypeView.setTextColor(upcomingContactEventViewModel.getEventColor());
         avatarView.setCircleColorVariant(upcomingContactEventViewModel.getBackgroundVariant());
         avatarView.setText(upcomingContactEventViewModel.getContactName());
-        contactNameView.setTypeface(upcomingContactEventViewModel.getTypeface());
 
         imageLoader
                 .load(upcomingContactEventViewModel.getContactImagePath())
                 .asCircle()
                 .into(avatarView.getImageView());
 
-        setVisibility(upcomingContactEventViewModel.getContactEventVisibility());
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

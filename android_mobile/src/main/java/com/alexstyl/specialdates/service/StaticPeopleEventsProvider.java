@@ -155,7 +155,7 @@ class StaticPeopleEventsProvider {
 
     private static TimePeriod secondHalfOf(TimePeriod timeDuration) {
         return TimePeriod.Companion.between(
-                Date.Companion.startOfTheYear(timeDuration.getEndingDate().getYear()),
+                Date.Companion.startOfYear(timeDuration.getEndingDate().getYear()),
                 timeDuration.getEndingDate()
         );
     }
