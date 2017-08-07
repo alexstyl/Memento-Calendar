@@ -8,24 +8,11 @@ import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
-import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
-import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.BankHolidayViewModelFactory;
-import com.alexstyl.specialdates.upcoming.ContactViewModelFactory;
-import com.alexstyl.specialdates.upcoming.MonthLabels;
-import com.alexstyl.specialdates.upcoming.NamedaysViewModelFactory;
-import com.alexstyl.specialdates.upcoming.UpcomingDateStringCreator;
-import com.alexstyl.specialdates.upcoming.UpcomingEventRowViewModelFactory;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider;
 
 import javax.inject.Inject;
-import java.util.Locale;
+import javax.inject.Named;
 
 public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
@@ -33,6 +20,9 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
     @Inject DimensionResources dimensResources;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
+    @Inject
+    @Named("widget")
+    UpcomingEventsProvider peopleEventsProvider;
 
     @Override
     public void onCreate() {
@@ -43,7 +33,6 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        UpcomingEventsProvider peopleEventsProvider = createPeopleEventsProvider();
         CircularAvatarFactory avatarFactory = new CircularAvatarFactory(
                 imageLoader,
                 colorResources
@@ -56,26 +45,4 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
                 avatarFactory
         );
     }
-
-    private UpcomingEventsProvider createPeopleEventsProvider() {
-        Date today = Date.today();
-        return new UpcomingEventsProvider(
-                PeopleEventsProvider.newInstance(this),
-                NamedayPreferences.newInstance(this),
-                BankHolidaysPreferences.newInstance(this),
-                new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                NamedayCalendarProvider.newInstance(getResources()),
-                new UpcomingEventRowViewModelFactory(
-                        today,
-                        new UpcomingDateStringCreator(stringResources, today),
-                        new ContactViewModelFactory(colorResources, stringResources),
-                        stringResources,
-                        new BankHolidayViewModelFactory(),
-                        new NamedaysViewModelFactory(today),
-                        MonthLabels.forLocale(Locale.getDefault())
-                ),
-                new NoAds()
-        );
-    }
-
 }

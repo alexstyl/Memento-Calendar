@@ -26,13 +26,11 @@ public class PeopleEventsObserver extends ContentObserver {
 
     @Override
     public void onChange(boolean selfChange) {
-        super.onChange(selfChange);
         callback.onPeopleEventsUpdated();
     }
 
     @Override
     public void onChange(boolean selfChange, Uri uri) {
-        super.onChange(selfChange, uri);
         callback.onPeopleEventsUpdated();
     }
 

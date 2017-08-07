@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.date;
 
-public class DateConstants {
+public class Months {
 
     /**
      * A value that represents that no year has been specified.
@@ -12,7 +12,7 @@ public class DateConstants {
      */
     public static final int NO_YEAR = 4;
 
-    private DateConstants() {
+    private Months() {
         // hide this
     }
 

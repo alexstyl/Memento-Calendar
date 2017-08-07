@@ -65,7 +65,7 @@ public final class UpcomingRowViewModelsBuilder {
         Date indexDate = duration.getStartingDate();
         Date lastDate = duration.getEndingDate();
 
-        Date previousDate = Date.startOfTheYear(indexDate.getYear());
+        Date previousDate = Date.Companion.startOfTheYear(indexDate.getYear());
 
         int index = 0;
         while (dateComparator.compare(indexDate, lastDate) <= 0) {

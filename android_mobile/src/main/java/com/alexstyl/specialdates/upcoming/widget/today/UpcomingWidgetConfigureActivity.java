@@ -67,7 +67,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
     protected void onStart() {
         super.onStart();
 
-        String title = DateFormatUtils.formatTimeStampString(this, Date.today().toMillis(), true);
+        String title = DateFormatUtils.formatTimeStampString(this, Date.Companion.today().toMillis(), true);
         previewLayout.setTitle(title);
         previewLayout.setSubtitle(R.string.upcoming_widget_configure_subtitle);
 

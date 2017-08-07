@@ -9,6 +9,7 @@ import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
 
@@ -44,8 +45,8 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onDataSetChanged() {
-        Date date = Date.today();
-        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.between(date, date.addDay(30)));
+        Date date = Date.Companion.today();
+        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.Companion.between(date, date.addDay(30)));
     }
 
     @Override

@@ -64,7 +64,7 @@ public class PeopleNamedaysCalculator {
     }
 
     public ContactEventsOnADate loadSpecialNamedaysOn(Date date) {
-        List<ContactEvent> contactEvents = loadSpecialNamedaysBetween(TimePeriod.between(date, date));
+        List<ContactEvent> contactEvents = loadSpecialNamedaysBetween(TimePeriod.Companion.between(date, date));
         return ContactEventsOnADate.createFrom(date, contactEvents);
     }
 
@@ -102,7 +102,7 @@ public class PeopleNamedaysCalculator {
 
     private NamedayCalendar getNamedayCalendar() {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
-        return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR);
+        return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.Companion.getCURRENT_YEAR());
     }
 
     public List<ContactEvent> loadSpecialNamedaysFor(Contact contact) {

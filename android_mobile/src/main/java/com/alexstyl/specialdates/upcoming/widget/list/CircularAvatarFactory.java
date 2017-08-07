@@ -34,7 +34,7 @@ final class CircularAvatarFactory {
         Optional<Bitmap> bitmapOptional = imageLoader
                 .load(contact.getImagePath())
                 .withSize(targetSize, targetSize)
-                .async();
+                .synchronously();
         if (!bitmapOptional.isPresent()) {
             return Optional.absent();
         }

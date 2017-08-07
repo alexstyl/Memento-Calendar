@@ -14,7 +14,7 @@ public abstract class NodeTest {
     @Test
     public void addingADate_isPlacedUnderTheRightNode() {
         Node node = buildNode();
-        Date date = Date.on(1, 2, 1990);
+        Date date = Date.Companion.on(1, 2, 1990);
         node.addDate("Alex", date);
 
         NameCelebrations extracted = node.getDates("Alex");

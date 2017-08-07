@@ -33,7 +33,7 @@ class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implem
         } else {
             compatator = new CaseInsensitiveComparator();
         }
-        int year = Date.today().getYear();
+        int year = Date.Companion.today().getYear();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, year);
         ArrayList<String> names = namedayCalendar.getAllNames();
         return new NameSuggestionsAdapter(new NameFilter(names, compatator), onNameSelectedListener);

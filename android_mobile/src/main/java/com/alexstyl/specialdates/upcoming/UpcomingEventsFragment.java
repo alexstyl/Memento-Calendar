@@ -16,10 +16,10 @@ import android.widget.TextView;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
@@ -28,28 +28,33 @@ import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
-import com.alexstyl.specialdates.settings.EventsSettingsMonitor;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
+import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
 
     private ViewGroup root;
     private ProgressBar progressBar;
     private TextView emptyView;
-
     private RecyclerView upcomingList;
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
+    private MainNavigator navigator;
+    private ContactPermissionRequest permissions;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
+    @Inject UpcomingEventsProvider provider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,25 +62,29 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        UpcomingEventsAsyncProvider upcomingEventsAsyncProvider = new UpcomingEventsAsyncProvider(new UpcomingEventsFetcher(getLoaderManager(), getActivity(), Date.today(), stringResources, colorResources));
-        ContactPermissionRequest permissions = new ContactPermissionRequest(new PermissionNavigator(getActivity(), analytics), new PermissionChecker(getActivity()), permissionCallbacks);
-        EventsSettingsMonitor monitor = new EventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
-        MainNavigator navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
+
+        permissions = new ContactPermissionRequest(
+                new PermissionNavigator(getActivity(), analytics),
+                new PermissionChecker(getActivity()), permissionCallbacks
+        );
+
+        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
+        navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
+
         presenter = new UpcomingEventsPresenter(
-                this,
-                analytics,
-                upcomingEventsAsyncProvider,
+                Date.Companion.today(),
                 permissions,
-                monitor,
+                provider,
+                settingsMonitor,
                 new PeopleEventsObserver(getContentResolver()),
-                navigator,
-                new ExternalNavigator(getActivity(), analytics)
+                Schedulers.io(),
+                AndroidSchedulers.mainThread()
         );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_upcoming_events, container, false);
+        final View view = inflater.inflate(R.layout.fragment_upcoming_events, container, false);
         root = Views.findById(view, R.id.root);
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
         emptyView = Views.findById(view, R.id.upcoming_events_emptyview);
@@ -85,7 +94,14 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         upcomingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         upcomingList.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards), 1));
 
-        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), presenter);
+        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), new OnUpcomingEventClickedListener() {
+
+            @Override
+            public void onContactClicked(Contact contact) {
+                navigator.toContactDetails(contact);
+
+            }
+        });
         upcomingList.setAdapter(adapter);
         return view;
     }
@@ -93,13 +109,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter.startPresenting();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.requestForPermissionIfNeeded();
+        presenter.startPresentingInto(this);
     }
 
     @Override
@@ -107,12 +117,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         progressBar.setVisibility(View.VISIBLE);
         upcomingList.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        presenter.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -132,13 +136,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void showFirstEvent() {
-        upcomingList.scrollToPosition(0);
+    public boolean isEmpty() {
+        return upcomingList.getChildCount() == 0;
     }
 
     @Override
-    public boolean isDisplayingNoData() {
-        return upcomingList.getChildCount() == 0;
+    public void askForContactPermission() {
+        permissions.requestForPermission();
     }
 
     @Override
@@ -147,10 +151,16 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         presenter.stopPresenting();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissions.onActivityResult(requestCode, resultCode, data);
+    }
+
     private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            presenter.refreshData();
+            presenter.refreshEvents();
         }
 
         @Override

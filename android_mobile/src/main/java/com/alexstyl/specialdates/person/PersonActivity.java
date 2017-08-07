@@ -87,7 +87,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                 ),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
-                new PersonDetailsViewModelFactory(stringResources, new AgeCalculator(Date.today())),
+                new PersonDetailsViewModelFactory(stringResources, new AgeCalculator(Date.Companion.today())),
                 new EventViewModelFactory(stringResources)
         );
 

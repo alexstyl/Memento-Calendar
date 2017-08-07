@@ -23,9 +23,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.alexstyl.specialdates.date.Date.on;
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
-import static com.alexstyl.specialdates.date.DateConstants.MARCH;
+import static com.alexstyl.specialdates.date.Date.Companion;
+import static com.alexstyl.specialdates.date.Months.JANUARY;
+import static com.alexstyl.specialdates.date.Months.MARCH;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -62,10 +62,10 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void staticEventsAreReturnedCorrectly() {
-        Date date = on(1, JANUARY, 2017);
+        Date date = Companion.on(1, JANUARY, 2017);
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
 
-        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.between(date, date))).thenReturn(expectedEvents);
+        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.Companion.between(date, date))).thenReturn(expectedEvents);
 
         List<ContactEvent> events = peopleEventsProvider.getCelebrationDateOn(date);
         assertThat(events).containsOnly(expectedEvents.get(0));
@@ -73,10 +73,11 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void dynamicEventsAreReturnedCorrectly() {
-        Date date = on(1, JANUARY, 2017);
+        Date date = Date.Companion.on(1, JANUARY, 2017);
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder().addNamedayFor(PETER, date).build();
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
-        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, date))).thenReturn(expectedEvents);
+        TimePeriod timePeriod = TimePeriod.Companion.between(date, date);
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(timePeriod)).thenReturn(expectedEvents);
 
         List<ContactEvent> events = peopleEventsProvider.getCelebrationDateOn(date);
         assertThat(events).containsOnly(expectedEvents.get(0));
@@ -84,13 +85,13 @@ public class PeopleEventsProviderTest {
 
     @Test
     public void combinedEventsAreReturnedCorrectly() {
-        Date date = on(1, JANUARY, 2017);
+        Date date = Companion.on(1, JANUARY, 2017);
         List<ContactEvent> expectedDynamicEvents = new TestContactEventsBuilder().addNamedayFor(PETER, date).build();
         List<ContactEvent> expectedStaticEvents = new TestContactEventsBuilder().addAnniversaryFor(PETER, date).build();
 
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
-        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(date, date))).thenReturn(expectedDynamicEvents);
-        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.between(date, date))).thenReturn(expectedStaticEvents);
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.Companion.between(date, date))).thenReturn(expectedDynamicEvents);
+        when(mockStaticEventProvider.fetchEventsBetween(TimePeriod.Companion.between(date, date))).thenReturn(expectedStaticEvents);
 
         List<ContactEvent> events = peopleEventsProvider.getCelebrationDateOn(date);
         assertThat(events).containsAll(expectedDynamicEvents);
@@ -102,28 +103,28 @@ public class PeopleEventsProviderTest {
         when(mockStaticEventProvider.findClosestStaticEventDateFrom(any(Date.class))).thenThrow(NoEventsFoundException.class);
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
         when(mockPeopleNamedaysCalculator.loadSpecialNamedaysOn(any(Date.class)))
-                .thenReturn(ContactEventsOnADate.createFrom(on(1, JANUARY, 2017), Collections.<ContactEvent>emptyList()));
+                .thenReturn(ContactEventsOnADate.createFrom(Companion.on(1, JANUARY, 2017), Collections.<ContactEvent>emptyList()));
 
-        Optional<ContactEventsOnADate> date = peopleEventsProvider.getCelebrationsClosestTo(on(1, JANUARY, 2017));
+        Optional<ContactEventsOnADate> date = peopleEventsProvider.getCelebrationsClosestTo(Companion.on(1, JANUARY, 2017));
         assertThat(date.isPresent()).isFalse();
 
     }
 
     @Test
     public void onlyDynamicEvents_returnsTheDynamicEvents() throws NoEventsFoundException {
-        when(mockStaticEventProvider.findClosestStaticEventDateFrom(on(2, MARCH, 2017))).thenThrow(NoEventsFoundException.class);
+        when(mockStaticEventProvider.findClosestStaticEventDateFrom(Companion.on(2, MARCH, 2017))).thenThrow(NoEventsFoundException.class);
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
 
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder()
-                .addNamedayFor(PETER, on(2, MARCH, 2017))
+                .addNamedayFor(PETER, Companion.on(2, MARCH, 2017))
                 .build();
-        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysOn(on(2, MARCH, 2017)))
-                .thenReturn(ContactEventsOnADate.createFrom(on(2, MARCH, 2017), expectedEvents));
-        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.between(on(2, MARCH, 2017), Date.endOfYear(2017))))
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysOn(Companion.on(2, MARCH, 2017)))
+                .thenReturn(ContactEventsOnADate.createFrom(Companion.on(2, MARCH, 2017), expectedEvents));
+        when(mockPeopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.Companion.between(Companion.on(2, MARCH, 2017), Date.Companion.endOfYear(2017))))
                 .thenReturn(expectedEvents);
 
-        Optional<ContactEventsOnADate> actualEvents = peopleEventsProvider.getCelebrationsClosestTo(on(2, MARCH, 2017));
-        assertThat(actualEvents.get()).isEqualTo(ContactEventsOnADate.createFrom(on(2, MARCH, 2017), expectedEvents));
+        Optional<ContactEventsOnADate> actualEvents = peopleEventsProvider.getCelebrationsClosestTo(Companion.on(2, MARCH, 2017));
+        assertThat(actualEvents.get()).isEqualTo(ContactEventsOnADate.createFrom(Companion.on(2, MARCH, 2017), expectedEvents));
     }
 
 }
