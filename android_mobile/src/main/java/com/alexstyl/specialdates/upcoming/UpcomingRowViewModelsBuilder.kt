@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.ContactEvent
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
@@ -14,14 +13,14 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
 ) {
 
     private val dateComparator = DateComparator.INSTANCE
-    private val contactEvents = HashMapList<Date, ContactEvent>()
-    private val namedays = HashMap<Date, NamesInADate>()
-    private val bankHolidays = HashMap<Date, BankHoliday>()
+    private val contactEvents = HashMapList<AnnualDate, ContactEvent>()
+    private val namedays = HashMap<AnnualDate, NamesInADate>()
+    private val bankHolidays = HashMap<AnnualDate, BankHoliday>()
 
     fun withContactEvents(contactEvents: List<ContactEvent>): UpcomingRowViewModelsBuilder {
         this.contactEvents.clear()
         for (contactEvent in contactEvents) {
-            val annualDate = contactEvent.date
+            val annualDate = AnnualDate(contactEvent.date)
             this.contactEvents.addValue(annualDate, contactEvent)
         }
         return this
@@ -31,7 +30,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         this.namedays.clear()
         for (nameday in namedays) {
             val date = nameday.date
-            this.namedays.put(date, nameday)
+            this.namedays.put(AnnualDate(date), nameday)
         }
         return this
     }
@@ -40,7 +39,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         this.bankHolidays.clear()
         for (bankHoliday in bankHolidays) {
             val date = bankHoliday.date
-            this.bankHolidays.put(date, bankHoliday)
+            this.bankHolidays.put(AnnualDate(date), bankHoliday)
         }
         return this
     }
@@ -56,7 +55,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
 
         var index = 0
         while (dateComparator.compare(indexDate, lastDate) <= 0) {
-            val annualDate = indexDate
+            val annualDate = AnnualDate(indexDate)
             if (containsAnyEventsOn(annualDate)) {
 
                 rowsViewModels.add(viewModelFactory.createDateHeader(indexDate))
@@ -83,7 +82,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         return rowsViewModels
     }
 
-    private fun getEventsOn(indexDate: Date): List<ContactEvent> {
+    private fun getEventsOn(indexDate: AnnualDate): List<ContactEvent> {
         val contactEvent = contactEvents.get(indexDate)
         if (contactEvent == null) {
             return NO_CONTACT_EVENTS
@@ -96,7 +95,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         return contactEvents.isEmpty && namedays.isEmpty() && bankHolidays.isEmpty()
     }
 
-    private fun containsAnyEventsOn(date: Date): Boolean {
+    private fun containsAnyEventsOn(date: AnnualDate): Boolean {
         return getEventsOn(date).size > 0 || namedays.containsKey(date) || bankHolidays.containsKey(date)
     }
 
