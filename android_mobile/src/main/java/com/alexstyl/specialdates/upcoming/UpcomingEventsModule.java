@@ -16,7 +16,6 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.NoAds;
 
 import javax.inject.Named;
-import java.util.Locale;
 
 import dagger.Module;
 import dagger.Provides;
@@ -37,17 +36,12 @@ public class UpcomingEventsModule {
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context),
                                           NamedayPreferences.newInstance(context),
-                                          BankHolidaysPreferences.newInstance(context),
+                                          NamedayCalendarProvider.newInstance(context.getResources()), BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                                          NamedayCalendarProvider.newInstance(context.getResources()),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
                                                   new UpcomingDateStringCreator(stringResources, date),
-                                                  new ContactViewModelFactory(colorResources, stringResources),
-                                                  stringResources,
-                                                  new BankHolidayViewModelFactory(),
-                                                  new NamedaysViewModelFactory(date),
-                                                  MonthLabels.forLocale(Locale.getDefault())
+                                                  new ContactViewModelFactory(colorResources, stringResources)
                                           ), adRules
         );
     }
@@ -60,17 +54,12 @@ public class UpcomingEventsModule {
         UpcomingEventsAdRules adRules = new NoAds();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context),
                                           NamedayPreferences.newInstance(context),
-                                          BankHolidaysPreferences.newInstance(context),
+                                          NamedayCalendarProvider.newInstance(context.getResources()), BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                                          NamedayCalendarProvider.newInstance(context.getResources()),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
                                                   new UpcomingDateStringCreator(stringResources, date),
-                                                  new ContactViewModelFactory(colorResources, stringResources),
-                                                  stringResources,
-                                                  new BankHolidayViewModelFactory(),
-                                                  new NamedaysViewModelFactory(date),
-                                                  MonthLabels.forLocale(Locale.getDefault())
+                                                  new ContactViewModelFactory(colorResources, stringResources)
                                           ), adRules
         );
     }

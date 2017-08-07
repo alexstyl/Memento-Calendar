@@ -17,8 +17,8 @@ public class TimePeriodTest {
     @Test
     public void dateBetweenPeriod() {
         TimePeriod range = TimePeriod.Companion.between(
-                Date.Companion.startOfTheYear(2016),
-                Date.Companion.startOfTheYear(2017)
+                Date.Companion.startOfYear(2016),
+                Date.Companion.startOfYear(2017)
         );
         assertThat(range.containsDate(Date.Companion.on(1, FEBRUARY, 2016))).isTrue();
     }
@@ -26,8 +26,8 @@ public class TimePeriodTest {
     @Test
     public void dateOutsideOfPeriod() {
         TimePeriod range = TimePeriod.Companion.between(
-                Date.Companion.startOfTheYear(2016),
-                Date.Companion.startOfTheYear(2017)
+                Date.Companion.startOfYear(2016),
+                Date.Companion.startOfYear(2017)
         );
         assertThat(range.containsDate(Date.Companion.on(1, FEBRUARY, 1990))).isFalse();
     }
@@ -35,8 +35,8 @@ public class TimePeriodTest {
     @Test(expected = IllegalArgumentException.class)
     public void invalidPeriodThrowsException() {
         TimePeriod.Companion.between(
-                Date.Companion.startOfTheYear(3560),
-                Date.Companion.startOfTheYear(5)
+                Date.Companion.startOfYear(3560),
+                Date.Companion.startOfYear(5)
         );
         fail("Should have thrown exception");
     }

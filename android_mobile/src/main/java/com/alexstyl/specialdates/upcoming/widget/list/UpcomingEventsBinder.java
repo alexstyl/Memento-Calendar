@@ -66,12 +66,10 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
 
     private void bind(BankHolidayViewModel viewModel) {
         remoteViews.setTextViewText(R.id.row_widget_upcoming_event_bankholidays, viewModel.getBankHolidayName());
-        remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_bankholidays, viewModel.getBankHolidaysVisibility());
     }
 
     private void bind(NamedaysViewModel viewModel) {
         remoteViews.setTextViewText(R.id.row_widget_upcoming_event_namedays, viewModel.getNamesLabel());
-        remoteViews.setViewVisibility(R.id.row_widget_upcoming_event_namedays, viewModel.getNamedaysVisibility());
     }
 
     private void bind(List<UpcomingContactEventViewModel> viewModels) {
