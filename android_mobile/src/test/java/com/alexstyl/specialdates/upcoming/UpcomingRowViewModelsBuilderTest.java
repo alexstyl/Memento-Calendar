@@ -137,7 +137,7 @@ public class UpcomingRowViewModelsBuilderTest {
         List<BankHoliday> bankHolidays = singletonList(bankHoliday);
         List<NamesInADate> namedays = namedayOf(date, "Maria");
 
-        List<UpcomingRowViewModel> viewModels = builderWithAds(entireYear(2017))
+        List<UpcomingRowViewModel> viewModels = builderFor(entireYear(2017))
                 .withContactEvents(asList(
                         aContactEventOn(Date.Companion.on(1, Months.APRIL, 2017)),
                         aContactEventOn(Date.Companion.on(2, Months.APRIL, 2017))
@@ -146,14 +146,13 @@ public class UpcomingRowViewModelsBuilderTest {
                 .withBankHolidays(bankHolidays)
                 .build();
 
-        assertThat(viewModels.size()).isEqualTo(7);
+        assertThat(viewModels.size()).isEqualTo(6);
         assertThat(viewModels.get(0)).isInstanceOf(DateHeaderViewModel.class);
         assertThat(viewModels.get(1)).isInstanceOf(BankHolidayViewModel.class);
         assertThat(viewModels.get(2)).isInstanceOf(NamedaysViewModel.class);
         assertThat(viewModels.get(3)).isInstanceOf(UpcomingContactEventViewModel.class);
-        assertThat(viewModels.get(4)).isInstanceOf(AdViewModel.class);
-        assertThat(viewModels.get(5)).isInstanceOf(DateHeaderViewModel.class);
-        assertThat(viewModels.get(6)).isInstanceOf(UpcomingContactEventViewModel.class);
+        assertThat(viewModels.get(4)).isInstanceOf(DateHeaderViewModel.class);
+        assertThat(viewModels.get(5)).isInstanceOf(UpcomingContactEventViewModel.class);
     }
 
     private List<NamesInADate> namedayOf(Date date, String maria) {
@@ -164,10 +163,6 @@ public class UpcomingRowViewModelsBuilderTest {
 
     private UpcomingRowViewModelsBuilder builderFor(TimePeriod timePeriod) {
         return new UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory, new UpcomingEventsNoAdRules());
-    }
-
-    private UpcomingRowViewModelsBuilder builderWithAds(TimePeriod timePeriod) {
-        return new UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory, new UpcomingEventsFreeUserAdRules());
     }
 
     private static BankHoliday aBankHoliday() {
