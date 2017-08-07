@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
@@ -28,25 +27,20 @@ import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private WidgetImageLoader widgetImageLoader;
-    private UpcomingWidgetPreferences preferences;
-    private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            Context context = MementoApplication.getContext();
-            TodayPeopleEventsView todayPeopleEventsView = new TodayPeopleEventsView(context, AppWidgetManager.getInstance(context));
-            todayPeopleEventsView.requestUpdate();
-        }
-    };
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
+    private PermissionChecker permissionChecker;
+    private UpcomingWidgetPreferences preferences;
+    private WidgetImageLoader widgetImageLoader;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
         applicationModule.inject(this);
+        widgetImageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), imageLoader);
+        preferences = new UpcomingWidgetPreferences(context);
+        permissionChecker = new PermissionChecker(context);
         super.onReceive(context, intent);
     }
 
@@ -54,30 +48,18 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         analytics.trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE);
-        preferences(context).addListener(listener);
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
         analytics.trackWidgetRemoved(Widget.UPCOMING_EVENTS_SIMPLE);
-        preferences(context).removeListener(listener);
-    }
-
-    private WidgetImageLoader imageLoader(Context context) {
-        if (widgetImageLoader == null) {
-            widgetImageLoader = new WidgetImageLoader(
-                    AppWidgetManager.getInstance(context),
-                    imageLoader
-            );
-        }
-        return widgetImageLoader;
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        if (new PermissionChecker(context).canReadAndWriteContacts()) {
+        if (permissionChecker.canReadAndWriteContacts()) {
             updateTodayWidget(context, appWidgetManager, appWidgetIds);
         } else {
             promptForContactPermission(context, appWidgetManager, appWidgetIds);
@@ -115,9 +97,9 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
 
-        WidgetVariant selectedVariant = preferences(context).getSelectedVariant();
+        WidgetVariant selectedVariant = preferences.getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
-        float opacity = preferences(context).getOppacityLevel();
+        float opacity = preferences.getOppacityLevel();
         int selectedTextColor = context.getResources().getColor(selectedVariant.getTextColor());
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
@@ -143,7 +125,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
-            imageLoader(context).loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
+            widgetImageLoader.loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
         }
     }
 
@@ -182,12 +164,4 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-    private UpcomingWidgetPreferences preferences(Context context) {
-        if (preferences == null) {
-            preferences = new UpcomingWidgetPreferences(context);
-        }
-        return preferences;
-    }
-
 }
