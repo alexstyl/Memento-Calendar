@@ -9,10 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import com.alexstyl.android.Version;
-import com.novoda.notils.exception.DeveloperError;
 
 import java.util.List;
 
@@ -77,6 +77,19 @@ public class MementoActivity extends AppCompatActivity {
 
     protected Activity thisActivity() {
         return this;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            return onKeyMenuPressed();
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    public boolean onKeyMenuPressed() {
+        return false;
     }
 
 }
