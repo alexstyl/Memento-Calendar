@@ -145,7 +145,6 @@
   </style>
 
   <style name="Upcoming.MonthHeader">
-    <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
     <item name="android:fontFamily">sans-serif-condensed</item>
   </style>
 
