@@ -15,7 +15,7 @@ final public class UpcomingDateStringCreator {
     private final StringResources stringResources;
     private final Date today;
 
-    public UpcomingDateStringCreator(StringResources stringResources, Date today) {
+    UpcomingDateStringCreator(StringResources stringResources, Date today) {
         this.stringResources = stringResources;
         this.today = today;
     }

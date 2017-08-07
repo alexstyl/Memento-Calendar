@@ -44,7 +44,7 @@ public final class BankHolidayProvider {
     private static TimePeriod getSecondHalfOf(TimePeriod timePeriod) {
         Date endingDate = timePeriod.getEndingDate();
         return TimePeriod.Companion.between(
-                Date.Companion.startOfTheYear(endingDate.getYear()),
+                Date.Companion.startOfYear(endingDate.getYear()),
                 endingDate
         );
     }

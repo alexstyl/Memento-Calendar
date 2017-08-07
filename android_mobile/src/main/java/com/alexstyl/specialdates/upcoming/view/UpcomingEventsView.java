@@ -50,14 +50,11 @@ public class UpcomingEventsView extends FrameLayout {
     }
 
     private void bindBankHolidays(BankHolidayViewModel viewModel) {
-        bankholidaysCard.setVisibility(viewModel.getBankHolidaysVisibility());
         bankholidaysCard.setText(viewModel.getBankHolidayName());
     }
 
     private void bindNamedays(NamedaysViewModel viewModel) {
         namedaysCard.setText(viewModel.getNamesLabel());
-        namedaysCard.setVisibility(viewModel.getNamedaysVisibility());
-        namedaysCard.setTextLines(viewModel.getMaxLines());
     }
 
     private void bindContactEvents(List<UpcomingContactEventViewModel> viewModels, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {

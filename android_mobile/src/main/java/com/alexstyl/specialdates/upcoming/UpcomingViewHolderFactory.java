@@ -26,7 +26,7 @@ final class UpcomingViewHolderFactory {
         this.imageLoader = imageLoader;
     }
 
-    public UpcomingRowViewHolder createFor(int viewType, ViewGroup parent) {
+    public UpcomingRowViewHolder createFor(@UpcomingRowViewType int viewType, ViewGroup parent) {
         if (viewType == UpcomingRowViewType.UPCOMING_EVENTS) {
             View view = layoutInflater.inflate(R.layout.row_upcoming_day, parent, false);
             TextView titleView = Views.findById(view, R.id.upcoming_events_title);
@@ -47,7 +47,7 @@ final class UpcomingViewHolderFactory {
             adView.setAdUnitId(parent.getResources().getString(R.string.admob_unit_id));
             return new AdViewHolder(adView, adView);
         } else {
-            throw new DeveloperError("Invalid viewType " + viewType);
+            throw new DeveloperError("Unhandled viewType [" + viewType + "]");
         }
     }
 }

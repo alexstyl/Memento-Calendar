@@ -29,4 +29,8 @@ public class HashMapList<K, V> {
     public Set<K> keys() {
         return map.keySet();
     }
+
+    public void clear() {
+        map.clear();
+    }
 }
