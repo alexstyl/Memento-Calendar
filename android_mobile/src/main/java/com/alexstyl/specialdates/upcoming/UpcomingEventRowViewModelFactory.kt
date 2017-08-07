@@ -23,7 +23,7 @@ class UpcomingEventRowViewModelFactory(private val today: Date,
     }
 
     fun createViewModelFor(namedays: NamesInADate): UpcomingRowViewModel {
-        return NamedaysViewModel(namedays.names.joinToString(", "))
+        return NamedaysViewModel(namedays.names.joinToString(", "), namedays.date)
     }
 
 }

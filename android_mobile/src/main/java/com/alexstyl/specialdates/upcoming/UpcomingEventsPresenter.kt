@@ -30,15 +30,12 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                 subject
                         .doOnSubscribe { view.showLoading() }
                         .observeOn(workScheduler)
-                        .map<List<UpcomingRowViewModel>> {
-                            provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
-                        }
+                        .map { provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay)) }
                         .observeOn(resultScheduler)
                         .subscribe {
                             upcomingRowViewModels ->
                             view.display(upcomingRowViewModels)
                         }
-
         if (permissions.permissionIsPresent()) {
             setupContentUpdatedListeners()
             refreshEvents()
