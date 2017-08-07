@@ -5,6 +5,5 @@ ext {
     androidCompileSdkVersion = 25
     androidBuildToolsVersion = '25.0.2'
     androidVersionCode = 77
-    androidVersionName = '11.0'
+    androidVersionName = '11.1'
 }
-
