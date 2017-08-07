@@ -232,4 +232,14 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         Intent intent = new Intent(context, UpcomingEventsActivity.class);
         return intent;
     }
+
+    @Override
+    public boolean onKeyMenuPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+        } else {
+            drawerLayout.openDrawer(Gravity.START, true);
+        }
+        return true;
+    }
 }
