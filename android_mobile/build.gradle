@@ -52,6 +52,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    sourceSets {
+        test {
+            resources.srcDirs = ['src/main/res/raw']
+        }
+    }
 }
 
 repositories {
