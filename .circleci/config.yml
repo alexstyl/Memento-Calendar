@@ -2,8 +2,6 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/memento/
-
     docker:
       - image: circleci/android:api-25-alpha
 
