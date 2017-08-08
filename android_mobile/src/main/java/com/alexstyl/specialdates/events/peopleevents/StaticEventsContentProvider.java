@@ -39,7 +39,6 @@ public class StaticEventsContentProvider extends ContentProvider {
 
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
-
     private EventPreferences eventPreferences;
     private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;

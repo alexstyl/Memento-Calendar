@@ -5,7 +5,11 @@ import android.support.annotation.ColorInt;
 
 import com.alexstyl.specialdates.R;
 
-public class LetterPainter {
+final class LetterPainter {
+
+    private LetterPainter() {
+        // hide this
+    }
 
     /**
      * The different color variants to draw
@@ -25,7 +29,7 @@ public class LetterPainter {
     }
 
     @ColorInt
-    public static int getVariant(Resources res, int i) {
+    static int getVariant(Resources res, int i) {
         if (i < 0) {
             i = i * (-1);
         }
