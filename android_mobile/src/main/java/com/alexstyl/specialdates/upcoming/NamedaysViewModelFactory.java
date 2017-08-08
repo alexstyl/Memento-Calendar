@@ -6,11 +6,14 @@ import android.view.View;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 
-public final class NamedaysViewModelFactory {
+final class NamedaysViewModelFactory {
+
+    private static final int MAX_LINES = 3;
+    private static final int SINGLE_LINE = 1;
 
     private final Date today;
 
-    public NamedaysViewModelFactory(Date today) {
+    NamedaysViewModelFactory(Date today) {
         this.today = today;
     }
 
@@ -19,7 +22,7 @@ public final class NamedaysViewModelFactory {
         if (namedays == null) {
             namedaysViewModel = new NamedaysViewModel("", View.GONE, 0);
         } else {
-            int maxLines = date.equals(today) ? 3 : 1;
+            int maxLines = date.equals(today) ? MAX_LINES : SINGLE_LINE;
             namedaysViewModel = new NamedaysViewModel(TextUtils.join(", ", namedays.getNames()), View.VISIBLE, maxLines);
         }
         return namedaysViewModel;
