@@ -2,7 +2,7 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/memento
+    working_directory: ~/
 
     docker:
       - image: circleci/android:api-25-alpha
@@ -16,7 +16,7 @@ jobs:
 
       # Restore cached dependencies (if any)
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "android_mobile/build.gradle" }}
 
       # Prepare the container for the build
       - run:
@@ -46,13 +46,13 @@ jobs:
 
             # Gradle dependencies
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "android_mobile/build.gradle" }}
 
       # Collect static analysis reports as build artifacts
       - store_artifacts:
-          path: app/build/reports
+          path: android_mobile/build/reports
           destination: reports
 
       # Collect JUnit test results
       - store_test_results:
-          path: app/build/test-results
+          path: android_mobile/build/test-results
