@@ -40,7 +40,7 @@ public class UpcomingEventsView extends FrameLayout {
 
     }
 
-    public void bind(final UpcomingEventsViewModel viewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+    public void bind(UpcomingEventsViewModel viewModel, OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
         bindBankHolidays(viewModel.getBankHolidayViewModel());
         bindNamedays(viewModel.getNamedaysViewModel());
         bindContactEvents(viewModel.getContactViewModels(), listener, imageLoader);
@@ -60,7 +60,9 @@ public class UpcomingEventsView extends FrameLayout {
         namedaysCard.setTextLines(viewModel.getMaxLines());
     }
 
-    private void bindContactEvents(List<UpcomingContactEventViewModel> viewModels, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+    private void bindContactEvents(List<UpcomingContactEventViewModel> viewModels,
+                                   OnUpcomingEventClickedListener listener,
+                                   ImageLoader imageLoader) {
         if (viewModels.size() >= 1) {
             contactEventCardViewOne.bind(viewModels.get(0), listener, imageLoader);
         } else {
