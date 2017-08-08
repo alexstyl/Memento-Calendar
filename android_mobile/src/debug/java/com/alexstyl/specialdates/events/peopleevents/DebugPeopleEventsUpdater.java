@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.util.DateParser;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
-public class DebugPeopleEventsUpdater {
+public final class DebugPeopleEventsUpdater {
 
     private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
@@ -26,7 +26,11 @@ public class DebugPeopleEventsUpdater {
 
         NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
-        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
+        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
+                namedayPreferences,
+                namedayCalendarProvider,
+                contactsProvider
+        );
         return new DebugPeopleEventsUpdater(databaseRefresher, new NamedayDatabaseRefresher(
                 namedayPreferences,
                 databaseProvider,
