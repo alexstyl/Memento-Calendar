@@ -158,7 +158,9 @@
     <module name="FinalClass" />
     <module name="HideUtilityClassConstructor" />
     <module name="InterfaceIsType" />
-    <module name="VisibilityModifier" />
+    <module name="VisibilityModifier" >
+      <property name="ignoreAnnotationCanonicalNames" value="Inject" />
+    </module>
 
 
     <!-- Miscellaneous other checks.                   -->
