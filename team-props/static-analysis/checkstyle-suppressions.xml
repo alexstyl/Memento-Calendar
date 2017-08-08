@@ -9,7 +9,9 @@
   <!-- Exclude all Kotlin files -->
   <suppress checks=".*" files=".*\.kt" />
 
-  <!-- RenderThread adopted code -->
-  <suppress checks=".*" files="me[\\/]eugeniomarletti[\\/]renderthread[\\/]" />
+  <!-- Preference Fragment -->
+  <suppress checks="." files="android[\\/]support[\\/]v4[\\/]preference" />
+  <!-- IAB -->
+  <suppress checks="." files="com[\\/]alexstyl[\\/]specialdates[\\/]donate[\\/]util" />
 
 </suppressions>

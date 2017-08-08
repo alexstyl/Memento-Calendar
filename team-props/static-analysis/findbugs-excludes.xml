@@ -15,7 +15,8 @@
   </Match>
 
   <Match>
-    <Class name="~.*me\.eugeniomarletti\.renderthread.*" />
+    <Class name="~.*android\.support\.v4\.preference.*" />
+    <Class name="~.*com\.alexstyl\.specialdates\.donate\.util.*" />
   </Match>
 
 </FindBugsFilter>
