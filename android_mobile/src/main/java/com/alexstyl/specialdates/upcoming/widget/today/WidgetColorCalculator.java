@@ -39,7 +39,7 @@ class WidgetColorCalculator {
         return (float) ((MAX - (dif + ONE_DAY) * MODIFIER) / MAX);
     }
 
-    @SuppressWarnings({"MagicNumberCheck", "LocalVariableNameCheck"}) // disable checkstyle checks due to the loaded of magic stuff happening
+    @SuppressWarnings({"MagicNumber", "LocalVariableName"}) // disable checkstyle checks due to the loaded of magic stuff happening
     private static int blend(@ColorInt int background, @ColorInt int foreground, float ratio) {
         if (ratio > 1f) {
             ratio = 1f;
