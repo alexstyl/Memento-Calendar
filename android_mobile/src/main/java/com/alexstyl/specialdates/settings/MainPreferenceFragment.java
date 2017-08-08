@@ -28,9 +28,9 @@ import com.novoda.notils.caster.Classes;
 
 import javax.inject.Inject;
 
-final public class MainPreferenceFragment extends MementoPreferenceFragment {
+public final class MainPreferenceFragment extends MementoPreferenceFragment {
 
-    private final String FM_THEME_TAG = "fm_theme";
+    private static final String FM_THEME_TAG = "fm_theme";
 
     private NamedayListPreference namedayLanguageListPreferences;
     private NamedayPreferences namedaysPreferences;
