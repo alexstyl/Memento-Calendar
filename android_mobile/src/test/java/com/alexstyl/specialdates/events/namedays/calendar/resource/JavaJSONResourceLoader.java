@@ -1,23 +1,33 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
+import com.novoda.notils.exception.DeveloperError;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 class JavaJSONResourceLoader implements NamedayJSONResourceLoader {
 
+    private static final ClassLoader CLASS_LOADER = Thread.currentThread().getContextClassLoader();
+
     @Override
     public JSONObject loadJSON(NamedayLocale locale) throws JSONException {
         String namedayRaw;
+
         try {
-            BufferedReader br = new BufferedReader(new FileReader(getPathTo(locale)));
-            namedayRaw = br.readLine();
+            InputStream stream = CLASS_LOADER.getResourceAsStream("namedays/" + fileNameOf(locale));
+            if (stream == null) {
+                throw new DeveloperError("Couldn't find " + locale);
+            }
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+            namedayRaw = bufferedReader.readLine();
         } catch (IOException e) {
             throw new JSONException(e.getMessage());
         }
@@ -25,14 +35,8 @@ class JavaJSONResourceLoader implements NamedayJSONResourceLoader {
         return new JSONObject(namedayRaw);
     }
 
-    private static String getPathTo(NamedayLocale locale) {
-        String prefix = locale.getCountryCode();
-        return String.format("android_mobile" + File.separator +
-                                     "src" + File.separator +
-                                     "main" + File.separator +
-                                     "res" + File.separator +
-                                     "raw" + File.separator +
-                                     "%s_namedays.json", prefix);
+    private static String fileNameOf(NamedayLocale locale) {
+        return String.format(Locale.US, "%s_namedays.json", locale.getCountryCode());
     }
 
 }
