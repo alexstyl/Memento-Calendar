@@ -16,7 +16,7 @@ final class AdViewHolder extends UpcomingRowViewHolder<AdViewModel> {
     }
 
     @Override
-    public void bind(AdViewModel element, OnUpcomingEventClickedListener listener) {
+    public void bind(AdViewModel viewModel, OnUpcomingEventClickedListener listener) {
         // ads handle clicking by themselves
         adView.loadAd(new AdRequest.Builder()
                               .build());

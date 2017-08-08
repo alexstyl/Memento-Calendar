@@ -46,7 +46,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private AskForSupport askForSupport;
     private ThemeMonitor themeMonitor;
 
-    private MainNavigator navigator;
+    private UpcomingEventsNavigator navigator;
     private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
     private DrawerLayout drawerLayout;
@@ -69,7 +69,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
+        navigator = new UpcomingEventsNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
         externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
