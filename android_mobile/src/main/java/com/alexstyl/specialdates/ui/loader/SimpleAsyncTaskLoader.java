@@ -78,7 +78,7 @@ public abstract class SimpleAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
             mData = null;
         }
 
-//        // The Loader is being reset, so we should stop monitoring for changes.
+        // The Loader is being reset, so we should stop monitoring for changes.
         onUnregisterObserver();
     }
 
