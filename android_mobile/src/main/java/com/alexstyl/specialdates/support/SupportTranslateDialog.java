@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.support;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -36,8 +38,8 @@ public class SupportTranslateDialog extends ThemedMementoActivity {
     }
 
     public boolean copyLinkToClipboard() {
-        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        android.content.ClipData clip = android.content.ClipData.newPlainText(getResources().getString(R.string.app_name), getString(R.string.link_translate_short));
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(getResources().getString(R.string.app_name), getString(R.string.link_translate_short));
         clipboard.setPrimaryClip(clip);
         return true;
     }

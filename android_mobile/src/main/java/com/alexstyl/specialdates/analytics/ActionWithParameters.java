@@ -23,13 +23,4 @@ public final class ActionWithParameters {
     public String getValue() {
         return value;
     }
-
-    @Override
-    public String toString() {
-        return "ActionWithParameters{" +
-                "actionName=" + actionName +
-                ", label='" + label + '\'' +
-                ", value='" + value + '\'' +
-                '}';
-    }
 }
