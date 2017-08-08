@@ -9,25 +9,19 @@ import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String INT_TYPE = " INTEGER";
+    private static final String COMMA_SEP = ", ";
+    private static final String NOT_NULL = " NOT NULL ";
     private static final String DATABASE_NAME = "events.db";
     private static final int DATABASE_VERSION = 4;
+
     private final EventPreferences eventPreferences;
 
     public EventSQLiteOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         eventPreferences = new EventPreferences(context.getApplicationContext());
     }
-
-    private static final String TEXT_TYPE = " TEXT";
-    private static final String INT_TYPE = " INTEGER";
-    private static final String COMMA_SEP = ", ";
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-    }
-
-    private static String NOT_NULL = " NOT NULL ";
 
     private static final String SQL_CREATE_ANNUAL_EVENTS =
             "CREATE TABLE " + AnnualEventsContract.TABLE_NAME + " ("

@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.Monitor;
 import com.alexstyl.specialdates.R;
 
-class PeopleSettingsMonitor implements Monitor {
+final class PeopleSettingsMonitor implements Monitor {
 
     private final Monitor monitor;
 
