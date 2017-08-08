@@ -7,10 +7,13 @@ import com.alexstyl.specialdates.date.Date;
 
 class WidgetColorCalculator {
 
-    private static final int modifier = 15;
-    private static final double max = 100.00;
+    private static final int MODIFIER = 15;
+    private static final double MAX = 100.00;
     @ColorInt
-    private static final int highlightColor = Color.RED;
+    private static final int HIGHLIGHT_COLOR = Color.RED;
+    private static final int DAYS_THRESHOLD = 3;
+    private static final int ONE_DAY = 1;
+
     @ColorInt
     private final int baseColor;
 
@@ -21,7 +24,7 @@ class WidgetColorCalculator {
     public int getColor(Date today, Date nextEvent) {
 
         int dayDiff = today.daysDifferenceTo(nextEvent);
-        if (dayDiff <= 3) {
+        if (dayDiff <= DAYS_THRESHOLD) {
             return getColorForDaysDifference(dayDiff);
         }
         return baseColor;
@@ -29,13 +32,15 @@ class WidgetColorCalculator {
 
     private int getColorForDaysDifference(int dayDiff) {
         float modifier = getModifier(dayDiff);
-        return blend(baseColor, highlightColor, modifier);
+        return blend(baseColor, HIGHLIGHT_COLOR, modifier);
     }
 
     private float getModifier(int dif) {
-        return (float) ((max - (dif + 1) * modifier) / max);
+        return (float) ((MAX - (dif + ONE_DAY) * MODIFIER) / MAX);
     }
 
+    //Check:OFF
+    // disable checkstyle checks due to the loaded of magic stuff happening
     private static int blend(@ColorInt int background, @ColorInt int foreground, float ratio) {
         if (ratio > 1f) {
             ratio = 1f;
@@ -61,5 +66,6 @@ class WidgetColorCalculator {
 
         return A << 24 | R << 16 | G << 8 | B;
     }
+    //Check:ON
 
 }
