@@ -9,6 +9,10 @@ public class PeopleEventsContract {
     public static final String AUTHORITY = "com.alexstyl.specialdates.peopleeventsprovider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
+    private PeopleEventsContract() {
+        // hide this
+    }
+
     public static class PeopleEvents implements BaseColumns, ContactColumns, EventColumns {
 
         private PeopleEvents() {

@@ -8,4 +8,7 @@ public final class DatabaseContract {
         public static final String TABLE_NAME = "annual_events";
     }
 
+    private DatabaseContract() {
+        // hide this
+    }
 }
