@@ -29,7 +29,7 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-final class MainNavigator {
+final class UpcomingEventsNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("https://g3mge.app.goo.gl/jdF1");
 
@@ -39,7 +39,7 @@ final class MainNavigator {
     private final StringResources stringResource;
     private final FacebookPreferences facebookPreferences;
 
-    MainNavigator(Analytics analytics, Activity activity, StringResources stringResource, FacebookPreferences facebookPreferences) {
+    UpcomingEventsNavigator(Analytics analytics, Activity activity, StringResources stringResource, FacebookPreferences facebookPreferences) {
         this.analytics = analytics;
         this.activity = activity;
         this.stringResource = stringResource;

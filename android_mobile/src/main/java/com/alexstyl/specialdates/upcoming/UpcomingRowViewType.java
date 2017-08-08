@@ -9,22 +9,16 @@ import static com.alexstyl.specialdates.upcoming.UpcomingRowViewType.*;
 
 @Retention(RetentionPolicy.SOURCE)
 @IntDef({
-        MONTH,
-        UPCOMING_EVENTS,
-        YEAR,
-        AD,
         DATE_HEADER,
-        CONTACT_EVENT,
+        BANKHOLIDAY,
         NAMEDAY_CARD,
-        BANKHOLIDAY
+        CONTACT_EVENT,
+        AD
 })
 public @interface UpcomingRowViewType {
-    int MONTH = 0;
-    int UPCOMING_EVENTS = 1;
-    int YEAR = 2;
-    int AD = 3;
-    int DATE_HEADER = 4;
-    int CONTACT_EVENT = 5;
-    int NAMEDAY_CARD = 6;
-    int BANKHOLIDAY = 7;
+    int DATE_HEADER = 0;
+    int BANKHOLIDAY = 1;
+    int NAMEDAY_CARD = 2;
+    int CONTACT_EVENT = 3;
+    int AD = 4;
 }
