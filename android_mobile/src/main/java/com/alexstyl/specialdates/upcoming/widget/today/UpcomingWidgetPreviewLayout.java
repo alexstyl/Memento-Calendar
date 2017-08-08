@@ -15,11 +15,12 @@ import com.novoda.notils.caster.Views;
 
 public class UpcomingWidgetPreviewLayout extends FrameLayout {
 
+    private static final TransparencyColorCalculator COLOR_CALCULATOR = new TransparencyColorCalculator();
+
     private final View background;
     private final ImageView avatar;
     private final TextView header;
     private final TextView contactNames;
-    private static final TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
 
     private WidgetVariant selectedVariant = WidgetVariant.LIGHT;
     private float opacityLevel = 1.0f;
@@ -49,7 +50,7 @@ public class UpcomingWidgetPreviewLayout extends FrameLayout {
 
     private void updateBackgroundColor() {
         int color = getResources().getColor(selectedVariant.getBackgroundColorResId());
-        int newBackgroundColor = transparencyColorCalculator.calculateColor(color, opacityLevel);
+        int newBackgroundColor = COLOR_CALCULATOR.calculateColor(color, opacityLevel);
         background.setBackgroundColor(newBackgroundColor);
     }
 
