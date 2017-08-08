@@ -38,7 +38,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 DebugPeopleEventsUpdater.newInstance(getActivity()).refresh();
-                Toast.makeText(getActivity(), "Refreshing Database", Toast.LENGTH_SHORT).show();
+                showToast("Refreshing Database");
                 return true;
             }
         });
@@ -46,7 +46,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 PeopleEventsViewRefresher.get(getActivity()).updateAllViews();
-                Toast.makeText(getActivity(), "Widget(s) refreshed", Toast.LENGTH_SHORT).show();
+                showToast("Widget(s) refreshed");
                 return true;
             }
         });
@@ -76,7 +76,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 DailyReminderIntentService.startService(getActivity());
-                Toast.makeText(getActivity(), "Daily Reminder Triggered", Toast.LENGTH_SHORT).show();
+                showToast("Daily Reminder Triggered");
                 return true;
             }
         });
@@ -109,7 +109,8 @@ public class DebugFragment extends MementoPreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 DebugPreferences.newInstance(preference.getContext(), R.string.pref_call_to_rate).wipe();
                 new AskForSupport(preference.getContext()).requestForRatingSooner();
-                Toast.makeText(preference.getContext(), "Support triggered. You should now see a prompt to rate the app when you launch it", Toast.LENGTH_SHORT).show();
+                String message = "Support triggered. You should now see a prompt to rate the app when you launch it";
+                showToast(message);
                 return true;
             }
         });
@@ -129,6 +130,10 @@ public class DebugFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void startDateIntent() {
