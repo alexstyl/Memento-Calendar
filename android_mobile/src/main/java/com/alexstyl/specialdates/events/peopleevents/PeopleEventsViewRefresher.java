@@ -15,13 +15,13 @@ import java.util.List;
 public final class PeopleEventsViewRefresher {
 
     private final List<PeopleEventsView> views;
-    private static PeopleEventsViewRefresher INSTANCE;
+    private static PeopleEventsViewRefresher instance;
 
     public static PeopleEventsViewRefresher get(Context appContext) {
-        if (INSTANCE == null) {
+        if (instance == null) {
             ContentResolver resolver = appContext.getContentResolver();
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(appContext);
-            INSTANCE = new PeopleEventsViewRefresher(
+            instance = new PeopleEventsViewRefresher(
                     Arrays.asList(
                             new ContentResolverPeopleEventsView(resolver),
                             new WearSyncPeopleEventsView(appContext),
@@ -29,7 +29,7 @@ public final class PeopleEventsViewRefresher {
                             new UpcomingEventsScrollingWidgetView(appContext, appWidgetManager)
                     ));
         }
-        return INSTANCE;
+        return instance;
     }
 
     private PeopleEventsViewRefresher(List<PeopleEventsView> views) {

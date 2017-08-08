@@ -8,7 +8,6 @@ import java.io.InputStream;
 
 public class NutraBaseImageDecoder extends BaseImageDecoder {
 
-
     public NutraBaseImageDecoder(boolean loggingEnabled) {
         super(loggingEnabled);
     }
@@ -20,7 +19,7 @@ public class NutraBaseImageDecoder extends BaseImageDecoder {
         return stream == null ? null : new JpegClosedInputStream(stream);
     }
 
-    private class JpegClosedInputStream extends InputStream {
+    private final class JpegClosedInputStream extends InputStream {
 
         private static final int JPEG_EOI_1 = 0xFF;
         private static final int JPEG_EOI_2 = 0xD9;

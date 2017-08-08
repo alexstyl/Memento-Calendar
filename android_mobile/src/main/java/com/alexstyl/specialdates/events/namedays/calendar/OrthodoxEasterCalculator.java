@@ -9,6 +9,7 @@ public enum OrthodoxEasterCalculator {
     /**
      * Calculates the date of the easter Sunday for the given year
      */
+    @SuppressWarnings({"MagicNumber"})
     public Date calculateEasterForYear(int year) {
         int a = year % 4;
         int b = year % 7;

@@ -25,7 +25,7 @@ import io.reactivex.Observable;
 
 public class PeopleEventsProvider {
 
-    private static final DateComparator dateComparator = DateComparator.INSTANCE;
+    private static final DateComparator DATE_COMPARATOR = DateComparator.INSTANCE;
 
     private final NamedayPreferences namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
@@ -137,24 +137,26 @@ public class PeopleEventsProvider {
     }
 
     private Date findNextDynamicEventDateAfter(final Date date) throws NoEventsFoundException {
-        List<ContactEvent> contactEvents = new ArrayList<>(peopleNamedaysCalculator.loadSpecialNamedaysBetween(TimePeriod.Companion.between(date, Date.Companion.endOfYear(date.getYear()))));
+        TimePeriod timePeriod = TimePeriod.Companion.between(date, Date.Companion.endOfYear(date.getYear()));
+        List<ContactEvent> contactEvents = new ArrayList<>(peopleNamedaysCalculator.loadSpecialNamedaysBetween(timePeriod));
         Collections.sort(contactEvents, new Comparator<ContactEvent>() {
             @Override
             public int compare(ContactEvent o1, ContactEvent o2) {
-                return dateComparator.compare(o1.getDate(), o2.getDate());
+                return DATE_COMPARATOR.compare(o1.getDate(), o2.getDate());
             }
         });
 
         for (ContactEvent contactEvent : contactEvents) {
             Date contactEventDate = contactEvent.getDate();
-            if (dateComparator.compare(contactEventDate, date) >= 0) {
+            if (DATE_COMPARATOR.compare(contactEventDate, date) >= 0) {
                 return contactEventDate;
             }
         }
         throw new NoEventsFoundException("No dynamic even found after or on " + date);
     }
 
-    private Optional<ContactEventsOnADate> returnClosestEventsOrMerge(Optional<ContactEventsOnADate> staticEvents, Optional<ContactEventsOnADate> dynamicEvents) {
+    private Optional<ContactEventsOnADate> returnClosestEventsOrMerge(Optional<ContactEventsOnADate> staticEvents,
+                                                                      Optional<ContactEventsOnADate> dynamicEvents) {
         if (!staticEvents.isPresent() && !dynamicEvents.isPresent()) {
             return Optional.absent();
         }
@@ -169,7 +171,8 @@ public class PeopleEventsProvider {
         }
     }
 
-    private Optional<ContactEventsOnADate> createOptionalFor(Optional<ContactEventsOnADate> staticEvents, Optional<ContactEventsOnADate> dynamicEvents) {
+    private Optional<ContactEventsOnADate> createOptionalFor(Optional<ContactEventsOnADate> staticEvents,
+                                                             Optional<ContactEventsOnADate> dynamicEvents) {
         List<ContactEvent> combinedEvents = combine(dynamicEvents.get().getEvents(), staticEvents.get().getEvents());
         if (combinedEvents.size() > 0) {
             return new Optional<>(ContactEventsOnADate.createFrom(

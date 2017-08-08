@@ -297,13 +297,14 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 } else {
                     cancelActivity();
                 }
-                break;
+                return true;
             case R.id.menu_add_event_save:
                 presenter.saveChanges();
                 finishActivitySuccessfully();
-                break;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void promptToDiscardBeforeExiting() {

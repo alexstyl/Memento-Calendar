@@ -34,7 +34,9 @@ public class ContactEventsMarshaller {
     private ContentValues createValuesFor(ContactEvent event) {
         Contact contact = event.getContact();
 
-        ContentValues values = new ContentValues(4);
+        //CHECKSTYLE:OFF: 5 is the capacity we need
+        ContentValues values = new ContentValues(5);
+        //CHECKSTYLE:ON
         values.put(PeopleEventsContract.PeopleEvents.CONTACT_ID, contact.getContactID());
         values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
         String date = instance.stringOf(event.getDate());

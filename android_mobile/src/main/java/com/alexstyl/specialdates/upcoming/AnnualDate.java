@@ -20,8 +20,8 @@ final class AnnualDate {
 
         AnnualDate that = (AnnualDate) o;
 
-        return date.getMonth() == that.date.getMonth() &&
-                date.getDayOfMonth() == that.date.getDayOfMonth();
+        return date.getMonth() == that.date.getMonth()
+                && date.getDayOfMonth() == that.date.getDayOfMonth();
     }
 
     @Override

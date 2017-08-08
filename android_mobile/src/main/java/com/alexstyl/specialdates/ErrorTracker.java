@@ -19,6 +19,10 @@ public class ErrorTracker {
 
     private static boolean hasBeenInitialised = false;
 
+    private ErrorTracker() {
+        // hide this
+    }
+
     static void startTracking(Context context) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Ignoring Crash Tracking in DEBUG builds");

@@ -70,9 +70,10 @@ public class MementoApplication extends Application {
         initImageLoader(this);
     }
 
+    @SuppressWarnings("MagicNumber")
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .threadPriority(Thread.MIN_PRIORITY)
                 .threadPoolSize(10)
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))

@@ -5,7 +5,7 @@ import android.text.format.DateUtils;
 
 import com.alexstyl.specialdates.search.DateLabelCreator;
 
-final public class AndroidDateLabelCreator implements DateLabelCreator {
+public final class AndroidDateLabelCreator implements DateLabelCreator {
 
     private final Context context;
 
@@ -15,13 +15,13 @@ final public class AndroidDateLabelCreator implements DateLabelCreator {
 
     @Override
     public String createLabelWithoutYearFor(Date date) {
-        int format_flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
-        return DateUtils.formatDateTime(context, date.toMillis(), format_flags);
+        int formatFlags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
+        return DateUtils.formatDateTime(context, date.toMillis(), formatFlags);
     }
 
     @Override
     public String createLabelWithYearFor(Date date) {
-        int format_flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
-        return DateUtils.formatDateTime(context, date.toMillis(), format_flags);
+        int formatFlags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
+        return DateUtils.formatDateTime(context, date.toMillis(), formatFlags);
     }
 }

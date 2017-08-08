@@ -80,6 +80,7 @@ class SpecialGreekNamedaysCalculator {
         addSpecialChloe(node, namedaysList);
     }
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialPropatorwn(Node node, NamedaysList namedaysList) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, Calendar.DECEMBER);
@@ -95,6 +96,7 @@ class SpecialGreekNamedaysCalculator {
         }
     }
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
         int year = Date.Companion.today().getYear();
         Date date = Date.Companion.on(23, Months.APRIL, year);
@@ -124,6 +126,7 @@ class SpecialGreekNamedaysCalculator {
             "Γίτσα"
     );
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
         Date date = Date.Companion.on(23, Months.APRIL, Date.Companion.today().getYear());
 
@@ -140,6 +143,7 @@ class SpecialGreekNamedaysCalculator {
         }
     }
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialChloe(Node node, NamedaysList namedaysList) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.FEBRUARY);

@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.addevent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 
 import com.alexstyl.specialdates.Optional;
@@ -13,6 +14,8 @@ import java.util.List;
 
 final class ContactEventsFetcher {
 
+    private static final int LOADER_ID = 24;
+
     private final LoaderManager loaderManager;
     private final Context context;
     private final PeopleEventsProvider peopleEventsProvider;
@@ -20,7 +23,6 @@ final class ContactEventsFetcher {
     private final AddEventViewModelFactory addEventViewModelFactory;
 
     private Optional<Contact> contact;
-
     private OnDataFetchedCallback callback;
 
     ContactEventsFetcher(LoaderManager loaderManager,
@@ -46,10 +48,10 @@ final class ContactEventsFetcher {
     private void loadEventsFor(Optional<Contact> contactOptional, OnDataFetchedCallback callback) {
         this.contact = contactOptional;
         this.callback = callback;
-        loaderManager.restartLoader(24, null, callbacks);
+        loaderManager.restartLoader(LOADER_ID, null, callbacks);
     }
 
-    private LoaderManager.LoaderCallbacks<List<AddEventContactEventViewModel>> callbacks = new LoaderManager.LoaderCallbacks<List<AddEventContactEventViewModel>>() {
+    private final LoaderCallbacks<List<AddEventContactEventViewModel>> callbacks = new LoaderCallbacks<List<AddEventContactEventViewModel>>() {
         @Override
         public Loader<List<AddEventContactEventViewModel>> onCreateLoader(int id, Bundle args) {
             return new ContactEventsLoader(context, contact, peopleEventsProvider, factory, addEventViewModelFactory);

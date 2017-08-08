@@ -107,7 +107,10 @@ public class SearchActivity extends ThemedMementoActivity {
         resultView.setHasFixedSize(true);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / 2;
+        //CHECKSTYLE:OFF: 3 is the columns we need
         resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
+        // CHECKSTYLE:ON
+
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
         resultView.setLayoutManager(mLayoutManager);

@@ -21,6 +21,9 @@ public class ImageModule {
     @Provides
     @Singleton
     ImageLoader providesImageLoader() {
-        return new UILImageLoader(new CrossFadeBitmapDisplayer(resources, CROSSFADE_DURATION), new CrossFadeCircleBitmapDisplayer(resources, CROSSFADE_DURATION));
+        return new UILImageLoader(
+                new CrossFadeBitmapDisplayer(resources, CROSSFADE_DURATION),
+                new CrossFadeCircleBitmapDisplayer(resources, CROSSFADE_DURATION)
+        );
     }
 }
