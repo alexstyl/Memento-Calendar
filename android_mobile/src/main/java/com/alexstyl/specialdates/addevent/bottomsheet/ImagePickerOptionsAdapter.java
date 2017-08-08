@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.
 import java.util.ArrayList;
 import java.util.List;
 
-class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_CLEAR = 0;
     private static final int TYPE_OPTION = 1;

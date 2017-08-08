@@ -8,6 +8,7 @@ import com.alexstyl.specialdates.MementoApplication;
 public enum DateDisplayStringCreator {
     INSTANCE;
 
+    private static final int TEN = 10;
     private static final String SEPARATOR = "-";
     private static final String ZERO = "0";
 
@@ -54,32 +55,18 @@ public enum DateDisplayStringCreator {
     }
 
     private boolean isSingleDigit(int number) {
-        return number < 10;
-    }
-
-    public String fullyFormattedBirthday(Date birthday) {
-        Context appContext = MementoApplication.getContext();
-
-        int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
-
-        if (birthday.hasYear()) {
-            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
-        } else {
-            format_flags |= DateUtils.FORMAT_NO_YEAR;
-        }
-
-        return DateUtils.formatDateTime(appContext, birthday.toMillis(), format_flags);
+        return number < TEN;
     }
 
     public String fullyFormattedDate(Date date) {
         Context appContext = MementoApplication.getContext();
 
-        int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
+        int formatFlags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
         if (date.hasYear()) {
-            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
+            formatFlags |= DateUtils.FORMAT_SHOW_YEAR;
         } else {
-            format_flags |= DateUtils.FORMAT_NO_YEAR;
+            formatFlags |= DateUtils.FORMAT_NO_YEAR;
         }
-        return DateUtils.formatDateTime(appContext, date.toMillis(), format_flags);
+        return DateUtils.formatDateTime(appContext, date.toMillis(), formatFlags);
     }
 }

@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 
-class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
+final class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
 
     private final NamedayPreferences namedayPreferences;
 

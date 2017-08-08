@@ -10,14 +10,17 @@ import android.widget.NumberPicker;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.novoda.notils.caster.Views;
 
 import java.util.Locale;
 
 public class EventDatePicker extends LinearLayout {
+
+    private static final int FIRST_DAY_OF_MONTH = 1;
+    private static final int LAST_DAY_OF_MONTH = 31;
 
     private final MonthLabels labels;
 
@@ -72,8 +75,9 @@ public class EventDatePicker extends LinearLayout {
     }
 
     private void setupDayPicker() {
-        dayPicker.setMinValue(1);
-        dayPicker.setMaxValue(31);
+        ;
+        dayPicker.setMinValue(FIRST_DAY_OF_MONTH);
+        dayPicker.setMaxValue(LAST_DAY_OF_MONTH);
 
         dayPicker.setValue(today.getDayOfMonth());
 
@@ -137,9 +141,9 @@ public class EventDatePicker extends LinearLayout {
     }
 
     @MonthInt
-    @SuppressWarnings("WrongConstant")
     private int getMonth() {
-        return monthPicker.getValue();
+        @MonthInt int value = monthPicker.getValue();
+        return value;
     }
 
     private int getYear() {
@@ -147,17 +151,21 @@ public class EventDatePicker extends LinearLayout {
     }
 
     private final NumberPicker.OnValueChangeListener dateValidator = new NumberPicker.OnValueChangeListener() {
+
+        private static final int LAST_DAY_OF_FEBRUARY_LONG = 29;
+        private static final int LAST_DAY_OF_FEBRUARY_SHORT = 28;
+
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             if (getMonth() == Months.FEBRUARY && isDisplayingYear()) {
 
-                if (isValidDate(29, Months.FEBRUARY, getYear())) {
-                    dayPicker.setMaxValue(29);
+                if (isValidDate(LAST_DAY_OF_FEBRUARY_LONG, Months.FEBRUARY, getYear())) {
+                    dayPicker.setMaxValue(LAST_DAY_OF_FEBRUARY_LONG);
                 } else {
-                    dayPicker.setMaxValue(28);
+                    dayPicker.setMaxValue(LAST_DAY_OF_FEBRUARY_SHORT);
                 }
             } else {
-                dayPicker.setMaxValue(31);
+                dayPicker.setMaxValue(LAST_DAY_OF_MONTH);
             }
         }
 

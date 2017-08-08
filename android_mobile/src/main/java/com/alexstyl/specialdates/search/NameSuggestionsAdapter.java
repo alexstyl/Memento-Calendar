@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import java.util.ArrayList;
 import java.util.List;
 
-class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
+final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
 
     private final OnNameSelectedListener listener;
     private final NamesFilter filter;

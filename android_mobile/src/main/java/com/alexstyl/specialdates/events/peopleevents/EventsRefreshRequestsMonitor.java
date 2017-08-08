@@ -11,9 +11,10 @@ import static java.util.Arrays.asList;
 
 /**
  * Class that monitors whether the events need to be refreshed due to some user action.
- * <p>This action can be internal to the app (such as the user wants to see the namedays of a different locale) or external (such as a change in the device database)</p>
+ * <p>This action can be internal to the app (such as the user wants to see the namedays of a different locale)
+ * or external (such as a change in the device database)</p>
  */
-class EventsRefreshRequestsMonitor implements Monitor {
+final class EventsRefreshRequestsMonitor implements Monitor {
 
     private final List<Monitor> monitors;
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-public class NamedayPreferences {
+public final class NamedayPreferences {
 
     private static final String DEFAULT_LOCALE = NamedayLocale.GREEK.getCountryCode();
 

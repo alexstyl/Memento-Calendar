@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.date.Date;
 
 import java.util.List;
 
+@SuppressWarnings("all") // this class is going away soon
 public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
 
     private final Date date;
@@ -51,7 +52,7 @@ public final class UpcomingEventsViewModel implements UpcomingRowViewModel {
         return displayDateLabel;
     }
 
-    public Typeface getDateTypeFace() {
+    Typeface getDateTypeFace() {
         return dateTypeFace;
     }
 

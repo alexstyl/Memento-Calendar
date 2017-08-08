@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class NamedayJSONParser {
+final class NamedayJSONParser {
 
     private NamedayJSONParser() {
         // hide this
