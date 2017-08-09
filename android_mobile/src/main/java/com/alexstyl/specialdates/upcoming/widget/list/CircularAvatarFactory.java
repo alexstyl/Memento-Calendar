@@ -65,12 +65,12 @@ final class CircularAvatarFactory {
         Canvas canvas = new Canvas(drawingBitmap);
 
         Paint backgroundPaint = createBackgroundPaint();
-        float radius = canvas.getWidth() / 2;
+        float radius = canvas.getWidth() / 2.0f;
         canvas.drawCircle(radius, radius, radius, backgroundPaint);
 
         Paint textPaint = createTextPaint(letterSize);
         int xPos = canvas.getWidth() / 2;
-        int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+        int yPos = (canvas.getHeight() / 2 - ((((int) (textPaint.descent() + textPaint.ascent()))) / 2));
         canvas.drawText(firstLetterOf(displayName), xPos, yPos, textPaint);
         return drawingBitmap;
     }
