@@ -50,9 +50,10 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_main);
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
+
+        addPreferencesFromResource(R.xml.preference_main);
         themingPreferences = ThemingPreferences.newInstance(getActivity());
         Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
         bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
