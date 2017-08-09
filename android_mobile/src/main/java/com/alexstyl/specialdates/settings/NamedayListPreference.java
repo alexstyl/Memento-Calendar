@@ -7,6 +7,8 @@ import android.preference.Preference;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 
@@ -20,6 +22,9 @@ public class NamedayListPreference extends ListPreference {
 
     public NamedayListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
 
         NamedayLocale[] locales = NamedayLocale.values();
         Arrays.sort(locales, COUNTRY_CODE_COMPARATOR);
