@@ -225,8 +225,9 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                     navigator.toContactDetails(displayingContact.get());
                 }
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
