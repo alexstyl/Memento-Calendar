@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
@@ -31,12 +31,14 @@ public class UpcomingEventsModule {
     }
 
     @Provides
-    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources, ColorResources colorResources) {
+    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources,
+                                                                 ColorResources colorResources,
+                                                                 NamedayUserSettings namedayUserSettings) {
         Date date = Date.Companion.today();
 
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
-        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context),
-                                          NamedayPreferences.newInstance(context),
+        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
+                                          namedayUserSettings,
                                           BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           NamedayCalendarProvider.newInstance(context.getResources()),
@@ -54,12 +56,13 @@ public class UpcomingEventsModule {
 
     @Provides
     @Named("widget")
-    UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources, ColorResources colorResources) {
+    UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources,
+                                                               ColorResources colorResources,
+                                                               NamedayUserSettings namedayUserSettings) {
         Date date = Date.Companion.today();
-
         UpcomingEventsAdRules adRules = new NoAds();
-        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context),
-                                          NamedayPreferences.newInstance(context),
+        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
+                                          namedayUserSettings,
                                           BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           NamedayCalendarProvider.newInstance(context.getResources()),

@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
@@ -27,15 +27,14 @@ public class PeopleEventsProvider {
 
     private static final DateComparator DATE_COMPARATOR = DateComparator.INSTANCE;
 
-    private final NamedayPreferences namedayPreferences;
+    private final NamedayUserSettings namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
     private final StaticPeopleEventsProvider staticEventsProvider;
     private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
 
-    public static PeopleEventsProvider newInstance(Context context) {
+    public static PeopleEventsProvider newInstance(Context context, NamedayUserSettings namedayPreferences) {
         ContactsProvider contactsProvider = ContactsProvider.get(context);
         ContentResolver resolver = context.getContentResolver();
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
                 namedayPreferences,
@@ -51,16 +50,15 @@ public class PeopleEventsProvider {
         );
     }
 
-    PeopleEventsProvider(NamedayPreferences namedayPreferences,
+    PeopleEventsProvider(NamedayUserSettings namedayPreferences,
                          PeopleNamedaysCalculator peopleNamedaysCalculator,
-                         StaticPeopleEventsProvider staticEventsProvider
-    ) {
+                         StaticPeopleEventsProvider staticEventsProvider) {
         this.staticEventsProvider = staticEventsProvider;
         this.namedayPreferences = namedayPreferences;
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
     }
 
-    public List<ContactEvent> getCelebrationDateOn(Date date) {
+    List<ContactEvent> getCelebrationDateOn(Date date) {
         TimePeriod timeDuration = TimePeriod.Companion.between(date, date);
         List<ContactEvent> contactEvents = new ArrayList<>();
         contactEvents.addAll(staticEventsProvider.fetchEventsBetween(timeDuration));

@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 
@@ -21,12 +21,12 @@ import java.util.List;
 
 public class PeopleNamedaysCalculator {
 
-    private final NamedayPreferences namedayPreferences;
+    private final NamedayUserSettings namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
     private final ContactsProvider contactsProvider;
 
     public PeopleNamedaysCalculator(
-            NamedayPreferences namedayPreferences,
+            NamedayUserSettings namedayPreferences,
             NamedayCalendarProvider namedayCalendarProvider,
             ContactsProvider contactsProvider) {
         this.namedayPreferences = namedayPreferences;

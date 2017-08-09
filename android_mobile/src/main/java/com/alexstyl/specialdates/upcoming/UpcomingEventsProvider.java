@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
@@ -22,7 +22,7 @@ public class UpcomingEventsProvider {
     private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
 
     private final PeopleEventsProvider peopleEventsProvider;
-    private final NamedayPreferences namedayPreferences;
+    private final NamedayUserSettings namedayUserSettings;
     private final BankHolidaysPreferences bankHolidaysPreferences;
     private final BankHolidayProvider bankHolidayProvider;
     private final NamedayCalendarProvider namedayCalendarProvider;
@@ -30,14 +30,14 @@ public class UpcomingEventsProvider {
     private final UpcomingEventsAdRules adRules;
 
     UpcomingEventsProvider(PeopleEventsProvider peopleEventsProvider,
-                           NamedayPreferences namedayPreferences,
+                           NamedayUserSettings namedayUserSettings,
                            BankHolidaysPreferences bankHolidaysPreferences,
                            BankHolidayProvider bankHolidayProvider,
                            NamedayCalendarProvider namedayCalendarProvider,
                            UpcomingEventRowViewModelFactory upcomingRowViewModelFactory,
                            UpcomingEventsAdRules adRules) {
         this.peopleEventsProvider = peopleEventsProvider;
-        this.namedayPreferences = namedayPreferences;
+        this.namedayUserSettings = namedayUserSettings;
         this.bankHolidaysPreferences = bankHolidaysPreferences;
         this.bankHolidayProvider = bankHolidayProvider;
         this.namedayCalendarProvider = namedayCalendarProvider;
@@ -67,7 +67,7 @@ public class UpcomingEventsProvider {
     }
 
     private List<NamesInADate> calculateNamedaysBetween(TimePeriod timeDuration) {
-        NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
+        NamedayLocale selectedLanguage = namedayUserSettings.getSelectedLanguage();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, leadingYearOf(timeDuration));
 
         Date indexDate = timeDuration.getStartingDate();
@@ -93,7 +93,7 @@ public class UpcomingEventsProvider {
     }
 
     private boolean shouldLoadNamedays() {
-        return namedayPreferences.isEnabled() && !namedayPreferences.isEnabledForContactsOnly();
+        return namedayUserSettings.isEnabled() && !namedayUserSettings.isEnabledForContactsOnly();
     }
 
 }

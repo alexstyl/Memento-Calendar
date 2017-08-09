@@ -15,6 +15,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
@@ -23,11 +24,13 @@ import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
+import javax.inject.Inject;
 import java.util.Calendar;
 
 public class DebugFragment extends MementoPreferenceFragment {
 
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
+    @Inject NamedayUserSettings namedayUserSettings;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -37,7 +40,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity()).refresh();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings).refresh();
                 showToast("Refreshing Database");
                 return true;
             }
