@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("SE_BAD_FIELD")
 class SoundNode implements Serializable, Node {
 
     private static final NameCelebrations NO_NAMEDAYS = new NameCelebrations("", new Dates());
