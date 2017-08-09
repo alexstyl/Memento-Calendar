@@ -34,6 +34,8 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
@@ -65,6 +67,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
 
     private Optional<Contact> displayingContact = Optional.absent();
 
@@ -80,7 +83,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
-                PeopleEventsProvider.newInstance(this),
+                PeopleEventsProvider.newInstance(this, namedayUserSettings),
                 new PersonCallProvider(
                         new AndroidContactActionsProvider(getContentResolver(), stringResources, thisActivity(), getPackageManager(), actionsFactory),
                         new FacebookContactActionsProvider(stringResources, getResources(), actionsFactory)
