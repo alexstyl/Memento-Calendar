@@ -20,6 +20,8 @@ public final class UpcomingContactEventViewModel {
     private final URI contactImagePath;
     private final Typeface typeface;
 
+    @SuppressWarnings("ParameterNumber")
+        // this is the number of parameters we need
     UpcomingContactEventViewModel(Contact contact,
                                   @ViewVisibility int visibility,
                                   String contactName,
@@ -27,8 +29,7 @@ public final class UpcomingContactEventViewModel {
                                   @ColorInt int eventColor,
                                   int backgroundVariant,
                                   URI contactImagePath,
-                                  Typeface typeface
-    ) {
+                                  Typeface typeface) {
         this.contact = contact;
         this.visibility = visibility;
         this.contactName = contactName;

@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
+import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel.ConfigurationListener;
 import com.novoda.notils.caster.Views;
 
 public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
@@ -118,7 +119,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
         finish();
     }
 
-    private final UpcomingWidgetConfigurationPanel.ConfigurationListener configurationListener = new UpcomingWidgetConfigurationPanel.ConfigurationListener() {
+    private final ConfigurationListener configurationListener = new ConfigurationListener() {
         @Override
         public void onOpacityLevelChanged(float percentage) {
             previewLayout.previewBackgroundOpacityLevel(percentage);
