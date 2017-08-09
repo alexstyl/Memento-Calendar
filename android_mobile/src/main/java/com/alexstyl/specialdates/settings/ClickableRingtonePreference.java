@@ -3,10 +3,10 @@ package com.alexstyl.specialdates.settings;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class RingtonePreference extends android.preference.RingtonePreference {
+public class ClickableRingtonePreference extends android.preference.RingtonePreference {
     private OnPreferenceClickListener onPreferenceClickListener;
 
-    public RingtonePreference(Context context, AttributeSet attrs) {
+    public ClickableRingtonePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

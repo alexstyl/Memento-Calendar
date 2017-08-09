@@ -34,7 +34,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     private static final int EXTERNAL_STORAGE_REQUEST_CODE = 15;
 
     private CheckBoxPreference enablePreference;
-    private RingtonePreference ringtonePreference;
+    private ClickableRingtonePreference ringtonePreference;
     private TimePreference timePreference;
     private PermissionChecker permissionChecker;
     private DailyReminderScheduler scheduler;
