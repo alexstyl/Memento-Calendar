@@ -20,6 +20,7 @@ class AndroidJSONResourceLoader implements NamedayJSONResourceLoader {
         this.resources = resources;
     }
 
+    @NonNull
     @Override
     public JSONObject loadJSON(@NonNull NamedayLocale locale) throws JSONException {
         InputStream inputStream = resources.openRawResource(locale.getRawResId());
@@ -33,7 +34,7 @@ class AndroidJSONResourceLoader implements NamedayJSONResourceLoader {
                 ctr = inputStream.read();
             }
             inputStream.close();
-            return new JSONObject(outputStream.toString());
+            return new JSONObject(outputStream.toString("UTF-8"));
         } catch (IOException | JSONException e) {
             throw new JSONException(e.getMessage());
         }
