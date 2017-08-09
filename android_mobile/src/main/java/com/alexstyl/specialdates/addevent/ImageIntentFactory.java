@@ -6,8 +6,8 @@ import android.provider.MediaStore;
 
 public final class ImageIntentFactory {
 
-    private static final String ACTION_IMAGE_PICK = Intent.ACTION_PICK;
-    private static final String ACTION_IMAGE_CAPTURE = MediaStore.ACTION_IMAGE_CAPTURE;
+    static final String ACTION_IMAGE_PICK = Intent.ACTION_PICK;
+    static final String ACTION_IMAGE_CAPTURE = MediaStore.ACTION_IMAGE_CAPTURE;
 
     public Intent pickExistingImage() {
         Intent intent = new Intent(ACTION_IMAGE_PICK);
