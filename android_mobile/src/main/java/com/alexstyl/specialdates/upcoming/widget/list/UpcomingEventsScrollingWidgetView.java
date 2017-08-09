@@ -23,7 +23,7 @@ public class UpcomingEventsScrollingWidgetView implements PeopleEventsView {
         Intent intent = new Intent(context, UpcomingEventsScrollingAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
-        int ids[] = widgetManager.getAppWidgetIds(
+        int[] ids = widgetManager.getAppWidgetIds(
                 new ComponentName(context, UpcomingEventsScrollingAppWidgetProvider.class)
         );
 

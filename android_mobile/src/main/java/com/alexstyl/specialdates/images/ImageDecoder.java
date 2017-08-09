@@ -12,10 +12,6 @@ public final class ImageDecoder {
     private static final int FULL_QUALITY = 100;
     private static final int SIZE_MULTIPLIER = 4;
 
-    private ImageDecoder() {
-        // hide this
-    }
-
     public DecodedImage decodeFrom(Bitmap bitmap) {
         int size = bitmap.getWidth() * bitmap.getHeight() * SIZE_MULTIPLIER;
         ByteArrayOutputStream stream = new ByteArrayOutputStream(size);

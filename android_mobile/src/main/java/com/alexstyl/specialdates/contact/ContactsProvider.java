@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
-public final class ContactsProvider {
+public class ContactsProvider {
 
     private static ContactsProvider instance;
 
