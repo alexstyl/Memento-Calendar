@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
@@ -38,7 +38,7 @@ public class PeopleNamedaysCalculatorTest {
     @Mock
     private NamedayCalendarProvider namedayCalendarProvider;
     @Mock
-    private NamedayPreferences mockPreferences;
+    private NamedayUserSettings mockSettings;
     @Mock
     private ContactsProvider mockContactsProvider;
     private final Contact EASTER_CELEBRATING_CONTACT = ContactFixture.withName("Λάμπρος");
@@ -52,8 +52,8 @@ public class PeopleNamedaysCalculatorTest {
                 .build();
 
         when(namedayCalendarProvider.loadNamedayCalendarForLocale(any(NamedayLocale.class), any(Integer.class))).thenReturn(namedayCalendar);
-        when(mockPreferences.getSelectedLanguage()).thenReturn(LOCALE);
-        calculator = new PeopleNamedaysCalculator(mockPreferences, namedayCalendarProvider, mockContactsProvider);
+        when(mockSettings.getSelectedLanguage()).thenReturn(LOCALE);
+        calculator = new PeopleNamedaysCalculator(mockSettings, namedayCalendarProvider, mockContactsProvider);
 
     }
 
