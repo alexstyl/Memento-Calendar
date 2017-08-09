@@ -2,7 +2,8 @@ package com.alexstyl.specialdates.upcoming;
 
 import com.alexstyl.specialdates.date.Date;
 
-final public class AdViewModel implements UpcomingRowViewModel {
+final class AdViewModel implements UpcomingRowViewModel {
+
     private final Date afterDate;
 
     AdViewModel(Date afterDate) {
@@ -16,7 +17,7 @@ final public class AdViewModel implements UpcomingRowViewModel {
 
     @Override
     public long getId() {
-        return 1337;
+        return afterDate.hashCode();
     }
 
     @Override

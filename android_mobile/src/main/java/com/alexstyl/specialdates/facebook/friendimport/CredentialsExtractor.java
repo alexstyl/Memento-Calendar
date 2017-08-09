@@ -38,7 +38,7 @@ final class CredentialsExtractor {
 
     }
 
-    @SuppressWarnings("magicNumber")
+    @SuppressWarnings("MagicNumber")
     private static String getUserNameFrom(String pageSource) {
         try {
             // TODO this needs refactorying

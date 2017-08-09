@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.ui.loader;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+@SuppressWarnings("all")
 public abstract class SimpleAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
 
     public SimpleAsyncTaskLoader(Context context) {

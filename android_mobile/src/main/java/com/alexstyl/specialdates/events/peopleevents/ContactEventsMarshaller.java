@@ -34,7 +34,7 @@ public class ContactEventsMarshaller {
     private ContentValues createValuesFor(ContactEvent event) {
         Contact contact = event.getContact();
 
-        //CHECKSTYLE:OFF: 5 is the capacity we need
+        //CHECKSTYLE:OFF
         ContentValues values = new ContentValues(5);
         //CHECKSTYLE:ON
         values.put(PeopleEventsContract.PeopleEvents.CONTACT_ID, contact.getContactID());
