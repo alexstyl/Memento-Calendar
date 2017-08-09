@@ -45,9 +45,9 @@ final class CircularAvatarFactory {
         Paint paint = createPaintFrom(avatar);
 
         canvas.drawCircle(
-                circleBitmap.getWidth() / 2,
-                circleBitmap.getHeight() / 2,
-                circleBitmap.getWidth() / 2f,
+                circleBitmap.getWidth() / 2.0f,
+                circleBitmap.getHeight() / 2.0f,
+                circleBitmap.getWidth() / 2.0f,
                 paint
         );
         return new Optional<>(circleBitmap);
