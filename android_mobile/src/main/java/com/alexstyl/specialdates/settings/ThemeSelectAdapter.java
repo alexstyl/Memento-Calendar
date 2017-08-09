@@ -15,12 +15,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ThemeSelectAdapter extends BaseAdapter {
+class ThemeSelectAdapter extends BaseAdapter {
 
     private final List<MementoTheme> themes;
     private final AttributeExtractor extractor;
 
-    public ThemeSelectAdapter() {
+    ThemeSelectAdapter() {
         this.themes = Arrays.asList(MementoTheme.values());
         Collections.sort(themes, new MementoThemeComparator());
         extractor = new AttributeExtractor();
