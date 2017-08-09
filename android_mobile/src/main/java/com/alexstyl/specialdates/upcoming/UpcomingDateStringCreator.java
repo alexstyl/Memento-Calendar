@@ -8,20 +8,20 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 
-final public class UpcomingDateStringCreator {
+final class UpcomingDateStringCreator {
 
     private static final String DAY_OF_WEEK_SEPARATOR = ", ";
 
     private final StringResources stringResources;
     private final Date today;
 
-    public UpcomingDateStringCreator(StringResources stringResources, Date today) {
+    UpcomingDateStringCreator(StringResources stringResources, Date today) {
         this.stringResources = stringResources;
         this.today = today;
     }
 
-    public String createLabelFor(Date date) {
-        int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
+    String createLabelFor(Date date) {
+        int formatFlags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -30,13 +30,13 @@ final public class UpcomingDateStringCreator {
         } else if (isTomorrow(date)) {
             stringBuilder.append(stringResources.getString(R.string.tomorrow)).append(DAY_OF_WEEK_SEPARATOR);
         } else {
-            format_flags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
+            formatFlags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
         }
 
         if (date.getYear() != today.getYear()) {
-            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
+            formatFlags |= DateUtils.FORMAT_SHOW_YEAR;
         }
-        stringBuilder.append(DateUtils.formatDateTime(MementoApplication.getContext(), date.toMillis(), format_flags));
+        stringBuilder.append(DateUtils.formatDateTime(MementoApplication.getContext(), date.toMillis(), formatFlags));
         return stringBuilder.toString();
     }
 
