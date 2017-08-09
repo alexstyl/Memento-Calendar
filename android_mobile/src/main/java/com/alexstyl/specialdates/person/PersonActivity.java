@@ -34,7 +34,6 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -144,6 +143,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
             return Optional.absent();
         }
         @ContactSource int contactSource = intent.getIntExtra(EXTRA_CONTACT_SOURCE, -1);
+        //noinspection WrongConstant
         if (contactSource == -1) {
             return Optional.absent();
         }
