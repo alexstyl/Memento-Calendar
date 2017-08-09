@@ -34,7 +34,7 @@ class CredentialsExtractor {
         int indexOfUserID = calendarURL.indexOf(UID);
         int indexOfEnd = calendarURL.indexOf("&", indexOfUserID);
 
-        long userID = Long.valueOf(calendarURL.substring(indexOfUserID + UID_LENGTH, indexOfEnd));
+        long userID = Long.parseLong(calendarURL.substring(indexOfUserID + UID_LENGTH, indexOfEnd));
         String key = calendarURL.substring(indexOfKey + KEY_LENGTH);
 
         return new UserCredentials(userID, key, name);
