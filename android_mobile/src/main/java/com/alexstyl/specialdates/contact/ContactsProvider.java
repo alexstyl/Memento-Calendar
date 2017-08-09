@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
-@SuppressWarnings({"FinalClass"})
+@SuppressWarnings({"FinalClass"}) // TODO abstract the Contacts Provider so that it is not platform dependant
 public class ContactsProvider {
 
     private static ContactsProvider instance;
