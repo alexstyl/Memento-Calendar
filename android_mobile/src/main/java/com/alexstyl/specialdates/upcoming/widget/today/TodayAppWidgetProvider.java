@@ -93,8 +93,6 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         String title = toString(context, date);
 
-        final int N = appWidgetIds.length;
-
         String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
 
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
@@ -105,9 +103,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
         int finalHeaderColor = calculator.getColor(Date.Companion.today(), date);
         int avatarSizeInPx = context.getResources().getDimensionPixelSize(R.dimen.widget_avatar_size);
-        for (int i = 0; i < N; i++) {
-            final int appWidgetId = appWidgetIds[i];
-
+        for (int appWidgetId : appWidgetIds) {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_today);
