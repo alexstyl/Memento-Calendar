@@ -11,7 +11,7 @@ import java.util.Calendar;
  * @deprecated Use {@link DateDisplayStringCreator} instead
  */
 @Deprecated // TODO Get rid of this class in favor of DateDisplayStringCreator
-public class DateFormatUtils {
+public final class DateFormatUtils {
 
     private DateFormatUtils() {
         // hide this

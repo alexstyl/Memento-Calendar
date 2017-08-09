@@ -202,8 +202,9 @@ public class SearchActivity extends ThemedMementoActivity {
             case R.id.action_clear:
                 onClearPressed();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

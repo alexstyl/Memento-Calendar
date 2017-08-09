@@ -13,9 +13,9 @@ import java.util.List;
 
 public class ContactEventsMarshaller {
 
+    private static final int DEFAULT_VALUES_SIZE = 5;
     private final DateDisplayStringCreator instance;
-    @ContactSource
-    private final int source;
+    @ContactSource private final int source;
 
     public ContactEventsMarshaller(@ContactSource int source) {
         this.source = source;
@@ -34,9 +34,7 @@ public class ContactEventsMarshaller {
     private ContentValues createValuesFor(ContactEvent event) {
         Contact contact = event.getContact();
 
-        //CHECKSTYLE:OFF
-        ContentValues values = new ContentValues(5);
-        //CHECKSTYLE:ON
+        ContentValues values = new ContentValues(DEFAULT_VALUES_SIZE);
         values.put(PeopleEventsContract.PeopleEvents.CONTACT_ID, contact.getContactID());
         values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
         String date = instance.stringOf(event.getDate());

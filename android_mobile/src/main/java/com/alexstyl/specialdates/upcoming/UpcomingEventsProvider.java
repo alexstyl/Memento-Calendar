@@ -68,7 +68,7 @@ public class UpcomingEventsProvider {
 
     private List<NamesInADate> calculateNamedaysBetween(TimePeriod timeDuration) {
         NamedayLocale selectedLanguage = namedayPreferences.getSelectedLanguage();
-        NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.getStartingDate().getYear());
+        NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, leadingYearOf(timeDuration));
 
         Date indexDate = timeDuration.getStartingDate();
         Date toDate = timeDuration.getEndingDate();
@@ -82,6 +82,10 @@ public class UpcomingEventsProvider {
             indexDate = indexDate.addDay(1);
         }
         return namedays;
+    }
+
+    private static int leadingYearOf(TimePeriod timeDuration) {
+        return timeDuration.getStartingDate().getYear();
     }
 
     private boolean shouldLoadBankHolidays() {
