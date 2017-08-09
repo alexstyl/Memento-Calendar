@@ -108,9 +108,8 @@ public class ColorImageView extends FrameLayout {
         int height = getHeight();
         if (width > 0 && height > 0) {
             if (drawCircle) {
-                int size = Math.min(width, height);
-                float radius = size / 2f;
-                canvas.drawCircle(width / 2, height / 2, radius, paint);
+                float minSide = (float) Math.min(width, height);
+                canvas.drawCircle(width / 2, height / 2, minSide / 2, paint);
             } else {
                 canvas.drawPaint(paint);
             }
