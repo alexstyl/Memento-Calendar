@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 
-public class ErrorTracker {
+public final class ErrorTracker {
 
     private static final String TAG = ErrorTracker.class.getSimpleName();
     private static final String KEY_LOCALE = "user_locale";

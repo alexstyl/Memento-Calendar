@@ -34,6 +34,7 @@ public class DonateActivity extends MementoActivity {
     private static final int REQUEST_CODE = 1004;
     private static final int SCROLL_DOWN_ANIMATION_DELAY = 2000;
     private static final URI DEV_IMAGE_URI = URI.create("http://alexstyl.com/memento-calendar/dev.jpg");
+    private static final int VELOCITY_Y = 50;
 
     private DonatePresenter donatePresenter;
     private SeekBar donateBar;
@@ -100,7 +101,7 @@ public class DonateActivity extends MementoActivity {
             private void scrollToDonate() {
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
                 AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-                behavior.onNestedFling(coordinator, appBarLayout, null, 0, 50, true);
+                behavior.onNestedFling(coordinator, appBarLayout, null, 0, VELOCITY_Y, true);
             }
         }, SCROLL_DOWN_ANIMATION_DELAY);
 

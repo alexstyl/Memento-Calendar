@@ -10,8 +10,12 @@ import java.util.Calendar;
 /**
  * @deprecated Use {@link DateDisplayStringCreator} instead
  */
-@Deprecated
+@Deprecated // TODO Get rid of this class in favor of DateDisplayStringCreator
 public class DateFormatUtils {
+
+    private DateFormatUtils() {
+        // hide this
+    }
 
     public static String formatTimeStampString(Context context, long when, boolean includeToday) {
         return formatTimeStampString(context, when, includeToday, false);
@@ -20,11 +24,11 @@ public class DateFormatUtils {
     public static String formatTimeStampString(Context context, long when, boolean includeToday, boolean includeYear) {
         // Basic settings for formatDateTime() we want for all cases.
         @SuppressWarnings("deprecation")
-        int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT
+        int formatFlags = DateUtils.FORMAT_NO_NOON_MIDNIGHT
                 | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
 
         if (!includeYear) {
-            format_flags |= DateUtils.FORMAT_NO_YEAR;
+            formatFlags |= DateUtils.FORMAT_NO_YEAR;
         }
 
         String day = "";
@@ -34,20 +38,20 @@ public class DateFormatUtils {
             } else if (isInXDays(when, 1)) {
                 day = context.getString(R.string.tomorrow) + ", ";
             } else {
-                format_flags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
+                formatFlags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
             }
         } else {
-            format_flags |= (DateUtils.FORMAT_SHOW_DATE);
+            formatFlags |= (DateUtils.FORMAT_SHOW_DATE);
         }
 
-        return day + DateUtils.formatDateTime(context, when, format_flags);
+        return day + DateUtils.formatDateTime(context, when, formatFlags);
 
     }
 
     /**
-     * @return true if the supplied when is today else false
+     * @return true if the supplied when is today
      */
-    public static boolean isInXDays(long when, int value) {
+    private static boolean isInXDays(long when, int value) {
         Calendar time = Calendar.getInstance();
         time.setTimeInMillis(when);
 

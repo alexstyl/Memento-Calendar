@@ -6,8 +6,7 @@ import android.provider.ContactsContract.Contacts;
 
 final class AndroidContactsQuery {
 
-    public final static Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
-
+    public static final Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
     static final String[] PROJECTION = {
             Contacts._ID,
             Contacts.LOOKUP_KEY,

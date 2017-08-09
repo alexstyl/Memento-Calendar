@@ -63,6 +63,8 @@ public class SearchActivity extends ThemedMementoActivity {
     private static final int ID_CONTACTS = 31;
     private static final int ID_NAMEDAYS = 32;
     private static final int INITAL_COUNT = 5;
+    private static final int HALF = 2;
+    private static final int COLUMNS = 3;
 
     private int searchCounter = INITAL_COUNT;
     private SearchBar searchbar;
@@ -106,11 +108,8 @@ public class SearchActivity extends ThemedMementoActivity {
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(true);
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / 2;
-        //CHECKSTYLE:OFF: 3 is the columns we need
-        resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
-        // CHECKSTYLE:ON
-
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / HALF;
+        resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, COLUMNS));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
         resultView.setLayoutManager(mLayoutManager);

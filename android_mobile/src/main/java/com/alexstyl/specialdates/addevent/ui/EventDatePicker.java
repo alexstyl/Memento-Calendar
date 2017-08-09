@@ -31,6 +31,9 @@ public class EventDatePicker extends LinearLayout {
     private final CheckedTextView includesYearCheckbox;
 
     private final Date today;
+    private static final int FIRST_MONTH = 1;
+    private static final int LAST_MONTH = 12;
+    private static final int FIRST_YEAR = 1900;
 
     public EventDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -75,7 +78,6 @@ public class EventDatePicker extends LinearLayout {
     }
 
     private void setupDayPicker() {
-        ;
         dayPicker.setMinValue(FIRST_DAY_OF_MONTH);
         dayPicker.setMaxValue(LAST_DAY_OF_MONTH);
 
@@ -84,8 +86,8 @@ public class EventDatePicker extends LinearLayout {
     }
 
     private void setupMonthPicker() {
-        monthPicker.setMinValue(1);
-        monthPicker.setMaxValue(12);
+        monthPicker.setMinValue(FIRST_MONTH);
+        monthPicker.setMaxValue(LAST_MONTH);
 
         monthPicker.setDisplayedValues(labels.getMonthsOfYear());
 
@@ -94,7 +96,7 @@ public class EventDatePicker extends LinearLayout {
     }
 
     private void setupYearPicker() {
-        yearPicker.setMinValue(1900);
+        yearPicker.setMinValue(FIRST_YEAR);
         yearPicker.setMaxValue(todaysYear());
 
         yearPicker.setValue(todaysYear());
