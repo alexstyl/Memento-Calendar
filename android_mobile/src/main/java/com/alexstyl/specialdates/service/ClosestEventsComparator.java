@@ -4,9 +4,10 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-final class ClosestEventsComparator implements Comparator<Optional<ContactEventsOnADate>> {
+final class ClosestEventsComparator implements Comparator<Optional<ContactEventsOnADate>>, Serializable {
 
     private final DateComparator dateComparator = DateComparator.INSTANCE;
 
