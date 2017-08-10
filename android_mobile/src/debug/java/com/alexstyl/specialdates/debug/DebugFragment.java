@@ -10,6 +10,8 @@ import android.provider.CalendarContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.alexstyl.specialdates.DebugAppComponent;
+import com.alexstyl.specialdates.DebugApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
@@ -30,11 +32,16 @@ import java.util.Calendar;
 public class DebugFragment extends MementoPreferenceFragment {
 
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
-    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject
+    NamedayUserSettings namedayUserSettings;
 
     @Override
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
+
+        DebugAppComponent debugAppComponent = ((DebugApplication) getActivity().getApplication()).getDebugAppComponent();
+        debugAppComponent.inject(this);
+
         addPreferencesFromResource(R.xml.preference_debug);
         dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(getActivity());
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
