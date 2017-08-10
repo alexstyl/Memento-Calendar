@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
-import com.alexstyl.specialdates.debug.DebugFragment;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider;
@@ -71,8 +70,6 @@ public interface AppComponent {
     void inject(ContactSuggestionView view);
 
     void inject(NamedayListPreference preference);
-
-    void inject(DebugFragment fragment);
 
     void inject(WearSyncService service);
 }
