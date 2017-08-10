@@ -7,11 +7,10 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-class SoundNode implements Serializable, Node {
+class SoundNode implements Node {
 
     private static final NameCelebrations NO_NAMEDAYS = new NameCelebrations("", new Dates());
 

@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.assist.ViewScaleType;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.novoda.notils.caster.Views;
 
-final public class AvatarPickerView extends RelativeLayout implements ImageAware {
+public final class AvatarPickerView extends RelativeLayout implements ImageAware {
 
     private ImageView imageView;
     private ImageView gradientTopView;

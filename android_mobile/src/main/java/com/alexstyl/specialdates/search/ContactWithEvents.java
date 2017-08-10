@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import java.util.ArrayList;
 import java.util.List;
 
-class ContactWithEvents {
+final class ContactWithEvents {
 
     private static final Optional<ContactEvent> NO_EVENT = Optional.absent();
 
@@ -51,14 +51,6 @@ class ContactWithEvents {
             }
         }
         return contactEvents;
-    }
-
-    @Override
-    public String toString() {
-        return "ContactWithEvents{" +
-                "contact=" + contact +
-                ", events=" + events +
-                '}';
     }
 
     @Override

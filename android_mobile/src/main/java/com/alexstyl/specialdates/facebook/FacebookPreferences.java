@@ -5,7 +5,7 @@ import android.content.Context;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-public class FacebookPreferences {
+public final class FacebookPreferences {
     private final EasyPreferences preferences;
 
     public static FacebookPreferences newInstance(Context context) {

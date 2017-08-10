@@ -6,7 +6,11 @@ import com.alexstyl.specialdates.R;
 
 import java.text.Normalizer;
 
-public class GreekNameUtils {
+public final class GreekNameUtils {
+
+    private GreekNameUtils() {
+        // hide this
+    }
 
     public static boolean isGreekLocaleSelected(Context context) {
         return context.getResources().getBoolean(R.bool.isGreekLocaleSelected);
@@ -14,7 +18,6 @@ public class GreekNameUtils {
 
     public static String removeAccents(CharSequence title) {
         String decomposed = Normalizer.normalize(title, Normalizer.Form.NFD);
-        String removed = decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-        return removed;
+        return decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 }

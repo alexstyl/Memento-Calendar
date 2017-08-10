@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ContactEventsOnADate {
+public final class ContactEventsOnADate {
 
     private final Date date;
     private final List<ContactEvent> contactEventList;

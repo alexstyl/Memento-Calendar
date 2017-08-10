@@ -27,7 +27,7 @@ class ContactEventSerialiser {
     }
 
     List<ContactEvent> createEventsFrom(InputStream inputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         String line;
         List<ContactEvent> contactEvents = new ArrayList<>();
         Map<String, String> map = null;

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 
-class MoreViewHolder extends RecyclerView.ViewHolder {
+final class MoreViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView mLabel;
     private final ProgressBar mProgress;

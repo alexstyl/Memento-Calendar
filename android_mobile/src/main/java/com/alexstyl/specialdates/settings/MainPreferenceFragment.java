@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.donate.DonationService;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
@@ -28,18 +28,18 @@ import com.novoda.notils.caster.Classes;
 
 import javax.inject.Inject;
 
-final public class MainPreferenceFragment extends MementoPreferenceFragment {
+public final class MainPreferenceFragment extends MementoPreferenceFragment {
 
-    private final String FM_THEME_TAG = "fm_theme";
+    private static final String FM_THEME_TAG = "fm_theme";
 
     private NamedayListPreference namedayLanguageListPreferences;
-    private NamedayPreferences namedaysPreferences;
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
     private MainPreferenceActivity activity;
     private DonationService donationService;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
+    @Inject NamedayUserSettings namedaysPreferences;
 
     @Override
     public void onAttach(Activity activity) {
@@ -50,9 +50,10 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_main);
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
+
+        addPreferencesFromResource(R.xml.preference_main);
         themingPreferences = ThemingPreferences.newInstance(getActivity());
         Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
         bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -88,7 +89,6 @@ final public class MainPreferenceFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
-        namedaysPreferences = NamedayPreferences.newInstance(getActivity());
         findPreference(R.string.key_namedays_contacts_only).setOnPreferenceChangeListener(onPreferenceChangeListener);
         namedayLanguageListPreferences = findPreference(R.string.key_namedays_language);
 

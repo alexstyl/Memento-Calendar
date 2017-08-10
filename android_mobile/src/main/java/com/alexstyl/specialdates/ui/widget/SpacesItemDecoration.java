@@ -6,7 +6,7 @@ import android.view.View;
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
-    final private int space;
+    private final int space;
     private final int columns;
 
     public SpacesItemDecoration(int space, int columns) {

@@ -42,6 +42,8 @@ import static com.novoda.notils.caster.Views.findById;
 
 public class UpcomingEventsActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
+    private static final long DRAWER_APPEARANCE_WAITING_TIME = 400L;
+
     private Notifier notifier;
     private AskForSupport askForSupport;
     private ThemeMonitor themeMonitor;
@@ -137,7 +139,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
                     drawerLayout.openDrawer(Gravity.START, true);
                     preferences.triggerNavigationDrawerDisplayed();
                 }
-            }, 400L);
+            }, DRAWER_APPEARANCE_WAITING_TIME);
         }
     }
 

@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.theming.Themer;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.novoda.notils.caster.Views;
 
 public class MainPreferenceActivity extends MementoPreferenceActivity {
@@ -16,7 +15,6 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Themer.get(this).initialiseActivity(this);
         setContentView(R.layout.activity_settings);
 
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
@@ -34,9 +32,8 @@ public class MainPreferenceActivity extends MementoPreferenceActivity {
                 finish();
                 return true;
             default:
-                break;
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -37,6 +37,7 @@ import java.security.spec.X509EncodedKeySpec;
  * make it harder for an attacker to replace the code with stubs that treat all
  * purchases as verified.
  */
+@SuppressWarnings("all")
 public class Security {
     private static final String TAG = "IABUtil/Security";
 

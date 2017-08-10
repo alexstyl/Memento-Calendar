@@ -22,10 +22,7 @@ public class TodayPeopleEventsView implements PeopleEventsView {
         Intent intent = new Intent(context, TodayAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
-        int ids[] = instance.getAppWidgetIds(
-                new ComponentName(context, TodayAppWidgetProvider.class)
-        );
-
+        int[] ids = instance.getAppWidgetIds(new ComponentName(context, TodayAppWidgetProvider.class));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(intent);
     }

@@ -45,7 +45,7 @@ class FacebookContactFactory {
     private long idOf(Map<String, String> map) {
         String uid = getOrThrow(map, "UID");
         int facebookMail = uid.indexOf("@facebook.com");
-        return Long.valueOf(uid.substring(1, facebookMail));
+        return Long.parseLong(uid.substring(1, facebookMail));
     }
 
     private static String getOrThrow(Map<String, String> map, String key) {
