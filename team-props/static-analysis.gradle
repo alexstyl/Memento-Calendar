@@ -2,8 +2,8 @@ apply plugin: 'com.novoda.static-analysis'
 
 staticAnalysis {
     penalty {
-        maxErrors = 0
-        maxWarnings = 0
+        maxErrors = 209
+        maxWarnings = 7
     }
 
     checkstyle {
