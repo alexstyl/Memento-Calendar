@@ -32,7 +32,10 @@ public class ContactEventView extends LinearLayout {
         super.setGravity(Gravity.CENTER_VERTICAL);
     }
 
-    public void bind(final UpcomingContactEventViewModel upcomingContactEventViewModel, final OnUpcomingEventClickedListener listener, ImageLoader imageLoader) {
+    public void bind(
+            final UpcomingContactEventViewModel upcomingContactEventViewModel,
+            final OnUpcomingEventClickedListener listener,
+            ImageLoader imageLoader) {
         contactNameView.setText(upcomingContactEventViewModel.getContactName());
         eventTypeView.setText(upcomingContactEventViewModel.getEventLabel());
         eventTypeView.setTextColor(upcomingContactEventViewModel.getEventColor());

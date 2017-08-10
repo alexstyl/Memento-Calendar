@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
@@ -38,7 +38,7 @@ public class PeopleEventsProviderTest {
     @Mock
     private ContactsProvider mockContactsProvider;
     @Mock
-    private NamedayPreferences mockNamedaysPreferences;
+    private NamedayUserSettings mockNamedaysPreferences;
     @Mock
     private CustomEventProvider customEventProvider;
     @Mock

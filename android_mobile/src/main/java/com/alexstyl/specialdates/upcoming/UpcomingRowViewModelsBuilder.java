@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public final class UpcomingRowViewModelsBuilder {
+final class UpcomingRowViewModelsBuilder {
 
     private static final List<UpcomingRowViewModel> NO_CELEBRATIONS = Collections.emptyList();
     private static final List<ContactEvent> NO_CONTACT_EVENTS = Collections.emptyList();
@@ -26,13 +26,15 @@ public final class UpcomingRowViewModelsBuilder {
     private final UpcomingEventRowViewModelFactory upcomingRowViewModelFactory;
     private final UpcomingEventsAdRules adRules;
 
-    public UpcomingRowViewModelsBuilder(TimePeriod duration, UpcomingEventRowViewModelFactory upcomingRowViewModelFactory, UpcomingEventsAdRules adRules) {
+    UpcomingRowViewModelsBuilder(TimePeriod duration,
+                                 UpcomingEventRowViewModelFactory upcomingRowViewModelFactory,
+                                 UpcomingEventsAdRules adRules) {
         this.duration = duration;
         this.upcomingRowViewModelFactory = upcomingRowViewModelFactory;
         this.adRules = adRules;
     }
 
-    public UpcomingRowViewModelsBuilder withContactEvents(List<ContactEvent> contactEvents) {
+    UpcomingRowViewModelsBuilder withContactEvents(List<ContactEvent> contactEvents) {
         for (ContactEvent contactEvent : contactEvents) {
             Date date = contactEvent.getDate();
             this.contactEvents.addValue(new AnnualDate(date), contactEvent);
@@ -40,7 +42,7 @@ public final class UpcomingRowViewModelsBuilder {
         return this;
     }
 
-    public UpcomingRowViewModelsBuilder withNamedays(List<NamesInADate> namedays) {
+    UpcomingRowViewModelsBuilder withNamedays(List<NamesInADate> namedays) {
         for (NamesInADate nameday : namedays) {
             Date date = nameday.getDate();
             this.namedays.put(new AnnualDate(date), nameday);
@@ -48,7 +50,7 @@ public final class UpcomingRowViewModelsBuilder {
         return this;
     }
 
-    public UpcomingRowViewModelsBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
+    UpcomingRowViewModelsBuilder withBankHolidays(List<BankHoliday> bankHolidays) {
         for (BankHoliday bankHoliday : bankHolidays) {
             Date date = bankHoliday.getDate();
             this.bankHolidays.put(new AnnualDate(date), bankHoliday);
@@ -56,7 +58,7 @@ public final class UpcomingRowViewModelsBuilder {
         return this;
     }
 
-    public List<UpcomingRowViewModel> build() {
+    List<UpcomingRowViewModel> build() {
         if (noEventsArePresent()) {
             return NO_CELEBRATIONS;
         }

@@ -3,19 +3,19 @@ package com.alexstyl.specialdates.search;
 import android.content.res.Resources;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 
-public class SearchHintCreator {
+class SearchHintCreator {
 
     private final Resources resources;
-    private final NamedayPreferences namedayPreferences;
+    private final NamedayUserSettings namedayPreferences;
 
-    public SearchHintCreator(Resources resources, NamedayPreferences namedayPreferences) {
+    SearchHintCreator(Resources resources, NamedayUserSettings namedayPreferences) {
         this.resources = resources;
         this.namedayPreferences = namedayPreferences;
     }
 
-    public String createHint() {
+    String createHint() {
         boolean enabled = namedayPreferences.isEnabled();
         if (enabled) {
             return resources.getString(R.string.search_hint_contacts_and_namedays);

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.R;
 
-class NoResultsViewHolder extends RecyclerView.ViewHolder {
+final class NoResultsViewHolder extends RecyclerView.ViewHolder {
 
     static NoResultsViewHolder createFor(ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());

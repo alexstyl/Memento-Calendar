@@ -2,9 +2,10 @@ package com.alexstyl.specialdates.upcoming;
 
 final class UpcomingEventsFreeUserAdRules implements UpcomingEventsAdRules {
 
+    private static final int DAY_INTERVAL = 2;
+
     private int lastAdIndex = 0;
     private boolean monthHandled = false;
-    private int DAY_INTERVAL = 2;
 
     @Override
     public boolean shouldAppendAdForEndOfMonth(int index) {

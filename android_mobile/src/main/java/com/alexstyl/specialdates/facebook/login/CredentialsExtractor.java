@@ -12,6 +12,9 @@ class CredentialsExtractor {
     private static final int UID_LENGTH = UID.length();
     private static final String KEY = "key=";
     private static final int KEY_LENGTH = KEY.length();
+    private static final int USER_DETAILS = 1;
+    private static final String OPENNING_SPAN = "<span>";
+    private static final String CLOSING_SPAN = "</span>";
 
     UserCredentials extractCalendarURL(String pageSource) {
         Matcher matcher = BIRTHDAY_PATTERN.matcher(pageSource);
@@ -31,7 +34,7 @@ class CredentialsExtractor {
         int indexOfUserID = calendarURL.indexOf(UID);
         int indexOfEnd = calendarURL.indexOf("&", indexOfUserID);
 
-        long userID = Long.valueOf(calendarURL.substring(indexOfUserID + UID_LENGTH, indexOfEnd));
+        long userID = Long.parseLong(calendarURL.substring(indexOfUserID + UID_LENGTH, indexOfEnd));
         String key = calendarURL.substring(indexOfKey + KEY_LENGTH);
 
         return new UserCredentials(userID, key, name);
@@ -40,8 +43,10 @@ class CredentialsExtractor {
 
     String obtainName(String pageSource) {
         try {
-            String[] splits = pageSource.split("data-testid=\"blue_bar_profile_link\">");
-            return splits[1].substring(splits[1].indexOf("span") + 5, splits[1].indexOf("/span") - 1);
+            String userDetails = pageSource.split("data-testid=\"blue_bar_profile_link\">")[USER_DETAILS];
+            int startOfName = userDetails.indexOf(OPENNING_SPAN) + OPENNING_SPAN.length();
+            int endOfName = userDetails.indexOf(CLOSING_SPAN);
+            return userDetails.substring(startOfName, endOfName);
         } catch (Exception e) {
             return "Facebook-User";
         }

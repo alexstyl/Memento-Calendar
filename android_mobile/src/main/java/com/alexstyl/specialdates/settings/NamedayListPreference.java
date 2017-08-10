@@ -7,22 +7,30 @@ import android.preference.Preference;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Comparator;
 
 public class NamedayListPreference extends ListPreference {
 
+    @Inject NamedayUserSettings userSettings;
+
     public NamedayListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
 
         NamedayLocale[] locales = NamedayLocale.values();
         Arrays.sort(locales, COUNTRY_CODE_COMPARATOR);
         setEntriesAndValues(locales);
 
-        NamedayLocale defaultLocale = NamedayPreferences.newInstance(context).getSelectedLanguage();
+        NamedayLocale defaultLocale = userSettings.getSelectedLanguage();
         setDefaultValue(defaultLocale.getCountryCode());
     }
 

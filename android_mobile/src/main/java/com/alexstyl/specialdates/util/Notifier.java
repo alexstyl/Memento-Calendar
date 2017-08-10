@@ -38,11 +38,12 @@ import com.novoda.notils.logger.simple.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Notifier {
+public final class Notifier {
 
     private static final int NOTIFICATION_ID_DAILY_REMINDER_CONTACTS = 0;
     private static final int NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS = 1;
     private static final int NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS = 2;
+    private static final int MAX_CONTACTS = 3;
 
     private final Context context;
     private final NotificationManager notificationManager;
@@ -52,7 +53,11 @@ public class Notifier {
     private final ColorResources colorResources;
     private final DailyReminderPreferences preferences;
 
-    public static Notifier newInstance(Context context, StringResources stringResources, ColorResources colorResources, DimensionResources dimensions, ImageLoader imageLoader) {
+    public static Notifier newInstance(Context context,
+                                       StringResources stringResources,
+                                       ColorResources colorResources,
+                                       DimensionResources dimensions,
+                                       ImageLoader imageLoader) {
         // TODO get rid of newInstance
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(context);
@@ -104,7 +109,7 @@ public class Notifier {
         for (ContactEvent event : events) {
             contacts.add(event.getContact());
         }
-        String title = NaturalLanguageUtils.joinContacts(stringResources, contacts, 3);
+        String title = NaturalLanguageUtils.joinContacts(stringResources, contacts, MAX_CONTACTS);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_memento)

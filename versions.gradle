@@ -5,4 +5,10 @@ ext {
     androidBuildToolsVersion = '25.0.2'
     androidVersionCode = 79
     androidVersionName = '11.2'
+
+    checkstyleVersion = '8.0'
+    findbugsVersion = '3.0.1'
+    pmdVersion = '5.8.1'
+
+
 }

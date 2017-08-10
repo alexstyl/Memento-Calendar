@@ -43,7 +43,7 @@ final class UpcomingViewHolderFactory {
         } else if (viewType == UpcomingRowViewType.AD) {
             NativeExpressAdView adView = new NativeExpressAdView(parent.getContext());
             adView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-            adView.setAdSize(new AdSize(AdSize.FULL_WIDTH, 132));
+            adView.setAdSize(new AdSize(AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT));
             adView.setAdUnitId(parent.getResources().getString(R.string.admob_unit_id));
             return new AdViewHolder(adView, adView);
         } else {

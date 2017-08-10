@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -41,6 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
 
+    private static final int SINGLE_COLUMN = 1;
     private ViewGroup root;
     private ProgressBar progressBar;
     private TextView emptyView;
@@ -68,7 +70,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
 
-        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(sharedPreferences, stringResources);
         navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
@@ -92,7 +95,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         upcomingList = Views.findById(view, R.id.upcoming_events_list);
         upcomingList.setHasFixedSize(true);
         upcomingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        upcomingList.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards), 1));
+        int space = getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards);
+        upcomingList.addItemDecoration(new SpacesItemDecoration(space, SINGLE_COLUMN));
 
         adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), new OnUpcomingEventClickedListener() {
 

@@ -11,6 +11,6 @@ public final class DecodedImage {
     }
 
     public byte[] getBytes() {
-        return bytes;
+        return bytes.clone();
     }
 }
