@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -27,12 +28,13 @@ import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    @Inject Analytics analytics;
-    @Inject StringResources stringResources;
-    @Inject ImageLoader imageLoader;
     private PermissionChecker permissionChecker;
     private UpcomingWidgetPreferences preferences;
     private WidgetImageLoader widgetImageLoader;
+    @Inject Analytics analytics;
+    @Inject StringResources stringResources;
+    @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -67,7 +69,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateTodayWidget(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context)) {
+        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context, namedayUserSettings)) {
             @Override
             void onNextDateLoaded(ContactEventsOnADate events) {
                 updateForDate(context, appWidgetManager, appWidgetIds, events);
@@ -93,8 +95,6 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         String title = toString(context, date);
 
-        final int N = appWidgetIds.length;
-
         String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
 
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
@@ -105,9 +105,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
         int finalHeaderColor = calculator.getColor(Date.Companion.today(), date);
         int avatarSizeInPx = context.getResources().getDimensionPixelSize(R.dimen.widget_avatar_size);
-        for (int i = 0; i < N; i++) {
-            final int appWidgetId = appWidgetIds[i];
-
+        for (int appWidgetId : appWidgetIds) {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_today);

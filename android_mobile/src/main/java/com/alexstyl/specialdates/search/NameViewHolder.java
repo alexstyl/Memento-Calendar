@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 
-class NameViewHolder extends RecyclerView.ViewHolder {
+final class NameViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView nameView;
 

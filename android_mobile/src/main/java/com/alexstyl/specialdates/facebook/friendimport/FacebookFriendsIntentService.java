@@ -25,6 +25,7 @@ import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();
+    private static final int NOTIFICATION_ID = 123;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -66,7 +67,7 @@ public class FacebookFriendsIntentService extends IntentService {
                 .setContentTitle("Friends fetched")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .build();
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(123, notification);
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notification);
     }
 
     private boolean isAnnonymous(UserCredentials userCredentials) {

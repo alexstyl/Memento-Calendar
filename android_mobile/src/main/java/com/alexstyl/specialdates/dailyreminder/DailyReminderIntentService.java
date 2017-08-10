@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
@@ -39,11 +39,11 @@ import java.util.List;
  */
 public class DailyReminderIntentService extends IntentService {
 
-    private NamedayPreferences namedayPreferences;
     private NamedayCalendarProvider namedayCalendarProvider;
     private BankHolidaysPreferences bankHolidaysPreferences;
     private PermissionChecker checker;
 
+    @Inject NamedayUserSettings namedayPreferences;
     @Inject StringResources stringResources;
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
@@ -62,7 +62,6 @@ public class DailyReminderIntentService extends IntentService {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         notifier = Notifier.newInstance(this, stringResources, colorResources, dimensions, imageLoader);
-        namedayPreferences = NamedayPreferences.newInstance(this);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
         checker = new PermissionChecker(this);
@@ -70,7 +69,7 @@ public class DailyReminderIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
+        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this, namedayPreferences);
         Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {

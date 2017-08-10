@@ -4,12 +4,16 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class PeopleEventsContract {
+public final class PeopleEventsContract {
 
     public static final String AUTHORITY = "com.alexstyl.specialdates.peopleeventsprovider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-    public static class PeopleEvents implements BaseColumns, ContactColumns, EventColumns {
+    private PeopleEventsContract() {
+        // hide this
+    }
+
+    public static final class PeopleEvents implements BaseColumns, ContactColumns, EventColumns {
 
         private PeopleEvents() {
             // hide this

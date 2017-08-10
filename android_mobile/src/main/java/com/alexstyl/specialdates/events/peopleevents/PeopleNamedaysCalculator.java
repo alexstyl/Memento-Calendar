@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 
@@ -21,15 +21,14 @@ import java.util.List;
 
 public class PeopleNamedaysCalculator {
 
-    private final NamedayPreferences namedayPreferences;
+    private final NamedayUserSettings namedayPreferences;
     private final NamedayCalendarProvider namedayCalendarProvider;
     private final ContactsProvider contactsProvider;
 
     public PeopleNamedaysCalculator(
-            NamedayPreferences namedayPreferences,
+            NamedayUserSettings namedayPreferences,
             NamedayCalendarProvider namedayCalendarProvider,
-            ContactsProvider contactsProvider
-    ) {
+            ContactsProvider contactsProvider) {
         this.namedayPreferences = namedayPreferences;
         this.namedayCalendarProvider = namedayCalendarProvider;
         this.contactsProvider = contactsProvider;
@@ -67,7 +66,7 @@ public class PeopleNamedaysCalculator {
         return ContactEventsOnADate.createFrom(date, contactEvents);
     }
 
-    public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timeDuration) {
+    public List<ContactEvent> loadSpecialNamedaysBetween(TimePeriod timePeriod) {
         List<ContactEvent> namedayEvents = new ArrayList<>();
         for (Contact contact : contactsProvider.getAllContacts()) {
             for (String firstName : contact.getDisplayName().getFirstNames()) {
@@ -79,7 +78,7 @@ public class PeopleNamedaysCalculator {
                 int namedaysCount = nameDays.size();
                 for (int i = 0; i < namedaysCount; i++) {
                     Date date = nameDays.getDate(i);
-                    if (timeDuration.containsDate(date)) {
+                    if (timePeriod.containsDate(date)) {
                         ContactEvent nameday = new ContactEvent(new Optional<>(contact.getContactID()), StandardEventType.NAMEDAY, date, contact);
                         namedayEvents.add(nameday);
                     }
@@ -95,7 +94,9 @@ public class PeopleNamedaysCalculator {
             NameCelebrations specialCelebration = getSpecialNamedaysOf(name);
             Dates specialDates = specialCelebration.getDates();
             for (int i = 0; i < specialDates.size(); i++) {
-                ContactEvent contactEvent = new ContactEvent(new Optional<>(contact.getContactID()), StandardEventType.NAMEDAY, specialDates.getDate(i), contact);
+                Date date = specialDates.getDate(i);
+                Optional<Long> deviceEventId = new Optional<>(contact.getContactID());
+                ContactEvent contactEvent = new ContactEvent(deviceEventId, StandardEventType.NAMEDAY, date, contact);
                 namedays.add(contactEvent);
             }
         }

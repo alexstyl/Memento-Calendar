@@ -45,18 +45,18 @@ public enum StandardEventType implements EventType {
         this.androidType = androidType;
     }
 
-    private static final Map<Integer, StandardEventType> map;
+    private static final Map<Integer, StandardEventType> MAP;
 
     static {
-        map = new HashMap<>();
+        MAP = new HashMap<>();
         for (StandardEventType eventType : values()) {
-            map.put(eventType.eventTypeId, eventType);
+            MAP.put(eventType.eventTypeId, eventType);
         }
     }
 
     public static StandardEventType fromId(@EventTypeId int eventTypeId) {
-        if (map.containsKey(eventTypeId)) {
-            return map.get(eventTypeId);
+        if (MAP.containsKey(eventTypeId)) {
+            return MAP.get(eventTypeId);
         }
         throw new IllegalArgumentException("No event type with eventTypeId " + eventTypeId);
     }

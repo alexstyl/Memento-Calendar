@@ -16,7 +16,8 @@ public class GreekBankHolidaysCalculator {
         this.easterCalculator = easterCalculator;
     }
 
-    public List<BankHoliday> calculateBankholidaysForYear(int year) {
+    @SuppressWarnings("checkstyle:magicnumber")
+    List<BankHoliday> calculateBankholidaysForYear(int year) {
         Date easter = easterCalculator.calculateEasterForYear(year);
 
         List<BankHoliday> bankHolidays = new ArrayList<>();

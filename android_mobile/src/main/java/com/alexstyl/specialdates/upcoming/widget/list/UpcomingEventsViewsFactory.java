@@ -18,6 +18,7 @@ import java.util.List;
 class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final int VIEW_TYPE_COUNT = 3;
+    private static final int DAYS_IN_A_MONTH = 30;
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
     private final DimensionResources dimensResources;
@@ -46,7 +47,11 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @Override
     public void onDataSetChanged() {
         Date date = Date.Companion.today();
-        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.Companion.between(date, date.addDay(30)));
+        rows = peopleEventsProvider.calculateEventsBetween(aMonthFrom(date));
+    }
+
+    private TimePeriod aMonthFrom(Date date) {
+        return TimePeriod.Companion.between(date, date.addDay(DAYS_IN_A_MONTH));
     }
 
     @Override
@@ -60,18 +65,15 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @SuppressLint("SwitchIntDef")
     private UpcomingEventViewBinder createBinderFor(UpcomingRowViewModel viewModel) {
         switch (viewModel.getViewType()) {
-            case UpcomingRowViewType.YEAR: {
-                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_year);
-                return new YearBinder(view);
-            }
-            case UpcomingRowViewType.MONTH: {
-                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
-                return new MonthBinder(view);
-            }
-            case UpcomingRowViewType.UPCOMING_EVENTS: {
+            case UpcomingRowViewType.YEAR:
+                RemoteViews yearView = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_year);
+                return new YearBinder(yearView);
+            case UpcomingRowViewType.MONTH:
+                RemoteViews monthView = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
+                return new MonthBinder(monthView);
+            case UpcomingRowViewType.UPCOMING_EVENTS:
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
                 return new UpcomingEventsBinder(remoteViews, context, avatarFactory, dimensResources);
-            }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());
         }

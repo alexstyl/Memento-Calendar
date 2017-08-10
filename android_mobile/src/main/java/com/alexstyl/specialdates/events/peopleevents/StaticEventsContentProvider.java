@@ -22,7 +22,7 @@ import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.util.DateParser;
@@ -39,11 +39,11 @@ public class StaticEventsContentProvider extends ContentProvider {
 
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
-
     private EventPreferences eventPreferences;
     private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;
     @Inject StringResources stringResources;
+    @Inject NamedayUserSettings namedayUserSettings;
 
     @Override
     public boolean onCreate() {
@@ -58,17 +58,16 @@ public class StaticEventsContentProvider extends ContentProvider {
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
         ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(SOURCE_DEVICE);
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
-        PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
+        PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayUserSettings, namedayCalendarProvider, contactsProvider);
         PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);
 
         eventPreferences = new EventPreferences(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
                 new PermissionChecker(context),
                 new DeviceEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator)
+                new NamedayDatabaseRefresher(namedayUserSettings, peopleEventsPersister, deviceEventsMarshaller, calculator)
         );
 
         presenter = new PeopleEventsPresenter(

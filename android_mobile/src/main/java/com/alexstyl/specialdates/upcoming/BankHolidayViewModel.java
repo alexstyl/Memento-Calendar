@@ -1,10 +1,8 @@
 package com.alexstyl.specialdates.upcoming;
 
-import android.view.View;
-
 import com.alexstyl.android.ViewVisibility;
 
-final public class BankHolidayViewModel {
+public final class BankHolidayViewModel {
     private final String bankHolidayName;
     @ViewVisibility
     private final int bankHolidaysVisibility;
@@ -21,10 +19,6 @@ final public class BankHolidayViewModel {
 
     public String getBankHolidayName() {
         return bankHolidayName;
-    }
-
-    boolean isHidden() {
-        return bankHolidaysVisibility == View.GONE;
     }
 
     @Override

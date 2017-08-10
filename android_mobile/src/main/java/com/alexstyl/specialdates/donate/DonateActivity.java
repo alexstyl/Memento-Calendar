@@ -32,7 +32,9 @@ import java.net.URI;
 public class DonateActivity extends MementoActivity {
 
     private static final int REQUEST_CODE = 1004;
+    private static final int SCROLL_DOWN_ANIMATION_DELAY = 2000;
     private static final URI DEV_IMAGE_URI = URI.create("http://alexstyl.com/memento-calendar/dev.jpg");
+    private static final int VELOCITY_Y = 50;
 
     private DonatePresenter donatePresenter;
     private SeekBar donateBar;
@@ -72,7 +74,9 @@ public class DonateActivity extends MementoActivity {
             appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
 
-        DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this, DonationPreferences.newInstance(this), analytics);
+        DonationPreferences donationPreferences = DonationPreferences.newInstance(this); // TODO inject this
+        IabHelper iabHelper = new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY); // TODO inject this
+        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
@@ -97,9 +101,9 @@ public class DonateActivity extends MementoActivity {
             private void scrollToDonate() {
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
                 AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-                behavior.onNestedFling(coordinator, appBarLayout, null, 0, 50, true);
+                behavior.onNestedFling(coordinator, appBarLayout, null, 0, VELOCITY_Y, true);
             }
-        }, 2000);
+        }, SCROLL_DOWN_ANIMATION_DELAY);
 
     }
 

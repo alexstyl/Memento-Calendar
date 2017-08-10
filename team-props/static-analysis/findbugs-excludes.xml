@@ -1,0 +1,22 @@
+<FindBugsFilter>
+
+  <Match>
+    <Or>
+      <Class name="~.*\.R\$.*" />
+      <Class name="~.*\.R\$.*" />
+      <Class name="~.*Test" />
+      <Class name="~.*Test\$.*" />
+      <Class name="~.*\.Manifest\$.*" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Source name="~.*\.kt" />
+  </Match>
+
+  <Match>
+    <Class name="~.*android\.support\.v4\.preference.*" />
+    <Class name="~.*com\.alexstyl\.specialdates\.donate\.util.*" />
+  </Match>
+
+</FindBugsFilter>

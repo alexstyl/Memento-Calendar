@@ -3,9 +3,12 @@ package com.alexstyl.specialdates.wear;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
@@ -14,13 +17,23 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WearSyncService extends IntentService {
 
+    @Inject NamedayUserSettings namedayUserSettings;
+
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
     }
 
     @Override
@@ -44,7 +57,7 @@ public class WearSyncService extends IntentService {
     }
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
-        PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this);
+        PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings);
         Date today = Date.Companion.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }

@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
-final public class FacebookFriendsPersister {
+public final class FacebookFriendsPersister {
 
     private final PeopleEventsPersister persister;
     private final ContactEventsMarshaller marshaller;

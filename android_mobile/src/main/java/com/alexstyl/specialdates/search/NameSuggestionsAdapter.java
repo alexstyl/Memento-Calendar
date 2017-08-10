@@ -10,21 +10,22 @@ import com.alexstyl.specialdates.SoundWordComparator;
 import com.alexstyl.specialdates.WordComparator;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
+final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
 
     private final OnNameSelectedListener listener;
     private final NamesFilter filter;
     private final List<String> displayingNames;
 
-    public static NameSuggestionsAdapter newInstance(Context context, OnNameSelectedListener onNameSelectedListener) {
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
+    public static NameSuggestionsAdapter newInstance(Context context,
+                                                     OnNameSelectedListener onNameSelectedListener,
+                                                     NamedayUserSettings namedayPreferences) {
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         WordComparator compatator;

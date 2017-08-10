@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
-class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
+final class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     private final ColorImageView avatar;
     private final TextView displayName;

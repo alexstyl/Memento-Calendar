@@ -7,19 +7,19 @@ import android.view.WindowManager;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.android.Version;
 
-public class Themer {
+public final class Themer {
 
     private final ThemingPreferences preferences;
     private final AttributeExtractor attributeExtractor;
 
-    private static Themer INSTANCE;
+    private static Themer instance;
 
     public static Themer get(Context context) {
-        if (INSTANCE == null) {
+        if (instance == null) {
             ThemingPreferences preferences = ThemingPreferences.newInstance(context);
-            INSTANCE = new Themer(preferences, new AttributeExtractor());
+            instance = new Themer(preferences, new AttributeExtractor());
         }
-        return INSTANCE;
+        return instance;
     }
 
     private Themer(ThemingPreferences preferences, AttributeExtractor attributeExtractor) {

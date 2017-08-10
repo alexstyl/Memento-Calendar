@@ -25,7 +25,7 @@ import com.novoda.notils.caster.Views;
 
 import java.util.List;
 
-final public class BottomSheetPicturesDialog extends MementoDialog {
+public final class BottomSheetPicturesDialog extends MementoDialog {
 
     private static final String KEY_INCLUDE_CLEAR = "key_include_clear";
 

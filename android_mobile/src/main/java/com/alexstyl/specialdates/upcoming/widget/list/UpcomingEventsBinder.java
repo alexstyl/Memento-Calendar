@@ -24,7 +24,7 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEventsViewModel> {
+final class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEventsViewModel> {
 
     private final RemoteViews remoteViews;
     private final CircularAvatarFactory avatarFactory;
@@ -32,10 +32,10 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
 
     private final Context context;
 
-    public UpcomingEventsBinder(RemoteViews remoteViews,
-                                Context context,
-                                CircularAvatarFactory avatarFactory,
-                                DimensionResources dimensionResources) {
+    UpcomingEventsBinder(RemoteViews remoteViews,
+                         Context context,
+                         CircularAvatarFactory avatarFactory,
+                         DimensionResources dimensionResources) {
         this.remoteViews = remoteViews;
         this.context = context;
         this.avatarFactory = avatarFactory;
@@ -76,14 +76,22 @@ public class UpcomingEventsBinder implements UpcomingEventViewBinder<UpcomingEve
 
     private void bind(List<UpcomingContactEventViewModel> viewModels) {
         if (viewModels.size() >= 1) {
-            bindContact(viewModels.get(0), R.id.row_widget_upcoming_event_contact_name_1, R.id.row_widget_upcoming_event_contact_event_type_1, R.id.widget_upcoming_events_avatar_1);
+            bindContact(viewModels.get(0),
+                        R.id.row_widget_upcoming_event_contact_name_1,
+                        R.id.row_widget_upcoming_event_contact_event_type_1, R.id.widget_upcoming_events_avatar_1
+            );
             remoteViews.setViewVisibility(R.id.row_widget_upcoming_contact_1, VISIBLE);
         } else {
             remoteViews.setViewVisibility(R.id.row_widget_upcoming_contact_1, GONE);
         }
 
         if (viewModels.size() >= 2) {
-            bindContact(viewModels.get(1), R.id.row_widget_upcoming_event_contact_name_2, R.id.row_widget_upcoming_event_contact_event_type_2, R.id.widget_upcoming_events_avatar_2);
+            bindContact(
+                    viewModels.get(1),
+                    R.id.row_widget_upcoming_event_contact_name_2,
+                    R.id.row_widget_upcoming_event_contact_event_type_2,
+                    R.id.widget_upcoming_events_avatar_2
+            );
             remoteViews.setViewVisibility(R.id.row_widget_upcoming_contact_2, VISIBLE);
         } else {
             remoteViews.setViewVisibility(R.id.row_widget_upcoming_contact_2, GONE);

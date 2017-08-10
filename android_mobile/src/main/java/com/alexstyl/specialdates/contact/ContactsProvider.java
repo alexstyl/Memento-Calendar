@@ -14,21 +14,22 @@ import java.util.Map;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
+@SuppressWarnings({"FinalClass"}) // TODO abstract the Contacts Provider so that it is not platform dependant
 public class ContactsProvider {
 
-    private static ContactsProvider INSTANCE;
+    private static ContactsProvider instance;
 
     private static final int CACHE_SIZE = 1024;
     private final Map<Integer, ContactsProviderSource> sources;
 
     public static ContactsProvider get(Context context) {
-        if (INSTANCE == null) {
+        if (instance == null) {
             Map<Integer, ContactsProviderSource> sources = new HashMap<>();
             sources.put(SOURCE_DEVICE, buildAndroidSource(context));
             sources.put(SOURCE_FACEBOOK, buildFacebookSource(context));
-            INSTANCE = new ContactsProvider(sources);
+            instance = new ContactsProvider(sources);
         }
-        return INSTANCE;
+        return instance;
     }
 
     private static ContactsProviderSource buildAndroidSource(Context context) {
