@@ -2,15 +2,15 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
-import com.novoda.notils.exception.DeveloperError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class NamedayJSONParser {
+final class NamedayJSONParser {
 
     private NamedayJSONParser() {
         // hide this
@@ -57,10 +57,10 @@ class NamedayJSONParser {
     private static Date getNamedaysFrom(String date) {
         int slashIndex = date.indexOf("/");
         if (slashIndex == -1) {
-            throw new DeveloperError("Unable to getNamedaysFrom " + date);
+            throw new IllegalArgumentException("Unable to get Namedays From " + date);
         }
-        int dayOfMonth = Integer.valueOf(date.substring(0, slashIndex));
-        int month = Integer.valueOf(date.substring(slashIndex + 1));
+        int dayOfMonth = Integer.parseInt(date.substring(0, slashIndex));
+        @MonthInt int month = Integer.parseInt(date.substring(slashIndex + 1));
         return Date.Companion.on(dayOfMonth, month);
     }
 }

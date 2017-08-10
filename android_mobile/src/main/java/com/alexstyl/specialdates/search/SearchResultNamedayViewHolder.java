@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 
-class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
+final class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView name;
     private final LinearLayout datesLayout;

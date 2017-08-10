@@ -5,12 +5,13 @@ import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
 import com.alexstyl.specialdates.events.namedays.NamedayPreferences
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.service.PeopleEventsProvider
 
 class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
-                             private val namedayPreferences: NamedayPreferences,
+                             private val namedayPreferences: NamedayUserSettings,
                              private val namedayCalendarProvider: NamedayCalendarProvider,
                              private val bankHolidaysPreferences: BankHolidaysPreferences,
                              private val bankHolidayProvider: BankHolidayProvider,

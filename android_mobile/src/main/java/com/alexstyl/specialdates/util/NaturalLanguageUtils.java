@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * <p>Created by alexstyl on 13/06/15.</p>
- */
-final public class NaturalLanguageUtils {
+public final class NaturalLanguageUtils {
+
+    private NaturalLanguageUtils() {
+        // hide this
+    }
 
     public static String joinContacts(StringResources stringResources, Collection<Contact> iterable, int displayNo) {
         int size = iterable.size();
@@ -26,7 +27,7 @@ final public class NaturalLanguageUtils {
         return join(stringResources, names, displayNo);
     }
 
-    public static String join(StringResources stringResources, List<String> iterable, int displayNo) {
+    static String join(StringResources stringResources, List<String> iterable, int displayNo) {
         if (iterable == null || iterable.size() == 0) {
             return "";
         }

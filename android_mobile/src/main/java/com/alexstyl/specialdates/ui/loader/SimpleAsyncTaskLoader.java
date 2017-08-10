@@ -3,8 +3,8 @@ package com.alexstyl.specialdates.ui.loader;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-abstract public class SimpleAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
-
+@SuppressWarnings("all")
+public abstract class SimpleAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
 
     public SimpleAsyncTaskLoader(Context context) {
         super(context);
@@ -79,14 +79,13 @@ abstract public class SimpleAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
             mData = null;
         }
 
-//        // The Loader is being reset, so we should stop monitoring for changes.
+        // The Loader is being reset, so we should stop monitoring for changes.
         onUnregisterObserver();
     }
 
     final public T getCachedData() {
         return mData;
     }
-
 
     /**
      * Called whenever it's time to stop monitoring changes on the loaders data source

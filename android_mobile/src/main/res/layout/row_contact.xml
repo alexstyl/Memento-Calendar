@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:foreground="@drawable/selectable_back"
+  android:orientation="horizontal"
+  android:padding="8dp">
+
+  <com.alexstyl.specialdates.ui.widget.ColorImageView
+    android:id="@+id/search_result_avatar"
+    android:layout_width="@dimen/avatar_size_min"
+    android:layout_height="@dimen/avatar_size_min"
+    app:isCircle="true"
+    app:letterSize="18sp" />
+
+  <TextView
+    android:id="@+id/display_name"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="@drawable/selectable_back"
-    android:orientation="horizontal"
-    android:padding="8dp">
-
-    <com.alexstyl.specialdates.ui.widget.ColorImageView
-        android:id="@+id/search_result_avatar"
-        android:layout_width="@dimen/avatar_size_min"
-        android:layout_height="@dimen/avatar_size_min"
-        app:isCircle="true"
-        app:letterSize="18sp" />
-
-    <TextView
-        android:id="@+id/display_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center_vertical"
-        android:textColor="@android:color/black"
-        tools:text="Display Name" />
-</com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:gravity="center_vertical"
+    android:textColor="@android:color/black"
+    tools:text="Display Name" />
+</com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground>

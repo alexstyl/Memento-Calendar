@@ -9,6 +9,7 @@ import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
@@ -41,6 +42,7 @@ public class MementoApplication extends Application {
                         .resourcesModule(new ResourcesModule(getResources()))
                         .imageModule(new ImageModule(getResources()))
                         .upcomingEventsModule(new UpcomingEventsModule(this))
+                        .namedayModule(new NamedayModule(this))
                         .build();
     }
 
@@ -70,9 +72,10 @@ public class MementoApplication extends Application {
         initImageLoader(this);
     }
 
+    @SuppressWarnings("MagicNumber")
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .threadPriority(Thread.MIN_PRIORITY)
                 .threadPoolSize(10)
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))

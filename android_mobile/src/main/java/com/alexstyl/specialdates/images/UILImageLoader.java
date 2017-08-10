@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.net.URI;
@@ -17,12 +18,12 @@ import java.net.URI;
 class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
     private final com.nostra13.universalimageloader.core.ImageLoader uil;
-    private final CrossFadeBitmapDisplayer displayer;
-    private final CrossFadeCircleBitmapDisplayer circleBitmapDisplayer;
+    private final BitmapDisplayer defaultDisplayer;
+    private final BitmapDisplayer defaultCircleDisplayer;
 
-    UILImageLoader(CrossFadeBitmapDisplayer displayer, CrossFadeCircleBitmapDisplayer circleBitmapDisplayer) {
-        this.displayer = displayer;
-        this.circleBitmapDisplayer = circleBitmapDisplayer;
+    UILImageLoader(CrossFadeBitmapDisplayer defaultDisplayer, CrossFadeCircleBitmapDisplayer circleDefaultDisplayer) {
+        this.defaultDisplayer = defaultDisplayer;
+        this.defaultCircleDisplayer = circleDefaultDisplayer;
         this.uil = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
     }
 
@@ -38,7 +39,7 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
             @Override
             public Request asCircle() {
-                builder.displayer(circleBitmapDisplayer);
+                builder.displayer(defaultCircleDisplayer);
                 return this;
             }
 
@@ -78,7 +79,7 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
     private DisplayImageOptions.Builder standardBuilder() {
         return new DisplayImageOptions.Builder()
-                .displayer(displayer)
+                .displayer(defaultDisplayer)
                 .resetViewBeforeLoading(true)
                 .cacheOnDisk(true)
                 .cacheInMemory(true);

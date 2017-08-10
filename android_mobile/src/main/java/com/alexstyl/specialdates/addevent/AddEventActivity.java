@@ -32,6 +32,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -59,6 +60,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         ContactDetailsAdapter adapter = new ContactDetailsAdapter(contactDetailsListener);
         eventsView.setAdapter(adapter);
 
-        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
+        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
         AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
@@ -297,13 +299,14 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 } else {
                     cancelActivity();
                 }
-                break;
+                return true;
             case R.id.menu_add_event_save:
                 presenter.saveChanges();
                 finishActivitySuccessfully();
-                break;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void promptToDiscardBeforeExiting() {

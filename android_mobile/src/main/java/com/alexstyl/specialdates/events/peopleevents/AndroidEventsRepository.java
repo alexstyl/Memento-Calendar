@@ -105,8 +105,9 @@ class AndroidEventsRepository {
                 return ANNIVERSARY;
             case ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM:
                 return CUSTOM;
+            default:
+                return OTHER;
         }
-        return OTHER;
     }
 
     private boolean isInvalid(Cursor cursor) {

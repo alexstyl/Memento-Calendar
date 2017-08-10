@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import static com.alexstyl.specialdates.facebook.friendimport.StreamUtil.closeStream;
-
 class FacebookBirthdaysProvider {
 
     private final CalendarLoader calendarLoader;
@@ -27,7 +25,13 @@ class FacebookBirthdaysProvider {
         } catch (IOException e) {
             throw new CalendarFetcherException(e);
         } finally {
-            closeStream(inputStream);
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

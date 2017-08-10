@@ -23,8 +23,7 @@ public class RateDialog extends MementoActivity {
     private final String smiley = " " + Emoticon.SMILEY.asText();
     private AskForSupport askForSupport;
     private ExternalNavigator externalNavigator;
-    @Inject
-    Analytics analytics;
+    @Inject Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

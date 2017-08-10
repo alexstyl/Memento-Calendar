@@ -16,6 +16,7 @@ import java.util.List;
 class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final int VIEW_TYPE_COUNT = 3;
+    private static final int DAYS_IN_A_MONTH = 30;
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
     private final DimensionResources dimensResources;
@@ -44,7 +45,11 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @Override
     public void onDataSetChanged() {
         Date date = Date.Companion.today();
-        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.Companion.between(date, date.addDay(30)));
+        rows = peopleEventsProvider.calculateEventsBetween(aMonthFrom(date));
+    }
+
+    private TimePeriod aMonthFrom(Date date) {
+        return TimePeriod.Companion.between(date, date.addDay(DAYS_IN_A_MONTH));
     }
 
     @Override

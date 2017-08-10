@@ -3,10 +3,10 @@ package com.alexstyl.specialdates.transition;
 import android.support.transition.AutoTransition;
 import android.support.transition.Transition;
 
-public class FadeOutTransition extends AutoTransition {
+public final class FadeOutTransition extends AutoTransition {
 
     private FadeOutTransition() {
-        // force callers to call the factory method to instantiate this class
+        // hide this
     }
 
     private static final int FADE_OUT_DURATION = 250;

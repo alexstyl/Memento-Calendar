@@ -5,7 +5,8 @@ import android.support.annotation.StringRes;
 
 import com.alexstyl.specialdates.EasyPreferences;
 
-class DebugPreferences {
+final class DebugPreferences {
+
     private final EasyPreferences preferences;
 
     public static DebugPreferences newInstance(Context context, @StringRes int prefKey) {

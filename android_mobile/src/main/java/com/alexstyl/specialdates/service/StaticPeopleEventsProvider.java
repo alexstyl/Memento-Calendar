@@ -115,8 +115,8 @@ class StaticPeopleEventsProvider {
         return resolver.query(
                 PeopleEventsContract.PeopleEvents.CONTENT_URI,
                 PROJECTION,
-                PeopleEventsContract.PeopleEvents.CONTACT_ID + " = ? " +
-                        "AND " + PeopleEventsContract.PeopleEvents.SOURCE + " = ?",
+                PeopleEventsContract.PeopleEvents.CONTACT_ID + " = ? "
+                        + "AND " + PeopleEventsContract.PeopleEvents.SOURCE + " = ?",
                 selectArgs,
                 null
         );
