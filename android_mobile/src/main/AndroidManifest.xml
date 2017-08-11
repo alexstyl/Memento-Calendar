@@ -155,7 +155,13 @@
         android:value=".upcoming.UpcomingEventsActivity" />
     </activity>
 
-    <activity android:name=".events.namedays.activity.NamedayActivity" />
+    <activity
+      android:name=".events.namedays.activity.NamedayActivity"
+      android:parentActivityName=".upcoming.UpcomingEventsActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".upcoming.UpcomingEventsActivity" />
+    </activity>
 
     <!-- Services -->
     <service

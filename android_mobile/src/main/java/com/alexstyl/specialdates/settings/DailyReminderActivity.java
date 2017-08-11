@@ -16,7 +16,7 @@ public class DailyReminderActivity extends MementoPreferenceActivity {
 
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.displayAsUp();
+        toolbar.displayNavigationIconAsUp();
     }
 
 }
