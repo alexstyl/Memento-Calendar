@@ -15,6 +15,7 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonateActivity;
+import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
@@ -118,7 +119,7 @@ final class UpcomingEventsNavigator {
     };
 
     void toDateDetails(Date dateSelected) {
-        Intent intent = UpcomingEventsActivity.getStartIntent(activity, dateSelected);
+        Intent intent = NamedayActivity.Companion.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.DATE_DETAILS);
     }
