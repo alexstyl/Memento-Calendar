@@ -1,8 +1,11 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-internal class NamedayPresenter {
+import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 
-    fun startPresentingInto(view: NamedaysMVPView) {
+internal class NamedayPresenter(private val namedayCalendar: NamedayCalendar, private val namedaysViewModelFactory: NamedaysViewModelFactory) {
+
+    fun startPresentingInto(into: NamedaysMVPView, forDate: Date) {
 
     }
 
