@@ -155,6 +155,8 @@
         android:value=".upcoming.UpcomingEventsActivity" />
     </activity>
 
+    <activity android:name=".events.namedays.activity.NamedayActivity" />
+
     <!-- Services -->
     <service
       android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"
