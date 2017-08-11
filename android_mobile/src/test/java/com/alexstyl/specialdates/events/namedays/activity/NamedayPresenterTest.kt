@@ -43,8 +43,7 @@ class NamedayPresenterTest {
 
     @Test
     fun aNamedayWithAContact_returnsAViewModelWithThatContact() {
-        val celebratingContacts = aContactCalled("Kate Brown").asList()
-        Mockito.`when`(mockContactsProvider.contactsCalled("Kate")).thenReturn(celebratingContacts)
+        Mockito.`when`(mockContactsProvider.contactsCalled("Kate")).thenReturn(arrayListOf(aContactCalled("Kate Brown")))
         Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, arrayListOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = CHECKING_DATE)
@@ -68,6 +67,5 @@ class NamedayPresenterTest {
 
 }
 
-private fun NamedaysViewModel(name: String, contact: Contact): NamedaysViewModel = NamedaysViewModel(name, contact.asList())
-private fun Contact.asList(): List<Contact> = arrayListOf(this)
+private fun NamedaysViewModel(name: String, contact: Contact): NamedaysViewModel = NamedaysViewModel(name, arrayListOf(contact))
 
