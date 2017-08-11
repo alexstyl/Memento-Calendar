@@ -25,6 +25,9 @@ public class ContactsProvider {
     private static ContactsProvider instance;
     private final Map<Integer, ContactsProviderSource> sources;
 
+    /**
+     * @Deprecated Use Dagger to inject this wherever needed instead
+     */
     public static ContactsProvider get(Context context) {
         if (instance == null) {
             Map<Integer, ContactsProviderSource> sources = new HashMap<>();

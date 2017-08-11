@@ -34,7 +34,7 @@ class NamedayPresenterTest {
         Mockito.`when`(mockContactsProvider.contactsCalled("Kate")).thenReturn(celebratingContacts)
         Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, arrayListOf("Kate")))
 
-        presenter.startPresentingInto(mockView, forDate = CHECKING_DATE)
+        presenter.startPresenting(mockView, forDate = CHECKING_DATE)
 
         val expectedViewModels = arrayListOf(NamedaysViewModel("Kate", celebratingContacts))
         Mockito.verify(mockView).displayNamedays(expectedViewModels)
