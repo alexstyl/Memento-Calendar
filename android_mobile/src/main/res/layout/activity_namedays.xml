@@ -2,11 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="?colorPrimaryDark"
   android:orientation="vertical">
 
-  <com.alexstyl.specialdates.ui.widget.MementoToolbar
-    android:id="@+id/toolbar"
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/namedays_list"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp" />
 
 </LinearLayout>
