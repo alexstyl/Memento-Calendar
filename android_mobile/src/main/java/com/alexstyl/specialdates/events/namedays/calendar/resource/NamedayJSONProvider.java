@@ -6,13 +6,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class NamedayJSONResourceProvider {
+public class NamedayJSONProvider {
 
     private static final JSONArray EMPTY = new JSONArray();
 
     private final NamedayJSONResourceLoader loader;
 
-    NamedayJSONResourceProvider(NamedayJSONResourceLoader loader) {
+    public NamedayJSONProvider(NamedayJSONResourceLoader loader) {
         this.loader = loader;
     }
 

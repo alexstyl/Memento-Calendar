@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NamedayJSONResourceProviderTest {
+public class NamedayJSONProviderTest {
 
-    private NamedayJSONResourceProvider provider;
+    private NamedayJSONProvider provider;
 
     @Before
     public void setUp() throws Exception {
-        provider = new NamedayJSONResourceProvider(new JavaJSONResourceLoader());
+        provider = new NamedayJSONProvider(new JavaJSONResourceLoader());
     }
 
     @Test
