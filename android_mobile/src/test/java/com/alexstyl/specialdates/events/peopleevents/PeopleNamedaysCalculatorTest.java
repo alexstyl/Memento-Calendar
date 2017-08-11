@@ -41,7 +41,7 @@ public class PeopleNamedaysCalculatorTest {
     private NamedayUserSettings mockSettings;
     @Mock
     private ContactsProvider mockContactsProvider;
-    private final Contact EASTER_CELEBRATING_CONTACT = ContactFixture.withName("Λάμπρος");
+    private final Contact EASTER_CELEBRATING_CONTACT = ContactFixture.aContactCalled("Λάμπρος");
 
     @Before
     public void setUp() {
@@ -71,8 +71,8 @@ public class PeopleNamedaysCalculatorTest {
 
     private List<Contact> createSomeContacts() {
         ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(ContactFixture.withName("Αβδηρος"));
-        contacts.add(ContactFixture.withName(("Αγις")));
+        contacts.add(ContactFixture.aContactCalled("Αβδηρος"));
+        contacts.add(ContactFixture.aContactCalled(("Αγις")));
         return contacts;
     }
 

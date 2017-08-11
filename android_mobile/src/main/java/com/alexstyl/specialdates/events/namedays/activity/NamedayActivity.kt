@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.alexstyl.specialdates.MementoApplication
-
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateBundleUtils
@@ -13,6 +12,8 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import com.novoda.notils.caster.Views
 import com.novoda.notils.logger.simple.Log
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
@@ -31,7 +32,7 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         val toolbar = Views.findById<MementoToolbar>(this, R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        presenter = NamedayPresenter(namedayCalendar, namedaysViewModelFactory)
+        presenter = NamedayPresenter(namedayCalendar, namedaysViewModelFactory, Schedulers.io(), AndroidSchedulers.mainThread())
     }
 
     override fun onStart() {

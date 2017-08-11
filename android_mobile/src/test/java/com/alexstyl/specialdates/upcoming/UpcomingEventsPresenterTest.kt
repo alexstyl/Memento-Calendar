@@ -23,8 +23,8 @@ class UpcomingEventsPresenterTest {
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
     private val mockEventsMonitor = Mockito.mock(UpcomingEventsSettingsMonitor::class.java)
-    private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
-    
+    private val mockProvider = Mockito.mock(IUpcomingEventsProvider::class.java)
+
     private lateinit var peopleEventsObserver: PeopleEventsObserver
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 

@@ -10,9 +10,9 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-class UpcomingEventsPresenter(private val firstDay: Date,
+internal class UpcomingEventsPresenter(private val firstDay: Date,
                               private val permissions: ContactPermissionRequest,
-                              private val provider: UpcomingEventsProvider,
+                              private val provider: IUpcomingEventsProvider,
                               private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
                               private val peopleEventsObserver: PeopleEventsObserver,
                               private val workScheduler: Scheduler,
