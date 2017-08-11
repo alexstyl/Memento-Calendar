@@ -24,9 +24,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsSearchTest {
 
-    private static final Contact ALEX = ContactFixture.withName("Alex Styl");
-    private static final Contact MARIA = ContactFixture.withName("Maria Papadopoulou");
-    private static final Contact MIMOZA = ContactFixture.withName("Mimoza Dereks");
+    private static final Contact ALEX = ContactFixture.aContactCalled("Alex Styl");
+    private static final Contact MARIA = ContactFixture.aContactCalled("Maria Papadopoulou");
+    private static final Contact MIMOZA = ContactFixture.aContactCalled("Mimoza Dereks");
     private static final Date JANUARY_1st = Date.Companion.startOfYear(2016);
 
     private PeopleEventsSearch search;

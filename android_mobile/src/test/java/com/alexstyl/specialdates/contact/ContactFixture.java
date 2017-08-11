@@ -12,7 +12,7 @@ public class ContactFixture {
         return new Contact(-1, DisplayName.from("Test Contact"), SOME_IMAGE, SOURCE_DEVICE);
     }
 
-    public static Contact withName(String peter) {
+    public static Contact aContactCalled(String peter) {
         return new Contact(-1, DisplayName.from(peter), SOME_IMAGE, 1);
     }
 

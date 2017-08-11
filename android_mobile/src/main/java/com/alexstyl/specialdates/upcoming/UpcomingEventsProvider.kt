@@ -4,7 +4,6 @@ import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
@@ -16,9 +15,11 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
                              private val bankHolidaysPreferences: BankHolidaysPreferences,
                              private val bankHolidayProvider: BankHolidayProvider,
                              private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory,
-                             private val adRules: UpcomingEventsAdRules) {
+                             private val adRules: UpcomingEventsAdRules)
+    : IUpcomingEventsProvider // TODO kotlin classes are closed by default. Mockito cannot mock final...
+{
 
-    fun calculateEventsBetween(period: TimePeriod): List<UpcomingRowViewModel> {
+    override fun calculateEventsBetween(period: TimePeriod): List<UpcomingRowViewModel> {
         val contactEvents = peopleEventsProvider.getContactEventsFor(period)
         val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
                 period,
@@ -69,4 +70,8 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
         private val COMPARATOR = DateComparator.INSTANCE
     }
 
+}
+
+interface IUpcomingEventsProvider { // This is temporarily until we figure out how to mock kotlin classes with Mockito
+    fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel>
 }

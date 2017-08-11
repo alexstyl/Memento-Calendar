@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsProviderTest {
 
-    private static final Contact PETER = ContactFixture.withName("Peter");
+    private static final Contact PETER = ContactFixture.aContactCalled("Peter");
 
     @Mock
     private ContactsProvider mockContactsProvider;
