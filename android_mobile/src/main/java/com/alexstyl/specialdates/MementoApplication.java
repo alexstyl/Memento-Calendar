@@ -7,9 +7,11 @@ import android.content.Context;
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
+import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
+import com.alexstyl.specialdates.events.namedays.activity.NamedayInADayFeature;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
@@ -41,8 +43,10 @@ public class MementoApplication extends Application {
                         .analyticsModule(new AnalyticsModule(this))
                         .resourcesModule(new ResourcesModule(getResources()))
                         .imageModule(new ImageModule(getResources()))
+                        .contactsModule(new ContactsModule(this))
                         .upcomingEventsModule(new UpcomingEventsModule(this))
                         .namedayModule(new NamedayModule(this))
+                        .namedayInADayFeature(new NamedayInADayFeature())
                         .build();
     }
 

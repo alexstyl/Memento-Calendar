@@ -4,12 +4,12 @@ import android.support.v7.util.DiffUtil;
 
 import java.util.List;
 
-public class NamedaysViewModelDiff extends DiffUtil.Callback {
+final class NamedaysViewModelDiff extends DiffUtil.Callback {
 
-    private final List<NamedaysViewModel> oldModels;
-    private final List<NamedaysViewModel> newModels;
+    private final List<NamedayScreenViewModel> oldModels;
+    private final List<NamedayScreenViewModel> newModels;
 
-    public NamedaysViewModelDiff(List<NamedaysViewModel> oldModels, List<NamedaysViewModel> newModels) {
+    NamedaysViewModelDiff(List<NamedayScreenViewModel> oldModels, List<NamedayScreenViewModel> newModels) {
         this.oldModels = oldModels;
         this.newModels = newModels;
     }
@@ -26,14 +26,12 @@ public class NamedaysViewModelDiff extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        // the identifier here is the name itself
-        return oldModels.get(oldItemPosition).getName()
-                .equals(newModels.get(newItemPosition).getName());
+        return oldModels.get(oldItemPosition).getViewType() == newModels.get(newItemPosition).getViewType()
+                && oldModels.get(oldItemPosition).getId() == newModels.get(newItemPosition).getId();
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldModels.get(oldItemPosition).getContacts()
-                .equals(newModels.get(newItemPosition).getContacts());
+        return oldModels.get(oldItemPosition).equals(newModels.get(newItemPosition));
     }
 }

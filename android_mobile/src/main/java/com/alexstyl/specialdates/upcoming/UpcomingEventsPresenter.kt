@@ -11,12 +11,12 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
 internal class UpcomingEventsPresenter(private val firstDay: Date,
-                              private val permissions: ContactPermissionRequest,
-                              private val provider: IUpcomingEventsProvider,
-                              private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
-                              private val peopleEventsObserver: PeopleEventsObserver,
-                              private val workScheduler: Scheduler,
-                              private val resultScheduler: Scheduler) {
+                                       private val permissions: ContactPermissionRequest,
+                                       private val provider: IUpcomingEventsProvider,
+                                       private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
+                                       private val peopleEventsObserver: PeopleEventsObserver,
+                                       private val workScheduler: Scheduler,
+                                       private val resultScheduler: Scheduler) {
 
     private val TRIGGER = 1
     private val subject = PublishSubject.create<Int>()

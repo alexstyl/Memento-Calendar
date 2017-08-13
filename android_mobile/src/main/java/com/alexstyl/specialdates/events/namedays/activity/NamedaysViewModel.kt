@@ -1,5 +1,8 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-import com.alexstyl.specialdates.contact.Contact
-
-data class NamedaysViewModel(val name: String, val contacts: List<Contact>)
+data class NamedaysViewModel(val name: String) : NamedayScreenViewModel {
+    override val viewType: Int
+        get() = NamedayScreenViewType.NAMEDAY
+    override val id: Long
+        get() = hashCode().toLong()
+}
