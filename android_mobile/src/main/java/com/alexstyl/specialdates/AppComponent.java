@@ -5,10 +5,12 @@ import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
+import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
+import com.alexstyl.specialdates.events.namedays.activity.NamedayInADayFeature;
 import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
@@ -32,7 +34,15 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AnalyticsModule.class, ResourcesModule.class, ImageModule.class, UpcomingEventsModule.class, NamedayModule.class})
+@Component(modules = {
+        AnalyticsModule.class,
+        ResourcesModule.class,
+        ContactsModule.class,
+        ImageModule.class,
+        NamedayModule.class,
+        UpcomingEventsModule.class,
+        NamedayInADayFeature.class
+})
 public interface AppComponent {
     void inject(UpcomingEventsActivity activity);
 

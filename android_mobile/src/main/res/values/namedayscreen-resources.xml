@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="NamedayScreen"></style>
+
+  <style name="NamedayScreen.Text">
+    <item name="android:textColor">?primaryTextColorInverse</item>
+  </style>
+
+</resources>

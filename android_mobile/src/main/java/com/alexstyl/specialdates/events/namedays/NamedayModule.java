@@ -2,9 +2,7 @@ package com.alexstyl.specialdates.events.namedays;
 
 import android.content.Context;
 
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.namedays.activity.NamedaysViewModelFactory;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.AndroidJSONResourceLoader;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
@@ -36,11 +34,6 @@ public class NamedayModule {
     @Provides
     NamedayUserSettings userSettings() {
         return new NamedayPreferences(context);
-    }
-
-    @Provides
-    NamedaysViewModelFactory viewModelFactory() {
-        return new NamedaysViewModelFactory(ContactsProvider.get(context));
     }
 
     @Provides

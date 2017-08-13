@@ -32,13 +32,14 @@ public class UpcomingEventsModule {
     @Provides
     UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources,
                                                                  ColorResources colorResources,
-                                                                 NamedayUserSettings namedayUserSettings) {
+                                                                 NamedayUserSettings namedayUserSettings,
+                                                                 NamedayCalendarProvider namedayCalendarProvider) {
         Date date = Date.Companion.today();
 
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
                                           namedayUserSettings,
-                                          NamedayCalendarProvider.newInstance(context.getResources()),
+                                          namedayCalendarProvider,
                                           BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           new UpcomingEventRowViewModelFactory(
@@ -53,12 +54,13 @@ public class UpcomingEventsModule {
     @Named("widget")
     UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources,
                                                                ColorResources colorResources,
-                                                               NamedayUserSettings namedayUserSettings) {
+                                                               NamedayUserSettings namedayUserSettings,
+                                                               NamedayCalendarProvider namedayCalendarProvider) {
         Date date = Date.Companion.today();
         UpcomingEventsAdRules adRules = new NoAds();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
                                           namedayUserSettings,
-                                          NamedayCalendarProvider.newInstance(context.getResources()),
+                                          namedayCalendarProvider,
                                           BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           new UpcomingEventRowViewModelFactory(

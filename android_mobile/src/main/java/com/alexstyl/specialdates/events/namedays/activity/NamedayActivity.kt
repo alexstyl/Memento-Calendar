@@ -13,18 +13,19 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateBundleUtils
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
+import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
 
     @Inject lateinit var namedayCalendar: NamedayCalendar
     @Inject lateinit var namedaysViewModelFactory: NamedaysViewModelFactory
+    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var presenter: NamedayPresenter
 
-    private var presenter: NamedayPresenter? = null
-    private var adapter: NamedaysAdapter? = null
+    private var screenAdapter: NamedaysScreenAdapter? = null
+    private val namedayNavigator = NamedayNavigator(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,19 +36,19 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
 
         val recyclerView = findViewById(R.id.namedays_list) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val namedaysAdapter = NamedaysAdapter(LayoutInflater.from(this))
-        adapter = namedaysAdapter
-        recyclerView.adapter = adapter
-
-        presenter = NamedayPresenter(namedayCalendar, namedaysViewModelFactory, Schedulers.io(), AndroidSchedulers.mainThread())
+        val namedaysAdapter = NamedaysScreenAdapter(NamedaysScreenViewHolderFactory(LayoutInflater.from(this), imageLoader), {
+            contact ->
+            namedayNavigator.toContactDetails(contact)
+        })
+        screenAdapter = namedaysAdapter
+        recyclerView.adapter = screenAdapter
     }
 
 
     override fun onStart() {
         super.onStart()
-
         val date = DateBundleUtils.extractDateFrom(intent)
-        presenter?.startPresenting(into = this, forDate = date)
+        presenter.startPresenting(into = this, forDate = date)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,13 +61,13 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun displayNamedays(viewModels: List<NamedaysViewModel>) {
-        adapter?.display(viewModels)
+    override fun displayNamedays(viewModels: List<NamedayScreenViewModel>) {
+        screenAdapter?.display(viewModels)
     }
 
     override fun onStop() {
         super.onStop()
-        presenter?.stopPresenting()
+        presenter.stopPresenting()
     }
 
     companion object {
@@ -77,4 +78,3 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         }
     }
 }
-

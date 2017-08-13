@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactFixture.aContactCalled
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.Date
@@ -29,7 +28,7 @@ class NamedayPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockContactsProvider), workScheduler, resultScheduler)
+        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(), mockContactsProvider, workScheduler, resultScheduler)
     }
 
     @Test
@@ -50,7 +49,8 @@ class NamedayPresenterTest {
 
         Mockito.verify(mockView).displayNamedays(
                 arrayListOf(
-                        NamedaysViewModel("Kate", aContactCalled("Kate Brown"))
+                        NamedaysViewModel("Kate"),
+                        CelebratingContactViewModel(aContactCalled("Kate Brown"))
                 ))
     }
 
@@ -61,11 +61,8 @@ class NamedayPresenterTest {
 
         presenter.startPresenting(mockView, forDate = CHECKING_DATE)
 
-        val expectedViewModels = arrayListOf(NamedaysViewModel("Kate", emptyList()))
+        val expectedViewModels = arrayListOf(NamedaysViewModel("Kate"))
         Mockito.verify(mockView).displayNamedays(expectedViewModels)
     }
 
 }
-
-private fun NamedaysViewModel(name: String, contact: Contact): NamedaysViewModel = NamedaysViewModel(name, arrayListOf(contact))
-

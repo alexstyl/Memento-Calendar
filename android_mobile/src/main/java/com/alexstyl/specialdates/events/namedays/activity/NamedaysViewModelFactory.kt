@@ -1,14 +1,15 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.Contact
 
-class NamedaysViewModelFactory(val provide: ContactsProvider) {
+class NamedaysViewModelFactory {
 
     fun viewModelsFor(name: String): NamedaysViewModel {
-        val contacts = provide.contactsCalled(name)
-        // TODO populate with UI specific values
-        return NamedaysViewModel(name, contacts)
+        return NamedaysViewModel(name)
+    }
 
+    fun viewModelsFor(contact: Contact): CelebratingContactViewModel {
+        return CelebratingContactViewModel(contact)
     }
 
 }

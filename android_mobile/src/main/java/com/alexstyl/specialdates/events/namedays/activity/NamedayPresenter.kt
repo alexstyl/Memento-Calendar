@@ -1,15 +1,17 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
+import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 
-internal class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
-                                private val namedaysViewModelFactory: NamedaysViewModelFactory,
-                                private val workScheduler: Scheduler,
-                                private val resultScheduler: Scheduler) {
+class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
+                       private val namedaysViewModelFactory: NamedaysViewModelFactory,
+                       private val contactsProvider: ContactsProvider,
+                       private val workScheduler: Scheduler,
+                       private val resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
 
@@ -28,11 +30,15 @@ internal class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         disposable?.dispose()
     }
 
-    private fun List<String>.asViewModels(): ArrayList<NamedaysViewModel> {
-        val list = ArrayList<NamedaysViewModel>()
+    private fun List<String>.asViewModels(): ArrayList<NamedayScreenViewModel> {
+        val list = ArrayList<NamedayScreenViewModel>()
         this.forEach {
             val viewModel = namedaysViewModelFactory.viewModelsFor(it)
             list.add(viewModel)
+            contactsProvider.contactsCalled(it).forEach {
+                contact ->
+                list.add(namedaysViewModelFactory.viewModelsFor(contact))
+            }
         }
         return list
     }
