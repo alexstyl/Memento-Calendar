@@ -5,7 +5,7 @@ import android.support.annotation.ColorInt;
 
 import com.alexstyl.specialdates.R;
 
-final class LetterPainter {
+public final class LetterPainter {
 
     private LetterPainter() {
         // hide this
@@ -29,7 +29,7 @@ final class LetterPainter {
     }
 
     @ColorInt
-    static int getVariant(Resources res, int i2) {
+    public static int getVariant(Resources res, int i2) {
         int variant = Math.abs(i2);
         variant = normalise(variant);
         return res.getColor(BACKGROUND_VARIANTS[variant]);
