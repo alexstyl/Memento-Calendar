@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.internal.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:foreground="@drawable/selectable_back"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:gravity="center_vertical"
-  android:orientation="horizontal"
-  tools:background="?colorPrimaryDark">
+  android:minHeight="@dimen/nameday_item_minheight"
+  android:orientation="horizontal">
 
   <ImageView
     android:id="@+id/row_nameday_contact_avatar"
-    android:layout_width="48dp"
-    android:layout_height="48dp"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
     tools:src="@mipmap/ic_launcher" />
 
   <TextView
     android:id="@+id/row_nameday_contact_name"
-    style="@style/NamedayScreen.Text"
+    style="@style/NamedayScreen.Text.ContactName"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
     tools:text="Αναστασία Κάτρανίδου" />
 
-
-</LinearLayout>
+</android.support.design.internal.ForegroundLinearLayout>

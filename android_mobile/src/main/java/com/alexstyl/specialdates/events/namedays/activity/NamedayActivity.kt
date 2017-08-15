@@ -15,6 +15,7 @@ import com.alexstyl.specialdates.date.DateBundleUtils
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
+import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import javax.inject.Inject
 
 class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
@@ -31,8 +32,12 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_namedays)
 
-        (application as MementoApplication).applicationModule.inject(this)
+        val applicationModule = (application as MementoApplication).applicationModule
+        applicationModule.inject(this)
 
+        val toolbar = findViewById(R.id.memento_toolbar) as MementoToolbar
+        toolbar.displayNavigationIconAsUp()
+        setSupportActionBar(toolbar)
 
         val recyclerView = findViewById(R.id.namedays_list) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -70,6 +75,10 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         presenter.stopPresenting()
     }
 
+    override fun shouldUseHomeAsUp(): Boolean {
+        return true
+    }
+
     companion object {
         fun getStartIntent(context: Context, dateSelected: Date): Intent {
             val intent = Intent(context, NamedayActivity::class.java)
@@ -78,3 +87,4 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         }
     }
 }
+

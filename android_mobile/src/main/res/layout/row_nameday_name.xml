@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nameday_name"
+  style="@style/NamedayScreen.Text.Name"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="horizontal">
-
-  <TextView
-    android:id="@+id/nameday_name"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:textColor="?primaryTextColorInverse"
-    android:textSize="24sp"
-    tools:text="Αλέξανδρος" />
-
-</LinearLayout>
+  android:gravity="center_vertical"
+  android:minHeight="@dimen/nameday_item_minheight"
+  tools:text="Αλέξανδρος" />
