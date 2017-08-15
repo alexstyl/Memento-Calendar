@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
@@ -8,16 +10,43 @@
     android:id="@+id/memento_toolbar"
     style="@style/Widget.Memento.Toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    app:elevation="8dp">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="48dp"
+      android:layout_marginTop="48dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/namedays"
+        android:textColor="#bfffffff"
+        android:textSize="28sp" />
+
+      <TextView
+        android:id="@+id/namedays_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="28sp"
+        tools:text="Friday, 24 January" />
+    </LinearLayout>
+
+  </com.alexstyl.specialdates.ui.widget.MementoToolbar>
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/namedays_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="20dp"
-    android:clipChildren="false" />
+    android:clipToPadding="false"
+    android:paddingBottom="20dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="20dp" />
 
 </LinearLayout>

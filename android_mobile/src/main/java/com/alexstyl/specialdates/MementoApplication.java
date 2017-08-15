@@ -10,6 +10,7 @@ import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayInADayFeature;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
@@ -47,6 +48,7 @@ public class MementoApplication extends Application {
                         .upcomingEventsModule(new UpcomingEventsModule(this))
                         .namedayModule(new NamedayModule(this))
                         .namedayInADayFeature(new NamedayInADayFeature())
+                        .dateModule(new DateModule(this))
                         .build();
     }
 
