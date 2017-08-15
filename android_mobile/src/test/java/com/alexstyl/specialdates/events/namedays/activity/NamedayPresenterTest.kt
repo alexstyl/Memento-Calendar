@@ -50,7 +50,7 @@ class NamedayPresenterTest {
         Mockito.verify(mockView).displayNamedays(
                 arrayListOf(
                         NamedaysViewModel("Kate"),
-                        CelebratingContactViewModel(aContactCalled("Kate Brown"))
+                        CelebratingContactViewModel(aContactCalled("Kate Brown"), )
                 ))
     }
 

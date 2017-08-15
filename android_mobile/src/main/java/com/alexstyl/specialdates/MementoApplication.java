@@ -47,7 +47,7 @@ public class MementoApplication extends Application {
                         .contactsModule(new ContactsModule(this))
                         .upcomingEventsModule(new UpcomingEventsModule(this))
                         .namedayModule(new NamedayModule(this))
-                        .namedayInADayFeature(new NamedayInADayFeature())
+                        .namedayInADayFeature(new NamedayInADayFeature(getResources()))
                         .dateModule(new DateModule(this))
                         .build();
     }
