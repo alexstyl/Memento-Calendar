@@ -35,6 +35,7 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         this.forEach {
             val viewModel = namedaysViewModelFactory.viewModelsFor(it)
             list.add(viewModel)
+
             contactsProvider.contactsCalled(it).forEach {
                 contact ->
                 list.add(namedaysViewModelFactory.viewModelsFor(contact))
