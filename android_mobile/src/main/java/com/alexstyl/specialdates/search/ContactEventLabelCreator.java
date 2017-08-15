@@ -4,6 +4,7 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 
 final class ContactEventLabelCreator {
 

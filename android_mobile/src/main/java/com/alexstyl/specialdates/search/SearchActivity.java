@@ -26,6 +26,7 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;

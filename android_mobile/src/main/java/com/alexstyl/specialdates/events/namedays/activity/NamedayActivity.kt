@@ -8,10 +8,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.widget.TextView
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateBundleUtils
+import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
@@ -24,8 +26,11 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
     @Inject lateinit var namedaysViewModelFactory: NamedaysViewModelFactory
     @Inject lateinit var imageLoader: ImageLoader
     @Inject lateinit var presenter: NamedayPresenter
+    @Inject lateinit var dateLabelCreator: DateLabelCreator
 
     private var screenAdapter: NamedaysScreenAdapter? = null
+    private var dateView: TextView? = null
+
     private val namedayNavigator = NamedayNavigator(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +43,8 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         val toolbar = findViewById(R.id.memento_toolbar) as MementoToolbar
         toolbar.displayNavigationIconAsUp()
         setSupportActionBar(toolbar)
+
+        dateView = findViewById(R.id.namedays_date) as TextView
 
         val recyclerView = findViewById(R.id.namedays_list) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -66,8 +73,9 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun displayNamedays(viewModels: List<NamedayScreenViewModel>) {
+    override fun displayNamedays(date: Date, viewModels: List<NamedayScreenViewModel>) {
         screenAdapter?.display(viewModels)
+        dateView?.text = dateLabelCreator.createLabelWithoutYearFor(date)
     }
 
     override fun onStop() {
