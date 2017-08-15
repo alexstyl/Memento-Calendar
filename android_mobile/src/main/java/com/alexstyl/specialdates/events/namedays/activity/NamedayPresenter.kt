@@ -22,7 +22,7 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
                 .observeOn(resultScheduler)
                 .subscribe {
                     namedaysViewModel ->
-                    into.displayNamedays(forDate, namedaysViewModel)
+                    into.displayNamedays(namedaysViewModel)
                 }
     }
 

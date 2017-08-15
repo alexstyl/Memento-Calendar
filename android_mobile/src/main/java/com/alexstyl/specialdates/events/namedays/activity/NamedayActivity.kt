@@ -54,6 +54,9 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         })
         screenAdapter = namedaysAdapter
         recyclerView.adapter = screenAdapter
+
+        val date = DateBundleUtils.extractDateFrom(intent)
+        dateView?.text = dateLabelCreator.createLabelWithoutYearFor(date)
     }
 
 
@@ -73,9 +76,8 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun displayNamedays(date: Date, viewModels: List<NamedayScreenViewModel>) {
+    override fun displayNamedays(viewModels: List<NamedayScreenViewModel>) {
         screenAdapter?.display(viewModels)
-        dateView?.text = dateLabelCreator.createLabelWithoutYearFor(date)
     }
 
     override fun onStop() {
