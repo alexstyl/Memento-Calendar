@@ -48,6 +48,15 @@ public class ContactsProvider {
         this.sources = sources;
     }
 
+    public List<Contact> getContacts(List<Long> contactIds, @ContactSource int source) {
+        if (sources.containsKey(source)) {
+            ContactsProviderSource contactsProviderSource = sources.get(source);
+
+            return contactsProviderSource.getContacts(contactIds);
+        }
+        throw new IllegalArgumentException("Unknown source type: " + source);
+    }
+
     public Contact getContact(long contactID, @ContactSource int source) throws ContactNotFoundException {
         if (sources.containsKey(source)) {
             ContactsProviderSource contactsProviderSource = sources.get(source);

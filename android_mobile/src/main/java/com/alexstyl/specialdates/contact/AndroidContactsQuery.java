@@ -9,14 +9,12 @@ final class AndroidContactsQuery {
     public static final Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
     static final String[] PROJECTION = {
             Contacts._ID,
-            Contacts.LOOKUP_KEY,
             Contacts.DISPLAY_NAME_PRIMARY,
     };
     static final String SORT_ORDER = Contacts._ID;
 
     public static final int CONTACT_ID = 0;
-    static final int LOOKUP_KEY = 1;
-    static final int DISPLAY_NAME = 2;
+    static final int DISPLAY_NAME = 1;
 
     private AndroidContactsQuery() {
         // hide this
