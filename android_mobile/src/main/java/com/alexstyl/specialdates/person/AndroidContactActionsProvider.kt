@@ -63,12 +63,13 @@ class AndroidContactActionsProvider(
                 ),
                 Data.MIMETYPE
         )
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                val mimeType = cursor.getString(cursor.getColumnIndex(Data.MIMETYPE))
+        cursor.use {
+            c ->
+            while (c.moveToNext()) {
+                val mimeType = c.getString(c.getColumnIndex(Data.MIMETYPE))
                 if (Phone.CONTENT_ITEM_TYPE == mimeType) {
-                    val phoneNumber = getPhoneNumberFrom(cursor)
-                    val customLabel = getCallLabelFrom(cursor)
+                    val phoneNumber = getPhoneNumberFrom(c)
+                    val customLabel = getCallLabelFrom(c)
                     val action = ContactAction(phoneNumber, customLabel, actionsFactory.dial(phoneNumber))
                     val icon = tinter.tintWithAccentColor(R.drawable.ic_call, context)
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
@@ -76,14 +77,13 @@ class AndroidContactActionsProvider(
                     viewModels.add(viewModel)
                 } else if (mimeType.isCustomCallType()) {
                     try {
-                        val action = createActionFor(cursor, mimeType)
+                        val action = createActionFor(c, mimeType)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
                         ErrorTracker.track(ex)
                     }
                 }
             }
-            cursor.close()
         }
         return viewModels
     }
