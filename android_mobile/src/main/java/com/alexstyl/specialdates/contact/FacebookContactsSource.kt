@@ -6,7 +6,9 @@ import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsCo
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper
 import com.alexstyl.specialdates.facebook.FacebookImagePath
 
-internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpenHelper, private val cache: ContactCache<Contact>) : ContactsProviderSource {
+internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpenHelper,
+                                      private val cache: ContactCache<Contact>)
+    : ContactsProviderSource {
 
     @Throws(ContactNotFoundException::class)
     override fun getOrCreateContact(contactID: Long): Contact {
