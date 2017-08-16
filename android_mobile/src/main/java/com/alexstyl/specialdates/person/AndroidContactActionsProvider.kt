@@ -137,12 +137,14 @@ class AndroidContactActionsProvider(
         intent.setDataAndType(uri, mimeType)
         val resolveInfos = packageManager.queryIntentActivities(intent, 0)
         if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-            val label = cursor.getString(cursor.getColumnIndex(CUSTOM_LABEL))
-            val action = ContactAction(label, resolveInfos[0].loadLabel(packageManager).toString(), actionsFactory.view(URI.create(uri.toString()), mimeType))
+            val customLabel = cursor.getString(cursor.getColumnIndex(CUSTOM_LABEL))
+            val viewAction = actionsFactory.view(URI.create(uri.toString()), mimeType)
+            val label = resolveInfos[0].loadLabel(packageManager)
+            val contactAction = ContactAction(customLabel, label.toString(), viewAction)
             val icon = resolveInfos[0].loadIcon(packageManager)
-            return ContactActionViewModel(action, View.VISIBLE, icon)
+            return ContactActionViewModel(contactAction, View.VISIBLE, icon)
         }
-        throw ActivityNotFoundException("Couldn't find activity for "+mimeType)
+        throw ActivityNotFoundException("Couldn't find activity for " + mimeType)
     }
 
 
