@@ -9,7 +9,8 @@ import com.alexstyl.specialdates.ErrorTracker
 import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import java.net.URI
-import java.util.*
+import java.util.Collections
+import kotlin.collections.ArrayList
 
 internal class AndroidContactFactory(private val resolver: ContentResolver) {
 

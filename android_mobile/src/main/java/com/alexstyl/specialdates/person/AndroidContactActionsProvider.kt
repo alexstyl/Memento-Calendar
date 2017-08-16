@@ -1,6 +1,11 @@
 package com.alexstyl.specialdates.person
 
-import android.content.*
+
+import android.content.ActivityNotFoundException
+import android.content.ContentResolver
+import android.content.ContentUris
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.provider.ContactsContract.CommonDataKinds.Email
