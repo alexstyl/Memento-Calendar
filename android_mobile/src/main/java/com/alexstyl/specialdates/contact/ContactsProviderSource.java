@@ -6,4 +6,6 @@ interface ContactsProviderSource {
     Contact getOrCreateContact(long contactID) throws ContactNotFoundException;
 
     List<Contact> getAllContacts();
+
+    List<Contact> getContacts(List<Long> contactIds);
 }

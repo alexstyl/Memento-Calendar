@@ -31,4 +31,9 @@ class AndroidContactsProviderSource implements ContactsProviderSource {
         }
         return allContacts;
     }
+
+    @Override
+    public List<Contact> getContacts(List<Long> contactIds) {
+        return factory.getContacts(contactIds);
+    }
 }
