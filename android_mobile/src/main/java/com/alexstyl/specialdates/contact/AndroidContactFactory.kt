@@ -10,31 +10,29 @@ import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import java.net.URI
 import java.util.Collections
-import kotlin.collections.ArrayList
 
 internal class AndroidContactFactory(private val resolver: ContentResolver) {
 
-    val allContacts: List<Contact>
-        get() {
-            val cursor = resolver.query(
+    fun getAllContacts(): List<Contact> {
+        val cursor: Cursor?
+        try {
+            cursor = resolver.query(
                     AndroidContactsQuery.CONTENT_URI,
                     AndroidContactsQuery.PROJECTION,
                     WHERE, null,
                     AndroidContactsQuery.SORT_ORDER
             )
-            val contacts = ArrayList<Contact>()
-            try {
-                while (cursor!!.moveToNext()) {
-                    val contact = createContactFrom(cursor)
-                    contacts.add(contact)
-                }
-            } catch (e: Exception) {
-                ErrorTracker.track(e)
-            } finally {
-                cursor!!.close()
-            }
-            return Collections.unmodifiableList(contacts)
+        } catch (e: Exception) {
+            ErrorTracker.track(e)
+            return emptyList()
         }
+        return cursor.use {
+            return@use List(it.count, { index ->
+                it.moveToPosition(index)
+                createContactFrom(it)
+            })
+        }
+    }
 
     @Throws(ContactNotFoundException::class)
     fun createContactWithId(contactID: Long): Contact {
@@ -42,9 +40,9 @@ internal class AndroidContactFactory(private val resolver: ContentResolver) {
         if (isInvalid(cursor)) {
             throw RuntimeException("Cursor was invalid")
         }
-        cursor.use { c ->
-            if (c.moveToFirst()) {
-                return createContactFrom(c)
+        cursor.use {
+            if (it.moveToFirst()) {
+                return createContactFrom(it)
             }
         }
         throw ContactNotFoundException(contactID)
@@ -54,10 +52,10 @@ internal class AndroidContactFactory(private val resolver: ContentResolver) {
     fun getContacts(ids: List<Long>): List<Contact> {
         val cursor = queryContactsWithContactId(ids)
 
-        return cursor.use { c ->
-            return@use List(c.count) { index ->
-                c.moveToPosition(index)
-                createContactFrom(c)
+        return cursor.use {
+            return@use List(it.count) { index ->
+                it.moveToPosition(index)
+                createContactFrom(it)
             }
         }
     }

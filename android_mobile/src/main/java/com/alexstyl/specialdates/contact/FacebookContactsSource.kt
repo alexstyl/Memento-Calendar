@@ -13,8 +13,7 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
     @Throws(ContactNotFoundException::class)
     override fun getOrCreateContact(contactID: Long): Contact {
         var contact: Contact? = cache.getContact(contactID)
-        if (contact ==
-                null) {
+        if (contact == null) {
             contact = queryContactWith(contactID)
         }
         return contact
@@ -23,21 +22,18 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
     @Throws(ContactNotFoundException::class)
     private fun queryContactWith(contactID: Long): Contact {
         val readableDatabase = eventSQLHelper.readableDatabase
-        var cursor: Cursor? = null
-        try {
-            cursor = readableDatabase.query(
-                    AnnualEventsContract.TABLE_NAME, null,
-                    "$IS_A_FACEBOOK_CONTACT AND ${AnnualEventsContract.CONTACT_ID} == $contactID", null, null, null, null
-            )
-            if (cursor!!.moveToFirst()) {
-                return createContactFrom(cursor)
+        val cursor = readableDatabase.query(
+                AnnualEventsContract.TABLE_NAME, null,
+                "$IS_A_FACEBOOK_CONTACT AND ${AnnualEventsContract.CONTACT_ID} == $contactID", null, null, null, null
+        )
+
+        return cursor.use {
+            if (!it.moveToFirst()) {
+                throw ContactNotFoundException(contactID)
             }
-        } finally {
-            if (cursor != null) {
-                cursor.close()
-            }
+
+            return@use createContactFrom(cursor)
         }
-        throw ContactNotFoundException(contactID)
     }
 
     override fun getContacts(contactIds: List<Long>): List<Contact>? {
@@ -52,10 +48,10 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
                 null
         )
 
-        return cursor.use { c ->
-            return@use List(c.count, { index ->
-                c.moveToPosition(index)
-                createContactFrom(c)
+        return cursor.use {
+            return@use List(it.count, { index ->
+                it.moveToPosition(index)
+                createContactFrom(it)
             })
         }
     }
@@ -71,23 +67,17 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
 
     private fun queryAllContacts(): List<Contact> {
         val readableDatabase = eventSQLHelper.readableDatabase
-        var cursor: Cursor? = null
-        val contacts = ArrayList<Contact>()
-        try {
-            cursor = readableDatabase.query(
-                    AnnualEventsContract.TABLE_NAME, null,
-                    IS_A_FACEBOOK_CONTACT, null, null, null, null
-            )
-            if (cursor!!.moveToFirst()) {
-                val contact = createContactFrom(cursor)
-                contacts.add(contact)
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close()
-            }
+        val cursor = readableDatabase.query(
+                AnnualEventsContract.TABLE_NAME, null,
+                IS_A_FACEBOOK_CONTACT, null, null, null, null
+        )
+
+        return cursor.use {
+            return@use List(it.count, { index ->
+                it.moveToPosition(index)
+                createContactFrom(it)
+            })
         }
-        return contacts
     }
 
     companion object {
