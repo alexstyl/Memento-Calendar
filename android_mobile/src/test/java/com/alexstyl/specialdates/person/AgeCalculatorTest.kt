@@ -28,8 +28,20 @@ class AgeCalculatorTest {
     fun birthdayAfterToday() {
         val ageCalculator = AgeCalculator(Date.on(5, Months.MARCH, 2017))
         val ageOf = ageCalculator.ageOf(Date.on(8, Months.MARCH, 1990))
-
-
         assertThat(ageOf).isEqualTo("26")
+    }
+
+    @Test
+    fun birthdayOnToday() {
+        val ageCalculator = AgeCalculator(Date.on(18, Months.AUGUST, 2017))
+        val ageOf = ageCalculator.ageOf(Date.on(18, Months.AUGUST, 2017))
+        assertThat(ageOf).isEqualTo("")
+    }
+
+    @Test
+    fun dateOfBirthOnFuture() {
+        val ageCalculator = AgeCalculator(Date.on(17, Months.AUGUST, 2017))
+        val ageOf = ageCalculator.ageOf(Date.on(18, Months.AUGUST, 2017))
+        assertThat(ageOf).isEqualTo("")
     }
 }
