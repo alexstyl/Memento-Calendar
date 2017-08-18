@@ -28,7 +28,7 @@ class NamedayPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(), mockContactsProvider, workScheduler, resultScheduler)
+        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockResources), mockContactsProvider, workScheduler, resultScheduler)
     }
 
     @Test
@@ -50,7 +50,7 @@ class NamedayPresenterTest {
         Mockito.verify(mockView).displayNamedays(
                 arrayListOf(
                         NamedaysViewModel("Kate"),
-                        CelebratingContactViewModel(aContactCalled("Kate Brown"), )
+                        CelebratingContactViewModel(aContactCalled("Kate Brown"), "Kate Brown", 1)
                 ))
     }
 

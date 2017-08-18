@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.ui.widget.LetterPainter
 
-class NamedaysViewModelFactory(val resources: Resources) {
+class NamedaysViewModelFactory(private val resources: Resources) {
 
     fun viewModelsFor(name: String): NamedaysViewModel {
         return NamedaysViewModel(name)
