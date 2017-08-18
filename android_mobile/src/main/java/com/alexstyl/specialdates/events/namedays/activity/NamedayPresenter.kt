@@ -1,8 +1,11 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
+import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.NameComparator
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
+import com.alexstyl.specialdates.util.HashMapList
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -31,12 +34,21 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
     }
 
     private fun List<String>.asViewModels(): ArrayList<NamedayScreenViewModel> {
+        val allContacts = contactsProvider.allContacts
+
+        val hashMap = HashMapList<CheatName, Contact>()
+        for (contact in allContacts) {
+            contact.displayName.firstNames.forEach {
+                hashMap.addValue(CheatName(it), contact)
+            }
+        }
+
         val list = ArrayList<NamedayScreenViewModel>()
         this.forEach {
             val viewModel = namedaysViewModelFactory.viewModelsFor(it)
             list.add(viewModel)
 
-            contactsProvider.contactsCalled(it).forEach {
+            hashMap.get(CheatName(it))?.forEach {
                 contact ->
                 list.add(namedaysViewModelFactory.viewModelsFor(contact))
             }
@@ -44,4 +56,43 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         return list
     }
 
+
+//    private fun List<String>.asViewModels(): ArrayList<NamedayScreenViewModel> {
+//        val allContacts = contactsProvider.allContacts
+//
+//        val hashMap = HashMapList<CheatName, Contact>()
+//        for (contact in allContacts) {
+//            contact.displayName.firstNames.forEach {
+//                hashMap.addValue(CheatName(it), contact)
+//            }
+//        }
+//
+//        val list = ArrayList<NamedayScreenViewModel>()
+//        this.forEach {
+//            val viewModel = namedaysViewModelFactory.viewModelsFor(it)
+//            list.add(viewModel)
+//
+//            hashMap.get(CheatName(it))?.forEach {
+//                contact ->
+//                list.add(namedaysViewModelFactory.viewModelsFor(contact))
+//            }
+//        }
+//        return list
+//    }
+
+}
+
+class CheatName(val it: String) {
+    override fun hashCode(): Int {
+        return it.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as CheatName
+
+        return NameComparator.areTheSameName(it, other.it)
+    }
 }
