@@ -1,10 +1,29 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-public class CharacterNodeTest extends NodeTest {
+import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
-    @Override
-    Node buildNode() {
-        return new CharacterNode();
+import org.junit.Test;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+
+public class CharacterNodeTest {
+
+    @Test
+    public void addingADate_isPlacedUnderTheRightNode() {
+        Node node = new CharacterNode();
+        Date date = Date.Companion.on(1, 2, 1990);
+        node.addDate("Alex", date);
+
+        NameCelebrations extracted = node.getDates("Alex");
+        assertThat(extracted.getDate(0)).isEqualTo(date);
+    }
+
+    @Test
+    public void gettingDateFromEmptyNodeReturnsNoDates() throws Exception {
+        Node node = new CharacterNode();
+        NameCelebrations extracted = node.getDates("Alex");
+        assertThat(extracted.getDates().size()).isZero();
     }
 
 }

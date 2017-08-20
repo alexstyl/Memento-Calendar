@@ -35,7 +35,7 @@ final class SpecialNamedaysHandlerFactory {
 
         @Override
         public NameCelebrations getNamedaysFor(String name, int year) {
-            return NameCelebrations.EMPTY;
+            return new NameCelebrations(name);
         }
 
         @Override

@@ -235,7 +235,6 @@ class SoundRules private constructor() {
 
                 if (doubleSounds.containsKey(key)) {
                     yield(doubleSounds[key])
-//                    continue
                     return@forEach
                 } else {
                     yield(getSound(previousCharacter))
@@ -252,7 +251,7 @@ class SoundRules private constructor() {
         /// Return any pending sounds
         if (doubleSoundPending) {
             if (retrieveAll) {
-                yield(getAllSounds(previousCharacter))
+                yield(getAllSoundsInternal(previousCharacter))
             } else {
                 yield(getSound(previousCharacter))
             }
@@ -277,8 +276,9 @@ class SoundRules private constructor() {
      * p => P, PS, PH
      *
      */
-    private fun getAllSounds(character: Char): Sound {
-        var upperCharacter = character.toUpperCase()
+    fun getAllSounds(character: Char): Sound = getAllSoundsInternal(character.toUpperCase())
+
+    private fun getAllSoundsInternal(upperCharacter: Char): Sound {
         var sound = getSound(upperCharacter)
 
         if (startOfDouble.indexOf(upperCharacter) >= 0) {
@@ -291,11 +291,7 @@ class SoundRules private constructor() {
 
             val allSounds = Sound.append(map)
 
-            if (sound != null) {
-                sound = Sound.combine(sound, allSounds);
-            } else {
-                sound = allSounds
-            }
+            sound = Sound.combine(sound, allSounds);
 
 
         }
@@ -309,7 +305,7 @@ class SoundRules private constructor() {
     companion object {
         private var sInstance: SoundRules? = null
 
-        val instance: SoundRules
+        public val INSTANCE: SoundRules
             get() {
                 if (sInstance == null) {
                     sInstance = SoundRules()
