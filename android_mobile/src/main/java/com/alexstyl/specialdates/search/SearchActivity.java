@@ -329,7 +329,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onLoaderReset(Loader<NameCelebrations> loader) {
-            adapter.setNamedays(NameCelebrations.EMPTY);
+            adapter.setNamedays(new NameCelebrations(""));
         }
     };
 
