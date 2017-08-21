@@ -8,7 +8,6 @@ import org.mockito.runners.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class SoundComparerTest {
 
-
     @Test
     fun areSame() {
         Assert.assertTrue(SoundComparer.areSame("Αθήνα", "athina"))

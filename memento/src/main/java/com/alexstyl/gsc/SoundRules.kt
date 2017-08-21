@@ -1,6 +1,6 @@
 package com.alexstyl.gsc
 
-import kotlin.coroutines.experimental.buildSequence
+import kotlin.coroutines.experimental.buildIterator
 
 
 /**
@@ -208,7 +208,7 @@ class SoundRules private constructor() {
      * Returns the next sound of the string.
      *
      */
-    fun getNextSound(string: String, retrieveAll: Boolean) = buildSequence {
+    fun getNextSound(string: String, retrieveAll: Boolean) = buildIterator {
         /// Used to indicate the beginning of a double char sound
         var doubleSoundPending = false
 
