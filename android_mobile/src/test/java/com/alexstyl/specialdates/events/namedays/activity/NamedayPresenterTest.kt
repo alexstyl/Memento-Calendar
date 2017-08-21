@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
+import android.content.res.Resources
 import com.alexstyl.specialdates.contact.ContactFixture.aContactCalled
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.Date
@@ -21,6 +22,7 @@ class NamedayPresenterTest {
     private val CHECKING_DATE = Date.on(1, JANUARY, 2017)
     private val mockNamedayCalendar = Mockito.mock(NamedayCalendar::class.java)
     private var mockContactsProvider = Mockito.mock(ContactsProvider::class.java)
+    private var mockResources = Mockito.mock(Resources::class.java)
 
     private lateinit var presenter: NamedayPresenter
 
@@ -28,7 +30,7 @@ class NamedayPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(), mockContactsProvider, workScheduler, resultScheduler)
+        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockResources), mockContactsProvider, workScheduler, resultScheduler)
     }
 
     @Test
@@ -50,7 +52,7 @@ class NamedayPresenterTest {
         Mockito.verify(mockView).displayNamedays(
                 arrayListOf(
                         NamedaysViewModel("Kate"),
-                        CelebratingContactViewModel(aContactCalled("Kate Brown"), )
+                        CelebratingContactViewModel(aContactCalled("Kate Brown"), "Kate Brown", 0)
                 ))
     }
 
