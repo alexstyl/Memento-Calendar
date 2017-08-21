@@ -1,6 +1,11 @@
 package com.alexstyl.specialdates.person
 
-import android.content.*
+
+import android.content.ActivityNotFoundException
+import android.content.ContentResolver
+import android.content.ContentUris
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.provider.ContactsContract.CommonDataKinds.Email
@@ -58,12 +63,13 @@ class AndroidContactActionsProvider(
                 ),
                 Data.MIMETYPE
         )
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                val mimeType = cursor.getString(cursor.getColumnIndex(Data.MIMETYPE))
+        cursor.use {
+            c ->
+            while (c.moveToNext()) {
+                val mimeType = c.getString(c.getColumnIndex(Data.MIMETYPE))
                 if (Phone.CONTENT_ITEM_TYPE == mimeType) {
-                    val phoneNumber = getPhoneNumberFrom(cursor)
-                    val customLabel = getCallLabelFrom(cursor)
+                    val phoneNumber = getPhoneNumberFrom(c)
+                    val customLabel = getCallLabelFrom(c)
                     val action = ContactAction(phoneNumber, customLabel, actionsFactory.dial(phoneNumber))
                     val icon = tinter.tintWithAccentColor(R.drawable.ic_call, context)
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
@@ -71,14 +77,13 @@ class AndroidContactActionsProvider(
                     viewModels.add(viewModel)
                 } else if (mimeType.isCustomCallType()) {
                     try {
-                        val action = createActionFor(cursor, mimeType)
+                        val action = createActionFor(c, mimeType)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
                         ErrorTracker.track(ex)
                     }
                 }
             }
-            cursor.close()
         }
         return viewModels
     }
@@ -132,12 +137,14 @@ class AndroidContactActionsProvider(
         intent.setDataAndType(uri, mimeType)
         val resolveInfos = packageManager.queryIntentActivities(intent, 0)
         if (resolveInfos != null && resolveInfos.isNotEmpty()) {
-            val label = cursor.getString(cursor.getColumnIndex(CUSTOM_LABEL))
-            val action = ContactAction(label, resolveInfos[0].loadLabel(packageManager).toString(), actionsFactory.view(URI.create(uri.toString()), mimeType))
+            val customLabel = cursor.getString(cursor.getColumnIndex(CUSTOM_LABEL))
+            val viewAction = actionsFactory.view(URI.create(uri.toString()), mimeType)
+            val label = resolveInfos[0].loadLabel(packageManager)
+            val contactAction = ContactAction(customLabel, label.toString(), viewAction)
             val icon = resolveInfos[0].loadIcon(packageManager)
-            return ContactActionViewModel(action, View.VISIBLE, icon)
+            return ContactActionViewModel(contactAction, View.VISIBLE, icon)
         }
-        throw ActivityNotFoundException("Couldn't find activity for "+mimeType)
+        throw ActivityNotFoundException("Couldn't find activity for " + mimeType)
     }
 
 
