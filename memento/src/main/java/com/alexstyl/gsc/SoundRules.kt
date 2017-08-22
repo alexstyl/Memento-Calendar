@@ -181,7 +181,10 @@ class SoundRules private constructor() {
 
         getNextSound(first, startsWith).forEach { sound1 ->
             if (enumerator2.hasNext()) {
-                if (sound1!!.soundsLike(enumerator2.next()!!)) {
+                sound1 as Sound
+                val sound2 = enumerator2.next() as Sound
+
+                if (!sound1.soundsLike(sound2)) {
                     /// Found a non matching sound thus
                     /// we are sure the two words don't sound the same
                     return false
