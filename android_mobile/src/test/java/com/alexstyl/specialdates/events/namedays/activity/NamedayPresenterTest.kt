@@ -46,7 +46,7 @@ class NamedayPresenterTest {
 
     @Test
     fun aNamedayWithAContact_returnsAViewModelWithThatContact() {
-        Mockito.`when`(mockContactsProvider.contactsCalled("Kate")).thenReturn(arrayListOf(aContactCalled("Kate Brown")))
+        Mockito.`when`(mockContactsProvider.allContacts).thenReturn(arrayListOf(aContactCalled("Kate Brown")))
         Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, arrayListOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = CHECKING_DATE)
@@ -60,7 +60,7 @@ class NamedayPresenterTest {
 
     @Test
     fun aNamedayWithoutRelatedContacts_returnsOnlyTheNameday() {
-        Mockito.`when`(mockContactsProvider.contactsCalled(Mockito.anyString())).thenReturn(emptyList())
+        Mockito.`when`(mockContactsProvider.allContacts).thenReturn(emptyList())
         Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, arrayListOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = CHECKING_DATE)
