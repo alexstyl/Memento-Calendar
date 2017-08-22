@@ -44,6 +44,18 @@ class Sound {
         return false
     }
 
+    fun soundsLike(other: Sound): Boolean {
+        soundSymbols.forEach { thisSymbol ->
+            other.soundSymbols.forEach { otherSymbol ->
+                if (thisSymbol == otherSymbol) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+
     operator fun plus(other: Sound): Sound {
         val length = this.soundSymbols.size + other.soundSymbols.size
         val soundSymbols = CharArray(length)
@@ -54,9 +66,7 @@ class Sound {
         return Sound(soundSymbols)
     }
 
-
     companion object {
-
         /**
          * Combines a series of different sounds into one.
          */
