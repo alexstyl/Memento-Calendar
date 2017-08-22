@@ -9,12 +9,23 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+
+import javax.inject.Inject;
 
 public class CompactCardView extends FrameLayout {
 
+    @Inject
+    LetterPainter letterPainter;
+
     public CompactCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
+
         View view = LayoutInflater.from(context).inflate(R.layout.base_card_compact, this, false);
         addView(view);
 
@@ -33,7 +44,7 @@ public class CompactCardView extends FrameLayout {
         String secondaryText;
         Drawable drawable;
         try {
-            color = typedArray.getColor(R.styleable.CompactCardView_backgroundHeroColor, LetterPainter.getVariant(getResources(), 0));
+            color = typedArray.getColor(R.styleable.CompactCardView_backgroundHeroColor, letterPainter.getVariant(0));
             primaryText = typedArray.getString(R.styleable.CompactCardView_primaryText);
             secondaryText = typedArray.getString(R.styleable.CompactCardView_secondaryText);
             drawable = typedArray.getDrawable(R.styleable.CompactCardView_android_src);

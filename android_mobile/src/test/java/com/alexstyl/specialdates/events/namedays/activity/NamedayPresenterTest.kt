@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
+import com.alexstyl.specialdates.ui.widget.LetterPainter
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
@@ -17,10 +18,12 @@ import org.mockito.runners.MockitoJUnitRunner
 class NamedayPresenterTest {
 
     private val mockView = Mockito.mock(NamedaysMVPView::class.java)
+    private val LETTER_VARIANT = 5
 
     private val CHECKING_DATE = Date.on(1, JANUARY, 2017)
     private val mockNamedayCalendar = Mockito.mock(NamedayCalendar::class.java)
     private var mockContactsProvider = Mockito.mock(ContactsProvider::class.java)
+    private var mockLetterPainter = Mockito.mock(LetterPainter::class.java)
 
     private lateinit var presenter: NamedayPresenter
 
@@ -28,7 +31,8 @@ class NamedayPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockResources), mockContactsProvider, workScheduler, resultScheduler)
+        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockLetterPainter), mockContactsProvider, workScheduler, resultScheduler)
+        Mockito.`when`(mockLetterPainter.getVariant(Mockito.anyInt())).thenReturn(LETTER_VARIANT)
     }
 
     @Test
@@ -50,7 +54,7 @@ class NamedayPresenterTest {
         Mockito.verify(mockView).displayNamedays(
                 arrayListOf(
                         NamedaysViewModel("Kate"),
-                        CelebratingContactViewModel(aContactCalled("Kate Brown"), "Kate Brown", 1)
+                        CelebratingContactViewModel(aContactCalled("Kate Brown"), "Kate Brown", LETTER_VARIANT)
                 ))
     }
 
