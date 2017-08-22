@@ -4,7 +4,18 @@ import android.support.annotation.StringRes
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Date.Companion.on
-import com.alexstyl.specialdates.date.Months.*
+import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.date.Months.FEBRUARY
+import com.alexstyl.specialdates.date.Months.MARCH
+import com.alexstyl.specialdates.date.Months.APRIL
+import com.alexstyl.specialdates.date.Months.MAY
+import com.alexstyl.specialdates.date.Months.JUNE
+import com.alexstyl.specialdates.date.Months.JULY
+import com.alexstyl.specialdates.date.Months.AUGUST
+import com.alexstyl.specialdates.date.Months.SEPTEMBER
+import com.alexstyl.specialdates.date.Months.OCTOBER
+import com.alexstyl.specialdates.date.Months.NOVEMBER
+import com.alexstyl.specialdates.date.Months.DECEMBER
 
 enum class StarSign(@StringRes val labelStringRes: Int, val emoji: String, val from: Date, val to: Date) {
     AQUARIUS(R.string.starsigns_aquarius, "\u2652", on(20, JANUARY), on(18, FEBRUARY)),

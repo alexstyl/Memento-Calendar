@@ -39,7 +39,8 @@ internal class PersonPresenter(private val personView: PersonView,
                         eventsOf(contact),
                         personCallProvider.getCallsFor(contact),
                         personCallProvider.getMessagesFor(contact),
-                        Function3<List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
+                        Function3
+                        <List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
                         {
                             t1, t2, t3 ->
                             PersonAvailableActionsViewModel(t1, t2, t3)

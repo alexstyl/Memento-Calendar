@@ -1,5 +1,6 @@
 package com.alexstyl.gsc;
 
+@Deprecated
 public class Index {
 
     private static final int NOT_STARTED = -1;

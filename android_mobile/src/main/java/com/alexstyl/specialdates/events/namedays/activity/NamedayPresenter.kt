@@ -55,31 +55,6 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         }
         return list
     }
-
-
-//    private fun List<String>.asViewModels(): ArrayList<NamedayScreenViewModel> {
-//        val allContacts = contactsProvider.allContacts
-//
-//        val hashMap = HashMapList<CheatName, Contact>()
-//        for (contact in allContacts) {
-//            contact.displayName.firstNames.forEach {
-//                hashMap.addValue(CheatName(it), contact)
-//            }
-//        }
-//
-//        val list = ArrayList<NamedayScreenViewModel>()
-//        this.forEach {
-//            val viewModel = namedaysViewModelFactory.viewModelsFor(it)
-//            list.add(viewModel)
-//
-//            hashMap.get(CheatName(it))?.forEach {
-//                contact ->
-//                list.add(namedaysViewModelFactory.viewModelsFor(contact))
-//            }
-//        }
-//        return list
-//    }
-
 }
 
 class CheatName(val it: String) {
