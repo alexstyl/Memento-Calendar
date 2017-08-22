@@ -309,9 +309,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onNamedayClicked(Date date) {
-            Date currentYearDate = Date.Companion.on(date.getDayOfMonth(), date.getMonth(), Date.Companion.getCURRENT_YEAR());
-            Intent intent = UpcomingEventsActivity.getStartIntent(context(), currentYearDate);
-            startActivity(intent);
+            searchNavigator.toNamedays(date);
         }
 
     };

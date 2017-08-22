@@ -91,13 +91,10 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         }
     }
 
-    private fun noEventsArePresent(): Boolean {
-        return contactEvents.isEmpty && namedays.isEmpty() && bankHolidays.isEmpty()
-    }
+    private fun noEventsArePresent(): Boolean = contactEvents.isEmpty && namedays.isEmpty() && bankHolidays.isEmpty()
 
-    private fun containsAnyEventsOn(date: AnnualDate): Boolean {
-        return getEventsOn(date).size > 0 || namedays.containsKey(date) || bankHolidays.containsKey(date)
-    }
+    private fun containsAnyEventsOn(date: AnnualDate): Boolean =
+            getEventsOn(date).isNotEmpty() || namedays.containsKey(date) || bankHolidays.containsKey(date)
 
     companion object {
 
