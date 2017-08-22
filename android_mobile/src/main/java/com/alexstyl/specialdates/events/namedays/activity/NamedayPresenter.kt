@@ -10,6 +10,7 @@ import com.alexstyl.specialdates.util.HashMapList
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
+import java.util.*
 
 class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
                        private val namedaysViewModelFactory: NamedaysViewModelFactory,
@@ -34,27 +35,20 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         disposable?.dispose()
     }
 
-    private fun List<String>.asViewModels(): ArrayList<NamedayScreenViewModel> {
-        val allContacts = contactsProvider.allContacts
-
-        val hashMap = HashMapList<PhoneticName, Contact>()
-        for (contact in allContacts) {
+    private fun List<String>.asViewModels(): List<NamedayScreenViewModel> {
+        val contacts = HashMapList<PhoneticName, Contact>()
+        for (contact in contactsProvider.allContacts) {
             contact.displayName.firstNames.forEach {
-                hashMap.addValue(it.toSounds(), contact)
+                contacts.addValue(it.toSounds(), contact)
             }
         }
-
-        val list = ArrayList<NamedayScreenViewModel>()
-        this.forEach {
-            val viewModel = namedaysViewModelFactory.viewModelsFor(it)
-            list.add(viewModel)
-
-            hashMap.get(it.toSounds())?.forEach {
-                contact ->
-                list.add(namedaysViewModelFactory.viewModelsFor(contact))
+        return this.fold(listOf<NamedayScreenViewModel>(), { list, name ->
+            val contactsForName = contacts.get(name.toSounds()) ?: emptyList()
+            list + namedaysViewModelFactory.viewModelsFor(name) + contactsForName.map {
+                namedaysViewModelFactory.viewModelsFor(it)
             }
-        }
-        return list
+        })
+
     }
 }
 
@@ -68,4 +62,4 @@ private fun String.toSounds(): PhoneticName {
             })
 }
 
-data class PhoneticName(val it: List<Sound>)
+data class PhoneticName(val sounds: List<Sound>)
