@@ -33,7 +33,6 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
 
     fun addDate(word: String, date: Date, iterator: Iterator<Sound?>) {
         if (!iterator.hasNext()) {
-            // we are done.
             if (dates == null) {
                 dates = NameCelebrations(word)
             }
@@ -42,7 +41,7 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
             var theNode: SoundNode? = null
             iterator.forEach { s ->
                 nodes.forEach { node ->
-                    if (node.keySound == s) {
+                    if (node.keySound!!.soundsLike(s!!)) {
                         theNode = node
                         return@forEach
                     }
@@ -60,12 +59,11 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
 
     fun getDates(name: String, iterator: Iterator<Sound?>): NameCelebrations? {
         if (!iterator.hasNext()) {
-            // we are done.
             return getNameCelebrations(name)
         } else {
             iterator.forEach { s ->
                 nodes.forEach { node ->
-                    if (node.keySound == s) {
+                    if (node.keySound!!.soundsLike(s!!)) {
                         val nameCelebrations = node.getDates(name, iterator)
                         if (nameCelebrations != null) {
                             return nameCelebrations
