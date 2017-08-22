@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-import android.content.res.Resources
 import com.alexstyl.specialdates.contact.ContactFixture.aContactCalled
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.Date

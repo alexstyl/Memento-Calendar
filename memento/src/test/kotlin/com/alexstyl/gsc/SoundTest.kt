@@ -10,14 +10,14 @@ class SoundTest {
 
     @Test
     fun combiningTwoSymbols_returnsASoundWithAllTheSymbols() {
-        val result = Sound('A') + Sound('E')
-        Assertions.assertThat(result).isEqualTo(Sound(charArrayOf('A', 'E')))
+        val result = sound('A') + sound('E')
+        Assertions.assertThat(result).isEqualTo(sound(charArrayOf('A', 'E')))
     }
 
 
     @Test
     fun appendingThreeSounds_returnsASoundWithAllSymbols() {
-        var result = Sound.flatten(listOf(Sound('A'), Sound('B'), Sound('C')))
-        Assertions.assertThat(result).isEqualTo(Sound("A,B,C"))
+        var result = Sound.flatten(listOf(sound('A'), sound('B'), sound('C')))
+        Assertions.assertThat(result).isEqualTo(sound("A,B,C"))
     }
 }
