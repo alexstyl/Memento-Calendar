@@ -99,8 +99,7 @@ data class Date private constructor(private val localDate: LocalDate, private va
         }
 
         fun startOfYear(year: Int): Date = Date.on(1, Months.JANUARY, year)
-
-        fun endOfYear(year: Int): Date = Date.on(31, Months.DECEMBER, year)
+        fun endOfYear(currentYear: Int): Date = Date.on(31, Months.DECEMBER, currentYear)
     }
 
 }

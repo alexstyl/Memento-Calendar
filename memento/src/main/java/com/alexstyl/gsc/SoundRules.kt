@@ -276,8 +276,6 @@ class SoundRules private constructor() {
      * p => P, PS, PH
      *
      */
-    fun getAllSounds(character: Char): Sound = getAllSoundsInternal(character.toUpperCase())
-
     private fun getAllSoundsInternal(upperCharacter: Char): Sound {
         var sound = getSound(upperCharacter)
 
@@ -298,9 +296,6 @@ class SoundRules private constructor() {
         return sound
     }
 
-    fun soundsLike(first: String): List<Sound> {
-        return emptyList()
-    }
 
     companion object {
         private var sInstance: SoundRules? = null

@@ -8,6 +8,7 @@ object NameComparator {
         try {
             return SoundComparer.areSame(left, right)
         } catch (e: Exception) {
+            e.printStackTrace()
             return false
         }
 
