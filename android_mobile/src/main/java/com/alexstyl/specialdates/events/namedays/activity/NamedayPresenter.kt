@@ -30,9 +30,7 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
                 }
     }
 
-    fun stopPresenting() {
-        disposable?.dispose()
-    }
+    fun stopPresenting() = disposable?.dispose()
 
     private fun List<String>.asViewModels(): List<NamedayScreenViewModel> {
         val contacts = HashMapList<PhoneticName, Contact>()
