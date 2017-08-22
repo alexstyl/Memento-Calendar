@@ -27,7 +27,9 @@ import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
 
@@ -36,7 +38,7 @@ class StaticPeopleEventsProvider {
     private static final String DATE_FROM = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) >= ?";
     private static final String DATE_TO = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) <= ?";
     private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
-    private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEventsContract.PeopleEvents.DATE};
+    private static final String[] PEOPLE_PROJECTION = {PeopleEventsContract.PeopleEvents.DATE};
     private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
     private static final String[] PROJECTION = {
             PeopleEventsContract.PeopleEvents.CONTACT_ID,
@@ -69,11 +71,40 @@ class StaticPeopleEventsProvider {
     }
 
     List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
-        List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = queryEventsFor(timeDuration);
+        List<ContactEvent> contactEvents = new ArrayList<>(cursor.getCount());
+
+        List<Long> deviceIds = new ArrayList<>(cursor.getCount());
+        List<Long> facebookIds = new ArrayList<>(cursor.getCount());
+
         while (cursor.moveToNext()) {
+            long contactId = getContactIdFrom(cursor);
+            int source = getContactSourceFrom(cursor);
+
+            switch (source) {
+                case ContactSource.SOURCE_DEVICE:
+                    deviceIds.add(contactId);
+                    break;
+                case ContactSource.SOURCE_FACEBOOK:
+                    facebookIds.add(contactId);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Source " + source + " not managed");
+            }
+        }
+
+        List<Contact> contacts = contactsProvider.getContacts(deviceIds, ContactSource.SOURCE_DEVICE);
+        contacts.addAll(contactsProvider.getContacts(facebookIds, ContactSource.SOURCE_FACEBOOK));
+
+        Map<Long, Contact> contactMap = new HashMap<>(contacts.size());
+        for (Contact contact : contacts) {
+            contactMap.put(contact.getContactID(), contact);
+        }
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             try {
-                ContactEvent contactEvent = getContactEventFrom(cursor);
+                long contactId = getContactIdFrom(cursor);
+                Contact contact = contactMap.get(contactId);
+                ContactEvent contactEvent = getContactEventFrom(cursor, contact);
                 contactEvents.add(contactEvent);
             } catch (ContactNotFoundException e) {
                 Log.w(e);
@@ -88,7 +119,7 @@ class StaticPeopleEventsProvider {
         Cursor cursor = queryEventsOf(contact);
         while (cursor.moveToNext()) {
             try {
-                ContactEvent contactEvent = getContactEventFrom(cursor);
+                ContactEvent contactEvent = getContactEventFrom(cursor, contact);
                 contactEvents.add(contactEvent);
             } catch (ContactNotFoundException e) {
                 Log.w(e);
@@ -107,7 +138,7 @@ class StaticPeopleEventsProvider {
     }
 
     private Cursor queryEventsOf(Contact contact) {
-        String[] selectArgs = new String[]{
+        String[] selectArgs = {
                 String.valueOf(contact.getContactID()),
                 String.valueOf(contact.getSource())
         };
@@ -123,7 +154,7 @@ class StaticPeopleEventsProvider {
     }
 
     private Cursor queryPeopleEvents(TimePeriod timePeriod, String sortOrder) {
-        String[] selectArgs = new String[]{
+        String[] selectArgs = {
                 SQLArgumentBuilder.dateWithoutYear(timePeriod.getStartingDate()),
                 SQLArgumentBuilder.dateWithoutYear(timePeriod.getEndingDate()),
         };
@@ -202,7 +233,6 @@ class StaticPeopleEventsProvider {
         try {
             return DateParser.INSTANCE.parse(rawDate);
         } catch (DateParseException e) {
-            e.printStackTrace();
             throw new DeveloperError("Invalid date stored to database. [" + rawDate + "]");
         }
     }
@@ -220,10 +250,7 @@ class StaticPeopleEventsProvider {
         return StandardEventType.fromId(rawEventType);
     }
 
-    private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
-        long contactId = getContactIdFrom(cursor);
-        int source = getContactSourceFrom(cursor);
-        Contact contact = contactsProvider.getContact(contactId, source);
+    private ContactEvent getContactEventFrom(Cursor cursor, Contact contact) throws ContactNotFoundException {
         Date date = getDateFrom(cursor);
         EventType eventType = getEventType(cursor);
 

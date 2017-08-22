@@ -5,9 +5,9 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 
 public interface Node {
 
-    void clear();
-
     void addDate(String name, Date date);
 
     NameCelebrations getDates(String name);
+
+    void clear();
 }

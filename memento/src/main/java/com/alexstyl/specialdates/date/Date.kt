@@ -23,13 +23,9 @@ data class Date private constructor(private val localDate: LocalDate, private va
         @MonthInt
         get() = localDate.monthOfYear
 
-    fun getYear(): Int {
-        return year.get()
-    }
+    fun getYear(): Int = year.get()
 
-    fun toMillis(): Long {
-        return localDate.toDate().time
-    }
+    fun toMillis(): Long = localDate.toDate().time
 
     fun minusDay(days: Int): Date {
         val minusDays = localDate.minusDays(days)
@@ -39,9 +35,7 @@ data class Date private constructor(private val localDate: LocalDate, private va
     val dayOfWeek: Int
         get() = localDate.dayOfWeek
 
-    fun addWeek(weeks: Int): Date {
-        return addDay(7 * weeks)
-    }
+    fun addWeek(weeks: Int): Date = addDay(7 * weeks)
 
     fun daysDifferenceTo(otherEvent: Date): Int {
         val dayOfYear = localDate.dayOfYear().get()
@@ -50,13 +44,9 @@ data class Date private constructor(private val localDate: LocalDate, private va
         return otherDayOfYear - dayOfYear - daysOfYearsDifference
     }
 
-    fun hasYear(): Boolean {
-        return year.isPresent
-    }
+    fun hasYear(): Boolean = year.isPresent
 
-    fun hasNoYear(): Boolean {
-        return !year.isPresent
-    }
+    fun hasNoYear(): Boolean = !year.isPresent
 
     override fun compareTo(right: Date): Int {
         if (this.hasYear() && right.hasYear()) {
@@ -105,16 +95,10 @@ data class Date private constructor(private val localDate: LocalDate, private va
             } catch (a: IllegalFieldValueException) {
                 throw IllegalArgumentException(String.format(Locale.US, "%d/%d/%d is invalid", dayOfMonth, month, year))
             }
-
         }
 
-        fun startOfYear(currentYear: Int): Date {
-            return Date.on(1, Months.JANUARY, currentYear)
-        }
-
-        fun endOfYear(currentYear: Int): Date {
-            return Date.on(31, Months.DECEMBER, currentYear)
-        }
+        fun startOfYear(year: Int): Date = Date.on(1, Months.JANUARY, year)
+        fun endOfYear(currentYear: Int): Date = Date.on(31, Months.DECEMBER, currentYear)
     }
 
 }
