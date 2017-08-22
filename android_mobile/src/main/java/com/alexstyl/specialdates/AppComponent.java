@@ -22,6 +22,9 @@ import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.support.RateDialog;
+import com.alexstyl.specialdates.ui.widget.ViewModule;
+import com.alexstyl.specialdates.ui.widget.ColorImageView;
+import com.alexstyl.specialdates.ui.widget.CompactCardView;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
@@ -41,6 +44,7 @@ import dagger.Component;
         ContactsModule.class,
         DateModule.class,
         ImageModule.class,
+        ViewModule.class,
         NamedayModule.class,
         UpcomingEventsModule.class,
         NamedayInADayFeature.class
@@ -87,4 +91,8 @@ public interface AppComponent {
     void inject(NamedayListPreference preference);
 
     void inject(WearSyncService service);
+
+    void inject(ColorImageView view);
+
+    void inject(CompactCardView view);
 }
