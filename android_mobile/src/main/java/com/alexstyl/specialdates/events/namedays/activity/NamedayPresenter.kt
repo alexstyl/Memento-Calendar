@@ -1,8 +1,9 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
+import com.alexstyl.gsc.Sound
+import com.alexstyl.gsc.SoundRules
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
-import com.alexstyl.specialdates.contact.NameComparator
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.util.HashMapList
@@ -36,10 +37,10 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
     private fun List<String>.asViewModels(): ArrayList<NamedayScreenViewModel> {
         val allContacts = contactsProvider.allContacts
 
-        val hashMap = HashMapList<CheatName, Contact>()
+        val hashMap = HashMapList<PhoneticName, Contact>()
         for (contact in allContacts) {
             contact.displayName.firstNames.forEach {
-                hashMap.addValue(CheatName(it), contact)
+                hashMap.addValue(it.toSounds(), contact)
             }
         }
 
@@ -48,7 +49,7 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
             val viewModel = namedaysViewModelFactory.viewModelsFor(it)
             list.add(viewModel)
 
-            hashMap.get(CheatName(it))?.forEach {
+            hashMap.get(it.toSounds())?.forEach {
                 contact ->
                 list.add(namedaysViewModelFactory.viewModelsFor(contact))
             }
@@ -57,17 +58,14 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
     }
 }
 
-class CheatName(val it: String) {
-    override fun hashCode(): Int {
-        return it.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other?.javaClass != javaClass) return false
-
-        other as CheatName
-
-        return NameComparator.areTheSameName(it, other.it)
-    }
+private fun String.toSounds(): PhoneticName {
+    val raw = this
+    return PhoneticName(ArrayList<Sound>()
+            .apply {
+                SoundRules.INSTANCE.getNextSound(raw, true).forEach {
+                    add(it!!)
+                }
+            })
 }
+
+data class PhoneticName(val it: List<Sound>)
