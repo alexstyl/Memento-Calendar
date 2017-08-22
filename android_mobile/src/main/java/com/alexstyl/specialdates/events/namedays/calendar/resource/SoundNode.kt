@@ -23,18 +23,6 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
         dates = null
     }
 
-    override fun toString(): String {
-        val str = StringBuilder()
-        if (keySound != null) {
-            str.append(keySound.toString()).append(" ")
-        }
-        str.append(nodes.size)
-        if (dates != null) {
-            str.append(" ").append(dates)
-        }
-        return str.toString()
-    }
-
     /**
      * Adds the given date for the given word
      */

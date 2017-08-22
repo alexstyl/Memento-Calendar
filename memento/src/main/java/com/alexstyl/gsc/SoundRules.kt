@@ -286,12 +286,7 @@ class SoundRules private constructor() {
             }.map {
                 it.value
             }
-
-            val allSounds = Sound.append(map)
-
-            sound = Sound.combine(sound, allSounds);
-
-
+            sound += Sound.flatten(map);
         }
         return sound
     }

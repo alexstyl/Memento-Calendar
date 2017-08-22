@@ -44,32 +44,23 @@ class Sound {
         return false
     }
 
-    override fun toString(): String {
-        val str = StringBuilder()
-        soundSymbols.forEach {
-            if (str.isNotBlank()) {
-                str.append(", ")
-            }
-            str.append(it)
-        }
-        return str.toString()
+    operator fun plus(other: Sound): Sound {
+        val length = this.soundSymbols.size + other.soundSymbols.size
+        val soundSymbols = CharArray(length)
+
+        System.arraycopy(this.soundSymbols, 0, soundSymbols, 0, this.soundSymbols.size)
+        System.arraycopy(other.soundSymbols, 0, soundSymbols, this.soundSymbols.size, other.soundSymbols.size)
+
+        return Sound(soundSymbols)
     }
 
+
     companion object {
-        fun combine(left: Sound, right: Sound): Sound {
-            val length = left.soundSymbols.size + right.soundSymbols.size
-            val soundSymbols = CharArray(length)
-
-            System.arraycopy(left.soundSymbols, 0, soundSymbols, 0, left.soundSymbols.size)
-            System.arraycopy(right.soundSymbols, 0, soundSymbols, left.soundSymbols.size, right.soundSymbols.size)
-
-            return Sound(soundSymbols)
-        }
 
         /**
          * Combines a series of different sounds into one.
          */
-        fun append(sounds: Iterable<Sound>): Sound {
+        fun flatten(sounds: Iterable<Sound>): Sound {
             val soundList = sounds.toList()
             var length = 0
             soundList.forEach {
@@ -83,6 +74,5 @@ class Sound {
             }
             return Sound(soundSymbols)
         }
-
     }
 }
