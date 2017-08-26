@@ -177,7 +177,7 @@ class SoundRules private constructor() {
      * Compare the two given string and determines if they sound the same.
      */
     fun compare(first: String, second: String, startsWith: Boolean): Boolean {
-        var enumerator2 = getNextSound(second, startsWith).iterator()
+        val enumerator2 = getNextSound(second, startsWith).iterator()
 
         getNextSound(first, startsWith).forEach { sound1 ->
             if (enumerator2.hasNext()) {
@@ -273,6 +273,7 @@ class SoundRules private constructor() {
         } else sound(character)
     }
 
+
     /**
      * Returns all sounds which are possible starting with the given character.
      *
@@ -294,11 +295,10 @@ class SoundRules private constructor() {
         return sound
     }
 
-
     companion object {
         private var sInstance: SoundRules? = null
 
-        public val INSTANCE: SoundRules
+        val INSTANCE: SoundRules
             get() {
                 if (sInstance == null) {
                     sInstance = SoundRules()
