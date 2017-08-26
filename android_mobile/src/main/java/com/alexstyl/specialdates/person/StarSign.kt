@@ -4,18 +4,18 @@ import android.support.annotation.StringRes
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Date.Companion.on
-import com.alexstyl.specialdates.date.Months.JANUARY
-import com.alexstyl.specialdates.date.Months.FEBRUARY
-import com.alexstyl.specialdates.date.Months.MARCH
 import com.alexstyl.specialdates.date.Months.APRIL
-import com.alexstyl.specialdates.date.Months.MAY
-import com.alexstyl.specialdates.date.Months.JUNE
-import com.alexstyl.specialdates.date.Months.JULY
 import com.alexstyl.specialdates.date.Months.AUGUST
-import com.alexstyl.specialdates.date.Months.SEPTEMBER
-import com.alexstyl.specialdates.date.Months.OCTOBER
-import com.alexstyl.specialdates.date.Months.NOVEMBER
 import com.alexstyl.specialdates.date.Months.DECEMBER
+import com.alexstyl.specialdates.date.Months.FEBRUARY
+import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.date.Months.JULY
+import com.alexstyl.specialdates.date.Months.JUNE
+import com.alexstyl.specialdates.date.Months.MARCH
+import com.alexstyl.specialdates.date.Months.MAY
+import com.alexstyl.specialdates.date.Months.NOVEMBER
+import com.alexstyl.specialdates.date.Months.OCTOBER
+import com.alexstyl.specialdates.date.Months.SEPTEMBER
 
 enum class StarSign(@StringRes val labelStringRes: Int, val emoji: String, val from: Date, val to: Date) {
     AQUARIUS(R.string.starsigns_aquarius, "\u2652", on(20, JANUARY), on(18, FEBRUARY)),
@@ -34,8 +34,7 @@ enum class StarSign(@StringRes val labelStringRes: Int, val emoji: String, val f
     companion object {
         fun forDateOfBirth(birthday: Date): StarSign {
             enumValues<StarSign>().forEach {
-                if (birthday.month == it.from.month && birthday.dayOfMonth >= it.from.dayOfMonth
-                        || birthday.month == it.to.month && birthday.dayOfMonth <= it.to.dayOfMonth) {
+                if (birthday.startingDateOf(it) || birthday.endingDateOf(it)) {
                     return it
                 }
             }
@@ -46,3 +45,7 @@ enum class StarSign(@StringRes val labelStringRes: Int, val emoji: String, val f
 
 
 }
+
+private fun Date.startingDateOf(startSign: StarSign) = this.month == startSign.from.month && this.dayOfMonth >= startSign.from.dayOfMonth
+
+private fun Date.endingDateOf(startSign: StarSign) = this.month == startSign.to.month && this.dayOfMonth <= startSign.to.dayOfMonth
