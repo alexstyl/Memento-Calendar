@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 public class DisplayName {
 
-    public static final DisplayName NO_NAME = new DisplayName("", Names.from(""), Names.from(""), "");
+    public static final DisplayName NO_NAME = new DisplayName("", Names.Companion.from(""), Names.Companion.from(""), "");
     private static final String SEPARATOR = " ";
 
     private final String displayName;
@@ -20,8 +20,8 @@ public class DisplayName {
 
         String firstNameString = subStringUpTo(displayName, separatorIndex).trim();
 
-        Names allNames = Names.from(displayName);
-        Names firstNames = Names.from(firstNameString);
+        Names allNames = Names.Companion.from(displayName);
+        Names firstNames = Names.Companion.from(firstNameString);
         String lastNameString = subStringAfter(displayName, separatorIndex).trim();
         return new DisplayName(displayName, allNames, firstNames, lastNameString);
     }
