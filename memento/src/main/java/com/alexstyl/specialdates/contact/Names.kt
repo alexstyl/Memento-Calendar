@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.contact
 
 
-data class Names constructor(private val names: List<String>) : Iterable<String> {
+data class Names private constructor(private val names: List<String>) : Iterable<String> {
 
     val primary: String
         get() = names[0]
@@ -15,14 +15,13 @@ data class Names constructor(private val names: List<String>) : Iterable<String>
 
     companion object {
 
-        private val regex = "[a-zA-Zά-ώΆ-Ώα-ωΑ-Ω\\d]+"
+        private val REGEX = "[@a-zA-Zά-ώΆ-Ώα-ωΑ-Ω\\d]+".toRegex()
 
-        fun from(input: String): Names =
-                Names(findAllNamesIn(input)
-                        .toList()
+        fun parse(input: String): Names =
+                Names(REGEX.findAll(input)
                         .map { it.value }
+                        .toList()
                 )
 
-        private fun findAllNamesIn(input: String) = regex.toRegex().findAll(input)
     }
 }
