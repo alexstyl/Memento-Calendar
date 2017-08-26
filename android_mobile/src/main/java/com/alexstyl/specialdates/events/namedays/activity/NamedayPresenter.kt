@@ -10,7 +10,6 @@ import com.alexstyl.specialdates.util.HashMapList
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
-import java.util.*
 
 class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
                        private val namedaysViewModelFactory: NamedaysViewModelFactory,
