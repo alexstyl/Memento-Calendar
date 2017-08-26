@@ -38,7 +38,7 @@ final class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
         if (namedayUserSettings.isEnabled()) {
             return getNamedayCalendar().getAllNamedays(searchQuery);
         }
-        return NameCelebrations.EMPTY;
+        return new NameCelebrations(searchQuery);
     }
 
     private NamedayCalendar getNamedayCalendar() {
