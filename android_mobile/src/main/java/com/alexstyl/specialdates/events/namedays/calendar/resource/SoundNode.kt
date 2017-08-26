@@ -31,7 +31,7 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
         addDate(word, date, nextSounds)
     }
 
-    fun addDate(word: String, date: Date, iterator: Iterator<Sound?>) {
+    private fun addDate(word: String, date: Date, iterator: Iterator<Sound?>) {
         if (!iterator.hasNext()) {
             if (dates == null) {
                 dates = NameCelebrations(word)
@@ -57,7 +57,7 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
 
     override fun getDates(name: String): NameCelebrations? = getDates(name, SoundRules.INSTANCE.getNextSound(name, false))
 
-    fun getDates(name: String, iterator: Iterator<Sound?>): NameCelebrations? {
+    private fun getDates(name: String, iterator: Iterator<Sound?>): NameCelebrations? {
         if (!iterator.hasNext()) {
             return getNameCelebrations(name)
         } else {
