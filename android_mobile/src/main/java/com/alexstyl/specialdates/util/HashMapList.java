@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.util;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ public class HashMapList<K, V> {
         return listValue.add(value);
     }
 
+    @Nullable
     public List<V> get(K key) {
         return map.get(key);
     }
@@ -28,5 +31,9 @@ public class HashMapList<K, V> {
 
     public Set<K> keys() {
         return map.keySet();
+    }
+
+    public void clear() {
+        map.clear();
     }
 }

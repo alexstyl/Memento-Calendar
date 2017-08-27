@@ -91,7 +91,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     private void setupToolbar() {
         MementoToolbar toolbar = findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationAsClose();
+        toolbar.displayNavigationIconAsClose();
         setTitle(null);
     }
 

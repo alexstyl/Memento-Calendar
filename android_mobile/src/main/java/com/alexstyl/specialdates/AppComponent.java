@@ -5,9 +5,14 @@ import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
+import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
+import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
+import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
@@ -18,6 +23,9 @@ import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.support.RateDialog;
+import com.alexstyl.specialdates.ui.widget.ViewModule;
+import com.alexstyl.specialdates.ui.widget.ColorImageView;
+import com.alexstyl.specialdates.ui.widget.CompactCardView;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
@@ -31,7 +39,18 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AnalyticsModule.class, ResourcesModule.class, ImageModule.class, UpcomingEventsModule.class, NamedayModule.class})
+@Component(modules = {
+        AnalyticsModule.class,
+        ResourcesModule.class,
+        ContactsModule.class,
+        DateModule.class,
+        ImageModule.class,
+        ViewModule.class,
+        NamedayModule.class,
+        UpcomingEventsModule.class,
+        NamedaysInADayModule.class,
+        DailyReminderModule.class
+})
 public interface AppComponent {
     void inject(UpcomingEventsActivity activity);
 
@@ -59,6 +78,8 @@ public interface AppComponent {
 
     void inject(PersonActivity activity);
 
+    void inject(NamedayActivity activity);
+
     void inject(EventDatePickerDialogFragment fragment);
 
     void inject(DailyReminderIntentService service);
@@ -72,4 +93,8 @@ public interface AppComponent {
     void inject(NamedayListPreference preference);
 
     void inject(WearSyncService service);
+
+    void inject(ColorImageView view);
+
+    void inject(CompactCardView view);
 }

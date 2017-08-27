@@ -19,8 +19,11 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:paddingBottom="@dimen/fab_total_size"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:scrollbarStyle="outsideOverlay"
     android:scrollbars="vertical"
-    tools:listitem="@layout/row_upcoming_day" />
+    tools:listitem="@layout/row_upcoming_events_bankholiday" />
 
 
   <TextView

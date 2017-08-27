@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNameda
 import java.util.ArrayList;
 import java.util.List;
 
-public final class NamedayCalendar {
+public class NamedayCalendar {
 
     private final NamedayLocale locale;
     private final NamedayBundle namedayBundle;
