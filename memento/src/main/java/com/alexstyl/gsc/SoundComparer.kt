@@ -4,8 +4,8 @@ class SoundComparer {
     companion object {
         private val soundRules = SoundRules.INSTANCE
 
-        fun areSame(first: String, second: String) = soundRules.compare(first, second, false)
+        fun soundTheSame(first: String, second: String) = soundRules.compare(first, second, false)
 
-        fun startsWith(first: String, second: String) = soundRules.compare(first, second, true)
+        fun startsWith(fullWord: String, startsWith: String) = soundRules.compare(fullWord, startsWith, true)
     }
 }

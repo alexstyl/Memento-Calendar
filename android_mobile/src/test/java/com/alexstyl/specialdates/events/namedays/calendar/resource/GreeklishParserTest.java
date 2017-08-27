@@ -17,7 +17,7 @@ public class GreeklishParserTest {
     @Before
     public void setUp() throws JSONException {
         JavaJSONResourceLoader resourceLoader = new JavaJSONResourceLoader();
-        NamedayJSONResourceProvider resourceProvider = new NamedayJSONResourceProvider(resourceLoader);
+        NamedayJSONProvider resourceProvider = new NamedayJSONProvider(resourceLoader);
         namedayJSON = resourceProvider.getNamedayJSONFor(NamedayLocale.GREEK);
 
     }

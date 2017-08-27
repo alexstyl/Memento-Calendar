@@ -61,4 +61,6 @@ public interface Analytics {
     void trackVisitGithub();
 
     void trackContactDetailsViewed(Contact contact);
+
+    void trackNamedaysScreen();
 }

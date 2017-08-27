@@ -27,7 +27,7 @@ public final class NaturalLanguageUtils {
         return join(stringResources, names, displayNo);
     }
 
-    static String join(StringResources stringResources, List<String> iterable, int displayNo) {
+    public static String join(StringResources stringResources, List<String> iterable, int displayNo) {
         if (iterable == null || iterable.size() == 0) {
             return "";
         }

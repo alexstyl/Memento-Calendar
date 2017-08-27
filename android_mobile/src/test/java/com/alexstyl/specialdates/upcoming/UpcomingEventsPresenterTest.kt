@@ -23,8 +23,8 @@ class UpcomingEventsPresenterTest {
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
     private val mockEventsMonitor = Mockito.mock(UpcomingEventsSettingsMonitor::class.java)
-    private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
-    
+    private val mockProvider = Mockito.mock(IUpcomingEventsProvider::class.java)
+
     private lateinit var peopleEventsObserver: PeopleEventsObserver
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 
@@ -75,7 +75,7 @@ class UpcomingEventsPresenterTest {
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
-        val updatedEvents = arrayListOf<UpcomingRowViewModel>(YearHeaderViewModel("2017"))
+        val updatedEvents = arrayListOf<UpcomingRowViewModel>(DateHeaderViewModel("February 2017"))
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(updatedEvents)
         peopleEventsObserver.onChange(false)
 

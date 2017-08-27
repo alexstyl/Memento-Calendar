@@ -69,83 +69,83 @@ class SoundRules private constructor() {
         /// Associate all letters to their sound
 
         /// English double sounds
-        doubleSounds.put("TH", Sound(THITA))
-        doubleSounds.put("PS", Sound(PSI))
-        doubleSounds.put("PH", Sound(FI))
-        doubleSounds.put("KS", Sound(XI))
-        doubleSounds.put("CH", Sound(HI))
-        doubleSounds.put("GG", Sound(GKOU))
-        doubleSounds.put("OY", Sound(OY))
-        doubleSounds.put("OU", Sound(OY))
-        doubleSounds.put("TZ", Sound(JI))
-        doubleSounds.put("MP", Sound(BI))
-        doubleSounds.put("AI", Sound(EPSILON))
-        doubleSounds.put("EY", Sound(EPSILON_YPSILON))
-        doubleSounds.put("EF", Sound(EPSILON_YPSILON))
-        doubleSounds.put("AF", Sound(ALPHA_YPSILONOY))
-        doubleSounds.put("AY", Sound(ALPHA_YPSILONOY))
-        doubleSounds.put("AU", Sound(ALPHA_YPSILONOY))
-        doubleSounds.put("EI", Sound(IOTA))
-        doubleSounds.put("OI", Sound(IOTA))
+        doubleSounds.put("TH", sound(THITA))
+        doubleSounds.put("PS", sound(PSI))
+        doubleSounds.put("PH", sound(FI))
+        doubleSounds.put("KS", sound(XI))
+        doubleSounds.put("CH", sound(HI))
+        doubleSounds.put("GG", sound(GKOU))
+        doubleSounds.put("OY", sound(OY))
+        doubleSounds.put("OU", sound(OY))
+        doubleSounds.put("TZ", sound(JI))
+        doubleSounds.put("MP", sound(BI))
+        doubleSounds.put("AI", sound(EPSILON))
+        doubleSounds.put("EY", sound(EPSILON_YPSILON))
+        doubleSounds.put("EF", sound(EPSILON_YPSILON))
+        doubleSounds.put("AF", sound(ALPHA_YPSILONOY))
+        doubleSounds.put("AY", sound(ALPHA_YPSILONOY))
+        doubleSounds.put("AU", sound(ALPHA_YPSILONOY))
+        doubleSounds.put("EI", sound(IOTA))
+        doubleSounds.put("OI", sound(IOTA))
 
         /// Greek double sounds
-        doubleSounds.put("ΓΓ", Sound(GKOU))
-        doubleSounds.put("ΑΙ", Sound(EPSILON))
-        doubleSounds.put("ΓΚ", Sound(GKOU))
-        doubleSounds.put("ΤΖ", Sound(JI))
-        doubleSounds.put("ΟΥ", Sound(OY))
-        doubleSounds.put("ΜΠ", Sound(BI))
-        doubleSounds.put("ΕΥ", Sound(EPSILON_YPSILON))
-        doubleSounds.put("ΕΦ", Sound(EPSILON_YPSILON))
-        doubleSounds.put("ΑΦ", Sound(ALPHA_YPSILONOY))
-        doubleSounds.put("ΑΥ", Sound(ALPHA_YPSILONOY))
-        doubleSounds.put("ΟΙ", Sound(IOTA))
-        doubleSounds.put("ΕΙ", Sound(IOTA))
-        doubleSounds.put("ΚΣ", Sound(XI))
-        doubleSounds.put("ΠΣ", Sound(PSI))
+        doubleSounds.put("ΓΓ", sound(GKOU))
+        doubleSounds.put("ΑΙ", sound(EPSILON))
+        doubleSounds.put("ΓΚ", sound(GKOU))
+        doubleSounds.put("ΤΖ", sound(JI))
+        doubleSounds.put("ΟΥ", sound(OY))
+        doubleSounds.put("ΜΠ", sound(BI))
+        doubleSounds.put("ΕΥ", sound(EPSILON_YPSILON))
+        doubleSounds.put("ΕΦ", sound(EPSILON_YPSILON))
+        doubleSounds.put("ΑΦ", sound(ALPHA_YPSILONOY))
+        doubleSounds.put("ΑΥ", sound(ALPHA_YPSILONOY))
+        doubleSounds.put("ΟΙ", sound(IOTA))
+        doubleSounds.put("ΕΙ", sound(IOTA))
+        doubleSounds.put("ΚΣ", sound(XI))
+        doubleSounds.put("ΠΣ", sound(PSI))
 
         /// English Sounds
-        this.singleSounds.put('Q', Sound(KAPPA))
-        this.singleSounds.put('8', Sound(THITA))
-        this.singleSounds.put('9', Sound(THITA))
-        this.singleSounds.put('3', Sound(EPSILON))
-        this.singleSounds.put('4', Sound(ALPHA))
-        this.singleSounds.put('0', Sound(OMIKRON))
-        this.singleSounds.put('W', Sound(OMIKRON))
-        this.singleSounds.put('O', Sound(OMIKRON))
-        this.singleSounds.put('E', Sound(EPSILON + "," + IOTA))
-        this.singleSounds.put('R', Sound(RO))
-        this.singleSounds.put('T', Sound(TAU))
-        this.singleSounds.put('Y', Sound(IOTA + "," + GAMMA))
-        this.singleSounds.put('U', Sound(IOTA + "," + OY))
-        this.singleSounds.put('I', Sound(IOTA))
-        this.singleSounds.put('P', Sound(PI))
-        this.singleSounds.put('A', Sound(ALPHA))
-        this.singleSounds.put('S', Sound(SIGMA))
-        this.singleSounds.put('D', Sound(DELTA + "," + DI))
-        this.singleSounds.put('F', Sound(FI))
-        this.singleSounds.put('G', Sound(GKOU + "," + GAMMA))
-        this.singleSounds.put('H', Sound(IOTA + "," + HI))
-        this.singleSounds.put('J', Sound(JI))
-        this.singleSounds.put('K', Sound(KAPPA))
-        this.singleSounds.put('L', Sound(LAMBDA))
-        this.singleSounds.put('Z', Sound(ZITA))
-        this.singleSounds.put('X', Sound(HI + "," + XI))
-        this.singleSounds.put('C', Sound(KAPPA + "," + SIGMA))
-        this.singleSounds.put('V', Sound(BETA))
-        this.singleSounds.put('B', Sound(BETA + "," + BI))
-        this.singleSounds.put('N', Sound(NI))
-        this.singleSounds.put('M', Sound(MI))
+        this.singleSounds.put('Q', sound(KAPPA))
+        this.singleSounds.put('8', sound(THITA))
+        this.singleSounds.put('9', sound(THITA))
+        this.singleSounds.put('3', sound(EPSILON))
+        this.singleSounds.put('4', sound(ALPHA))
+        this.singleSounds.put('0', sound(OMIKRON))
+        this.singleSounds.put('W', sound(OMIKRON))
+        this.singleSounds.put('O', sound(OMIKRON))
+        this.singleSounds.put('E', sound(EPSILON + "," + IOTA))
+        this.singleSounds.put('R', sound(RO))
+        this.singleSounds.put('T', sound(TAU))
+        this.singleSounds.put('Y', sound(IOTA + "," + GAMMA))
+        this.singleSounds.put('U', sound(IOTA + "," + OY))
+        this.singleSounds.put('I', sound(IOTA))
+        this.singleSounds.put('P', sound(PI))
+        this.singleSounds.put('A', sound(ALPHA))
+        this.singleSounds.put('S', sound(SIGMA))
+        this.singleSounds.put('D', sound(DELTA + "," + DI))
+        this.singleSounds.put('F', sound(FI))
+        this.singleSounds.put('G', sound(GKOU + "," + GAMMA))
+        this.singleSounds.put('H', sound(IOTA + "," + HI))
+        this.singleSounds.put('J', sound(JI))
+        this.singleSounds.put('K', sound(KAPPA))
+        this.singleSounds.put('L', sound(LAMBDA))
+        this.singleSounds.put('Z', sound(ZITA))
+        this.singleSounds.put('X', sound(HI + "," + XI))
+        this.singleSounds.put('C', sound(KAPPA + "," + SIGMA))
+        this.singleSounds.put('V', sound(BETA))
+        this.singleSounds.put('B', sound(BETA + "," + BI))
+        this.singleSounds.put('N', sound(NI))
+        this.singleSounds.put('M', sound(MI))
 
         /// Greek letters
-        this.singleSounds.put('Γ', Sound(GAMMA))
-        this.singleSounds.put('Ω', Sound(OMIKRON))
-        this.singleSounds.put('Η', Sound(IOTA))
-        this.singleSounds.put('Ι', Sound(IOTA))
-        this.singleSounds.put('Υ', Sound(IOTA))
-        this.singleSounds.put('Η', Sound(IOTA))
-        this.singleSounds.put('ς', Sound(SIGMA))
-        this.singleSounds.put('Ξ', Sound(XI))
+        this.singleSounds.put('Γ', sound(GAMMA))
+        this.singleSounds.put('Ω', sound(OMIKRON))
+        this.singleSounds.put('Η', sound(IOTA))
+        this.singleSounds.put('Ι', sound(IOTA))
+        this.singleSounds.put('Υ', sound(IOTA))
+        this.singleSounds.put('Η', sound(IOTA))
+        this.singleSounds.put('ς', sound(SIGMA))
+        this.singleSounds.put('Ξ', sound(XI))
 
         this.accentCapitals.put('Ά', ALPHA)
         this.accentCapitals.put('Ί', IOTA)
@@ -181,7 +181,10 @@ class SoundRules private constructor() {
 
         getNextSound(first, startsWith).forEach { sound1 ->
             if (enumerator2.hasNext()) {
-                if (sound1 != enumerator2.next()) {
+                sound1 as Sound
+                val sound2 = enumerator2.next() as Sound
+
+                if (!sound1.soundsLike(sound2)) {
                     /// Found a non matching sound thus
                     /// we are sure the two words don't sound the same
                     return false
@@ -267,7 +270,7 @@ class SoundRules private constructor() {
     private fun getSound(character: Char): Sound {
         return if (singleSounds.containsKey(character)) {
             singleSounds[character]!!
-        } else Sound(character)
+        } else sound(character)
     }
 
 
@@ -287,12 +290,7 @@ class SoundRules private constructor() {
             }.map {
                 it.value
             }
-
-            val allSounds = Sound.append(map)
-
-            sound = Sound.combine(sound, allSounds);
-
-
+            sound += Sound.flatten(map);
         }
         return sound
     }

@@ -31,7 +31,7 @@ import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
-import com.alexstyl.specialdates.util.Notifier;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -44,11 +44,10 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     private static final long DRAWER_APPEARANCE_WAITING_TIME = 400L;
 
-    private Notifier notifier;
     private AskForSupport askForSupport;
     private ThemeMonitor themeMonitor;
 
-    private MainNavigator navigator;
+    private UpcomingEventsNavigator navigator;
     private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
     private DrawerLayout drawerLayout;
@@ -59,6 +58,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
+    @Inject DailyReminderNotifier dailyReminderNotifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
+        navigator = new UpcomingEventsNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
         externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
@@ -80,8 +80,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
         ViewGroup activityContent = findById(this, R.id.main_content);
         searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
-
-        notifier = Notifier.newInstance(this, stringResource, colorResources, dimensions, imageLoader);
 
         findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override
@@ -208,7 +206,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
-        notifier.cancelAllEvents();
+        dailyReminderNotifier.cancelAllEvents();
     }
 
     private final OnClickListener onToolbarClickListener = new OnClickListener() {

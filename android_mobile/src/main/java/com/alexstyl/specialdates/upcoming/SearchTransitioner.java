@@ -21,7 +21,7 @@ import static android.view.View.VISIBLE;
 final class SearchTransitioner {
 
     private final Activity activity;
-    private final MainNavigator navigator;
+    private final UpcomingEventsNavigator navigator;
     private final ViewGroup activityContent;
     private final ExposedSearchToolbar toolbar;
     private final ViewFader viewFader;
@@ -30,7 +30,7 @@ final class SearchTransitioner {
     private boolean transitioning;
 
     SearchTransitioner(Activity activity,
-                       MainNavigator navigator,
+                       UpcomingEventsNavigator navigator,
                        ViewGroup activityContent,
                        ExposedSearchToolbar toolbar,
                        ViewFader viewFader) {
