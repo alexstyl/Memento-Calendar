@@ -1,9 +1,9 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.content.Context;
 import android.text.format.DateUtils;
 
 import com.alexstyl.resources.StringResources;
-import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
@@ -14,10 +14,12 @@ public final class UpcomingDateStringCreator {
 
     private final StringResources stringResources;
     private final Date today;
+    private final Context context;
 
-    UpcomingDateStringCreator(StringResources stringResources, Date today) {
+    UpcomingDateStringCreator(StringResources stringResources, Date today, Context context) {
         this.stringResources = stringResources;
         this.today = today;
+        this.context = context;
     }
 
     String createLabelFor(Date date) {
@@ -36,7 +38,7 @@ public final class UpcomingDateStringCreator {
         if (date.getYear() != today.getYear()) {
             formatFlags |= DateUtils.FORMAT_SHOW_YEAR;
         }
-        stringBuilder.append(DateUtils.formatDateTime(MementoApplication.getContext(), date.toMillis(), formatFlags));
+        stringBuilder.append(DateUtils.formatDateTime(context, date.toMillis(), formatFlags));
         return stringBuilder.toString();
     }
 

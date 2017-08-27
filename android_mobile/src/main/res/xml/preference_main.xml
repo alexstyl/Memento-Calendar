@@ -7,7 +7,7 @@
     android:title="@string/donate_restore_title" />
 
   <Preference
-    android:key="@string/key_app_theme"
+    android:key="@string/key_app_theme_id"
     android:title="@string/theme_preference_title" />
 
   <Preference

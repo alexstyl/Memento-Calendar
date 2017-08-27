@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateFormatUtils;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -37,6 +37,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
+    @Inject DateLabelCreator labelCreator;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -95,7 +96,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        String title = toString(context, date);
+        String title = labelOf(date);
 
         String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
 
@@ -129,8 +130,8 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private String toString(Context context, Date todayDate) {
-        return DateFormatUtils.formatTimeStampString(context, todayDate.toMillis(), false, true);
+    private String labelOf(Date todayDate) {
+        return labelCreator.createLabelWithYearPreferredFor(todayDate);
     }
 
     public void onUpdateNoEventsFound(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

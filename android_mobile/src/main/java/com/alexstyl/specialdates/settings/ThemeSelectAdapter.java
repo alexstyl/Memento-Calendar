@@ -9,7 +9,6 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.theming.MementoTheme;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,9 +19,9 @@ class ThemeSelectAdapter extends BaseAdapter {
     private final List<MementoTheme> themes;
     private final AttributeExtractor extractor;
 
-    ThemeSelectAdapter() {
+    ThemeSelectAdapter(Comparator<MementoTheme> themeNameComparator) {
         this.themes = Arrays.asList(MementoTheme.values());
-        Collections.sort(themes, new MementoThemeComparator());
+        Collections.sort(themes, themeNameComparator);
         extractor = new AttributeExtractor();
     }
 
@@ -53,12 +52,5 @@ class ThemeSelectAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    private static class MementoThemeComparator implements Comparator<MementoTheme>, Serializable {
-        @Override
-        public int compare(MementoTheme lhs, MementoTheme rhs) {
-            return lhs.getThemeName().compareTo(rhs.getThemeName());
-        }
     }
 }

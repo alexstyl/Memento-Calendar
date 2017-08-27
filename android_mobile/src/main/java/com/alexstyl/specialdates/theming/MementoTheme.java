@@ -1,55 +1,53 @@
 package com.alexstyl.specialdates.theming;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 
-import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.novoda.notils.exception.DeveloperError;
 
 public enum MementoTheme {
-    CHERRY_RED(withThemeName(R.string.theme_BloodyCherry), R.style.Theme_Memento_BloodyCherry),
-    NAVY_BLUE(withThemeName(R.string.theme_NavyBlue), R.style.Theme_Memento_NavyBlue),
-    GLOSS_PINK(withThemeName(R.string.theme_GlossPink), R.style.Theme_Memento_GlossPink),
-    EGGPLANT_GREEN(withThemeName(R.string.theme_Eggplant), R.style.Theme_Memento_Eggplant),
-    MONOCHROME(withThemeName(R.string.theme_Monochrome), R.style.Theme_Memento_Monochrome),
-    SYSTEMO(withThemeName(R.string.theme_Systemo), R.style.Theme_Memento_Systemo),
-    AMBER(withThemeName(R.string.theme_Amber), R.style.Theme_Memento_Amber);
-    private final String themeName;
+    CHERRY_RED(0, R.string.theme_BloodyCherry, R.style.Theme_Memento_BloodyCherry),
+    NAVY_BLUE(1, R.string.theme_NavyBlue, R.style.Theme_Memento_NavyBlue),
+    GLOSS_PINK(2, R.string.theme_GlossPink, R.style.Theme_Memento_GlossPink),
+    EGGPLANT_GREEN(3, R.string.theme_Eggplant, R.style.Theme_Memento_Eggplant),
+    MONOCHROME(4, R.string.theme_Monochrome, R.style.Theme_Memento_Monochrome),
+    SYSTEMO(5, R.string.theme_Systemo, R.style.Theme_Memento_Systemo),
+    AMBER(6, R.string.theme_Amber, R.style.Theme_Memento_Amber);
+
+    private int id;
+    @StringRes
+    private final int themeName;
     @StyleRes
     private final int styleResId;
 
-    private static String withThemeName(@StringRes int themNameResId) {
-        return MementoApplication.getContext().getString(themNameResId);
-    }
-
-    public static MementoTheme fromName(@NonNull String themeName) {
+    public static MementoTheme fromId(int themeId) {
         for (MementoTheme mementoTheme : values()) {
-            if (mementoTheme.getThemeName().equalsIgnoreCase(themeName)) {
+            if (mementoTheme.getId() == themeId) {
                 return mementoTheme;
             }
         }
 
-        throw new DeveloperError("No theme exists with the name [%s]", themeName);
+        throw new DeveloperError("No theme exists with the id [%s]", themeId);
     }
 
-    MementoTheme(@NonNull String themeName, @StyleRes int styleResId) {
+    MementoTheme(int id, @StringRes int themeName, @StyleRes int styleResId) {
+        this.id = id;
         this.themeName = themeName;
         this.styleResId = styleResId;
     }
 
-    public String getThemeName() {
+    @StringRes
+    public int getThemeName() {
         return themeName;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @StyleRes
     public int androidTheme() {
         return styleResId;
-    }
-
-    @Override
-    public String toString() {
-        return themeName;
     }
 }

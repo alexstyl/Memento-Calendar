@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.ContactEvent
+import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
@@ -20,7 +21,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
     fun withContactEvents(contactEvents: List<ContactEvent>): UpcomingRowViewModelsBuilder {
         this.contactEvents.clear()
         for (contactEvent in contactEvents) {
-            val annualDate = AnnualDate(contactEvent.date)
+            val annualDate = contactEvent.date.toAnnualDate()
             this.contactEvents.addValue(annualDate, contactEvent)
         }
         return this
@@ -30,7 +31,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         this.namedays.clear()
         for (nameday in namedays) {
             val date = nameday.date
-            this.namedays.put(AnnualDate(date), nameday)
+            this.namedays.put(date.toAnnualDate(), nameday)
         }
         return this
     }
@@ -39,7 +40,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         this.bankHolidays.clear()
         for (bankHoliday in bankHolidays) {
             val date = bankHoliday.date
-            this.bankHolidays.put(AnnualDate(date), bankHoliday)
+            this.bankHolidays.put(date.toAnnualDate(), bankHoliday)
         }
         return this
     }
@@ -55,7 +56,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
 
         var index = 0
         while (dateComparator.compare(indexDate, lastDate) <= 0) {
-            val annualDate = AnnualDate(indexDate)
+            val annualDate = indexDate.toAnnualDate()
             if (containsAnyEventsOn(annualDate)) {
 
                 rowsViewModels.add(viewModelFactory.createDateHeader(indexDate))
@@ -102,3 +103,5 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         private val NO_CONTACT_EVENTS = emptyList<ContactEvent>()
     }
 }
+
+private fun Date.toAnnualDate(): AnnualDate = AnnualDate(this.dayOfMonth, this.month)

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class ContactsProvider {
+public class ContactsProvider {
 
     private final Map<Integer, ContactsProviderSource> sources;
 

@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.contact.ContactSource;
 
@@ -14,12 +13,11 @@ import java.util.List;
 public class ContactEventsMarshaller {
 
     private static final int DEFAULT_VALUES_SIZE = 5;
-    private final DateDisplayStringCreator instance;
+    private final ShortDateLabelCreator DATE_LABEL_CREATOR = ShortDateLabelCreator.INSTANCE;
     @ContactSource private final int source;
 
     public ContactEventsMarshaller(@ContactSource int source) {
         this.source = source;
-        instance = DateDisplayStringCreator.INSTANCE;
     }
 
     public ContentValues[] marshall(List<ContactEvent> item) {
@@ -37,8 +35,7 @@ public class ContactEventsMarshaller {
         ContentValues values = new ContentValues(DEFAULT_VALUES_SIZE);
         values.put(PeopleEventsContract.PeopleEvents.CONTACT_ID, contact.getContactID());
         values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
-        String date = instance.stringOf(event.getDate());
-        values.put(PeopleEventsContract.PeopleEvents.DATE, date);
+        values.put(PeopleEventsContract.PeopleEvents.DATE, DATE_LABEL_CREATOR.createLabelWithYearPreferredFor(event.getDate()));
         values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, event.getType().getId());
         values.put(PeopleEventsContract.PeopleEvents.SOURCE, source);
 

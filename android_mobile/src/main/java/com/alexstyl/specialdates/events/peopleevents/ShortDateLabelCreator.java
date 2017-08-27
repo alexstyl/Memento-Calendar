@@ -1,18 +1,18 @@
-package com.alexstyl.specialdates.date;
+package com.alexstyl.specialdates.events.peopleevents;
 
-import android.content.Context;
-import android.text.format.DateUtils;
+import com.alexstyl.specialdates.date.Date;
 
-import com.alexstyl.specialdates.MementoApplication;
-
-public enum DateDisplayStringCreator {
+/**
+ * Creates date labels in a YYYY-MM-DD fashion. This class should be used to describe a date for non-user facing components, such as database entries.
+ */
+public enum ShortDateLabelCreator {
     INSTANCE;
 
     private static final int TEN = 10;
     private static final String SEPARATOR = "-";
     private static final String ZERO = "0";
 
-    public String stringOf(Date date) {
+    public String createLabelWithYearPreferredFor(Date date) {
         StringBuilder str = new StringBuilder();
         addYear(date, str);
         str.append(SEPARATOR);
@@ -22,7 +22,7 @@ public enum DateDisplayStringCreator {
         return str.toString();
     }
 
-    public String stringOfNoYear(Date date) {
+    public String createLabelWithNoYearFor(Date date) {
         StringBuilder str = new StringBuilder();
         addMonth(date, str);
         str.append(SEPARATOR);
@@ -56,17 +56,5 @@ public enum DateDisplayStringCreator {
 
     private boolean isSingleDigit(int number) {
         return number < TEN;
-    }
-
-    public String fullyFormattedDate(Date date) {
-        Context appContext = MementoApplication.getContext();
-
-        int formatFlags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE;
-        if (date.hasYear()) {
-            formatFlags |= DateUtils.FORMAT_SHOW_YEAR;
-        } else {
-            formatFlags |= DateUtils.FORMAT_NO_YEAR;
-        }
-        return DateUtils.formatDateTime(appContext, date.toMillis(), formatFlags);
     }
 }

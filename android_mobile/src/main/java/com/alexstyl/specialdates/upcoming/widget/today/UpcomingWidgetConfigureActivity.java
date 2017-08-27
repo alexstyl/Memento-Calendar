@@ -9,13 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateFormatUtils;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel.ConfigurationListener;
 import com.novoda.notils.caster.Views;
+
+import javax.inject.Inject;
 
 public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
 
@@ -23,12 +27,17 @@ public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
     private UpcomingWidgetPreviewLayout previewLayout;
     private UpcomingWidgetConfigurationPanel configurationPanel;
     private UpcomingWidgetPreferences preferences;
+    @Inject DateLabelCreator labelCreator;
 
     private int mAppWidgetId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         setContentView(R.layout.activity_upcoming_events_widget_configure);
 
         MementoToolbar mementoToolbar = Views.findById(this, R.id.memento_toolbar);
@@ -68,7 +77,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
     protected void onStart() {
         super.onStart();
 
-        String title = DateFormatUtils.formatTimeStampString(this, Date.Companion.today().toMillis(), true);
+        String title = labelCreator.createLabelWithYearPreferredFor(Date.Companion.today());
         previewLayout.setTitle(title);
         previewLayout.setSubtitle(R.string.upcoming_widget_configure_subtitle);
 

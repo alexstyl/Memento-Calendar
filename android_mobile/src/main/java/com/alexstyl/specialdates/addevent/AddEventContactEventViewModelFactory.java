@@ -30,7 +30,7 @@ final class AddEventContactEventViewModelFactory {
     }
 
     AddEventContactEventViewModel createViewModelWith(EventType eventType, Date date) {
-        String eventHint = date.hasYear() ? creator.createLabelWithYearFor(date) : creator.createLabelWithoutYearFor(date);
+        String eventHint = creator.createLabelWithYearPreferredFor(date);
         Optional<Date> dateOptional = new Optional<>(date);
         return new AddEventContactEventViewModel(eventHint, eventType, dateOptional, View.VISIBLE);
     }

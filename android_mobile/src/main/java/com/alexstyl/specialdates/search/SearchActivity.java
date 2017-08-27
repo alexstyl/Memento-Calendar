@@ -86,6 +86,7 @@ public class SearchActivity extends ThemedMementoActivity {
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
+    @Inject DateLabelCreator labelCreator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         setupSearchField();
 
-        adapter = new SearchResultAdapter(imageLoader);
+        adapter = new SearchResultAdapter(imageLoader, labelCreator);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);
 

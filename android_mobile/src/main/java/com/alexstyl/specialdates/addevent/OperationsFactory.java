@@ -10,7 +10,7 @@ import android.provider.ContactsContract.Data;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.images.DecodedImage;
@@ -24,13 +24,13 @@ final class OperationsFactory {
     private static final int NO_RAW_CONTACT_ID = 0;
 
     private final int rawContactID;
-    private final DateDisplayStringCreator displayStringCreator;
+    private final ShortDateLabelCreator displayStringCreator;
 
     static OperationsFactory forNewContact() {
-        return new OperationsFactory(NO_RAW_CONTACT_ID, DateDisplayStringCreator.INSTANCE);
+        return new OperationsFactory(NO_RAW_CONTACT_ID, ShortDateLabelCreator.INSTANCE);
     }
 
-    OperationsFactory(int rawContactID, DateDisplayStringCreator displayStringCreator) {
+    OperationsFactory(int rawContactID, ShortDateLabelCreator displayStringCreator) {
         this.rawContactID = rawContactID;
         this.displayStringCreator = displayStringCreator;
     }
@@ -40,7 +40,7 @@ final class OperationsFactory {
                 .newInsert(Data.CONTENT_URI)
                 .withValue(Data.MIMETYPE, CommonDataKinds.Event.CONTENT_ITEM_TYPE)
                 .withValue(CommonDataKinds.Event.TYPE, eventType.getAndroidType())
-                .withValue(CommonDataKinds.Event.START_DATE, displayStringCreator.stringOf(date));
+                .withValue(CommonDataKinds.Event.START_DATE, displayStringCreator.createLabelWithYearPreferredFor(date));
         addRawContactID(builder);
         return builder.build();
     }

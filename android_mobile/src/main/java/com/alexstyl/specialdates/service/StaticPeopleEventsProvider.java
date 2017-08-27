@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.EventTypeId;
@@ -103,7 +103,7 @@ class StaticPeopleEventsProvider {
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             try {
                 long contactId = getContactIdFrom(cursor);
-                Contact contact = contactMap.get(contactId);
+                Contact contact = contactMap.get(contactId);// TODO contact
                 ContactEvent contactEvent = getContactEventFrom(cursor, contact);
                 contactEvents.add(contactEvent);
             } catch (ContactNotFoundException e) {
@@ -223,7 +223,7 @@ class StaticPeopleEventsProvider {
 
     private String[] monthAndDayOf(Date date) {
         return new String[]{
-                DateDisplayStringCreator.INSTANCE.stringOfNoYear(date)
+                ShortDateLabelCreator.INSTANCE.createLabelWithNoYearFor(date)
         };
     }
 

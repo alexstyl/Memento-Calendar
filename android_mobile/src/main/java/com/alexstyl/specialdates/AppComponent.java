@@ -32,6 +32,7 @@ import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayAppWidgetProvider;
+import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity;
 import com.alexstyl.specialdates.wear.WearSyncService;
 
 import javax.inject.Singleton;
@@ -98,4 +99,6 @@ public interface AppComponent {
     void inject(ColorImageView view);
 
     void inject(CompactCardView view);
+
+    void inject(UpcomingWidgetConfigureActivity activity);
 }

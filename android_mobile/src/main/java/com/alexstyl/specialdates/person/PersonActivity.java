@@ -34,6 +34,7 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -68,6 +69,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
+    @Inject DateLabelCreator dateLabelCreator;
 
     private Optional<Contact> displayingContact = Optional.absent();
 
@@ -91,7 +93,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
                 new PersonDetailsViewModelFactory(stringResources, new AgeCalculator(Date.Companion.today())),
-                new EventViewModelFactory(stringResources)
+                new EventViewModelFactory(stringResources, dateLabelCreator)
         );
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
