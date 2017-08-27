@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @Module
-public class NamedayInADayFeature {
+public class NamedaysInADayModule {
 
     @Provides
     NamedaysViewModelFactory viewModelFactory(LetterPainter letterPainter) {
