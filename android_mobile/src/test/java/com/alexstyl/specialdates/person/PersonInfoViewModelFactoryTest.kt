@@ -32,31 +32,31 @@ class PersonInfoViewModelFactoryTest {
 
     @Test
     fun whenPassingAContact_thenAlwaysReturnItsName() {
-        var resultViewModel = toViewModel(ContactFixture.withName("Anna Roberts"), null)
+        var resultViewModel = toViewModel(ContactFixture.aContactCalled("Anna Roberts"), null)
         assertThat(resultViewModel.displayName).isEqualTo("Anna Roberts")
     }
 
     @Test
     fun whenPassingNoContactEvent_thenAgeAndStarSignIsEmptyString() {
-        var resultViewModel = toViewModel(ContactFixture.withName("Anna Roberts"), null)
+        var resultViewModel = toViewModel(ContactFixture.aContactCalled("Anna Roberts"), null)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("")
     }
 
     @Test
     fun whenPassingABirthdayWithoutYear_thenAgeAndStarSignContainsOnlyStarSign() {
         val dateOfBirth = Date.on(1, JANUARY)
-        val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, ContactFixture.withName("Anna Roberts"))
+        val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, ContactFixture.aContactCalled("Anna Roberts"))
 
-        var resultViewModel = toViewModel(ContactFixture.withName("Anna Roberts"), contactEvent)
+        var resultViewModel = toViewModel(ContactFixture.aContactCalled("Anna Roberts"), contactEvent)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("Sagittarius ♑")
     }
 
     @Test
     fun whenPassingABirthdayWithYear_thenAgeAndStarSignContainsBothAgeAndStarSign() {
         val dateOfBirth = Date.on(1, JANUARY, 1990)
-        val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, ContactFixture.withName("Anna Roberts"))
+        val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, ContactFixture.aContactCalled("Anna Roberts"))
 
-        var resultViewModel = toViewModel(ContactFixture.withName("Anna Roberts"), contactEvent)
+        var resultViewModel = toViewModel(ContactFixture.aContactCalled("Anna Roberts"), contactEvent)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("27, Sagittarius ♑")
     }
 

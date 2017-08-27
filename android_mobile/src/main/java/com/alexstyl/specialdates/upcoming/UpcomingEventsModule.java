@@ -16,7 +16,6 @@ import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.NoAds;
 
 import javax.inject.Named;
-import java.util.Locale;
 
 import dagger.Module;
 import dagger.Provides;
@@ -33,23 +32,20 @@ public class UpcomingEventsModule {
     @Provides
     UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources,
                                                                  ColorResources colorResources,
-                                                                 NamedayUserSettings namedayUserSettings) {
+                                                                 NamedayUserSettings namedayUserSettings,
+                                                                 NamedayCalendarProvider namedayCalendarProvider) {
         Date date = Date.Companion.today();
 
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
                                           namedayUserSettings,
+                                          namedayCalendarProvider,
                                           BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                                          NamedayCalendarProvider.newInstance(context.getResources()),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
                                                   new UpcomingDateStringCreator(stringResources, date),
-                                                  new ContactViewModelFactory(colorResources, stringResources),
-                                                  stringResources,
-                                                  new BankHolidayViewModelFactory(),
-                                                  new NamedaysViewModelFactory(date),
-                                                  MonthLabels.forLocale(Locale.getDefault())
+                                                  new ContactViewModelFactory(colorResources, stringResources)
                                           ), adRules
         );
     }
@@ -58,22 +54,19 @@ public class UpcomingEventsModule {
     @Named("widget")
     UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources,
                                                                ColorResources colorResources,
-                                                               NamedayUserSettings namedayUserSettings) {
+                                                               NamedayUserSettings namedayUserSettings,
+                                                               NamedayCalendarProvider namedayCalendarProvider) {
         Date date = Date.Companion.today();
         UpcomingEventsAdRules adRules = new NoAds();
         return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
                                           namedayUserSettings,
+                                          namedayCalendarProvider,
                                           BankHolidaysPreferences.newInstance(context),
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                                          NamedayCalendarProvider.newInstance(context.getResources()),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
                                                   new UpcomingDateStringCreator(stringResources, date),
-                                                  new ContactViewModelFactory(colorResources, stringResources),
-                                                  stringResources,
-                                                  new BankHolidayViewModelFactory(),
-                                                  new NamedaysViewModelFactory(date),
-                                                  MonthLabels.forLocale(Locale.getDefault())
+                                                  new ContactViewModelFactory(colorResources, stringResources)
                                           ), adRules
         );
     }

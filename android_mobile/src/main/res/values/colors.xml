@@ -2,7 +2,7 @@
 <resources>
 
   <color name="main_grey">#eeeeee</color>
-  <color name="light_grey">#e7e7e7</color>
+  <color name="light_grey">#F6F6F6</color>
   <color name="main_white">@android:color/white</color>
   <color name="pressed_example">#CC33B5E5</color>
   <color name="avatar_number">#414141</color>

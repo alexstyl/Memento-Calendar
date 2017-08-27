@@ -10,13 +10,13 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-class UpcomingEventsPresenter(private val firstDay: Date,
-                              private val permissions: ContactPermissionRequest,
-                              private val provider: UpcomingEventsProvider,
-                              private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
-                              private val peopleEventsObserver: PeopleEventsObserver,
-                              private val workScheduler: Scheduler,
-                              private val resultScheduler: Scheduler) {
+internal class UpcomingEventsPresenter(private val firstDay: Date,
+                                       private val permissions: ContactPermissionRequest,
+                                       private val provider: IUpcomingEventsProvider,
+                                       private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
+                                       private val peopleEventsObserver: PeopleEventsObserver,
+                                       private val workScheduler: Scheduler,
+                                       private val resultScheduler: Scheduler) {
 
     private val TRIGGER = 1
     private val subject = PublishSubject.create<Int>()
@@ -30,15 +30,12 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                 subject
                         .doOnSubscribe { view.showLoading() }
                         .observeOn(workScheduler)
-                        .map<List<UpcomingRowViewModel>> {
-                            provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
-                        }
+                        .map { provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay)) }
                         .observeOn(resultScheduler)
                         .subscribe {
                             upcomingRowViewModels ->
                             view.display(upcomingRowViewModels)
                         }
-
         if (permissions.permissionIsPresent()) {
             setupContentUpdatedListeners()
             refreshEvents()

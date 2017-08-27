@@ -4,7 +4,6 @@ import com.alexstyl.gsc.Sound
 import com.alexstyl.gsc.SoundRules
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
-import java.util.*
 
 
 class SoundNode private constructor(private val keySound: Sound?) : Node {
@@ -23,18 +22,6 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
         dates = null
     }
 
-    override fun toString(): String {
-        val str = StringBuilder()
-        if (keySound != null) {
-            str.append(keySound.toString()).append(" ")
-        }
-        str.append(nodes.size)
-        if (dates != null) {
-            str.append(" ").append(dates)
-        }
-        return str.toString()
-    }
-
     /**
      * Adds the given date for the given word
      */
@@ -45,7 +32,6 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
 
     private fun addDate(word: String, date: Date, iterator: Iterator<Sound?>) {
         if (!iterator.hasNext()) {
-            // we are done.
             if (dates == null) {
                 dates = NameCelebrations(word)
             }
@@ -54,7 +40,7 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
             var theNode: SoundNode? = null
             iterator.forEach { s ->
                 nodes.forEach { node ->
-                    if (node.keySound == s) {
+                    if (node.keySound!!.soundsLike(s!!)) {
                         theNode = node
                         return@forEach
                     }
@@ -72,12 +58,11 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
 
     private fun getDates(name: String, iterator: Iterator<Sound?>): NameCelebrations? {
         if (!iterator.hasNext()) {
-            // we are done.
             return getNameCelebrations(name)
         } else {
             iterator.forEach { s ->
                 nodes.forEach { node ->
-                    if (node.keySound == s) {
+                    if (node.keySound!!.soundsLike(s!!)) {
                         val nameCelebrations = node.getDates(name, iterator)
                         if (nameCelebrations != null) {
                             return nameCelebrations

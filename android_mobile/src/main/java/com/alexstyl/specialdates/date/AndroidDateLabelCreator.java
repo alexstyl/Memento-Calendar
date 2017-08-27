@@ -3,8 +3,6 @@ package com.alexstyl.specialdates.date;
 import android.content.Context;
 import android.text.format.DateUtils;
 
-import com.alexstyl.specialdates.search.DateLabelCreator;
-
 public final class AndroidDateLabelCreator implements DateLabelCreator {
 
     private final Context context;

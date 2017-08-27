@@ -11,17 +11,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 @SuppressWarnings({"FinalClass"}) // TODO abstract the Contacts Provider so that it is not platform dependant
 public class ContactsProvider {
 
-    private static ContactsProvider instance;
-
+    private static final NameComparator NAME_COMPARATOR = NameComparator.INSTANCE;
     private static final int CACHE_SIZE = 1024;
+
+    private static ContactsProvider instance;
     private final Map<Integer, ContactsProviderSource> sources;
 
+    /**
+     * @Deprecated Use Dagger to inject this wherever needed instead
+     */
     public static ContactsProvider get(Context context) {
         if (instance == null) {
             Map<Integer, ContactsProviderSource> sources = new HashMap<>();
@@ -74,4 +80,17 @@ public class ContactsProvider {
         return Collections.unmodifiableList(contacts);
     }
 
+    public List<Contact> contactsCalled(@NotNull String name) {
+        List<Contact> matchingContacts = new ArrayList<>();
+        for (Contact contact : getAllContacts()) {
+            DisplayName displayName = contact.getDisplayName();
+            for (String contactName : displayName.getFirstNames()) {
+                if (NAME_COMPARATOR.areTheSameName(contactName, name)) {
+                    matchingContacts.add(contact);
+                    break;
+                }
+            }
+        }
+        return matchingContacts;
+    }
 }

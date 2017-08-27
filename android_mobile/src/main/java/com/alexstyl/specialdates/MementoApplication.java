@@ -7,14 +7,19 @@ import android.content.Context;
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
+import com.alexstyl.specialdates.contact.ContactsModule;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
+import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -41,8 +46,13 @@ public class MementoApplication extends Application {
                         .analyticsModule(new AnalyticsModule(this))
                         .resourcesModule(new ResourcesModule(getResources()))
                         .imageModule(new ImageModule(getResources()))
+                        .contactsModule(new ContactsModule(this))
                         .upcomingEventsModule(new UpcomingEventsModule(this))
                         .namedayModule(new NamedayModule(this))
+                        .viewModule(new ViewModule(getResources()))
+                        .namedaysInADayModule(new NamedaysInADayModule())
+                        .dateModule(new DateModule(this))
+                        .dailyReminderModule(new DailyReminderModule(this))
                         .build();
     }
 

@@ -16,13 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.android.Version;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.util.GreekNameUtils;
 import com.novoda.notils.caster.Views;
 
+import javax.inject.Inject;
+
 public class ColorImageView extends FrameLayout {
 
     private static final String UKNOWN_CHARACTER = "?";
+
+    @Inject
+    LetterPainter letterPainter;
 
     private boolean drawCircle = true;
 
@@ -35,6 +42,9 @@ public class ColorImageView extends FrameLayout {
 
     public ColorImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
 
         View view = inflate(context, R.layout.merge_color_imageview, this);
         this.letter = Views.findById(view, android.R.id.text1);
@@ -94,7 +104,7 @@ public class ColorImageView extends FrameLayout {
      * Returns the currently selected background variant of the view
      */
     public void setCircleColorVariant(@Size(min = 1, max = 5) int i) {
-        int variant = LetterPainter.getVariant(getResources(), i);
+        int variant = letterPainter.getVariant(i);
         if (backgroundVariant != variant) {
             backgroundVariant = variant;
             paint.setColor(backgroundVariant);
