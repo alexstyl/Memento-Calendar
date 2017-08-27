@@ -31,9 +31,9 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
+import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
-import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,12 +217,11 @@ public final class Notifier {
 
     public void forNamedays(List<String> names, Date date) {
         if (names == null || names.isEmpty()) {
-            Log.w("Tried to notify for empty name list");
             return;
         }
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS,
-                UpcomingEventsActivity.getStartIntent(context, date),
+                NamedayActivity.Companion.getStartIntent(context, date),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
