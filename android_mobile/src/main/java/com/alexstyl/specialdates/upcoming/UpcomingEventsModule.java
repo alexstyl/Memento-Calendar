@@ -41,7 +41,7 @@ public class UpcomingEventsModule {
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
-                                                  new UpcomingDateStringCreator(stringResources, date),
+                                                  new UpcomingDateStringCreator(stringResources, date, context),
                                                   new ContactViewModelFactory(colorResources, stringResources)
                                           ), adRules
         );
@@ -64,7 +64,7 @@ public class UpcomingEventsModule {
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
-                                                  new UpcomingDateStringCreator(stringResources, date),
+                                                  new UpcomingDateStringCreator(stringResources, date, context),
                                                   new ContactViewModelFactory(colorResources, stringResources)
                                           ), adRules
         );

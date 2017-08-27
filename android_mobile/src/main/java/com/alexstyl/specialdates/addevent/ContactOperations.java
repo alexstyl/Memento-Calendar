@@ -7,7 +7,7 @@ import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.images.DecodedImage;
@@ -24,12 +24,12 @@ class ContactOperations {
     private final ContentResolver contentResolver;
     private final WriteableAccountsProvider accountsProvider;
     private final PeopleEventsProvider peopleEventsProvider;
-    private final DateDisplayStringCreator displayStringCreator;
+    private final ShortDateLabelCreator displayStringCreator;
 
     ContactOperations(ContentResolver contentResolver,
                       WriteableAccountsProvider accountsProvider,
                       PeopleEventsProvider peopleEventsProvider,
-                      DateDisplayStringCreator displayStringCreator) {
+                      ShortDateLabelCreator displayStringCreator) {
         this.contentResolver = contentResolver;
         this.accountsProvider = accountsProvider;
         this.peopleEventsProvider = peopleEventsProvider;

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming
 
+import android.content.Context
 import com.alexstyl.resources.ColorResources
 import com.alexstyl.resources.DumbTestResources
 import com.alexstyl.resources.StringResources
@@ -32,10 +33,9 @@ class UpcomingRowViewModelsBuilderTest {
 
     private var upcomingEventRowViewModelFactory: UpcomingEventRowViewModelFactory? = null
 
-    @Mock
-    private val mockColorResources: ColorResources? = null
-    @Mock
-    private val mockStringResources: StringResources? = null
+    @Mock private val mockColorResources: ColorResources? = null
+    @Mock private val mockStringResources: StringResources? = null
+    @Mock private val mockContext: Context? = null
 
     @Before
     fun setUp() {
@@ -46,7 +46,7 @@ class UpcomingRowViewModelsBuilderTest {
         val today = Date.today()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
-                UpcomingDateStringCreator(DumbTestResources(), today),
+                UpcomingDateStringCreator(DumbTestResources(), today, mockContext),
                 ContactViewModelFactory(mockColorResources, mockStringResources)
         )
 

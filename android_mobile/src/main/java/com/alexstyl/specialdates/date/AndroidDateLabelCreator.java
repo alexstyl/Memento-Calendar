@@ -18,7 +18,7 @@ public final class AndroidDateLabelCreator implements DateLabelCreator {
     }
 
     @Override
-    public String createLabelWithYearFor(Date date) {
+    public String createLabelWithYearPreferredFor(Date date) {
         int formatFlags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
         return DateUtils.formatDateTime(context, date.toMillis(), formatFlags);
     }

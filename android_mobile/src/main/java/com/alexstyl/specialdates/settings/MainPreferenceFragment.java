@@ -64,7 +64,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
             }
         });
 
-        appThemePreference = findPreference(R.string.key_app_theme);
+        appThemePreference = findPreference(R.string.key_app_theme_id);
         appThemePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -161,7 +161,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     private final ThemeSelectDialog.OnThemeSelectedListener themeSelectedListener = new ThemeSelectDialog.OnThemeSelectedListener() {
         @Override
         public void onThemeSelected(MementoTheme theme) {
-            analytics.trackAction(new ActionWithParameters(Action.SELECT_THEME, "theme name", theme.getThemeName()));
+            analytics.trackAction(new ActionWithParameters(Action.SELECT_THEME, "theme name", getString(theme.getThemeName())));
             themingPreferences.setSelectedTheme(theme);
             activity.reapplyTheme();
         }

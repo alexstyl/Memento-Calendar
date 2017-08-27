@@ -20,7 +20,7 @@ final class ContactEventLabelCreator {
 
     public String createFor(ContactEvent event) {
         String eventLabel = event.getLabel(today, stringResources);
-        String dateLabel = dateLabelCreator.createLabelWithoutYearFor(event.getDate());
+        String dateLabel = dateLabelCreator.createLabelWithYearPreferredFor(event.getDate());
         return stringResources.getString(R.string.search_event_label, eventLabel, dateLabel);
     }
 }

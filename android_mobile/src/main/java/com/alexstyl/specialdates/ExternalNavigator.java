@@ -21,11 +21,6 @@ import java.util.List;
 
 public class ExternalNavigator {
 
-    private static Uri createPlayStoreUri() {
-        String packageName = MementoApplication.getContext().getPackageName();
-        return Uri.parse("market://details?id=" + packageName);
-    }
-
     private final Activity activity;
     private final Analytics analytics;
 
@@ -33,6 +28,11 @@ public class ExternalNavigator {
         this.activity = activity;
         this.analytics = analytics;
         SimpleChromeCustomTabs.initialize(activity);
+    }
+
+    private Uri createPlayStoreUri() {
+        String packageName = activity.getPackageName();
+        return Uri.parse("market://details?id=" + packageName);
     }
 
     public void toPlayStore() {

@@ -24,13 +24,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
-    private static Context context;
-
     private AppComponent appComponent;
-
-    public static Context getContext() {
-        return context;
-    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -48,7 +42,6 @@ public class MementoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
 
         initialiseDependencies();
         ErrorTracker.startTracking(this);

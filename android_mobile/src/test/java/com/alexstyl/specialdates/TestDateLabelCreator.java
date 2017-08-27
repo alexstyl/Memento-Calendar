@@ -25,7 +25,7 @@ final public class TestDateLabelCreator implements DateLabelCreator {
     }
 
     @Override
-    public String createLabelWithYearFor(Date date) {
+    public String createLabelWithYearPreferredFor(Date date) {
         return monthLabels.getMonthOfYear(date.getMonth()) + " " + date.getDayOfMonth() + " " + date.getYear();
     }
 }
