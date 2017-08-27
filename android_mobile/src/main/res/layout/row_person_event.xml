@@ -12,21 +12,21 @@
 
   <TextView
     android:id="@+id/row_person_event_title"
+    style="@style/Person.Text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:fontFamily="sans-serif-condensed"
     android:textColor="?colorAccent"
-    android:textSize="18sp"
     tools:text="Birthday" />
 
   <TextView
     android:id="@+id/row_person_event_date"
+    style="@style/Person.Text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
     android:fontFamily="sans-serif-condensed"
     android:textColor="#000"
-    android:textSize="18sp"
     tools:text="29 March, 1990" />
 
 </LinearLayout>
