@@ -24,6 +24,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
@@ -41,7 +42,6 @@ import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 import com.novoda.notils.text.SimpleTextWatcher;
@@ -85,6 +85,7 @@ public class SearchActivity extends ThemedMementoActivity {
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class SearchActivity extends ThemedMementoActivity {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context(), namedayUserSettings), NameMatcher.INSTANCE);
+        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context(), namedayUserSettings, contactsProvider), NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), stringResources, dateLabelCreator));
 

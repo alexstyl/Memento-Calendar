@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateFormatUtils;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
@@ -35,6 +36,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -69,7 +71,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateTodayWidget(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context, namedayUserSettings)) {
+        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context, namedayUserSettings, contactsProvider)) {
             @Override
             void onNextDateLoaded(ContactEventsOnADate events) {
                 updateForDate(context, appWidgetManager, appWidgetIds, events);

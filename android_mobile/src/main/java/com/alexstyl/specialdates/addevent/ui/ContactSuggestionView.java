@@ -26,6 +26,7 @@ public class ContactSuggestionView extends LinearLayout {
     private OnContactSelectedListener listener = OnContactSelectedListener.NO_CALLBACKS;
     private AutoCompleteTextView autoCompleteView;
     @Inject ImageLoader imageLoader;
+    @Inject ContactsProvider contactsProvider;
 
     public ContactSuggestionView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,7 +47,6 @@ public class ContactSuggestionView extends LinearLayout {
         if (isInEditMode()) {
             return;
         }
-        ContactsProvider contactsProvider = ContactsProvider.get(getContext());
         ContactsSearch contactsSearch = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
         final ContactsAdapter adapter = new ContactsAdapter(contactsSearch, imageLoader);
         autoCompleteView.setAdapter(adapter);

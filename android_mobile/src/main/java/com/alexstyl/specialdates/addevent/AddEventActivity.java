@@ -29,6 +29,7 @@ import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateDisplayStringCreator;
@@ -61,6 +62,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         ContactDetailsAdapter adapter = new ContactDetailsAdapter(contactDetailsListener);
         eventsView.setAdapter(adapter);
 
-        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings);
+        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
         AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
@@ -181,7 +183,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
             analytics.trackImageCaptured();
@@ -291,7 +293,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (presenter.isHoldingModifiedData()) {

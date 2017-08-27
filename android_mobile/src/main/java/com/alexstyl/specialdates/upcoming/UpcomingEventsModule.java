@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
@@ -33,11 +34,12 @@ public class UpcomingEventsModule {
     UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources,
                                                                  ColorResources colorResources,
                                                                  NamedayUserSettings namedayUserSettings,
-                                                                 NamedayCalendarProvider namedayCalendarProvider) {
+                                                                 NamedayCalendarProvider namedayCalendarProvider,
+                                                                 ContactsProvider provider) {
         Date date = Date.Companion.today();
 
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
-        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
+        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings, provider),
                                           namedayUserSettings,
                                           namedayCalendarProvider,
                                           BankHolidaysPreferences.newInstance(context),
@@ -55,10 +57,11 @@ public class UpcomingEventsModule {
     UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources,
                                                                ColorResources colorResources,
                                                                NamedayUserSettings namedayUserSettings,
-                                                               NamedayCalendarProvider namedayCalendarProvider) {
+                                                               NamedayCalendarProvider namedayCalendarProvider,
+                                                               ContactsProvider provider) {
         Date date = Date.Companion.today();
         UpcomingEventsAdRules adRules = new NoAds();
-        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings),
+        return new UpcomingEventsProvider(PeopleEventsProvider.newInstance(context, namedayUserSettings, provider),
                                           namedayUserSettings,
                                           namedayCalendarProvider,
                                           BankHolidaysPreferences.newInstance(context),

@@ -44,6 +44,7 @@ public class StaticEventsContentProvider extends ContentProvider {
     private PeopleEventsUpdater peopleEventsUpdater;
     @Inject StringResources stringResources;
     @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public boolean onCreate() {
@@ -53,7 +54,6 @@ public class StaticEventsContentProvider extends ContentProvider {
         AppComponent applicationModule = ((MementoApplication) getContext().getApplicationContext()).getApplicationModule();
         applicationModule.inject(this);
 
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
         DateParser dateParser = DateParser.INSTANCE;
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);

@@ -16,8 +16,7 @@ public final class DebugPeopleEventsUpdater {
     private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
-    public static DebugPeopleEventsUpdater newInstance(Context context, NamedayUserSettings namedayUserSettings) {
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
+    public static DebugPeopleEventsUpdater newInstance(Context context, NamedayUserSettings namedayUserSettings, ContactsProvider contactsProvider) {
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE);
         ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller(SOURCE_DEVICE);
         PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));

@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
@@ -48,6 +49,7 @@ public class DailyReminderIntentService extends IntentService {
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
     @Inject DailyReminderNotifier notifier;
+    @Inject ContactsProvider contactsProvider;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -66,7 +68,7 @@ public class DailyReminderIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this, namedayPreferences);
+        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this, namedayPreferences, contactsProvider);
         Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {

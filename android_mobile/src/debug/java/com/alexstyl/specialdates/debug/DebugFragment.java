@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.alexstyl.specialdates.DebugAppComponent;
 import com.alexstyl.specialdates.DebugApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
@@ -32,8 +33,8 @@ import java.util.Calendar;
 public class DebugFragment extends MementoPreferenceFragment {
 
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
-    @Inject
-    NamedayUserSettings namedayUserSettings;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -47,7 +48,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings).refresh();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider).refresh();
                 showToast("Refreshing Database");
                 return true;
             }
