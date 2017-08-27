@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
@@ -24,6 +25,7 @@ import java.util.List;
 public class WearSyncService extends IntentService {
 
     @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
@@ -57,7 +59,7 @@ public class WearSyncService extends IntentService {
     }
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
-        PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings);
+        PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider);
         Date today = Date.Companion.today();
         return eventsProvider.getCelebrationsClosestTo(today);
     }

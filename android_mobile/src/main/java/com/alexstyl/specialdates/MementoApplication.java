@@ -43,10 +43,11 @@ public class MementoApplication extends Application {
         super.attachBaseContext(base);
         appComponent =
                 DaggerAppComponent.builder()
+                        .appModule(new AppModule(this))
                         .analyticsModule(new AnalyticsModule(this))
                         .resourcesModule(new ResourcesModule(getResources()))
                         .imageModule(new ImageModule(getResources()))
-                        .contactsModule(new ContactsModule(this))
+                        .contactsModule(new ContactsModule())
                         .upcomingEventsModule(new UpcomingEventsModule(this))
                         .namedayModule(new NamedayModule(this))
                         .viewModule(new ViewModule(getResources()))

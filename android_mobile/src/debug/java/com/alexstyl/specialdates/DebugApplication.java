@@ -2,6 +2,7 @@ package com.alexstyl.specialdates;
 
 import android.content.Context;
 
+import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 
 public class DebugApplication extends MementoApplication {
@@ -13,7 +14,9 @@ public class DebugApplication extends MementoApplication {
         super.attachBaseContext(base);
         debugAppComponent =
                 DaggerDebugAppComponent.builder()
+                        .appModule(new AppModule(this))
                         .namedayModule(new NamedayModule(this))
+                        .contactsModule(new ContactsModule())
                         .build();
     }
 

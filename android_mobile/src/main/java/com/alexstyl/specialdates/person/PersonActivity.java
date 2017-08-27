@@ -67,6 +67,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     @Inject StringResources stringResources;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     private Optional<Contact> displayingContact = Optional.absent();
 
@@ -82,7 +83,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
-                PeopleEventsProvider.newInstance(this, namedayUserSettings),
+                PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider),
                 new PersonCallProvider(
                         new AndroidContactActionsProvider(getContentResolver(), stringResources, thisActivity(), getPackageManager(), actionsFactory),
                         new FacebookContactActionsProvider(stringResources, getResources(), actionsFactory)
@@ -152,7 +153,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
 
     private Optional<Contact> contactFor(long contactID, int contactSource) {
         try {
-            ContactsProvider contactsProvider = ContactsProvider.get(this);
             return new Optional<>(contactsProvider.getContact(contactID, contactSource));
         } catch (ContactNotFoundException e) {
             ErrorTracker.track(e);

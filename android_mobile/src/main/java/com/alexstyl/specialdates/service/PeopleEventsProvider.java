@@ -32,8 +32,7 @@ public class PeopleEventsProvider {
     private final StaticPeopleEventsProvider staticEventsProvider;
     private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
 
-    public static PeopleEventsProvider newInstance(Context context, NamedayUserSettings namedayPreferences) {
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
+    public static PeopleEventsProvider newInstance(Context context, NamedayUserSettings namedayPreferences, ContactsProvider contactsProvider) {
         ContentResolver resolver = context.getContentResolver();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
