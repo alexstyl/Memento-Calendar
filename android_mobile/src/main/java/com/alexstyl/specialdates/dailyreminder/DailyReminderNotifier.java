@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.util;
+package com.alexstyl.specialdates.dailyreminder;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -27,18 +27,18 @@ import com.alexstyl.resources.StringResources;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Notifier {
+public final class DailyReminderNotifier {
 
     private static final int NOTIFICATION_ID_DAILY_REMINDER_CONTACTS = 0;
     private static final int NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS = 1;
@@ -53,24 +53,13 @@ public final class Notifier {
     private final ColorResources colorResources;
     private final DailyReminderPreferences preferences;
 
-    public static Notifier newInstance(Context context,
-                                       StringResources stringResources,
-                                       ColorResources colorResources,
-                                       DimensionResources dimensions,
-                                       ImageLoader imageLoader) {
-        // TODO get rid of newInstance
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(context);
-        return new Notifier(context, notificationManager, imageLoader, stringResources, colorResources, dimensions, preferences);
-    }
-
-    private Notifier(Context context,
-                     NotificationManager notificationManager,
-                     ImageLoader imageLoader,
-                     StringResources stringResources,
-                     ColorResources colorResources,
-                     DimensionResources dimensions,
-                     DailyReminderPreferences preferences) {
+    DailyReminderNotifier(Context context,
+                          NotificationManager notificationManager,
+                          ImageLoader imageLoader,
+                          StringResources stringResources,
+                          ColorResources colorResources,
+                          DimensionResources dimensions,
+                          DailyReminderPreferences preferences) {
         this.notificationManager = notificationManager;
         this.stringResources = stringResources;
         this.imageLoader = imageLoader;
@@ -80,7 +69,7 @@ public final class Notifier {
         this.preferences = preferences;
     }
 
-    public void forDailyReminder(Date date, List<ContactEvent> events) {
+    void forDailyReminder(Date date, List<ContactEvent> events) {
         Bitmap largeIcon = null;
         int contactCount = events.size();
 
@@ -215,7 +204,7 @@ public final class Notifier {
         return contactCount == 1;
     }
 
-    public void forNamedays(List<String> names, Date date) {
+    void forNamedays(List<String> names, Date date) {
         if (names == null || names.isEmpty()) {
             return;
         }
@@ -250,7 +239,7 @@ public final class Notifier {
 
     }
 
-    public void forBankholiday(Date date, BankHoliday bankHoliday) {
+    void forBankholiday(Date date, BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
                 UpcomingEventsActivity.getStartIntent(context, date),
