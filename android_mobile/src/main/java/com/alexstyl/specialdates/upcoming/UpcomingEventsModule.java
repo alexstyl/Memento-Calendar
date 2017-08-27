@@ -24,14 +24,9 @@ import dagger.Provides;
 @Module
 public class UpcomingEventsModule {
 
-    private final Context context;
-
-    public UpcomingEventsModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
-    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(StringResources stringResources,
+    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(Context context,
+                                                                 StringResources stringResources,
                                                                  ColorResources colorResources,
                                                                  NamedayUserSettings namedayUserSettings,
                                                                  NamedayCalendarProvider namedayCalendarProvider,
@@ -54,7 +49,8 @@ public class UpcomingEventsModule {
 
     @Provides
     @Named("widget")
-    UpcomingEventsProvider providesUpcomingEventsProviderNoAds(StringResources stringResources,
+    UpcomingEventsProvider providesUpcomingEventsProviderNoAds(Context context,
+                                                               StringResources stringResources,
                                                                ColorResources colorResources,
                                                                NamedayUserSettings namedayUserSettings,
                                                                NamedayCalendarProvider namedayCalendarProvider,

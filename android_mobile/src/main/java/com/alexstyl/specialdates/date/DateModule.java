@@ -11,15 +11,9 @@ import dagger.Provides;
 @Singleton
 public class DateModule {
 
-    private final Context context;
-
-    public DateModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
     @Singleton
-    DateLabelCreator labelCreator() {
+    DateLabelCreator labelCreator(Context context) {
         return new AndroidDateLabelCreator(context);
     }
 }
