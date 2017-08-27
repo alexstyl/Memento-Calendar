@@ -27,8 +27,3 @@ class NamedaysScreenViewHolderFactory(private val layoutInflater: LayoutInflater
         }
     }
 }
-
-
-
-
-
