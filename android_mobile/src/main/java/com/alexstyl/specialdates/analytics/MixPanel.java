@@ -182,6 +182,11 @@ class MixPanel implements Analytics {
         mixpanel.track("view_contact_details");
     }
 
+    @Override
+    public void trackNamedaysScreen() {
+        mixpanel.track("namedays_screen");
+    }
+
     private static JSONObject createJSONfor(ActionWithParameters event) {
         JSONObject properties = new JSONObject();
         try {

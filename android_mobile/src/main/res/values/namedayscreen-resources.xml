@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <dimen name="nameday_contact_name_size">14sp</dimen>
+  <dimen name="nameday_item_minheight">60dp</dimen>
+
+  <style name="NamedayScreen"></style>
+
+  <style name="NamedayScreen.Text">
+    <item name="android:textColor">?primaryTextColor</item>
+  </style>
+
+  <style name="NamedayScreen.Text.Name">
+    <item name="android:textSize">16sp</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="NamedayScreen.Text.ContactName">
+    <item name="android:textSize">14sp</item>
+  </style>
+
+</resources>

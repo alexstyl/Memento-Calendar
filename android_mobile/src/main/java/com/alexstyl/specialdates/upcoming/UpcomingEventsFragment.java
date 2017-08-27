@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -50,7 +49,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
-    private MainNavigator navigator;
+    private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
     @Inject Analytics analytics;
     @Inject StringResources stringResources;
@@ -70,9 +69,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(sharedPreferences, stringResources);
-        navigator = new MainNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
+        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
+        navigator = new UpcomingEventsNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
@@ -104,6 +102,11 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
             public void onContactClicked(Contact contact) {
                 navigator.toContactDetails(contact);
 
+            }
+
+            @Override
+            public void onNamedayClicked(Date date) {
+                navigator.toDateDetails(date);
             }
         });
         upcomingList.setAdapter(adapter);

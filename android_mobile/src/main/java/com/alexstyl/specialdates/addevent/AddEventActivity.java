@@ -75,7 +75,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationAsClose();
+        toolbar.displayNavigationIconAsClose();
 
         AvatarPickerView avatarView = Views.findById(this, R.id.add_event_avatar);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);

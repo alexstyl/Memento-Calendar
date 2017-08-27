@@ -28,7 +28,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
@@ -48,12 +47,11 @@ public class DailyReminderIntentService extends IntentService {
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
+    @Inject DailyReminderNotifier notifier;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
     }
-
-    private Notifier notifier;
 
     @Override
     public void onCreate() {
@@ -61,7 +59,6 @@ public class DailyReminderIntentService extends IntentService {
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        notifier = Notifier.newInstance(this, stringResources, colorResources, dimensions, imageLoader);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
         checker = new PermissionChecker(this);

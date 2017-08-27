@@ -5,10 +5,12 @@ import android.support.annotation.ColorInt;
 
 import com.alexstyl.specialdates.R;
 
-final class LetterPainter {
+public class LetterPainter {
 
-    private LetterPainter() {
-        // hide this
+    private final Resources resources;
+
+    LetterPainter(Resources resources) {
+        this.resources = resources;
     }
 
     /**
@@ -22,17 +24,13 @@ final class LetterPainter {
             R.color.avatar_variant_5,
     };
 
-    private static final int VARIANT_COUNT;
-
-    static {
-        VARIANT_COUNT = BACKGROUND_VARIANTS.length;
-    }
+    private static final int VARIANT_COUNT = BACKGROUND_VARIANTS.length;
 
     @ColorInt
-    static int getVariant(Resources res, int i2) {
+    public int getVariant(int i2) {
         int variant = Math.abs(i2);
         variant = normalise(variant);
-        return res.getColor(BACKGROUND_VARIANTS[variant]);
+        return resources.getColor(BACKGROUND_VARIANTS[variant]);
     }
 
     private static int normalise(int variant) {

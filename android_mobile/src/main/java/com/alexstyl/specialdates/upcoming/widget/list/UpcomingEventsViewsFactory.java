@@ -6,12 +6,10 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
-import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
 
 import java.util.List;
 
@@ -65,15 +63,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @SuppressLint("SwitchIntDef")
     private UpcomingEventViewBinder createBinderFor(UpcomingRowViewModel viewModel) {
         switch (viewModel.getViewType()) {
-            case UpcomingRowViewType.YEAR:
-                RemoteViews yearView = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_year);
-                return new YearBinder(yearView);
-            case UpcomingRowViewType.MONTH:
-                RemoteViews monthView = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
-                return new MonthBinder(monthView);
-            case UpcomingRowViewType.UPCOMING_EVENTS:
-                RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-                return new UpcomingEventsBinder(remoteViews, context, avatarFactory, dimensResources);
+            // TODO add binders for view types
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());
         }

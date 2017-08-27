@@ -3,8 +3,9 @@
   <string name="upcoming_events_bankholidays_title">@string/Bank_holiday</string>
   <string name="upcoming_events_namedays_title">@string/namedays</string>
   <string name="plus_x_more">+%d more</string>
+  <string name="upcoming_select_date">@string/Select_date</string>
 
-  <dimen name="upcoming_vertical_padding_between_cards">12dp</dimen>
+  <dimen name="upcoming_vertical_padding_between_cards">20dp</dimen>
 
   <dimen name="upcoming_event_padding_vertical">8dp</dimen>
   <dimen name="upcoming_event_padding_horizontal">16dp</dimen>
@@ -12,8 +13,6 @@
   <dimen name="upcoming_initial_size">16sp</dimen>
   <dimen name="upcoming_spacing_indicator">8dp</dimen>
 
-  <dimen name="upcoming_contact_event_avatar_width">42dp</dimen>
-  <dimen name="upcoming_contact_event_avatar_height">@dimen/upcoming_contact_event_avatar_width</dimen>
 
   <style name="Upcoming"
     parent="None" />
@@ -41,8 +40,12 @@
   <style name="Upcoming.Avatar">
     <item name="letterSize">@dimen/upcoming_initial_size</item>
     <item name="isCircle">true</item>
-    <item name="android:layout_width">@dimen/upcoming_contact_event_avatar_width</item>
-    <item name="android:layout_height">@dimen/upcoming_contact_event_avatar_height</item>
+    <item name="android:layout_width">52dp</item>
+    <item name="android:layout_height">52dp</item>
+  </style>
+
+  <style name="Upcoming.Text">
+    <item name="android:textSize">14sp</item>
   </style>
 
   <style name="Upcoming.TodayBackground">

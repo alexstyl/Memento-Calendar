@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 
-final class UpcomingDateStringCreator {
+public final class UpcomingDateStringCreator {
 
     private static final String DAY_OF_WEEK_SEPARATOR = ", ";
 
