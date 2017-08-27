@@ -35,21 +35,21 @@
 
       <TextView
         android:id="@+id/row_person_call_number"
+        style="@style/Person.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:textColor="?colorAccent"
-        android:textSize="18sp"
         tools:text="(555) 54-23-493" />
 
       <TextView
         android:id="@+id/row_person_action_type"
+        style="@style/Person.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="sans-serif-condensed"
         android:textColor="#a0000000"
-        android:textSize="18sp"
         tools:text="Home" />
     </LinearLayout>
   </LinearLayout>

@@ -3,8 +3,12 @@
 
   <style name="Person" />
 
+  <style name="Person.Text">
+    <item name="android:textSize">15sp</item>
+  </style>
+
   <style name="Person.Name">
-    <item name="android:textSize">24sp</item>
+    <item name="android:textSize">20sp</item>
     <item name="android:textColor">#fff</item>
     <item name="android:fontFamily">sans-serif-medium</item>
   </style>
