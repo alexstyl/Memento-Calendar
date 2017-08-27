@@ -18,21 +18,15 @@ import dagger.Provides;
 @Singleton
 public class NamedayModule {
 
-    private final Context context;
-
-    public NamedayModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
     @Singleton
-    NamedayCalendarProvider provider() {
+    NamedayCalendarProvider provider(Context context) {
         AndroidJSONResourceLoader loader = new AndroidJSONResourceLoader(context.getResources());
         return new NamedayCalendarProvider(new NamedayJSONProvider(loader), new SpecialNamedaysHandlerFactory());
     }
 
     @Provides
-    NamedayUserSettings userSettings() {
+    NamedayUserSettings userSettings(Context context) {
         return new NamedayPreferences(context);
     }
 

@@ -14,24 +14,19 @@ import dagger.Provides;
 @Module
 public class DailyReminderModule {
 
-    private final Context context;
-
-    public DailyReminderModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
-    public DailyReminderNotifier notifier(ImageLoader imageLoader,
-                                          StringResources stringResources,
-                                          ColorResources colorResources,
-                                          DimensionResources dimensionResources,
-                                          DailyReminderPreferences preferences) {
+    DailyReminderNotifier notifier(Context context,
+                                   ImageLoader imageLoader,
+                                   StringResources stringResources,
+                                   ColorResources colorResources,
+                                   DimensionResources dimensionResources,
+                                   DailyReminderPreferences preferences) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         return new DailyReminderNotifier(context, notificationManager, imageLoader, stringResources, colorResources, dimensionResources, preferences);
     }
 
     @Provides
-    DailyReminderPreferences preferences() {
+    DailyReminderPreferences preferences(Context context) {
         return DailyReminderPreferences.newInstance(context);
     }
 }
