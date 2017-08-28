@@ -7,11 +7,11 @@ import android.support.annotation.StringRes;
 /**
  * Wrapper class of Android's {@link Resources} string related methods
  */
-final class AndroidStringResources implements StringResources {
+final class AndroidStrings implements Strings {
 
     private final Resources resources;
 
-    AndroidStringResources(Resources resources) {
+    AndroidStrings(Resources resources) {
         this.resources = resources;
     }
 

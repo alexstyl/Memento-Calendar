@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.Context;
 import android.text.format.DateUtils;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
@@ -12,12 +12,12 @@ public final class UpcomingDateStringCreator {
 
     private static final String DAY_OF_WEEK_SEPARATOR = ", ";
 
-    private final StringResources stringResources;
+    private final Strings strings;
     private final Date today;
     private final Context context;
 
-    UpcomingDateStringCreator(StringResources stringResources, Date today, Context context) {
-        this.stringResources = stringResources;
+    UpcomingDateStringCreator(Strings strings, Date today, Context context) {
+        this.strings = strings;
         this.today = today;
         this.context = context;
     }
@@ -28,9 +28,9 @@ public final class UpcomingDateStringCreator {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (isToday(date)) {
-            stringBuilder.append(stringResources.getString(R.string.today)).append(DAY_OF_WEEK_SEPARATOR);
+            stringBuilder.append(strings.getString(R.string.today)).append(DAY_OF_WEEK_SEPARATOR);
         } else if (isTomorrow(date)) {
-            stringBuilder.append(stringResources.getString(R.string.tomorrow)).append(DAY_OF_WEEK_SEPARATOR);
+            stringBuilder.append(strings.getString(R.string.tomorrow)).append(DAY_OF_WEEK_SEPARATOR);
         } else {
             formatFlags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
         }

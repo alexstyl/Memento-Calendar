@@ -5,7 +5,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 
@@ -62,8 +62,8 @@ public enum StandardEventType implements EventType {
     }
 
     @Override
-    public String getEventName(StringResources stringResources) {
-        return stringResources.getString(eventNameRes);
+    public String getEventName(Strings strings) {
+        return strings.getString(eventNameRes);
     }
 
     @ColorRes

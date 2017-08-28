@@ -9,7 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -36,7 +36,7 @@ public class EventDatePickerDialogFragment extends MementoDialog {
 
     private Optional<Date> initialDate;
     @Inject
-    StringResources stringResources;
+    Strings strings;
 
     public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date) {
         EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
@@ -95,7 +95,7 @@ public class EventDatePickerDialogFragment extends MementoDialog {
         }
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle(eventType.getEventName(stringResources))
+                .setTitle(eventType.getEventName(strings))
                 .setView(view)
                 .setPositiveButton(R.string.birthday_picker_dialog_positive, new DialogInterface.OnClickListener() {
                     @Override

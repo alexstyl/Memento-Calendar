@@ -14,7 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.alexstyl.android.Version;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -41,7 +41,7 @@ public class DonateActivity extends MementoActivity {
     private CoordinatorLayout coordinator;
 
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject ImageLoader imageLoader;
 
     @Override
@@ -80,7 +80,7 @@ public class DonateActivity extends MementoActivity {
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
-        donatePresenter = new DonatePresenter(analytics, donationService, new TextViewLabelSetter(donateButton), stringResources);
+        donatePresenter = new DonatePresenter(analytics, donationService, new TextViewLabelSetter(donateButton), strings);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
