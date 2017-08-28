@@ -11,6 +11,7 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun facebookMessenger(): String = resources.getString(R.string.facebook_messenger)
 
     override fun viewConversation(): String = resources.getString(R.string.View_conversation)
+
     override fun nameOf(starSign: StarSign): String {
         when (starSign) {
             StarSign.AQUARIUS -> resources.getString(R.string.starsigns_aquarius)
@@ -28,4 +29,8 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
         }
         throw IllegalArgumentException("Unable to resolve name of $starSign")
     }
+
+    override fun turnsAge(age: Int): String = resources.getString(R.string.turns_age, age);
+
+    override fun inviteFriend(): String = resources.getString(R.string.Invite_friend)
 }
