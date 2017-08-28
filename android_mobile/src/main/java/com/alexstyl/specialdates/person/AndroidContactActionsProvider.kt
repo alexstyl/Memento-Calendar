@@ -7,12 +7,12 @@ import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.database.Cursor
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.provider.ContactsContract.Data
 import android.view.View
-import com.alexstyl.resources.Strings
 import com.alexstyl.specialdates.ErrorTracker
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
@@ -23,7 +23,7 @@ import java.net.URI
 
 class AndroidContactActionsProvider(
         private val contentResolver: ContentResolver,
-        private val strings: Strings,
+        private val resources: Resources,
         private val context: Context,
         private val packageManager: PackageManager,
         private val actionsFactory: ContactActionsFactory)
@@ -154,12 +154,12 @@ class AndroidContactActionsProvider(
 
     private fun getCallLabelFrom(cursor: Cursor): String {
         val type = cursor.getInt(cursor.getColumnIndex(Phone.TYPE))
-        return strings.getString(Phone.getTypeLabelResource(type))
+        return resources.getString(Phone.getTypeLabelResource(type))
     }
 
     private fun getEmailLabelFrom(cursor: Cursor): String {
         val type = cursor.getInt(cursor.getColumnIndex(Phone.TYPE))
-        return strings.getString(Email.getTypeLabelResource(type))
+        return resources.getString(Email.getTypeLabelResource(type))
     }
 
     private val CUSTOM_CALL_ACTION_LIST = arrayOf(
@@ -176,13 +176,9 @@ class AndroidContactActionsProvider(
             VIBER_NUMBER_MESSAGE
     )
 
-    private fun String.isCustomCallType(): Boolean {
-        return CUSTOM_CALL_ACTION_LIST.contains(this)
-    }
+    private fun String.isCustomCallType(): Boolean = CUSTOM_CALL_ACTION_LIST.contains(this)
 
-    private fun String.isCustomMessagingType(): Boolean {
-        return CUSTOM_MESSAGING_ACTION_LIST.contains(this)
-    }
+    private fun String.isCustomMessagingType(): Boolean = CUSTOM_MESSAGING_ACTION_LIST.contains(this)
 
 }
 
