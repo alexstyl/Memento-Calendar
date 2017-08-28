@@ -7,7 +7,6 @@ import android.net.Uri;
 
 import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -37,13 +36,13 @@ final class UpcomingEventsNavigator {
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
     private final Activity activity;
-    private final Strings stringResource;
+    private final Strings strings;
     private final FacebookPreferences facebookPreferences;
 
-    UpcomingEventsNavigator(Analytics analytics, Activity activity, Strings stringResource, FacebookPreferences facebookPreferences) {
+    UpcomingEventsNavigator(Analytics analytics, Activity activity, Strings strings, FacebookPreferences facebookPreferences) {
         this.analytics = analytics;
         this.activity = activity;
-        this.stringResource = stringResource;
+        this.strings = strings;
         this.facebookPreferences = facebookPreferences;
         this.attributeExtractor = new AttributeExtractor();
     }
@@ -125,8 +124,8 @@ final class UpcomingEventsNavigator {
     }
 
     void toAppInvite() {
-        Intent intent = new ShareAppIntentCreator(activity, stringResource).buildIntent();
-        String shareTitle = stringResource.getString(R.string.invite_title);
+        Intent intent = new ShareAppIntentCreator(activity, strings).buildIntent();
+        String shareTitle = strings.inviteFriend();
         activity.startActivity(Intent.createChooser(intent, shareTitle));
         analytics.trackAppInviteRequested();
     }

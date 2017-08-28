@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.date;
 
 import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -26,7 +25,7 @@ public final class ContactEvent {
             if (eventDate.hasYear()) {
                 int age = dateWithYear.getYear() - eventDate.getYear();
                 if (age > 0) {
-                    return strings.getString(R.string.turns_age, age);
+                    return strings.turnsAge(age);
                 }
             }
         }
