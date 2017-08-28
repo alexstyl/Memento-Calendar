@@ -21,7 +21,7 @@ internal class PersonDetailsViewModelFactory(private val strings: Strings, priva
 
     private fun starSignOf(birthday: Date): String {
         val starSign = StarSign.forDateOfBirth(birthday)
-        return strings.getString(starSign.labelStringRes) + " " + starSign.emoji
+        return strings.nameOf(starSign) + " " + starSign.emoji
     }
 }
 
