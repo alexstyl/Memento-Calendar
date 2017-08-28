@@ -7,7 +7,7 @@ import android.content.Intent;
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.MementoApplication;
@@ -44,7 +44,7 @@ public class DailyReminderIntentService extends IntentService {
     private PermissionChecker checker;
 
     @Inject NamedayUserSettings namedayPreferences;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;

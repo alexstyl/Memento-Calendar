@@ -3,7 +3,7 @@ package com.alexstyl.resources;
 import android.support.annotation.PluralsRes;
 import android.support.annotation.StringRes;
 
-public interface StringResources {
+public interface Strings {
     String getString(@StringRes int id);
 
     String getString(@StringRes int id, Object... formatArgs);

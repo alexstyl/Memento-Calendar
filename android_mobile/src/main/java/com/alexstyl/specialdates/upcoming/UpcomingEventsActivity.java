@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
@@ -54,7 +54,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     private UpcomingEventsPreferences preferences;
     @Inject Analytics analytics;
-    @Inject StringResources stringResource;
+    @Inject Strings stringResource;
     @Inject DimensionResources dimensions;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;

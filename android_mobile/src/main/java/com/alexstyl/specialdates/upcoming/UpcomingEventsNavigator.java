@@ -5,7 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
@@ -37,10 +37,10 @@ final class UpcomingEventsNavigator {
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
     private final Activity activity;
-    private final StringResources stringResource;
+    private final Strings stringResource;
     private final FacebookPreferences facebookPreferences;
 
-    UpcomingEventsNavigator(Analytics analytics, Activity activity, StringResources stringResource, FacebookPreferences facebookPreferences) {
+    UpcomingEventsNavigator(Analytics analytics, Activity activity, Strings stringResource, FacebookPreferences facebookPreferences) {
         this.analytics = analytics;
         this.activity = activity;
         this.stringResource = stringResource;

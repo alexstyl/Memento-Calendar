@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -33,7 +33,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private UpcomingWidgetPreferences preferences;
     private WidgetImageLoader widgetImageLoader;
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
@@ -98,7 +98,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
         String title = labelOf(date);
 
-        String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
+        String label = NaturalLanguageUtils.joinContacts(strings, contactEvents.getContacts(), 2);
 
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();

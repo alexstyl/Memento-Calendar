@@ -3,18 +3,18 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.SharedPreferences;
 
 import com.alexstyl.android.preferences.PreferenceKeyId;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.R;
 
 public class UpcomingEventsSettingsMonitor {
 
     private final SharedPreferences sharedPreferences;
-    private final StringResources stringResources;
+    private final Strings strings;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    UpcomingEventsSettingsMonitor(SharedPreferences sharedPreferences, StringResources stringResources) {
+    UpcomingEventsSettingsMonitor(SharedPreferences sharedPreferences, Strings strings) {
         this.sharedPreferences = sharedPreferences;
-        this.stringResources = stringResources;
+        this.strings = strings;
     }
 
     public void register(Listener listener) {
@@ -41,7 +41,7 @@ public class UpcomingEventsSettingsMonitor {
             }
 
             private boolean isKey(String key, @PreferenceKeyId int keyId) {
-                return stringResources.getString(keyId).equalsIgnoreCase(key);
+                return strings.getString(keyId).equalsIgnoreCase(key);
             }
         };
     }

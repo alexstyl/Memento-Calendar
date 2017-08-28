@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.SharedPreferences;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.Monitor;
 
@@ -16,12 +16,12 @@ class PreferenceChangedMonitor implements Monitor {
 
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
-    PreferenceChangedMonitor(EasyPreferences preferences, StringResources stringResources, int firstKeys, int... keys) {
+    PreferenceChangedMonitor(EasyPreferences preferences, Strings strings, int firstKeys, int... keys) {
         this.preferences = preferences;
         this.keys = new ArrayList<>(keys.length + 1);
-        this.keys.add(stringResources.getString(firstKeys));
+        this.keys.add(strings.getString(firstKeys));
         for (int key : keys) {
-            this.keys.add(stringResources.getString(key));
+            this.keys.add(strings.getString(key));
         }
     }
 

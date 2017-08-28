@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R;
 
 import java.util.Locale;
 
-public final class DumbTestResources implements StringResources {
+public final class JavaStrings implements Strings {
     @Override
     public String getString(@StringRes int id) {
         switch (id) {

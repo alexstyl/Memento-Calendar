@@ -19,8 +19,8 @@ public class ResourcesModule {
 
     @Provides
     @Singleton
-    StringResources providesStringResources() {
-        return new AndroidStringResources(resources);
+    Strings providesStringResources() {
+        return new AndroidStrings(resources);
     }
 
     @Provides

@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.person
 
-import com.alexstyl.resources.StringResources
+import com.alexstyl.resources.Strings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent
@@ -20,7 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class PersonInfoViewModelFactoryTest {
 
-    private val stringResources = mock(StringResources::class.java)
+    private val stringResources = mock(Strings::class.java)
 
     private val toViewModel = PersonDetailsViewModelFactory(stringResources, AgeCalculator(Date.on(30, JULY, 2017)));
 

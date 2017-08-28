@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
@@ -9,18 +9,18 @@ import com.alexstyl.specialdates.date.DateLabelCreator;
 final class ContactEventLabelCreator {
 
     private final Date today;
-    private final StringResources stringResources;
+    private final Strings strings;
     private final DateLabelCreator dateLabelCreator;
 
-    ContactEventLabelCreator(Date today, StringResources stringResources, DateLabelCreator dateLabelCreator) {
+    ContactEventLabelCreator(Date today, Strings strings, DateLabelCreator dateLabelCreator) {
         this.today = today;
-        this.stringResources = stringResources;
+        this.strings = strings;
         this.dateLabelCreator = dateLabelCreator;
     }
 
     public String createFor(ContactEvent event) {
-        String eventLabel = event.getLabel(today, stringResources);
+        String eventLabel = event.getLabel(today, strings);
         String dateLabel = dateLabelCreator.createLabelWithYearPreferredFor(event.getDate());
-        return stringResources.getString(R.string.search_event_label, eventLabel, dateLabel);
+        return strings.getString(R.string.search_event_label, eventLabel, dateLabel);
     }
 }

@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.addevent;
 
 import android.view.View;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
@@ -14,10 +14,10 @@ import java.util.List;
 final class AddEventViewModelFactory {
 
     private static final Optional<Date> NO_DATE = Optional.absent();
-    private final StringResources stringResources;
+    private final Strings strings;
 
-    AddEventViewModelFactory(StringResources stringResources) {
-        this.stringResources = stringResources;
+    AddEventViewModelFactory(Strings strings) {
+        this.strings = strings;
     }
 
     List<AddEventContactEventViewModel> createViewModelsForAllEventsBut(List<EventType> existingTypes) {
@@ -35,7 +35,7 @@ final class AddEventViewModelFactory {
     }
 
     AddEventContactEventViewModel createAddEventViewModelsFor(EventType eventType) {
-        String eventName = eventType.getEventName(stringResources);
+        String eventName = eventType.getEventName(strings);
         return new AddEventContactEventViewModel(eventName, eventType, NO_DATE, View.GONE);
     }
 

@@ -3,16 +3,16 @@ package com.alexstyl.specialdates;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 
 public class ShareAppIntentCreator {
 
     private static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";
 
     private final Context context;
-    private final StringResources stringResource;
+    private final Strings stringResource;
 
-    public ShareAppIntentCreator(Context context, StringResources stringResource) {
+    public ShareAppIntentCreator(Context context, Strings stringResource) {
         this.context = context;
         this.stringResource = stringResource;
     }

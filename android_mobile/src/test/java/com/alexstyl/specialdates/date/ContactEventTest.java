@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.date;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
@@ -28,7 +28,7 @@ public class ContactEventTest {
     private Contact ANY_CONTACT = ContactFixture.aContact();
 
     @Mock
-    private StringResources mockResources;
+    private Strings mockResources;
 
     @Before
     public void setUp() throws Exception {

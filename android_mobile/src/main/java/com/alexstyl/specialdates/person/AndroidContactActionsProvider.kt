@@ -12,7 +12,7 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.provider.ContactsContract.Data
 import android.view.View
-import com.alexstyl.resources.StringResources
+import com.alexstyl.resources.Strings
 import com.alexstyl.specialdates.ErrorTracker
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
@@ -23,7 +23,7 @@ import java.net.URI
 
 class AndroidContactActionsProvider(
         private val contentResolver: ContentResolver,
-        private val strings: StringResources,
+        private val strings: Strings,
         private val context: Context,
         private val packageManager: PackageManager,
         private val actionsFactory: ContactActionsFactory)

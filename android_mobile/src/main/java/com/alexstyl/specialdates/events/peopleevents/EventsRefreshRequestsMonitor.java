@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.Context;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.Monitor;
 
 import java.util.List;
@@ -18,11 +18,11 @@ final class EventsRefreshRequestsMonitor implements Monitor {
 
     private final List<Monitor> monitors;
 
-    public static EventsRefreshRequestsMonitor newInstance(Context context, StringResources stringResources) {
+    public static EventsRefreshRequestsMonitor newInstance(Context context, Strings strings) {
         return new EventsRefreshRequestsMonitor(
                 asList(
                         new ContactsObserver(context.getContentResolver()),
-                        PeopleSettingsMonitor.newInstance(context, stringResources)
+                        PeopleSettingsMonitor.newInstance(context, strings)
                 ));
     }
 

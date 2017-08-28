@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.donate;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.LabelSetter;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -11,20 +11,20 @@ class DonatePresenter {
     private final Analytics analytics;
     private final DonationService donationService;
     private final LabelSetter donateButtonLabel;
-    private final StringResources stringResources;
+    private final Strings strings;
 
     DonatePresenter(Analytics analytics,
                     DonationService donationService,
                     LabelSetter donateButtonLabel,
-                    StringResources stringResources) {
+                    Strings strings) {
         this.analytics = analytics;
         this.donationService = donationService;
         this.donateButtonLabel = donateButtonLabel;
-        this.stringResources = stringResources;
+        this.strings = strings;
     }
 
     void displaySelectedDonation(String amount) {
-        donateButtonLabel.setLabel(stringResources.getString(R.string.donation_donate_amount, amount));
+        donateButtonLabel.setLabel(strings.getString(R.string.donation_donate_amount, amount));
     }
 
     void startPresenting(DonationCallbacks donationCallbacks) {

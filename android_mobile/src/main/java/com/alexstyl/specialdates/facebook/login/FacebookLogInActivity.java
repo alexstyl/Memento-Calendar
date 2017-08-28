@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -49,7 +49,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private Button shareButton;
     private Button closeButton;
     @Inject Analytics analytics;
-    @Inject StringResources stringResource;
+    @Inject Strings stringResource;
     @Inject ImageLoader imageLoader;
 
     @Override
