@@ -15,8 +15,8 @@ class FacebookContactActionsProvider(
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
         val action = ContactAction(
-                strings.getString(R.string.View_conversation),
-                strings.getString(R.string.facebook_messenger),
+                strings.viewConversation(),
+                strings.facebookMessenger(),
                 actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
         )
         return ContactActionViewModel(
@@ -28,8 +28,8 @@ class FacebookContactActionsProvider(
 
     override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> {
         val action = ContactAction(
-                strings.getString(R.string.View_conversation),
-                strings.getString(R.string.facebook_messenger),
+                strings.viewConversation(),
+                strings.facebookMessenger(),
                 actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
         )
         return ContactActionViewModel(

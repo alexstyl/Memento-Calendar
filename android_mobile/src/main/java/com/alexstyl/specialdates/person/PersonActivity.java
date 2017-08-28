@@ -87,7 +87,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                 this,
                 PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider),
                 new PersonCallProvider(
-                        new AndroidContactActionsProvider(getContentResolver(), strings, thisActivity(), getPackageManager(), actionsFactory),
+                        new AndroidContactActionsProvider(getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory),
                         new FacebookContactActionsProvider(strings, getResources(), actionsFactory)
                 ),
                 Schedulers.io(),
