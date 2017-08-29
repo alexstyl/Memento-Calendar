@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.donate;
 
 import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.LabelSetter;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 
@@ -24,7 +23,7 @@ class DonatePresenter {
     }
 
     void displaySelectedDonation(String amount) {
-        donateButtonLabel.setLabel(strings.getString(R.string.donation_donate_amount, amount));
+        donateButtonLabel.setLabel(strings.donateAmount(amount));
     }
 
     void startPresenting(DonationCallbacks donationCallbacks) {

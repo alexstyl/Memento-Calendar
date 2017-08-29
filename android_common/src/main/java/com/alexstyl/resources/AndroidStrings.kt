@@ -32,4 +32,6 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun inviteFriend(): String = resources.getString(R.string.Invite_friend)
 
     override fun todaysNamedays(numberOfNamedays: Int): String = resources.getQuantityString(R.plurals.todays_nameday, numberOfNamedays)
+
+    override fun donateAmount(amount: String): String = resources.getString(R.string.donation_donate_amount, amount)
 }

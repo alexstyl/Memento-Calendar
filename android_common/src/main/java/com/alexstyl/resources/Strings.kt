@@ -9,4 +9,5 @@ interface Strings {
     fun turnsAge(age: Int): String
     fun inviteFriend(): String
     fun todaysNamedays(numberOfNamedays: Int): String
+    fun donateAmount(amount: String): String
 }
