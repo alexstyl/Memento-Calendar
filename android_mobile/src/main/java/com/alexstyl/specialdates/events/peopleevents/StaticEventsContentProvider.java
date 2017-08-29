@@ -72,7 +72,7 @@ public class StaticEventsContentProvider extends ContentProvider {
 
         presenter = new PeopleEventsPresenter(
                 AndroidSchedulers.mainThread(),
-                EventsRefreshRequestsMonitor.newInstance(context, strings),
+                EventsRefreshRequestsMonitor.newInstance(context, context.getResources()),
                 peopleEventsUpdater,
                 viewRefresher
         );

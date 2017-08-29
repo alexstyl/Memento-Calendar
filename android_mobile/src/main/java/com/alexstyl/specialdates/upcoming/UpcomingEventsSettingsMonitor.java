@@ -1,20 +1,20 @@
 package com.alexstyl.specialdates.upcoming;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 
 import com.alexstyl.android.preferences.PreferenceKeyId;
-import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.R;
 
 public class UpcomingEventsSettingsMonitor {
 
     private final SharedPreferences sharedPreferences;
-    private final Strings strings;
+    private final Resources resources;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    UpcomingEventsSettingsMonitor(SharedPreferences sharedPreferences, Strings strings) {
+    UpcomingEventsSettingsMonitor(SharedPreferences sharedPreferences, Resources resources) {
         this.sharedPreferences = sharedPreferences;
-        this.strings = strings;
+        this.resources = resources;
     }
 
     public void register(Listener listener) {
@@ -41,7 +41,7 @@ public class UpcomingEventsSettingsMonitor {
             }
 
             private boolean isKey(String key, @PreferenceKeyId int keyId) {
-                return strings.getString(keyId).equalsIgnoreCase(key);
+                return resources.getString(keyId).equalsIgnoreCase(key);
             }
         };
     }

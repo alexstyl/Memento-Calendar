@@ -15,5 +15,6 @@ interface Strings {
     fun shareText(): String
     fun today(): String
     fun tomorrow(): String
-
+    fun todayCelebrateTwo(nameOne: String, nameTwo: String): String
+    fun todayCelebrateMany(name: String, numberLeft: Int): String
 }
