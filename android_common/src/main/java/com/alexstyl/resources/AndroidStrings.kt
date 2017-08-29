@@ -5,27 +5,23 @@ import com.alexstyl.specialdates.common.R
 import com.alexstyl.specialdates.person.StarSign
 
 internal class AndroidStrings(private val resources: Resources) : Strings {
-
     override fun facebookMessenger(): String = resources.getString(R.string.facebook_messenger)
 
     override fun viewConversation(): String = resources.getString(R.string.View_conversation)
 
-    override fun nameOf(starSign: StarSign): String {
-        when (starSign) {
-            StarSign.AQUARIUS -> resources.getString(R.string.starsigns_aquarius)
-            StarSign.PISCES -> resources.getString(R.string.starsigns_pisces)
-            StarSign.ARIES -> resources.getString(R.string.starsigns_aries)
-            StarSign.TAURUS -> resources.getString(R.string.starsigns_taurus)
-            StarSign.GEMINI -> resources.getString(R.string.starsigns_gemini)
-            StarSign.CANCER -> resources.getString(R.string.starsigns_cancer)
-            StarSign.LEO -> resources.getString(R.string.starsigns_leo)
-            StarSign.VIRGO -> resources.getString(R.string.starsigns_virgo)
-            StarSign.LIBRA -> resources.getString(R.string.starsigns_libra)
-            StarSign.SCORPIO -> resources.getString(R.string.starsigns_scorpio)
-            StarSign.SAGITTARIUS -> resources.getString(R.string.starsigns_sagittarius)
-            StarSign.CAPRICORN -> resources.getString(R.string.starsigns_capricorn)
-        }
-        throw IllegalArgumentException("Unable to resolve name of $starSign")
+    override fun nameOf(starSign: StarSign): String = when (starSign) {
+        StarSign.AQUARIUS -> resources.getString(R.string.starsigns_aquarius)
+        StarSign.PISCES -> resources.getString(R.string.starsigns_pisces)
+        StarSign.ARIES -> resources.getString(R.string.starsigns_aries)
+        StarSign.TAURUS -> resources.getString(R.string.starsigns_taurus)
+        StarSign.GEMINI -> resources.getString(R.string.starsigns_gemini)
+        StarSign.CANCER -> resources.getString(R.string.starsigns_cancer)
+        StarSign.LEO -> resources.getString(R.string.starsigns_leo)
+        StarSign.VIRGO -> resources.getString(R.string.starsigns_virgo)
+        StarSign.LIBRA -> resources.getString(R.string.starsigns_libra)
+        StarSign.SCORPIO -> resources.getString(R.string.starsigns_scorpio)
+        StarSign.SAGITTARIUS -> resources.getString(R.string.starsigns_sagittarius)
+        StarSign.CAPRICORN -> resources.getString(R.string.starsigns_capricorn)
     }
 
     override fun turnsAge(age: Int): String = resources.getString(R.string.turns_age, age);
@@ -49,4 +45,6 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun todayCelebrateTwo(nameOne: String, nameTwo: String): String = resources.getString(R.string.today_celebrates_two, nameOne, nameTwo)
 
     override fun todayCelebrateMany(name: String, numberLeft: Int): String = resources.getString(R.string.today_celebrates_many, name, numberLeft)
+
+    override fun nameOfEvent(eventResId: Int): String = resources.getString(eventResId)
 }

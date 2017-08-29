@@ -63,7 +63,7 @@ public enum StandardEventType implements EventType {
 
     @Override
     public String getEventName(Strings strings) {
-        return strings.getString(eventNameRes);
+        return strings.nameOfEvent(eventNameRes);
     }
 
     @ColorRes
