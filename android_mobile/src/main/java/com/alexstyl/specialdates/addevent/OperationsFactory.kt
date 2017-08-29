@@ -14,7 +14,6 @@ import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.images.DecodedImage
-import java.util.*
 
 internal class OperationsFactory(private val rawContactID: Int, private val displayStringCreator: ShortDateLabelCreator) {
 
