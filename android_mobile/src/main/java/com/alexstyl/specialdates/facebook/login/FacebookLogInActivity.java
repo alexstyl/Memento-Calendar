@@ -102,7 +102,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
             @Override
             public void onClick(View v) {
-                ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(thisActivity(), stringResource);
+                ShareAppIntentCreator appIntentCreator = new ShareAppIntentCreator(stringResource);
                 Intent intent = appIntentCreator.buildIntent();
                 startActivity(intent);
                 analytics.trackAppInviteRequested();

@@ -28,9 +28,9 @@ public final class UpcomingDateStringCreator {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (isToday(date)) {
-            stringBuilder.append(strings.getString(R.string.today)).append(DAY_OF_WEEK_SEPARATOR);
+            stringBuilder.append(strings.today()).append(DAY_OF_WEEK_SEPARATOR);
         } else if (isTomorrow(date)) {
-            stringBuilder.append(strings.getString(R.string.tomorrow)).append(DAY_OF_WEEK_SEPARATOR);
+            stringBuilder.append(strings.tomorrow()).append(DAY_OF_WEEK_SEPARATOR);
         } else {
             formatFlags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
         }

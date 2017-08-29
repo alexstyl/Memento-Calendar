@@ -124,7 +124,7 @@ final class UpcomingEventsNavigator {
     }
 
     void toAppInvite() {
-        Intent intent = new ShareAppIntentCreator(activity, strings).buildIntent();
+        Intent intent = new ShareAppIntentCreator(strings).buildIntent();
         String shareTitle = strings.inviteFriend();
         activity.startActivity(Intent.createChooser(intent, shareTitle));
         analytics.trackAppInviteRequested();
