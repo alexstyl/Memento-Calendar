@@ -24,13 +24,14 @@ final class ContactEventViewModelFactory {
             for (ContactEvent event : contactEvent.getEvents()) {
                 String eventLabel = eventLabelCreator.createFor(event);
                 int variant = getVariationFor(event);
-                ContactEventViewModel viewModel = new ContactEventViewModel(
+                models.add(new ContactEventViewModel(
                         contact,
+                        contact.getDisplayName().toString(),
+                        contact.getImagePath(),
                         eventLabel,
                         EventColors.INSTANCE.colorOf(event.getType()),
                         variant
-                );
-                models.add(viewModel);
+                ));
             }
         }
         return models;
