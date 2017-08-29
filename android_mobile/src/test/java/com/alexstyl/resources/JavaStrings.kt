@@ -1,9 +1,10 @@
 package com.alexstyl.resources
 
+import com.alexstyl.specialdates.events.peopleevents.EventType
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
-
     override fun viewConversation(): String = "View Conversations"
 
     override fun facebookMessenger(): String = "Messenger"
@@ -44,11 +45,21 @@ class JavaStrings : Strings {
     override fun shareText(): String = "Share Text"
 
     override fun today(): String = "today"
+
     override fun tomorrow(): String = "tomorrow"
 
     override fun todayCelebrateTwo(nameOne: String, nameTwo: String): String = "Today celebrate $nameOne and $nameTwo"
 
     override fun todayCelebrateMany(name: String, numberLeft: Int): String = "Today celebrate $name and $numberLeft other"
 
-    override fun nameOfEvent(eventResId: Int): String = "EVENT"
+    override fun nameOfEvent(event: EventType): String = when (event) {
+        StandardEventType.BIRTHDAY -> "Birthday"
+        StandardEventType.NAMEDAY -> "Nameday"
+        StandardEventType.ANNIVERSARY -> "Anniversary"
+        StandardEventType.OTHER -> "Other"
+        StandardEventType.CUSTOM -> "Custom"
+        else -> {
+            throw IllegalStateException("$event has no name")
+        }
+    }
 }

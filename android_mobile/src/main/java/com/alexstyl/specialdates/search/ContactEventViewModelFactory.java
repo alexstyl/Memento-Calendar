@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.search;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.events.peopleevents.EventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,15 @@ final class ContactEventViewModelFactory {
             for (ContactEvent event : contactEvent.getEvents()) {
                 String eventLabel = eventLabelCreator.createFor(event);
                 int variant = getVariationFor(event);
-                ContactEventViewModel viewModel = new ContactEventViewModel(contact, eventLabel, event.getType().getColorRes(), variant);
+                ContactEventViewModel viewModel = new ContactEventViewModel(contact, eventLabel, colorOf(event.getType()), variant);
                 models.add(viewModel);
             }
         }
         return models;
+    }
+
+    private int colorOf(EventType type) {
+        return 0;
     }
 
     private int getVariationFor(ContactEvent event) {

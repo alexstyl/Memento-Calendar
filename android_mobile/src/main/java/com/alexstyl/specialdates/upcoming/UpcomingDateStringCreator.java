@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.format.DateUtils;
 
 import com.alexstyl.resources.Strings;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 

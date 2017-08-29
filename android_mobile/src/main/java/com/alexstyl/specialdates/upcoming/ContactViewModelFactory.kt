@@ -13,10 +13,11 @@ class ContactViewModelFactory(private val colorResources: ColorResources, privat
                 contact,
                 contact.displayName.toString(),
                 contactEvent.getLabel(date, strings),
-                colorResources.getColor(contactEvent.type.colorRes),
+                colorResources.getColor(EventColors.colorOf(contactEvent.type)),
                 contact.contactID.toInt(),
                 contact.imagePath
         )
     }
+
 
 }
