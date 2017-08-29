@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.EventType
-import java.util.*
 
 internal class AddEventContactEventViewModelFactory(private val creator: DateLabelCreator) {
 
