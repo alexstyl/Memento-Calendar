@@ -17,4 +17,5 @@ interface Strings {
     fun tomorrow(): String
     fun todayCelebrateTwo(nameOne: String, nameTwo: String): String
     fun todayCelebrateMany(name: String, numberLeft: Int): String
+    fun nameOfEvent(eventResId: Int): String // TODO temporary until we clear out the mess in the EventType
 }
