@@ -223,4 +223,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="donate_restore_summary">Placed a donation, but still see ads? Tap here</string>
   <string name="donate_checking_for_donations">Checking for donations</string>
   <string name="donate_no_donation_found">"No donation found. Have you donated?"</string>
+  <string name="Select_date">Select date</string>
 </resources>
