@@ -40,7 +40,7 @@ final class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
             TextView dateView = (TextView) view.findViewById(android.R.id.text1);
 
             final Date date = dates.getDate(i);
-            String prettyDate = labelCreator.createLabelWithYearPreferredFor(date);
+            String prettyDate = labelCreator.createLabelFor(date);
             dateView.setText(prettyDate);
             if (searchResultListener != null) {
                 view.setOnClickListener(

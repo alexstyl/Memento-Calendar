@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -52,7 +52,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
@@ -69,8 +69,10 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
 
-        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(PreferenceManager.getDefaultSharedPreferences(getActivity()), stringResources);
-        navigator = new UpcomingEventsNavigator(analytics, getActivity(), stringResources, FacebookPreferences.newInstance(getActivity()));
+        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(
+                PreferenceManager.getDefaultSharedPreferences(getActivity()), getResources()
+        );
+        navigator = new UpcomingEventsNavigator(analytics, getActivity(), strings, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),

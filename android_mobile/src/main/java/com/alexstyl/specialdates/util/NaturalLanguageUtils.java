@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.util;
 
-import com.alexstyl.resources.StringResources;
-import com.alexstyl.specialdates.R;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.contact.Contact;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public final class NaturalLanguageUtils {
         // hide this
     }
 
-    public static String joinContacts(StringResources stringResources, Collection<Contact> iterable, int displayNo) {
+    public static String joinContacts(Strings strings, Collection<Contact> iterable, int displayNo) {
         int size = iterable.size();
         if (size == 1) {
             return iterable.iterator().next().getDisplayName().toString();
@@ -24,10 +23,10 @@ public final class NaturalLanguageUtils {
         for (Contact contact : iterable) {
             names.add(contact.getGivenName());
         }
-        return join(stringResources, names, displayNo);
+        return join(strings, names, displayNo);
     }
 
-    public static String join(StringResources stringResources, List<String> iterable, int displayNo) {
+    public static String join(Strings strings, List<String> iterable, int displayNo) {
         if (iterable == null || iterable.size() == 0) {
             return "";
         }
@@ -36,7 +35,7 @@ public final class NaturalLanguageUtils {
         if (size == 1) {
             return iterable.get(0);
         } else if (size == 2) {
-            return stringResources.getString(R.string.today_celebrates_two, iterable.get(0), iterable.get(1));
+            return strings.todayCelebrateTwo(iterable.get(0), iterable.get(1));
         }
         if (size < displayNo) {
             // set a cap of the number of items in the array
@@ -60,9 +59,9 @@ public final class NaturalLanguageUtils {
         int remaining = size - hasShown;
         if (remaining == 1) {
             // only one left
-            return stringResources.getString(R.string.today_celebrates_two, str.toString(), iterable.get(size - 1));
+            return strings.todayCelebrateTwo(str.toString(), iterable.get(size - 1));
         } else {
-            return stringResources.getString(R.string.today_celebrates_many, str.toString(), remaining);
+            return strings.todayCelebrateMany(str.toString(), remaining);
         }
 
     }

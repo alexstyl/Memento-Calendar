@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
@@ -65,7 +65,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private ExternalNavigator navigator;
     private ImageView toolbarGradient;
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
@@ -87,13 +87,13 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
                 this,
                 PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider),
                 new PersonCallProvider(
-                        new AndroidContactActionsProvider(getContentResolver(), stringResources, thisActivity(), getPackageManager(), actionsFactory),
-                        new FacebookContactActionsProvider(stringResources, getResources(), actionsFactory)
+                        new AndroidContactActionsProvider(getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory),
+                        new FacebookContactActionsProvider(strings, getResources(), actionsFactory)
                 ),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
-                new PersonDetailsViewModelFactory(stringResources, new AgeCalculator(Date.Companion.today())),
-                new EventViewModelFactory(stringResources, dateLabelCreator)
+                new PersonDetailsViewModelFactory(strings, new AgeCalculator(Date.Companion.today())),
+                new EventViewModelFactory(strings, dateLabelCreator)
         );
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);

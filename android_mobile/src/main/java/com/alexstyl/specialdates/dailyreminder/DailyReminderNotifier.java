@@ -23,7 +23,7 @@ import android.text.style.StyleSpan;
 import com.alexstyl.android.Version;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
@@ -48,7 +48,7 @@ public final class DailyReminderNotifier {
     private final Context context;
     private final NotificationManager notificationManager;
     private final ImageLoader imageLoader;
-    private final StringResources stringResources;
+    private final Strings strings;
     private final DimensionResources dimensions;
     private final ColorResources colorResources;
     private final DailyReminderPreferences preferences;
@@ -56,12 +56,12 @@ public final class DailyReminderNotifier {
     DailyReminderNotifier(Context context,
                           NotificationManager notificationManager,
                           ImageLoader imageLoader,
-                          StringResources stringResources,
+                          Strings strings,
                           ColorResources colorResources,
                           DimensionResources dimensions,
                           DailyReminderPreferences preferences) {
         this.notificationManager = notificationManager;
-        this.stringResources = stringResources;
+        this.strings = strings;
         this.imageLoader = imageLoader;
         this.context = context.getApplicationContext();
         this.dimensions = dimensions;
@@ -98,7 +98,7 @@ public final class DailyReminderNotifier {
         for (ContactEvent event : events) {
             contacts.add(event.getContact());
         }
-        String title = NaturalLanguageUtils.joinContacts(stringResources, contacts, MAX_CONTACTS);
+        String title = NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_memento)
@@ -113,7 +113,7 @@ public final class DailyReminderNotifier {
 
         if (events.size() == 1) {
             ContactEvent event = events.get(0);
-            String msg = event.getLabel(date, stringResources);
+            String msg = event.getLabel(date, strings);
 
             NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText(msg);
             bigTextStyle.setBigContentTitle(title);
@@ -131,7 +131,7 @@ public final class DailyReminderNotifier {
                 Contact contact = event.getContact();
                 String name = contact.getDisplayName().toString();
 
-                String lineFormatted = name + "\t\t" + event.getLabel(date, stringResources);
+                String lineFormatted = name + "\t\t" + event.getLabel(date, strings);
 
                 Spannable sb = new SpannableString(lineFormatted);
                 sb.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -214,13 +214,13 @@ public final class DailyReminderNotifier {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        String subtitle = NaturalLanguageUtils.join(stringResources, names, 1);
+        String subtitle = NaturalLanguageUtils.join(strings, names, 1);
         String fullsubtitle = TextUtils.join(", ", names);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_namedays)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(fullsubtitle))
-                .setContentTitle(stringResources.getQuantityString(R.plurals.todays_nameday, names.size()))
+                .setContentTitle(strings.todaysNamedays(names.size()))
                 .setContentText(subtitle)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

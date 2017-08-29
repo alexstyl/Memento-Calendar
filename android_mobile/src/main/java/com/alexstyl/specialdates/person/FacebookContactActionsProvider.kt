@@ -2,21 +2,21 @@ package com.alexstyl.specialdates.person
 
 import android.content.res.Resources
 import android.view.View
-import com.alexstyl.resources.StringResources
+import com.alexstyl.resources.Strings
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import java.net.URI
 
 class FacebookContactActionsProvider(
-        private val stringResources: StringResources,
+        private val strings: Strings,
         private val resources: Resources,
         private val actionsFactory: ContactActionsFactory)
     : ContactActionsProvider {
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
         val action = ContactAction(
-                stringResources.getString(R.string.View_conversation),
-                stringResources.getString(R.string.facebook_messenger),
+                strings.viewConversation(),
+                strings.facebookMessenger(),
                 actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
         )
         return ContactActionViewModel(
@@ -28,8 +28,8 @@ class FacebookContactActionsProvider(
 
     override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> {
         val action = ContactAction(
-                stringResources.getString(R.string.View_conversation),
-                stringResources.getString(R.string.facebook_messenger),
+                strings.viewConversation(),
+                strings.facebookMessenger(),
                 actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
         )
         return ContactActionViewModel(
