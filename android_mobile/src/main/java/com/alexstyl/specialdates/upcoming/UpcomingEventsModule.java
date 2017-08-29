@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.Context;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonationPreferences;
@@ -26,7 +26,7 @@ public class UpcomingEventsModule {
 
     @Provides
     UpcomingEventsProvider providesUpcomingEventsProviderWithAds(Context context,
-                                                                 StringResources stringResources,
+                                                                 Strings strings,
                                                                  ColorResources colorResources,
                                                                  NamedayUserSettings namedayUserSettings,
                                                                  NamedayCalendarProvider namedayCalendarProvider,
@@ -41,8 +41,8 @@ public class UpcomingEventsModule {
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
-                                                  new UpcomingDateStringCreator(stringResources, date, context),
-                                                  new ContactViewModelFactory(colorResources, stringResources)
+                                                  new UpcomingDateStringCreator(strings, date, context),
+                                                  new ContactViewModelFactory(colorResources, strings)
                                           ), adRules
         );
     }
@@ -50,7 +50,7 @@ public class UpcomingEventsModule {
     @Provides
     @Named("widget")
     UpcomingEventsProvider providesUpcomingEventsProviderNoAds(Context context,
-                                                               StringResources stringResources,
+                                                               Strings strings,
                                                                ColorResources colorResources,
                                                                NamedayUserSettings namedayUserSettings,
                                                                NamedayCalendarProvider namedayCalendarProvider,
@@ -64,8 +64,8 @@ public class UpcomingEventsModule {
                                           new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
                                           new UpcomingEventRowViewModelFactory(
                                                   date,
-                                                  new UpcomingDateStringCreator(stringResources, date, context),
-                                                  new ContactViewModelFactory(colorResources, stringResources)
+                                                  new UpcomingDateStringCreator(strings, date, context),
+                                                  new ContactViewModelFactory(colorResources, strings)
                                           ), adRules
         );
     }

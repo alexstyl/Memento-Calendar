@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -42,7 +42,7 @@ public class StaticEventsContentProvider extends ContentProvider {
     private EventPreferences eventPreferences;
     private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
 
@@ -72,7 +72,7 @@ public class StaticEventsContentProvider extends ContentProvider {
 
         presenter = new PeopleEventsPresenter(
                 AndroidSchedulers.mainThread(),
-                EventsRefreshRequestsMonitor.newInstance(context, stringResources),
+                EventsRefreshRequestsMonitor.newInstance(context, context.getResources()),
                 peopleEventsUpdater,
                 viewRefresher
         );

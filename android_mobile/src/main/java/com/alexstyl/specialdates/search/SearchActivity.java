@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -82,7 +82,7 @@ public class SearchActivity extends ThemedMementoActivity {
     private ContactEventViewModelFactory viewModelFactory;
     private SearchNavigator searchNavigator;
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
@@ -98,7 +98,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context(), namedayUserSettings, contactsProvider), NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
-        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), stringResources, dateLabelCreator));
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), strings, dateLabelCreator));
 
         analytics.trackScreen(Screen.SEARCH);
         searchNavigator = new SearchNavigator(this, analytics);

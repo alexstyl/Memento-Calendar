@@ -2,8 +2,7 @@ package com.alexstyl.specialdates.upcoming
 
 import android.content.Context
 import com.alexstyl.resources.ColorResources
-import com.alexstyl.resources.DumbTestResources
-import com.alexstyl.resources.StringResources
+import com.alexstyl.resources.JavaStrings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture.aContact
 import com.alexstyl.specialdates.date.ContactEvent
@@ -20,7 +19,6 @@ import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Matchers
 import org.mockito.Matchers.anyInt
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -32,22 +30,19 @@ import java.util.Arrays.asList
 class UpcomingRowViewModelsBuilderTest {
 
     private var upcomingEventRowViewModelFactory: UpcomingEventRowViewModelFactory? = null
+    private val mockStrings = JavaStrings()
 
     @Mock private val mockColorResources: ColorResources? = null
-    @Mock private val mockStringResources: StringResources? = null
     @Mock private val mockContext: Context? = null
 
     @Before
     fun setUp() {
         `when`(mockColorResources!!.getColor(anyInt())).thenReturn(5)
-        `when`(mockStringResources!!.getString(anyInt())).thenReturn("mock-string")
-        `when`(mockStringResources.getString(anyInt(), Matchers.any<Any>())).thenReturn("mock-string")
-
         val today = Date.today()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
-                UpcomingDateStringCreator(DumbTestResources(), today, mockContext),
-                ContactViewModelFactory(mockColorResources, mockStringResources)
+                UpcomingDateStringCreator(JavaStrings(), today, mockContext),
+                ContactViewModelFactory(mockColorResources, mockStrings)
         )
 
     }

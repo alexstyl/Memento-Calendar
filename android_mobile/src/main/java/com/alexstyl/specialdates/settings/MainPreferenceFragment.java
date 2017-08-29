@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.preference.Preference;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -38,7 +38,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     private MainPreferenceActivity activity;
     private DonationService donationService;
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject NamedayUserSettings namedaysPreferences;
 
     @Override

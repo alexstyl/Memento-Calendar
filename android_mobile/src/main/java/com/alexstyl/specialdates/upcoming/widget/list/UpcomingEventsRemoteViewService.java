@@ -5,7 +5,7 @@ import android.widget.RemoteViewsService;
 
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -16,7 +16,7 @@ import javax.inject.Named;
 
 public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject DimensionResources dimensResources;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;

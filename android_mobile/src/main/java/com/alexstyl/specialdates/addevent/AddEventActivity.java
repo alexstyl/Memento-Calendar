@@ -16,7 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.resources.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -59,7 +59,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private PermissionChecker permissionChecker;
     private FilePathProvider filePathProvider;
     @Inject Analytics analytics;
-    @Inject StringResources stringResources;
+    @Inject Strings strings;
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
@@ -88,7 +88,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
 
         PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
-        AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
+        AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(strings);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
                 getSupportLoaderManager(),
                 this,
