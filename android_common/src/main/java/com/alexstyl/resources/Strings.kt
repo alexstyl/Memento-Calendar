@@ -8,4 +8,5 @@ interface Strings {
     fun nameOf(starSign: StarSign): String
     fun turnsAge(age: Int): String
     fun inviteFriend(): String
+    fun todaysNamedays(numberOfNamedays: Int): String
 }

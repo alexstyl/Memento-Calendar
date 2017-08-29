@@ -220,7 +220,7 @@ public final class DailyReminderNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_namedays)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(fullsubtitle))
-                .setContentTitle(strings.getQuantityString(R.plurals.todays_nameday, names.size()))
+                .setContentTitle(strings.todaysNamedays(names.size()))
                 .setContentText(subtitle)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

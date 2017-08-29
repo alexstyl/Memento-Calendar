@@ -4,9 +4,6 @@ import android.content.res.Resources
 import com.alexstyl.specialdates.common.R
 import com.alexstyl.specialdates.person.StarSign
 
-/**
- * Wrapper class of Android's [Resources] string related methods
- */
 internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun facebookMessenger(): String = resources.getString(R.string.facebook_messenger)
 
@@ -33,4 +30,6 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun turnsAge(age: Int): String = resources.getString(R.string.turns_age, age);
 
     override fun inviteFriend(): String = resources.getString(R.string.Invite_friend)
+
+    override fun todaysNamedays(numberOfNamedays: Int): String = resources.getQuantityString(R.plurals.todays_nameday, numberOfNamedays)
 }
