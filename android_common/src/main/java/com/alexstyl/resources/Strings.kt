@@ -10,4 +10,5 @@ interface Strings {
     fun inviteFriend(): String
     fun todaysNamedays(numberOfNamedays: Int): String
     fun donateAmount(amount: String): String
+    fun eventOnDate(eventLabel: String, dateLabel: String): String
 }
