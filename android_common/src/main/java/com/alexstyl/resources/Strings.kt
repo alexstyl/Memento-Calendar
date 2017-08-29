@@ -11,4 +11,9 @@ interface Strings {
     fun todaysNamedays(numberOfNamedays: Int): String
     fun donateAmount(amount: String): String
     fun eventOnDate(eventLabel: String, dateLabel: String): String
+    fun appName(): String
+    fun shareText(): String
+    fun today(): String
+    fun tomorrow(): String
+
 }

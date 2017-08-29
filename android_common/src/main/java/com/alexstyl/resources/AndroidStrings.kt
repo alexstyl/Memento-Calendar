@@ -36,4 +36,12 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun donateAmount(amount: String): String = resources.getString(R.string.donation_donate_amount, amount)
 
     override fun eventOnDate(eventLabel: String, dateLabel: String): String = resources.getString(R.string.eventlabel_on_dateLabel, eventLabel, dateLabel)
+
+    override fun appName(): String = resources.getString(R.string.app_name)
+
+    override fun shareText(): String = resources.getString(R.string.share_text)
+
+    override fun today(): String = resources.getString(R.string.today)
+
+    override fun tomorrow(): String = resources.getString(R.string.tomorrow)
 }
