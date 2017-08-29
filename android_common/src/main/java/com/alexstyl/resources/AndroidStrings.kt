@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
-internal class AndroidStrings(private val resources: Resources) : Strings {
+class AndroidStrings(private val resources: Resources) : Strings {
     override fun facebookMessenger(): String = resources.getString(R.string.facebook_messenger)
 
     override fun viewConversation(): String = resources.getString(R.string.View_conversation)
