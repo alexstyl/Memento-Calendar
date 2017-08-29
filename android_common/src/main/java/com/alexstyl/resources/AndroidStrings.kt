@@ -5,6 +5,7 @@ import com.alexstyl.specialdates.common.R
 import com.alexstyl.specialdates.person.StarSign
 
 internal class AndroidStrings(private val resources: Resources) : Strings {
+
     override fun facebookMessenger(): String = resources.getString(R.string.facebook_messenger)
 
     override fun viewConversation(): String = resources.getString(R.string.View_conversation)
@@ -44,4 +45,8 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
     override fun today(): String = resources.getString(R.string.today)
 
     override fun tomorrow(): String = resources.getString(R.string.tomorrow)
+
+    override fun todayCelebrateTwo(nameOne: String, nameTwo: String): String = resources.getString(R.string.today_celebrates_two, nameOne, nameTwo)
+
+    override fun todayCelebrateMany(name: String, numberLeft: Int): String = resources.getString(R.string.today_celebrates_many, name, numberLeft)
 }
