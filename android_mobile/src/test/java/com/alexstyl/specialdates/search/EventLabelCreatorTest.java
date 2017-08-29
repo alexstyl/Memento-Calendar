@@ -27,7 +27,7 @@ public class EventLabelCreatorTest {
 
     @Before
     public void setUp() {
-        creator = new ContactEventLabelCreator(Date.Companion.today(), new JavaStrings(), TestDateLabelCreator.forUS());
+        creator = new ContactEventLabelCreator(Date.Companion.today(), new JavaStrings(), TestDateLabelCreator.Companion.forUS());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class EventLabelCreatorTest {
         ContactEvent event = contactEventOn(date, BIRTHDAY);
         String label = creator.createFor(event);
 
-        assertThat(label).isEqualTo("Turns " + age + " on December 12");
+        assertThat(label).isEqualTo("Turns " + age + " on December 12 1990"); // TODO Sort out this use case
     }
 
     @Test
