@@ -44,4 +44,37 @@ class ContactEventViewModel {
     int getEventColor() {
         return eventColor;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ContactEventViewModel that = (ContactEventViewModel) o;
+
+        if (backgroundVariant != that.backgroundVariant) {
+            return false;
+        }
+        if (eventColor != that.eventColor) {
+            return false;
+        }
+        if (!contact.equals(that.contact)) {
+            return false;
+        }
+        return eventLabel.equals(that.eventLabel);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = contact.hashCode();
+        result = 31 * result + eventLabel.hashCode();
+        result = 31 * result + backgroundVariant;
+        result = 31 * result + eventColor;
+        return result;
+    }
 }

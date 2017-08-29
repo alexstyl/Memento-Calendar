@@ -2,9 +2,11 @@ package com.alexstyl.resources
 
 import android.content.res.Resources
 import com.alexstyl.specialdates.common.R
+import com.alexstyl.specialdates.events.peopleevents.EventType
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
-internal class AndroidStrings(private val resources: Resources) : Strings {
+class AndroidStrings(private val resources: Resources) : Strings {
     override fun facebookMessenger(): String = resources.getString(R.string.facebook_messenger)
 
     override fun viewConversation(): String = resources.getString(R.string.View_conversation)
@@ -46,5 +48,14 @@ internal class AndroidStrings(private val resources: Resources) : Strings {
 
     override fun todayCelebrateMany(name: String, numberLeft: Int): String = resources.getString(R.string.today_celebrates_many, name, numberLeft)
 
-    override fun nameOfEvent(eventResId: Int): String = resources.getString(eventResId)
+    override fun nameOfEvent(event: EventType): String = when (event) {
+        StandardEventType.BIRTHDAY -> resources.getString(R.string.birthday)
+        StandardEventType.NAMEDAY -> resources.getString(R.string.nameday)
+        StandardEventType.ANNIVERSARY -> resources.getString(R.string.Anniversary)
+        StandardEventType.OTHER -> resources.getString(R.string.Other)
+        StandardEventType.CUSTOM -> resources.getString(R.string.Custom)
+        else -> {
+            throw IllegalStateException("$event has no name")
+        }
+    }
 }
