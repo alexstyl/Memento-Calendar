@@ -6,7 +6,6 @@ public final class AndroidDonationConstants {
         // hide this
     }
 
-    // TODO this should be a environment variable
     public static final String PUBLIC_KEY =
             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsYY0f8jTzL1RkaxI6RgasYZ1anbjHo3uOrSecriRJdQtTtiynmnjSqg0mh79gJunqbqtJtQQaFYo"
                     + "wm1D5uTWkZ30CmZqrKAz8PILbF7andUNECZRuUENfsptHhaBQHYcDucXLP2QDuerEaYPcBW4kQoyv4Jyfm/"

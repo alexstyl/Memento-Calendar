@@ -11,7 +11,7 @@ class EventViewModelFactory(private val strings: Strings, private val dateLabelC
         events.forEach {
             val eventName = it.type.getEventName(strings)
             val date = it.date
-            val dateLabel = dateLabelCreator.createLabelFor(date)
+            val dateLabel = dateLabelCreator.createWithYearPreferred(date)
             viewModels.add(ContactEventViewModel(eventName, dateLabel, date))
         }
         return viewModels
