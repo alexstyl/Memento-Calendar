@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates
 
 import android.content.res.Resources
-import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.common.R
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType

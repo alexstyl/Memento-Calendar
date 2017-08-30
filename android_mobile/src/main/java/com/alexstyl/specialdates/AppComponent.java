@@ -10,6 +10,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.donate.DonateActivity;
+import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
@@ -51,7 +52,8 @@ import dagger.Component;
         NamedayModule.class,
         UpcomingEventsModule.class,
         NamedaysInADayModule.class,
-        DailyReminderModule.class
+        DailyReminderModule.class,
+        DonateModule.class
 })
 public interface AppComponent {
     void inject(UpcomingEventsActivity activity);

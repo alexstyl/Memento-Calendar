@@ -14,11 +14,11 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.alexstyl.android.Version;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
@@ -43,6 +43,8 @@ public class DonateActivity extends MementoActivity {
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject ImageLoader imageLoader;
+    @Inject IabHelper iabHelper;
+    @Inject DonationPreferences donationPreferences;
 
     @Override
     protected boolean shouldUseHomeAsUp() {
@@ -74,8 +76,6 @@ public class DonateActivity extends MementoActivity {
             appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
 
-        DonationPreferences donationPreferences = DonationPreferences.newInstance(this); // TODO inject this
-        IabHelper iabHelper = new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY); // TODO inject this
         DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
