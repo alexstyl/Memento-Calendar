@@ -21,7 +21,7 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
 
     fun startPresenting(into: NamedaysMVPView, forDate: Date) {
         disposable = Observable.fromCallable { namedayCalendar.getAllNamedayOn(forDate) }
-                .observeOn(workScheduler) // TODO does this mean that the fromCallable will be executed on the workScheduler?
+                .observeOn(workScheduler)
                 .map { it.names.asViewModels() }
                 .observeOn(resultScheduler)
                 .subscribe { namedaysViewModel ->

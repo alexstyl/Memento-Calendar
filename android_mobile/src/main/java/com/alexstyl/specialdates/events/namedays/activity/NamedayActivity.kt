@@ -60,7 +60,7 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         recyclerView.adapter = screenAdapter
 
         val date = DateBundleUtils.extractDateFrom(intent)
-        dateView?.text = dateLabelCreator.createLabelFor(date)
+        dateView?.text = dateLabelCreator.createWithYearPreferred(date)
     }
 
 

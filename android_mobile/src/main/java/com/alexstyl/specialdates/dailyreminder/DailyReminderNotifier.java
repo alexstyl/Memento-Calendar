@@ -154,14 +154,6 @@ public final class DailyReminderNotifier {
             builder.setPublicVersion(publicNotification.build());
         }
 
-        // TODO add Lookup URI for Android
-//        for (Contact contact : contacts) {
-//            if (contact instanceof AndroidContact) {
-//                Uri uri = ((AndroidContact) contact).getLookupUri();
-//                builder.addPerson(uri.toString());
-//            }
-//        }
-
         if (preferences.getVibrationSet()) {
             builder.setDefaults(Notification.DEFAULT_VIBRATE);
         }

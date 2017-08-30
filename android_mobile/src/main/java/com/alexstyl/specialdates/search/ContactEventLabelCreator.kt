@@ -9,7 +9,7 @@ class ContactEventLabelCreator(private val today: Date, private val strings: Str
 
     fun createFor(event: ContactEvent): String {
         val eventLabel = event.getLabel(today, strings)
-        val dateLabel = dateLabelCreator.createLabelFor(event.date)
+        val dateLabel = dateLabelCreator.createLabelWithoutYear(event.date)
         return strings.eventOnDate(eventLabel, dateLabel)
     }
 }

@@ -131,7 +131,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private String labelOf(Date todayDate) {
-        return labelCreator.createLabelFor(todayDate);
+        return labelCreator.createWithYearPreferred(todayDate);
     }
 
     public void onUpdateNoEventsFound(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

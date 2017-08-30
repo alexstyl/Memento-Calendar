@@ -20,7 +20,7 @@ internal class AddEventContactEventViewModelFactory(private val creator: DateLab
     }
 
     fun createViewModelWith(eventType: EventType, date: Date): AddEventContactEventViewModel {
-        val eventHint = creator.createLabelFor(date)
+        val eventHint = creator.createWithYearPreferred(date)
         val dateOptional = Optional(date)
         return AddEventContactEventViewModel(eventHint, eventType, dateOptional, View.VISIBLE, EventIcons.iconOf(eventType))
     }

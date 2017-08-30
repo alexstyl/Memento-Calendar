@@ -139,7 +139,6 @@ class AddContactEventsPresenter {
                 protected void onPostExecute(Boolean success) {
                     if (success) {
                         analytics.trackContactCreated();
-                        // TODO open contact screen?
                         messageDisplayer.showMessage(R.string.add_birthday_contact_added);
                     } else {
                         messageDisplayer.showMessage(R.string.add_birthday_failed_to_add_contact);
