@@ -2,8 +2,6 @@ package com.alexstyl.specialdates;
 
 import android.content.Intent;
 
-import com.alexstyl.resources.Strings;
-
 public class ShareAppIntentCreator {
 
     private static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";

@@ -14,7 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.alexstyl.android.Version;
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;

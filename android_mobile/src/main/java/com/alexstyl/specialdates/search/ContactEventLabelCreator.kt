@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.search
 
-import com.alexstyl.resources.Strings
+import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator

@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.peopleevents
 
-import com.alexstyl.resources.Strings
+import com.alexstyl.specialdates.Strings
 
 import com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM
 

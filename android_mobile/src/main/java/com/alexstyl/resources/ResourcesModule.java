@@ -2,6 +2,9 @@ package com.alexstyl.resources;
 
 import android.content.res.Resources;
 
+import com.alexstyl.specialdates.AndroidStrings;
+import com.alexstyl.specialdates.Strings;
+
 import javax.inject.Singleton;
 
 import dagger.Module;

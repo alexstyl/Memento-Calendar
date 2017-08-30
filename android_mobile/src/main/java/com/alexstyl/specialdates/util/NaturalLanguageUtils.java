@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.util;
 
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.contact.Contact;
 
 import java.util.ArrayList;

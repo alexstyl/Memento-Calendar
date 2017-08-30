@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.date;
 
-import com.alexstyl.resources.JavaStrings;
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.JavaStrings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactFixture;

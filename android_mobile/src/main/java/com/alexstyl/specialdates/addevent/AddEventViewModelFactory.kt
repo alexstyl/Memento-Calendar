@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.addevent
 
 import android.view.View
 
-import com.alexstyl.resources.Strings
+import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.peopleevents.EventType

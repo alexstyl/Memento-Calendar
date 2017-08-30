@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.resources.ColorResources
-import com.alexstyl.resources.Strings
+import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 

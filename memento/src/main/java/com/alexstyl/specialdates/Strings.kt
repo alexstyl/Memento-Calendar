@@ -1,4 +1,4 @@
-package com.alexstyl.resources
+package com.alexstyl.specialdates
 
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.person.StarSign

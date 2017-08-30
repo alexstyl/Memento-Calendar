@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.resources.JavaStrings;
+import com.alexstyl.specialdates.JavaStrings;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestDateLabelCreator;
 import com.alexstyl.specialdates.contact.Contact;

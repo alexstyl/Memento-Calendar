@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.person
 
 import android.content.res.Resources
 import android.view.View
-import com.alexstyl.resources.Strings
+import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import java.net.URI

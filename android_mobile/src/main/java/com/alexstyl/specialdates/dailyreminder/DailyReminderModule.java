@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.images.ImageLoader;
 
 import dagger.Module;
