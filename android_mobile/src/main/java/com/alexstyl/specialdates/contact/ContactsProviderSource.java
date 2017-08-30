@@ -5,7 +5,8 @@ import java.util.List;
 interface ContactsProviderSource {
     Contact getOrCreateContact(long contactID) throws ContactNotFoundException;
 
-    List<Contact> getAllContacts();
+    Contacts queryContacts(List<Long> contactIds);
 
-    List<Contact> getContacts(List<Long> contactIds);
+    Contacts getAllContacts();
+
 }

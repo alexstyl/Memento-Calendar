@@ -11,11 +11,11 @@ public class ContactCacheTest {
 
     private static final DisplayName ANY_DISPLAY_NAME = DisplayName.from("Alex Styl");
 
-    private ContactCache<Contact> contactCache;
+    private ContactCache contactCache;
 
     @Before
     public void createEmptyCache() {
-        contactCache = new ContactCache<>(CACHE_SIZE);
+        contactCache = new ContactCache(CACHE_SIZE);
     }
 
     @Test
