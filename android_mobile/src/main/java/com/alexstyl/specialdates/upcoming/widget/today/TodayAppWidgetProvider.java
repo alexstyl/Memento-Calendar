@@ -89,7 +89,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
         Date date = Date.Companion.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.Companion.today().getYear());
-        Intent intent = UpcomingEventsActivity.getStartIntent(context, date);
+        Intent intent = UpcomingEventsActivity.getStartIntent(context);
         intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(

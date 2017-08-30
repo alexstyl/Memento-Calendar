@@ -227,12 +227,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         }
     }
 
-    public static Intent getStartIntent(Context context, Date date) {
-        // TODO actually use the date
-        Intent intent = new Intent(context, UpcomingEventsActivity.class);
-        return intent;
-    }
-
     @Override
     public boolean onKeyMenuPressed() {
         if (drawerLayout.isDrawerOpen(Gravity.START)) {
@@ -241,5 +235,9 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
             drawerLayout.openDrawer(Gravity.START, true);
         }
         return true;
+    }
+
+    public static Intent getStartIntent(Context context) {
+        return new Intent(context, UpcomingEventsActivity.class);
     }
 }

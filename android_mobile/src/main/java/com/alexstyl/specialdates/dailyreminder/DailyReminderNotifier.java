@@ -86,7 +86,7 @@ public final class DailyReminderNotifier {
             }
         }
 
-        Intent startIntent = UpcomingEventsActivity.getStartIntent(context, date);
+        Intent startIntent = UpcomingEventsActivity.getStartIntent(context);
         PendingIntent intent =
                 PendingIntent.getActivity(
                         context, NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
@@ -234,7 +234,7 @@ public final class DailyReminderNotifier {
     void forBankholiday(Date date, BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
-                UpcomingEventsActivity.getStartIntent(context, date),
+                UpcomingEventsActivity.getStartIntent(context),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
