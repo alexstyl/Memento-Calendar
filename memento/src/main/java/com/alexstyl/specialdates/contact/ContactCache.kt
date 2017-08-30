@@ -1,8 +1,9 @@
 package com.alexstyl.specialdates.contact
 
-import android.support.v4.util.LruCache
+import android.LruCache
 
-internal class ContactCache(maxSize: Int) {
+
+class ContactCache(maxSize: Int) {
 
     private val cache: LruCache<Long, Contact> = LruCache(maxSize)
 
