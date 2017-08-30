@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.support.annotation.NonNull;
 
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 
 import java.util.HashMap;

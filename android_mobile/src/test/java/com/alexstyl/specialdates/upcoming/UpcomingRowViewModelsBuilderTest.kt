@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.upcoming
 
 import android.content.Context
 import com.alexstyl.resources.ColorResources
-import com.alexstyl.resources.JavaStrings
+import com.alexstyl.specialdates.JavaStrings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture.aContact
 import com.alexstyl.specialdates.date.ContactEvent

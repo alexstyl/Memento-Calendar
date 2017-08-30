@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.person
 
-import com.alexstyl.resources.JavaStrings
+import com.alexstyl.specialdates.JavaStrings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent

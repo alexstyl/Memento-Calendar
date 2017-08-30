@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.Context;
 import android.text.format.DateUtils;
 
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 

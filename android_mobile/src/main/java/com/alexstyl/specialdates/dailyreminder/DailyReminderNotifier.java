@@ -23,7 +23,7 @@ import android.text.style.StyleSpan;
 import com.alexstyl.android.Version;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;

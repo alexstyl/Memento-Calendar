@@ -7,7 +7,7 @@ import android.content.Intent;
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.resources.Strings;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.MementoApplication;
