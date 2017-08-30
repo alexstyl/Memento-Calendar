@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper
 import com.alexstyl.specialdates.facebook.FacebookImagePath
 
 internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpenHelper,
-                                      private val cache: ContactCache<Contact>)
+                                      private val cache: ContactCache)
     : ContactsProviderSource {
 
     @Throws(ContactNotFoundException::class)
@@ -36,7 +36,7 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         }
     }
 
-    override fun getContacts(contactIds: List<Long>): List<Contact>? {
+    override fun queryContacts(contactIds: List<Long>): Contacts {
         val readableDatabase = eventSQLHelper.readableDatabase
         val cursor = readableDatabase.query(
                 AnnualEventsContract.TABLE_NAME,
@@ -49,23 +49,23 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         )
 
         return cursor.use {
-            return@use List(it.count, { index ->
+            val contacts = Contacts(SOURCE_FACEBOOK, List(it.count, { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            })
+            }))
+            cache.addContacts(contacts)
+            return@use contacts
         }
     }
 
-    override fun getAllContacts(): List<Contact> {
+    override fun getAllContacts(): Contacts {
         val allContacts = queryAllContacts()
         cache.evictAll()
-        for (allContact in allContacts) {
-            cache.addContact(allContact)
-        }
+        cache.addContacts(allContacts)
         return allContacts
     }
 
-    private fun queryAllContacts(): List<Contact> {
+    private fun queryAllContacts(): Contacts {
         val readableDatabase = eventSQLHelper.readableDatabase
         val cursor = readableDatabase.query(
                 AnnualEventsContract.TABLE_NAME, null,
@@ -73,10 +73,10 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         )
 
         return cursor.use {
-            return@use List(it.count, { index ->
+            return@use Contacts(SOURCE_FACEBOOK, List(it.count, { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            })
+            }))
         }
     }
 

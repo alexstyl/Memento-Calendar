@@ -33,12 +33,12 @@ public class ContactsModule {
     private static ContactsProviderSource buildAndroidSource(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
         AndroidContactFactory factory = new AndroidContactFactory(contentResolver);
-        ContactCache<Contact> contactCache = new ContactCache<>(CACHE_SIZE);
+        ContactCache contactCache = new ContactCache(CACHE_SIZE);
         return new AndroidContactsProviderSource(contactCache, factory);
     }
 
     private static ContactsProviderSource buildFacebookSource(Context context) {
-        ContactCache<Contact> contactCache = new ContactCache<>(CACHE_SIZE);
+        ContactCache contactCache = new ContactCache(CACHE_SIZE);
         return new FacebookContactsSource(new EventSQLiteOpenHelper(context), contactCache);
     }
 }

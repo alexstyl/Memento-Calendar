@@ -5,21 +5,23 @@ import android.database.Cursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.SQLArgumentBuilder;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
+import com.alexstyl.specialdates.contact.Contacts;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
@@ -93,21 +95,22 @@ class StaticPeopleEventsProvider {
             }
         }
 
-        List<Contact> contacts = contactsProvider.getContacts(deviceIds, ContactSource.SOURCE_DEVICE);
-        contacts.addAll(contactsProvider.getContacts(facebookIds, ContactSource.SOURCE_FACEBOOK));
+        Contacts deviceContacts = contactsProvider.getContacts(deviceIds, ContactSource.SOURCE_DEVICE);
+        Contacts facebookContacts = contactsProvider.getContacts(facebookIds, ContactSource.SOURCE_FACEBOOK);
+        Map<Integer, Contacts> contacts = new HashMap<>();
+        contacts.put(ContactSource.SOURCE_DEVICE, deviceContacts);
+        contacts.put(ContactSource.SOURCE_FACEBOOK, facebookContacts);
 
-        Map<Long, Contact> contactMap = new HashMap<>(contacts.size());
-        for (Contact contact : contacts) {
-            contactMap.put(contact.getContactID(), contact);
-        }
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             try {
-                long contactId = getContactIdFrom(cursor);
-                Contact contact = contactMap.get(contactId);// TODO contact
-                ContactEvent contactEvent = getContactEventFrom(cursor, contact);
-                contactEvents.add(contactEvent);
+                Contacts contactsOfSource = contacts.get(getContactSourceFrom(cursor));
+                Contact contact = contactsOfSource.getContact(getContactIdFrom(cursor));
+                if (contact != null) {
+                    ContactEvent contactEvent = getContactEventFrom(cursor, contact);
+                    contactEvents.add(contactEvent);
+                }
             } catch (ContactNotFoundException e) {
-                Log.w(e);
+                ErrorTracker.track(e);
             }
         }
         cursor.close();

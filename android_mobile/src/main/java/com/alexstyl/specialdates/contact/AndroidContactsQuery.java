@@ -15,6 +15,7 @@ final class AndroidContactsQuery {
 
     public static final int CONTACT_ID = 0;
     static final int DISPLAY_NAME = 1;
+    public static final String _ID = Contacts._ID;
 
     private AndroidContactsQuery() {
         // hide this
