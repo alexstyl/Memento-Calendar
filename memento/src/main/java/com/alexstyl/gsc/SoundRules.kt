@@ -158,7 +158,6 @@ class SoundRules private constructor() {
         this.accentCapitals.put('Ϊ', IOTA)
         this.accentCapitals.put('\u0390', IOTA) // small iota with dyalitika and tonos does not have a upper case counter part
 
-        // TODO
         /// Find all characters which may start a double symbol sound
         val str = StringBuilder()
         val var2 = this.doubleSounds.keys.iterator()
