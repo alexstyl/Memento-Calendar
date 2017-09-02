@@ -16,25 +16,24 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
                              private val bankHolidayProvider: BankHolidayProvider,
                              private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory,
                              private val adRules: UpcomingEventsAdRules)
-    : IUpcomingEventsProvider // TODO kotlin classes are closed by default. Mockito cannot mock final...
-{
+    : IUpcomingEventsProvider {
 
-    override fun calculateEventsBetween(period: TimePeriod): List<UpcomingRowViewModel> {
-        val contactEvents = peopleEventsProvider.getContactEventsFor(period)
+    override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
+        val contactEvents = peopleEventsProvider.getContactEventsFor(timePeriod)
         val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
-                period,
+                timePeriod,
                 upcomingRowViewModelFactory,
                 adRules
         )
                 .withContactEvents(contactEvents)
 
         if (shouldLoadBankHolidays()) {
-            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(period)
+            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
             upcomingRowViewModelsBuilder.withBankHolidays(bankHolidays)
         }
 
         if (shouldLoadNamedays()) {
-            val namedays = calculateNamedaysBetween(period)
+            val namedays = calculateNamedaysBetween(timePeriod)
             upcomingRowViewModelsBuilder.withNamedays(namedays)
         }
         return upcomingRowViewModelsBuilder.build()
