@@ -40,8 +40,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
                 peopleEventsProvider,
-                dimensResources,
-                this,
+                getResources(),
                 avatarFactory
         );
     }
