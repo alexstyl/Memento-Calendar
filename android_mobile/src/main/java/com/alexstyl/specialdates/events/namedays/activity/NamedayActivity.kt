@@ -3,11 +3,9 @@ package com.alexstyl.specialdates.events.namedays.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.widget.TextView
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -21,6 +19,7 @@ import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import javax.inject.Inject
+
 
 class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
 
@@ -72,16 +71,6 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         presenter.startPresenting(into = this, forDate = date)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                NavUtils.navigateUpFromSameTask(this)
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun displayNamedays(viewModels: List<NamedayScreenViewModel>) {
         screenAdapter?.display(viewModels)
     }
@@ -91,7 +80,7 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         presenter.stopPresenting()
     }
 
-    override fun shouldUseHomeAsUp(): Boolean = true
+//    override fun shouldUseHomeAsUp(): Boolean = true
 
     companion object {
         fun getStartIntent(context: Context, date: Date): Intent =

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
+import android.support.v4.app.TaskStackBuilder
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.MenuItem
@@ -16,9 +17,7 @@ open class MementoActivity : AppCompatActivity() {
      * Override this method in order to let the activity handle the up button.
      * When pressed it will navigate the user to the parent of the activity
      */
-    protected open fun shouldUseHomeAsUp(): Boolean {
-        return false
-    }
+    private fun shouldUseHomeAsUp(): Boolean = parentActivityIntent != null
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
@@ -33,9 +32,21 @@ open class MementoActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            return handleUp()
+            navigateUpToParent()
+            return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun navigateUpToParent() {
+        val upIntent = NavUtils.getParentActivityIntent(this)
+        if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot) {
+            TaskStackBuilder.create(this)
+                    .addNextIntentWithParentStack(upIntent)
+                    .startActivities()
+        } else {
+            NavUtils.navigateUpTo(this, upIntent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -48,36 +59,21 @@ open class MementoActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleUp(): Boolean {
-        if (!shouldUseHomeAsUp()) {
-            return false
-        }
-        NavUtils.navigateUpFromSameTask(this)
-        return true
-    }
 
-    protected fun context(): Context {
-        return this
-    }
+    protected fun context(): Context = this
 
-    protected fun supportsTransitions(): Boolean {
-        return Version.hasKitKat()
-    }
+    protected fun supportsTransitions(): Boolean = Version.hasKitKat()
 
-    protected fun thisActivity(): Activity {
-        return this
-    }
+    protected fun thisActivity(): Activity = this
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            return onKeyMenuPressed()
+        return if (keyCode == KeyEvent.KEYCODE_MENU) {
+            onKeyMenuPressed()
         } else {
-            return super.onKeyDown(keyCode, event)
+            super.onKeyDown(keyCode, event)
         }
     }
 
-    open fun onKeyMenuPressed(): Boolean {
-        return false
-    }
+    open fun onKeyMenuPressed(): Boolean = false
 
 }
