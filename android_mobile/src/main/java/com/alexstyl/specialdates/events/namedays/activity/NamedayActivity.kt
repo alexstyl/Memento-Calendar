@@ -64,7 +64,6 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         dateView?.text = dateLabelCreator.createWithYearPreferred(date)
     }
 
-
     override fun onStart() {
         super.onStart()
         val date = intent.getDateExtraOrThrow()
@@ -79,8 +78,6 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         super.onStop()
         presenter.stopPresenting()
     }
-
-//    override fun shouldUseHomeAsUp(): Boolean = true
 
     companion object {
         fun getStartIntent(context: Context, date: Date): Intent =
