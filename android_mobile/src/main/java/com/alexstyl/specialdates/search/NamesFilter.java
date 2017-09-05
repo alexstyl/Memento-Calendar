@@ -38,7 +38,6 @@ final class NamesFilter extends Filter {
     protected void publishResults(CharSequence typedName, FilterResults results) {
         if (results.values == null) {
             // This is a fallback in case anything breaks the filtering
-            // TODO results.values must never return null
             results.values = nameFilter.getAllNames();
         }
         ArrayList<String> names = (ArrayList<String>) results.values;

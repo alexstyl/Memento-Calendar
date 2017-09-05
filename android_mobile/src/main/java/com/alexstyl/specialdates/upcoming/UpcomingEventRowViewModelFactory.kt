@@ -14,16 +14,10 @@ class UpcomingEventRowViewModelFactory(private val today: Date,
         return DateHeaderViewModel(label)
     }
 
-    fun createViewModelFor(contactEvent: ContactEvent): UpcomingRowViewModel {
-        return contactViewModelFactory.createViewModelFor(today, contactEvent)
-    }
+    fun createViewModelFor(contactEvent: ContactEvent): UpcomingRowViewModel = contactViewModelFactory.createViewModelFor(today, contactEvent)
 
-    fun createViewModelFor(bankHoliday: BankHoliday): UpcomingRowViewModel {
-        return BankHolidayViewModel(bankHoliday.holidayName)
-    }
+    fun createViewModelFor(bankHoliday: BankHoliday): UpcomingRowViewModel = BankHolidayViewModel(bankHoliday.holidayName)
 
-    fun createViewModelFor(namedays: NamesInADate): UpcomingRowViewModel {
-        return NamedaysViewModel(namedays.names.joinToString(", "), namedays.date)
-    }
+    fun createViewModelFor(namedays: NamesInADate): UpcomingRowViewModel = NamedaysViewModel(namedays.names.joinToString(", "), namedays.date)
 
 }

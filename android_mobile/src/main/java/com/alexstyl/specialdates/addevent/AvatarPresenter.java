@@ -77,7 +77,7 @@ final class AvatarPresenter {
     }
 
     void removeAvatar() {
-        avatarView.setImageBitmap(null); // TODO animate currentImageLoaded out
+        avatarView.setImageBitmap(null);
         currentImageLoaded = Optional.absent();
         toolbarAnimator.fadeIn();
     }

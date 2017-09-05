@@ -56,25 +56,31 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     }
 
     private void showUpcomingEvents(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Date date = Date.Companion.today();
-        String dateLabel = dateLabelCreator.createWithYearPreferred(date);
-
+        String dateLabel = dateLabelCreator.createWithYearPreferred(Date.Companion.today());
         for (int appWidgetId : appWidgetIds) {
             Intent intent = new Intent(context, UpcomingEventsRemoteViewService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events);
             remoteViews.setRemoteAdapter(R.id.widget_upcoming_events_list, intent);
-            Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
-            PendingIntent listPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, listPendingIntent);
 
             remoteViews.setTextViewText(R.id.widget_upcoming_events_date, dateLabel);
-            PendingIntent todayDatePendingIntent = pendingIntentToMain(context);
-            remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, todayDatePendingIntent);
+            setListClickListener(context, remoteViews);
+            setListHeaderClickListener(context, remoteViews);
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
+    }
+
+    private void setListHeaderClickListener(Context context, RemoteViews remoteViews) {
+        PendingIntent todayDatePendingIntent = pendingIntentToMain(context);
+        remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_date, todayDatePendingIntent);
+    }
+
+    private void setListClickListener(Context context, RemoteViews remoteViews) {
+        Intent clickIntent = WidgetRouterActivity.Companion.buildIntent(context);
+        PendingIntent listPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setPendingIntentTemplate(R.id.widget_upcoming_events_list, listPendingIntent);
     }
 
     private PendingIntent pendingIntentToMain(Context context) {
@@ -84,7 +90,6 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
 
     private void askForContactReadPermission(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_prompt_permissions);
             remoteViews.setOnClickPendingIntent(R.id.widget_prompt_permission_background, pendingIntentToMain(context));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);

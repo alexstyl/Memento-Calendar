@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/widgetrow_upcoming_contact_event"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:foreground="?android:attr/selectableItemBackground">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+      android:id="@+id/row_upcoming_event_contact_image"
+      style="@style/Upcoming.Avatar"
+      android:layout_marginBottom="10dp"
+      android:layout_marginRight="@dimen/widget_upcoming_vertical_padding"
+      android:layout_marginTop="10dp"
+      tools:background="#000" />
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/row_upcoming_event_contact_name"
+        style="@style/Widget.Upcoming.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        tools:text="Alex Styl" />
+
+      <TextView
+        android:id="@+id/row_upcoming_event_contact_event"
+        style="Upcoming.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:textColor="@color/anniversary_yellow"
+        tools:text="Turns 26" />
+
+    </LinearLayout>
+
+  </LinearLayout>
+</FrameLayout>
