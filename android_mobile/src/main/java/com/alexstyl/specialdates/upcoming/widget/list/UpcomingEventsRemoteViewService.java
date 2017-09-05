@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.widget.RemoteViewsService;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -16,8 +14,6 @@ import javax.inject.Named;
 
 public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
-    @Inject Strings strings;
-    @Inject DimensionResources dimensResources;
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
     @Inject
@@ -40,6 +36,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
                 peopleEventsProvider,
+                this,
                 getResources(),
                 avatarFactory
         );

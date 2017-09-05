@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming.widget.list
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.support.annotation.Px
@@ -11,6 +12,7 @@ import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel
 
 internal class ContactEventBinder(private val remoteViews: RemoteViews,
                                   private val resources: Resources,
+                                  private val context: Context,
                                   private val avatarFactory: CircularAvatarFactory)
     : UpcomingEventViewBinder<UpcomingContactEventViewModel> {
 
@@ -21,6 +23,9 @@ internal class ContactEventBinder(private val remoteViews: RemoteViews,
 
         val avatar = createAvatarFor(viewModel.contact)
         remoteViews.setImageViewBitmap(R.id.row_upcoming_event_contact_image, avatar)
+
+        val fillInIntent = WidgetRouterActivity.buildContactIntent(context, viewModel.contact)
+        remoteViews.setOnClickFillInIntent(R.id.widgetrow_upcoming_contact_event, fillInIntent)
     }
 
     private fun createAvatarFor(contact: Contact): Bitmap {

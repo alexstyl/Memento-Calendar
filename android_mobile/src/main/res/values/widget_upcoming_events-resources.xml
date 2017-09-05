@@ -7,13 +7,18 @@
   <dimen name="widget_upcoming_avatar_text_size">24sp</dimen>
   <dimen name="widget_upcoming_vertical_padding">16dp</dimen>
   <dimen name="widget_upcoming_horizontal_padding">16dp</dimen>
-  <color name="widget_upcoming_text_color">#000</color>
+  <color name="widget_upcoming_text_color">#515151</color>
 
   <color name="widget_upcoming_avatar_background_color">@color/main_red</color>
   <color name="widget_upcoming_avatar_text_color">@color/main_white</color>
 
-  <style name="Widget.Upcoming.Header"
+  <style name="Widget.Upcoming.Text"
     parent="None">
+    <item name="android:textColor">@color/widget_upcoming_text_color</item>
+  </style>
+
+  <style name="Widget.Upcoming.Header"
+    parent="Widget.Upcoming.Text">
     <item name="android:textSize">18sp</item>
     <item name="android:padding">12dp</item>
     <item name="android:textColor">@color/widget_upcoming_text_color</item>
