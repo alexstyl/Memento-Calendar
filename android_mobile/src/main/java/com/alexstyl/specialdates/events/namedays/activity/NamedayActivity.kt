@@ -13,8 +13,9 @@ import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.DateBundleUtils
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.getDateExtraOrThrow
+import com.alexstyl.specialdates.date.putExtraDate
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
@@ -59,14 +60,15 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         screenAdapter = namedaysAdapter
         recyclerView.adapter = screenAdapter
 
-        val date = DateBundleUtils.extractDateFrom(intent)
+
+        val date = intent.getDateExtraOrThrow()
         dateView?.text = dateLabelCreator.createWithYearPreferred(date)
     }
 
 
     override fun onStart() {
         super.onStart()
-        val date = DateBundleUtils.extractDateFrom(intent)
+        val date = intent.getDateExtraOrThrow()
         presenter.startPresenting(into = this, forDate = date)
     }
 
@@ -92,11 +94,8 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
     override fun shouldUseHomeAsUp(): Boolean = true
 
     companion object {
-        fun getStartIntent(context: Context, dateSelected: Date): Intent {
-            val intent = Intent(context, NamedayActivity::class.java)
-            DateBundleUtils.putDateAsExtraIntoIntent(dateSelected, intent)
-            return intent
-        }
+        fun getStartIntent(context: Context, dateSelected: Date): Intent =
+                Intent(context, NamedayActivity::class.java).apply { putExtraDate(dateSelected) }
     }
 }
 

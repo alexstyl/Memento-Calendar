@@ -157,12 +157,13 @@
 
     <activity
       android:name=".events.namedays.activity.NamedayActivity"
-      android:exported="true"
       android:parentActivityName=".upcoming.UpcomingEventsActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".upcoming.UpcomingEventsActivity" />
     </activity>
+
+    <activity android:name=".upcoming.widget.list.WidgetRouterActivity"/>
 
     <!-- Services -->
     <service

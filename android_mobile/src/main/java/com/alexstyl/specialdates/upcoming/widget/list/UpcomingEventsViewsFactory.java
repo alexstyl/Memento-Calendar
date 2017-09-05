@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Resources;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -22,14 +23,16 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private final UpcomingEventsProvider peopleEventsProvider;
     private final Resources resources;
     private final CircularAvatarFactory avatarFactory;
+    private final Context context;
 
     private List<UpcomingRowViewModel> rows;
 
     UpcomingEventsViewsFactory(String packageName,
                                UpcomingEventsProvider peopleEventsProvider,
-                               Resources resources,
+                               Context context, Resources resources,
                                CircularAvatarFactory avatarFactory) {
         this.packageName = packageName;
+        this.context = context;
         this.resources = resources;
         this.peopleEventsProvider = peopleEventsProvider;
         this.avatarFactory = avatarFactory;
@@ -67,15 +70,15 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
             }
             case UpcomingRowViewType.BANKHOLIDAY: {
                 RemoteViews view = new RemoteViews(packageName, R.layout.widget_upcomingevents_list_bankholiday);
-                return new BankHolidayBinder(view);
+                return new BankHolidayBinder(view, context);
             }
             case UpcomingRowViewType.NAMEDAY_CARD: {
                 RemoteViews view = new RemoteViews(packageName, R.layout.widget_upcoming_events_list_nameday);
-                return new NamedayCardBinder(view);
+                return new NamedaysBinder(view, context);
             }
             case UpcomingRowViewType.CONTACT_EVENT: {
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.widget_upcoming_events_list_contact_event);
-                return new ContactEventBinder(remoteViews, resources, avatarFactory);
+                return new ContactEventBinder(remoteViews, resources, context, avatarFactory);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());

@@ -4,8 +4,6 @@
   android:id="@+id/upcoming_event_date_header"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_marginLeft="@dimen/widget_upcoming_vertical_padding"
-  android:layout_marginRight="@dimen/widget_upcoming_vertical_padding"
   android:gravity="center_vertical"
   android:textAllCaps="true"
   android:textColor="#B0B0B0"
