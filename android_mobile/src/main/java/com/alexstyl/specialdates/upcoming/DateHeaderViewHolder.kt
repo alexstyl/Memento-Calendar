@@ -7,6 +7,6 @@ import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener
 
 internal class DateHeaderViewHolder(view: View, private val dateView: TextView) : UpcomingRowViewHolder<DateHeaderViewModel>(view) {
     override fun bind(viewModel: DateHeaderViewModel, listener: OnUpcomingEventClickedListener) {
-        dateView.text = viewModel.monthLabel
+        dateView.text = viewModel.date
     }
 }

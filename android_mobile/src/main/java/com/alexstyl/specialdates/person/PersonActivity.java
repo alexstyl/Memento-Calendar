@@ -162,13 +162,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         }
     }
 
-    public static Intent buildIntentFor(Context context, Contact contact) {
-        Intent intent = new Intent(context, PersonActivity.class);
-        intent.putExtra(EXTRA_CONTACT_ID, contact.getContactID());
-        intent.putExtra(EXTRA_CONTACT_SOURCE, contact.getSource());
-        return intent;
-    }
-
     @Override
     public void displayPersonInfo(PersonInfoViewModel viewModel) {
         imageLoader.load(viewModel.getImage())
@@ -252,5 +245,12 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
             }
         }
     };
+
+    public static Intent buildIntentFor(Context context, Contact contact) {
+        Intent intent = new Intent(context, PersonActivity.class);
+        intent.putExtra(EXTRA_CONTACT_ID, contact.getContactID());
+        intent.putExtra(EXTRA_CONTACT_SOURCE, contact.getSource());
+        return intent;
+    }
 
 }

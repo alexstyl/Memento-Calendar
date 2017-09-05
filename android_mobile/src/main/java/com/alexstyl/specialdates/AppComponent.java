@@ -24,14 +24,15 @@ import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.support.RateDialog;
-import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.alexstyl.specialdates.ui.widget.CompactCardView;
+import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider;
+import com.alexstyl.specialdates.upcoming.widget.list.WidgetRouterActivity;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity;
 import com.alexstyl.specialdates.wear.WearSyncService;
@@ -103,4 +104,6 @@ public interface AppComponent {
     void inject(CompactCardView view);
 
     void inject(UpcomingWidgetConfigureActivity activity);
+
+    void inject(WidgetRouterActivity widgetRouterActivity);
 }
