@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
@@ -46,7 +45,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     private ThemeMonitor themeMonitor;
 
     private UpcomingEventsNavigator navigator;
-    private ExternalNavigator externalNavigator;
     private SearchTransitioner searchTransitioner;
     private DrawerLayout drawerLayout;
 
@@ -70,7 +68,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         analytics.trackScreen(Screen.HOME);
 
         navigator = new UpcomingEventsNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
-        externalNavigator = new ExternalNavigator(this, analytics);
 
         ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
@@ -154,13 +151,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
             reapplyTheme();
         }
         searchTransitioner.onActivityResumed();
-        externalNavigator.connectTo(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        externalNavigator.disconnectTo(this);
     }
 
     @Override
