@@ -19,4 +19,6 @@ interface Strings {
     fun todayCelebrateTwo(nameOne: String, nameTwo: String): String
     fun todayCelebrateMany(name: String, numberLeft: Int): String
     fun nameOfEvent(event: EventType): String
+    fun goToWall(): String
+    fun facebook(): String
 }
