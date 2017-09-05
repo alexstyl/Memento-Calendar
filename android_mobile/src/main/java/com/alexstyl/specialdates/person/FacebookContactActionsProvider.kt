@@ -2,8 +2,8 @@ package com.alexstyl.specialdates.person
 
 import android.content.res.Resources
 import android.view.View
-import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.R
+import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
 import java.net.URI
 
@@ -26,18 +26,27 @@ class FacebookContactActionsProvider(
                 .toList()
     }
 
-    override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> {
-        val action = ContactAction(
-                strings.viewConversation(),
-                strings.facebookMessenger(),
-                actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
-        )
-        return ContactActionViewModel(
-                action,
-                View.VISIBLE,
-                resources.getDrawable(R.drawable.ic_facebook_messenger))
-                .toList()
-    }
+    override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel>
+            = arrayListOf(goToWallAction(contact), messengerAction(contact))
+
+    private fun messengerAction(contact: Contact): ContactActionViewModel
+            = ContactActionViewModel(
+            ContactAction(
+                    strings.viewConversation(),
+                    strings.facebookMessenger(),
+                    actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
+            ),
+            View.VISIBLE,
+            resources.getDrawable(R.drawable.ic_facebook_messenger))
+
+    private fun goToWallAction(contact: Contact): ContactActionViewModel = ContactActionViewModel(
+            ContactAction(
+                    strings.goToWall(),
+                    strings.facebook(),
+                    actionsFactory.view(URI.create("https://www.facebook.com/profile.php?id=" + contact.contactID))
+            ),
+            View.VISIBLE,
+            resources.getDrawable(R.drawable.ic_f_icon))
 
 
 }

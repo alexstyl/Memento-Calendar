@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -59,7 +58,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private TextView personNameView;
     private TextView ageAndSignView;
     private ContactItemsAdapter adapter;
-    private ExternalNavigator navigator;
     private ImageView toolbarGradient;
     @Inject Analytics analytics;
     @Inject Strings strings;
@@ -78,7 +76,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        navigator = new ExternalNavigator(this, analytics);
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
