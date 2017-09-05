@@ -94,8 +94,11 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
     override fun shouldUseHomeAsUp(): Boolean = true
 
     companion object {
-        fun getStartIntent(context: Context, dateSelected: Date): Intent =
-                Intent(context, NamedayActivity::class.java).apply { putExtraDate(dateSelected) }
+        fun getStartIntent(context: Context, date: Date): Intent =
+                Intent(context, NamedayActivity::class.java)
+                        .apply {
+                            putExtraDate(date)
+                        }
     }
 }
 
