@@ -7,21 +7,20 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.resources.DimensionResources;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Action;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -31,7 +30,6 @@ import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -166,30 +164,14 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(Gravity.START);
                 return true;
-            case R.id.action_select_date:
-                showSelectDateDialog();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void showSelectDateDialog() {
-        analytics.trackAction(Action.SELECT_DATE);
-        DatePickerDialogFragment
-                .newInstance(Date.Companion.today())
-                .show(getSupportFragmentManager(), "date_picker");
     }
 
     @Override
