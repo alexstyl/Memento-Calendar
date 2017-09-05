@@ -10,11 +10,9 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -199,21 +197,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     @Override
     public void displayAvailableActions(PersonAvailableActionsViewModel viewModel) {
         adapter.displayEvents(viewModel);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (wasCalledFromMemento()) {
-                    NavUtils.navigateUpFromSameTask(this);
-                } else {
-                    finish();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

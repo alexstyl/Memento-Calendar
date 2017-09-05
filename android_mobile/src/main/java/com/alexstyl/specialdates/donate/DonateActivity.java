@@ -47,11 +47,6 @@ public class DonateActivity extends MementoActivity {
     @Inject DonationPreferences donationPreferences;
 
     @Override
-    protected boolean shouldUseHomeAsUp() {
-        return true;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
