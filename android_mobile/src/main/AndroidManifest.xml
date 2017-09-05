@@ -163,7 +163,7 @@
         android:value=".upcoming.UpcomingEventsActivity" />
     </activity>
 
-    <activity android:name=".upcoming.widget.list.WidgetRouterActivity"/>
+    <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
 
     <!-- Services -->
     <service

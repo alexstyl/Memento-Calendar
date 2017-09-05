@@ -4,10 +4,6 @@ import android.content.Intent
 
 open class MementoPreferenceActivity : ThemedMementoActivity() {
 
-    override fun shouldUseHomeAsUp(): Boolean {
-        return true
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         val fragments = supportFragmentManager.fragments
