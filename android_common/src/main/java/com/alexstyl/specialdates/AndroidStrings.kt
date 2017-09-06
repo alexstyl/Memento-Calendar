@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class AndroidStrings(private val resources: Resources) : Strings {
-    override fun goToWall(): String = resources.getString(R.string.go_to_wall)
+    override fun postOnFacebook(): String = resources.getString(R.string.Post_on_Facebook)
 
     override fun facebook(): String = resources.getString(R.string.Facebook)
 

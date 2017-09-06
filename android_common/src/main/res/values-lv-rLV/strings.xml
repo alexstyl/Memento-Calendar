@@ -186,6 +186,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="has_birthday_on">Dzimšanas diena %s</string>
     <string name="has_birthday_on_age">Paliek %1$d vecs %2$s</string>
     <string name="title_add_birthday">Pievienot dzimšanas dienu</string>
-    <string name="go_to_wall">Apskatīt sienu</string>
+    <string name="Post_on_Facebook">Apskatīt sienu</string>
     <string name="romanian">Rumāņu</string>
 </resources>

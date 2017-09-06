@@ -5,6 +5,11 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
+
+    override fun postOnFacebook(): String = "Post on Facebook"
+
+    override fun facebook(): String = "Facebook"
+
     override fun viewConversation(): String = "View Conversations"
 
     override fun facebookMessenger(): String = "Messenger"

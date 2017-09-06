@@ -183,6 +183,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="has_birthday_on">Γενέθλια την %s</string>
     <string name="has_birthday_on_age">Γίνεται %1$d την %2$s</string>
     <string name="title_add_birthday">Προσθήκη γενεθλίων</string>
-    <string name="go_to_wall">Άνοιγμα Τοίχου</string>
+    <string name="Post_on_Facebook">Άνοιγμα Τοίχου</string>
     <string name="romanian">Ρωμάνικα</string>
 </resources>
