@@ -41,7 +41,7 @@ class FacebookContactActionsProvider(
 
     private fun goToWallAction(contact: Contact): ContactActionViewModel = ContactActionViewModel(
             ContactAction(
-                    strings.goToWall(),
+                    strings.postOnFacebook(),
                     strings.facebook(),
                     actionsFactory.view(URI.create("https://www.facebook.com/profile.php?id=" + contact.contactID))
             ),

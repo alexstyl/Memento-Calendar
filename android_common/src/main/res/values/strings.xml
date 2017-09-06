@@ -190,7 +190,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="has_birthday_on">Birthday on %s</string>
   <string name="has_birthday_on_age">Turns %1$d on %2$s</string>
   <string name="title_add_birthday">Add birthday</string>
-  <string name="go_to_wall">Open Wall</string>
+  <string name="Post_on_Facebook">Post on Facebook</string>
   <string name="romanian">Romanian</string>
   <string name="Open_Source">Open Source</string>
   <string name="Licenses">Licences</string>

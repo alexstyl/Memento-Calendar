@@ -9,6 +9,4 @@ ext {
     checkstyleVersion = '8.0'
     findbugsVersion = '3.0.1'
     pmdVersion = '5.8.1'
-
-
 }
