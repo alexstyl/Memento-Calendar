@@ -14,7 +14,9 @@ public enum Screen {
     EMAIL_SUPPORT("email support"),
     FACEBOOK_PROFILE("facebook_profile"),
     FACEBOOK_LOG_IN("facebook_login"),
-    FACEBOOK_PAGE("facebook_page_url");
+    FACEBOOK_PAGE("facebook_page_url"),
+    NAMEDAYS("namedays"),
+    PERSON("person");
 
     private final String screenName;
 

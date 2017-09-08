@@ -27,6 +27,7 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
@@ -77,6 +78,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
+        analytics.trackScreen(Screen.PERSON);
 
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
