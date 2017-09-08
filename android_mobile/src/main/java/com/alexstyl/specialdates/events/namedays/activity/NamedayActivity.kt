@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
+import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.getDateExtraOrThrow
@@ -42,6 +43,7 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
 
+        analytics.trackScreen(Screen.NAMEDAYS)
         namedayNavigator = NamedayNavigator(this, analytics)
 
         val toolbar = findViewById(R.id.memento_toolbar) as MementoToolbar
