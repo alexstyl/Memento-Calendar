@@ -183,7 +183,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_TAKE_PICTURE && resultCode == RESULT_OK) {
             analytics.trackImageCaptured();
