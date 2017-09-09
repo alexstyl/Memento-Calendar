@@ -58,14 +58,10 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
         subject.onNext(TRIGGER)
     }
 
-
     fun stopPresenting() {
-        if (disposable != null) {
-            disposable!!.dispose()
-        }
+        disposable?.dispose()
         settingsMonitorUpcoming.unregister()
         peopleEventsObserver.stopObserving()
         DonateMonitor.getInstance().removeListener(donateListener)
     }
-
 }
