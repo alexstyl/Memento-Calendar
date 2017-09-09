@@ -38,7 +38,7 @@ open class MementoActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun navigateUpToParent() {
+    fun navigateUpToParent() {
         val upIntent = NavUtils.getParentActivityIntent(this)
         if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot) {
             TaskStackBuilder.create(this)

@@ -11,6 +11,7 @@ import android.widget.RemoteViews;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
@@ -63,13 +64,19 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_upcoming_events);
             remoteViews.setRemoteAdapter(R.id.widget_upcoming_events_list, intent);
-
             remoteViews.setTextViewText(R.id.widget_upcoming_events_date, dateLabel);
+            setAddEventClickListener(context, remoteViews);
             setListClickListener(context, remoteViews);
             setListHeaderClickListener(context, remoteViews);
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
+    }
+
+    private void setAddEventClickListener(Context context, RemoteViews remoteViews) {
+        Intent intent = AddEventActivity.buildIntent(context);
+        PendingIntent todayDatePendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_add_event, todayDatePendingIntent);
     }
 
     private void setListHeaderClickListener(Context context, RemoteViews remoteViews) {
