@@ -28,20 +28,19 @@
 
       <TextView
         android:id="@+id/row_upcoming_event_contact_name"
-        style="Upcoming.Text"
+        style="@style/Upcoming.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
         tools:text="Alex Styl" />
 
       <TextView
         android:id="@+id/row_upcoming_event_contact_event"
-        style="Upcoming.Text"
+        style="@style/Upcoming.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8sp"
-        android:textColor="@color/anniversary_yellow"
-        tools:text="Turns 26" />
+        tools:text="Turns 26"
+        tools:textColor="@color/anniversary_yellow" />
 
     </LinearLayout>
 

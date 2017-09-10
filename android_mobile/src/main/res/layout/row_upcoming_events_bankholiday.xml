@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -15,18 +14,18 @@
     android:orientation="vertical">
 
     <TextView
+      style="@style/Upcoming.Text.Header"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/Bank_holiday"
-      android:textColor="@color/bankholiday_green"
-      android:textSize="14sp" />
+      android:textColor="@color/bankholiday_green" />
 
     <TextView
       android:id="@+id/row_upcoming_bankholiday"
+      style="@style/Upcoming.Text.Content"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8sp"
-      android:textSize="14sp"
+      android:layout_marginTop="@dimen/upcoming_space_between_title_and_content"
       tools:text="October Fest" />
 
   </LinearLayout>
