@@ -59,18 +59,19 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
     }
 
     override fun getAllContacts(): Contacts {
-        val allContacts = queryAllContacts()
-        cache.evictAll()
-        cache.addContacts(allContacts)
-        return allContacts
+        return queryAllContacts().apply {
+            cache.evictAll()
+            cache.addContacts(this)
+        }
     }
 
     private fun queryAllContacts(): Contacts {
-        val readableDatabase = eventSQLHelper.readableDatabase
-        val cursor = readableDatabase.query(
-                AnnualEventsContract.TABLE_NAME, null,
-                IS_A_FACEBOOK_CONTACT, null, null, null, null
-        )
+        val db = eventSQLHelper.readableDatabase
+        val cursor = db.rawQuery(
+                "SELECT * FROM ${AnnualEventsContract.TABLE_NAME}" +
+                        "WHERE ${AnnualEventsContract.SOURCE} == ? " +
+                        "GROUP BY ${AnnualEventsContract.CONTACT_ID}",
+                arrayOf(SOURCE_FACEBOOK.toString()))
 
         return cursor.use {
             return@use Contacts(SOURCE_FACEBOOK, List(it.count, { index ->
