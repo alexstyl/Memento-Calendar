@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.contact.ContactSource;
 
 import java.util.List;
 
@@ -14,11 +13,6 @@ public class ContactEventsMarshaller {
 
     private static final int DEFAULT_VALUES_SIZE = 5;
     private final ShortDateLabelCreator DATE_LABEL_CREATOR = ShortDateLabelCreator.INSTANCE;
-    @ContactSource private final int source;
-
-    public ContactEventsMarshaller(@ContactSource int source) {
-        this.source = source;
-    }
 
     public ContentValues[] marshall(List<ContactEvent> item) {
         ContentValues[] returningValues = new ContentValues[item.size()];
@@ -37,7 +31,7 @@ public class ContactEventsMarshaller {
         values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
         values.put(PeopleEventsContract.PeopleEvents.DATE, DATE_LABEL_CREATOR.createLabelWithYearPreferredFor(event.getDate()));
         values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, event.getType().getId());
-        values.put(PeopleEventsContract.PeopleEvents.SOURCE, source);
+        values.put(PeopleEventsContract.PeopleEvents.SOURCE, contact.getSource());
 
         putDeviceContactIdIfPresent(event, values);
 
