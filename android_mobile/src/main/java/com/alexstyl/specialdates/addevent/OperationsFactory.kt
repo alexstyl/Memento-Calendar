@@ -10,9 +10,9 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.Event
+import com.alexstyl.specialdates.events.database.EventTypeId
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
-import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.images.DecodedImage
 
 internal class OperationsFactory(private val rawContactID: Int, private val displayStringCreator: ShortDateLabelCreator) {
@@ -27,14 +27,14 @@ internal class OperationsFactory(private val rawContactID: Int, private val disp
         return builder.build()
     }
 
-    private fun androidIdOf(eventType: EventType): Int {
-        when (eventType) {
-            StandardEventType.BIRTHDAY -> CommonDataKinds.Event.TYPE_BIRTHDAY
-            StandardEventType.ANNIVERSARY -> CommonDataKinds.Event.TYPE_ANNIVERSARY
-            StandardEventType.CUSTOM -> CommonDataKinds.Event.TYPE_CUSTOM
-            StandardEventType.OTHER -> CommonDataKinds.Event.TYPE_OTHER
+    private fun androidIdOf(eventType: EventType): Int = when (eventType.id) {
+        EventTypeId.TYPE_BIRTHDAY -> CommonDataKinds.Event.TYPE_BIRTHDAY
+        EventTypeId.TYPE_ANNIVERSARY -> CommonDataKinds.Event.TYPE_ANNIVERSARY
+        EventTypeId.TYPE_CUSTOM -> CommonDataKinds.Event.TYPE_CUSTOM
+        EventTypeId.TYPE_OTHER -> CommonDataKinds.Event.TYPE_OTHER
+        else -> {
+            throw IllegalStateException("There is no Android type of $eventType")
         }
-        throw IllegalStateException("There is no Android type of $eventType")
     }
 
     private fun addRawContactID(builder: ContentProviderOperation.Builder) {
