@@ -9,8 +9,6 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.util.DateParser;
 
-import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
-
 public final class DebugPeopleEventsUpdater {
 
     private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
@@ -18,7 +16,7 @@ public final class DebugPeopleEventsUpdater {
 
     public static DebugPeopleEventsUpdater newInstance(Context context, NamedayUserSettings namedayUserSettings, ContactsProvider contactsProvider) {
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE);
-        ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller(SOURCE_DEVICE);
+        ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller();
         PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
 
         DeviceEventsDatabaseRefresher databaseRefresher = new DeviceEventsDatabaseRefresher(repository, deviceMarshaller, databaseProvider);

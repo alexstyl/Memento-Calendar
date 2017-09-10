@@ -58,7 +58,7 @@ public class StaticEventsContentProvider extends ContentProvider {
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
-        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(SOURCE_DEVICE);
+        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
         PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayUserSettings, namedayCalendarProvider, contactsProvider);
         PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);

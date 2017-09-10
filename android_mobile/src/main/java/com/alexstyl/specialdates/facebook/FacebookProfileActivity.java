@@ -60,7 +60,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
             }
         });
 
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller(SOURCE_FACEBOOK);
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         navigator = new ExternalNavigator(this, analytics);
