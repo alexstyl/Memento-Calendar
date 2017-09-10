@@ -69,8 +69,8 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         val db = eventSQLHelper.readableDatabase
         val cursor = db.rawQuery(
                 "SELECT * FROM ${AnnualEventsContract.TABLE_NAME}" +
-                        "WHERE ${AnnualEventsContract.SOURCE} == ? " +
-                        "GROUP BY ${AnnualEventsContract.CONTACT_ID}",
+                        " WHERE ${AnnualEventsContract.SOURCE} == ? " +
+                        " GROUP BY ${AnnualEventsContract.CONTACT_ID}",
                 arrayOf(SOURCE_FACEBOOK.toString()))
 
         return cursor.use {
