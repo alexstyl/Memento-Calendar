@@ -19,16 +19,15 @@
       android:layout_height="wrap_content"
       android:text="@string/namedays"
       android:textColor="@color/nameday_blue"
-      android:textSize="14sp" />
+      style="@style/Upcoming.Text.Header" />
 
     <TextView
+      style="@style/Upcoming.Text.Content"
       android:id="@+id/row_upcoming_namedays"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8sp"
+      android:layout_marginTop="@dimen/upcoming_space_between_title_and_content"
       android:ellipsize="end"
-      android:maxLines="2"
-      android:textSize="14sp"
       tools:text="Πέτρος, Μάκης, Δήμητρα, Μαρία και πόοοοοοσι ακόμα, πωπω, πόσα ονόματα γιορτάζουν πια σε αυτή την ημέρα είναι τρελό" />
 
   </LinearLayout>
