@@ -58,6 +58,7 @@
   </style>
 
   <style name="Upcoming.Text.Header">
+    <item name="android:fontFamily">sans-serif-condensed</item>
     <item name="android:textSize">16sp</item>
   </style>
 

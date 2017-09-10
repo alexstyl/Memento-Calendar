@@ -15,15 +15,15 @@
     android:orientation="vertical">
 
     <TextView
+      style="@style/Upcoming.Text.Header"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/namedays"
-      android:textColor="@color/nameday_blue"
-      style="@style/Upcoming.Text.Header" />
+      android:textColor="@color/nameday_blue" />
 
     <TextView
-      style="@style/Upcoming.Text.Content"
       android:id="@+id/row_upcoming_namedays"
+      style="@style/Upcoming.Text.Content"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/upcoming_space_between_title_and_content"

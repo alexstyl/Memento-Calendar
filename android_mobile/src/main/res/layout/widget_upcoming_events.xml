@@ -38,7 +38,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_grey"
     android:divider="@null"
-    android:dividerHeight="@dimen/widget_upcoming_vertical_padding"
+    android:dividerHeight="20dp"
     android:paddingLeft="@dimen/upcoming_event_padding_horizontal"
     android:paddingRight="@dimen/upcoming_event_padding_horizontal" />
 </LinearLayout>

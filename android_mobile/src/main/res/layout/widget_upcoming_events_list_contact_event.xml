@@ -15,10 +15,8 @@
     <ImageView
       android:id="@+id/row_upcoming_event_contact_image"
       style="@style/Upcoming.Avatar"
-      android:layout_marginBottom="10dp"
-      android:layout_marginRight="@dimen/widget_upcoming_vertical_padding"
-      android:layout_marginTop="10dp"
-      tools:background="#000" />
+      android:layout_marginRight="16dp"
+      tools:background="@mipmap/ic_launcher" />
 
     <LinearLayout
       android:layout_width="0dp"
@@ -31,7 +29,6 @@
         style="@style/Widget.Upcoming.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
         tools:text="Alex Styl" />
 
       <TextView
