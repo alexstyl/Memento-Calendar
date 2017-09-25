@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.contact.ContactFixture.aContactCalled
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.ui.widget.LetterPainter
@@ -20,10 +21,11 @@ class NamedayPresenterTest {
     private val mockView = Mockito.mock(NamedaysMVPView::class.java)
     private val LETTER_VARIANT = 5
 
-    private val CHECKING_DATE = Date.on(1, JANUARY, 2017)
+    private val ANY_DATE = Date.on(1, JANUARY, 2017)
     private val mockNamedayCalendar = Mockito.mock(NamedayCalendar::class.java)
     private var mockContactsProvider = Mockito.mock(ContactsProvider::class.java)
     private var mockLetterPainter = Mockito.mock(LetterPainter::class.java)
+    private val mockUserSettings = Mockito.mock(NamedayUserSettings::class.java)
 
     private lateinit var presenter: NamedayPresenter
 
@@ -31,15 +33,15 @@ class NamedayPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockLetterPainter), mockContactsProvider, workScheduler, resultScheduler)
+        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockLetterPainter), mockContactsProvider, mockUserSettings, workScheduler, resultScheduler)
         Mockito.`when`(mockLetterPainter.getVariant(Mockito.anyInt())).thenReturn(LETTER_VARIANT)
     }
 
     @Test
     fun whenNoNamedaysExistOnASpecificDate_thenNoViewModelsArePassedToTheView() {
-        Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, emptyList()))
+        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, emptyList()))
 
-        presenter.startPresenting(mockView, forDate = CHECKING_DATE)
+        presenter.startPresenting(mockView, forDate = ANY_DATE)
 
         Mockito.verify(mockView).displayNamedays(emptyList())
     }
@@ -47,9 +49,9 @@ class NamedayPresenterTest {
     @Test
     fun aNamedayWithAContact_returnsAViewModelWithThatContact() {
         Mockito.`when`(mockContactsProvider.allContacts).thenReturn(arrayListOf(aContactCalled("Kate Brown")))
-        Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, arrayListOf("Kate")))
+        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
 
-        presenter.startPresenting(mockView, forDate = CHECKING_DATE)
+        presenter.startPresenting(mockView, forDate = ANY_DATE)
 
         Mockito.verify(mockView).displayNamedays(
                 arrayListOf(
@@ -61,11 +63,23 @@ class NamedayPresenterTest {
     @Test
     fun aNamedayWithoutRelatedContacts_returnsOnlyTheNameday() {
         Mockito.`when`(mockContactsProvider.allContacts).thenReturn(emptyList())
-        Mockito.`when`(mockNamedayCalendar.getAllNamedayOn(CHECKING_DATE)).thenReturn(NamesInADate(CHECKING_DATE, arrayListOf("Kate")))
+        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
 
-        presenter.startPresenting(mockView, forDate = CHECKING_DATE)
+        presenter.startPresenting(mockView, forDate = ANY_DATE)
 
         val expectedViewModels = arrayListOf(NamedaysViewModel("Kate"))
+        Mockito.verify(mockView).displayNamedays(expectedViewModels)
+    }
+
+    @Test
+    fun irida() {
+        Mockito.`when`(mockContactsProvider.allContacts).thenReturn(arrayListOf(aContactCalled("Irida")))
+        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf("Ιριδα")))
+
+        presenter.startPresenting(mockView, forDate = ANY_DATE)
+
+        val expectedViewModels = arrayListOf(NamedaysViewModel("Ιριδα"),
+                CelebratingContactViewModel(aContactCalled("Irida"), "Irida", LETTER_VARIANT))
         Mockito.verify(mockView).displayNamedays(expectedViewModels)
     }
 

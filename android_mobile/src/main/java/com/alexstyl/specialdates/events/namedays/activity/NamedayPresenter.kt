@@ -1,12 +1,13 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-import com.alexstyl.gsc.Sound
-import com.alexstyl.gsc.SoundRules
+import com.alexstyl.gsc.SoundComparer.Companion.soundTheSame
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.DisplayName
+import com.alexstyl.specialdates.contact.Names
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
-import com.alexstyl.specialdates.util.HashMapList
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -14,48 +15,60 @@ import io.reactivex.disposables.Disposable
 class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
                        private val namedaysViewModelFactory: NamedaysViewModelFactory,
                        private val contactsProvider: ContactsProvider,
+                       private val namedayUserSettings: NamedayUserSettings,
                        private val workScheduler: Scheduler,
                        private val resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
 
     fun startPresenting(into: NamedaysMVPView, forDate: Date) {
-        disposable = Observable.fromCallable { namedayCalendar.getAllNamedayOn(forDate) }
-                .observeOn(workScheduler)
-                .map { it.names.asViewModels() }
-                .observeOn(resultScheduler)
-                .subscribe { namedaysViewModel ->
-                    into.displayNamedays(namedaysViewModel)
-                }
+        disposable =
+                Observable.fromCallable { namedayCalendar.getAllNamedaysOn(forDate) }
+                        .observeOn(workScheduler)
+                        .map { findAndCreateViewModelsOf(it.names) }
+                        .observeOn(resultScheduler)
+                        .subscribe { namedaysViewModel ->
+                            into.displayNamedays(namedaysViewModel)
+                        }
     }
 
     fun stopPresenting() = disposable?.dispose()
 
-    private fun List<String>.asViewModels(): List<NamedayScreenViewModel> {
-        val contacts = HashMapList<PhoneticName, Contact>()
-        for (contact in contactsProvider.allContacts) {
-            contact.displayName.firstNames.forEach {
-                contacts.addValue(it.toSounds(), contact)
-            }
-        }
-        return this.fold(listOf(), { list, name ->
-            val contactsForName = contacts.get(name.toSounds()) ?: emptyList()
-            list + namedaysViewModelFactory.viewModelsFor(name) + contactsForName.map {
+    private fun findAndCreateViewModelsOf(celebratingNames: List<String>): List<NamedayScreenViewModel> {
+        val allContacts = contactsProvider.allContacts
+
+        return celebratingNames.fold(listOf(), { list, celebratingName ->
+            val contactsCelebrating = allContacts.findContactsCalled(celebratingName)
+            list + namedaysViewModelFactory.viewModelsFor(celebratingName) + contactsCelebrating.map {
                 namedaysViewModelFactory.viewModelsFor(it)
             }
         })
 
     }
-}
 
-private fun String.toSounds(): PhoneticName {
-    val raw = this
-    return PhoneticName(ArrayList<Sound>()
-            .apply {
-                SoundRules.INSTANCE.getNextSound(raw, true).forEach {
-                    add(it!!)
+    private val DisplayName.names: Names
+        get() {
+            return if (namedayUserSettings.shouldLookupAllNames()) {
+                this.firstNames
+            } else {
+                this.firstNames
+            }
+        }
+
+
+    private fun List<Contact>.findContactsCalled(celebratingName: String): List<Contact> {
+        val list = ArrayList<Contact>()
+        this.forEach { contact ->
+            contact.displayName.names.forEach {
+                if (it.soundsLike(celebratingName)) {
+                    list.add(contact)
+                    return@forEach
                 }
-            })
+            }
+        }
+        return list
+    }
+
 }
 
-data class PhoneticName(val sounds: List<Sound>)
+private fun String.soundsLike(celebratingName: String): Boolean = soundTheSame(this, celebratingName)
