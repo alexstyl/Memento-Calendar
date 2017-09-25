@@ -33,7 +33,7 @@ public class NamedayCalendar {
         return strategy.getNamedaysFor(name, year);
     }
 
-    public NamesInADate getAllNamedayOn(Date date) {
+    public NamesInADate getAllNamedaysOn(Date date) {
         List<String> names = namedayBundle.getNamedaysFor(date).getNames();
         List<String> specialNames = strategy.getNamedayOn(date).getNames();
         List<String> arrayList = new ArrayList<>(names.size() + specialNames.size());
