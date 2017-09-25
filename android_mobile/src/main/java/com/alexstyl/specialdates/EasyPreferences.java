@@ -8,7 +8,7 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.StringRes;
 import android.support.v4.util.Pair;
 
-public class EasyPreferences {
+public final class EasyPreferences {
 
     private final SharedPreferences prefs;
     private final Resources res;

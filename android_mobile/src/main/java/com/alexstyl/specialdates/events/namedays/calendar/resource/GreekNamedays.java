@@ -57,7 +57,7 @@ public final class GreekNamedays {
     }
 
     public ArrayList<String> getNames() {
-        int year = Date.today().getYear();
+        int year = Date.Companion.today().getYear();
         refreshNamedaysIfNeeded(year);
         return namedays.getNames();
     }

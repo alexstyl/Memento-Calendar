@@ -1,8 +1,7 @@
 package com.alexstyl.specialdates.date;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
@@ -21,16 +20,16 @@ public final class ContactEvent {
         this.contact = contact;
     }
 
-    public String getLabel(Date dateWithYear, StringResources stringResources) {
+    public String getLabel(Date dateWithYear, Strings strings) {
         if (eventType == StandardEventType.BIRTHDAY) {
             if (eventDate.hasYear()) {
                 int age = dateWithYear.getYear() - eventDate.getYear();
                 if (age > 0) {
-                    return stringResources.getString(R.string.turns_age, age);
+                    return strings.turnsAge(age);
                 }
             }
         }
-        return eventType.getEventName(stringResources);
+        return eventType.getEventName(strings);
     }
 
     public Date getDate() {

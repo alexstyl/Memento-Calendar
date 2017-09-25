@@ -4,7 +4,7 @@
   <group android:id="@+id/import_events">
     <item
       android:id="@+id/nav_import_facebook"
-      android:icon="@drawable/ic_facebook_logo"
+      android:icon="@drawable/ic_facebook_logo_traced"
       android:title="@string/title_facebook_friends_import"
       app:actionLayout="@layout/navigation_new_feature" />
   </group>

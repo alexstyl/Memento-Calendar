@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.addevent;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,25 +17,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener;
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -43,6 +46,7 @@ import com.novoda.notils.caster.Views;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 public class AddEventActivity extends ThemedMementoActivity implements Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
@@ -55,7 +59,11 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private AddContactEventsPresenter presenter;
     private PermissionChecker permissionChecker;
     private FilePathProvider filePathProvider;
-    private Analytics analytics;
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,13 +72,13 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
 
-        analytics = AnalyticsProvider.getAnalytics(this);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         analytics.trackScreen(Screen.ADD_EVENT);
-        ImageLoader imageLoader = UILImageLoader.createLoader(getResources());
         filePathProvider = new FilePathProvider(this);
         MementoToolbar toolbar = Views.findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationAsClose();
+        toolbar.displayNavigationIconAsClose();
 
         AvatarPickerView avatarView = Views.findById(this, R.id.add_event_avatar);
         RecyclerView eventsView = Views.findById(this, R.id.add_event_events);
@@ -79,10 +87,9 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         ContactDetailsAdapter adapter = new ContactDetailsAdapter(contactDetailsListener);
         eventsView.setAdapter(adapter);
 
-        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this);
+        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
-        AndroidStringResources stringResources = new AndroidStringResources(getResources());
-        AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(stringResources);
+        AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(strings);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(
                 getSupportLoaderManager(),
                 this,
@@ -96,7 +103,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 getContentResolver(),
                 accountsProvider,
                 peopleEventsProvider,
-                DateDisplayStringCreator.INSTANCE
+                ShortDateLabelCreator.INSTANCE
         );
         MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
         ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
@@ -287,7 +294,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (presenter.isHoldingModifiedData()) {
@@ -295,13 +302,14 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 } else {
                     cancelActivity();
                 }
-                break;
+                return true;
             case R.id.menu_add_event_save:
                 presenter.saveChanges();
                 finishActivitySuccessfully();
-                break;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void promptToDiscardBeforeExiting() {
@@ -318,7 +326,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private void cancelActivity() {
         analytics.trackAddEventsCancelled();
         setResult(RESULT_CANCELED);
-        finish();
+        navigateUpToParent();
     }
 
     @Override
@@ -339,5 +347,9 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Override
     public void onDiscardChangesSelected() {
         cancelActivity();
+    }
+
+    public static Intent buildIntent(Context context) {
+        return new Intent(context, AddEventActivity.class);
     }
 }

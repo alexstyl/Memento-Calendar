@@ -1,20 +1,15 @@
 package com.alexstyl.specialdates;
 
-import android.content.Context;
 import android.content.Intent;
-
-import com.alexstyl.resources.StringResources;
 
 public class ShareAppIntentCreator {
 
     private static final String MARKET_LINK_SHORT = "http://goo.gl/ZQiAsi";
 
-    private final Context context;
-    private final StringResources stringResource;
+    private final Strings strings;
 
-    public ShareAppIntentCreator(Context context, StringResources stringResource) {
-        this.context = context;
-        this.stringResource = stringResource;
+    public ShareAppIntentCreator(Strings strings) {
+        this.strings = strings;
     }
 
     public Intent buildIntent() {
@@ -25,7 +20,6 @@ public class ShareAppIntentCreator {
     }
 
     private String createShareText() {
-        String appName = context.getString(R.string.app_name);
-        return String.format(stringResource.getString(R.string.share_text), appName, MARKET_LINK_SHORT);
+        return String.format(strings.shareText(), strings.appName(), MARKET_LINK_SHORT);
     }
 }

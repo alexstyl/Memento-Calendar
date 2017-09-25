@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.Node;
-import com.alexstyl.specialdates.date.TimePeriod;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ public class NamedayBundle {
     public NameCelebrations getDatesFor(String name) {
         NameCelebrations bundle = namesToDate.getDates(name);
         if (bundle.containsNoDate()) {
-            return NameCelebrations.EMPTY;
+            return new NameCelebrations(name);
         }
         return new NameCelebrations(bundle.getName(), bundle.getDates());
     }
@@ -30,9 +29,5 @@ public class NamedayBundle {
 
     public ArrayList<String> getNames() {
         return namedaysList.getNames();
-    }
-
-    public NamedayBundle getNamedaysFor(TimePeriod period) {
-        return null;
     }
 }

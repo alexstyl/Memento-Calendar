@@ -90,7 +90,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Czech">Čehu</string>
     <string name="Slovak">Slovāku</string>
     <string name="Russian">Krievu</string>
-    <string name="Latvian">Latviešu</string>
+    <string name="Latvian_Traditional">Latviešu</string>
     <string name="Hungarian">Ungāru</string>
     <string name="nameday_language_title">Vārda dienu kalendārs</string>
     <string name="no_sound">Klusums</string>
@@ -131,7 +131,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="copy_link">Kopēt saiti</string>
     <string name="copied_to_clipboard">Saite ir nokopēta</string>
     <string name="select_donation_amount">Izvēlies ziedojuma summu</string>
-    <string name="view_contact">Apskatīt kontaktpersonu</string>
+    <string name="View_contact">Apskatīt kontaktpersonu</string>
     <string name="no_birthday_set">Dzimšanas datums nav uzstādīts</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Kontaktpersonas ar svētku dienām nav atrastas.\n\nSpied '+', lai pievienotu"</string>
     <string name="No_contacts_with_events_found">"Kontaktpersonas ar svētku dienām nav atrastas"</string>
@@ -186,6 +186,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="has_birthday_on">Dzimšanas diena %s</string>
     <string name="has_birthday_on_age">Paliek %1$d vecs %2$s</string>
     <string name="title_add_birthday">Pievienot dzimšanas dienu</string>
-    <string name="go_to_wall">Apskatīt sienu</string>
+    <string name="Post_on_Facebook">Apskatīt sienu</string>
     <string name="romanian">Rumāņu</string>
 </resources>

@@ -32,7 +32,8 @@
   <string name="key_rate_previous_time_asked">key_rate_previous_time_asked</string>
   <string name="key_rate_triggered">key_rate_triggered</string>
   <string name="pref_namedays">pref_namedays</string>
-  <string name="key_app_theme">key_app_theme</string>
+  <!-- Value: Integer-->
+  <string name="key_app_theme_id">key_app_theme_id</string>
   <string name="pref_upcoming_widget_config">pref_upcoming_widget_config</string>
   <string name="key_upcoming_widget_variant">key_upcoming_widget_variant</string>
   <string name="key_upcoming_widget_opacity">key_upcoming_widget_opacity</string>

@@ -17,22 +17,21 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.alexstyl.specialdates.ExternalNavigator;
-import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.Strings;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.date.AndroidDateLabelCreator;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
@@ -44,9 +43,10 @@ import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
 import com.novoda.notils.meta.AndroidUtils;
 import com.novoda.notils.text.SimpleTextWatcher;
+
+import javax.inject.Inject;
 
 import static android.view.View.GONE;
 import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -64,6 +64,8 @@ public class SearchActivity extends ThemedMementoActivity {
     private static final int ID_CONTACTS = 31;
     private static final int ID_NAMEDAYS = 32;
     private static final int INITAL_COUNT = 5;
+    private static final int HALF = 2;
+    private static final int COLUMNS = 3;
 
     private int searchCounter = INITAL_COUNT;
     private SearchBar searchbar;
@@ -74,27 +76,32 @@ public class SearchActivity extends ThemedMementoActivity {
 
     private ViewFader fader = new ViewFader();
     private ViewGroup content;
-    private NamedayPreferences namedayPreferences;
     private ContactPermissionRequest permissions;
     private RecyclerView resultView;
     private PeopleEventsSearch peopleEventsSearch;
     private ContactEventViewModelFactory viewModelFactory;
-    private ExternalNavigator externalNavigator;
+    private SearchNavigator searchNavigator;
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
+    @Inject DateLabelCreator labelCreator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context()), NameMatcher.INSTANCE);
-        StringResources stringResources = new AndroidStringResources(getResources());
-        DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
-        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.today(), stringResources, dateLabelCreator));
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
 
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
+        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context(), namedayUserSettings, contactsProvider), NameMatcher.INSTANCE);
+        DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), strings, dateLabelCreator));
+
         analytics.trackScreen(Screen.SEARCH);
-        externalNavigator = new ExternalNavigator(this, analytics);
-        namedayPreferences = NamedayPreferences.newInstance(this);
+        searchNavigator = new SearchNavigator(this, analytics);
 
         searchbar = Views.findById(this, R.id.search_searchbar);
         setSupportActionBar(searchbar);
@@ -103,8 +110,8 @@ public class SearchActivity extends ThemedMementoActivity {
         resultView = Views.findById(this, android.R.id.list);
         resultView.setHasFixedSize(true);
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / 2;
-        resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, 3));
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / HALF;
+        resultView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, COLUMNS));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
         resultView.setLayoutManager(mLayoutManager);
@@ -120,19 +127,17 @@ public class SearchActivity extends ThemedMementoActivity {
 
         setupSearchField();
 
-        ImageLoader imageLoader = UILImageLoader.createCircleLoader(getResources());
-        adapter = new SearchResultAdapter(imageLoader);
+        adapter = new SearchResultAdapter(imageLoader, labelCreator);
         adapter.setSearchResultClickListener(listener);
         resultView.setAdapter(adapter);
 
         searchbar.setOnBackKeyPressedListener(onBackKeyPressedListener);
 
-        setupSearchbarHint(namedayPreferences);
+        setupSearchbarHint(namedayUserSettings);
 
-        if (namedayPreferences.isEnabled()) {
-            // we are loading namedays as well
+        if (namedayUserSettings.isEnabled()) {
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
-            namesAdapter = NameSuggestionsAdapter.newInstance(context(), onNameSelectedListener);
+            namesAdapter = NameSuggestionsAdapter.newInstance(context(), onNameSelectedListener, namedayUserSettings);
             namesSuggestionsView.setHasFixedSize(true);
             namesSuggestionsView.setLayoutManager(namedayManager);
             namesSuggestionsView.setAdapter(namesAdapter);
@@ -161,7 +166,6 @@ public class SearchActivity extends ThemedMementoActivity {
         }
 
         if (!permissions.permissionIsPresent()) {
-            Log.d("requesting permission");
             permissions.requestForPermission();
         }
     }
@@ -172,7 +176,7 @@ public class SearchActivity extends ThemedMementoActivity {
         permissions.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setupSearchbarHint(NamedayPreferences preferences) {
+    private void setupSearchbarHint(NamedayUserSettings preferences) {
         SearchHintCreator searchHintCreator = new SearchHintCreator(getResources(), preferences);
         searchbar.setHint(searchHintCreator.createHint());
     }
@@ -200,8 +204,9 @@ public class SearchActivity extends ThemedMementoActivity {
             case R.id.action_clear:
                 onClearPressed();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -252,7 +257,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
     private void clearResults() {
         adapter.clearResults();
-        if (namedayPreferences.isEnabled()) {
+        if (namedayUserSettings.isEnabled()) {
             namesAdapter.clearNames();
         }
     }
@@ -262,14 +267,14 @@ public class SearchActivity extends ThemedMementoActivity {
     }
 
     private void updateNameSuggestions(String text) {
-        if (namedayPreferences.isEnabled()) {
+        if (namedayUserSettings.isEnabled()) {
             namesAdapter.getFilter().filter(text);
         }
     }
 
     private void setupSearchField() {
         searchbar.addTextWatcher(DelayedTextWatcher.newInstance(textUpdatedTextUpdatedCallback));
-        if (namedayPreferences.isEnabled()) {
+        if (namedayUserSettings.isEnabled()) {
             searchbar.addTextWatcher(new SimpleTextWatcher() {
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -292,7 +297,7 @@ public class SearchActivity extends ThemedMementoActivity {
     private void onNameSet(String name) {
         // setting the text to the EditText will trigger the search for the name
         searchbar.setText(name);
-        if (namedayPreferences.isEnabled()) {
+        if (namedayUserSettings.isEnabled()) {
             namesAdapter.clearNames();
         }
     }
@@ -301,14 +306,12 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onContactClicked(Contact contact) {
-            externalNavigator.toContactDetails(contact);
+            searchNavigator.toContactDetails(contact);
         }
 
         @Override
         public void onNamedayClicked(Date date) {
-            Date currentYearDate = Date.on(date.getDayOfMonth(), date.getMonth(), Date.CURRENT_YEAR);
-            Intent intent = DateDetailsActivity.getStartIntent(context(), currentYearDate);
-            startActivity(intent);
+            searchNavigator.toNamedays(date);
         }
 
     };
@@ -317,7 +320,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public Loader<NameCelebrations> onCreateLoader(int id, Bundle args) {
-            return NamedaysLoader.newInstance(context(), searchQuery);
+            return NamedaysLoader.newInstance(context(), searchQuery, namedayUserSettings);
         }
 
         @Override
@@ -327,7 +330,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onLoaderReset(Loader<NameCelebrations> loader) {
-            adapter.setNamedays(NameCelebrations.EMPTY);
+            adapter.setNamedays(new NameCelebrations(""));
         }
     };
 

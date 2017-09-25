@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.MementoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:paddingBottom="10dp"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  android:paddingTop="10dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selectable_back"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <ImageView
+      android:id="@+id/row_person_call_icon"
+      android:layout_width="42dp"
+      android:layout_height="42dp"
+      android:layout_marginEnd="22dp"
+      android:layout_marginRight="22dp"
+      android:padding="4dp"
+      tools:src="@drawable/ic_call"
+      tools:tint="?colorAccent" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/row_person_call_number"
+        style="@style/Person.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="?colorAccent"
+        tools:text="(555) 54-23-493" />
+
+      <TextView
+        android:id="@+id/row_person_action_type"
+        style="@style/Person.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#a0000000"
+        tools:text="Home" />
+    </LinearLayout>
+  </LinearLayout>
+
+</com.alexstyl.specialdates.ui.MementoCardView>

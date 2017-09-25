@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
@@ -24,9 +24,11 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean canLoadMore = false;
     private final ImageLoader imageLoader;
     private String searchQuery;
+    private final DateLabelCreator labelCreator;
 
-    SearchResultAdapter(ImageLoader imageLoader) {
+    SearchResultAdapter(ImageLoader imageLoader, DateLabelCreator labelCreator) {
         this.imageLoader = imageLoader;
+        this.labelCreator = labelCreator;
     }
 
     void updateSearchResults(SearchResults searchResults) {
@@ -110,7 +112,7 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return SearchResultContactViewHolder.createFor(parent, imageLoader);
         }
         if (viewType == VIEWTYPE_NAMEDAYS_VIEW) {
-            return SearchResultNamedayViewHolder.createFor(parent);
+            return SearchResultNamedayViewHolder.createFor(parent, labelCreator);
         }
 
         if (viewType == VIEWTYPE_LOAD_MORE) {

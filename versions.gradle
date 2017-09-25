@@ -3,7 +3,10 @@ ext {
     play_services_version = '10.0.1'
     androidCompileSdkVersion = 25
     androidBuildToolsVersion = '25.0.2'
-    androidVersionCode = 79
-    androidVersionName = '11.2'
-}
+    androidVersionCode = 80
+    androidVersionName = '12'
 
+    checkstyleVersion = '8.0'
+    findbugsVersion = '3.0.1'
+    pmdVersion = '5.8.1'
+}

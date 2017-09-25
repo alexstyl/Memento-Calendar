@@ -8,44 +8,44 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.Strings;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Widget;
-import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateFormatUtils;
-import com.alexstyl.specialdates.datedetails.DateDetailsActivity;
+import com.alexstyl.specialdates.date.DateLabelCreator;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
+import javax.inject.Inject;
+
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private WidgetImageLoader imageLoader;
-    private StringResources stringResources;
-    private UpcomingWidgetPreferences preferences;
-    private TodayPeopleEventsView todayPeopleEventsView;
     private PermissionChecker permissionChecker;
-    private Analytics analytics;
+    private UpcomingWidgetPreferences preferences;
+    private WidgetImageLoader widgetImageLoader;
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
+    @Inject DateLabelCreator labelCreator;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (imageLoader == null) {
-            imageLoader = new WidgetImageLoader(
-                    AppWidgetManager.getInstance(context),
-                    UILImageLoader.createLoader(context.getResources())
-            );
-            preferences = new UpcomingWidgetPreferences(context);
-            todayPeopleEventsView = new TodayPeopleEventsView(context, AppWidgetManager.getInstance(context));
-            stringResources = new AndroidStringResources(context.getResources());
-            permissionChecker = new PermissionChecker(context);
-            analytics = AnalyticsProvider.getAnalytics(context);
-        }
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
+        widgetImageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), imageLoader);
+        preferences = new UpcomingWidgetPreferences(context);
+        permissionChecker = new PermissionChecker(context);
         super.onReceive(context, intent);
     }
 
@@ -72,7 +72,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateTodayWidget(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context)) {
+        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context, namedayUserSettings, contactsProvider)) {
             @Override
             void onNextDateLoaded(ContactEventsOnADate events) {
                 updateForDate(context, appWidgetManager, appWidgetIds, events);
@@ -88,19 +88,17 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
 
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
-        Date date = Date.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.today().getYear());
-        Intent intent = DateDetailsActivity.getStartIntent(context, date);
+        Date date = Date.Companion.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.Companion.today().getYear());
+        Intent intent = UpcomingEventsActivity.getStartIntent(context);
         intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        String title = toString(context, date);
+        String title = labelOf(date);
 
-        final int N = appWidgetIds.length;
-
-        String label = NaturalLanguageUtils.joinContacts(stringResources, contactEvents.getContacts(), 2);
+        String label = NaturalLanguageUtils.joinContacts(strings, contactEvents.getContacts(), 2);
 
         WidgetVariant selectedVariant = preferences.getSelectedVariant();
         TransparencyColorCalculator transparencyColorCalculator = new TransparencyColorCalculator();
@@ -108,11 +106,9 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         int selectedTextColor = context.getResources().getColor(selectedVariant.getTextColor());
 
         WidgetColorCalculator calculator = new WidgetColorCalculator(selectedTextColor);
-        int finalHeaderColor = calculator.getColor(Date.today(), date);
+        int finalHeaderColor = calculator.getColor(Date.Companion.today(), date);
         int avatarSizeInPx = context.getResources().getDimensionPixelSize(R.dimen.widget_avatar_size);
-        for (int i = 0; i < N; i++) {
-            final int appWidgetId = appWidgetIds[i];
-
+        for (int appWidgetId : appWidgetIds) {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_today);
@@ -130,12 +126,12 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
-            imageLoader.loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
+            widgetImageLoader.loadPicture(contactEvents.getContacts(), appWidgetId, remoteViews, avatarSizeInPx);
         }
     }
 
-    private String toString(Context context, Date todayDate) {
-        return DateFormatUtils.formatTimeStampString(context, todayDate.toMillis(), false, true);
+    private String labelOf(Date todayDate) {
+        return labelCreator.createWithYearPreferred(todayDate);
     }
 
     public void onUpdateNoEventsFound(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -169,5 +165,4 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
 }

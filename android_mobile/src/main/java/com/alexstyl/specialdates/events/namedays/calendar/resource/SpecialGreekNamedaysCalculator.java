@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
@@ -80,6 +80,7 @@ class SpecialGreekNamedaysCalculator {
         addSpecialChloe(node, namedaysList);
     }
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialPropatorwn(Node node, NamedaysList namedaysList) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, Calendar.DECEMBER);
@@ -95,13 +96,14 @@ class SpecialGreekNamedaysCalculator {
         }
     }
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
-        int year = Date.today().getYear();
-        Date date = Date.on(23, DateConstants.APRIL, year);
+        int year = Date.Companion.today().getYear();
+        Date date = Date.Companion.on(23, Months.APRIL, year);
         if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2);
         } else {
-            date = Date.on(25, DateConstants.APRIL, year);
+            date = Date.Companion.on(25, Months.APRIL, year);
         }
 
         for (String variation : MARKOS_ALTS) {
@@ -124,8 +126,9 @@ class SpecialGreekNamedaysCalculator {
             "Γίτσα"
     );
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
-        Date date = Date.on(23, DateConstants.APRIL, Date.today().getYear());
+        Date date = Date.Companion.on(23, Months.APRIL, Date.Companion.today().getYear());
 
         Date actualDate;
         if (COMPARATOR.compare(easter, date) > 0) {
@@ -140,6 +143,7 @@ class SpecialGreekNamedaysCalculator {
         }
     }
 
+    @SuppressWarnings({"MagicNumber"})
     private void addSpecialChloe(Node node, NamedaysList namedaysList) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.FEBRUARY);
@@ -157,7 +161,7 @@ class SpecialGreekNamedaysCalculator {
 
     private static Date createDayDateFrom(Calendar calendar) {
         @MonthInt int month = calendar.get(Calendar.MONTH);
-        return Date.on(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
+        return Date.Companion.on(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
     }
 
 }
