@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.activity;
 
 import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.ui.widget.LetterPainter;
 
@@ -18,7 +19,10 @@ public class NamedaysInADayModule {
     }
 
     @Provides
-    NamedayPresenter presenter(NamedayCalendar calendar, NamedaysViewModelFactory namedaysViewModelFactory, ContactsProvider contactsProvider) {
-        return new NamedayPresenter(calendar, namedaysViewModelFactory, contactsProvider, Schedulers.io(), AndroidSchedulers.mainThread());
+    NamedayPresenter presenter(NamedayCalendar calendar,
+                               NamedaysViewModelFactory namedaysViewModelFactory,
+                               ContactsProvider contactsProvider,
+                               NamedayUserSettings namedayUserSettings) {
+        return new NamedayPresenter(calendar, namedaysViewModelFactory, contactsProvider, namedayUserSettings, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }
