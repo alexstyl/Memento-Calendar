@@ -117,7 +117,7 @@ public class DailyReminderIntentService extends IntentService {
     private void notifyForNamedaysFor(Date date) {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, date.getYear());
-        NamesInADate names = namedayCalendar.getAllNamedayOn(date);
+        NamesInADate names = namedayCalendar.getAllNamedaysOn(date);
         if (containsNames(names)) {
             notifier.forNamedays(names.getNames(), date);
         }

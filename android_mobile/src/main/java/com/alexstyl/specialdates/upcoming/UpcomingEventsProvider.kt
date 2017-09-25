@@ -48,7 +48,7 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
         val namedays = ArrayList<NamesInADate>()
 
         while (COMPARATOR.compare(indexDate, toDate) < 0) {
-            val allNamedayOn = namedayCalendar.getAllNamedayOn(indexDate)
+            val allNamedayOn = namedayCalendar.getAllNamedaysOn(indexDate)
             if (allNamedayOn.nameCount() > 0) {
                 namedays.add(allNamedayOn)
             }
