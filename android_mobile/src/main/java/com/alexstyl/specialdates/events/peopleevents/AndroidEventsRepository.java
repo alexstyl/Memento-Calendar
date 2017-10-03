@@ -13,7 +13,6 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
-import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.logger.simple.Log;
 
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 
 class AndroidEventsRepository {
@@ -64,7 +64,7 @@ class AndroidEventsRepository {
                 try {
                     Date eventDate = getEventDateFrom(cursor);
                     long eventId = getEventIdFrom(cursor);
-                    Contact contact = contactsProvider.getContact(contactId, AnnualEventsContract.SOURCE_DEVICE);
+                    Contact contact = contactsProvider.getContact(contactId, SOURCE_DEVICE);
                     events.add(new ContactEvent(new Optional<>(eventId), eventType, eventDate, contact));
                 } catch (DateParseException e) {
                     ErrorTracker.track(e);
@@ -105,8 +105,9 @@ class AndroidEventsRepository {
                 return ANNIVERSARY;
             case ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM:
                 return CUSTOM;
+            default:
+                return OTHER;
         }
-        return OTHER;
     }
 
     private boolean isInvalid(Cursor cursor) {

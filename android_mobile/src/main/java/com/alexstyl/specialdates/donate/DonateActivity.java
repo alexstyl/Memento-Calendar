@@ -14,33 +14,37 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.alexstyl.android.Version;
-import com.alexstyl.resources.StringResources;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 import com.alexstyl.specialdates.donate.util.IabHelper;
-import com.alexstyl.specialdates.images.UILImageLoader;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 public class DonateActivity extends MementoActivity {
 
     private static final int REQUEST_CODE = 1004;
+    private static final int SCROLL_DOWN_ANIMATION_DELAY = 2000;
     private static final URI DEV_IMAGE_URI = URI.create("http://alexstyl.com/memento-calendar/dev.jpg");
+    private static final int VELOCITY_Y = 50;
 
     private DonatePresenter donatePresenter;
     private SeekBar donateBar;
     private CoordinatorLayout coordinator;
 
-    @Override
-    protected boolean shouldUseHomeAsUp() {
-        return true;
-    }
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ImageLoader imageLoader;
+    @Inject IabHelper iabHelper;
+    @Inject DonationPreferences donationPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +52,17 @@ public class DonateActivity extends MementoActivity {
 
         setContentView(R.layout.activity_donate);
 
-        final Toolbar toolbar = Views.findById(this, R.id.toolbar);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
+        Toolbar toolbar = Views.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
 
         coordinator = Views.findById(this, R.id.donate_coordinator);
         ImageView avatar = Views.findById(this, R.id.donate_avatar);
-        UILImageLoader.createLoader(getResources()).loadImage(DEV_IMAGE_URI, avatar);
+        imageLoader
+                .load(DEV_IMAGE_URI)
+                .into(avatar);
 
         final AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
@@ -62,14 +71,11 @@ public class DonateActivity extends MementoActivity {
             appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
 
-        StringResources stringResources = new AndroidStringResources(getResources());
-        Analytics analytics = AnalyticsProvider.getAnalytics(this);
-
-        DonationService donationService = new AndroidDonationService(new IabHelper(this, AndroidDonationConstants.PUBLIC_KEY), this, DonationPreferences.newInstance(this), analytics);
+        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
-        donatePresenter = new DonatePresenter(analytics, donationService, new TextViewLabelSetter(donateButton), stringResources);
+        donatePresenter = new DonatePresenter(analytics, donationService, new TextViewLabelSetter(donateButton), strings);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +96,9 @@ public class DonateActivity extends MementoActivity {
             private void scrollToDonate() {
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
                 AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-                behavior.onNestedFling(coordinator, appBarLayout, null, 0, 50, true);
+                behavior.onNestedFling(coordinator, appBarLayout, null, 0, VELOCITY_Y, true);
             }
-        }, 2000);
+        }, SCROLL_DOWN_ANIMATION_DELAY);
 
     }
 

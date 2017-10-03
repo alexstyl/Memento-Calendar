@@ -2,13 +2,14 @@ package com.alexstyl.specialdates.upcoming.widget.list;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel;
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType;
 
@@ -17,23 +18,23 @@ import java.util.List;
 class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final int VIEW_TYPE_COUNT = 3;
+    private static final int DAYS_IN_A_MONTH = 30;
     private final String packageName;
     private final UpcomingEventsProvider peopleEventsProvider;
-    private final DimensionResources dimensResources;
-    private final Context context;
+    private final Resources resources;
     private final CircularAvatarFactory avatarFactory;
+    private final Context context;
 
     private List<UpcomingRowViewModel> rows;
 
     UpcomingEventsViewsFactory(String packageName,
                                UpcomingEventsProvider peopleEventsProvider,
-                               DimensionResources dimensResources,
-                               Context context,
+                               Context context, Resources resources,
                                CircularAvatarFactory avatarFactory) {
         this.packageName = packageName;
-        this.peopleEventsProvider = peopleEventsProvider;
-        this.dimensResources = dimensResources;
         this.context = context;
+        this.resources = resources;
+        this.peopleEventsProvider = peopleEventsProvider;
         this.avatarFactory = avatarFactory;
     }
 
@@ -44,8 +45,12 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onDataSetChanged() {
-        Date date = Date.today();
-        rows = peopleEventsProvider.calculateEventsBetween(TimePeriod.between(date, date.addDay(30)));
+        Date date = Date.Companion.today();
+        rows = peopleEventsProvider.calculateEventsBetween(aMonthFrom(date));
+    }
+
+    private TimePeriod aMonthFrom(Date date) {
+        return TimePeriod.Companion.between(date, date.addDay(DAYS_IN_A_MONTH));
     }
 
     @Override
@@ -59,17 +64,21 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @SuppressLint("SwitchIntDef")
     private UpcomingEventViewBinder createBinderFor(UpcomingRowViewModel viewModel) {
         switch (viewModel.getViewType()) {
-            case UpcomingRowViewType.YEAR: {
-                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_year);
-                return new YearBinder(view);
+            case UpcomingRowViewType.DATE_HEADER: {
+                RemoteViews view = new RemoteViews(packageName, R.layout.widget_upcoming_events_list_date);
+                return new DateHeaderBinder(view);
             }
-            case UpcomingRowViewType.MONTH: {
-                RemoteViews view = new RemoteViews(packageName, R.layout.row_widget_upcoming_event_month);
-                return new MonthBinder(view);
+            case UpcomingRowViewType.BANKHOLIDAY: {
+                RemoteViews view = new RemoteViews(packageName, R.layout.widget_upcomingevents_list_bankholiday);
+                return new BankHolidayBinder(view, context);
             }
-            case UpcomingRowViewType.UPCOMING_EVENTS: {
-                RemoteViews remoteViews = new RemoteViews(packageName, R.layout.row_widget_upcoming_event);
-                return new UpcomingEventsBinder(remoteViews, context, avatarFactory, dimensResources);
+            case UpcomingRowViewType.NAMEDAY_CARD: {
+                RemoteViews view = new RemoteViews(packageName, R.layout.widget_upcoming_events_list_nameday);
+                return new NamedaysBinder(view, context);
+            }
+            case UpcomingRowViewType.CONTACT_EVENT: {
+                RemoteViews remoteViews = new RemoteViews(packageName, R.layout.widget_upcoming_events_list_contact_event);
+                return new ContactEventBinder(remoteViews, resources, context, avatarFactory);
             }
             default:
                 throw new IllegalStateException("Unhandled type " + viewModel.getViewType());

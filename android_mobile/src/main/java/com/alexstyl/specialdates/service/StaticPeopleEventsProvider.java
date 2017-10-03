@@ -5,22 +5,23 @@ import android.database.Cursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 
+import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.SQLArgumentBuilder;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
+import com.alexstyl.specialdates.contact.ContactSource;
+import com.alexstyl.specialdates.contact.Contacts;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.events.database.SourceType;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
@@ -28,14 +29,18 @@ import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
 
 class StaticPeopleEventsProvider {
 
     private static final String DATE_FROM = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) >= ?";
     private static final String DATE_TO = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) <= ?";
     private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
-    private static final String[] PEOPLE_PROJECTION = new String[]{PeopleEventsContract.PeopleEvents.DATE};
+    private static final String[] PEOPLE_PROJECTION = {PeopleEventsContract.PeopleEvents.DATE};
     private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
     private static final String[] PROJECTION = {
             PeopleEventsContract.PeopleEvents.CONTACT_ID,
@@ -64,15 +69,60 @@ class StaticPeopleEventsProvider {
     }
 
     ContactEventsOnADate fetchEventsOn(Date date) {
-        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.between(date, date)));
+        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
     }
 
     List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
-        List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = queryEventsFor(timeDuration);
+        List<ContactEvent> contactEvents = new ArrayList<>(cursor.getCount());
+
+        List<Long> deviceIds = new ArrayList<>(cursor.getCount());
+        List<Long> facebookIds = new ArrayList<>(cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            long contactId = getContactIdFrom(cursor);
+            int source = getContactSourceFrom(cursor);
+
+            switch (source) {
+                case ContactSource.SOURCE_DEVICE:
+                    deviceIds.add(contactId);
+                    break;
+                case ContactSource.SOURCE_FACEBOOK:
+                    facebookIds.add(contactId);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Source " + source + " not managed");
+            }
+        }
+
+        Contacts deviceContacts = contactsProvider.getContacts(deviceIds, ContactSource.SOURCE_DEVICE);
+        Contacts facebookContacts = contactsProvider.getContacts(facebookIds, ContactSource.SOURCE_FACEBOOK);
+        Map<Integer, Contacts> contacts = new HashMap<>();
+        contacts.put(ContactSource.SOURCE_DEVICE, deviceContacts);
+        contacts.put(ContactSource.SOURCE_FACEBOOK, facebookContacts);
+
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            try {
+                Contacts contactsOfSource = contacts.get(getContactSourceFrom(cursor));
+                Contact contact = contactsOfSource.getContact(getContactIdFrom(cursor));
+                if (contact != null) {
+                    ContactEvent contactEvent = getContactEventFrom(cursor, contact);
+                    contactEvents.add(contactEvent);
+                }
+            } catch (ContactNotFoundException e) {
+                ErrorTracker.track(e);
+            }
+        }
+        cursor.close();
+        return Collections.unmodifiableList(contactEvents);
+    }
+
+    List<ContactEvent> fetchEventsFor(Contact contact) {
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        Cursor cursor = queryEventsOf(contact);
         while (cursor.moveToNext()) {
             try {
-                ContactEvent contactEvent = getContactEventFrom(cursor);
+                ContactEvent contactEvent = getContactEventFrom(cursor, contact);
                 contactEvents.add(contactEvent);
             } catch (ContactNotFoundException e) {
                 Log.w(e);
@@ -90,8 +140,24 @@ class StaticPeopleEventsProvider {
         }
     }
 
+    private Cursor queryEventsOf(Contact contact) {
+        String[] selectArgs = {
+                String.valueOf(contact.getContactID()),
+                String.valueOf(contact.getSource())
+        };
+
+        return resolver.query(
+                PeopleEventsContract.PeopleEvents.CONTENT_URI,
+                PROJECTION,
+                PeopleEventsContract.PeopleEvents.CONTACT_ID + " = ? "
+                        + "AND " + PeopleEventsContract.PeopleEvents.SOURCE + " = ?",
+                selectArgs,
+                null
+        );
+    }
+
     private Cursor queryPeopleEvents(TimePeriod timePeriod, String sortOrder) {
-        String[] selectArgs = new String[]{
+        String[] selectArgs = {
                 SQLArgumentBuilder.dateWithoutYear(timePeriod.getStartingDate()),
                 SQLArgumentBuilder.dateWithoutYear(timePeriod.getEndingDate()),
         };
@@ -115,15 +181,15 @@ class StaticPeopleEventsProvider {
     }
 
     private static TimePeriod firstHalfOf(TimePeriod timeDuration) {
-        return TimePeriod.between(
+        return TimePeriod.Companion.between(
                 timeDuration.getStartingDate(),
-                Date.endOfYear(timeDuration.getStartingDate().getYear())
+                Date.Companion.endOfYear(timeDuration.getStartingDate().getYear())
         );
     }
 
     private static TimePeriod secondHalfOf(TimePeriod timeDuration) {
-        return TimePeriod.between(
-                Date.startOfTheYear(timeDuration.getEndingDate().getYear()),
+        return TimePeriod.Companion.between(
+                Date.Companion.startOfYear(timeDuration.getEndingDate().getYear()),
                 timeDuration.getEndingDate()
         );
     }
@@ -138,11 +204,11 @@ class StaticPeopleEventsProvider {
             if (cursor.moveToFirst()) {
                 Date closestDate = getDateFrom(cursor);
 
-                return Date.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
-                               date.getYear()
+                return Date.Companion.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
+                                         date.getYear()
                 );
             }
-            throw new NoEventsFoundException();
+            throw new NoEventsFoundException("No static even found after or on " + date);
         } finally {
             cursor.close();
         }
@@ -160,7 +226,7 @@ class StaticPeopleEventsProvider {
 
     private String[] monthAndDayOf(Date date) {
         return new String[]{
-                DateDisplayStringCreator.INSTANCE.stringOfNoYear(date)
+                ShortDateLabelCreator.INSTANCE.createLabelWithNoYearFor(date)
         };
     }
 
@@ -170,7 +236,6 @@ class StaticPeopleEventsProvider {
         try {
             return DateParser.INSTANCE.parse(rawDate);
         } catch (DateParseException e) {
-            e.printStackTrace();
             throw new DeveloperError("Invalid date stored to database. [" + rawDate + "]");
         }
     }
@@ -178,7 +243,7 @@ class StaticPeopleEventsProvider {
     private EventType getEventType(Cursor cursor) {
         int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.EVENT_TYPE);
         @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
-        if (rawEventType == EventColumns.TYPE_CUSTOM) {
+        if (rawEventType == TYPE_CUSTOM) {
             Optional<Long> deviceEventIdFrom = getDeviceEventIdFrom(cursor);
             if (deviceEventIdFrom.isPresent()) {
                 return queryCustomEvent(deviceEventIdFrom.get());
@@ -188,10 +253,7 @@ class StaticPeopleEventsProvider {
         return StandardEventType.fromId(rawEventType);
     }
 
-    private ContactEvent getContactEventFrom(Cursor cursor) throws ContactNotFoundException {
-        long contactId = getContactIdFrom(cursor);
-        int source = getContactSourceFrom(cursor);
-        Contact contact = contactsProvider.getContact(contactId, source);
+    private ContactEvent getContactEventFrom(Cursor cursor, Contact contact) throws ContactNotFoundException {
         Date date = getDateFrom(cursor);
         EventType eventType = getEventType(cursor);
 
@@ -204,7 +266,8 @@ class StaticPeopleEventsProvider {
         return cursor.getLong(contactIdIndex);
     }
 
-    @SourceType
+    @ContactSource
+    @SuppressWarnings("WrongConstant")
     private int getContactSourceFrom(Cursor cursor) {
         int sourceTypeIdex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.SOURCE);
         return cursor.getInt(sourceTypeIdex);

@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.DateConstants.*;
+import static com.alexstyl.specialdates.date.Months.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.fail;
 
@@ -21,7 +21,7 @@ public class NamedayJSONParserTest {
     @Before
     public void setUp() throws JSONException {
         JavaJSONResourceLoader resourceLoader = new JavaJSONResourceLoader();
-        NamedayJSONResourceProvider resourceProvider = new NamedayJSONResourceProvider(resourceLoader);
+        NamedayJSONProvider resourceProvider = new NamedayJSONProvider(resourceLoader);
         namedayJSON = resourceProvider.getNamedayJSONFor(NamedayLocale.GREEK);
 
     }
@@ -36,21 +36,21 @@ public class NamedayJSONParserTest {
     public void alexandrosNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αλέξανδρος");
-        assertThatContainsDate(dates, Date.on(30, AUGUST));
+        assertThatContainsDate(dates, Date.Companion.on(30, AUGUST));
     }
 
     @Test
     public void davidNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Δαβίδ");
-        assertThatContainsDate(dates, Date.on(26, JUNE));
+        assertThatContainsDate(dates, Date.Companion.on(26, JUNE));
     }
 
     @Test
     public void amaliaNamedayIsReturnedCorrectly() {
         NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFrom(namedayJSON);
         NameCelebrations dates = namedayBundle.getDatesFor("Αμαλία");
-        assertThatContainsDate(dates, Date.on(10, JULY));
+        assertThatContainsDate(dates, Date.Companion.on(10, JULY));
     }
 
     private static void assertThatContainsDate(NameCelebrations celebrations, Date date) {

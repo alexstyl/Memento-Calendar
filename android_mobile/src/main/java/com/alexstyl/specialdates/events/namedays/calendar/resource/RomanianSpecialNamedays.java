@@ -29,7 +29,7 @@ final class RomanianSpecialNamedays implements SpecialNamedays {
         return names;
     }
 
-    public RomanianSpecialNamedays(RomanianNamedays namedays) {
+    private RomanianSpecialNamedays(RomanianNamedays namedays) {
         this.namedays = namedays;
     }
 

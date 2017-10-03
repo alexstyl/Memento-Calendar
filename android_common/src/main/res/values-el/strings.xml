@@ -88,7 +88,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Czech">Τσέχικα</string>
     <string name="Slovak">Σλοβάκικα</string>
     <string name="Russian">Ρώσικα</string>
-    <string name="Latvian">Λατβικά</string>
+    <string name="Latvian_Traditional">Λατβικά</string>
     <string name="Hungarian">Ουγγρικά</string>
     <string name="nameday_language_title">Γλώσσα Εορτολογίου</string>
     <string name="no_sound">Αθόρυβο</string>
@@ -129,7 +129,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="copy_link">Αντιγραφή</string>
     <string name="copied_to_clipboard">Το URL αντιγράφθηκε στο πρόχειρο</string>
     <string name="select_donation_amount">Επιλέξτε το ποσό που θα θέλατε να προσφέρετε</string>
-    <string name="view_contact">Προβολή επαφής</string>
+    <string name="View_contact">Προβολή επαφής</string>
     <string name="no_birthday_set">Δεν έχει οριστεί ημερομηνία γενεθλίων</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Δεν βρέθηκαν επαφές με εορτές. Πατήστε το '+' για προσθήκη"</string>
     <string name="No_contacts_with_events_found">"Δεν βρέθηκαν επαφές με εορτές"</string>
@@ -183,6 +183,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="has_birthday_on">Γενέθλια την %s</string>
     <string name="has_birthday_on_age">Γίνεται %1$d την %2$s</string>
     <string name="title_add_birthday">Προσθήκη γενεθλίων</string>
-    <string name="go_to_wall">Άνοιγμα Τοίχου</string>
+    <string name="Post_on_Facebook">Άνοιγμα Τοίχου</string>
     <string name="romanian">Ρωμάνικα</string>
 </resources>

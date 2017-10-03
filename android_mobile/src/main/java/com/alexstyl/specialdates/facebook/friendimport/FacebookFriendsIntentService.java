@@ -21,10 +21,9 @@ import com.alexstyl.specialdates.facebook.UserCredentials;
 import java.net.URL;
 import java.util.List;
 
-import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
-
 public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();
+    private static final int NOTIFICATION_ID = 123;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -46,7 +45,7 @@ public class FacebookFriendsIntentService extends IntentService {
         CalendarURLCreator calendarURLCreator = new CalendarURLCreator();
 
         URL calendarUrl = calendarURLCreator.createFrom(userCredentials);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller(SOURCE_FACEBOOK);
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
         try {
             List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
@@ -66,7 +65,7 @@ public class FacebookFriendsIntentService extends IntentService {
                 .setContentTitle("Friends fetched")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .build();
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(123, notification);
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notification);
     }
 
     private boolean isAnnonymous(UserCredentials userCredentials) {

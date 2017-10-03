@@ -22,7 +22,7 @@ public final class FacebookFriendsScheduler {
     }
 
     public void scheduleNext() {
-        DateAndTime dateAndTime = new DateAndTime(Date.today().addDay(1), EIGHT_O_CLOCK);
+        DateAndTime dateAndTime = new DateAndTime(Date.Companion.today().addDay(1), EIGHT_O_CLOCK);
         PendingIntent pi = PendingIntent.getService(
                 context,
                 0,

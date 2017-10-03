@@ -13,19 +13,19 @@ public class NamedayCalendarProvider {
     private static NamedayCalendar cachedCalendar;
 
     private final SpecialNamedaysHandlerFactory factory;
-    private final NamedayJSONResourceProvider jsonProvider;
+    private final NamedayJSONProvider jsonProvider;
 
     /**
      * @deprecated Use the constructor instead.
      */
     public static NamedayCalendarProvider newInstance(Resources resources) {
         NamedayJSONResourceLoader loader = new AndroidJSONResourceLoader(resources);
-        NamedayJSONResourceProvider jsonResourceProvider = new NamedayJSONResourceProvider(loader);
+        NamedayJSONProvider jsonResourceProvider = new NamedayJSONProvider(loader);
         SpecialNamedaysHandlerFactory factory = new SpecialNamedaysHandlerFactory();
         return new NamedayCalendarProvider(jsonResourceProvider, factory);
     }
 
-    public NamedayCalendarProvider(NamedayJSONResourceProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
+    public NamedayCalendarProvider(NamedayJSONProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
         this.factory = factory;
         this.jsonProvider = jsonProvider;
     }

@@ -1,13 +1,12 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.specialdates.contact.DisplayName;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.service.PeopleEventsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +24,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleEventsSearchTest {
 
-    private static final Contact ALEX = new TestContact(1, DisplayName.from("Alex Styl"));
-    private static final Contact MARIA = new TestContact(2, DisplayName.from("Maria Papadopoulou"));
-    private static final Contact MIMOZA = new TestContact(3, DisplayName.from("Mimoza Dereks"));
-    private static final Date JANUARY_1st = Date.startOfTheYear(2016);
+    private static final Contact ALEX = ContactFixture.aContactCalled("Alex Styl");
+    private static final Contact MARIA = ContactFixture.aContactCalled("Maria Papadopoulou");
+    private static final Contact MIMOZA = ContactFixture.aContactCalled("Mimoza Dereks");
+    private static final Date JANUARY_1st = Date.Companion.startOfYear(2016);
 
     private PeopleEventsSearch search;
     @Mock
@@ -47,9 +46,9 @@ public class PeopleEventsSearchTest {
     }
 
     private static TimePeriod aYearFromNow() {
-        Date today = Date.today();
+        Date today = Date.Companion.today();
         Date aYearFromNow = today.addDay(364);
-        return TimePeriod.between(today, aYearFromNow);
+        return TimePeriod.Companion.between(today, aYearFromNow);
     }
 
     @Test

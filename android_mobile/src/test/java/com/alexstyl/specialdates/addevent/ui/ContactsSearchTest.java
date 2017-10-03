@@ -1,8 +1,7 @@
 package com.alexstyl.specialdates.addevent.ui;
 
-import com.alexstyl.specialdates.contact.DisplayName;
-import com.alexstyl.specialdates.TestContact;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.search.NameMatcher;
 
@@ -77,10 +76,10 @@ public class ContactsSearchTest {
     private static List<Contact> contacts(String firstName, String... names) {
         long id = 0;
         ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(new TestContact(id, DisplayName.from(firstName)));
+        contacts.add(ContactFixture.with(id, firstName));
         id++;
         for (String name : names) {
-            contacts.add(new TestContact(id, DisplayName.from(name)));
+            contacts.add(ContactFixture.with(id, name));
         }
         return contacts;
     }

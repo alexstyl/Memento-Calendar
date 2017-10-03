@@ -1,8 +1,9 @@
 package com.alexstyl.specialdates.date;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public enum DateComparator implements Comparator<Date> {
+public enum DateComparator implements Comparator<Date>, Serializable {
     INSTANCE;
 
     @Override

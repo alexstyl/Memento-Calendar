@@ -1,42 +1,43 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.content.Context;
 import android.text.format.DateUtils;
 
-import com.alexstyl.resources.StringResources;
-import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 
-final public class UpcomingDateStringCreator {
+public final class UpcomingDateStringCreator {
 
     private static final String DAY_OF_WEEK_SEPARATOR = ", ";
 
-    private final StringResources stringResources;
+    private final Strings strings;
     private final Date today;
+    private final Context context;
 
-    public UpcomingDateStringCreator(StringResources stringResources, Date today) {
-        this.stringResources = stringResources;
+    UpcomingDateStringCreator(Strings strings, Date today, Context context) {
+        this.strings = strings;
         this.today = today;
+        this.context = context;
     }
 
-    public String createLabelFor(Date date) {
-        int format_flags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
+    String createLabelFor(Date date) {
+        int formatFlags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
 
         StringBuilder stringBuilder = new StringBuilder();
 
         if (isToday(date)) {
-            stringBuilder.append(stringResources.getString(R.string.today)).append(DAY_OF_WEEK_SEPARATOR);
+            stringBuilder.append(strings.today()).append(DAY_OF_WEEK_SEPARATOR);
         } else if (isTomorrow(date)) {
-            stringBuilder.append(stringResources.getString(R.string.tomorrow)).append(DAY_OF_WEEK_SEPARATOR);
+            stringBuilder.append(strings.tomorrow()).append(DAY_OF_WEEK_SEPARATOR);
         } else {
-            format_flags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
+            formatFlags |= (DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
         }
 
         if (date.getYear() != today.getYear()) {
-            format_flags |= DateUtils.FORMAT_SHOW_YEAR;
+            formatFlags |= DateUtils.FORMAT_SHOW_YEAR;
         }
-        stringBuilder.append(DateUtils.formatDateTime(MementoApplication.getContext(), date.toMillis(), format_flags));
+        stringBuilder.append(DateUtils.formatDateTime(context, date.toMillis(), formatFlags));
         return stringBuilder.toString();
     }
 

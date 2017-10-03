@@ -5,26 +5,33 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.DimensionResources;
+import com.alexstyl.specialdates.Strings;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.service.PeopleEventsProvider;
-import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.logger.simple.Log;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -32,29 +39,28 @@ import java.util.List;
  */
 public class DailyReminderIntentService extends IntentService {
 
-    private static final int REQUEST_CODE = 0;
-    private NamedayPreferences namedayPreferences;
     private NamedayCalendarProvider namedayCalendarProvider;
-
     private BankHolidaysPreferences bankHolidaysPreferences;
     private PermissionChecker checker;
+
+    @Inject NamedayUserSettings namedayPreferences;
+    @Inject Strings strings;
+    @Inject DimensionResources dimensions;
+    @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
+    @Inject DailyReminderNotifier notifier;
+    @Inject ContactsProvider contactsProvider;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
     }
 
-    private Notifier notifier;
-
-    public static void startService(Context context) {
-        Intent service = new Intent(context, DailyReminderIntentService.class);
-        context.startService(service);
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        notifier = Notifier.newInstance(this);
-        namedayPreferences = NamedayPreferences.newInstance(this);
+
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
         checker = new PermissionChecker(this);
@@ -62,11 +68,11 @@ public class DailyReminderIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this);
+        PeopleEventsProvider provider = PeopleEventsProvider.newInstance(this, namedayPreferences, contactsProvider);
         Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {
-            List<ContactEvent> celebrationDate = provider.getContactEventsFor(TimePeriod.between(today, today));
+            List<ContactEvent> celebrationDate = provider.getContactEventsFor(TimePeriod.Companion.between(today, today));
             if (containsAnyContactEvents(celebrationDate)) {
                 notifier.forDailyReminder(today, celebrationDate);
             }
@@ -97,7 +103,7 @@ public class DailyReminderIntentService extends IntentService {
                 return selectedDate;
             }
         }
-        return Date.today();
+        return Date.Companion.today();
     }
 
     private boolean containsAnyContactEvents(List<ContactEvent> celebrationDate) {
@@ -111,7 +117,7 @@ public class DailyReminderIntentService extends IntentService {
     private void notifyForNamedaysFor(Date date) {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, date.getYear());
-        NamesInADate names = namedayCalendar.getAllNamedayOn(date);
+        NamesInADate names = namedayCalendar.getAllNamedaysOn(date);
         if (containsNames(names)) {
             notifier.forNamedays(names.getNames(), date);
         }
@@ -135,6 +141,11 @@ public class DailyReminderIntentService extends IntentService {
 
     private boolean containsNames(NamesInADate names) {
         return names.nameCount() > 0;
+    }
+
+    public static void startService(Context context) {
+        Intent service = new Intent(context, DailyReminderIntentService.class);
+        context.startService(service);
     }
 
 }

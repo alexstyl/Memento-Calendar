@@ -5,22 +5,14 @@ import android.content.ContentValues;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.date.DateDisplayStringCreator;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
-import com.alexstyl.specialdates.events.database.SourceType;
 
 import java.util.List;
 
 public class ContactEventsMarshaller {
 
-    private final DateDisplayStringCreator instance;
-    @SourceType
-    private final int source;
-
-    public ContactEventsMarshaller(@SourceType int source) {
-        this.source = source;
-        instance = DateDisplayStringCreator.INSTANCE;
-    }
+    private static final int DEFAULT_VALUES_SIZE = 5;
+    private final ShortDateLabelCreator DATE_LABEL_CREATOR = ShortDateLabelCreator.INSTANCE;
 
     public ContentValues[] marshall(List<ContactEvent> item) {
         ContentValues[] returningValues = new ContentValues[item.size()];
@@ -34,13 +26,12 @@ public class ContactEventsMarshaller {
     private ContentValues createValuesFor(ContactEvent event) {
         Contact contact = event.getContact();
 
-        ContentValues values = new ContentValues(4);
+        ContentValues values = new ContentValues(DEFAULT_VALUES_SIZE);
         values.put(PeopleEventsContract.PeopleEvents.CONTACT_ID, contact.getContactID());
         values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
-        String date = instance.stringOf(event.getDate());
-        values.put(PeopleEventsContract.PeopleEvents.DATE, date);
+        values.put(PeopleEventsContract.PeopleEvents.DATE, DATE_LABEL_CREATOR.createLabelWithYearPreferredFor(event.getDate()));
         values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, event.getType().getId());
-        values.put(PeopleEventsContract.PeopleEvents.SOURCE, source);
+        values.put(PeopleEventsContract.PeopleEvents.SOURCE, contact.getSource());
 
         putDeviceContactIdIfPresent(event, values);
 

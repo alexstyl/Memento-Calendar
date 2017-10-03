@@ -11,17 +11,16 @@ import java.util.List;
 
 public class NamedayDatabaseRefresher {
 
-    private final NamedayPreferences namedayPreferences;
+    private final NamedayUserSettings namedayUserSettings;
     private final PeopleEventsPersister perister;
     private final ContactEventsMarshaller eventMarshaller;
     private final PeopleNamedaysCalculator calculator;
 
-    public NamedayDatabaseRefresher(NamedayPreferences namedayPreferences,
+    public NamedayDatabaseRefresher(NamedayUserSettings namedayPreferences,
                                     PeopleEventsPersister databaseProvider,
                                     ContactEventsMarshaller eventMarshaller,
-                                    PeopleNamedaysCalculator calculator
-    ) {
-        this.namedayPreferences = namedayPreferences;
+                                    PeopleNamedaysCalculator calculator) {
+        this.namedayUserSettings = namedayPreferences;
         this.perister = databaseProvider;
         this.eventMarshaller = eventMarshaller;
         this.calculator = calculator;
@@ -29,7 +28,7 @@ public class NamedayDatabaseRefresher {
 
     public void refreshNamedaysIfEnabled() {
         perister.deleteAllNamedays();
-        if (namedayPreferences.isEnabled()) {
+        if (namedayUserSettings.isEnabled()) {
             initialiseNamedays();
         }
     }

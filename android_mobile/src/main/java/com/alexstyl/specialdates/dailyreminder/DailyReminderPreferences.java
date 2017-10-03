@@ -34,8 +34,8 @@ public final class DailyReminderPreferences {
         String[] time = preferences.getString(R.string.key_daily_reminder_time, DEFAULT_DAILY_REMINDER_TIME)
                 .split(":");
         return new TimeOfDay(
-                Integer.valueOf(time[0]),
-                Integer.valueOf(time[1])
+                Integer.parseInt(time[0]),
+                Integer.parseInt(time[1])
         );
     }
 

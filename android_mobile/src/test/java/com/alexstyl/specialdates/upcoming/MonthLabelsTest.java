@@ -3,8 +3,8 @@ package com.alexstyl.specialdates.upcoming;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.DateConstants.DECEMBER;
-import static com.alexstyl.specialdates.date.DateConstants.JANUARY;
+import static com.alexstyl.specialdates.date.Months.DECEMBER;
+import static com.alexstyl.specialdates.date.Months.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class MonthLabelsTest {

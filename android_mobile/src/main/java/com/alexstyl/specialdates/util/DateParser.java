@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.util;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.MonthInt;
 
@@ -15,17 +15,16 @@ import org.joda.time.format.DateTimeFormatter;
 public enum DateParser {
     INSTANCE;
 
-    private static Locale[] LOCALES;
+    private static final Locale[] LOCALES;
 
     static {
         LOCALES = new Locale[]{Locale.getDefault(), Locale.US};
     }
 
-    private final static String[] DATE_FORMATS = {
+    private static final String[] DATE_FORMATS = {
             "yyyy-MM-dd", "--MM-dd",
             "MMM dd, yyyy", "MMM dd yyyy", "MMM dd",
-
-            "dd MMM yyyy", "dd MMM",// 19 Aug 1990
+            "dd MMM yyyy", "dd MMM", // 19 Aug 1990
             "yyyyMMdd", // 20110505
             "dd MMM yyyy",
             "d MMM yyyy", // >>> 6 Δεκ 1980
@@ -52,17 +51,17 @@ public enum DateParser {
             for (String format : DATE_FORMATS) {
                 DateTimeFormatter formatter = DateTimeFormat.forPattern(format)
                         .withLocale(locale)
-                        .withDefaultYear(DateConstants.NO_YEAR);
+                        .withDefaultYear(Months.NO_YEAR);
                 try {
                     LocalDate parsedDate = formatter.parseLocalDate(rawDate);
                     int dayOfMonth = parsedDate.getDayOfMonth();
                     @MonthInt int month = parsedDate.getMonthOfYear();
                     int year = parsedDate.getYear();
 
-                    if (year == DateConstants.NO_YEAR || removeYear) {
-                        return Date.on(dayOfMonth, month);
+                    if (year == Months.NO_YEAR || removeYear) {
+                        return Date.Companion.on(dayOfMonth, month);
                     } else {
-                        return Date.on(dayOfMonth, month, year);
+                        return Date.Companion.on(dayOfMonth, month, year);
                     }
 
                 } catch (IllegalArgumentException e) {

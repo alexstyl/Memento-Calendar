@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="donation_donate_amount">Donate %s</string>
-  <string name="donate_thanks_for_donating">♥</string>
-  <string name="donate_welcome">"Hi, I'm Alex Styl"</string>
-  <string name="donate_text">"Memento Calendar was developed in Greece for all those who don't want to forget their loved ones.\n\nIt feels great to see how well received Memento is both by users and devs! All these Play Store reviews and donations give me the strength to keep maintaining Memento with new features and polishing!"\n\nMemento is a free application, supported by ads and donations. Donating any amount, removes all ads and grants you my infinite gratitude ♥.</string>
-  <string name="donate_restore_title">Restore donation</string>
-  <string name="donate_restore_summary">Placed a donation, but still see ads? Tap here</string>
-  <string name="donate_checking_for_donations">Checking for donations</string>
-  <string name="donate_no_donation_found">"No donation found. Have you donated?"</string>
 
-  <style name="Donate.Text"
-    parent="None"></style>
+  <style name="Donate.Text" parent="None" />
 
   <style name="Theme.Donate"
     parent="Theme.Memento.Light.DarkToolbar">

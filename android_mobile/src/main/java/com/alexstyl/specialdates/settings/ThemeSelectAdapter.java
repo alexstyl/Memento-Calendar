@@ -14,14 +14,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ThemeSelectAdapter extends BaseAdapter {
+class ThemeSelectAdapter extends BaseAdapter {
 
     private final List<MementoTheme> themes;
     private final AttributeExtractor extractor;
 
-    public ThemeSelectAdapter() {
+    ThemeSelectAdapter(Comparator<MementoTheme> themeNameComparator) {
         this.themes = Arrays.asList(MementoTheme.values());
-        Collections.sort(themes, new MementoThemeComparator());
+        Collections.sort(themes, themeNameComparator);
         extractor = new AttributeExtractor();
     }
 
@@ -52,12 +52,5 @@ public class ThemeSelectAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    private static class MementoThemeComparator implements Comparator<MementoTheme> {
-        @Override
-        public int compare(MementoTheme lhs, MementoTheme rhs) {
-            return lhs.getThemeName().compareTo(rhs.getThemeName());
-        }
     }
 }

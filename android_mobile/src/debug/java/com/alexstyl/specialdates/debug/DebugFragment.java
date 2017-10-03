@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.debug;
 
 import android.app.DatePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,37 +10,46 @@ import android.provider.CalendarContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.DebugAppComponent;
+import com.alexstyl.specialdates.DebugApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.datedetails.actions.IntentAction;
+import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.specialdates.util.AppUtils;
 import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
+import javax.inject.Inject;
 import java.util.Calendar;
 
 public class DebugFragment extends MementoPreferenceFragment {
 
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
+
+        DebugAppComponent debugAppComponent = ((DebugApplication) getActivity().getApplication()).getDebugAppComponent();
+        debugAppComponent.inject(this);
+
         addPreferencesFromResource(R.xml.preference_debug);
         dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(getActivity());
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity()).refresh();
-                Toast.makeText(getActivity(), "Refreshing Database", Toast.LENGTH_SHORT).show();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider).refresh();
+                showToast("Refreshing Database");
                 return true;
             }
         });
@@ -50,7 +57,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 PeopleEventsViewRefresher.get(getActivity()).updateAllViews();
-                Toast.makeText(getActivity(), "Widget(s) refreshed", Toast.LENGTH_SHORT).show();
+                showToast("Widget(s) refreshed");
                 return true;
             }
         });
@@ -80,7 +87,7 @@ public class DebugFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 DailyReminderIntentService.startService(getActivity());
-                Toast.makeText(getActivity(), "Daily Reminder Triggered", Toast.LENGTH_SHORT).show();
+                showToast("Daily Reminder Triggered");
                 return true;
             }
         });
@@ -113,7 +120,8 @@ public class DebugFragment extends MementoPreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 DebugPreferences.newInstance(preference.getContext(), R.string.pref_call_to_rate).wipe();
                 new AskForSupport(preference.getContext()).requestForRatingSooner();
-                Toast.makeText(preference.getContext(), "Support triggered. You should now see a prompt to rate the app when you launch it", Toast.LENGTH_SHORT).show();
+                String message = "Support triggered. You should now see a prompt to rate the app when you launch it";
+                showToast(message);
                 return true;
             }
         });
@@ -135,27 +143,19 @@ public class DebugFragment extends MementoPreferenceFragment {
         });
     }
 
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
     private void startDateIntent() {
-        IntentAction i = new IntentAction() {
-            @Override
-            public void onStartAction(Context context) throws ActivityNotFoundException {
-                Calendar cal = Calendar.getInstance();
-                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                builder.appendPath("time");
-                ContentUris.appendId(builder, cal.getTimeInMillis());
-                Intent intent = new Intent(Intent.ACTION_VIEW)
-                        .setData(builder.build());
+        Calendar cal = Calendar.getInstance();
+        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+        builder.appendPath("time");
+        ContentUris.appendId(builder, cal.getTimeInMillis());
+        Intent intent = new Intent(Intent.ACTION_VIEW)
+                .setData(builder.build());
 
-                startActivity(intent);
-
-            }
-
-            @Override
-            public String getAnalyticsName() {
-                return "date debug";
-            }
-        };
-        AppUtils.openIntentSafely(getActivity(), i);
+        startActivity(intent);
     }
 
     private final DatePickerDialog.OnDateSetListener onDailyReminderDateSelectedListener = new DatePickerDialog.OnDateSetListener() {

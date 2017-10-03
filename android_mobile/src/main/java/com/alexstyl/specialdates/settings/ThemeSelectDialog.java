@@ -23,7 +23,7 @@ public class ThemeSelectDialog extends MementoDialog {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final ThemeSelectAdapter adapter = new ThemeSelectAdapter();
+        final ThemeSelectAdapter adapter = new ThemeSelectAdapter(new MementoThemeNameComparator(getResources()));
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.theme_preference_title)
                 .setAdapter(adapter, new DialogInterface.OnClickListener() {

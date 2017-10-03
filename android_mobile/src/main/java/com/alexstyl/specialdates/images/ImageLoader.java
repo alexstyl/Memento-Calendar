@@ -1,27 +1,30 @@
 package com.alexstyl.specialdates.images;
 
 import android.graphics.Bitmap;
+import android.support.annotation.Px;
 import android.widget.ImageView;
 
 import com.alexstyl.specialdates.Optional;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
 import java.net.URI;
 
 public interface ImageLoader {
-    void loadImage(URI imagePath, ImageView imageView);
 
-    void loadImage(URI imagePath, ImageAware avatarView, OnImageLoadedCallback callback);
+    Request load(URI imagePath);
 
-    void loadImage(URI imagePath, ImageView avatarView, OnImageLoadedCallback callback);
+    interface Request {
 
-    void loadImage(URI imagePath, ImageSize targetImageSize, OnImageLoadedCallback callback);
+        FixedSizeRequest withSize(@Px int width, @Px int height);
 
-    Optional<Bitmap> loadBitmapSync(URI imagePath, ImageSize imageSize);
+        void into(ImageView imageView);
 
-    void resume();
+        Request asCircle();
+    }
 
-    void pause();
+    interface FixedSizeRequest {
+        Optional<Bitmap> synchronously();
+
+        void into(ImageLoadedConsumer consumer);
+    }
 
 }
