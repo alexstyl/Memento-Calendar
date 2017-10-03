@@ -29,8 +29,8 @@ class FBImportClient extends WebViewClient {
     }
 
     private boolean isHomePage(String url) {
-        return url.startsWith(HTTP + MOBILE_HOME) || url.startsWith(HTTPS + MOBILE_HOME) ||
-                url.startsWith(HTTP + DESKTOP_HOME) || url.startsWith(HTTPS + DESKTOP_HOME);
+        return url.startsWith(HTTP + MOBILE_HOME) || url.startsWith(HTTPS + MOBILE_HOME)
+                || url.startsWith(HTTP + DESKTOP_HOME) || url.startsWith(HTTPS + DESKTOP_HOME);
     }
 
     private void internalOnUserLoggedIn() {

@@ -6,7 +6,8 @@ import android.support.v4.util.Pair;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateConstants;
+import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.date.Months;
 
 public final class DailyReminderDebugPreferences {
 
@@ -20,14 +21,15 @@ public final class DailyReminderDebugPreferences {
         this.preferences = preferences;
     }
 
+    @SuppressWarnings("magicNumber")
     public Date getSelectedDate() {
         int dayOfMonth = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_day, 1);
-        int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, DateConstants.JANUARY);
+        @MonthInt int month = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_month, Months.JANUARY);
         int year = preferences.getInt(R.string.key_debug_daily_reminder_date_fake_year, 2016);
-        return Date.on(dayOfMonth, month, year);
+        return Date.Companion.on(dayOfMonth, month, year);
     }
 
-    public boolean isFakeDateEnabled() {
+    boolean isFakeDateEnabled() {
         return preferences.getBoolean(R.string.key_debug_daily_reminder_date_enable, false);
     }
 
@@ -35,6 +37,7 @@ public final class DailyReminderDebugPreferences {
         Pair<Integer, Integer> dayPair = new Pair<>(R.string.key_debug_daily_reminder_date_fake_day, dayOfMonth);
         Pair<Integer, Integer> monthPair = new Pair<>(R.string.key_debug_daily_reminder_date_fake_month, month);
         Pair<Integer, Integer> yearPair = new Pair<>(R.string.key_debug_daily_reminder_date_fake_year, year);
+        //noinspection unchecked
         preferences.setIntegers(dayPair, monthPair, yearPair);
     }
 

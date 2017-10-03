@@ -35,16 +35,16 @@ public final class BankHolidayProvider {
 
     private static TimePeriod getfirstHalfOf(TimePeriod timePeriod) {
         Date startingDate = timePeriod.getStartingDate();
-        return TimePeriod.between(
+        return TimePeriod.Companion.between(
                 startingDate,
-                Date.endOfYear(startingDate.getYear())
+                Date.Companion.endOfYear(startingDate.getYear())
         );
     }
 
     private static TimePeriod getSecondHalfOf(TimePeriod timePeriod) {
         Date endingDate = timePeriod.getEndingDate();
-        return TimePeriod.between(
-                Date.startOfTheYear(endingDate.getYear()),
+        return TimePeriod.Companion.between(
+                Date.Companion.startOfYear(endingDate.getYear()),
                 endingDate
         );
     }

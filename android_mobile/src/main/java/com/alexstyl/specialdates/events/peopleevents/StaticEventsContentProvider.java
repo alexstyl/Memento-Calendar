@@ -12,20 +12,26 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.alexstyl.specialdates.Strings;
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.DatabaseContract;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.database.PeopleEventsContract.PeopleEvents;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
-import com.alexstyl.specialdates.events.namedays.NamedayPreferences;
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.util.DateParser;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
 public class StaticEventsContentProvider extends ContentProvider {
 
@@ -33,37 +39,40 @@ public class StaticEventsContentProvider extends ContentProvider {
 
     private EventSQLiteOpenHelper eventSQLHelper;
     private UriMatcher uriMatcher;
-
     private EventPreferences eventPreferences;
     private PeopleEventsPresenter presenter;
     private PeopleEventsUpdater peopleEventsUpdater;
+    @Inject Strings strings;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
         Resources resources = context.getResources();
 
-        ContactsProvider contactsProvider = ContactsProvider.get(context);
+        AppComponent applicationModule = ((MementoApplication) getContext().getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
+
         DateParser dateParser = DateParser.INSTANCE;
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, dateParser);
         eventSQLHelper = new EventSQLiteOpenHelper(context);
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQLHelper);
-        NamedayPreferences namedayPreferences = NamedayPreferences.newInstance(context);
-        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller(EventColumns.SOURCE_DEVICE);
+        ContactEventsMarshaller deviceEventsMarshaller = new ContactEventsMarshaller();
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(resources);
-        PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayPreferences, namedayCalendarProvider, contactsProvider);
+        PeopleNamedaysCalculator calculator = new PeopleNamedaysCalculator(namedayUserSettings, namedayCalendarProvider, contactsProvider);
         PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context);
 
         eventPreferences = new EventPreferences(context);
         peopleEventsUpdater = new PeopleEventsUpdater(
                 new PermissionChecker(context),
                 new DeviceEventsDatabaseRefresher(repository, deviceEventsMarshaller, peopleEventsPersister),
-                new NamedayDatabaseRefresher(namedayPreferences, peopleEventsPersister, deviceEventsMarshaller, calculator)
+                new NamedayDatabaseRefresher(namedayUserSettings, peopleEventsPersister, deviceEventsMarshaller, calculator)
         );
 
         presenter = new PeopleEventsPresenter(
                 AndroidSchedulers.mainThread(),
-                EventsRefreshRequestsMonitor.newInstance(context),
+                EventsRefreshRequestsMonitor.newInstance(context, context.getResources()),
                 peopleEventsUpdater,
                 viewRefresher
         );

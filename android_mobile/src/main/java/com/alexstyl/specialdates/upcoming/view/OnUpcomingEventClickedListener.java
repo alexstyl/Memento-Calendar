@@ -1,12 +1,10 @@
 package com.alexstyl.specialdates.upcoming.view;
 
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsViewModel;
+import com.alexstyl.specialdates.date.Date;
 
 public interface OnUpcomingEventClickedListener {
-    void onEventClicked(UpcomingEventsViewModel viewModel);
-
     void onContactClicked(Contact contact);
 
-    void onMoreEventsClicked(UpcomingEventsViewModel viewModel);
+    void onNamedayClicked(Date date);
 }

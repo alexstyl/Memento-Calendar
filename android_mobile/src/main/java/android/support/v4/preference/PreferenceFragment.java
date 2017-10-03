@@ -34,9 +34,10 @@ import android.widget.ListView;
 
 import com.alexstyl.specialdates.R;
 
+@SuppressWarnings("all")
 public abstract class PreferenceFragment extends Fragment implements
 		PreferenceManagerCompat.OnPreferenceTreeClickListener {
-    
+
 	private static final String PREFERENCES_TAG = "android:preferences";
 
     private PreferenceManager mPreferenceManager;
@@ -82,7 +83,7 @@ public abstract class PreferenceFragment extends Fragment implements
          */
         boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref);
     }
-	
+
     @Override
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
@@ -103,7 +104,7 @@ public abstract class PreferenceFragment extends Fragment implements
                 R.layout.preference_list_fragment, paramViewGroup,
 				false);
 	}
-    
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -124,20 +125,20 @@ public abstract class PreferenceFragment extends Fragment implements
             }
         }
     }
-    
+
     @Override
     public void onStart() {
         super.onStart();
         PreferenceManagerCompat.setOnPreferenceTreeClickListener(mPreferenceManager, this);
     }
-    
+
     @Override
 	public void onStop() {
 		super.onStop();
 		PreferenceManagerCompat.dispatchActivityStop(mPreferenceManager);
 		PreferenceManagerCompat.setOnPreferenceTreeClickListener(mPreferenceManager, null);
 	}
-    
+
     @Override
 	public void onDestroyView() {
 		mList = null;
@@ -145,13 +146,13 @@ public abstract class PreferenceFragment extends Fragment implements
 		mHandler.removeMessages(MSG_BIND_PREFERENCES);
 		super.onDestroyView();
 	}
-    
+
     @Override
 	public void onDestroy() {
 		super.onDestroy();
 		PreferenceManagerCompat.dispatchActivityDestroy(mPreferenceManager);
 	}
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -163,14 +164,14 @@ public abstract class PreferenceFragment extends Fragment implements
             outState.putBundle(PREFERENCES_TAG, container);
         }
     }
-    
+
     @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
         PreferenceManagerCompat.dispatchActivityResult(mPreferenceManager, requestCode, resultCode, data);
 	}
-    
+
     /**
      * Returns the {@link PreferenceManager} used by this fragment.
      * @return The {@link PreferenceManager}.
@@ -178,7 +179,7 @@ public abstract class PreferenceFragment extends Fragment implements
     public PreferenceManager getPreferenceManager() {
         return mPreferenceManager;
     }
-    
+
     /**
      * Sets the root of the preference hierarchy that this fragment is showing.
      *
@@ -192,7 +193,7 @@ public abstract class PreferenceFragment extends Fragment implements
             }
         }
     }
-    
+
     /**
      * Gets the root of the preference hierarchy that this fragment is showing.
      *
@@ -202,7 +203,7 @@ public abstract class PreferenceFragment extends Fragment implements
     public PreferenceScreen getPreferenceScreen() {
         return PreferenceManagerCompat.getPreferenceScreen(mPreferenceManager);
     }
-    
+
     /**
      * Adds preferences from activities that match the given {@link Intent}.
      *
@@ -213,7 +214,7 @@ public abstract class PreferenceFragment extends Fragment implements
 
         setPreferenceScreen(PreferenceManagerCompat.inflateFromIntent(mPreferenceManager, intent, getPreferenceScreen()));
     }
-    
+
     /**
      * Inflates the given XML resource and adds the preference hierarchy to the current
      * preference hierarchy.
@@ -226,7 +227,7 @@ public abstract class PreferenceFragment extends Fragment implements
         setPreferenceScreen(PreferenceManagerCompat.inflateFromResource(mPreferenceManager, getActivity(),
         		preferencesResId, getPreferenceScreen()));
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -240,7 +241,7 @@ public abstract class PreferenceFragment extends Fragment implements
         }
         return false;
     }
-	
+
     /**
      * Finds a {@link Preference} based on its key.
      *
@@ -254,18 +255,18 @@ public abstract class PreferenceFragment extends Fragment implements
         }
         return mPreferenceManager.findPreference(key);
     }
-    
+
     private void requirePreferenceManager() {
         if (mPreferenceManager == null) {
             throw new RuntimeException("This should be called after super.onCreate.");
         }
     }
-	
+
     private void postBindPreferences() {
         if (mHandler.hasMessages(MSG_BIND_PREFERENCES)) return;
         mHandler.obtainMessage(MSG_BIND_PREFERENCES).sendToTarget();
     }
-    
+
     private void bindPreferences() {
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
         if (preferenceScreen != null) {
@@ -318,6 +319,6 @@ public abstract class PreferenceFragment extends Fragment implements
         }
 
     };
-	
+
 
 }

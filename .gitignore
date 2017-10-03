@@ -44,5 +44,4 @@ captures/
 .DS_Store
 
 # secrets
-secret.gradle
 google-services.json

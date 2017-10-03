@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
@@ -18,15 +19,15 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.images.UILImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.alexstyl.specialdates.events.database.EventColumns.SOURCE_FACEBOOK;
+import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 import static com.novoda.notils.caster.Views.findById;
 
 public class FacebookProfileActivity extends ThemedMementoActivity implements FacebookProfileView {
@@ -35,15 +36,16 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
     private ExternalNavigator navigator;
     private FacebookProfilePresenter presenter;
-    private Analytics analytics;
-    private ImageLoader imageLoader;
     private ImageView profilePicture;
     private TextView userName;
+    @Inject Analytics analytics;
+    @Inject ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = AnalyticsProvider.getAnalytics(this);
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
         analytics.trackScreen(Screen.FACEBOOK_PROFILE);
         setContentView(R.layout.activity_facebook_profile);
 
@@ -58,7 +60,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
             }
         });
 
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller(SOURCE_FACEBOOK);
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         navigator = new ExternalNavigator(this, analytics);
@@ -69,7 +71,6 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
                 persister,
                 PeopleEventsViewRefresher.get(this), onLogOut()
         );
-        imageLoader = UILImageLoader.createCircleLoaderWithBorder(getResources());
         presenter = new FacebookProfilePresenter(
                 service,
                 this,
@@ -90,7 +91,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     private void setupToolbar() {
         MementoToolbar toolbar = findById(this, R.id.memento_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationAsClose();
+        toolbar.displayNavigationIconAsClose();
         setTitle(null);
     }
 
@@ -98,7 +99,10 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     public void display(UserCredentials userCredentials) {
         userName.setText(userCredentials.getName());
         URI uri = FacebookImagePath.forUid(userCredentials.getUid());
-        imageLoader.loadImage(uri, profilePicture);
+        imageLoader
+                .load(uri)
+                .asCircle()
+                .into(profilePicture);
     }
 
     @Override

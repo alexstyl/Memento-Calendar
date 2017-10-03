@@ -12,7 +12,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class FacebookBirthdaysProviderTest {
 
-    private static final String CALENDAR_URL = "https://www.facebook.com/ical/b.php?locale=en_US&uid=1358181263&key=AQCg1OoTtQTSzywU";
+    private static final String CALENDAR_URL = "https://www.facebook.com/ical/b.php?locale=en_US&uid=100010984206219&key=AQCdZHp_7d_O82DZ";
 
     @Test
     public void parseMockCalendar() throws CalendarFetcherException, MalformedURLException {

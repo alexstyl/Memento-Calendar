@@ -1,62 +1,73 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alexstyl.specialdates.ExternalNavigator;
+import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.DimensionResources;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Action;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.analytics.AnalyticsProvider;
 import com.alexstyl.specialdates.analytics.Screen;
-import com.alexstyl.specialdates.android.AndroidStringResources;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
-import com.alexstyl.specialdates.util.Notifier;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
+
+import javax.inject.Inject;
 
 import static android.view.View.OnClickListener;
 import static com.novoda.notils.caster.Views.findById;
 
 public class UpcomingEventsActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
-    private Notifier notifier;
+    private static final long DRAWER_APPEARANCE_WAITING_TIME = 400L;
+
     private AskForSupport askForSupport;
     private ThemeMonitor themeMonitor;
 
-    private MainNavigator navigator;
-    private ExternalNavigator externalNavigator;
+    private UpcomingEventsNavigator navigator;
     private SearchTransitioner searchTransitioner;
-    private Analytics analytics;
     private DrawerLayout drawerLayout;
 
     private UpcomingEventsPreferences preferences;
+    @Inject Analytics analytics;
+    @Inject Strings stringResource;
+    @Inject DimensionResources dimensions;
+    @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
+    @Inject DailyReminderNotifier dailyReminderNotifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming_events);
 
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        applicationModule.inject(this);
+
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
-        analytics = AnalyticsProvider.getAnalytics(this);
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new MainNavigator(analytics, this, new AndroidStringResources(getResources()), FacebookPreferences.newInstance(this));
-        externalNavigator = new ExternalNavigator(this, analytics);
+        navigator = new UpcomingEventsNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
 
         ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
@@ -64,8 +75,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
         ViewGroup activityContent = findById(this, R.id.main_content);
         searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
-
-        notifier = Notifier.newInstance(this);
 
         findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
             @Override
@@ -123,7 +132,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
                     drawerLayout.openDrawer(Gravity.START, true);
                     preferences.triggerNavigationDrawerDisplayed();
                 }
-            }, 400L);
+            }, DRAWER_APPEARANCE_WAITING_TIME);
         }
     }
 
@@ -142,40 +151,17 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
             reapplyTheme();
         }
         searchTransitioner.onActivityResumed();
-        externalNavigator.connectTo(this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        externalNavigator.disconnectTo(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(Gravity.START);
                 return true;
-            case R.id.action_select_date:
-                showSelectDateDialog();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void showSelectDateDialog() {
-        analytics.trackAction(Action.SELECT_DATE);
-        DatePickerDialogFragment
-                .newInstance(Date.today())
-                .show(getSupportFragmentManager(), "date_picker");
     }
 
     @Override
@@ -192,7 +178,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
-        notifier.cancelAllEvents();
+        dailyReminderNotifier.cancelAllEvents();
     }
 
     private final OnClickListener onToolbarClickListener = new OnClickListener() {
@@ -211,5 +197,19 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onKeyMenuPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+        } else {
+            drawerLayout.openDrawer(Gravity.START, true);
+        }
+        return true;
+    }
+
+    public static Intent getStartIntent(Context context) {
+        return new Intent(context, UpcomingEventsActivity.class);
     }
 }

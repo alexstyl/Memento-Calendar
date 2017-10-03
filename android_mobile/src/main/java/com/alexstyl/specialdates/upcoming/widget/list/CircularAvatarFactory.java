@@ -9,16 +9,15 @@ import android.graphics.Typeface;
 import android.support.annotation.Px;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import static android.graphics.Shader.TileMode.CLAMP;
 
-public final class CircularAvatarFactory {
+final class CircularAvatarFactory {
 
     private static final String SMILEY_FACE = ":)";
     private static final Typeface ROBOTO_LIGHT = Typeface.create("sans-serif-light", Typeface.NORMAL);
@@ -26,13 +25,16 @@ public final class CircularAvatarFactory {
     private final ImageLoader imageLoader;
     private final ColorResources colorResources;
 
-    public CircularAvatarFactory(ImageLoader imageLoader, ColorResources colorResources) {
+    CircularAvatarFactory(ImageLoader imageLoader, ColorResources colorResources) {
         this.imageLoader = imageLoader;
         this.colorResources = colorResources;
     }
 
     Optional<Bitmap> circularAvatarFor(Contact contact, @Px int targetSize) {
-        Optional<Bitmap> bitmapOptional = imageLoader.loadBitmapSync(contact.getImagePath(), new ImageSize(targetSize, targetSize));
+        Optional<Bitmap> bitmapOptional = imageLoader
+                .load(contact.getImagePath())
+                .withSize(targetSize, targetSize)
+                .synchronously();
         if (!bitmapOptional.isPresent()) {
             return Optional.absent();
         }
@@ -43,9 +45,9 @@ public final class CircularAvatarFactory {
         Paint paint = createPaintFrom(avatar);
 
         canvas.drawCircle(
-                circleBitmap.getWidth() / 2,
-                circleBitmap.getHeight() / 2,
-                circleBitmap.getWidth() / 2f,
+                circleBitmap.getWidth() / 2.0f,
+                circleBitmap.getHeight() / 2.0f,
+                circleBitmap.getWidth() / 2.0f,
                 paint
         );
         return new Optional<>(circleBitmap);
@@ -63,12 +65,12 @@ public final class CircularAvatarFactory {
         Canvas canvas = new Canvas(drawingBitmap);
 
         Paint backgroundPaint = createBackgroundPaint();
-        float radius = canvas.getWidth() / 2;
+        float radius = canvas.getWidth() / 2.0f;
         canvas.drawCircle(radius, radius, radius, backgroundPaint);
 
         Paint textPaint = createTextPaint(letterSize);
         int xPos = canvas.getWidth() / 2;
-        int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+        int yPos = (canvas.getHeight() / 2 - ((((int) (textPaint.descent() + textPaint.ascent()))) / 2));
         canvas.drawText(firstLetterOf(displayName), xPos, yPos, textPaint);
         return drawingBitmap;
     }

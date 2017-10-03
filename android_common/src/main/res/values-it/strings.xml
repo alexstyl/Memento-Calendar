@@ -91,7 +91,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Czech">Ceco</string>
     <string name="Slovak">Slovacco</string>
     <string name="Russian">Russo</string>
-    <string name="Latvian">Lituano</string>
+    <string name="Latvian_Traditional">Lituano</string>
     <string name="Hungarian">Ungherese</string>
     <string name="nameday_language_title">Calendario onomastico</string>
     <string name="no_sound">Silenzioso</string>
@@ -132,7 +132,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="copy_link">Copia il link</string>
     <string name="copied_to_clipboard">Link copiato negli appunti</string>
     <string name="select_donation_amount">Scegli l\'importo che vuoi donare</string>
-    <string name="view_contact">Visualizza il contatto</string>
+    <string name="View_contact">Visualizza il contatto</string>
     <string name="no_birthday_set">Compleanno non impostato</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Non ho trovato contatti con eventi speciali.\nTocca il '+' per aggiungerne"</string>
     <string name="No_contacts_with_events_found">"Non ho trovato contatti con eventi speciali"</string>
@@ -187,6 +187,6 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="has_birthday_on">Compleanno il %s</string>
     <string name="has_birthday_on_age">Compie %1$d anni il %2$s</string>
     <string name="title_add_birthday">Aggiungi compleanno</string>
-    <string name="go_to_wall">Apri il diario</string>
+    <string name="Post_on_Facebook">Apri il diario</string>
     <string name="romanian">Rumeno</string>
 </resources>

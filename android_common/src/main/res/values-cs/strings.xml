@@ -89,7 +89,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="Czech">český</string>
     <string name="Slovak">slovenský</string>
     <string name="Russian">ruský</string>
-    <string name="Latvian">lotyšský</string>
+    <string name="Latvian_Traditional">lotyšský</string>
     <string name="Hungarian">maďarský</string>
     <string name="nameday_language_title">Kalendář svátků</string>
     <string name="no_sound">Tichý</string>
@@ -130,7 +130,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="copy_link">Zkopírovat odkaz</string>
     <string name="copied_to_clipboard">Odkaz zkopírován do schránky</string>
     <string name="select_donation_amount">Vyber částku, kterou chcete darovat</string>
-    <string name="view_contact">Zobrazit kontakt</string>
+    <string name="View_contact">Zobrazit kontakt</string>
     <string name="no_birthday_set">Žádné narozeniny nastaveny</string>
     <string name="No_contacts_with_events_found_Tap_the_plus_to_add_some">"Nenalezeny žádné kontakty se zvláštními událostmi\nPoklepejte na '+' pro přidání"</string>
     <string name="No_contacts_with_events_found">"Nenalezeny žádné kontakty se zvláštními událostmi"</string>
@@ -159,6 +159,6 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="has_birthday_on">Narozeniny %s</string>
     <string name="has_birthday_on_age">%1$s slaví %2$d</string>
     <string name="title_add_birthday">Přidat narozeniny</string>
-    <string name="go_to_wall">Otevřít tabuli</string>
+    <string name="Post_on_Facebook">Otevřít tabuli</string>
     <string name="romanian">Rumunsko</string>
 </resources>

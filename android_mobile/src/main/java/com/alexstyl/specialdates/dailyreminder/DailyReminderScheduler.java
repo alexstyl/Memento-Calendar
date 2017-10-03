@@ -29,7 +29,7 @@ public final class DailyReminderScheduler {
     public void updateReminderTime(TimeOfDay timeOfDay) {
         PendingIntent pendingIntent = buildPendingIntent();
 
-        DateAndTime dateAndTime = new DateAndTime(Date.today(), timeOfDay);
+        DateAndTime dateAndTime = new DateAndTime(Date.Companion.today(), timeOfDay);
 
         TimeOfDay now = TimeOfDay.now();
         if (now.isAfter(timeOfDay)) {

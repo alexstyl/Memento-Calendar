@@ -41,25 +41,6 @@
 
 
     <activity
-      android:name=".datedetails.DateDetailsActivity"
-      android:exported="true"
-      android:parentActivityName=".upcoming.UpcomingEventsActivity">
-
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-
-        <data android:mimeType="time/epoch" />
-        <data android:host="com.android.calendar" />
-        <data android:scheme="content" />
-      </intent-filter>
-
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".upcoming.UpcomingEventsActivity" />
-    </activity>
-
-    <activity
       android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
       android:label="@string/action_settings"
       android:parentActivityName=".upcoming.UpcomingEventsActivity">
@@ -145,6 +126,44 @@
     <activity
       android:name=".facebook.FacebookProfileActivity"
       android:label="@string/title_facebook_profile" />
+
+    <activity
+      android:name=".person.PersonActivity"
+      android:parentActivityName=".upcoming.UpcomingEventsActivity">
+
+      <intent-filter>
+        <action android:name="com.android.contacts.action.QUICK_CONTACT" />
+        <action android:name="android.provider.action.QUICK_CONTACT" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+
+        <data android:mimeType="vnd.android.cursor.item/contact" />
+        <data android:mimeType="vnd.android.cursor.item/person" />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+
+        <data android:mimeType="vnd.android.cursor.item/person" />
+        <data android:mimeType="vnd.android.cursor.item/contact" />
+        <data android:mimeType="vnd.android.cursor.item/raw_contact" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".upcoming.UpcomingEventsActivity" />
+    </activity>
+
+    <activity
+      android:name=".events.namedays.activity.NamedayActivity"
+      android:parentActivityName=".upcoming.UpcomingEventsActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".upcoming.UpcomingEventsActivity" />
+    </activity>
+
+    <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
 
     <!-- Services -->
     <service

@@ -7,7 +7,8 @@ import com.alexstyl.specialdates.R;
 
 public final class ThemingPreferences {
 
-    private static final String DEFAULT_THEME = MementoTheme.CHERRY_RED.getThemeName();
+    private static final MementoTheme DEFAULT_THEME = MementoTheme.CHERRY_RED;
+
     private final EasyPreferences preferences;
 
     public static ThemingPreferences newInstance(Context context) {
@@ -19,11 +20,11 @@ public final class ThemingPreferences {
     }
 
     public MementoTheme getSelectedTheme() {
-        String themeName = preferences.getString(R.string.key_app_theme, DEFAULT_THEME);
-        return MementoTheme.fromName(themeName);
+        int themeId = preferences.getInt(R.string.key_app_theme_id, DEFAULT_THEME.getId());
+        return MementoTheme.fromId(themeId);
     }
 
     public void setSelectedTheme(MementoTheme selectedTheme) {
-        preferences.setString(R.string.key_app_theme, selectedTheme.getThemeName());
+        preferences.setInteger(R.string.key_app_theme_id, selectedTheme.getId());
     }
 }

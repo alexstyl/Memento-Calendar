@@ -5,7 +5,7 @@ import android.content.Context;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-class UpcomingEventsPreferences {
+final class UpcomingEventsPreferences {
 
     private static final int MIN_TIMES_TO_VIEW_DRAWER = 5;
 

@@ -43,14 +43,14 @@ public class MementoToolbar extends Toolbar {
         return color;
     }
 
-    public void displayAsUp() {
+    public void displayNavigationIconAsUp() {
         int color = attributeExtractor.extractToolbarIconColors(getContext());
         Drawable closeIconDrawable = DrawableCompat.wrap(getResources().getDrawable(R.drawable.ic_action_left_semitransparent));
         DrawableCompat.setTintList(closeIconDrawable, ColorStateList.valueOf(color));
         setNavigationIcon(closeIconDrawable);
     }
 
-    public void setNavigationAsClose() {
+    public void displayNavigationIconAsClose() {
         int color = attributeExtractor.extractToolbarIconColors(getContext());
         Drawable closeIconDrawable = DrawableCompat.wrap(getResources().getDrawable(R.drawable.ic_close_white));
         DrawableCompat.setTintList(closeIconDrawable, ColorStateList.valueOf(color));

@@ -26,7 +26,7 @@ class UpcomingWidgetPreferences {
         return preferences.getFloat(R.string.key_upcoming_widget_opacity, DEFAULT_OPACITY);
     }
 
-    void storeUserOptions(UpcomingWidgetConfigurationPanel.UserOptions userOptions) {
+    void storeUserOptions(UserOptions userOptions) {
         preferences.setFloat(R.string.key_upcoming_widget_opacity, userOptions.getOpacityLevel());
         preferences.setInteger(R.string.key_upcoming_widget_variant, userOptions.getWidgetVariant().getId());
     }

@@ -15,14 +15,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexstyl.android.Version;
+import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.util.GreekNameUtils;
-import com.alexstyl.android.Version;
 import com.novoda.notils.caster.Views;
+
+import javax.inject.Inject;
 
 public class ColorImageView extends FrameLayout {
 
     private static final String UKNOWN_CHARACTER = "?";
+
+    @Inject
+    LetterPainter letterPainter;
 
     private boolean drawCircle = true;
 
@@ -35,6 +42,9 @@ public class ColorImageView extends FrameLayout {
 
     public ColorImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        AppComponent applicationModule = ((MementoApplication) context.getApplicationContext()).getApplicationModule();
+        applicationModule.inject(this);
 
         View view = inflate(context, R.layout.merge_color_imageview, this);
         this.letter = Views.findById(view, android.R.id.text1);
@@ -93,8 +103,8 @@ public class ColorImageView extends FrameLayout {
     /**
      * Returns the currently selected background variant of the view
      */
-    public void setBackgroundVariant(@Size(min = 1, max = 5) int i) {
-        int variant = LetterPainter.getVariant(getResources(), i);
+    public void setCircleColorVariant(@Size(min = 1, max = 5) int i) {
+        int variant = letterPainter.getVariant(i);
         if (backgroundVariant != variant) {
             backgroundVariant = variant;
             paint.setColor(backgroundVariant);
@@ -103,30 +113,25 @@ public class ColorImageView extends FrameLayout {
     }
 
     @Override
-    public void setBackgroundColor(int color) {
-        paint.setColor(color);
-        invalidate();
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         int width = getWidth();
         int height = getHeight();
         if (width > 0 && height > 0) {
             if (drawCircle) {
-                int size = Math.min(width, height);
-                float radius = size / 2f;
-                canvas.drawCircle(width / 2, height / 2, radius, paint);
+                float minSide = (float) Math.min(width, height);
+                canvas.drawCircle(width / 2, height / 2, minSide / 2, paint);
             } else {
                 canvas.drawPaint(paint);
             }
         }
         super.onDraw(canvas);
-
     }
 
     public void setLetter(String letter) {
         setLetter(letter, true);
     }
 
+    public void setText(String text) {
+        setLetter(text);
+    }
 }

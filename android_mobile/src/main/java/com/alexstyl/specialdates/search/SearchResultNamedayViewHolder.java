@@ -9,25 +9,27 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateFormatUtils;
+import com.alexstyl.specialdates.date.DateLabelCreator;
 
-class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
+final class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView name;
     private final LinearLayout datesLayout;
     private final LayoutInflater inflater;
+    private final DateLabelCreator labelCreator;
 
-    static SearchResultNamedayViewHolder createFor(ViewGroup parent) {
+    static SearchResultNamedayViewHolder createFor(ViewGroup parent, DateLabelCreator labelCreator) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.card_nameday_single, parent, false);
-        return new SearchResultNamedayViewHolder(view, layoutInflater);
+        return new SearchResultNamedayViewHolder(view, layoutInflater, labelCreator);
     }
 
-    private SearchResultNamedayViewHolder(View convertView, LayoutInflater layoutInflater) {
+    private SearchResultNamedayViewHolder(View convertView, LayoutInflater layoutInflater, DateLabelCreator labelCreator) {
         super(convertView);
         this.name = (TextView) convertView.findViewById(R.id.name_celebrating);
         this.datesLayout = (LinearLayout) convertView.findViewById(R.id.dates);
         this.inflater = layoutInflater;
+        this.labelCreator = labelCreator;
     }
 
     public void bind(NamedayCard dates, final SearchResultAdapter.SearchResultClickListener searchResultListener) {
@@ -38,7 +40,7 @@ class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
             TextView dateView = (TextView) view.findViewById(android.R.id.text1);
 
             final Date date = dates.getDate(i);
-            String prettyDate = DateFormatUtils.formatTimeStampString(view.getContext(), date.toMillis(), false);
+            String prettyDate = labelCreator.createWithYearPreferred(date);
             dateView.setText(prettyDate);
             if (searchResultListener != null) {
                 view.setOnClickListener(

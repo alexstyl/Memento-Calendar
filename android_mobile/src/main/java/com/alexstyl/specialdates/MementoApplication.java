@@ -5,12 +5,16 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alexstyl.android.AlarmManagerCompat;
+import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
+import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
+import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
@@ -20,16 +24,25 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
-    private static Context context;
+    private AppComponent appComponent;
 
-    public static Context getContext() {
-        return context;
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        appComponent =
+                DaggerAppComponent.builder()
+                        .appModule(new AppModule(this))
+                        .resourcesModule(new ResourcesModule(getResources()))
+                        .imageModule(new ImageModule(getResources()))
+                        .viewModule(new ViewModule(getResources()))
+                        .namedaysInADayModule(new NamedaysInADayModule())
+                        .build();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+
         initialiseDependencies();
         ErrorTracker.startTracking(this);
 
@@ -51,9 +64,10 @@ public class MementoApplication extends Application {
         initImageLoader(this);
     }
 
+    @SuppressWarnings("MagicNumber")
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .threadPriority(Thread.MIN_PRIORITY)
                 .threadPoolSize(10)
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))
@@ -62,4 +76,7 @@ public class MementoApplication extends Application {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
     }
 
+    public AppComponent getApplicationModule() {
+        return appComponent;
+    }
 }

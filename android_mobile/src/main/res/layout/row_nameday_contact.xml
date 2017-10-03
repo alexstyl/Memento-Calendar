@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.internal.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:foreground="@drawable/selectable_back"
+  android:gravity="center_vertical"
+  android:minHeight="@dimen/nameday_item_minheight"
+  android:orientation="horizontal">
+
+  <com.alexstyl.specialdates.ui.widget.ColorImageView
+    android:id="@+id/row_nameday_contact_avatar"
+    app:isCircle="true"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    tools:src="@mipmap/ic_launcher" />
+
+  <TextView
+    android:id="@+id/row_nameday_contact_name"
+    style="@style/NamedayScreen.Text.ContactName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    tools:text="Αναστασία Κάτρανίδου" />
+
+</android.support.design.internal.ForegroundLinearLayout>

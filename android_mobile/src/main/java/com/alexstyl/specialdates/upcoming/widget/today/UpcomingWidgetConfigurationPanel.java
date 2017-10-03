@@ -41,22 +41,20 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
         });
 
         darkThemeCheckbox = Views.findById(this, R.id.upcoming_widget_dark_theme);
-        darkThemeCheckbox.setOnCheckedChangeListener(onDarkThemeSelectedListener);
+        darkThemeCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                WidgetVariant selectedVariant = (isChecked ? WidgetVariant.DARK : WidgetVariant.LIGHT);
+                setWidgetVariant(selectedVariant);
+                listener.onWidgetVariantSelected(selectedVariant);
+            }
+        });
     }
 
     @Override
     public void setOrientation(int orientation) {
         Log.w("Cannot change the orientation of [%s]", UpcomingWidgetConfigurationPanel.class.getSimpleName());
     }
-
-    private final CompoundButton.OnCheckedChangeListener onDarkThemeSelectedListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            WidgetVariant selectedVariant = (isChecked ? WidgetVariant.DARK : WidgetVariant.LIGHT);
-            setWidgetVariant(selectedVariant);
-            listener.onWidgetVariantSelected(selectedVariant);
-        }
-    };
 
     public void setOpacityLevel(float percentage) {
         int progress = valueConverter.percentToProgress(percentage);
@@ -86,25 +84,7 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
         this.listener = listener;
     }
 
-    class UserOptions {
-        private final float opacityLevel;
-        private final WidgetVariant widgetVariant;
-
-        public UserOptions(float opacityLevel, WidgetVariant widgetVariant) {
-            this.opacityLevel = opacityLevel;
-            this.widgetVariant = widgetVariant;
-        }
-
-        public float getOpacityLevel() {
-            return opacityLevel;
-        }
-
-        public WidgetVariant getWidgetVariant() {
-            return widgetVariant;
-        }
-    }
-
-    public interface ConfigurationListener {
+    interface ConfigurationListener {
 
         ConfigurationListener NO_OP = new ConfigurationListener() {
             @Override

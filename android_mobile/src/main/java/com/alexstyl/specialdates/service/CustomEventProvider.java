@@ -16,10 +16,10 @@ class CustomEventProvider {
             ContactsContract.CommonDataKinds.Event.LABEL
     };
     private static final String SELECTION =
-            "( " + ContactsContract.Data._ID + " = ?" +
-                    " AND " + ContactsContract.Data.MIMETYPE + " = ? " +
-                    " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + " = 1" +
-                    ")";
+            "( " + ContactsContract.Data._ID + " = ?"
+                    + " AND " + ContactsContract.Data.MIMETYPE + " = ? "
+                    + " AND " + ContactsContract.Data.IN_VISIBLE_GROUP + " = 1"
+                    + ")";
 
     private static final String SORT_ORDER = ContactsContract.CommonDataKinds.Event._ID + " LIMIT 1";
 

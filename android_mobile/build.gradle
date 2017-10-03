@@ -1,17 +1,33 @@
-apply from: '../versions.gradle'
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
-
 buildscript {
-    repositories {
-        mavenCentral()
-    }
     dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.novoda:build-properties-plugin:1.2.1'
     }
 }
 
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.M13.2"
+}
+
+apply from: '../versions.gradle'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'io.fabric'
+apply plugin: 'com.novoda.build-properties'
+
+detekt {
+    version = "1.0.0.M13.2"
+
+    profile("main") {
+        input = "$projectDir/src/main/java"
+        config = "$rootDir/team-props/static-analysis/detekt-config.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        output = "$projectDir/build/reports/detekt.xml"
+    }
+}
+
+project.afterEvaluate {
+    check.dependsOn tasks['detektCheck']
+}
 
 android {
     compileSdkVersion androidCompileSdkVersion
@@ -61,6 +77,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    sourceSets {
+        test {
+            resources.srcDirs = ['src/main/res/raw']
+        }
+    }
 }
 
 repositories {
@@ -77,9 +99,14 @@ dependencies {
     compile project(':android_common')
 
     compile "com.android.support:design:$android_support_version"
+    compile "com.android.support:cardview-v7:$android_support_version"
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:transition:$android_support_version"
+
+    compile 'com.google.dagger:dagger:2.9'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+    provided 'javax.annotation:jsr250-api:1.0'
 
     compile 'com.novoda:notils:2.2.15'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
@@ -91,7 +118,6 @@ dependencies {
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
     compile "com.google.firebase:firebase-core:$play_services_version"
     compile "com.google.firebase:firebase-ads:$play_services_version"
-
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
 
@@ -105,6 +131,9 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
 }
 
-// This must be applied after the dependencies closure in order to avoid conflicts ¯\_(ツ)_/¯
-// see http://stackoverflow.com/questions/38127053/google-play-services-gcm-9-2-0-asks-to-update-back-to-9-0-0
 apply plugin: 'com.google.gms.google-services'
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}

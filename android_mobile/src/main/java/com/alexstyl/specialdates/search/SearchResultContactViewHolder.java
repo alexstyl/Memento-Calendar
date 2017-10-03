@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 
-class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
+final class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
 
     private final ColorImageView avatar;
     private final TextView displayName;
@@ -32,10 +32,13 @@ class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     }
 
     void bind(final ContactEventViewModel viewModel, final SearchResultAdapter.SearchResultClickListener listener) {
-        avatar.setBackgroundVariant(viewModel.getBackgroundVariant());
+        avatar.setCircleColorVariant(viewModel.getBackgroundVariant());
         avatar.setLetter(viewModel.getDisplayName(), true);
         displayName.setText(viewModel.getDisplayName());
-        imageLoader.loadImage(viewModel.getContactAvatarURI(), avatar.getImageView());
+        imageLoader
+                .load(viewModel.getContactAvatarURI())
+                .asCircle()
+                .into(avatar.getImageView());
         eventLabel.setText(viewModel.getEventLabel());
         eventLabel.setTextColor(eventLabel.getResources().getColor(viewModel.getEventColor()));
         itemView.setOnClickListener(

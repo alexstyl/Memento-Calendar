@@ -1,20 +1,20 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.Monitor;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.android.AndroidStringResources;
 
-class PeopleSettingsMonitor implements Monitor {
+final class PeopleSettingsMonitor implements Monitor {
 
     private final Monitor monitor;
 
-    public static Monitor newInstance(Context context) {
+    public static Monitor newInstance(Context context, Resources resources) {
         PreferenceChangedMonitor monitor = new PreferenceChangedMonitor(
                 EasyPreferences.createForDefaultPreferences(context),
-                new AndroidStringResources(context.getResources()),
+                resources,
                 R.string.key_enable_namedays,
                 R.string.key_nameday_lang,
                 R.string.key_namedays_full_name

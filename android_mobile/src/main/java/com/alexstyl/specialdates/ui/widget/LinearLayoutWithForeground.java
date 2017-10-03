@@ -22,9 +22,9 @@ public class LinearLayoutWithForeground extends LinearLayout {
 
     private int mForegroundGravity = Gravity.FILL;
 
-    protected boolean mForegroundInPadding = true;
+    private boolean mForegroundInPadding = true;
 
-    boolean mForegroundBoundsChanged = false;
+    private boolean mForegroundBoundsChanged = false;
 
     public LinearLayoutWithForeground(Context context, AttributeSet attrs) {
         super(context, attrs);

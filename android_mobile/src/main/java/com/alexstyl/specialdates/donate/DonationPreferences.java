@@ -5,7 +5,7 @@ import android.content.Context;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-public class DonationPreferences {
+public final class DonationPreferences {
 
     private final EasyPreferences preferences;
 
