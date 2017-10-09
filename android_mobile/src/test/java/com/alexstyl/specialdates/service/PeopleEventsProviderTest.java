@@ -42,7 +42,7 @@ public class PeopleEventsProviderTest {
     @Mock
     private CustomEventProvider customEventProvider;
     @Mock
-    private StaticPeopleEventsProvider mockStaticEventProvider;
+    private AndroidPeopleStaticEventsProvider mockStaticEventProvider;
     @Mock
     private NamedayCalendarProvider mockNamedayCalendarProvider;
     @Mock

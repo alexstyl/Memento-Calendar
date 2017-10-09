@@ -23,7 +23,6 @@ public final class PeopleEventsViewRefresher {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(appContext);
             instance = new PeopleEventsViewRefresher(
                     Arrays.asList(
-                            new ContentResolverPeopleEventsView(resolver),
                             new WearSyncPeopleEventsView(appContext),
                             new TodayPeopleEventsView(appContext, appWidgetManager),
                             new UpcomingEventsScrollingWidgetView(appContext, appWidgetManager)

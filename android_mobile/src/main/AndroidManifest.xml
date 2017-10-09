@@ -215,13 +215,6 @@
       android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
       android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-    <provider
-      android:name=".events.peopleevents.StaticEventsContentProvider"
-      android:authorities="com.alexstyl.specialdates.peopleeventsprovider"
-      android:exported="true"
-      android:grantUriPermissions="true"
-      android:label="Events Provider" />
-
     <service
       android:name=".facebook.friendimport.FacebookFriendsIntentService"
       android:label="@string/title_facebook_friends_import" />

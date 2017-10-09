@@ -14,7 +14,6 @@ import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
-import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.images.ImageModule;
@@ -88,8 +87,6 @@ public interface AppComponent {
     void inject(EventDatePickerDialogFragment fragment);
 
     void inject(DailyReminderIntentService service);
-
-    void inject(StaticEventsContentProvider contentProvider);
 
     void inject(UpcomingEventsRemoteViewService viewService);
 

@@ -14,14 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
@@ -79,7 +78,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 permissions,
                 provider,
                 settingsMonitor,
-                new PeopleEventsObserver(getContentResolver()),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
