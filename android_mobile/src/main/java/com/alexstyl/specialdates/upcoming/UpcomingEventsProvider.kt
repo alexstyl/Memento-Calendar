@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import com.alexstyl.specialdates.service.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
 class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
                              private val namedayPreferences: NamedayUserSettings,

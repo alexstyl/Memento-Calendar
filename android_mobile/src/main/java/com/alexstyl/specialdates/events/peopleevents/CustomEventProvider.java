@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentResolver;
 import android.database.Cursor;

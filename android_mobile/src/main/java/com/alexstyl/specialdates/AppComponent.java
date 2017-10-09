@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.images.ImageModule;
@@ -53,7 +54,8 @@ import dagger.Component;
         UpcomingEventsModule.class,
         NamedaysInADayModule.class,
         DailyReminderModule.class,
-        DonateModule.class
+        DonateModule.class,
+        PeopleEventsModule.class
 })
 public interface AppComponent {
     void inject(UpcomingEventsActivity activity);

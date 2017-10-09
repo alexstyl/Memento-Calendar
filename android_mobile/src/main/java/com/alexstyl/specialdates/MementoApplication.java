@@ -9,6 +9,7 @@ import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
@@ -34,6 +35,7 @@ public class MementoApplication extends Application {
                         .appModule(new AppModule(this))
                         .resourcesModule(new ResourcesModule(getResources()))
                         .imageModule(new ImageModule(getResources()))
+                        .peopleEventsModule(new PeopleEventsModule(this))
                         .viewModule(new ViewModule(getResources()))
                         .namedaysInADayModule(new NamedaysInADayModule())
                         .build();

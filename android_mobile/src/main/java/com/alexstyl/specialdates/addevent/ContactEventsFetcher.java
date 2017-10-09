@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 
 import java.util.List;
 

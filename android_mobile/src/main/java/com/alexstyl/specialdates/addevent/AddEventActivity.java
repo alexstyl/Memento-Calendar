@@ -39,7 +39,7 @@ import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
@@ -64,6 +64,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
+    @Inject PeopleEventsProvider peopleEventsProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,6 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
         ContactDetailsAdapter adapter = new ContactDetailsAdapter(contactDetailsListener);
         eventsView.setAdapter(adapter);
 
-        PeopleEventsProvider peopleEventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider);
         AddEventContactEventViewModelFactory factory = new AddEventContactEventViewModelFactory(new AndroidDateLabelCreator(this));
         AddEventViewModelFactory addEventFactory = new AddEventViewModelFactory(strings);
         ContactEventsFetcher contactEventsFetcher = new ContactEventsFetcher(

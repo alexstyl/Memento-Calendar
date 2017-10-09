@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.DateComparator;
