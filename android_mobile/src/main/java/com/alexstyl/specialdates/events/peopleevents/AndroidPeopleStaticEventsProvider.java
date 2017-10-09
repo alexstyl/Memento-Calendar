@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import android.database.Cursor;
 import android.database.MergeCursor;
@@ -18,10 +18,6 @@ import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
-import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
-import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.util.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;

@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
@@ -38,6 +38,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
+    @Inject PeopleEventsProvider peopleEventsProvider;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -72,7 +73,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateTodayWidget(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        new QueryUpcomingPeopleEventsTask(PeopleEventsProvider.newInstance(context, namedayUserSettings, contactsProvider)) {
+        new QueryUpcomingPeopleEventsTask(peopleEventsProvider) {
             @Override
             void onNextDateLoaded(ContactEventsOnADate events) {
                 updateForDate(context, appWidgetManager, appWidgetIds, events);

@@ -1,20 +1,12 @@
-package com.alexstyl.specialdates.service;
-
-import android.content.ContentResolver;
-import android.content.Context;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,25 +24,6 @@ public class PeopleEventsProvider {
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
     private final PeopleStaticEventsProvider staticEvents;
     private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
-
-    // TODO inject this instead
-    public static PeopleEventsProvider newInstance(Context context, NamedayUserSettings namedayPreferences, ContactsProvider contactsProvider) {
-        ContentResolver resolver = context.getContentResolver();
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
-        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
-                namedayPreferences,
-                namedayCalendarProvider,
-                contactsProvider
-        );
-        CustomEventProvider customEventProvider = new CustomEventProvider(resolver);
-        EventSQLiteOpenHelper sqLiteOpenHelper = new EventSQLiteOpenHelper(context);
-        PeopleStaticEventsProvider staticEventsProvider = new AndroidPeopleStaticEventsProvider(sqLiteOpenHelper, contactsProvider, customEventProvider);
-        return new PeopleEventsProvider(
-                namedayPreferences,
-                peopleNamedaysCalculator,
-                staticEventsProvider
-        );
-    }
 
     PeopleEventsProvider(NamedayUserSettings namedayPreferences,
                          PeopleNamedaysCalculator peopleNamedaysCalculator,

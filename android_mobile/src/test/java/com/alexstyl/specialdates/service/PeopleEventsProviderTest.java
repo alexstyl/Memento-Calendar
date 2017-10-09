@@ -10,7 +10,11 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleStaticEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
+import com.alexstyl.specialdates.events.peopleevents.CustomEventProvider;
+import com.alexstyl.specialdates.events.peopleevents.NoEventsFoundException;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.novoda.notils.logger.simple.Log;
 
