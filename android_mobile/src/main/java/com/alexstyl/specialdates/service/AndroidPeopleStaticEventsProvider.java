@@ -1,9 +1,7 @@
 package com.alexstyl.specialdates.service;
 
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.database.MergeCursor;
-import android.net.Uri;
 
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.Optional;
@@ -17,8 +15,9 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
+import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.events.database.PeopleEventsContract;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
@@ -35,19 +34,19 @@ import java.util.Map;
 
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
 
-class StaticPeopleEventsProvider {
+class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
 
-    private static final String DATE_FROM = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) >= ?";
-    private static final String DATE_TO = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ",-5) <= ?";
+    private static final String DATE_FROM = "substr(" + AnnualEventsContract.DATE + ",-5) >= ?";
+    private static final String DATE_TO = "substr(" + AnnualEventsContract.DATE + ",-5) <= ?";
     private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
-    private static final String[] PEOPLE_PROJECTION = {PeopleEventsContract.PeopleEvents.DATE};
-    private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
+    private static final String[] PEOPLE_PROJECTION = {AnnualEventsContract.DATE};
+    //    private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
     private static final String[] PROJECTION = {
-            PeopleEventsContract.PeopleEvents.CONTACT_ID,
-            PeopleEventsContract.PeopleEvents.DEVICE_EVENT_ID,
-            PeopleEventsContract.PeopleEvents.DATE,
-            PeopleEventsContract.PeopleEvents.EVENT_TYPE,
-            PeopleEventsContract.PeopleEvents.SOURCE,
+            AnnualEventsContract.CONTACT_ID,
+            AnnualEventsContract.DEVICE_EVENT_ID,
+            AnnualEventsContract.DATE,
+            AnnualEventsContract.EVENT_TYPE,
+            AnnualEventsContract.SOURCE,
     };
 
     /*
@@ -56,23 +55,25 @@ class StaticPeopleEventsProvider {
 
         an example in use: select * from annual_events WHERE substr(date,-5) >= '03-04' ORDER BY substr(date,-5) asc LIMIT 1
      */
-    private static final String DATE_COLUMN_WITHOUT_YEAR = "substr(" + PeopleEventsContract.PeopleEvents.DATE + ", -5) ";
+    private static final String DATE_COLUMN_WITHOUT_YEAR = "substr(" + AnnualEventsContract.DATE + ", -5) ";
 
-    private final ContentResolver resolver;
+    private final EventSQLiteOpenHelper eventSQLHelper;
     private final ContactsProvider contactsProvider;
     private final CustomEventProvider customEventProvider;
 
-    StaticPeopleEventsProvider(ContentResolver resolver, ContactsProvider contactsProvider, CustomEventProvider customEventProvider) {
-        this.resolver = resolver;
+    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper, ContactsProvider contactsProvider, CustomEventProvider customEventProvider) {
+        this.eventSQLHelper = sqLiteOpenHelper;
         this.contactsProvider = contactsProvider;
         this.customEventProvider = customEventProvider;
     }
 
-    ContactEventsOnADate fetchEventsOn(Date date) {
+    @Override
+    public ContactEventsOnADate fetchEventsOn(Date date) {
         return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
     }
 
-    List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
+    @Override
+    public List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
         Cursor cursor = queryEventsFor(timeDuration);
         List<ContactEvent> contactEvents = new ArrayList<>(cursor.getCount());
 
@@ -117,7 +118,8 @@ class StaticPeopleEventsProvider {
         return Collections.unmodifiableList(contactEvents);
     }
 
-    List<ContactEvent> fetchEventsFor(Contact contact) {
+    @Override
+    public List<ContactEvent> fetchEventsFor(Contact contact) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         Cursor cursor = queryEventsOf(contact);
         while (cursor.moveToNext()) {
@@ -134,7 +136,7 @@ class StaticPeopleEventsProvider {
 
     private Cursor queryEventsFor(TimePeriod timeDuration) {
         if (isWithinTheSameYear(timeDuration)) {
-            return queryPeopleEvents(timeDuration, PeopleEventsContract.PeopleEvents.DATE + " ASC");
+            return queryPeopleEvents(timeDuration, AnnualEventsContract.DATE + " ASC");
         } else {
             return queryAllYearsIn(timeDuration);
         }
@@ -146,13 +148,14 @@ class StaticPeopleEventsProvider {
                 String.valueOf(contact.getSource())
         };
 
-        return resolver.query(
-                PeopleEventsContract.PeopleEvents.CONTENT_URI,
+        // query database
+        return eventSQLHelper.getReadableDatabase().query(
+                AnnualEventsContract.TABLE_NAME,
                 PROJECTION,
-                PeopleEventsContract.PeopleEvents.CONTACT_ID + " = ? "
-                        + "AND " + PeopleEventsContract.PeopleEvents.SOURCE + " = ?",
+                AnnualEventsContract.CONTACT_ID + " = ? "
+                        + "AND " + AnnualEventsContract.SOURCE + " = ?",
                 selectArgs,
-                null
+                null, null, null
         );
     }
 
@@ -162,11 +165,13 @@ class StaticPeopleEventsProvider {
                 SQLArgumentBuilder.dateWithoutYear(timePeriod.getEndingDate()),
         };
 
-        return resolver.query(
-                PeopleEventsContract.PeopleEvents.CONTENT_URI,
+        return eventSQLHelper.getReadableDatabase().query(
+                AnnualEventsContract.TABLE_NAME,
                 PROJECTION,
                 DATE_BETWEEN_IGNORING_YEAR,
                 selectArgs,
+                null,
+                null,
                 sortOrder
         );
     }
@@ -174,9 +179,9 @@ class StaticPeopleEventsProvider {
     private Cursor queryAllYearsIn(TimePeriod timeDuration) {
         TimePeriod firstHalf = firstHalfOf(timeDuration);
         Cursor[] cursors = new Cursor[2];
-        cursors[0] = queryPeopleEvents(firstHalf, PeopleEventsContract.PeopleEvents.DATE + " ASC");
+        cursors[0] = queryPeopleEvents(firstHalf, AnnualEventsContract.DATE + " ASC");
         TimePeriod secondHalf = secondHalfOf(timeDuration);
-        cursors[1] = queryPeopleEvents(secondHalf, PeopleEventsContract.PeopleEvents.DATE + " ASC");
+        cursors[1] = queryPeopleEvents(secondHalf, AnnualEventsContract.DATE + " ASC");
         return new MergeCursor(cursors);
     }
 
@@ -198,7 +203,8 @@ class StaticPeopleEventsProvider {
         return timeDuration.getStartingDate().getYear() == timeDuration.getEndingDate().getYear();
     }
 
-    Date findClosestStaticEventDateFrom(Date date) throws NoEventsFoundException {
+    @Override
+    public Date findClosestStaticEventDateFrom(Date date) throws NoEventsFoundException {
         Cursor cursor = queryDateClosestTo(date);
         try {
             if (cursor.moveToFirst()) {
@@ -215,11 +221,13 @@ class StaticPeopleEventsProvider {
     }
 
     private Cursor queryDateClosestTo(Date date) {
-        return resolver.query(
-                PEOPLE_EVENTS,
+        return eventSQLHelper.getReadableDatabase().query(
+                AnnualEventsContract.TABLE_NAME,
                 PEOPLE_PROJECTION,
                 DATE_COLUMN_WITHOUT_YEAR + " >= ?",
                 monthAndDayOf(date),
+                null,
+                null,
                 DATE_COLUMN_WITHOUT_YEAR + " ASC LIMIT 1"
         );
     }
@@ -231,7 +239,7 @@ class StaticPeopleEventsProvider {
     }
 
     private static Date getDateFrom(Cursor cursor) {
-        int index = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DATE);
+        int index = cursor.getColumnIndexOrThrow(AnnualEventsContract.DATE);
         String rawDate = cursor.getString(index);
         try {
             return DateParser.INSTANCE.parse(rawDate);
@@ -241,7 +249,7 @@ class StaticPeopleEventsProvider {
     }
 
     private EventType getEventType(Cursor cursor) {
-        int eventTypeIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.EVENT_TYPE);
+        int eventTypeIndex = cursor.getColumnIndexOrThrow(AnnualEventsContract.EVENT_TYPE);
         @EventTypeId int rawEventType = cursor.getInt(eventTypeIndex);
         if (rawEventType == TYPE_CUSTOM) {
             Optional<Long> deviceEventIdFrom = getDeviceEventIdFrom(cursor);
@@ -262,19 +270,19 @@ class StaticPeopleEventsProvider {
     }
 
     private static long getContactIdFrom(Cursor cursor) {
-        int contactIdIndex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.CONTACT_ID);
+        int contactIdIndex = cursor.getColumnIndexOrThrow(AnnualEventsContract.CONTACT_ID);
         return cursor.getLong(contactIdIndex);
     }
 
     @ContactSource
     @SuppressWarnings("WrongConstant")
     private int getContactSourceFrom(Cursor cursor) {
-        int sourceTypeIdex = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.SOURCE);
+        int sourceTypeIdex = cursor.getColumnIndexOrThrow(AnnualEventsContract.SOURCE);
         return cursor.getInt(sourceTypeIdex);
     }
 
     private static Optional<Long> getDeviceEventIdFrom(Cursor cursor) {
-        int eventId = cursor.getColumnIndexOrThrow(PeopleEventsContract.PeopleEvents.DEVICE_EVENT_ID);
+        int eventId = cursor.getColumnIndexOrThrow(AnnualEventsContract.DEVICE_EVENT_ID);
         long deviceEventId = cursor.getLong(eventId);
         if (isALegitEventId(deviceEventId)) {
             return Optional.absent();

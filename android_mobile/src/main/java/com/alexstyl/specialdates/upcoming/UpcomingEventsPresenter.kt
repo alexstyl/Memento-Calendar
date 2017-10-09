@@ -4,7 +4,6 @@ import com.alexstyl.specialdates.date.Date
 
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.donate.DonateMonitor
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -14,7 +13,6 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
                                        private val permissions: ContactPermissionRequest,
                                        private val provider: IUpcomingEventsProvider,
                                        private val settingsMonitorUpcoming: UpcomingEventsSettingsMonitor,
-                                       private val peopleEventsObserver: PeopleEventsObserver,
                                        private val workScheduler: Scheduler,
                                        private val resultScheduler: Scheduler) {
 
@@ -48,9 +46,6 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
         settingsMonitorUpcoming.register {
             refreshEvents()
         }
-        peopleEventsObserver.startObserving {
-            refreshEvents()
-        }
         DonateMonitor.getInstance().addListener { donateListener }
     }
 
@@ -61,7 +56,6 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
     fun stopPresenting() {
         disposable?.dispose()
         settingsMonitorUpcoming.unregister()
-        peopleEventsObserver.stopObserving()
         DonateMonitor.getInstance().removeListener(donateListener)
     }
 }
