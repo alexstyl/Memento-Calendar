@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates;
 
-public interface Monitor {
+public interface EventsUpdateTrigger {
 
     void startObserving(Callback callback);
 

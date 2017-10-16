@@ -35,6 +35,7 @@ public class DebugFragment extends MementoPreferenceFragment {
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
+    @Inject PeopleEventsViewRefresher refresher;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -54,9 +55,10 @@ public class DebugFragment extends MementoPreferenceFragment {
             }
         });
         findPreference(R.string.key_debug_refresh_widget).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                PeopleEventsViewRefresher.get(getActivity()).updateAllViews();
+                refresher.updateAllViews();
                 showToast("Widget(s) refreshed");
                 return true;
             }

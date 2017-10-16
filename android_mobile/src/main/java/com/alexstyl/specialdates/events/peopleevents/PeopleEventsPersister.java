@@ -3,21 +3,21 @@ package com.alexstyl.specialdates.events.peopleevents;
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.ErrorTracker;
-import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.contact.ContactSource;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
+import com.alexstyl.specialdates.events.database.EventTypeId;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_NAMEDAY;
 
 public final class PeopleEventsPersister {
 
-    private final EventSQLiteOpenHelper helper;
+    private final SQLiteOpenHelper helper;
 
-    public PeopleEventsPersister(EventSQLiteOpenHelper helper) {
+    public PeopleEventsPersister(SQLiteOpenHelper helper) {
         this.helper = helper;
     }
 

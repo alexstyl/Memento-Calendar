@@ -20,7 +20,7 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public EventSQLiteOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        eventPreferences = new EventPreferences(context.getApplicationContext());
+        eventPreferences = new EventPreferences(context);
     }
 
     private static final String SQL_CREATE_ANNUAL_EVENTS =
