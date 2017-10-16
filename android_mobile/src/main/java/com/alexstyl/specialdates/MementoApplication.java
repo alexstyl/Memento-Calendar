@@ -3,11 +3,16 @@ package com.alexstyl.specialdates;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.events.ContactsObserver;
+import com.alexstyl.specialdates.events.PeopleEventsDatabaseUpdater;
+import com.alexstyl.specialdates.events.PreferenceChangedEventsUpdateTrigger;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
@@ -21,15 +26,22 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
+import javax.inject.Inject;
+
 import net.danlew.android.joda.JodaTimeAndroid;
+
+import static java.util.Arrays.asList;
 
 public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
+    @Inject PeopleEventsDatabaseUpdater updater;
+
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+    public void onCreate() {
+        super.onCreate();
+
         appComponent =
                 DaggerAppComponent.builder()
                         .appModule(new AppModule(this))
@@ -39,11 +51,8 @@ public class MementoApplication extends Application {
                         .viewModule(new ViewModule(getResources()))
                         .namedaysInADayModule(new NamedaysInADayModule())
                         .build();
-    }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+        appComponent.inject(this);
 
         initialiseDependencies();
         ErrorTracker.startTracking(this);
@@ -56,8 +65,37 @@ public class MementoApplication extends Application {
         if (FacebookPreferences.newInstance(this).isLoggedIn()) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
-
         }
+
+        setupDatabaseRefresher();
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Log.e("Should have triggered");
+        }
+    };
+
+    PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
+
+    private void setupDatabaseRefresher() {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(listener);
+
+        preferenceChangedEventsUpdateTrigger = new PreferenceChangedEventsUpdateTrigger(
+                EasyPreferences.createForDefaultPreferences(this),
+                getResources(),
+                R.string.key_enable_namedays,
+                R.string.key_nameday_lang,
+                R.string.key_namedays_full_name
+        );
+
+        updater.startMonitoring(
+                asList(
+                        new ContactsObserver(getContentResolver()),
+                        preferenceChangedEventsUpdateTrigger
+                ));
     }
 
     protected void initialiseDependencies() {

@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,16 +67,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
 
-        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(
-                PreferenceManager.getDefaultSharedPreferences(getActivity()), getResources()
-        );
         navigator = new UpcomingEventsNavigator(analytics, getActivity(), strings, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
                 permissions,
                 provider,
-                settingsMonitor,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
@@ -101,7 +96,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
             @Override
             public void onContactClicked(Contact contact) {
                 navigator.toContactDetails(contact);
-
             }
 
             @Override

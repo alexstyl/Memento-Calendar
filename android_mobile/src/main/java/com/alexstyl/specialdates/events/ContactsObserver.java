@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.events.peopleevents;
+package com.alexstyl.specialdates.events;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
@@ -6,16 +6,16 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.Monitor;
+import com.alexstyl.specialdates.EventsUpdateTrigger;
 
-final class ContactsObserver extends ContentObserver implements Monitor {
+public final class ContactsObserver extends ContentObserver implements EventsUpdateTrigger {
 
     private static final Uri URI = ContactsContract.Contacts.CONTENT_URI;
     private final ContentResolver resolver;
 
     private Callback callback;
 
-    ContactsObserver(ContentResolver resolver) {
+    public ContactsObserver(ContentResolver resolver) {
         super(new Handler());
         this.resolver = resolver;
     }

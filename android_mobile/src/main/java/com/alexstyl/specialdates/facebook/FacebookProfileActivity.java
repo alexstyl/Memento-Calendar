@@ -27,7 +27,6 @@ import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 import static com.novoda.notils.caster.Views.findById;
 
 public class FacebookProfileActivity extends ThemedMementoActivity implements FacebookProfileView {
@@ -40,6 +39,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     private TextView userName;
     @Inject Analytics analytics;
     @Inject ImageLoader imageLoader;
+    @Inject PeopleEventsViewRefresher uiRefresher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,8 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
                 AndroidSchedulers.mainThread(),
                 preferences,
                 persister,
-                PeopleEventsViewRefresher.get(this), onLogOut()
+                uiRefresher,
+                onLogOut()
         );
         presenter = new FacebookProfilePresenter(
                 service,

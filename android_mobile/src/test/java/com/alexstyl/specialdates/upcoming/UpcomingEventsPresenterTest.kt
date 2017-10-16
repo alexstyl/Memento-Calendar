@@ -28,7 +28,7 @@ class UpcomingEventsPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider, mockEventsMonitor, workScheduler, resultScheduler)
+        upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider, workScheduler, resultScheduler)
     }
 
     @Test
