@@ -19,9 +19,10 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
 
     fun startPresentingInto(view: UpcomingListMVPView) {
         disposable =
-                // TODO observe changes to database events
                 subject
-                        .doOnSubscribe { view.showLoading() }
+                        .doOnSubscribe {
+                            if (view.isEmpty) { view.showLoading() }
+                        }
                         .observeOn(workScheduler)
                         .map { provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay)) }
                         .observeOn(resultScheduler)
