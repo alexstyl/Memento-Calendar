@@ -36,7 +36,8 @@ public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject PeopleEventsDatabaseUpdater updater;
+    @Inject
+    PeopleEventsDatabaseUpdater updater;
 
     @Override
     public void onCreate() {
@@ -70,19 +71,9 @@ public class MementoApplication extends Application {
         setupDatabaseRefresher();
     }
 
-    private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            Log.e("Should have triggered");
-        }
-    };
-
     PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
 
     private void setupDatabaseRefresher() {
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(listener);
-
         preferenceChangedEventsUpdateTrigger = new PreferenceChangedEventsUpdateTrigger(
                 EasyPreferences.createForDefaultPreferences(this),
                 getResources(),
