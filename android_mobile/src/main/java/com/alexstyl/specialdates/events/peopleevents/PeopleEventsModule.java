@@ -17,6 +17,7 @@ import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
 import javax.inject.Singleton;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import dagger.Module;
 import dagger.Provides;
@@ -58,11 +59,11 @@ public class PeopleEventsModule {
 
     @Provides
     PeopleEventsViewRefresher viewRefresher(Context appContext, AppWidgetManager appWidgetManager) {
-        return new PeopleEventsViewRefresher(Arrays.asList(
+        return new PeopleEventsViewRefresher(new HashSet<>(Arrays.asList(
                 new WearSyncPeopleEventsView(appContext),
                 new TodayPeopleEventsView(appContext, appWidgetManager),
                 new UpcomingEventsScrollingWidgetView(appContext, appWidgetManager)
-        ));
+        )));
     }
 
     @Provides
