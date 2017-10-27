@@ -3,8 +3,6 @@ package com.alexstyl.specialdates;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
@@ -70,19 +68,9 @@ public class MementoApplication extends Application {
         setupDatabaseRefresher();
     }
 
-    private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            Log.e("Should have triggered");
-        }
-    };
-
     PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
 
     private void setupDatabaseRefresher() {
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(listener);
-
         preferenceChangedEventsUpdateTrigger = new PreferenceChangedEventsUpdateTrigger(
                 EasyPreferences.createForDefaultPreferences(this),
                 getResources(),
