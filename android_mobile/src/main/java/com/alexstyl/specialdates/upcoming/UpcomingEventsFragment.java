@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -108,8 +107,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         presenter.startPresentingInto(this);
     }
 
@@ -147,8 +146,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         presenter.stopPresenting();
     }
 
