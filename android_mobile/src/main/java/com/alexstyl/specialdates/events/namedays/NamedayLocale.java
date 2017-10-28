@@ -14,7 +14,8 @@ public enum NamedayLocale {
     LATVIAN_EXTENDED("lv_ext", false, R.string.Latvian_Extended, R.raw.lv_ext_namedays),
     SLOVAK("sk", false, R.string.Slovak, R.raw.sk_namedays),
     ITALIAN("it", false, R.string.Italian, R.raw.it_namedays),
-    CZECH("cs", false, R.string.Czech, R.raw.cs_namedays);
+    CZECH("cs", false, R.string.Czech, R.raw.cs_namedays),
+    HUNGARIAN("hu", false, R.string.Hungarian, R.raw.hu_namedays);
 
     private final String shortCode;
     private final boolean soundCompared;
