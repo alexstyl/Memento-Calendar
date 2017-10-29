@@ -34,7 +34,8 @@ public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject PeopleEventsDatabaseUpdater updater;
+    @Inject
+    PeopleEventsDatabaseUpdater updater;
 
     @Override
     public void onCreate() {
