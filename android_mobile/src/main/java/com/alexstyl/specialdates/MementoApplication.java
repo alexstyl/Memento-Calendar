@@ -9,15 +9,17 @@ import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.ContactsObserver;
-import com.alexstyl.specialdates.events.PeopleEventsDatabaseUpdater;
+import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.PreferenceChangedEventsUpdateTrigger;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
+import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -34,8 +36,9 @@ public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject
-    PeopleEventsDatabaseUpdater updater;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
+    @Inject PermissionChecker contactPermissions;
 
     @Override
     public void onCreate() {
@@ -80,7 +83,7 @@ public class MementoApplication extends Application {
                 R.string.key_namedays_full_name
         );
 
-        updater.startMonitoring(
+        eventsMonitor.startMonitoring(
                 asList(
                         new ContactsObserver(getContentResolver()),
                         preferenceChangedEventsUpdateTrigger

@@ -39,12 +39,12 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
         db.execSQL("DROP TABLE IF EXISTS annual_events;");
+        eventPreferences.reset();
         onCreate(db);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ANNUAL_EVENTS);
-        eventPreferences.reset();
     }
 }

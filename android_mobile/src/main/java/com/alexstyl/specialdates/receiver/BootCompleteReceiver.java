@@ -12,8 +12,6 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 
 import javax.inject.Inject;
 
-import static android.R.attr.action;
-
 public class BootCompleteReceiver extends BroadcastReceiver {
 
     @Inject PeopleEventsViewRefresher refresher;
@@ -27,7 +25,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)) {
             rescheduleDailyReminder(context, DailyReminderPreferences.newInstance(context));
-            refresher.updateAllViews();
+            refresher.refreshViews();
         }
     }
 

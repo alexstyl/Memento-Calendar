@@ -51,16 +51,19 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private UpcomingEventsAdapter adapter;
     private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
-    @Inject
-    Analytics analytics;
-    @Inject
-    Strings strings;
-    @Inject
-    ColorResources colorResources;
-    @Inject
-    ImageLoader imageLoader;
-    @Inject
-    UpcomingEventsProvider provider;
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
+    @Inject UpcomingEventsProvider provider;
+    @Inject PeopleEventsViewRefresher monitor;
+
+    private final PeopleEventsView listener = new PeopleEventsView() {
+        @Override
+        public void onEventsUpdated() {
+            presenter.refreshEvents();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
+        monitor.addView(listener);
     }
 
     @Override
@@ -157,6 +161,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     public void onStop() {
         super.onStop();
         presenter.stopPresenting();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        monitor.removeView(listener);
     }
 
     @Override

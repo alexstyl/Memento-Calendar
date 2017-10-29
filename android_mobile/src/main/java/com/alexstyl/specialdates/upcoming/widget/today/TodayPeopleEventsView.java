@@ -18,7 +18,7 @@ public class TodayPeopleEventsView implements PeopleEventsView {
     }
 
     @Override
-    public void requestUpdate() {
+    public void onEventsUpdated() {
         Intent intent = new Intent(context, TodayAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

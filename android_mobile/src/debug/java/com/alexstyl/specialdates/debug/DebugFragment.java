@@ -58,7 +58,7 @@ public class DebugFragment extends MementoPreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                refresher.updateAllViews();
+                refresher.refreshViews();
                 showToast("Widget(s) refreshed");
                 return true;
             }
@@ -105,7 +105,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new WearSyncPeopleEventsView(getActivity()).requestUpdate();
+                new WearSyncPeopleEventsView(getActivity()).onEventsUpdated();
                 return true;
             }
         });
