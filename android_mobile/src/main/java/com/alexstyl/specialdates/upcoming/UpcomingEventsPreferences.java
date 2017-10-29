@@ -20,7 +20,8 @@ final class UpcomingEventsPreferences {
     }
 
     boolean isTheUserAwareOfNavigationDrawer() {
-        return preferences.getInt(R.string.key_navigation_times_viewed, 0) > MIN_TIMES_TO_VIEW_DRAWER;
+        return preferences.getBoolean(R.string.key_navigation_drawer_user_knows, false)
+                || preferences.getInt(R.string.key_navigation_times_viewed, 0) > MIN_TIMES_TO_VIEW_DRAWER;
     }
 
     void triggerNavigationDrawerDisplayed() {
@@ -28,4 +29,7 @@ final class UpcomingEventsPreferences {
         preferences.setInteger(R.string.key_navigation_times_viewed, times + 1);
     }
 
+    void setUserKnowsDrawer() {
+        preferences.setBoolean(R.string.key_navigation_drawer_user_knows, true);
+    }
 }
