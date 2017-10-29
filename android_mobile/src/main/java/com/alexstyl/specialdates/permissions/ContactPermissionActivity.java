@@ -10,8 +10,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.events.PeopleEventsMonitor;
+import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -22,7 +23,8 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
 
     private static final int REQUEST_CONTACT_PERMISSION = 5;
 
-    @Inject PeopleEventsViewRefresher viewRefresher;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,10 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CONTACT_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            eventsMonitor.updateEvents();
+            eventPreferences.markEventsAsInitialised();
             setResult(RESULT_OK);
             finish();
-            viewRefresher.updateAllViews();
         }
     }
 }

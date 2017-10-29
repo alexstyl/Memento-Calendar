@@ -6,8 +6,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.contact.ContactsProvider;
-import com.alexstyl.specialdates.events.PeopleEventsDatabaseUpdater;
+import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
+import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingWidgetView;
@@ -44,21 +45,22 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleEventsProvider provider(NamedayUserSettings namedayUserSettings,
-                                  PeopleNamedaysCalculator peopleNamedaysCalculator,
-                                  PeopleStaticEventsProvider staticEvents) {
+    PeopleEventsProvider peopleEventsProvider(NamedayUserSettings namedayUserSettings,
+                                              PeopleNamedaysCalculator peopleNamedaysCalculator,
+                                              PeopleStaticEventsProvider staticEvents) {
         return new PeopleEventsProvider(namedayUserSettings, peopleNamedaysCalculator, staticEvents);
     }
 
     @Provides
-    PeopleNamedaysCalculator namedaysCalculator(NamedayUserSettings namedayPreferences,
-                                                NamedayCalendarProvider namedaysCalendarProvider,
-                                                ContactsProvider contactsProvider) {
+    PeopleNamedaysCalculator peopleNamedayCalculator(NamedayUserSettings namedayPreferences,
+                                                     NamedayCalendarProvider namedaysCalendarProvider,
+                                                     ContactsProvider contactsProvider) {
         return new PeopleNamedaysCalculator(namedayPreferences, namedaysCalendarProvider, contactsProvider);
     }
 
     @Provides
-    PeopleEventsViewRefresher viewRefresher(Context appContext, AppWidgetManager appWidgetManager) {
+    @Singleton
+    PeopleEventsViewRefresher peopleEventsViewRefresher(Context appContext, AppWidgetManager appWidgetManager) {
         return new PeopleEventsViewRefresher(new HashSet<>(Arrays.asList(
                 new WearSyncPeopleEventsView(appContext),
                 new TodayPeopleEventsView(appContext, appWidgetManager),
@@ -67,15 +69,38 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    DeviceEventsDatabaseRefresher refresher(SQLiteOpenHelper eventSQlite, ContentResolver contentResolver, ContactsProvider contactsProvider) {
+    PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher(SQLiteOpenHelper eventSQlite, ContentResolver contentResolver, ContactsProvider contactsProvider) {
         AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQlite);
-        return new DeviceEventsDatabaseRefresher(repository, marshaller, peopleEventsPersister);
+        return new PeopleEventsStaticEventsRefresher(repository, marshaller, peopleEventsPersister);
     }
 
     @Provides
-    PeopleEventsDatabaseUpdater databaseUpdater(PeopleEventsViewRefresher uiRefresher, DeviceEventsDatabaseRefresher dbRefresher) {
-        return new PeopleEventsDatabaseUpdater(dbRefresher, uiRefresher, Schedulers.io(), AndroidSchedulers.mainThread());
+    NamedayDatabaseRefresher namedayDatabaseRefresher(NamedayUserSettings namedayUserSettings,
+                                                      PeopleEventsPersister databaseProvider,
+                                                      PeopleNamedaysCalculator calculator) {
+        return new NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, new ContactEventsMarshaller(), calculator);
+    }
+
+    @Provides
+    PeopleEventsUpdater peopleEventsUpdater(PeopleEventsStaticEventsRefresher staticRefresher, NamedayDatabaseRefresher namedayRefresher) {
+        return new PeopleEventsUpdater(staticRefresher, namedayRefresher);
+    }
+
+    @Provides
+    @Singleton
+    PeopleEventsMonitor peopleEventsDatabaseUpdater(PeopleEventsViewRefresher uiRefresher, PeopleEventsUpdater peopleEventsUpdater) {
+        return new PeopleEventsMonitor(peopleEventsUpdater, uiRefresher, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    PeopleEventsPersister peopleEventsPersister() {
+        return new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
+    }
+
+    @Provides
+    EventPreferences eventPreferences() {
+        return new EventPreferences(context);
     }
 }

@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.util.DateParser;
 
 public final class DebugPeopleEventsUpdater {
 
-    private final DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher;
+    private final PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
     public static DebugPeopleEventsUpdater newInstance(Context context, NamedayUserSettings namedayUserSettings, ContactsProvider contactsProvider) {
@@ -19,7 +19,7 @@ public final class DebugPeopleEventsUpdater {
         ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller();
         PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
 
-        DeviceEventsDatabaseRefresher databaseRefresher = new DeviceEventsDatabaseRefresher(repository, deviceMarshaller, databaseProvider);
+        PeopleEventsStaticEventsRefresher databaseRefresher = new PeopleEventsStaticEventsRefresher(repository, deviceMarshaller, databaseProvider);
 
         NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
@@ -35,13 +35,13 @@ public final class DebugPeopleEventsUpdater {
         ));
     }
 
-    private DebugPeopleEventsUpdater(DeviceEventsDatabaseRefresher deviceEventsDatabaseRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
-        this.deviceEventsDatabaseRefresher = deviceEventsDatabaseRefresher;
+    private DebugPeopleEventsUpdater(PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
+        this.peopleEventsStaticEventsRefresher = peopleEventsStaticEventsRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
     }
 
     public void refresh() {
-        deviceEventsDatabaseRefresher.rebuildEvents();
+        peopleEventsStaticEventsRefresher.rebuildEvents();
         namedayDatabaseRefresher.refreshNamedaysIfEnabled();
     }
 }

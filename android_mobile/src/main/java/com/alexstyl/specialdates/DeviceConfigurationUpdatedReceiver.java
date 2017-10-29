@@ -23,9 +23,9 @@ public class DeviceConfigurationUpdatedReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
             ErrorTracker.updateLocaleUsed();
-            viewRefresher.updateAllViews();
+            viewRefresher.refreshViews();
         } else if (Intent.ACTION_DATE_CHANGED.equals(action)) {
-            viewRefresher.updateAllViews();
+            viewRefresher.refreshViews();
         }
     }
 

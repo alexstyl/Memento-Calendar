@@ -19,7 +19,7 @@ public class UpcomingEventsScrollingWidgetView implements PeopleEventsView {
     }
 
     @Override
-    public void requestUpdate() {
+    public void onEventsUpdated() {
         Intent intent = new Intent(context, UpcomingEventsScrollingAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

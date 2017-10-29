@@ -60,7 +60,7 @@ public class FacebookFriendsIntentService extends IntentService {
         try {
             List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
             persister.keepOnly(friends);
-            uiRefresher.updateAllViews();
+            uiRefresher.refreshViews();
         } catch (CalendarFetcherException e) {
             ErrorTracker.track(e);
         }

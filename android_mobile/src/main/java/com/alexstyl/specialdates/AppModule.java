@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
+import com.alexstyl.specialdates.permissions.PermissionChecker;
 
 import dagger.Module;
 import dagger.Provides;
@@ -37,5 +38,10 @@ class AppModule {
     @Provides
     SQLiteOpenHelper sqLiteOpenHelper() {
         return new EventSQLiteOpenHelper(context);
+    }
+
+    @Provides
+    PermissionChecker permissionChecker() {
+        return new PermissionChecker(context);
     }
 }
