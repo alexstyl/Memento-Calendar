@@ -40,7 +40,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     private static final long DRAWER_APPEARANCE_WAITING_TIME = 400L;
 
-
     private ThemeMonitor themeMonitor;
 
     private UpcomingEventsNavigator navigator;
@@ -129,9 +128,20 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
                 public void run() {
                     drawerLayout.openDrawer(Gravity.START, true);
                     preferences.triggerNavigationDrawerDisplayed();
+                    setupDrawerListener();
                 }
             }, DRAWER_APPEARANCE_WAITING_TIME);
         }
+    }
+
+    private void setupDrawerListener() {
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                preferences.setUserKnowsDrawer();
+            }
+        });
     }
 
     @Override
