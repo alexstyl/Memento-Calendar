@@ -27,8 +27,11 @@ import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
+import java.util.concurrent.Callable;
 
 import net.danlew.android.joda.JodaTimeAndroid;
+
+import io.reactivex.Observable;
 
 import static java.util.Arrays.asList;
 
@@ -88,6 +91,20 @@ public class MementoApplication extends Application {
                         new ContactsObserver(getContentResolver()),
                         preferenceChangedEventsUpdateTrigger
                 ));
+
+        boolean eventsHaveBeenInitialised = eventPreferences.hasBeenInitialised();
+        if (!eventsHaveBeenInitialised && contactPermissions.canReadAndWriteContacts()) {
+            // if we don't have contact permission, we'll update it is granted
+            Observable.fromCallable(new Callable<Integer>() {
+                @Override
+                public Integer call() {
+                    eventsMonitor.updateEvents();
+                    eventPreferences.markEventsAsInitialised();
+                    return 5;
+                }
+            })
+                    .subscribe();
+        }
     }
 
     protected void initialiseDependencies() {
