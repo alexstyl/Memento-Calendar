@@ -21,7 +21,9 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
         disposable =
                 subject
                         .doOnSubscribe {
-                            if (view.isEmpty) { view.showLoading() }
+                            if (view.isEmpty) {
+                                view.showLoading()
+                            }
                         }
                         .observeOn(workScheduler)
                         .map { provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay)) }

@@ -14,11 +14,13 @@ import android.widget.TextView;
 import com.alexstyl.resources.ColorResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.PeopleEventsView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
@@ -31,6 +33,7 @@ import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
+
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,11 +51,16 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private UpcomingEventsAdapter adapter;
     private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
-    @Inject Analytics analytics;
-    @Inject Strings strings;
-    @Inject ColorResources colorResources;
-    @Inject ImageLoader imageLoader;
-    @Inject UpcomingEventsProvider provider;
+    @Inject
+    Analytics analytics;
+    @Inject
+    Strings strings;
+    @Inject
+    ColorResources colorResources;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    UpcomingEventsProvider provider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
