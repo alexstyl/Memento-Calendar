@@ -29,6 +29,7 @@ import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
+import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
@@ -52,6 +53,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private UpcomingEventsAdapter adapter;
     private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
+    private AskForSupport askForSupport;
+
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject ColorResources colorResources;
@@ -74,6 +77,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
+
+        askForSupport = new AskForSupport(getActivity());
 
         permissions = new ContactPermissionRequest(
                 new PermissionNavigator(getActivity(), analytics),
@@ -147,6 +152,10 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         } else {
             upcomingList.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
+        }
+
+        if (askForSupport.shouldAskForRating()) {
+            askForSupport.askForRatingFromUser(getActivity());
         }
     }
 

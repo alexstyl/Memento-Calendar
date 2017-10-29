@@ -26,7 +26,7 @@ public class AskForSupport {
         return timeSinceLastRate > RETRY_INTERVAL;
     }
 
-    public void onRateEnd() {
+    void onRateEnd() {
         preferences.setHasUserRated(true);
     }
 

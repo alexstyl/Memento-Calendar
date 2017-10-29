@@ -23,7 +23,6 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
@@ -41,7 +40,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     private static final long DRAWER_APPEARANCE_WAITING_TIME = 400L;
 
-    private AskForSupport askForSupport;
+
     private ThemeMonitor themeMonitor;
 
     private UpcomingEventsNavigator navigator;
@@ -82,7 +81,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
                 navigator.toAddEvent();
             }
         });
-        askForSupport = new AskForSupport(this);
 
         setTitle(R.string.app_name);
 
@@ -133,14 +131,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
                     preferences.triggerNavigationDrawerDisplayed();
                 }
             }, DRAWER_APPEARANCE_WAITING_TIME);
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (askForSupport.shouldAskForRating()) {
-            askForSupport.askForRatingFromUser(this);
         }
     }
 
