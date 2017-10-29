@@ -20,6 +20,8 @@ import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.PeopleEventsMonitor;
+import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -33,7 +35,6 @@ import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -56,7 +57,9 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
-    @Inject PeopleEventsViewRefresher monitor;
+    @Inject PeopleEventsViewRefresher refresher;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
@@ -86,7 +89,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
-        monitor.addView(listener);
+        refresher.addView(listener);
     }
 
     @Override
@@ -166,7 +169,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        monitor.removeView(listener);
+        refresher.removeView(listener);
     }
 
     @Override
@@ -178,7 +181,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            presenter.refreshEvents();
+            eventsMonitor.updateEvents();
+            eventPreferences.markEventsAsInitialised();
         }
 
         @Override
