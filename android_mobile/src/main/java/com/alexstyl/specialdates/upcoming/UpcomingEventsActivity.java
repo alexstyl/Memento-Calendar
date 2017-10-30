@@ -136,10 +136,10 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     private void setupDrawerListener() {
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-
             @Override
             public void onDrawerOpened(View drawerView) {
                 preferences.setUserKnowsDrawer();
+                drawerLayout.removeDrawerListener(this);
             }
         });
     }
