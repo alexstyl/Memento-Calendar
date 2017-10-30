@@ -14,11 +14,14 @@ import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
-import com.alexstyl.specialdates.events.peopleevents.StaticEventsContentProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.images.ImageModule;
+import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
+import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
@@ -54,9 +57,12 @@ import dagger.Component;
         UpcomingEventsModule.class,
         NamedaysInADayModule.class,
         DailyReminderModule.class,
-        DonateModule.class
+        DonateModule.class,
+        PeopleEventsModule.class
 })
 public interface AppComponent {
+    void inject(MementoApplication application);
+
     void inject(UpcomingEventsActivity activity);
 
     void inject(UpcomingEventsFragment fragment);
@@ -89,8 +95,6 @@ public interface AppComponent {
 
     void inject(DailyReminderIntentService service);
 
-    void inject(StaticEventsContentProvider contentProvider);
-
     void inject(UpcomingEventsRemoteViewService viewService);
 
     void inject(ContactSuggestionView view);
@@ -106,4 +110,12 @@ public interface AppComponent {
     void inject(UpcomingWidgetConfigureActivity activity);
 
     void inject(WidgetRouterActivity widgetRouterActivity);
+
+    void inject(DeviceConfigurationUpdatedReceiver receiver);
+
+    void inject(FacebookFriendsIntentService service);
+
+    void inject(ContactPermissionActivity activity);
+
+    void inject(BootCompleteReceiver receiver);
 }

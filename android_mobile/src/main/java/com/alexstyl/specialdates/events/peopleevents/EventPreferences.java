@@ -13,11 +13,11 @@ public class EventPreferences {
         preferences = EasyPreferences.createForPrivatePreferences(context, R.string.pref_events);
     }
 
-    boolean hasBeenInitialised() {
+    public boolean hasBeenInitialised() {
         return preferences.getBoolean(R.string.key_events_are_initialised, false);
     }
 
-    void markEventsAsInitialised() {
+    public void markEventsAsInitialised() {
         preferences.setBoolean(R.string.key_events_are_initialised, true);
     }
 

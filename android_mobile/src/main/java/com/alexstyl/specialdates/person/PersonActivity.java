@@ -37,7 +37,7 @@ import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -68,6 +68,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator dateLabelCreator;
+    @Inject PeopleEventsProvider peopleEventsProvider;
 
     private Optional<Contact> displayingContact = Optional.absent();
 
@@ -83,7 +84,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
-                PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider),
+                peopleEventsProvider,
                 new PersonCallProvider(
                         new AndroidContactActionsProvider(getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory),
                         new FacebookContactActionsProvider(strings, getResources(), actionsFactory)

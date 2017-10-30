@@ -1,17 +1,18 @@
 package com.alexstyl.specialdates;
 
-import android.content.Context;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 
 public class DebugApplication extends MementoApplication {
 
     private DebugAppComponent debugAppComponent;
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+    public void onCreate() {
+        super.onCreate();
         debugAppComponent =
                 DaggerDebugAppComponent.builder()
                         .appModule(new AppModule(this))
+                        .peopleEventsModule(new PeopleEventsModule(this))
                         .build();
     }
 

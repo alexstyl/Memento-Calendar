@@ -14,7 +14,7 @@ public class WearSyncPeopleEventsView implements PeopleEventsView {
     }
 
     @Override
-    public void requestUpdate() {
+    public void onEventsUpdated() {
         Intent service = new Intent(context, WearSyncService.class);
         context.startService(service);
     }

@@ -1,10 +1,9 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.Months;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.events.peopleevents;
 
 final class NoEventsFoundException extends Exception {
     NoEventsFoundException(String message) {

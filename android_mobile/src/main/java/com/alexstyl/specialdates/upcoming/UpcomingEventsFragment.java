@@ -2,8 +2,6 @@ package com.alexstyl.specialdates.upcoming;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,14 +12,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alexstyl.resources.ColorResources;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.PeopleEventsView;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
+import com.alexstyl.specialdates.events.PeopleEventsMonitor;
+import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
@@ -56,6 +57,16 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject ColorResources colorResources;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
+    @Inject PeopleEventsViewRefresher refresher;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
+
+    private final PeopleEventsView listener = new PeopleEventsView() {
+        @Override
+        public void onEventsUpdated() {
+            presenter.refreshEvents();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,20 +80,16 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
 
-        UpcomingEventsSettingsMonitor settingsMonitor = new UpcomingEventsSettingsMonitor(
-                PreferenceManager.getDefaultSharedPreferences(getActivity()), getResources()
-        );
         navigator = new UpcomingEventsNavigator(analytics, getActivity(), strings, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
                 permissions,
                 provider,
-                settingsMonitor,
-                new PeopleEventsObserver(getContentResolver()),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
+        refresher.addView(listener);
     }
 
     @Override
@@ -103,7 +110,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
             @Override
             public void onContactClicked(Contact contact) {
                 navigator.toContactDetails(contact);
-
             }
 
             @Override
@@ -116,8 +122,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         presenter.startPresentingInto(this);
     }
 
@@ -155,9 +161,15 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        presenter.stopPresenting();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.stopPresenting();
+        refresher.removeView(listener);
     }
 
     @Override
@@ -169,7 +181,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
         @Override
         public void onPermissionGranted() {
-            presenter.refreshEvents();
+            eventsMonitor.updateEvents();
+            eventPreferences.markEventsAsInitialised();
         }
 
         @Override

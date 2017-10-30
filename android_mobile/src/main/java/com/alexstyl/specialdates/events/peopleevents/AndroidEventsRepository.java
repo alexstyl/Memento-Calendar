@@ -23,7 +23,7 @@ import java.util.List;
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.*;
 
-class AndroidEventsRepository {
+public class AndroidEventsRepository { // TODO change this to Device Events Repository
 
     private static final Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;
     private static final String[] PROJECTION = {
@@ -45,7 +45,7 @@ class AndroidEventsRepository {
     private final ContactsProvider contactsProvider;
     private final DateParser dateParser;
 
-    AndroidEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
+    public AndroidEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
         this.contentResolver = contentResolver;
         this.contactsProvider = contactsProvider;
         this.dateParser = dateParser;

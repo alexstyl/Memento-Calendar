@@ -45,7 +45,7 @@ class FacebookLogoutService {
         return new Action() {
             @Override
             public void run() throws Exception {
-                refresher.updateAllViews();
+                refresher.refreshViews();
             }
         };
     }

@@ -1,19 +1,12 @@
-package com.alexstyl.specialdates.service;
-
-import android.content.ContentResolver;
-import android.content.Context;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,30 +22,13 @@ public class PeopleEventsProvider {
 
     private final NamedayUserSettings namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
-    private final StaticPeopleEventsProvider staticEventsProvider;
+    private final PeopleStaticEventsProvider staticEvents;
     private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
-
-    public static PeopleEventsProvider newInstance(Context context, NamedayUserSettings namedayPreferences, ContactsProvider contactsProvider) {
-        ContentResolver resolver = context.getContentResolver();
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
-        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
-                namedayPreferences,
-                namedayCalendarProvider,
-                contactsProvider
-        );
-        CustomEventProvider customEventProvider = new CustomEventProvider(resolver);
-        StaticPeopleEventsProvider staticEventsProvider = new StaticPeopleEventsProvider(resolver, contactsProvider, customEventProvider);
-        return new PeopleEventsProvider(
-                namedayPreferences,
-                peopleNamedaysCalculator,
-                staticEventsProvider
-        );
-    }
 
     PeopleEventsProvider(NamedayUserSettings namedayPreferences,
                          PeopleNamedaysCalculator peopleNamedaysCalculator,
-                         StaticPeopleEventsProvider staticEventsProvider) {
-        this.staticEventsProvider = staticEventsProvider;
+                         PeopleStaticEventsProvider staticEvents) {
+        this.staticEvents = staticEvents;
         this.namedayPreferences = namedayPreferences;
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
     }
@@ -60,7 +36,7 @@ public class PeopleEventsProvider {
     List<ContactEvent> getCelebrationDateOn(Date date) {
         TimePeriod timeDuration = TimePeriod.Companion.between(date, date);
         List<ContactEvent> contactEvents = new ArrayList<>();
-        contactEvents.addAll(staticEventsProvider.fetchEventsBetween(timeDuration));
+        contactEvents.addAll(staticEvents.fetchEventsBetween(timeDuration));
         if (namedayPreferences.isEnabled()) {
             List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
             contactEvents.addAll(namedaysContactEvents);
@@ -71,7 +47,7 @@ public class PeopleEventsProvider {
 
     public List<ContactEvent> getContactEventsFor(TimePeriod timeDuration) {
         List<ContactEvent> contactEvents = new ArrayList<>();
-        contactEvents.addAll(staticEventsProvider.fetchEventsBetween(timeDuration));
+        contactEvents.addAll(staticEvents.fetchEventsBetween(timeDuration));
 
         if (namedayPreferences.isEnabled()) {
             List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
@@ -85,7 +61,7 @@ public class PeopleEventsProvider {
             @Override
             public List<ContactEvent> call() {
                 List<ContactEvent> contactEvents = new ArrayList<>();
-                contactEvents.addAll(staticEventsProvider.fetchEventsFor(contact));
+                contactEvents.addAll(staticEvents.fetchEventsFor(contact));
                 if (namedayPreferences.isEnabled()) {
                     List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysFor(contact);
                     contactEvents.addAll(namedaysContactEvents);
@@ -106,8 +82,8 @@ public class PeopleEventsProvider {
 
     private Optional<ContactEventsOnADate> findNextStaticEventsFor(Date date) {
         try {
-            Date closestStaticDate = staticEventsProvider.findClosestStaticEventDateFrom(date);
-            return new Optional<>(staticEventsProvider.fetchEventsOn(closestStaticDate));
+            Date closestStaticDate = staticEvents.findClosestStaticEventDateFrom(date);
+            return new Optional<>(staticEvents.fetchEventsOn(closestStaticDate));
         } catch (NoEventsFoundException e) {
             return Optional.absent();
         }
