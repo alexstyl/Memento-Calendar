@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.internal.verification.Times
 import org.mockito.runners.MockitoJUnitRunner
 
 
@@ -19,7 +20,6 @@ class UpcomingEventsPresenterTest {
 
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
-    private val mockEventsMonitor = Mockito.mock(UpcomingEventsSettingsMonitor::class.java)
     private val mockProvider = Mockito.mock(IUpcomingEventsProvider::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
@@ -29,6 +29,7 @@ class UpcomingEventsPresenterTest {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
         upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider, workScheduler, resultScheduler)
+        Mockito.`when`(mockView.isEmpty).thenReturn(true) // start each test with from scratch
     }
 
     @Test
@@ -63,7 +64,7 @@ class UpcomingEventsPresenterTest {
     }
 
     @Test
-    fun whenEventPreferencesAreUpdated_thenUpdatedEventsArePushedToTheView() {
+    fun givenEventsWereUpdated_whenAskedToUpdate_thenNewEventsArePushedToTheView() {
         val initialEvents = arrayListOf<UpcomingRowViewModel>()
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(initialEvents)
         Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
@@ -72,10 +73,10 @@ class UpcomingEventsPresenterTest {
 
         val updatedEvents = arrayListOf<UpcomingRowViewModel>(DateHeaderViewModel("February 2017"))
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(updatedEvents)
-// TODO        peopleEventsObserver.onChange(false)
+        upcomingEventsPresenter.refreshEvents()
 
-//        Mockito.verify(mockView, Times(1)).display(initialEvents)
-//        Mockito.verify(mockView, Times(1)).display(updatedEvents)
+        Mockito.verify(mockView, Times(1)).display(initialEvents)
+        Mockito.verify(mockView, Times(1)).display(updatedEvents)
 
     }
 }
