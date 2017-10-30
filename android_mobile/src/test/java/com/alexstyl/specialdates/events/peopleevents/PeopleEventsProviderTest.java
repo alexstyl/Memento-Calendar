@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.service;
+package com.alexstyl.specialdates.events.peopleevents;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
@@ -10,8 +10,6 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 import com.novoda.notils.logger.simple.Log;
 
 import java.util.Collections;
@@ -42,7 +40,7 @@ public class PeopleEventsProviderTest {
     @Mock
     private CustomEventProvider customEventProvider;
     @Mock
-    private StaticPeopleEventsProvider mockStaticEventProvider;
+    private AndroidPeopleStaticEventsProvider mockStaticEventProvider;
     @Mock
     private NamedayCalendarProvider mockNamedayCalendarProvider;
     @Mock

@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.preference.Preference;
 
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;

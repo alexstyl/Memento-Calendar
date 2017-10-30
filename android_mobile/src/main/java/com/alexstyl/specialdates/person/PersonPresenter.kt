@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.person
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
-import com.alexstyl.specialdates.service.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable

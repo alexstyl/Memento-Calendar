@@ -30,12 +30,11 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsObserver;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
@@ -87,6 +86,7 @@ public class SearchActivity extends ThemedMementoActivity {
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
+    @Inject PeopleEventsProvider peopleEventsProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class SearchActivity extends ThemedMementoActivity {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        peopleEventsSearch = new PeopleEventsSearch(PeopleEventsProvider.newInstance(context(), namedayUserSettings, contactsProvider), NameMatcher.INSTANCE);
+        peopleEventsSearch = new PeopleEventsSearch(peopleEventsProvider, NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
         viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), strings, dateLabelCreator));
 
@@ -360,8 +360,7 @@ public class SearchActivity extends ThemedMementoActivity {
         @Override
         public Loader<SearchResults> onCreateLoader(int id, Bundle args) {
             adapter.notifyIsLoadingMore();
-            PeopleEventsObserver observer = new PeopleEventsObserver(getContentResolver());
-            return new SearchLoader(context(), peopleEventsSearch, observer, searchQuery, searchCounter, viewModelFactory);
+            return new SearchLoader(context(), peopleEventsSearch, searchQuery, searchCounter, viewModelFactory);
         }
 
         @Override

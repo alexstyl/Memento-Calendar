@@ -1,22 +1,22 @@
-package com.alexstyl.specialdates.events.peopleevents;
+package com.alexstyl.specialdates.events;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import com.alexstyl.specialdates.EasyPreferences;
-import com.alexstyl.specialdates.Monitor;
+import com.alexstyl.specialdates.EventsUpdateTrigger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class PreferenceChangedMonitor implements Monitor {
+public final class PreferenceChangedEventsUpdateTrigger implements EventsUpdateTrigger {
 
     private final EasyPreferences preferences;
     private final List<String> keys;
 
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
-    PreferenceChangedMonitor(EasyPreferences preferences, Resources strings, int firstKeys, int... keys) {
+    public PreferenceChangedEventsUpdateTrigger(EasyPreferences preferences, Resources strings, int firstKeys, int... keys) {
         this.preferences = preferences;
         this.keys = new ArrayList<>(keys.length + 1);
         this.keys.add(strings.getString(firstKeys));

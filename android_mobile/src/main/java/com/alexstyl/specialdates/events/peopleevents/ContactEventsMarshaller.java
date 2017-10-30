@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.database.PeopleEventsContract;
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 
 import java.util.List;
 
@@ -27,11 +27,12 @@ public class ContactEventsMarshaller {
         Contact contact = event.getContact();
 
         ContentValues values = new ContentValues(DEFAULT_VALUES_SIZE);
-        values.put(PeopleEventsContract.PeopleEvents.CONTACT_ID, contact.getContactID());
-        values.put(PeopleEventsContract.PeopleEvents.DISPLAY_NAME, contact.getDisplayName().toString());
-        values.put(PeopleEventsContract.PeopleEvents.DATE, DATE_LABEL_CREATOR.createLabelWithYearPreferredFor(event.getDate()));
-        values.put(PeopleEventsContract.PeopleEvents.EVENT_TYPE, event.getType().getId());
-        values.put(PeopleEventsContract.PeopleEvents.SOURCE, contact.getSource());
+
+        values.put(AnnualEventsContract.CONTACT_ID, contact.getContactID());
+        values.put(AnnualEventsContract.DISPLAY_NAME, contact.getDisplayName().toString());
+        values.put(AnnualEventsContract.DATE, DATE_LABEL_CREATOR.createLabelWithYearPreferredFor(event.getDate()));
+        values.put(AnnualEventsContract.EVENT_TYPE, event.getType().getId());
+        values.put(AnnualEventsContract.SOURCE, contact.getSource());
 
         putDeviceContactIdIfPresent(event, values);
 
@@ -41,9 +42,9 @@ public class ContactEventsMarshaller {
     private void putDeviceContactIdIfPresent(ContactEvent event, ContentValues values) {
         Optional<Long> deviceEventId = event.getDeviceEventId();
         if (deviceEventId.isPresent()) {
-            values.put(PeopleEventsContract.PeopleEvents.DEVICE_EVENT_ID, deviceEventId.get());
+            values.put(AnnualEventsContract.DEVICE_EVENT_ID, deviceEventId.get());
         } else {
-            values.put(PeopleEventsContract.PeopleEvents.DEVICE_EVENT_ID, -1);
+            values.put(AnnualEventsContract.DEVICE_EVENT_ID, -1);
         }
     }
 

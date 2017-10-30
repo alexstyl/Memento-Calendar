@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -18,6 +19,7 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 
+import javax.inject.Inject;
 import java.net.URL;
 import java.util.List;
 
@@ -25,8 +27,16 @@ public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();
     private static final int NOTIFICATION_ID = 123;
 
+    @Inject PeopleEventsViewRefresher uiRefresher;
+
     public FacebookFriendsIntentService() {
         super(TAG);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((MementoApplication) getApplication()).getApplicationModule().inject(this);
     }
 
     @Override
@@ -50,7 +60,7 @@ public class FacebookFriendsIntentService extends IntentService {
         try {
             List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
             persister.keepOnly(friends);
-            PeopleEventsViewRefresher.get(this).updateAllViews();
+            uiRefresher.refreshViews();
         } catch (CalendarFetcherException e) {
             ErrorTracker.track(e);
         }
