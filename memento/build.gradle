@@ -11,6 +11,16 @@ for (File file : sdkHandler.sdkLoader.repositories) {
         url = file.toURI()
     }
 }
+repositories {
+    jcenter()
+    mavenCentral()
+    google()
+    maven {
+        url 'http://dl.bintray.com/novoda/maven'
+    }
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

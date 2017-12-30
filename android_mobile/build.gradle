@@ -34,10 +34,10 @@ android {
     buildToolsVersion androidBuildToolsVersion
 
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(
+        variant.outputs.all { output ->
+            output.outputFileName = new File(
                     output.outputFile.parent,
-                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+                    output.outputFileName.replace(".apk", "-${variant.versionName}.apk"))
         }
     }
 
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode androidVersionCode
         versionName androidVersionName
         manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
@@ -83,15 +83,6 @@ android {
             resources.srcDirs = ['src/main/res/raw']
         }
     }
-}
-
-repositories {
-    jcenter()
-    mavenCentral()
-    maven {
-        url 'http://dl.bintray.com/novoda/maven'
-    }
-    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
@@ -132,8 +123,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
