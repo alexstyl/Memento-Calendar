@@ -14,13 +14,13 @@ class NamedaysScreenViewHolderFactory(private val layoutInflater: LayoutInflater
         when (viewType) {
             NamedayScreenViewType.NAMEDAY -> {
                 val view = layoutInflater.inflate(R.layout.row_nameday_name, parent, false)
-                val nameView = view.findViewById(R.id.nameday_name) as TextView
+                val nameView = view.findViewById<TextView>(R.id.nameday_name)
                 return NameViewHolder(view, nameView)
             }
             NamedayScreenViewType.CONTACT -> {
                 val view = layoutInflater.inflate(R.layout.row_nameday_contact, parent, false)
-                val nameView = view.findViewById(R.id.row_nameday_contact_name) as TextView
-                val avatarView = view.findViewById(R.id.row_nameday_contact_avatar) as ColorImageView
+                val nameView = view.findViewById<TextView>(R.id.row_nameday_contact_name)
+                val avatarView = view.findViewById<ColorImageView>(R.id.row_nameday_contact_avatar)
                 return CelebratingContactViewHolder(view, imageLoader, avatarView, nameView)
             }
             else -> throw UnsupportedOperationException("Unsupported view type " + viewType)
