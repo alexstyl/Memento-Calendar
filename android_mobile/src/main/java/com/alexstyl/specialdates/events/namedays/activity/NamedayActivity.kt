@@ -46,13 +46,13 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         analytics.trackScreen(Screen.NAMEDAYS)
         namedayNavigator = NamedayNavigator(this, analytics)
 
-        val toolbar = findViewById(R.id.memento_toolbar) as MementoToolbar
+        val toolbar = findViewById<MementoToolbar>(R.id.memento_toolbar)
         toolbar.displayNavigationIconAsUp()
         setSupportActionBar(toolbar)
 
-        dateView = findViewById(R.id.namedays_date) as TextView
+        dateView = findViewById<TextView>(R.id.namedays_date)
 
-        val recyclerView = findViewById(R.id.namedays_list) as RecyclerView
+        val recyclerView = findViewById<RecyclerView>(R.id.namedays_list)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         val namedaysAdapter = NamedaysScreenAdapter(NamedaysScreenViewHolderFactory(LayoutInflater.from(this), imageLoader),
                 { contact ->
