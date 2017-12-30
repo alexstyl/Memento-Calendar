@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.internal.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:foreground="@drawable/selectable_back"
-  android:gravity="center_vertical"
-  android:minHeight="@dimen/nameday_item_minheight"
-  android:orientation="horizontal">
-
-  <com.alexstyl.specialdates.ui.widget.ColorImageView
-    android:id="@+id/row_nameday_contact_avatar"
-    app:isCircle="true"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    tools:src="@mipmap/ic_launcher" />
-
-  <TextView
-    android:id="@+id/row_nameday_contact_name"
-    style="@style/NamedayScreen.Text.ContactName"
+<com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    tools:text="Αναστασία Κάτρανίδου" />
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/nameday_item_minheight"
+    android:orientation="horizontal"
+    app:foreground="@drawable/selectable_back">
 
-</android.support.design.internal.ForegroundLinearLayout>
+    <com.alexstyl.specialdates.ui.widget.ColorImageView
+        android:id="@+id/row_nameday_contact_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:isCircle="true"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/row_nameday_contact_name"
+        style="@style/NamedayScreen.Text.ContactName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        tools:text="Αναστασία Κάτρανίδου" />
+
+</com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>
