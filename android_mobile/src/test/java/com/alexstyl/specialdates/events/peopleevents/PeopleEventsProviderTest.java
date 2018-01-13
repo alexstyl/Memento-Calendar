@@ -34,15 +34,9 @@ public class PeopleEventsProviderTest {
     private static final Contact PETER = ContactFixture.aContactCalled("Peter");
 
     @Mock
-    private ContactsProvider mockContactsProvider;
-    @Mock
     private NamedayUserSettings mockNamedaysPreferences;
     @Mock
-    private CustomEventProvider customEventProvider;
-    @Mock
     private AndroidPeopleStaticEventsProvider mockStaticEventProvider;
-    @Mock
-    private NamedayCalendarProvider mockNamedayCalendarProvider;
     @Mock
     private PeopleNamedaysCalculator mockPeopleNamedaysCalculator;
 
