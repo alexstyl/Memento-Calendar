@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.alexstyl.specialdates.R;
 
-public class LinearLayoutWithForeground extends LinearLayout {
+public class ForegroundLinearLayout extends LinearLayout {
 
     private Drawable mForeground;
 
@@ -26,13 +26,13 @@ public class LinearLayoutWithForeground extends LinearLayout {
 
     private boolean mForegroundBoundsChanged = false;
 
-    public LinearLayoutWithForeground(Context context, AttributeSet attrs) {
+    public ForegroundLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialiseLayout(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public LinearLayoutWithForeground(Context context, AttributeSet attrs, int defStyle) {
+    public ForegroundLinearLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initialiseLayout(context, attrs);
     }
@@ -40,15 +40,15 @@ public class LinearLayoutWithForeground extends LinearLayout {
     private void initialiseLayout(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ForegroundLinearLayout);
 
-        mForegroundGravity = a.getInt(R.styleable.ForegroundLinearLayout_android_foregroundGravity, mForegroundGravity);
+        mForegroundGravity = Gravity.NO_GRAVITY;//a.getInt(R.styleable.ForegroundLinearLayout_android_foregroundGravity, mForegroundGravity);
 
-        final Drawable d = a.getDrawable(R.styleable.ForegroundLinearLayout_android_foreground);
+        final Drawable d = a.getDrawable(R.styleable.ForegroundLinearLayout_foreground);
         if (d != null) {
             setForeground(d);
         }
 
         mForegroundInPadding = a.getBoolean(
-                R.styleable.ForegroundLinearLayout_android_foregroundInsidePadding, true);
+                R.styleable.ForegroundLinearLayout_foregroundInsidePadding, true);
 
         a.recycle();
     }
@@ -188,12 +188,12 @@ public class LinearLayoutWithForeground extends LinearLayout {
                     selfBounds.set(0, 0, w, h);
                 } else {
                     selfBounds.set(getPaddingLeft(), getPaddingTop(),
-                                   w - getPaddingRight(), h - getPaddingBottom()
+                            w - getPaddingRight(), h - getPaddingBottom()
                     );
                 }
 
                 Gravity.apply(mForegroundGravity, foreground.getIntrinsicWidth(),
-                              foreground.getIntrinsicHeight(), selfBounds, overlayBounds
+                        foreground.getIntrinsicHeight(), selfBounds, overlayBounds
                 );
                 foreground.setBounds(overlayBounds);
             }
