@@ -30,4 +30,10 @@
       format="color" />
   </declare-styleable>
 
+  <declare-styleable name="ForegroundLinearLayout">
+    <attr name="foreground" />
+    <attr name="foregroundInsidePadding" />
+    <attr name="foregroundGravity" />
+  </declare-styleable>
+
 </resources>

@@ -50,13 +50,7 @@ import javax.inject.Inject;
 import static android.view.View.GONE;
 import static com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
 
-/**
- * A fragment in which the user can search for namedays and their contact's birthdays.
- * <br/>The fragment has a different logic for when the user has enabled namedays for any language.
- * If the user has enabled to display Namedays, the search EditText will give no suggestions. Instead a custom
- * suggestion bar on top of the keyboard is going to be given to the user with names.
- * <p>Created by alexstyl on 20/04/15.</p>
- */
+
 public class SearchActivity extends ThemedMementoActivity {
 
     private static final String KEY_QUERY = "alexstyl:key_query";

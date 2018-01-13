@@ -48,22 +48,22 @@ data class Date private constructor(private val localDate: LocalDate, private va
 
     fun hasNoYear(): Boolean = !year.isPresent
 
-    override fun compareTo(right: Date): Int {
-        if (this.hasYear() && right.hasYear()) {
+    override fun compareTo(other: Date): Int {
+        if (this.hasYear() && other.hasYear()) {
             val yearOne = this.getYear()
-            val yearTwo = right.getYear()
+            val yearTwo = other.getYear()
             if (yearOne > yearTwo) {
                 return 1
             } else if (yearOne < yearTwo) {
                 return -1
             }
         }
-        if (this.month < right.month) {
+        if (this.month < other.month) {
             return -1
-        } else if (this.month > right.month) {
+        } else if (this.month > other.month) {
             return 1
         }
-        return this.dayOfMonth - right.dayOfMonth
+        return this.dayOfMonth - other.dayOfMonth
     }
 
     companion object {

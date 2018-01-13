@@ -1,11 +1,16 @@
 ext {
-    android_support_version = '25.3.1'
-    play_services_version = '10.0.1'
-    androidCompileSdkVersion = 25
-    androidBuildToolsVersion = '25.0.2'
+    // App Specifics
     androidVersionCode = 80
     androidVersionName = '12'
 
+    androidCompileSdkVersion = 27
+
+    // Libraries
+    androidBuildToolsVersion = '27.0.3'
+    android_support_version = '27.0.2'
+    play_services_version = '10.0.1'
+
+    // Code Quality
     checkstyleVersion = '8.0'
     findbugsVersion = '3.0.1'
     pmdVersion = '5.8.1'
