@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.permissions;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.contact.ContactMonitorService;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -44,8 +46,14 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CONTACT_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            launchMonitorService();
             setResult(RESULT_OK);
             finish();
         }
+    }
+
+    private void launchMonitorService() {
+        Intent intent = new Intent(this, ContactMonitorService.class);
+        startService(intent);
     }
 }
