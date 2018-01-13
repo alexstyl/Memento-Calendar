@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-27-alpha
 
     environment:
       ANDROID_HOME: /opt/android/sdk
