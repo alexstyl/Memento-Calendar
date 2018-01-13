@@ -3,16 +3,14 @@ package com.alexstyl.specialdates;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
+import com.alexstyl.specialdates.contact.ContactMonitorService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
-import com.alexstyl.specialdates.events.ContactsObserver;
-import com.alexstyl.specialdates.events.PeopleEventsMonitor;
-import com.alexstyl.specialdates.events.PreferenceChangedEventsUpdateTrigger;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
-import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
@@ -26,22 +24,16 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
-import javax.inject.Inject;
-import java.util.concurrent.Callable;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import io.reactivex.Observable;
-
-import static java.util.Arrays.asList;
+import javax.inject.Inject;
 
 public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject PeopleEventsMonitor eventsMonitor;
-    @Inject EventPreferences eventPreferences;
-    @Inject PermissionChecker contactPermissions;
+    @Inject
+    PermissionChecker contactPermissions;
 
     @Override
     public void onCreate() {
@@ -72,40 +64,13 @@ public class MementoApplication extends Application {
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
         }
 
-        setupDatabaseRefresher();
-    }
 
-    PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
-
-    private void setupDatabaseRefresher() {
-        preferenceChangedEventsUpdateTrigger = new PreferenceChangedEventsUpdateTrigger(
-                EasyPreferences.createForDefaultPreferences(this),
-                getResources(),
-                R.string.key_enable_namedays,
-                R.string.key_nameday_lang,
-                R.string.key_namedays_full_name
-        );
-
-        eventsMonitor.startMonitoring(
-                asList(
-                        new ContactsObserver(getContentResolver()),
-                        preferenceChangedEventsUpdateTrigger
-                ));
-
-        boolean eventsHaveBeenInitialised = eventPreferences.hasBeenInitialised();
-        if (!eventsHaveBeenInitialised && contactPermissions.canReadAndWriteContacts()) {
-            // if we don't have contact permission, we'll update it is granted
-            Observable.fromCallable(new Callable<Integer>() {
-                @Override
-                public Integer call() {
-                    eventsMonitor.updateEvents();
-                    eventPreferences.markEventsAsInitialised();
-                    return 5;
-                }
-            })
-                    .subscribe();
+        if (contactPermissions.canReadAndWriteContacts()) {
+            Intent intent = new Intent(this, ContactMonitorService.class);
+            startService(intent);
         }
     }
+
 
     protected void initialiseDependencies() {
         Log.setShowLogs(BuildConfig.DEBUG);
