@@ -39,7 +39,9 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
     };
 
     private void requestContactPermission() {
-        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT_PERMISSION);
+        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.WRITE_CONTACTS}
+                , REQUEST_CONTACT_PERMISSION);
     }
 
     @Override
