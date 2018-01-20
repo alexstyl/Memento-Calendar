@@ -30,27 +30,44 @@ class AndroidContactActionsProvider(
     : ContactActionsProvider {
 
 
-    private val WHATSAPP_VIDEO_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.video.call"
-    private val WHATSAPP_VOIP_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.voip.call"
-    private val VIBER_VOICE_MESSAGE = "vnd.android.cursor.item/vnd.com.viber.voip.google_voice_message"
-    private val VIBER_NUMBER_CALL = "vnd.android.cursor.item/vnd.com.viber.voip.viber_number_call"
-    private val VIBER_OUT_CALL = "vnd.android.cursor.item/vnd.com.viber.voip.viber_out_call_viber"
+    companion object {
+        private const val WHATSAPP_VIDEO_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.video.call"
+        private const val WHATSAPP_VOIP_CALL = "vnd.android.cursor.item/vnd.com.whatsapp.voip.call"
+        private const val VIBER_VOICE_MESSAGE = "vnd.android.cursor.item/vnd.com.viber.voip.google_voice_message"
+        private const val VIBER_NUMBER_CALL = "vnd.android.cursor.item/vnd.com.viber.voip.viber_number_call"
+        private const val VIBER_OUT_CALL = "vnd.android.cursor.item/vnd.com.viber.voip.viber_out_call_viber"
 
-    private val WHATSAPP_MESSAGE = "vnd.android.cursor.item/vnd.com.whatsapp.profile"
-    private val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
-    private val VIBER_NUMBER_MESSAGE = "vnd.android.cursor.item/vnd.com.viber.voip.viber_number_message"
+        private const val WHATSAPP_MESSAGE = "vnd.android.cursor.item/vnd.com.whatsapp.profile"
+        private const val TELEGRAM_MESSAGE = "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile"
+        private const val VIBER_NUMBER_MESSAGE = "vnd.android.cursor.item/vnd.com.viber.voip.viber_number_message"
 
 
-    private val CUSTOM_LABEL = Data.DATA3
-    private val PROJECTION = arrayOf(
-            Data._ID,
-            Phone.NUMBER, // works for Email.ADDRESS
-            Phone.TYPE, // works for Email.TYPE
-            CUSTOM_LABEL, // works for custom events label
-            Data.MIMETYPE
-    )
+        private const val CUSTOM_LABEL = Data.DATA3
+        private val PROJECTION = arrayOf(
+                Data._ID,
+                Phone.NUMBER, // works for Email.ADDRESS
+                Phone.TYPE, // works for Email.TYPE
+                CUSTOM_LABEL, // works for custom events label
+                Data.MIMETYPE
+        )
 
-    private val tinter = DrawableTinter(AttributeExtractor())
+        private val CUSTOM_CALL_ACTION_LIST = arrayOf(
+                WHATSAPP_VIDEO_CALL,
+                WHATSAPP_VOIP_CALL,
+                VIBER_VOICE_MESSAGE,
+                VIBER_NUMBER_CALL,
+                TELEGRAM_MESSAGE,
+                VIBER_OUT_CALL
+        )
+        private val CUSTOM_MESSAGING_ACTION_LIST = arrayOf(
+                WHATSAPP_MESSAGE,
+                TELEGRAM_MESSAGE,
+                VIBER_NUMBER_MESSAGE
+        )
+
+        private val tinter = DrawableTinter(AttributeExtractor())
+    }
+
 
     override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
 
@@ -63,8 +80,7 @@ class AndroidContactActionsProvider(
                 ),
                 Data.MIMETYPE
         )
-        cursor.use {
-            c ->
+        cursor.use { c ->
             while (c.moveToNext()) {
                 val mimeType = c.getString(c.getColumnIndex(Data.MIMETYPE))
                 if (Phone.CONTENT_ITEM_TYPE == mimeType) {
@@ -102,22 +118,24 @@ class AndroidContactActionsProvider(
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 val mimeType = cursor.getString(cursor.getColumnIndex(Data.MIMETYPE))
-                if (Phone.CONTENT_ITEM_TYPE == mimeType) {
-                    val phoneNumber = getPhoneNumberFrom(cursor)
-                    val customLabel = getCallLabelFrom(cursor)
-                    val action = ContactAction(phoneNumber, customLabel, actionsFactory.message(phoneNumber))
-                    val icon = tinter.tintWithAccentColor(R.drawable.ic_message, context)
-                    val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
-                    viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
-                } else if (Email.CONTENT_ITEM_TYPE == mimeType) {
-                    val phoneNumber = getEmailAddressFrom(cursor)
-                    val customLabel = getEmailLabelFrom(cursor)
-                    val action = ContactAction(phoneNumber, customLabel, actionsFactory.email(phoneNumber))
-                    val icon = tinter.tintWithAccentColor(R.drawable.ic_email, context)
-                    val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
-                    viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
-                } else if (mimeType.isCustomMessagingType()) {
-                    try {
+                when {
+                    Phone.CONTENT_ITEM_TYPE == mimeType -> {
+                        val phoneNumber = getPhoneNumberFrom(cursor)
+                        val customLabel = getCallLabelFrom(cursor)
+                        val action = ContactAction(phoneNumber, customLabel, actionsFactory.message(phoneNumber))
+                        val icon = tinter.tintWithAccentColor(R.drawable.ic_message, context)
+                        val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
+                        viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
+                    }
+                    Email.CONTENT_ITEM_TYPE == mimeType -> {
+                        val phoneNumber = getEmailAddressFrom(cursor)
+                        val customLabel = getEmailLabelFrom(cursor)
+                        val action = ContactAction(phoneNumber, customLabel, actionsFactory.email(phoneNumber))
+                        val icon = tinter.tintWithAccentColor(R.drawable.ic_email, context)
+                        val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
+                        viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
+                    }
+                    mimeType.isCustomMessagingType() -> try {
                         val action = createActionFor(cursor, mimeType)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
@@ -161,20 +179,6 @@ class AndroidContactActionsProvider(
         val type = cursor.getInt(cursor.getColumnIndex(Phone.TYPE))
         return resources.getString(Email.getTypeLabelResource(type))
     }
-
-    private val CUSTOM_CALL_ACTION_LIST = arrayOf(
-            WHATSAPP_VIDEO_CALL,
-            WHATSAPP_VOIP_CALL,
-            VIBER_VOICE_MESSAGE,
-            VIBER_NUMBER_CALL,
-            TELEGRAM_MESSAGE,
-            VIBER_OUT_CALL
-    )
-    private val CUSTOM_MESSAGING_ACTION_LIST = arrayOf(
-            WHATSAPP_MESSAGE,
-            TELEGRAM_MESSAGE,
-            VIBER_NUMBER_MESSAGE
-    )
 
     private fun String.isCustomCallType(): Boolean = CUSTOM_CALL_ACTION_LIST.contains(this)
 
