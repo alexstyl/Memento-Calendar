@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.person
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -17,10 +18,10 @@ import com.novoda.notils.caster.Views.findById
 
 
 class BottomSheetIntentDialog : MementoDialog() {
-    private var KEY_INTENTS = "key:intents"
-    private val KEY_TITLE = "key:title"
 
     companion object {
+        private const val KEY_INTENTS = "key:intents"
+        private const val KEY_TITLE = "key:title"
 
         fun newIntent(title: String, intents: ArrayList<Intent>): BottomSheetIntentDialog {
             return BottomSheetIntentDialog().apply {
@@ -34,11 +35,13 @@ class BottomSheetIntentDialog : MementoDialog() {
 
     lateinit var listener: BottomSheetIntentListener
 
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
         this.listener = Classes.from(activity)
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = activity
         val dialog = BottomSheetDialog(context!!)
@@ -60,13 +63,13 @@ class BottomSheetIntentDialog : MementoDialog() {
 
         val createViewModelsFor = createViewModelsFor(intents)
         val adapter = BottomSheetIntentAdapter(listener, createViewModelsFor)
-        grid.setAdapter(adapter)
+        grid.adapter = adapter
 
         dialog.setContentView(view)
         return dialog
     }
 
-    fun createViewModelsFor(intents: List<Intent>): List<IntentOptionViewModel> {
+    private fun createViewModelsFor(intents: List<Intent>): List<IntentOptionViewModel> {
         val packageManager = context!!.packageManager
         val viewModels = ArrayList<IntentOptionViewModel>(intents.size)
 
