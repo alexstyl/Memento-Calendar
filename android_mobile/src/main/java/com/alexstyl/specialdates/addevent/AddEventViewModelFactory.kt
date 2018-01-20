@@ -10,7 +10,10 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 
 internal class AddEventViewModelFactory(private val strings: Strings) {
 
-    private val NO_DATE = Optional.absent<Date>()
+
+    companion object {
+        private val NO_DATE = Optional.absent<Date>()
+    }
 
     fun createViewModelsForAllEventsBut(existingTypes: List<EventType>): List<AddEventContactEventViewModel> {
         val addEventViewModels = ArrayList<AddEventContactEventViewModel>()
