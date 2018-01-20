@@ -13,7 +13,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,10 +24,12 @@ import android.widget.Toast;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
+import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
@@ -51,7 +55,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
-public class PersonActivity extends ThemedMementoActivity implements PersonView {
+public class PersonActivity extends ThemedMementoActivity implements PersonView, BottomSheetIntentListener {
 
     private static final String EXTRA_CONTACT_SOURCE = "extra:source";
     private static final String EXTRA_CONTACT_ID = "extra:id";
@@ -62,13 +66,23 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
     private TextView ageAndSignView;
     private ContactItemsAdapter adapter;
     private ImageView toolbarGradient;
-    @Inject Analytics analytics;
-    @Inject Strings strings;
-    @Inject ImageLoader imageLoader;
-    @Inject NamedayUserSettings namedayUserSettings;
-    @Inject ContactsProvider contactsProvider;
-    @Inject DateLabelCreator dateLabelCreator;
-    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject
+    Analytics analytics;
+    @Inject
+    Strings strings;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    NamedayUserSettings namedayUserSettings;
+    @Inject
+    ContactsProvider contactsProvider;
+    @Inject
+    DateLabelCreator dateLabelCreator;
+    @Inject
+    PeopleEventsProvider peopleEventsProvider;
+
+
+    private PersonDetailsNavigator navigator;
 
     private Optional<Contact> displayingContact = Optional.absent();
 
@@ -80,7 +94,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         analytics.trackScreen(Screen.PERSON);
-
+        navigator = new PersonDetailsNavigator(new ExternalNavigator(this, analytics));
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
@@ -201,11 +215,20 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         adapter.displayEvents(viewModel);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_person_details, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home && !wasCalledFromMemento()) {
             finish();
             return true;
+        } else if (item.getItemId() == R.id.menu_view_contact) {
+            navigator.toViewContact(displayingContact);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -235,4 +258,9 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView 
         return intent;
     }
 
+    @Override
+    public void onActivitySelected(Intent intent) {
+        Log.d("TAG", "DONE!");
+        startActivity(intent);
+    }
 }
