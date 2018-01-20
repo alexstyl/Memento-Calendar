@@ -13,7 +13,11 @@ internal class UpcomingEventsPresenter(private val firstDay: Date,
                                        private val workScheduler: Scheduler,
                                        private val resultScheduler: Scheduler) {
 
-    private val TRIGGER = 1
+
+    companion object {
+        private const val TRIGGER = 1
+    }
+
     private val subject = PublishSubject.create<Int>()
     private var disposable: Disposable? = null
 
