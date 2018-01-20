@@ -8,15 +8,15 @@ import android.graphics.drawable.Drawable;
 import java.util.ArrayList;
 import java.util.List;
 
-final class IntentResolver {
+public final class IntentResolver {
 
     private final PackageManager packageManager;
 
-    IntentResolver(PackageManager packageManager) {
+    public IntentResolver(PackageManager packageManager) {
         this.packageManager = packageManager;
     }
 
-    List<IntentOptionViewModel> createViewModelsFor(Intent intent) {
+    public List<IntentOptionViewModel> createViewModelsFor(Intent intent) {
         List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(intent, 0);
         List<IntentOptionViewModel> viewModels = new ArrayList<>(resolveInfos.size());
         for (ResolveInfo resolveInfo : resolveInfos) {

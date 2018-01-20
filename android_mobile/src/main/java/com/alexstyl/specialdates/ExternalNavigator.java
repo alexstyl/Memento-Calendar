@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.provider.ContactsContract.Contacts;
 import android.widget.Toast;
 
@@ -14,6 +13,8 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactSource;
+import com.alexstyl.specialdates.person.BottomSheetIntentDialog;
+import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ import java.util.List;
 
 public class ExternalNavigator {
 
-    private final Activity activity;
+    private final MementoActivity activity;
     private final Analytics analytics;
 
-    public ExternalNavigator(Activity activity, Analytics analytics) {
+    public ExternalNavigator(MementoActivity activity, Analytics analytics) {
         this.activity = activity;
         this.analytics = analytics;
         SimpleChromeCustomTabs.initialize(activity);
@@ -75,14 +76,25 @@ public class ExternalNavigator {
 
     private void toDeviceContactDetails(Contact contact) {
         try {
-            Intent intent = checkContactSomewhereElse(contact);
-            activity.startActivity(intent);
+            ArrayList<Intent> intents = viewContactIntentsFromOtherApps(contact);
+            if (intents.size() == 1) {
+                activity.startActivity(intents.get(0));
+            } else if (intents.size() > 1) {
+                // show bottom sheet with options
+                BottomSheetIntentDialog bottomSheetPicturesDialog =
+                        BottomSheetIntentDialog.Companion.newIntent(
+                                activity.getString(R.string.View_contact),
+                                intents);
+                bottomSheetPicturesDialog.show(activity.getSupportFragmentManager(), "CONTACT");
+            }
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity,
+                    R.string.no_app_found,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
-    private Intent checkContactSomewhereElse(Contact contact) {
+    private ArrayList<Intent> viewContactIntentsFromOtherApps(Contact contact) {
         PackageManager packageManager = activity.getPackageManager();
 
         Intent intent = viewContact(contact);
@@ -94,16 +106,11 @@ public class ExternalNavigator {
             if (!myPackage.equals(packageName)) {
                 Intent targetIntent = viewContact(contact);
                 intent.setPackage(packageName);
+                targetIntent.setClassName(packageName, currentInfo.activityInfo.name);
                 targetIntents.add(targetIntent);
             }
         }
-        if (targetIntents.isEmpty()) {
-            throw new ActivityNotFoundException("NOOOOO!");
-        } else {
-            Intent chooserIntent = Intent.createChooser(targetIntents.remove(0), "Open file with");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toArray(new Parcelable[]{}));
-            return chooserIntent;
-        }
+        return targetIntents;
     }
 
     private Intent viewContact(Contact contact) {
@@ -119,7 +126,10 @@ public class ExternalNavigator {
             intent.setData(Uri.parse("https://www.facebook.com/memento.calendar/"));
             activity.startActivity(intent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(activity, R.string.no_app_found, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity,
+                    R.string.no_app_found,
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
         analytics.trackScreen(Screen.FACEBOOK_PAGE);
     }
