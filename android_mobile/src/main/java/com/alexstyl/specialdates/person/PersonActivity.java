@@ -260,7 +260,10 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
     @Override
     public void onActivitySelected(Intent intent) {
-        Log.d("TAG", "DONE!");
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, R.string.no_app_found, Toast.LENGTH_LONG).show();
+        }
     }
 }
