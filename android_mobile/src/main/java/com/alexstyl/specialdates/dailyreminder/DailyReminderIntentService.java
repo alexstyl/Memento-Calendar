@@ -128,7 +128,7 @@ public class DailyReminderIntentService extends IntentService {
     private void notifyForBankholidaysFor(Date date) {
         Optional<BankHoliday> bankHoliday = findBankholidayFor(date);
         if (bankHoliday.isPresent()) {
-            notifier.forBankholiday(date, bankHoliday.get());
+            notifier.forBankholiday(bankHoliday.get());
         }
     }
 
