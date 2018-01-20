@@ -41,4 +41,8 @@ public final class Version {
     static boolean hasMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
+
+    public static boolean hasOreo() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
 }
