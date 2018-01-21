@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.alexstyl.specialdates.util.DateParser;
@@ -38,12 +39,14 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     @Inject
     Strings strings;
 
+
     public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date) {
         EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
         Bundle args = new Bundle(2);
         args.putInt(ARG_EVENT_TYPE_ID, eventType.getId());
         if (date.isPresent()) {
-            args.putString(KEY_DATE, date.get().toString());
+            String label = ShortDateLabelCreator.INSTANCE.createLabelWithYearPreferredFor(date.get());
+            args.putString(KEY_DATE, label);
         }
         dialogFragment.setArguments(args);
         return dialogFragment;
