@@ -48,6 +48,8 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.novoda.notils.caster.Views;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -85,6 +87,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     private PersonDetailsNavigator navigator;
 
     private Optional<Contact> displayingContact = Optional.absent();
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +130,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
 
-        TabLayout tabLayout = Views.findById(this, R.id.person_tabs);
+        tabLayout = Views.findById(this, R.id.person_tabs);
         tabLayout.setupWithViewPager(viewPager, false);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_gift);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_call);
@@ -213,8 +216,17 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Override
     public void displayAvailableActions(PersonAvailableActionsViewModel viewModel) {
         adapter.displayEvents(viewModel);
-    }
+        if (viewModel.component3().isEmpty()) {
+            tabLayout.removeTabAt(2);
+        }
+        if (viewModel.component2().isEmpty()) {
+            tabLayout.removeTabAt(1);
+        }
 
+        if (tabLayout.getChildCount() == 1) {
+            tabLayout.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
