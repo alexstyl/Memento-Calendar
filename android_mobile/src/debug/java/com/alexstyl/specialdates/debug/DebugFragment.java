@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.debug;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -23,19 +25,26 @@ import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
+import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
 
 import javax.inject.Inject;
+
 import java.util.Calendar;
 
 public class DebugFragment extends MementoPreferenceFragment {
 
+    private static final int RESULT_PICK_CONTACT = 4929;
+
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
-    @Inject NamedayUserSettings namedayUserSettings;
-    @Inject ContactsProvider contactsProvider;
-    @Inject PeopleEventsViewRefresher refresher;
+    @Inject
+    NamedayUserSettings namedayUserSettings;
+    @Inject
+    ContactsProvider contactsProvider;
+    @Inject
+    PeopleEventsViewRefresher refresher;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -143,6 +152,16 @@ public class DebugFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
+
+        findPreference(R.string.key_debug_open_contact).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
+                        ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
+                return true;
+            }
+        });
     }
 
     private void showToast(String message) {
@@ -169,4 +188,14 @@ public class DebugFragment extends MementoPreferenceFragment {
         }
     };
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_PICK_CONTACT && resultCode == Activity.RESULT_OK) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(data.getData().getLastPathSegment()));
+            intent.setData(uri);
+            startActivity(intent);
+        }
+    }
 }

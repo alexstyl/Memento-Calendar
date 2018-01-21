@@ -16,4 +16,5 @@
   <string name="key_debug_trigger_support">key_debug_trigger_support</string>
   <string name="key_debug_facebook">key_debug_facebook</string>
   <string name="key_debug_facebook_fetch_friends">key_debug_facebook_fetch_friends</string>
+  <string name="key_debug_open_contact">key_debug_open_contact</string>
 </resources>
