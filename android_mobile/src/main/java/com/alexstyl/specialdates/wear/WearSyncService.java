@@ -1,12 +1,23 @@
 package com.alexstyl.specialdates.wear;
 
+import android.app.Activity;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
@@ -18,13 +29,16 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import javax.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class WearSyncService extends IntentService {
 
-    @Inject NamedayUserSettings namedayUserSettings;
-    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject
+    NamedayUserSettings namedayUserSettings;
+    @Inject
+    PeopleEventsProvider peopleEventsProvider;
 
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
@@ -33,8 +47,24 @@ public class WearSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        AppComponent applicationModule = ((MementoApplication) getApplication())
+                .getApplicationModule();
         applicationModule.inject(this);
+
+
+        if (Version.hasOreo()) {
+            initChannel();
+            Notification notification = new NotificationCompat
+                    .Builder(this, "Wear Service")
+                    .build();
+            startForeground(1, notification);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void initChannel() {
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.createNotificationChannel(new NotificationChannel("Wear Service", "derp", NotificationManager.IMPORTANCE_DEFAULT));
     }
 
     @Override
