@@ -222,9 +222,10 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         if (viewModel.component2().isEmpty()) {
             tabLayout.removeTabAt(1);
         }
-
-        if (tabLayout.getChildCount() == 1) {
+        if (tabLayout.getTabCount() == 1) {
             tabLayout.setVisibility(View.GONE);
+        } else {
+            tabLayout.setVisibility(View.VISIBLE);
         }
     }
 
