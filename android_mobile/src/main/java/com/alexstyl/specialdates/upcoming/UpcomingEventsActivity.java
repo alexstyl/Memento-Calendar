@@ -38,21 +38,24 @@ import static com.novoda.notils.caster.Views.findById;
 
 public class UpcomingEventsActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
-    private static final long DRAWER_APPEARANCE_WAITING_TIME = 400L;
 
     private ThemeMonitor themeMonitor;
 
     private UpcomingEventsNavigator navigator;
     private SearchTransitioner searchTransitioner;
-    private DrawerLayout drawerLayout;
 
-    private UpcomingEventsPreferences preferences;
-    @Inject Analytics analytics;
-    @Inject Strings stringResource;
-    @Inject DimensionResources dimensions;
-    @Inject ColorResources colorResources;
-    @Inject ImageLoader imageLoader;
-    @Inject DailyReminderNotifier dailyReminderNotifier;
+    @Inject
+    Analytics analytics;
+    @Inject
+    Strings stringResource;
+    @Inject
+    DimensionResources dimensions;
+    @Inject
+    ColorResources colorResources;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    DailyReminderNotifier dailyReminderNotifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,67 +85,8 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         });
 
         setTitle(R.string.app_name);
-
-        final NavigationView navigationView = Views.findById(this, R.id.navigation_view);
-        drawerLayout = Views.findById(this, R.id.drawer);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                boolean handled = handleNavigationItem(itemId);
-                if (handled) {
-                    drawerLayout.closeDrawer(Gravity.START);
-                }
-
-                // returning true highlights the row - we don't want that
-                return false;
-            }
-
-            private boolean handleNavigationItem(int itemId) {
-                switch (itemId) {
-                    case R.id.nav_github_link:
-                        navigator.toGithubPage();
-                        return true;
-                    case R.id.nav_settings:
-                        navigator.toSettings();
-                        return true;
-                    case R.id.nav_invite_friend:
-                        navigator.toAppInvite();
-                        return true;
-                    case R.id.nav_donate:
-                        navigator.toDonate();
-                        return true;
-                    case R.id.nav_import_facebook:
-                        navigator.toFacebookImport();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        preferences = UpcomingEventsPreferences.newInstance(thisActivity());
-
-        if (!preferences.isTheUserAwareOfNavigationDrawer()) {
-            drawerLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    drawerLayout.openDrawer(Gravity.START, true);
-                    preferences.triggerNavigationDrawerDisplayed();
-                    setupDrawerListener();
-                }
-            }, DRAWER_APPEARANCE_WAITING_TIME);
-        }
     }
 
-    private void setupDrawerListener() {
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                preferences.setUserKnowsDrawer();
-                drawerLayout.removeDrawerListener(this);
-            }
-        });
-    }
 
     @Override
     protected void onResume() {
@@ -153,16 +97,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         searchTransitioner.onActivityResumed();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(Gravity.START);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     public void onDateSelected(Date dateSelected) {
@@ -189,25 +123,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         }
 
     };
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onKeyMenuPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START);
-        } else {
-            drawerLayout.openDrawer(Gravity.START, true);
-        }
-        return true;
-    }
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, UpcomingEventsActivity.class);
