@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.images.ImageModule;
+import com.alexstyl.specialdates.people.PeopleFragment;
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
@@ -121,4 +122,6 @@ public interface AppComponent {
     void inject(BootCompleteReceiver receiver);
 
     void inject(ContactMonitorService contactMonitorService);
+
+    void inject(PeopleFragment peopleFragment);
 }

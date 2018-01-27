@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="52dp"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:background="#31225b61">
+
+    <com.alexstyl.specialdates.ui.widget.ColorImageView
+        android:id="@+id/people_avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:isCircle="true" />
+
+    <TextView
+        android:id="@+id/people_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="Hello FriendArin" />
+
+</com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>
