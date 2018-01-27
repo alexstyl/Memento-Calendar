@@ -6,6 +6,7 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.transition.FadeInTransition;
@@ -61,7 +62,7 @@ final class SearchTransitioner {
     }
 
     private void expandToolbar() {
-        FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
+        LinearLayout.LayoutParams frameLP = (LinearLayout.LayoutParams) toolbar.getLayoutParams();
         frameLP.setMargins(0, 0, 0, 0);
         toolbar.setLayoutParams(frameLP);
     }
@@ -90,7 +91,7 @@ final class SearchTransitioner {
     void onActivityResumed() {
         if (supportsTransitions()) {
             TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) toolbar.getLayoutParams();
             layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
             viewFader.showContent(toolbar);
             toolbar.setLayoutParams(layoutParams);
