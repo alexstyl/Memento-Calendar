@@ -23,7 +23,9 @@ import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
+import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Classes;
 
 import javax.inject.Inject;
@@ -35,7 +37,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     private NamedayListPreference namedayLanguageListPreferences;
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
-    private MainPreferenceActivity activity;
+    private ThemedMementoActivity activity;
     private DonationService donationService;
     @Inject Analytics analytics;
     @Inject Strings strings;
