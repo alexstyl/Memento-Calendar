@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,38 +25,12 @@
             android:layout_height="wrap_content"
             app:tabMinWidth="52dp"
             app:tabMode="fixed" />
-
-
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/main_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/upcoming_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_holder"
-        android:baselineAligned="false"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <fragment
-            android:id="@+id/upcoming"
-            android:name="com.alexstyl.specialdates.upcoming.UpcomingEventsFragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="@dimen/landscape_weight"
-            tools:layout="@layout/fragment_upcoming_events" />
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/upcoming_events_add_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_content_add"
-        app:fabSize="normal" />
+        android:layout_below="@id/toolbar_holder" />
 
 </RelativeLayout>

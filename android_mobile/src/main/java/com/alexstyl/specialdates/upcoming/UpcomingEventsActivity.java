@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -74,17 +76,21 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
-        ViewGroup activityContent = findById(this, R.id.main_content);
-        searchTransitioner = new SearchTransitioner(this, navigator, activityContent, toolbar, new ViewFader());
 
-        findById(this, R.id.upcoming_events_add_event).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigator.toAddEvent();
-            }
-        });
+        ViewPager viewPager = findViewById(R.id.upcoming_view_pager);
+        UpcomingViewPagerAdapter adapter = new UpcomingViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(adapter.getCount());
+
+        searchTransitioner = new SearchTransitioner(this, navigator, viewPager, toolbar, new ViewFader());
 
         setTitle(R.string.app_name);
+
+        TabLayout tabLayout = findViewById(R.id.upcoming_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_events);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_contacts);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings);
     }
 
 
