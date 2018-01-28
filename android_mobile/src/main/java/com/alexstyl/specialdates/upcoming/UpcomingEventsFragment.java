@@ -25,7 +25,6 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -120,19 +119,20 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                         getResources().getDimensionPixelSize(R.dimen.upcoming_event_header_vertical_spacing),
                         getResources().getDimensionPixelSize(R.dimen.upcoming_event_vertical_spacing)));
 
+        adapter = new UpcomingEventsAdapter(
+                new UpcomingViewHolderFactory(inflater, imageLoader),
+                new OnUpcomingEventClickedListener() {
 
-        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), new OnUpcomingEventClickedListener() {
+                    @Override
+                    public void onContactClicked(Contact contact) {
+                        navigator.toContactDetails(contact, getActivity());
+                    }
 
-            @Override
-            public void onContactClicked(Contact contact) {
-                navigator.toContactDetails(contact, getActivity());
-            }
-
-            @Override
-            public void onNamedayClicked(Date date) {
-                navigator.toDateDetails(date, getActivity());
-            }
-        });
+                    @Override
+                    public void onNamedayClicked(Date date) {
+                        navigator.toDateDetails(date, getActivity());
+                    }
+                });
         upcomingList.setAdapter(adapter);
         return view;
     }
