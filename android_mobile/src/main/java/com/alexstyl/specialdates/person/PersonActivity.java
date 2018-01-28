@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -240,14 +244,17 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Override
     public void showPersonAsVisible() {
         isVisibleContactOptional = new Optional<>(true);
-        avatarView.setColorFilter(Color.RED);
+        avatarView.setColorFilter(Color.TRANSPARENT);
         invalidateOptionsMenu();
     }
 
     @Override
     public void showPersonAsHidden() {
         isVisibleContactOptional = new Optional<>(false);
-        avatarView.setColorFilter(Color.TRANSPARENT);
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+
+        avatarView.setColorFilter(new ColorMatrixColorFilter(matrix));
         invalidateOptionsMenu();
     }
 
