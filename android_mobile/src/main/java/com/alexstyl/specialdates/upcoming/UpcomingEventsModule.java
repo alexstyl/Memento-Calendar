@@ -34,15 +34,16 @@ public class UpcomingEventsModule {
 
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
         return new UpcomingEventsProvider(eventsProvider,
-                                          namedayUserSettings,
-                                          namedayCalendarProvider,
-                                          BankHolidaysPreferences.newInstance(context),
-                                          new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                                          new UpcomingEventRowViewModelFactory(
-                                                  date,
-                                                  new UpcomingDateStringCreator(strings, date, context),
-                                                  new ContactViewModelFactory(colorResources, strings)
-                                          ), adRules
+                namedayUserSettings,
+                namedayCalendarProvider,
+                BankHolidaysPreferences.newInstance(context),
+                new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                new UpcomingEventRowViewModelFactory(
+                        date,
+                        colorResources,
+                        new UpcomingDateStringCreator(strings, date, context),
+                        new ContactViewModelFactory(colorResources, strings)
+                ), adRules
         );
     }
 
@@ -57,15 +58,16 @@ public class UpcomingEventsModule {
         Date date = Date.Companion.today();
         UpcomingEventsAdRules adRules = new NoAds();
         return new UpcomingEventsProvider(eventsProvider,
-                                          namedayUserSettings,
-                                          namedayCalendarProvider,
-                                          BankHolidaysPreferences.newInstance(context),
-                                          new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                                          new UpcomingEventRowViewModelFactory(
-                                                  date,
-                                                  new UpcomingDateStringCreator(strings, date, context),
-                                                  new ContactViewModelFactory(colorResources, strings)
-                                          ), adRules
+                namedayUserSettings,
+                namedayCalendarProvider,
+                BankHolidaysPreferences.newInstance(context),
+                new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                new UpcomingEventRowViewModelFactory(
+                        date,
+                        colorResources,
+                        new UpcomingDateStringCreator(strings, date, context),
+                        new ContactViewModelFactory(colorResources, strings)
+                ), adRules
         );
     }
 }

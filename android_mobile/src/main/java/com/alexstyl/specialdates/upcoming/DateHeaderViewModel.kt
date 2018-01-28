@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.upcoming
 
-data class DateHeaderViewModel(val date: String) : UpcomingRowViewModel {
+import android.support.annotation.ColorInt
+
+data class DateHeaderViewModel(val date: String, @ColorInt val titleColor: Int) : UpcomingRowViewModel {
 
     override val viewType: Int
         get() = UpcomingRowViewType.DATE_HEADER

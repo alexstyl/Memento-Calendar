@@ -12,6 +12,8 @@
     <dimen name="upcoming_space_between_title_and_content">15dp</dimen>
     <dimen name="upcoming_event_padding_horizontal">16dp</dimen>
 
+    <color name="upcoming_header_text_color">#B0B0B0</color>
+    <color name="upcoming_header_today_text_color">#535353</color>
 
     <style name="Upcoming" parent="None" />
 
