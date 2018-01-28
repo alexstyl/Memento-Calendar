@@ -1,96 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="upcoming_events_bankholidays_title">@string/Bank_holiday</string>
-  <string name="upcoming_events_namedays_title">@string/namedays</string>
-  <string name="plus_x_more">+%d more</string>
-  <string name="upcoming_select_date">@string/Select_date</string>
+    <string name="upcoming_events_bankholidays_title">@string/Bank_holiday</string>
+    <string name="upcoming_events_namedays_title">@string/namedays</string>
+    <string name="plus_x_more">+%d more</string>
+    <string name="upcoming_select_date">@string/Select_date</string>
 
-  <dimen name="upcoming_vertical_padding_between_cards">20dp</dimen>
-  <dimen name="upcoming_space_between_title_and_content">15dp</dimen>
+    <dimen name="upcoming_event_header_vertical_spacing">30dp</dimen>
+    <dimen name="upcoming_event_vertical_spacing">20dp</dimen>
 
-  <dimen name="upcoming_event_padding_vertical">8dp</dimen>
-  <dimen name="upcoming_event_padding_horizontal">16dp</dimen>
-
-  <dimen name="upcoming_initial_size">16sp</dimen>
-  <dimen name="upcoming_spacing_indicator">8dp</dimen>
+    <dimen name="upcoming_space_between_title_and_content">15dp</dimen>
+    <dimen name="upcoming_event_padding_horizontal">16dp</dimen>
 
 
-  <style name="Upcoming"
-    parent="None" />
+    <style name="Upcoming" parent="None" />
 
-  <style name="Upcoming.Toolbar"
-    parent="None" />
+    <style name="Upcoming.Toolbar" parent="None" />
 
-  <style name="Upcoming.Toolbar.TitleText"
-    parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-    <item name="android:textSize">16sp</item>
-    <item name="android:textColor">#a0000000</item>
-  </style>
+    <style name="Upcoming.Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#a0000000</item>
+    </style>
 
-  <style name="Upcoming.DateTitle">
-    <item name="android:paddingTop">24dp</item>
-    <item name="android:fontFamily">sans-serif-condensed</item>
-    <item name="android:paddingBottom">16dp</item>
+    <style name="Upcoming.DateTitle">
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:paddingBottom">16dp</item>
 
-    <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>
-    <item name="android:paddingRight">@dimen/upcoming_event_padding_horizontal</item>
+        <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/upcoming_event_padding_horizontal</item>
 
-    <item name="android:textSize">@dimen/card_header_text_size_medium</item>
-  </style>
+        <item name="android:textSize">@dimen/card_header_text_size_medium</item>
+    </style>
 
-  <style name="Upcoming.Avatar">
-    <item name="letterSize">@dimen/upcoming_initial_size</item>
-    <item name="isCircle">true</item>
-    <item name="android:layout_width">52dp</item>
-    <item name="android:layout_height">52dp</item>
-  </style>
+    <style name="Upcoming.Avatar">
+        <item name="letterSize">16sp</item>
+        <item name="isCircle">true</item>
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">52dp</item>
+    </style>
 
-  <style name="Upcoming.Text"
-    parent="None">
-    <item name="android:ellipsize">end</item>
-    <item name="android:textSize">14sp</item>
-  </style>
+    <style name="Upcoming.Text" parent="None">
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
-  <style name="Upcoming.Text.Content">
-    <item name="android:lineSpacingExtra">10sp</item>
-    <item name="android:maxLines">2</item>
-  </style>
+    <style name="Upcoming.Text.Content">
+        <item name="android:lineSpacingExtra">10sp</item>
+        <item name="android:maxLines">2</item>
+    </style>
 
-  <style name="Upcoming.Text.Header">
-    <item name="android:fontFamily">sans-serif-condensed</item>
-    <item name="android:textSize">16sp</item>
-  </style>
+    <style name="Upcoming.Text.Header">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
-  <style name="Upcoming.TodayBackground">
-    <item name="android:gravity">center_vertical</item>
-    <item name="android:orientation">horizontal</item>
-    <item name="android:minHeight">@dimen/size_daymarker</item>
-  </style>
+    <style name="Upcoming.TodayBackground">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:minHeight">@dimen/size_daymarker</item>
+    </style>
 
-  <style name="Upcoming.EventsText">
-    <item name="android:paddingLeft">@dimen/padding_tight</item>
-    <item name="android:paddingRight">@dimen/padding_tight</item>
-    <item name="android:ellipsize">end</item>
-    <item name="android:maxLines">2</item>
-    <item name="android:textColor">@color/card_text</item>
-    <item name="android:textSize">16sp</item>
-  </style>
+    <style name="Upcoming.EventsText">
+        <item name="android:paddingLeft">@dimen/padding_tight</item>
+        <item name="android:paddingRight">@dimen/padding_tight</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textColor">@color/card_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
-  <style name="Upcoming.EventItem">
-    <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>
-    <item name="android:paddingRight">@dimen/upcoming_event_padding_horizontal</item>
-  </style>
+    <style name="Upcoming.EventItem">
+        <item name="android:paddingLeft">@dimen/upcoming_event_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/upcoming_event_padding_horizontal</item>
+    </style>
 
-  <style name="Upcoming.ShowMore"
-    parent="Upcoming.EventItem">
-    <item name="android:background">@drawable/selectable_background_dayslight</item>
-  </style>
+    <style name="Upcoming.ShowMore" parent="Upcoming.EventItem">
+        <item name="android:background">@drawable/selectable_background_dayslight</item>
+    </style>
 
 
-  <style name="Upcoming.ContactName">
-    <item name="android:lines">1</item>
-  </style>
+    <style name="Upcoming.ContactName">
+        <item name="android:lines">1</item>
+    </style>
 
 
 </resources>
