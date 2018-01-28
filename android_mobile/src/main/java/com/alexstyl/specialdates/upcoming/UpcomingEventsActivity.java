@@ -43,9 +43,10 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     private ThemeMonitor themeMonitor;
 
-    private UpcomingEventsNavigator navigator;
     private SearchTransitioner searchTransitioner;
 
+    @Inject
+    UpcomingEventsNavigator navigator;
     @Inject
     Analytics analytics;
     @Inject
@@ -70,7 +71,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics.trackScreen(Screen.HOME);
 
-        navigator = new UpcomingEventsNavigator(analytics, this, stringResource, FacebookPreferences.newInstance(this));
 
         ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
@@ -106,7 +106,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
     @Override
     public void onDateSelected(Date dateSelected) {
-        navigator.toDateDetails(dateSelected);
+        navigator.toDateDetails(dateSelected, this);
     }
 
     @Override

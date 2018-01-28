@@ -57,7 +57,7 @@ final class SearchTransitioner {
             TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.OUT));
             activityContent.setVisibility(GONE);
         } else {
-            navigator.toSearch();
+            navigator.toSearch(activity);
         }
     }
 
@@ -78,7 +78,7 @@ final class SearchTransitioner {
             @Override
             public void onTransitionEnd(Transition transition) {
                 transitioning = false;
-                navigator.toSearch();
+                navigator.toSearch(activity);
                 activity.overridePendingTransition(0, 0);
             }
         };

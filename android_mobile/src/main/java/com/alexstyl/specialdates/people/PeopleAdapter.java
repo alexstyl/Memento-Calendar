@@ -15,7 +15,10 @@ import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-class PeopleAdapter extends RecyclerView.Adapter<PeopleViewHolder> {
+class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_TYPE_PERSON = 0;
+    private static final int VIEW_TYPE_IMPORT_FACEBOOK = 1;
 
     private final List<PeopleViewModel> people = new ArrayList<>();
     private final LayoutInflater inflater;
@@ -29,17 +32,38 @@ class PeopleAdapter extends RecyclerView.Adapter<PeopleViewHolder> {
     }
 
     @Override
-    public PeopleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowView = inflater.inflate(R.layout.row_people, parent, false);
-
-        ColorImageView imageView = rowView.findViewById(R.id.people_avatar);
-        TextView nameView = rowView.findViewById(R.id.people_name);
-        return new PeopleViewHolder(rowView, imageLoader, imageView, nameView);
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return VIEW_TYPE_IMPORT_FACEBOOK;
+        }
+        return VIEW_TYPE_PERSON;
     }
 
     @Override
-    public void onBindViewHolder(PeopleViewHolder holder, int position) {
-        holder.bind(people.get(position), listener);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_PERSON) {
+            View rowView = inflater.inflate(R.layout.row_people, parent, false);
+
+            ColorImageView imageView = rowView.findViewById(R.id.people_avatar);
+            TextView nameView = rowView.findViewById(R.id.people_name);
+            return new PeopleViewHolder(rowView, imageLoader, imageView, nameView);
+        } else if (viewType == VIEW_TYPE_IMPORT_FACEBOOK) {
+            View rowView = inflater.inflate(R.layout.row_people_import_from_facebook, parent, false);
+            return new ImportFromFacebookViewHolder(rowView);
+
+        }
+        throw new IllegalArgumentException("Cannot create holder for viewType " + viewType);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int itemViewType = getItemViewType(position);
+
+        if (itemViewType == VIEW_TYPE_PERSON) {
+            ((PeopleViewHolder) holder).bind(people.get(position), listener);
+        } else if (itemViewType == VIEW_TYPE_IMPORT_FACEBOOK) {
+            ((ImportFromFacebookViewHolder) holder).bind(listener);
+        }
     }
 
     void updateWith(final List<PeopleViewModel> viewModels) {

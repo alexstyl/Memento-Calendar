@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsNavigator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,6 +39,8 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
     PeoplePresenter peoplePresenter;
 
     private PeopleAdapter adapter;
+    @Inject
+    UpcomingEventsNavigator navigator;
 
 
     @Override
@@ -61,8 +65,12 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
         adapter = new PeopleAdapter(imageLoader, inflater, new PeopleViewHolderListener() {
             @Override
             public void onPersonClicked(Contact contact) {
-                Intent intent = PersonActivity.buildIntentFor(getActivity(), contact);
-                startActivity(intent);
+                navigator.toContactDetails(contact, getActivity());
+            }
+
+            @Override
+            public void onFacebookImport() {
+                navigator.toFacebookImport(getActivity());
             }
         });
         recyclerView.setAdapter(adapter);

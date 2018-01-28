@@ -36,6 +36,7 @@ import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
+
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,18 +52,27 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
-    private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
-    @Inject Analytics analytics;
-    @Inject Strings strings;
-    @Inject ColorResources colorResources;
-    @Inject ImageLoader imageLoader;
-    @Inject UpcomingEventsProvider provider;
-    @Inject PeopleEventsViewRefresher refresher;
-    @Inject PeopleEventsMonitor eventsMonitor;
-    @Inject EventPreferences eventPreferences;
+    @Inject
+    UpcomingEventsNavigator navigator;
+    @Inject
+    Analytics analytics;
+    @Inject
+    Strings strings;
+    @Inject
+    ColorResources colorResources;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    UpcomingEventsProvider provider;
+    @Inject
+    PeopleEventsViewRefresher refresher;
+    @Inject
+    PeopleEventsMonitor eventsMonitor;
+    @Inject
+    EventPreferences eventPreferences;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
@@ -84,8 +94,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 new PermissionNavigator(getActivity(), analytics),
                 new PermissionChecker(getActivity()), permissionCallbacks
         );
-
-        navigator = new UpcomingEventsNavigator(analytics, getActivity(), strings, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
@@ -114,12 +122,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
             @Override
             public void onContactClicked(Contact contact) {
-                navigator.toContactDetails(contact);
+                navigator.toContactDetails(contact, getActivity());
             }
 
             @Override
             public void onNamedayClicked(Date date) {
-                navigator.toDateDetails(date);
+                navigator.toDateDetails(date, getActivity());
             }
         });
         upcomingList.setAdapter(adapter);
