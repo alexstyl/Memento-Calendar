@@ -121,19 +121,20 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                         getResources().getDimensionPixelSize(R.dimen.upcoming_event_header_vertical_spacing),
                         getResources().getDimensionPixelSize(R.dimen.upcoming_event_vertical_spacing)));
 
+        adapter = new UpcomingEventsAdapter(
+                new UpcomingViewHolderFactory(inflater, imageLoader),
+                new OnUpcomingEventClickedListener() {
 
-        adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), new OnUpcomingEventClickedListener() {
+                    @Override
+                    public void onContactClicked(Contact contact) {
+                        navigator.toContactDetails(contact);
+                    }
 
-            @Override
-            public void onContactClicked(Contact contact) {
-                navigator.toContactDetails(contact);
-            }
-
-            @Override
-            public void onNamedayClicked(Date date) {
-                navigator.toDateDetails(date);
-            }
-        });
+                    @Override
+                    public void onNamedayClicked(Date date) {
+                        navigator.toDateDetails(date);
+                    }
+                });
         upcomingList.setAdapter(adapter);
         return view;
     }
