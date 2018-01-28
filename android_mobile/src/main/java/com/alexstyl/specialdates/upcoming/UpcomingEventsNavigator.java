@@ -29,26 +29,24 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-final class UpcomingEventsNavigator {
+public final class UpcomingEventsNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("https://g3mge.app.goo.gl/jdF1");
 
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
-    private final Activity activity;
     private final Strings strings;
     private final FacebookPreferences facebookPreferences;
 
-    UpcomingEventsNavigator(Analytics analytics, Activity activity, Strings strings, FacebookPreferences facebookPreferences) {
+    public UpcomingEventsNavigator(Analytics analytics, Strings strings, FacebookPreferences facebookPreferences) {
         this.analytics = analytics;
-        this.activity = activity;
         this.strings = strings;
         this.facebookPreferences = facebookPreferences;
         this.attributeExtractor = new AttributeExtractor();
     }
 
-    void toDonate() {
-        if (hasPlayStoreInstalled()) {
+    void toDonate(final Activity activity) {
+        if (hasPlayStoreInstalled(activity)) {
             Intent intent = DonateActivity.createIntent(activity);
             activity.startActivity(intent);
         } else {
@@ -56,23 +54,29 @@ final class UpcomingEventsNavigator {
                     .withFallback(new NavigationFallback() {
                         @Override
                         public void onFallbackNavigateTo(Uri url) {
-                            navigateToDonateWebsite();
+                            navigateToDonateWebsite(activity);
                         }
                     })
-                    .withIntentCustomizer(intentCustomizer)
+                    .withIntentCustomizer(new IntentCustomizer() {
+                        @Override
+                        public SimpleChromeCustomTabsIntentBuilder onCustomiseIntent(SimpleChromeCustomTabsIntentBuilder simpleChromeCustomTabsIntentBuilder) {
+                            int toolbarColor = attributeExtractor.extractPrimaryColorFrom(activity);
+                            return simpleChromeCustomTabsIntentBuilder.withToolbarColor(toolbarColor);
+                        }
+                    })
                     .navigateTo(SUPPORT_URL, activity);
 
         }
         analytics.trackScreen(Screen.DONATE);
     }
 
-    private boolean hasPlayStoreInstalled() {
+    private boolean hasPlayStoreInstalled(Activity activity) {
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(activity);
         return resultCode == ConnectionResult.SUCCESS;
     }
 
-    private void navigateToDonateWebsite() {
+    private void navigateToDonateWebsite(Activity activity) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(SUPPORT_URL);
@@ -82,12 +86,12 @@ final class UpcomingEventsNavigator {
         }
     }
 
-    void toAddEvent() {
+    void toAddEvent(Activity activity) {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
     }
 
-    void toFacebookImport() {
+    public void toFacebookImport(Activity activity) {
         if (facebookPreferences.isLoggedIn()) {
             Intent intent = new Intent(activity, FacebookProfileActivity.class);
             activity.startActivity(intent);
@@ -97,47 +101,40 @@ final class UpcomingEventsNavigator {
         }
     }
 
-    void toSettings() {
+    void toSettings(Activity activity) {
         Intent intent = new Intent(activity, MainPreferenceActivity.class);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.SETTINGS);
     }
 
-    void toSearch() {
+    void toSearch(Activity activity) {
         Intent intent = new Intent(activity, SearchActivity.class);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.SEARCH);
     }
 
-    private final IntentCustomizer intentCustomizer = new IntentCustomizer() {
-        @Override
-        public SimpleChromeCustomTabsIntentBuilder onCustomiseIntent(SimpleChromeCustomTabsIntentBuilder simpleChromeCustomTabsIntentBuilder) {
-            int toolbarColor = attributeExtractor.extractPrimaryColorFrom(activity);
-            return simpleChromeCustomTabsIntentBuilder.withToolbarColor(toolbarColor);
-        }
-    };
 
-    void toDateDetails(Date dateSelected) {
+    void toDateDetails(Date dateSelected, Activity activity) {
         Intent intent = NamedayActivity.Companion.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.DATE_DETAILS);
     }
 
-    void toAppInvite() {
+    void toAppInvite(Activity activity) {
         Intent intent = new ShareAppIntentCreator(strings).buildIntent();
         String shareTitle = strings.inviteFriend();
         activity.startActivity(Intent.createChooser(intent, shareTitle));
         analytics.trackAppInviteRequested();
     }
 
-    void toGithubPage() {
+    void toGithubPage(Activity activity) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("https://github.com/alexstyl/Memento-Calendar"));
         analytics.trackVisitGithub();
         activity.startActivity(intent);
     }
 
-    void toContactDetails(Contact contact) {
+    public void toContactDetails(Contact contact, Activity activity) {
         Intent intent = PersonActivity.buildIntentFor(activity, contact);
         activity.startActivity(intent);
         analytics.trackContactDetailsViewed(contact);
