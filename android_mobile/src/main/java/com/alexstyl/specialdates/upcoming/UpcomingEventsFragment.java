@@ -54,24 +54,15 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
-    @Inject
-    UpcomingEventsNavigator navigator;
-    @Inject
-    Analytics analytics;
-    @Inject
-    Strings strings;
-    @Inject
-    ColorResources colorResources;
-    @Inject
-    ImageLoader imageLoader;
-    @Inject
-    UpcomingEventsProvider provider;
-    @Inject
-    PeopleEventsViewRefresher refresher;
-    @Inject
-    PeopleEventsMonitor eventsMonitor;
-    @Inject
-    EventPreferences eventPreferences;
+    @Inject UpcomingEventsNavigator navigator;
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ColorResources colorResources;
+    @Inject ImageLoader imageLoader;
+    @Inject UpcomingEventsProvider provider;
+    @Inject PeopleEventsViewRefresher refresher;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override

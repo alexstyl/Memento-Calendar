@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -13,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +29,6 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
-import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
@@ -39,6 +38,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
@@ -47,8 +47,6 @@ import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.novoda.notils.caster.Views;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,6 +59,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
     private static final String EXTRA_CONTACT_SOURCE = "extra:source";
     private static final String EXTRA_CONTACT_ID = "extra:id";
+    private static final int ID_TOGGLE_VISIBILITY = 1023;
 
     private PersonPresenter presenter;
     private ImageView avatarView;
@@ -82,6 +81,8 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     DateLabelCreator dateLabelCreator;
     @Inject
     PeopleEventsProvider peopleEventsProvider;
+    @Inject
+    PeopleEventsPersister peoplePersister;
 
 
     private PersonDetailsNavigator navigator;
@@ -109,7 +110,8 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
                 new PersonDetailsViewModelFactory(strings, new AgeCalculator(Date.Companion.today())),
-                new EventViewModelFactory(strings, dateLabelCreator)
+                new EventViewModelFactory(strings, dateLabelCreator),
+                peoplePersister
         );
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
@@ -211,6 +213,12 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
+
+        if (viewModel.isVisible()) {
+            showPersonAsVisible();
+        } else {
+            showPersonAsHidden();
+        }
     }
 
     @Override
@@ -230,18 +238,51 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     }
 
     @Override
+    public void showPersonAsVisible() {
+        isVisibleContactOptional = new Optional<>(true);
+        avatarView.setColorFilter(Color.RED);
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void showPersonAsHidden() {
+        isVisibleContactOptional = new Optional<>(false);
+        avatarView.setColorFilter(Color.TRANSPARENT);
+        invalidateOptionsMenu();
+    }
+
+
+    private Optional<Boolean> isVisibleContactOptional = Optional.absent();
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_person_details, menu);
+        if (isVisibleContactOptional.isPresent()) {
+            if (isVisibleContactOptional.get()) {
+                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_hide);
+            } else {
+                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_show);
+            }
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home && !wasCalledFromMemento()) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home && !wasCalledFromMemento()) {
             finish();
             return true;
-        } else if (item.getItemId() == R.id.menu_view_contact) {
+        } else if (itemId == R.id.menu_view_contact) {
             navigator.toViewContact(displayingContact);
+        } else if (itemId == ID_TOGGLE_VISIBILITY) {
+            Boolean isVisible = isVisibleContactOptional.get();
+            if (isVisible) {
+                presenter.hideContact();
+            } else {
+                presenter.showContact();
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -14,4 +14,10 @@ public interface EventColumns {
 
     String DATE = "date";
     String SOURCE = "source";
+
+    /**
+     * A value to indicate whether the user is interested in seeing this event.
+     * <p>1 for visible, 0 for not-visible</p>
+     */
+    String VISIBLE = "visible";
 }
