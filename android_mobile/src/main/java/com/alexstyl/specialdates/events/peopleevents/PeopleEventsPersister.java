@@ -1,14 +1,18 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventTypeId;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_NAMEDAY;
@@ -60,5 +64,49 @@ public final class PeopleEventsPersister {
         } finally {
             database.endTransaction();
         }
+    }
+
+    public void markContactAsVisible(Contact contact) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues values = new ContentValues(1);
+        values.put(AnnualEventsContract.VISIBLE, 1);
+
+        database.update(AnnualEventsContract.TABLE_NAME,
+                values,
+                AnnualEventsContract.CONTACT_ID + " = " + contact.getContactID() +
+                        " AND " + AnnualEventsContract.SOURCE + " = " + contact.getSource(),
+                null);
+    }
+
+    public void markContactAsHidden(Contact contact) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues values = new ContentValues(1);
+        values.put(AnnualEventsContract.VISIBLE, 0);
+
+        database.update(AnnualEventsContract.TABLE_NAME,
+                values,
+                AnnualEventsContract.CONTACT_ID + " = " + contact.getContactID() +
+                        " AND " + AnnualEventsContract.SOURCE + " = " + contact.getSource(),
+                null);
+    }
+
+    public boolean getVisibilityFor(@NotNull Contact contact) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        // TODO just count events the contact has
+        Cursor query = database.query(AnnualEventsContract.TABLE_NAME,
+                null,
+                AnnualEventsContract.CONTACT_ID + " == " + contact.getContactID() +
+                        " AND " + AnnualEventsContract.SOURCE + " == " + contact.getSource() +
+                        " AND " + AnnualEventsContract.VISIBLE + " = 1",
+                null,
+                null,
+                null,
+                null
+        );
+        int count = query.getCount();
+        query.close();
+        return count > 0;
     }
 }

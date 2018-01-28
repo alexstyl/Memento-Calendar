@@ -1,13 +1,17 @@
 package com.alexstyl.specialdates.person
 
+import com.alexstyl.specialdates.ErrorTracker
+import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
+import io.reactivex.subjects.PublishSubject
 import javax.security.auth.Subject
 
 internal class PersonPresenter(private val personView: PersonView,
@@ -16,17 +20,24 @@ internal class PersonPresenter(private val personView: PersonView,
                                private val workScheduler: Scheduler,
                                private val resultScheduler: Scheduler,
                                private val toPersonViewModel: PersonDetailsViewModelFactory,
-                               private val toEventViewModel: EventViewModelFactory) {
+                               private val toEventViewModel: EventViewModelFactory,
+                               private val persister: PeopleEventsPersister) {
 
 
     private var disposable = CompositeDisposable()
-    private var subject = Subject()
+
+    private var contactOptional = Optional.absent<Contact>()
 
     fun startPresenting(contact: Contact) {
+        contactOptional = Optional(contact)
 
         disposable.add(
                 provider.getContactEventsFor(contact)
-                        .map { toPersonViewModel(contact, it.keepOnlyBirthday()) }
+                        .map {
+
+                            val isVisible = persister.getVisibilityFor(contact)
+                            toPersonViewModel(contact, it.keepOnlyBirthday(), isVisible)
+                        }
                         .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
                         .subscribe({
@@ -41,8 +52,7 @@ internal class PersonPresenter(private val personView: PersonView,
                         personCallProvider.getMessagesFor(contact),
                         Function3
                         <List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
-                        {
-                            t1, t2, t3 ->
+                        { t1, t2, t3 ->
                             PersonAvailableActionsViewModel(t1, t2, t3)
                         }
                 )
@@ -62,6 +72,35 @@ internal class PersonPresenter(private val personView: PersonView,
 
     fun stopPresenting() {
         disposable.dispose()
+    }
+
+    fun hideContact() {
+        if (!contactOptional.isPresent) {
+            ErrorTracker.log("Tried to hide a contact, but there was none")
+            return
+        }
+        disposable.add(Observable.fromCallable {
+            persister.markContactAsHidden(contactOptional.get())
+        }.observeOn(resultScheduler)
+                .subscribeOn(workScheduler)
+                .subscribe {
+                    personView.showPersonAsHidden()
+                })
+
+    }
+
+    fun showContact() {
+        if (!contactOptional.isPresent) {
+            ErrorTracker.log("Tried to show a contact, but there was none")
+            return
+        }
+        disposable.add(Observable.fromCallable {
+            persister.markContactAsVisible(contactOptional.get())
+        }.observeOn(resultScheduler)
+                .subscribeOn(workScheduler)
+                .subscribe {
+                    personView.showPersonAsVisible()
+                })
     }
 }
 

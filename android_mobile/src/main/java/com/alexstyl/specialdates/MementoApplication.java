@@ -2,6 +2,7 @@ package com.alexstyl.specialdates;
 
 import android.app.AlarmManager;
 import android.app.Application;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 
@@ -68,6 +69,7 @@ public class MementoApplication extends Application {
         if (contactPermissions.canReadAndWriteContacts()) {
             Intent intent = new Intent(this, ContactMonitorService.class);
             startService(intent);
+            // TODO use JobScheduler
         }
     }
 

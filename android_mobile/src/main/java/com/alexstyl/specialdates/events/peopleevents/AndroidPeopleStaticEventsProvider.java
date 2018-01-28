@@ -34,7 +34,7 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
 
     private static final String DATE_FROM = "substr(" + AnnualEventsContract.DATE + ",-5) >= ?";
     private static final String DATE_TO = "substr(" + AnnualEventsContract.DATE + ",-5) <= ?";
-    private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
+    private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO + " AND " + AnnualEventsContract.VISIBLE + " == 1";
     private static final String[] PEOPLE_PROJECTION = {AnnualEventsContract.DATE};
     //    private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
     private static final String[] PROJECTION = {
@@ -207,7 +207,7 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
                 Date closestDate = getDateFrom(cursor);
 
                 return Date.Companion.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
-                                         date.getYear()
+                        date.getYear()
                 );
             }
             throw new NoEventsFoundException("No static even found after or on " + date);
