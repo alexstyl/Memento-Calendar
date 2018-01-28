@@ -4,14 +4,12 @@ import com.alexstyl.specialdates.contact.ContactsProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.PublishSubject
 
 class PeoplePresenter(
         private val contactProvider: ContactsProvider,
         private val workScheduler: Scheduler,
         private val resultScheduler: Scheduler) {
 
-    private val subject = PublishSubject.create<Int>()
     private var disposable: Disposable? = null
 
     fun startPresentingInto(view: PeopleView) {
@@ -29,7 +27,7 @@ class PeoplePresenter(
                                         contact.contactID,
                                         contact.source))
                             }
-                            viewModels
+                            viewModels.sortedWith(compareBy({ it.personName }))
                         }
                         .observeOn(resultScheduler)
                         .subscribe { viewModels ->
