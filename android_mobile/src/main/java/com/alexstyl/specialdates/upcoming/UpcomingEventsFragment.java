@@ -1,7 +1,9 @@
 package com.alexstyl.specialdates.upcoming;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,19 +33,18 @@ import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
-import javax.inject.Inject;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
 
-    private static final int SINGLE_COLUMN = 1;
     private ViewGroup root;
     private ProgressBar progressBar;
     private TextView emptyView;
@@ -55,14 +56,22 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
-    @Inject Analytics analytics;
-    @Inject Strings strings;
-    @Inject ColorResources colorResources;
-    @Inject ImageLoader imageLoader;
-    @Inject UpcomingEventsProvider provider;
-    @Inject PeopleEventsViewRefresher refresher;
-    @Inject PeopleEventsMonitor eventsMonitor;
-    @Inject EventPreferences eventPreferences;
+    @Inject
+    Analytics analytics;
+    @Inject
+    Strings strings;
+    @Inject
+    ColorResources colorResources;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    UpcomingEventsProvider provider;
+    @Inject
+    PeopleEventsViewRefresher refresher;
+    @Inject
+    PeopleEventsMonitor eventsMonitor;
+    @Inject
+    EventPreferences eventPreferences;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
@@ -98,7 +107,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_upcoming_events, container, false);
         root = Views.findById(view, R.id.root);
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
@@ -107,8 +116,11 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         upcomingList = Views.findById(view, R.id.upcoming_events_list);
         upcomingList.setHasFixedSize(true);
         upcomingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        int space = getResources().getDimensionPixelSize(R.dimen.upcoming_vertical_padding_between_cards);
-        upcomingList.addItemDecoration(new SpacesItemDecoration(space, SINGLE_COLUMN));
+        upcomingList.addItemDecoration(
+                new UpcomingEventsDecorator(
+                        getResources().getDimensionPixelSize(R.dimen.upcoming_event_header_vertical_spacing),
+                        getResources().getDimensionPixelSize(R.dimen.upcoming_event_vertical_spacing)));
+
 
         adapter = new UpcomingEventsAdapter(new UpcomingViewHolderFactory(inflater, imageLoader), new OnUpcomingEventClickedListener() {
 
@@ -196,7 +208,10 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         @Override
         public void onPermissionDenied() {
-            getActivity().finishAffinity();
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.finishAffinity();
+            }
         }
     };
 }
