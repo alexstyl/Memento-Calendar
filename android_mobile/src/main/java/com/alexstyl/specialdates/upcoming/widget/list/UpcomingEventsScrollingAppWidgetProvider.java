@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.upcoming.HomeActivity;
 
 import javax.inject.Inject;
 
@@ -91,7 +91,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     }
 
     private PendingIntent pendingIntentToMain(Context context) {
-        Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
+        Intent clickIntent = new Intent(context, HomeActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

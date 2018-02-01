@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/toolbar_holder"
+        android:id="@+id/home_toolbar_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
-            android:id="@+id/memento_toolbar"
+            android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -20,7 +20,7 @@
             app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/upcoming_tabs"
+            android:id="@+id/home_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMinWidth="52dp"
@@ -28,9 +28,9 @@
     </LinearLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/upcoming_view_pager"
+        android:id="@+id/home_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_holder" />
+        android:layout_below="@id/home_toolbar_holder" />
 
 </RelativeLayout>

@@ -22,7 +22,7 @@ import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.upcoming.HomeActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import javax.inject.Inject;
@@ -90,7 +90,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
         Date date = Date.Companion.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.Companion.today().getYear());
-        Intent intent = UpcomingEventsActivity.getStartIntent(context);
+        Intent intent = HomeActivity.getStartIntent(context);
         intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -143,7 +143,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
                     context.getPackageName(),
                     R.layout.widget_today_nocontacts
             );
-            Intent intent = new Intent(context, UpcomingEventsActivity.class);
+            Intent intent = new Intent(context, HomeActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT
@@ -163,7 +163,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private PendingIntent pendingIntentToMain(Context context) {
-        Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
+        Intent clickIntent = new Intent(context, HomeActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

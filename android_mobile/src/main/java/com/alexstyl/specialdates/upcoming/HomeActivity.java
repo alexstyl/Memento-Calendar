@@ -3,34 +3,22 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.alexstyl.resources.ColorResources;
-import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
-import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
-import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
 import javax.inject.Inject;
@@ -38,7 +26,7 @@ import javax.inject.Inject;
 import static android.view.View.OnClickListener;
 import static com.novoda.notils.caster.Views.findById;
 
-public class UpcomingEventsActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
+public class HomeActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
 
     private ThemeMonitor themeMonitor;
@@ -50,20 +38,12 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Inject
     Analytics analytics;
     @Inject
-    Strings stringResource;
-    @Inject
-    DimensionResources dimensions;
-    @Inject
-    ColorResources colorResources;
-    @Inject
-    ImageLoader imageLoader;
-    @Inject
     DailyReminderNotifier dailyReminderNotifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upcoming_events);
+        setContentView(R.layout.activity_home);
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
@@ -72,12 +52,12 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
         analytics.trackScreen(Screen.HOME);
 
 
-        ExposedSearchToolbar toolbar = findById(this, R.id.memento_toolbar);
+        ExposedSearchToolbar toolbar = findById(this, R.id.home_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
 
-        ViewPager viewPager = findViewById(R.id.upcoming_view_pager);
+        ViewPager viewPager = findViewById(R.id.home_viewpager);
         UpcomingViewPagerAdapter adapter = new UpcomingViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());
@@ -86,7 +66,7 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
 
         setTitle(R.string.app_name);
 
-        TabLayout tabLayout = findViewById(R.id.upcoming_tabs);
+        TabLayout tabLayout = findViewById(R.id.home_tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_events);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_contacts);
@@ -131,6 +111,6 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     };
 
     public static Intent getStartIntent(Context context) {
-        return new Intent(context, UpcomingEventsActivity.class);
+        return new Intent(context, HomeActivity.class);
     }
 }

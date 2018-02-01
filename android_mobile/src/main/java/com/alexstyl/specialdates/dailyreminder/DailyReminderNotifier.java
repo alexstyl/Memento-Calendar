@@ -32,7 +32,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.upcoming.HomeActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public final class DailyReminderNotifier {
             }
         }
 
-        Intent startIntent = UpcomingEventsActivity.getStartIntent(context);
+        Intent startIntent = HomeActivity.getStartIntent(context);
         PendingIntent intent =
                 PendingIntent.getActivity(
                         context, NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
@@ -234,7 +234,7 @@ public final class DailyReminderNotifier {
     void forBankholiday(BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
-                UpcomingEventsActivity.getStartIntent(context),
+                HomeActivity.getStartIntent(context),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 

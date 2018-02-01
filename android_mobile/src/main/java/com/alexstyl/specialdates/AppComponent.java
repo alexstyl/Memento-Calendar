@@ -32,7 +32,7 @@ import com.alexstyl.specialdates.support.RateDialog;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.alexstyl.specialdates.ui.widget.CompactCardView;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.upcoming.HomeActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
@@ -65,7 +65,7 @@ import dagger.Component;
 public interface AppComponent {
     void inject(MementoApplication application);
 
-    void inject(UpcomingEventsActivity activity);
+    void inject(HomeActivity activity);
 
     void inject(UpcomingEventsFragment fragment);
 
