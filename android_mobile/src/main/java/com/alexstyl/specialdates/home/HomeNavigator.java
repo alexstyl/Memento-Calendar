@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.home;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -29,7 +29,7 @@ import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
 import com.novoda.simplechromecustomtabs.navigation.NavigationFallback;
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
-public final class UpcomingEventsNavigator {
+public final class HomeNavigator {
 
     private static final Uri SUPPORT_URL = Uri.parse("https://g3mge.app.goo.gl/jdF1");
 
@@ -38,14 +38,14 @@ public final class UpcomingEventsNavigator {
     private final Strings strings;
     private final FacebookPreferences facebookPreferences;
 
-    public UpcomingEventsNavigator(Analytics analytics, Strings strings, FacebookPreferences facebookPreferences) {
+    public HomeNavigator(Analytics analytics, Strings strings, FacebookPreferences facebookPreferences) {
         this.analytics = analytics;
         this.strings = strings;
         this.facebookPreferences = facebookPreferences;
         this.attributeExtractor = new AttributeExtractor();
     }
 
-    void toDonate(final Activity activity) {
+    public void toDonate(final Activity activity) {
         if (hasPlayStoreInstalled(activity)) {
             Intent intent = DonateActivity.createIntent(activity);
             activity.startActivity(intent);
@@ -86,7 +86,7 @@ public final class UpcomingEventsNavigator {
         }
     }
 
-    void toAddEvent(Activity activity) {
+    public void toAddEvent(Activity activity) {
         Intent intent = new Intent(activity, AddEventActivity.class);
         activity.startActivity(intent);
     }
@@ -101,7 +101,7 @@ public final class UpcomingEventsNavigator {
         }
     }
 
-    void toSettings(Activity activity) {
+    public void toSettings(Activity activity) {
         Intent intent = new Intent(activity, MainPreferenceActivity.class);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.SETTINGS);
@@ -114,20 +114,20 @@ public final class UpcomingEventsNavigator {
     }
 
 
-    void toDateDetails(Date dateSelected, Activity activity) {
+    public void toDateDetails(Date dateSelected, Activity activity) {
         Intent intent = NamedayActivity.Companion.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
         analytics.trackScreen(Screen.DATE_DETAILS);
     }
 
-    void toAppInvite(Activity activity) {
+    public void toAppInvite(Activity activity) {
         Intent intent = new ShareAppIntentCreator(strings).buildIntent();
         String shareTitle = strings.inviteFriend();
         activity.startActivity(Intent.createChooser(intent, shareTitle));
         analytics.trackAppInviteRequested();
     }
 
-    void toGithubPage(Activity activity) {
+    public void toGithubPage(Activity activity) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("https://github.com/alexstyl/Memento-Calendar"));
         analytics.trackVisitGithub();

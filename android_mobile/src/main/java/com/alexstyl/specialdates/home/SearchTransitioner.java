@@ -1,11 +1,10 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.home;
 
 import android.app.Activity;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.alexstyl.specialdates.R;
@@ -22,7 +21,7 @@ import static android.view.View.VISIBLE;
 final class SearchTransitioner {
 
     private final Activity activity;
-    private final UpcomingEventsNavigator navigator;
+    private final HomeNavigator navigator;
     private final ViewGroup activityContent;
     private final ExposedSearchToolbar toolbar;
     private final ViewFader viewFader;
@@ -31,7 +30,7 @@ final class SearchTransitioner {
     private boolean transitioning;
 
     SearchTransitioner(Activity activity,
-                       UpcomingEventsNavigator navigator,
+                       HomeNavigator navigator,
                        ViewGroup activityContent,
                        ExposedSearchToolbar toolbar,
                        ViewFader viewFader) {

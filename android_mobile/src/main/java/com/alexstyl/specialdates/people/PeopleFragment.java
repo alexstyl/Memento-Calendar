@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsNavigator;
+import com.alexstyl.specialdates.home.HomeNavigator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +37,7 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
 
     private PeopleAdapter adapter;
     @Inject
-    UpcomingEventsNavigator navigator;
+    HomeNavigator navigator;
 
 
     @Override

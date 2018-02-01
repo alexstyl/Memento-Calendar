@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -54,7 +55,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
-    @Inject UpcomingEventsNavigator navigator;
+    @Inject
+    HomeNavigator navigator;
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject ColorResources colorResources;

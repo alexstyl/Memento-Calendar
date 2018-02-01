@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.theming.ThemeMonitor;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
+import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import com.novoda.notils.meta.AndroidUtils;
 
@@ -34,7 +35,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     private SearchTransitioner searchTransitioner;
 
     @Inject
-    UpcomingEventsNavigator navigator;
+    HomeNavigator navigator;
     @Inject
     Analytics analytics;
     @Inject
@@ -58,7 +59,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
 
         ViewPager viewPager = findViewById(R.id.home_viewpager);
-        UpcomingViewPagerAdapter adapter = new UpcomingViewPagerAdapter(getSupportFragmentManager());
+        HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());
 
