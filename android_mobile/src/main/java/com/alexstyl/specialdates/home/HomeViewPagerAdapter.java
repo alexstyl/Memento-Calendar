@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.upcoming;
+package com.alexstyl.specialdates.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,11 +6,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.alexstyl.specialdates.people.PeopleFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 
 import java.util.HashMap;
 
 
-class UpcomingViewPagerAdapter extends FragmentPagerAdapter {
+class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
     private HashMap<Integer, Fragment> pages = new HashMap<>();
 
@@ -20,7 +21,7 @@ class UpcomingViewPagerAdapter extends FragmentPagerAdapter {
     private static final int PAGE_CONTACTS = 1;
     private static final int PAGE_SETTINGS = 2;
 
-    UpcomingViewPagerAdapter(FragmentManager fragmentManager) {
+    HomeViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 

@@ -15,6 +15,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.upcoming.widget.list.NoAds;
 
 import javax.inject.Named;
@@ -74,7 +75,7 @@ public class UpcomingEventsModule {
     }
 
     @Provides
-    UpcomingEventsNavigator navigator(Analytics analytics, Strings strings, Context context) {
-        return new UpcomingEventsNavigator(analytics, strings, FacebookPreferences.newInstance(context));
+    HomeNavigator navigator(Analytics analytics, Strings strings, Context context) {
+        return new HomeNavigator(analytics, strings, FacebookPreferences.newInstance(context));
     }
 }

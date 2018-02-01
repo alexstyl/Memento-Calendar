@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.upcoming.HomeActivity;
+import com.alexstyl.specialdates.home.HomeActivity;
 
 import javax.inject.Inject;
 

@@ -32,7 +32,7 @@ import com.alexstyl.specialdates.support.RateDialog;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.alexstyl.specialdates.ui.widget.CompactCardView;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
-import com.alexstyl.specialdates.upcoming.HomeActivity;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;

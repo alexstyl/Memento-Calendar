@@ -32,7 +32,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.upcoming.HomeActivity;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import java.util.ArrayList;
