@@ -9,7 +9,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.*
 
-internal class JavaJSONResourceLoader : NamedayJSONResourceLoader {
+class JavaJSONResourceLoader : NamedayJSONResourceLoader {
 
     @Throws(JSONException::class)
     override fun loadJSON(locale: NamedayLocale): JSONObject {

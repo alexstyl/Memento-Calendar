@@ -6,7 +6,10 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.AndroidJSONResourceLoader;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedaysHandlerFactory;
 import com.alexstyl.specialdates.util.DateParser;
 
 public final class DebugPeopleEventsUpdater {
@@ -21,7 +24,8 @@ public final class DebugPeopleEventsUpdater {
 
         PeopleEventsStaticEventsRefresher databaseRefresher = new PeopleEventsStaticEventsRefresher(repository, deviceMarshaller, databaseProvider);
 
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+        AndroidJSONResourceLoader loader = new AndroidJSONResourceLoader(context.getResources());
+        NamedayCalendarProvider namedayCalendarProvider = new NamedayCalendarProvider(new NamedayJSONProvider(loader), new SpecialNamedaysHandlerFactory());
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
                 namedayUserSettings,
                 namedayCalendarProvider,

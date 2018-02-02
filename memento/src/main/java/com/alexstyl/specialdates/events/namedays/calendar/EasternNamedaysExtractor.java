@@ -2,9 +2,6 @@ package com.alexstyl.specialdates.events.namedays.calendar;
 
 import android.support.annotation.NonNull;
 
-import com.alexstyl.specialdates.ErrorTracker;
-import com.novoda.notils.logger.simple.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +29,6 @@ public class EasternNamedaysExtractor {
                 JSONObject nameday = (JSONObject) specialJSON.get(i);
                 JSONArray variations = nameday.getJSONArray("variations");
                 if (containsNoVariations(variations)) {
-                    Log.w("Skipped [%s] because it had no variations", nameday.toString());
                     continue;
                 }
 
@@ -41,7 +37,7 @@ public class EasternNamedaysExtractor {
                 EasternNameday easternDate = new EasternNameday(date, celebratingNames);
                 easternNamedays.add(easternDate);
             } catch (JSONException e) {
-                ErrorTracker.track(e);
+                e.printStackTrace();
             }
         }
         return easternNamedays;
