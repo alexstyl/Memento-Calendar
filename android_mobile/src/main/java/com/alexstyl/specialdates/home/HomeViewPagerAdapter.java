@@ -53,4 +53,20 @@ class HomeViewPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return PAGE_COUNT;
     }
+
+    void onViewPagerIdled(int currentItem) {
+        Fragment fragment = pages.get(currentItem);
+        if (fragment instanceof ViewPagerAware) {
+            ((ViewPagerAware) fragment).onPagerIdled();
+        }
+    }
+
+    void onViewPagerScrolled() {
+        for (Fragment fragment : pages.values()) {
+            if (fragment instanceof ViewPagerAware) {
+                ((ViewPagerAware) fragment).onPagerScrolled();
+            }
+
+        }
+    }
 }

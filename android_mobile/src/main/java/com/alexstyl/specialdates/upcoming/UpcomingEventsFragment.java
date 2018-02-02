@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.home.HomeNavigator;
+import com.alexstyl.specialdates.home.ViewPagerAware;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
@@ -43,20 +45,20 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
+public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView, ViewPagerAware {
 
     private ViewGroup root;
     private ProgressBar progressBar;
     private TextView emptyView;
     private RecyclerView upcomingList;
+    private FloatingActionButton addEventView;
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
     private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
-    @Inject
-    HomeNavigator navigator;
+    @Inject HomeNavigator navigator;
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject ColorResources colorResources;
@@ -103,6 +105,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         root = Views.findById(view, R.id.root);
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
         emptyView = Views.findById(view, R.id.upcoming_events_emptyview);
+        addEventView = Views.findById(view, R.id.upcoming_events_add_event);
+        addEventView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigator.toAddEvent(getActivity());
+            }
+        });
 
         upcomingList = Views.findById(view, R.id.upcoming_events_list);
         upcomingList.setHasFixedSize(true);
@@ -206,4 +215,14 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
             }
         }
     };
+
+    @Override
+    public void onPagerIdled() {
+        addEventView.show();
+    }
+
+    @Override
+    public void onPagerScrolled() {
+        addEventView.hide();
+    }
 }
