@@ -1,10 +1,13 @@
 package com.alexstyl.specialdates.home;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.alexstyl.specialdates.R;
@@ -24,6 +27,7 @@ final class SearchTransitioner {
     private final HomeNavigator navigator;
     private final ViewGroup activityContent;
     private final ExposedSearchToolbar toolbar;
+    private final FrameLayout toolbarHolder;
     private final ViewFader viewFader;
 
     private final int toolbarMargin;
@@ -33,23 +37,26 @@ final class SearchTransitioner {
                        HomeNavigator navigator,
                        ViewGroup activityContent,
                        ExposedSearchToolbar toolbar,
+                       FrameLayout toolbarHolder,
                        ViewFader viewFader) {
         this.activity = activity;
         this.navigator = navigator;
         this.activityContent = activityContent;
         this.toolbar = toolbar;
+        this.toolbarHolder = toolbarHolder;
         this.viewFader = viewFader;
         this.toolbarMargin = activity.getResources().getDimensionPixelSize(R.dimen.padding_tight);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     void transitionToSearch() {
         if (transitioning) {
             return;
         }
         if (supportsTransitions()) {
-
             Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
             TransitionManager.beginDelayedTransition(toolbar, transition);
+            toolbarHolder.setElevation(activity.getResources().getDimensionPixelSize(R.dimen.toolbar_elevation));
             expandToolbar();
             viewFader.hideContentOf(toolbar);
 
@@ -61,7 +68,7 @@ final class SearchTransitioner {
     }
 
     private void expandToolbar() {
-        LinearLayout.LayoutParams frameLP = (LinearLayout.LayoutParams) toolbar.getLayoutParams();
+        FrameLayout.LayoutParams frameLP = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
         frameLP.setMargins(0, 0, 0, 0);
         toolbar.setLayoutParams(frameLP);
     }
@@ -87,16 +94,18 @@ final class SearchTransitioner {
         return Version.hasKitKat();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     void onActivityResumed() {
         if (supportsTransitions()) {
             TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) toolbar.getLayoutParams();
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
             layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
             viewFader.showContent(toolbar);
             toolbar.setLayoutParams(layoutParams);
 
             TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.IN));
             activityContent.setVisibility(VISIBLE);
+            toolbarHolder.setElevation(0);
         }
     }
 }

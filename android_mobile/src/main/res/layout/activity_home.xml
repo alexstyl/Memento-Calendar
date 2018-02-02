@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/home_toolbar_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_semi_expanded_height"
         android:background="?attr/colorPrimary"
-        android:elevation="@dimen/toolbar_elevation"
         android:orientation="vertical">
 
         <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
@@ -18,19 +17,30 @@
             android:layout_gravity="center"
             android:layout_margin="@dimen/padding_tight"
             app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/home_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/home_toolbar_holder"
+        android:orientation="vertical">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/home_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="@dimen/toolbar_elevation"
             app:tabMinWidth="52dp"
             app:tabMode="fixed" />
-    </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/home_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/home_toolbar_holder" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/home_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </RelativeLayout>
