@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -58,8 +59,8 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         setSupportActionBar(toolbar);
 
 
-        ViewPager viewPager = findViewById(R.id.home_viewpager);
-        HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
+        final ViewPager viewPager = findViewById(R.id.home_viewpager);
+        final HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());
 
@@ -72,6 +73,19 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_events);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_contacts);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings);
+
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    adapter.onViewPagerIdled(viewPager.getCurrentItem());
+                } else {
+                    adapter.onViewPagerScrolled();
+                }
+
+            }
+        });
     }
 
 
