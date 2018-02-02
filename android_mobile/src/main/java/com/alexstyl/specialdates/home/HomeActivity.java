@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
@@ -32,7 +34,6 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
 
     private ThemeMonitor themeMonitor;
-
     private SearchTransitioner searchTransitioner;
 
     @Inject
@@ -64,7 +65,9 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());
 
-        searchTransitioner = new SearchTransitioner(this, navigator, viewPager, toolbar, new ViewFader());
+        LinearLayout content = findViewById(R.id.home_content);
+        FrameLayout toolbarHolder = findViewById(R.id.home_toolbar_holder);
+        searchTransitioner = new SearchTransitioner(this, navigator, content, toolbar, toolbarHolder, new ViewFader());
 
         setTitle(R.string.app_name);
 
