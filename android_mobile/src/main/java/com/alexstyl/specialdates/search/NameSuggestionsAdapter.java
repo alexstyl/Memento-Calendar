@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.search;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -23,10 +22,9 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> 
     private final NamesFilter filter;
     private final List<String> displayingNames;
 
-    public static NameSuggestionsAdapter newInstance(Context context,
-                                                     OnNameSelectedListener onNameSelectedListener,
-                                                     NamedayUserSettings namedayPreferences) {
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+    public static NameSuggestionsAdapter newInstance(OnNameSelectedListener onNameSelectedListener,
+                                                     NamedayUserSettings namedayPreferences,
+                                                     NamedayCalendarProvider namedayCalendarProvider) {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         WordComparator compatator;
         if (locale.isComparedBySound()) {

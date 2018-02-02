@@ -38,10 +38,10 @@ import java.util.List;
  */
 public class DailyReminderIntentService extends IntentService {
 
-    private NamedayCalendarProvider namedayCalendarProvider;
     private BankHolidaysPreferences bankHolidaysPreferences;
     private PermissionChecker checker;
 
+    @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayUserSettings namedayPreferences;
     @Inject Strings strings;
     @Inject DimensionResources dimensions;
@@ -60,7 +60,6 @@ public class DailyReminderIntentService extends IntentService {
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
         bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
         checker = new PermissionChecker(this);
     }

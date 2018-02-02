@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import android.content.res.Resources;
-
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
@@ -15,15 +13,6 @@ public class NamedayCalendarProvider {
     private final SpecialNamedaysHandlerFactory factory;
     private final NamedayJSONProvider jsonProvider;
 
-    /**
-     * @deprecated Use the constructor instead.
-     */
-    public static NamedayCalendarProvider newInstance(Resources resources) {
-        NamedayJSONResourceLoader loader = new AndroidJSONResourceLoader(resources);
-        NamedayJSONProvider jsonResourceProvider = new NamedayJSONProvider(loader);
-        SpecialNamedaysHandlerFactory factory = new SpecialNamedaysHandlerFactory();
-        return new NamedayCalendarProvider(jsonResourceProvider, factory);
-    }
 
     public NamedayCalendarProvider(NamedayJSONProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
         this.factory = factory;

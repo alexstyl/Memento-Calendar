@@ -15,6 +15,7 @@ class PeoplePresenter(
     fun startPresentingInto(view: PeopleView) {
         disposable =
                 Observable.fromCallable {
+
                     contactProvider.allContacts
                 }
                         .observeOn(workScheduler)

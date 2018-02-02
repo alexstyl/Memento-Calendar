@@ -2,6 +2,7 @@ package com.alexstyl.specialdates
 
 import android.content.res.Resources
 import com.alexstyl.specialdates.common.R
+import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
@@ -61,5 +62,17 @@ class AndroidStrings(private val resources: Resources) : Strings {
         else -> {
             throw IllegalStateException("$event has no name")
         }
+    }
+
+    override fun localeName(locale: NamedayLocale): String = when (locale){
+        NamedayLocale.GREEK -> resources.getString(R.string.Greek)
+        NamedayLocale.ROMANIAN -> resources.getString(R.string.Romanian)
+        NamedayLocale.RUSSIAN -> resources.getString(R.string.Russian)
+        NamedayLocale.LATVIAN -> resources.getString(R.string.Latvian_Traditional)
+        NamedayLocale.LATVIAN_EXTENDED -> resources.getString(R.string.Latvian_Extended)
+        NamedayLocale.SLOVAK -> resources.getString(R.string.Slovak)
+        NamedayLocale.ITALIAN -> resources.getString(R.string.Italian)
+        NamedayLocale.CZECH -> resources.getString(R.string.Czech)
+        NamedayLocale.HUNGARIAN -> resources.getString(R.string.Hungarian)
     }
 }

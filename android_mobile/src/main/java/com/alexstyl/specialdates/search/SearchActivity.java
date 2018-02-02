@@ -30,6 +30,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.PermissionChecker;
@@ -81,6 +82,8 @@ public class SearchActivity extends ThemedMementoActivity {
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
     @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject NamedayCalendarProvider namedayCalendarProvider;
+    @Inject NamedayCalendarProvider calendarProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,7 +134,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         if (namedayUserSettings.isEnabled()) {
             GridLayoutManager namedayManager = new GridLayoutManager(context(), 1, RecyclerView.HORIZONTAL, false);
-            namesAdapter = NameSuggestionsAdapter.newInstance(context(), onNameSelectedListener, namedayUserSettings);
+            namesAdapter = NameSuggestionsAdapter.newInstance(onNameSelectedListener, namedayUserSettings, namedayCalendarProvider);
             namesSuggestionsView.setHasFixedSize(true);
             namesSuggestionsView.setLayoutManager(namedayManager);
             namesSuggestionsView.setAdapter(namesAdapter);
@@ -314,7 +317,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public Loader<NameCelebrations> onCreateLoader(int id, Bundle args) {
-            return NamedaysLoader.newInstance(context(), searchQuery, namedayUserSettings);
+            return NamedaysLoader.newInstance(context(), searchQuery, namedayUserSettings, calendarProvider);
         }
 
         @Override

@@ -36,4 +36,5 @@ public class NamedayModule {
         int year = Date.Companion.getCURRENT_YEAR();
         return namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, year);
     }
+
 }

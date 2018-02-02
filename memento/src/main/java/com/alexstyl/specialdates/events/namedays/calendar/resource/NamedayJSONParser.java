@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
-import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
@@ -47,7 +46,7 @@ final class NamedayJSONParser {
 
                 }
             } catch (JSONException e) {
-                ErrorTracker.track(e);
+                e.printStackTrace();
             }
         }
 
