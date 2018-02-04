@@ -5,15 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -137,10 +136,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         viewPager.setOffscreenPageLimit(2);
 
         tabLayout = Views.findById(this, R.id.person_tabs);
-        tabLayout.setupWithViewPager(viewPager, false);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_gift);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_call);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_message);
+        tabLayout.setupWithViewPager(viewPager, true);
 
         displayingContact = extractContactFrom(getIntent());
         if (displayingContact.isPresent()) {
@@ -228,16 +224,21 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Override
     public void displayAvailableActions(PersonAvailableActionsViewModel viewModel) {
         adapter.displayEvents(viewModel);
-        if (viewModel.component3().isEmpty()) {
-            tabLayout.removeTabAt(2);
-        }
-        if (viewModel.component2().isEmpty()) {
-            tabLayout.removeTabAt(1);
-        }
-        if (tabLayout.getTabCount() == 1) {
+
+        updateTabIfNeeded(0, R.drawable.ic_gift);
+        updateTabIfNeeded(1, R.drawable.ic_call);
+        updateTabIfNeeded(2, R.drawable.ic_message);
+
+        if (tabLayout.getTabCount() <= 1) {
             tabLayout.setVisibility(View.GONE);
         } else {
             tabLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateTabIfNeeded(int index, @DrawableRes int iconResId) {
+        if (tabLayout.getTabAt(index) != null) {
+            tabLayout.getTabAt(index).setIcon(iconResId);
         }
     }
 
