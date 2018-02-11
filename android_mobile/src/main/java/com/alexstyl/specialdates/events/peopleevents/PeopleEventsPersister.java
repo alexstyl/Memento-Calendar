@@ -72,11 +72,13 @@ public final class PeopleEventsPersister {
         ContentValues values = new ContentValues(1);
         values.put(AnnualEventsContract.VISIBLE, 1);
 
-        database.update(AnnualEventsContract.TABLE_NAME,
+        database.update(
+                AnnualEventsContract.TABLE_NAME,
                 values,
-                AnnualEventsContract.CONTACT_ID + " = " + contact.getContactID() +
-                        " AND " + AnnualEventsContract.SOURCE + " = " + contact.getSource(),
-                null);
+                AnnualEventsContract.CONTACT_ID + " = " + contact.getContactID()
+                        + " AND " + AnnualEventsContract.SOURCE + " = " + contact.getSource(),
+                null
+        );
     }
 
     public void markContactAsHidden(Contact contact) {
@@ -85,21 +87,24 @@ public final class PeopleEventsPersister {
         ContentValues values = new ContentValues(1);
         values.put(AnnualEventsContract.VISIBLE, 0);
 
-        database.update(AnnualEventsContract.TABLE_NAME,
+        database.update(
+                AnnualEventsContract.TABLE_NAME,
                 values,
-                AnnualEventsContract.CONTACT_ID + " = " + contact.getContactID() +
-                        " AND " + AnnualEventsContract.SOURCE + " = " + contact.getSource(),
-                null);
+                AnnualEventsContract.CONTACT_ID + " = " + contact.getContactID()
+                        + " AND " + AnnualEventsContract.SOURCE + " = " + contact.getSource(),
+                null
+        );
     }
 
     public boolean getVisibilityFor(@NotNull Contact contact) {
         SQLiteDatabase database = helper.getWritableDatabase();
-        // TODO just count events the contact has
-        Cursor query = database.query(AnnualEventsContract.TABLE_NAME,
+        // TODO just COUNT() events the contact has
+        Cursor query = database.query(
+                AnnualEventsContract.TABLE_NAME,
                 null,
-                AnnualEventsContract.CONTACT_ID + " == " + contact.getContactID() +
-                        " AND " + AnnualEventsContract.SOURCE + " == " + contact.getSource() +
-                        " AND " + AnnualEventsContract.VISIBLE + " = 1",
+                AnnualEventsContract.CONTACT_ID + " == " + contact.getContactID()
+                        + " AND " + AnnualEventsContract.SOURCE + " == " + contact.getSource()
+                        + " AND " + AnnualEventsContract.VISIBLE + " = 1",
                 null,
                 null,
                 null,
