@@ -41,6 +41,7 @@ class UpcomingRowViewModelsBuilderTest {
         val today = Date.today()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
+                mockColorResources,
                 UpcomingDateStringCreator(JavaStrings(), today, mockContext),
                 ContactViewModelFactory(mockColorResources, mockStrings)
         )

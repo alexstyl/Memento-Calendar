@@ -1,8 +1,5 @@
 package com.alexstyl.specialdates.events.namedays;
 
-import android.support.annotation.RawRes;
-import android.support.annotation.StringRes;
-
 public enum NamedayLocale {
     GREEK("gr", true),
     ROMANIAN("ro", false),

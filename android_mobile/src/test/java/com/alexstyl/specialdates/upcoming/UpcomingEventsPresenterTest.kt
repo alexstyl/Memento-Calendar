@@ -71,7 +71,7 @@ class UpcomingEventsPresenterTest {
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
-        val updatedEvents = arrayListOf<UpcomingRowViewModel>(DateHeaderViewModel("February 2017"))
+        val updatedEvents = arrayListOf<UpcomingRowViewModel>(DateHeaderViewModel("February 2017", 2))
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(updatedEvents)
         upcomingEventsPresenter.refreshEvents()
 

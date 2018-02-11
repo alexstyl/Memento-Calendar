@@ -1,11 +1,11 @@
 package com.alexstyl.specialdates
 
+import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
-
     override fun postOnFacebook(): String = "Post on Facebook"
 
     override fun facebook(): String = "Facebook"
@@ -66,5 +66,17 @@ class JavaStrings : Strings {
         else -> {
             throw IllegalStateException("$event has no name")
         }
+    }
+
+    override fun localeName(locale: NamedayLocale): String = when (locale) {
+        NamedayLocale.GREEK -> "Greek"
+        NamedayLocale.ROMANIAN -> "Romanian"
+        NamedayLocale.RUSSIAN -> "Russian"
+        NamedayLocale.LATVIAN -> "Latvian"
+        NamedayLocale.LATVIAN_EXTENDED -> "Latvian (Extended)"
+        NamedayLocale.SLOVAK -> "Slovak"
+        NamedayLocale.ITALIAN -> "Italian"
+        NamedayLocale.CZECH -> "Czech"
+        NamedayLocale.HUNGARIAN -> "Hungarian"
     }
 }
