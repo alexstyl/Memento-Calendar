@@ -25,7 +25,10 @@ public final class DebugPeopleEventsUpdater {
         PeopleEventsStaticEventsRefresher databaseRefresher = new PeopleEventsStaticEventsRefresher(repository, deviceMarshaller, databaseProvider);
 
         AndroidJSONResourceLoader loader = new AndroidJSONResourceLoader(context.getResources());
-        NamedayCalendarProvider namedayCalendarProvider = new NamedayCalendarProvider(new NamedayJSONProvider(loader), new SpecialNamedaysHandlerFactory());
+        NamedayCalendarProvider namedayCalendarProvider = new NamedayCalendarProvider(
+                new NamedayJSONProvider(loader),
+                new SpecialNamedaysHandlerFactory()
+        );
         PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
                 namedayUserSettings,
                 namedayCalendarProvider,
@@ -39,7 +42,8 @@ public final class DebugPeopleEventsUpdater {
         ));
     }
 
-    private DebugPeopleEventsUpdater(PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher, NamedayDatabaseRefresher namedayDatabaseRefresher) {
+    private DebugPeopleEventsUpdater(PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher,
+                                     NamedayDatabaseRefresher namedayDatabaseRefresher) {
         this.peopleEventsStaticEventsRefresher = peopleEventsStaticEventsRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
     }
