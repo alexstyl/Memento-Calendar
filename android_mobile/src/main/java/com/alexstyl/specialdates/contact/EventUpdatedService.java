@@ -6,20 +6,15 @@ import android.os.IBinder;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.EasyPreferences;
-import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.events.ContactsObserver;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.PreferenceChangedEventsUpdateTrigger;
 import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.novoda.notils.logger.simple.Log;
-
-import java.util.concurrent.Callable;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 
@@ -27,12 +22,14 @@ import static java.util.Arrays.asList;
 
 public class EventUpdatedService extends Service {
 
+    private static final int A_NUMBER = 5;
+    
     @Inject
     PeopleEventsMonitor eventsMonitor;
     @Inject
     EventPreferences eventPreferences;
 
-    PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
+    private PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -77,7 +74,7 @@ public class EventUpdatedService extends Service {
                 public Integer call() {
                     eventsMonitor.updateEvents();
                     eventPreferences.markEventsAsInitialised();
-                    return 5;
+                    return A_NUMBER;
                 }
             })
                     .subscribe();
