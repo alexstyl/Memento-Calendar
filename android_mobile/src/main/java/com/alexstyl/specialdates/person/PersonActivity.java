@@ -214,11 +214,12 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
 
-        if (viewModel.isVisible()) {
-            showPersonAsVisible();
-        } else {
-            showPersonAsHidden();
-        }
+        // TODO coming up
+        //        if (viewModel.isVisible()) {
+        //            showPersonAsVisible();
+        //        } else {
+        //            showPersonAsHidden();
+        //        }
     }
 
     @Override
@@ -244,19 +245,21 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
     @Override
     public void showPersonAsVisible() {
-        isVisibleContactOptional = new Optional<>(true);
-        avatarView.setColorFilter(Color.TRANSPARENT);
-        invalidateOptionsMenu();
+        throw new UnsupportedOperationException("Visibility is not currently available");
+//        isVisibleContactOptional = new Optional<>(true);
+//        avatarView.setColorFilter(Color.TRANSPARENT);
+//        invalidateOptionsMenu();
     }
 
     @Override
     public void showPersonAsHidden() {
-        isVisibleContactOptional = new Optional<>(false);
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-
-        avatarView.setColorFilter(new ColorMatrixColorFilter(matrix));
-        invalidateOptionsMenu();
+        throw new UnsupportedOperationException("Visibility is not currently available");
+//        isVisibleContactOptional = new Optional<>(false);
+//        ColorMatrix matrix = new ColorMatrix();
+//        matrix.setSaturation(0);
+//
+//        avatarView.setColorFilter(new ColorMatrixColorFilter(matrix));
+//        invalidateOptionsMenu();
     }
 
 
@@ -265,13 +268,14 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_person_details, menu);
-        if (isVisibleContactOptional.isPresent()) {
-            if (isVisibleContactOptional.get()) {
-                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_hide);
-            } else {
-                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_show);
-            }
-        }
+        // TODO coming up in a follow up PR
+//        if (isVisibleContactOptional.isPresent()) {
+//            if (isVisibleContactOptional.get()) {
+//                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_hide);
+//            } else {
+//                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_show);
+//            }
+//        }
         return true;
     }
 
