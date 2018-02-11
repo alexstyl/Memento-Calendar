@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
-import com.alexstyl.specialdates.contact.ContactMonitorService;
+import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
@@ -121,7 +121,7 @@ public interface AppComponent {
 
     void inject(BootCompleteReceiver receiver);
 
-    void inject(ContactMonitorService contactMonitorService);
+    void inject(EventUpdatedService eventUpdatedService);
 
     void inject(PeopleFragment peopleFragment);
 }

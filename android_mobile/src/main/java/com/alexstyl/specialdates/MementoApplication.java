@@ -2,13 +2,12 @@ package com.alexstyl.specialdates;
 
 import android.app.AlarmManager;
 import android.app.Application;
-import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
-import com.alexstyl.specialdates.contact.ContactMonitorService;
+import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
@@ -67,7 +66,7 @@ public class MementoApplication extends Application {
 
 
         if (contactPermissions.canReadAndWriteContacts()) {
-            Intent intent = new Intent(this, ContactMonitorService.class);
+            Intent intent = new Intent(this, EventUpdatedService.class);
             startService(intent);
             // TODO use JobScheduler
         }

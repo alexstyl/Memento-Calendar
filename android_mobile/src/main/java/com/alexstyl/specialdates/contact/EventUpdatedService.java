@@ -25,7 +25,7 @@ import io.reactivex.Observable;
 
 import static java.util.Arrays.asList;
 
-public class ContactMonitorService extends Service {
+public class EventUpdatedService extends Service {
 
     @Inject
     PeopleEventsMonitor eventsMonitor;
@@ -57,8 +57,10 @@ public class ContactMonitorService extends Service {
         preferenceChangedEventsUpdateTrigger = new PreferenceChangedEventsUpdateTrigger(
                 EasyPreferences.createForDefaultPreferences(this),
                 getResources(),
+                R.string.key_enable_bank_holidays,
                 R.string.key_enable_namedays,
                 R.string.key_nameday_lang,
+                R.string.key_namedays_contacts_only,
                 R.string.key_namedays_full_name
         );
 

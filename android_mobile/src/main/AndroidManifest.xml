@@ -219,7 +219,7 @@
             android:name=".facebook.friendimport.FacebookFriendsIntentService"
             android:label="@string/title_facebook_friends_import" />
 
-        <service android:name=".contact.ContactMonitorService" />
+        <service android:name=".contact.EventUpdatedService" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
