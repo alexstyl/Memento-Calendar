@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.contact.ContactMonitorService;
+import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -55,7 +55,7 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
     }
 
     private void launchMonitorService() {
-        Intent intent = new Intent(this, ContactMonitorService.class);
+        Intent intent = new Intent(this, EventUpdatedService.class);
         startService(intent);
     }
 }

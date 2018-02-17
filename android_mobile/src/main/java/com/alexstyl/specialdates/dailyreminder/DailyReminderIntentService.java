@@ -5,19 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
-import com.alexstyl.resources.ColorResources;
-import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.events.bankholidays.AndroidBankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
@@ -26,8 +24,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
@@ -38,17 +35,14 @@ import java.util.List;
  */
 public class DailyReminderIntentService extends IntentService {
 
-    private NamedayCalendarProvider namedayCalendarProvider;
-    private BankHolidaysPreferences bankHolidaysPreferences;
-    private PermissionChecker checker;
+    private AndroidBankHolidaysPreferences bankHolidaysPreferences;
+    private AndroidPermissionChecker checker;
 
+    @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayUserSettings namedayPreferences;
-    @Inject Strings strings;
-    @Inject DimensionResources dimensions;
-    @Inject ColorResources colorResources;
-    @Inject ImageLoader imageLoader;
     @Inject DailyReminderNotifier notifier;
     @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -60,9 +54,8 @@ public class DailyReminderIntentService extends IntentService {
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        namedayCalendarProvider = NamedayCalendarProvider.newInstance(this.getResources());
-        bankHolidaysPreferences = BankHolidaysPreferences.newInstance(this);
-        checker = new PermissionChecker(this);
+        bankHolidaysPreferences = AndroidBankHolidaysPreferences.newInstance(this);
+        checker = new AndroidPermissionChecker(tracker, this);
     }
 
     @Override

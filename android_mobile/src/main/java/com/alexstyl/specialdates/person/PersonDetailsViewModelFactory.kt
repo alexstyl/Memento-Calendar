@@ -7,16 +7,16 @@ import com.alexstyl.specialdates.date.Date
 
 internal class PersonDetailsViewModelFactory(private val strings: Strings, private val ageCalculator: AgeCalculator) {
 
-    operator fun invoke(contact: Contact, contactEvent: ContactEvent?): PersonInfoViewModel {
+    operator fun invoke(contact: Contact, dateOfBirth: ContactEvent?, isVisible: Boolean): PersonInfoViewModel {
         val ageAndStarSignBuilder = StringBuilder()
-        if (contactEvent != null) {
-            ageAndStarSignBuilder.append(ageCalculator.ageOf(contactEvent.date!!))
+        if (dateOfBirth != null) {
+            ageAndStarSignBuilder.append(ageCalculator.ageOf(dateOfBirth.date!!))
             if (ageAndStarSignBuilder.isNotEmpty()) {
                 ageAndStarSignBuilder.append(", ")
             }
-            ageAndStarSignBuilder.append(starSignOf(contactEvent.date!!))
+            ageAndStarSignBuilder.append(starSignOf(dateOfBirth.date!!))
         }
-        return PersonInfoViewModel(contact.displayName.toString(), ageAndStarSignBuilder.toString(), contact.imagePath)
+        return PersonInfoViewModel(contact.displayName.toString(), ageAndStarSignBuilder.toString(), contact.imagePath, isVisible)
     }
 
     private fun starSignOf(birthday: Date): String {

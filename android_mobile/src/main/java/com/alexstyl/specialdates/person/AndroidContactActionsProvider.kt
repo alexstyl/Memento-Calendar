@@ -1,11 +1,7 @@
 package com.alexstyl.specialdates.person
 
 
-import android.content.ActivityNotFoundException
-import android.content.ContentResolver
-import android.content.ContentUris
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.database.Cursor
@@ -13,7 +9,7 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.provider.ContactsContract.Data
 import android.view.View
-import com.alexstyl.specialdates.ErrorTracker
+import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.theming.AttributeExtractor
@@ -26,7 +22,8 @@ class AndroidContactActionsProvider(
         private val resources: Resources,
         private val context: Context,
         private val packageManager: PackageManager,
-        private val actionsFactory: ContactActionsFactory)
+        private val actionsFactory: ContactActionsFactory,
+        private val tracker: CrashAndErrorTracker)
     : ContactActionsProvider {
 
 
@@ -96,7 +93,7 @@ class AndroidContactActionsProvider(
                         val action = createActionFor(c, mimeType)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
-                        ErrorTracker.track(ex)
+                        tracker.track(ex)
                     }
                 }
             }
@@ -139,7 +136,7 @@ class AndroidContactActionsProvider(
                         val action = createActionFor(cursor, mimeType)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
-                        ErrorTracker.track(ex)
+                        tracker.track(ex)
                     }
                 }
             }

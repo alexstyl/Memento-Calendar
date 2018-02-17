@@ -3,8 +3,8 @@ package com.alexstyl.specialdates.contact;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
@@ -24,16 +24,16 @@ public class ContactsModule {
 
     @Provides
     @Singleton
-    ContactsProvider provider(Context context) {
+    ContactsProvider provider(Context context, CrashAndErrorTracker tracker) {
         Map<Integer, ContactsProviderSource> sources = new HashMap<>();
-        sources.put(SOURCE_DEVICE, buildAndroidSource(context));
+        sources.put(SOURCE_DEVICE, buildAndroidSource(context, tracker));
         sources.put(SOURCE_FACEBOOK, buildFacebookSource(context));
         return new ContactsProvider(sources);
     }
 
-    private static ContactsProviderSource buildAndroidSource(Context context) {
+    private static ContactsProviderSource buildAndroidSource(Context context, CrashAndErrorTracker tracker) {
         ContentResolver contentResolver = context.getContentResolver();
-        AndroidContactFactory factory = new AndroidContactFactory(contentResolver);
+        AndroidContactFactory factory = new AndroidContactFactory(contentResolver, tracker);
         ContactCache contactCache = new ContactCache(CACHE_SIZE);
         return new AndroidContactsProviderSource(contactCache, factory);
     }

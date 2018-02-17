@@ -4,8 +4,7 @@ import com.alexstyl.specialdates.date.ContactEvent
 
 class PeopleEventsStaticEventsRefresher(
         private val repository: AndroidEventsRepository,
-        private val marshaller: ContactEventsMarshaller,
-        private val persister: PeopleEventsPersister) {
+        private val persister: AndroidPeopleEventsPersister) {
 
     fun rebuildEvents() {
         persister.deleteAllDeviceEvents()
@@ -14,8 +13,7 @@ class PeopleEventsStaticEventsRefresher(
     }
 
     private fun storeContactsToProvider(contacts: List<ContactEvent>) {
-        val values = marshaller.marshall(contacts)
-        persister.insertAnnualEvents(values)
+        persister.insertAnnualEvents(contacts)
     }
 
 }

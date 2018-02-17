@@ -9,11 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,13 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
-import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
@@ -39,16 +38,15 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.novoda.notils.caster.Views;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,6 +59,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
     private static final String EXTRA_CONTACT_SOURCE = "extra:source";
     private static final String EXTRA_CONTACT_ID = "extra:id";
+    private static final int ID_TOGGLE_VISIBILITY = 1023;
 
     private PersonPresenter presenter;
     private ImageView avatarView;
@@ -82,12 +81,14 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     DateLabelCreator dateLabelCreator;
     @Inject
     PeopleEventsProvider peopleEventsProvider;
-
+    @Inject
+    AndroidPeopleEventsPersister peoplePersister;
 
     private PersonDetailsNavigator navigator;
 
     private Optional<Contact> displayingContact = Optional.absent();
     private TabLayout tabLayout;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,19 +98,22 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         analytics.trackScreen(Screen.PERSON);
-        navigator = new PersonDetailsNavigator(new ExternalNavigator(this, analytics));
+        navigator = new PersonDetailsNavigator(new ExternalNavigator(this, analytics, tracker));
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
                 peopleEventsProvider,
                 new PersonCallProvider(
-                        new AndroidContactActionsProvider(getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory),
+                        new AndroidContactActionsProvider(
+                                getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory, tracker
+                        ),
                         new FacebookContactActionsProvider(strings, getResources(), actionsFactory)
                 ),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread(),
                 new PersonDetailsViewModelFactory(strings, new AgeCalculator(Date.Companion.today())),
-                new EventViewModelFactory(strings, dateLabelCreator)
+                new EventViewModelFactory(strings, dateLabelCreator),
+                peoplePersister
         );
 
         Toolbar toolbar = Views.findById(this, R.id.toolbar);
@@ -131,16 +135,13 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         viewPager.setOffscreenPageLimit(2);
 
         tabLayout = Views.findById(this, R.id.person_tabs);
-        tabLayout.setupWithViewPager(viewPager, false);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_gift);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_call);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_message);
+        tabLayout.setupWithViewPager(viewPager, true);
 
         displayingContact = extractContactFrom(getIntent());
         if (displayingContact.isPresent()) {
             presenter.startPresenting(displayingContact.get());
         } else {
-            ErrorTracker.track(new IllegalArgumentException("No contact to display"));
+            tracker.track(new IllegalArgumentException("No contact to display"));
             finish();
         }
     }
@@ -173,7 +174,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         try {
             return new Optional<>(contactsProvider.getContact(contactID, contactSource));
         } catch (ContactNotFoundException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
             return Optional.absent();
         }
     }
@@ -211,37 +212,87 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
+
+        // TODO coming up
+        //        if (viewModel.isVisible()) {
+        //            showPersonAsVisible();
+        //        } else {
+        //            showPersonAsHidden();
+        //        }
     }
 
     @Override
     public void displayAvailableActions(PersonAvailableActionsViewModel viewModel) {
         adapter.displayEvents(viewModel);
-        if (viewModel.component3().isEmpty()) {
-            tabLayout.removeTabAt(2);
-        }
-        if (viewModel.component2().isEmpty()) {
-            tabLayout.removeTabAt(1);
-        }
-        if (tabLayout.getTabCount() == 1) {
+
+        updateTabIfNeeded(0, R.drawable.ic_gift);
+        updateTabIfNeeded(1, R.drawable.ic_call);
+        updateTabIfNeeded(2, R.drawable.ic_message);
+
+        if (tabLayout.getTabCount() <= 1) {
             tabLayout.setVisibility(View.GONE);
         } else {
             tabLayout.setVisibility(View.VISIBLE);
         }
     }
 
+    private void updateTabIfNeeded(int index, @DrawableRes int iconResId) {
+        if (tabLayout.getTabAt(index) != null) {
+            tabLayout.getTabAt(index).setIcon(iconResId);
+        }
+    }
+
+    @Override
+    public void showPersonAsVisible() {
+        throw new UnsupportedOperationException("Visibility is not currently available");
+//        isVisibleContactOptional = new Optional<>(true);
+//        avatarView.setColorFilter(Color.TRANSPARENT);
+//        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void showPersonAsHidden() {
+        throw new UnsupportedOperationException("Visibility is not currently available");
+//        isVisibleContactOptional = new Optional<>(false);
+//        ColorMatrix matrix = new ColorMatrix();
+//        matrix.setSaturation(0);
+//
+//        avatarView.setColorFilter(new ColorMatrixColorFilter(matrix));
+//        invalidateOptionsMenu();
+    }
+
+    private Optional<Boolean> isVisibleContactOptional = Optional.absent();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_person_details, menu);
+        // TODO coming up in a follow up PR
+//        if (isVisibleContactOptional.isPresent()) {
+//            if (isVisibleContactOptional.get()) {
+//                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_hide);
+//            } else {
+//                menu.add(0, ID_TOGGLE_VISIBILITY, 0, R.string.person_show);
+//            }
+//        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home && !wasCalledFromMemento()) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home && !wasCalledFromMemento()) {
             finish();
             return true;
-        } else if (item.getItemId() == R.id.menu_view_contact) {
+        } else if (itemId == R.id.menu_view_contact) {
             navigator.toViewContact(displayingContact);
+        } else if (itemId == ID_TOGGLE_VISIBILITY) {
+            Boolean isVisible = isVisibleContactOptional.get();
+            if (isVisible) {
+                presenter.hideContact();
+            } else {
+                presenter.showContact();
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -259,7 +310,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
                 intent.getAction().run();
             } catch (ActivityNotFoundException ex) {
                 Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show();
-                ErrorTracker.track(ex);
+                tracker.track(ex);
             }
         }
     };

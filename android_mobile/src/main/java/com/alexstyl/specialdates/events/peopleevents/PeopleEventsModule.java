@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
@@ -36,11 +37,12 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleStaticEventsProvider peopleStaticEventsProvider(ContactsProvider contactsProvider) {
+    PeopleStaticEventsProvider peopleStaticEventsProvider(ContactsProvider contactsProvider, CrashAndErrorTracker tracker) {
         return new AndroidPeopleStaticEventsProvider(
                 new EventSQLiteOpenHelper(context),
                 contactsProvider,
-                new CustomEventProvider(context.getContentResolver())
+                new CustomEventProvider(context.getContentResolver()),
+                tracker
         );
     }
 
@@ -69,18 +71,22 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher(SQLiteOpenHelper eventSQlite, ContentResolver contentResolver, ContactsProvider contactsProvider) {
-        AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE);
+    PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher(
+            SQLiteOpenHelper eventSQlite,
+            ContentResolver contentResolver,
+            ContactsProvider contactsProvider,
+            CrashAndErrorTracker tracker) {
+        AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE, tracker);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
-        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQlite);
-        return new PeopleEventsStaticEventsRefresher(repository, marshaller, peopleEventsPersister);
+        AndroidPeopleEventsPersister androidPeopleEventsPersister = new AndroidPeopleEventsPersister(eventSQlite, marshaller, tracker);
+        return new PeopleEventsStaticEventsRefresher(repository, androidPeopleEventsPersister);
     }
 
     @Provides
     NamedayDatabaseRefresher namedayDatabaseRefresher(NamedayUserSettings namedayUserSettings,
-                                                      PeopleEventsPersister databaseProvider,
+                                                      AndroidPeopleEventsPersister databaseProvider,
                                                       PeopleNamedaysCalculator calculator) {
-        return new NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, new ContactEventsMarshaller(), calculator);
+        return new NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, calculator);
     }
 
     @Provides
@@ -95,8 +101,12 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleEventsPersister peopleEventsPersister() {
-        return new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
+    AndroidPeopleEventsPersister peopleEventsPersister(CrashAndErrorTracker tracker) {
+        return new AndroidPeopleEventsPersister(
+                new EventSQLiteOpenHelper(context),
+                new ContactEventsMarshaller(),
+                tracker
+        );
     }
 
     @Provides

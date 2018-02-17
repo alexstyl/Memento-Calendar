@@ -14,7 +14,7 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ", ";
     private static final String NOT_NULL = " NOT NULL ";
     private static final String DATABASE_NAME = "events.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     private final EventPreferences eventPreferences;
 
@@ -32,6 +32,7 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
                     + AnnualEventsContract.DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.EVENT_TYPE + INT_TYPE + NOT_NULL + COMMA_SEP
                     + AnnualEventsContract.SOURCE + INT_TYPE + NOT_NULL + COMMA_SEP
+                    + AnnualEventsContract.VISIBLE + INT_TYPE + NOT_NULL + COMMA_SEP
                     + " PRIMARY KEY (" + AnnualEventsContract._ID + ")"
                     + ")";
 
@@ -39,6 +40,7 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
         db.execSQL("DROP TABLE IF EXISTS annual_events;");
+        // TODO keep facebook contacts
         eventPreferences.reset();
         onCreate(db);
     }

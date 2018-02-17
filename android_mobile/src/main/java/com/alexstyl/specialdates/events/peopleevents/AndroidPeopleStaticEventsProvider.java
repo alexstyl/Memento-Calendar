@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 import android.database.Cursor;
 import android.database.MergeCursor;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.SQLArgumentBuilder;
 import com.alexstyl.specialdates.contact.Contact;
@@ -34,7 +34,7 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
 
     private static final String DATE_FROM = "substr(" + AnnualEventsContract.DATE + ",-5) >= ?";
     private static final String DATE_TO = "substr(" + AnnualEventsContract.DATE + ",-5) <= ?";
-    private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO;
+    private static final String DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO + " AND " + AnnualEventsContract.VISIBLE + " == 1";
     private static final String[] PEOPLE_PROJECTION = {AnnualEventsContract.DATE};
     //    private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
     private static final String[] PROJECTION = {
@@ -56,11 +56,16 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
     private final EventSQLiteOpenHelper eventSQLHelper;
     private final ContactsProvider contactsProvider;
     private final CustomEventProvider customEventProvider;
+    private final CrashAndErrorTracker tracker;
 
-    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper, ContactsProvider contactsProvider, CustomEventProvider customEventProvider) {
+    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
+                                      ContactsProvider contactsProvider,
+                                      CustomEventProvider customEventProvider,
+                                      CrashAndErrorTracker tracker) {
         this.eventSQLHelper = sqLiteOpenHelper;
         this.contactsProvider = contactsProvider;
         this.customEventProvider = customEventProvider;
+        this.tracker = tracker;
     }
 
     @Override
@@ -107,7 +112,7 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
                     contactEvents.add(contactEvent);
                 }
             } catch (ContactNotFoundException e) {
-                ErrorTracker.track(e);
+                tracker.track(e);
             }
         }
         cursor.close();
@@ -207,7 +212,7 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
                 Date closestDate = getDateFrom(cursor);
 
                 return Date.Companion.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
-                                         date.getYear()
+                        date.getYear()
                 );
             }
             throw new NoEventsFoundException("No static even found after or on " + date);

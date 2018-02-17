@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
@@ -44,11 +44,16 @@ public class AndroidEventsRepository { // TODO change this to Device Events Repo
     private final ContentResolver contentResolver;
     private final ContactsProvider contactsProvider;
     private final DateParser dateParser;
+    private final CrashAndErrorTracker tracker;
 
-    public AndroidEventsRepository(ContentResolver contentResolver, ContactsProvider contactsProvider, DateParser dateParser) {
+    AndroidEventsRepository(ContentResolver contentResolver,
+                            ContactsProvider contactsProvider,
+                            DateParser dateParser,
+                            CrashAndErrorTracker tracker) {
         this.contentResolver = contentResolver;
         this.contactsProvider = contactsProvider;
         this.dateParser = dateParser;
+        this.tracker = tracker;
     }
 
     List<ContactEvent> fetchPeopleWithEvents() {
@@ -67,7 +72,7 @@ public class AndroidEventsRepository { // TODO change this to Device Events Repo
                     Contact contact = contactsProvider.getContact(contactId, SOURCE_DEVICE);
                     events.add(new ContactEvent(new Optional<>(eventId), eventType, eventDate, contact));
                 } catch (DateParseException e) {
-                    ErrorTracker.track(e);
+                    tracker.track(e);
                 } catch (ContactNotFoundException e) {
                     Log.e(e);
                 }

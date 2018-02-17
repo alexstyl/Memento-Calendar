@@ -5,10 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import com.alexstyl.specialdates.events.peopleevents.CustomEventType;
-import com.alexstyl.specialdates.events.peopleevents.EventType;
-import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
-
 class CustomEventProvider {
 
     private static final Uri CONTENT_URI = ContactsContract.Data.CONTENT_URI;

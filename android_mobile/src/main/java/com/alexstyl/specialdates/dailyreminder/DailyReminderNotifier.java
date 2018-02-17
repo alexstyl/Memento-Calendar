@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
 import com.alexstyl.android.Version;
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.Optional;
@@ -32,7 +32,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import java.util.ArrayList;
@@ -50,14 +50,14 @@ public final class DailyReminderNotifier {
     private final ImageLoader imageLoader;
     private final Strings strings;
     private final DimensionResources dimensions;
-    private final ColorResources colorResources;
+    private final Colors colors;
     private final DailyReminderPreferences preferences;
 
     DailyReminderNotifier(Context context,
                           NotificationManager notificationManager,
                           ImageLoader imageLoader,
                           Strings strings,
-                          ColorResources colorResources,
+                          Colors colors,
                           DimensionResources dimensions,
                           DailyReminderPreferences preferences) {
         this.notificationManager = notificationManager;
@@ -65,7 +65,7 @@ public final class DailyReminderNotifier {
         this.imageLoader = imageLoader;
         this.context = context.getApplicationContext();
         this.dimensions = dimensions;
-        this.colorResources = colorResources;
+        this.colors = colors;
         this.preferences = preferences;
     }
 
@@ -86,7 +86,7 @@ public final class DailyReminderNotifier {
             }
         }
 
-        Intent startIntent = UpcomingEventsActivity.getStartIntent(context);
+        Intent startIntent = HomeActivity.getStartIntent(context);
         PendingIntent intent =
                 PendingIntent.getActivity(
                         context, NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
@@ -108,7 +108,7 @@ public final class DailyReminderNotifier {
                 .setAutoCancel(true)
                 .setContentIntent(intent)
                 .setNumber(events.size())
-                .setColor(colorResources.getColor(R.color.main_red))
+                .setColor(colors.getDailyReminderColor())
                 .setSound(preferences.getRingtoneSelected());
 
         if (events.size() == 1) {
@@ -149,7 +149,7 @@ public final class DailyReminderNotifier {
                     .setAutoCancel(true)
                     .setContentIntent(intent)
                     .setContentTitle(publicTitle)
-                    .setColor(colorResources.getColor(R.color.main_red));
+                    .setColor(colors.getDailyReminderColor());
 
             builder.setPublicVersion(publicNotification.build());
         }
@@ -216,7 +216,7 @@ public final class DailyReminderNotifier {
                 .setContentText(subtitle)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setColor(colorResources.getColor(R.color.nameday_blue))
+                .setColor(colors.getNamedaysColor())
                 .setContentIntent(intent);
         if (names.size() > 1) {
             mBuilder.setNumber(names.size());
@@ -234,7 +234,7 @@ public final class DailyReminderNotifier {
     void forBankholiday(BankHoliday bankHoliday) {
         PendingIntent intent = PendingIntent.getActivity(
                 context, NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS,
-                UpcomingEventsActivity.getStartIntent(context),
+                HomeActivity.getStartIntent(context),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
@@ -247,7 +247,7 @@ public final class DailyReminderNotifier {
                 .setContentText(subtitle)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setColor(colorResources.getColor(R.color.bankholiday_green))
+                .setColor(colors.getBankholidaysColor())
                 .setContentIntent(intent);
         notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS, builder.build());
     }

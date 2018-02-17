@@ -4,14 +4,14 @@ import android.content.Context
 import android.widget.RemoteViews
 import com.alexstyl.specialdates.R
 
-import com.alexstyl.specialdates.upcoming.NamedaysViewModel
+import com.alexstyl.specialdates.upcoming.UpcomingNamedaysViewModel
 
-internal class NamedaysBinder(private val views: RemoteViews, private val context: Context) : UpcomingEventViewBinder<NamedaysViewModel> {
+internal class NamedaysBinder(private val views: RemoteViews, private val context: Context) : UpcomingEventViewBinder<UpcomingNamedaysViewModel> {
 
-    override fun bind(viewModel: NamedaysViewModel) {
-        views.setTextViewText(R.id.row_upcoming_namedays, viewModel.namesLabel)
+    override fun bind(viewModelUpcoming: UpcomingNamedaysViewModel) {
+        views.setTextViewText(R.id.row_upcoming_namedays, viewModelUpcoming.namesLabel)
 
-        views.setOnClickFillInIntent(R.id.widget_row_upcoming_nameday_background, WidgetRouterActivity.buildNamedayIntent(viewModel.date, context))
+        views.setOnClickFillInIntent(R.id.widget_row_upcoming_nameday_background, WidgetRouterActivity.buildNamedayIntent(viewModelUpcoming.date, context))
     }
 
     override fun getViews(): RemoteViews = views
