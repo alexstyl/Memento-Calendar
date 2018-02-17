@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.contact.ContactSource
 import io.reactivex.Observable
 
 class PersonCallProvider(
-        private val androidActionsProvider: ContactActionsProvider,
+        private val deviceActionsProvider: ContactActionsProvider,
         private val facebookContactActionsProvider: ContactActionsProvider) {
 
 
@@ -14,7 +14,7 @@ class PersonCallProvider(
             if (contact.source == ContactSource.SOURCE_FACEBOOK) {
                 facebookContactActionsProvider.callActionsFor(contact)
             } else if (contact.source == ContactSource.SOURCE_DEVICE) {
-                androidActionsProvider.callActionsFor(contact)
+                deviceActionsProvider.callActionsFor(contact)
             } else {
                 throw IllegalArgumentException("unknown contact type " + contact.source)
             }
@@ -26,7 +26,7 @@ class PersonCallProvider(
             if (contact.source == ContactSource.SOURCE_FACEBOOK) {
                 facebookContactActionsProvider.messagingActionsFor(contact)
             } else if (contact.source == ContactSource.SOURCE_DEVICE) {
-                androidActionsProvider.messagingActionsFor(contact)
+                deviceActionsProvider.messagingActionsFor(contact)
             } else {
                 throw IllegalArgumentException("unknown contact type " + contact.source)
             }

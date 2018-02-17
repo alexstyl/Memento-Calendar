@@ -48,7 +48,7 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        AppModule.class,
+        AndroidApplicationModule.class,
         AnalyticsModule.class,
         ResourcesModule.class,
         ContactsModule.class,

@@ -1,18 +1,15 @@
 package com.alexstyl.specialdates.person
 
-import com.alexstyl.specialdates.ErrorTracker
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
-import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
-import io.reactivex.subjects.PublishSubject
-import javax.security.auth.Subject
 
 internal class PersonPresenter(private val personView: PersonView,
                                private val provider: PeopleEventsProvider,
@@ -76,7 +73,6 @@ internal class PersonPresenter(private val personView: PersonView,
 
     fun hideContact() {
         if (!contactOptional.isPresent) {
-            ErrorTracker.log("Tried to hide a contact, but there was none")
             return
         }
         disposable.add(Observable.fromCallable {
@@ -91,7 +87,6 @@ internal class PersonPresenter(private val personView: PersonView,
 
     fun showContact() {
         if (!contactOptional.isPresent) {
-            ErrorTracker.log("Tried to show a contact, but there was none")
             return
         }
         disposable.add(Observable.fromCallable {

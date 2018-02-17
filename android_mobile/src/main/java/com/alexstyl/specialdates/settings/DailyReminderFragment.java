@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 
 import javax.inject.Inject;
@@ -36,7 +36,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     private CheckBoxPreference enablePreference;
     private ClickableRingtonePreference ringtonePreference;
     private TimePreference timePreference;
-    private PermissionChecker permissionChecker;
+    private AndroidPermissionChecker permissionChecker;
     private DailyReminderScheduler scheduler;
     private DailyReminderPreferences preferences;
     @Inject Analytics analytics;
@@ -49,7 +49,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
-        permissionChecker = new PermissionChecker(getActivity());
+        permissionChecker = new AndroidPermissionChecker(getActivity());
         enablePreference = findPreference(R.string.key_daily_reminder);
 
         preferences = DailyReminderPreferences.newInstance(getActivity());

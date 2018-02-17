@@ -31,7 +31,8 @@ import com.alexstyl.specialdates.home.ViewPagerAware;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
@@ -59,14 +60,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     @Inject HomeNavigator navigator;
     @Inject Analytics analytics;
-    @Inject Strings strings;
-    @Inject Colors colors;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
     @Inject PeopleEventsViewRefresher refresher;
     @Inject PeopleEventsMonitor eventsMonitor;
     @Inject EventPreferences eventPreferences;
-    
+    @Inject MementoPermissionsChecker permissionsChecker;
+
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
         public void onEventsUpdated() {
@@ -85,12 +85,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         permissions = new ContactPermissionRequest(
                 new PermissionNavigator(getActivity(), analytics),
-                new PermissionChecker(getActivity()), permissionCallbacks
+                new AndroidPermissionChecker(getActivity()), permissionCallbacks
         );
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
-                permissions,
+                permissionsChecker,
                 provider,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()

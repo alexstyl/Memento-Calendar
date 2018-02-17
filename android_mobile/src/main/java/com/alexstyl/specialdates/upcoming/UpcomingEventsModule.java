@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences;
+import com.alexstyl.specialdates.events.bankholidays.AndroidBankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
@@ -37,14 +37,14 @@ public class UpcomingEventsModule {
 
         UpcomingEventsAdRules adRules = DonationPreferences.newInstance(context).hasDonated() ? new NoAds() : new UpcomingEventsFreeUserAdRules();
         return new UpcomingEventsProvider(eventsProvider,
-                namedayUserSettings,
-                namedayCalendarProvider,
-                BankHolidaysPreferences.newInstance(context),
-                new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                new UpcomingEventRowViewModelFactory(
+                                          namedayUserSettings,
+                                          namedayCalendarProvider,
+                                          AndroidBankHolidaysPreferences.newInstance(context),
+                                          new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                                          new UpcomingEventRowViewModelFactory(
                         date,
                         colors,
-                        new UpcomingDateStringCreator(strings, date, context),
+                        new AndroidUpcomingDateStringCreator(strings, date, context),
                         new ContactViewModelFactory(colors, strings)
                 ), adRules
         );
@@ -61,14 +61,14 @@ public class UpcomingEventsModule {
         Date date = Date.Companion.today();
         UpcomingEventsAdRules adRules = new NoAds();
         return new UpcomingEventsProvider(eventsProvider,
-                namedayUserSettings,
-                namedayCalendarProvider,
-                BankHolidaysPreferences.newInstance(context),
-                new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
-                new UpcomingEventRowViewModelFactory(
+                                          namedayUserSettings,
+                                          namedayCalendarProvider,
+                                          AndroidBankHolidaysPreferences.newInstance(context),
+                                          new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE)),
+                                          new UpcomingEventRowViewModelFactory(
                         date,
                         colors,
-                        new UpcomingDateStringCreator(strings, date, context),
+                        new AndroidUpcomingDateStringCreator(strings, date, context),
                         new ContactViewModelFactory(colors, strings)
                 ), adRules
         );

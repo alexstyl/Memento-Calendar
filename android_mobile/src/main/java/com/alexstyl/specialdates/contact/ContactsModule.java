@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
 
 import javax.inject.Singleton;
 import java.util.HashMap;

@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -61,7 +61,8 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
         });
 
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
-        FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
+        FacebookFriendsPersister persister = new FacebookFriendsPersister(
+                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller));
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         navigator = new ExternalNavigator(this, analytics);
 

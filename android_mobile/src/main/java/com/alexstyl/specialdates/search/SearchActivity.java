@@ -18,10 +18,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.alexstyl.resources.Colors;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.contact.Contact;
@@ -32,11 +32,11 @@ import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
+import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
@@ -117,7 +117,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
         PermissionNavigator navigator = new PermissionNavigator(this, analytics);
-        PermissionChecker checker = new PermissionChecker(this);
+        AndroidPermissionChecker checker = new AndroidPermissionChecker(this);
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
 
         if (savedInstanceState != null) {

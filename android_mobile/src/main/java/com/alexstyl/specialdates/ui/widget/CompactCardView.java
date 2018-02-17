@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class CompactCardView extends FrameLayout {
 
     @Inject
-    LetterPainter letterPainter;
+    AndroidLetterPainter letterPainter;
 
     public CompactCardView(Context context, AttributeSet attrs) {
         super(context, attrs);

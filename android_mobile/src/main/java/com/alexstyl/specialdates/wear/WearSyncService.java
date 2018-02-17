@@ -1,28 +1,24 @@
 package com.alexstyl.specialdates.wear;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
 import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -69,7 +65,7 @@ public class WearSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        PermissionChecker permissionChecker = new PermissionChecker(this);
+        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(this);
         if (!permissionChecker.canReadAndWriteContacts()) {
             return;
         }

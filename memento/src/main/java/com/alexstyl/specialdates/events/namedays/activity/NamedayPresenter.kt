@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-import com.alexstyl.gsc.SoundComparer.Companion.soundTheSame
+import com.alexstyl.gsc.SoundComparer
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.DisplayName
@@ -69,6 +69,6 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         return list
     }
 
+    private fun String.soundsLike(celebratingName: String): Boolean = SoundComparer.soundTheSame(this, celebratingName)
 }
 
-private fun String.soundsLike(celebratingName: String): Boolean = soundTheSame(this, celebratingName)

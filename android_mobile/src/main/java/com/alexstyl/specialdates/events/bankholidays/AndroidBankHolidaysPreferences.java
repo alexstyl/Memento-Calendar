@@ -5,19 +5,20 @@ import android.content.Context;
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-public class BankHolidaysPreferences {
+public class AndroidBankHolidaysPreferences implements BankHolidaysPreferences {
 
     private final EasyPreferences preferences;
 
-    public static BankHolidaysPreferences newInstance(Context context) {
+    public static AndroidBankHolidaysPreferences newInstance(Context context) {
         EasyPreferences preferences = EasyPreferences.createForDefaultPreferences(context);
-        return new BankHolidaysPreferences(preferences);
+        return new AndroidBankHolidaysPreferences(preferences);
     }
 
-    BankHolidaysPreferences(EasyPreferences preferences) {
+    AndroidBankHolidaysPreferences(EasyPreferences preferences) {
         this.preferences = preferences;
     }
 
+    @Override
     public boolean isEnabled() {
         return preferences.getBoolean(R.string.key_enable_bank_holidays, R.bool.isBankholidaysSupported);
     }

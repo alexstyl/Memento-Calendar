@@ -19,10 +19,12 @@ public final class DebugPeopleEventsUpdater {
 
     public static DebugPeopleEventsUpdater newInstance(Context context, NamedayUserSettings namedayUserSettings, ContactsProvider contactsProvider) {
         AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE);
-        ContactEventsMarshaller deviceMarshaller = new ContactEventsMarshaller();
-        PeopleEventsPersister databaseProvider = new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
+        AndroidPeopleEventsPersister databaseProvider = new AndroidPeopleEventsPersister(
+                new EventSQLiteOpenHelper(context),
+                new ContactEventsMarshaller()
+        );
 
-        PeopleEventsStaticEventsRefresher databaseRefresher = new PeopleEventsStaticEventsRefresher(repository, deviceMarshaller, databaseProvider);
+        PeopleEventsStaticEventsRefresher databaseRefresher = new PeopleEventsStaticEventsRefresher(repository, databaseProvider);
 
         AndroidJSONResourceLoader loader = new AndroidJSONResourceLoader(context.getResources());
         NamedayCalendarProvider namedayCalendarProvider = new NamedayCalendarProvider(
@@ -37,7 +39,6 @@ public final class DebugPeopleEventsUpdater {
         return new DebugPeopleEventsUpdater(databaseRefresher, new NamedayDatabaseRefresher(
                 namedayUserSettings,
                 databaseProvider,
-                deviceMarshaller,
                 peopleNamedaysCalculator
         ));
     }

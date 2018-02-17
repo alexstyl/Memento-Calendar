@@ -4,9 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -41,7 +38,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
@@ -85,7 +82,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Inject
     PeopleEventsProvider peopleEventsProvider;
     @Inject
-    PeopleEventsPersister peoplePersister;
+    AndroidPeopleEventsPersister peoplePersister;
 
 
     private PersonDetailsNavigator navigator;

@@ -28,6 +28,6 @@ class UpcomingEventRowViewModelFactory(private val today: Date,
 
     fun createViewModelFor(bankHoliday: BankHoliday): UpcomingRowViewModel = BankHolidayViewModel(bankHoliday.holidayName)
 
-    fun createViewModelFor(namedays: NamesInADate): UpcomingRowViewModel = NamedaysViewModel(namedays.names.joinToString(", "), namedays.date)
+    fun createViewModelFor(namedays: NamesInADate): UpcomingRowViewModel = UpcomingNamedaysViewModel(namedays.names.joinToString(", "), namedays.date)
 
 }
