@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
@@ -45,6 +45,7 @@ public class DonateActivity extends MementoActivity {
     @Inject ImageLoader imageLoader;
     @Inject IabHelper iabHelper;
     @Inject DonationPreferences donationPreferences;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class DonateActivity extends MementoActivity {
             appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
 
-        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics);
+        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics, tracker);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
@@ -126,7 +127,7 @@ public class DonateActivity extends MementoActivity {
 
             @Override
             public void onDonateException(String message) {
-                ErrorTracker.track(new RuntimeException(message));
+                tracker.track(new RuntimeException(message));
                 finish();
             }
 

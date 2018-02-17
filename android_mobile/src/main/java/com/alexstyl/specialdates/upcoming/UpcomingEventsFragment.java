@@ -14,12 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.PeopleEventsView;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
@@ -66,6 +65,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject PeopleEventsMonitor eventsMonitor;
     @Inject EventPreferences eventPreferences;
     @Inject MementoPermissionsChecker permissionsChecker;
+    @Inject CrashAndErrorTracker tracker;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
@@ -85,7 +85,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         permissions = new ContactPermissionRequest(
                 new PermissionNavigator(getActivity(), analytics),
-                new AndroidPermissionChecker(getActivity()), permissionCallbacks
+                new AndroidPermissionChecker(tracker, getActivity()), permissionCallbacks
         );
 
         presenter = new UpcomingEventsPresenter(

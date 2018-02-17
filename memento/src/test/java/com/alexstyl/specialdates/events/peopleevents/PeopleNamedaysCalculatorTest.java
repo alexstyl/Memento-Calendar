@@ -12,7 +12,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.TestNamedayCalendarBuilder;
-import com.novoda.notils.logger.simple.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,6 @@ public class PeopleNamedaysCalculatorTest {
 
     @Before
     public void setUp() {
-        Log.setShowLogs(false);
         NamedayCalendar namedayCalendar = new TestNamedayCalendarBuilder()
                 .forLocale(LOCALE)
                 .forYear(YEAR)

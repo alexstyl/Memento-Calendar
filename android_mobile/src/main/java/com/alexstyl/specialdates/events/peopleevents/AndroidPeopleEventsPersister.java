@@ -6,7 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -24,10 +24,12 @@ public final class AndroidPeopleEventsPersister implements PeopleEventsPersister
 
     private final SQLiteOpenHelper helper;
     private final ContactEventsMarshaller marshaller;
+    private final CrashAndErrorTracker tracker;
 
-    public AndroidPeopleEventsPersister(SQLiteOpenHelper helper, ContactEventsMarshaller marshaller) {
+    public AndroidPeopleEventsPersister(SQLiteOpenHelper helper, ContactEventsMarshaller marshaller, CrashAndErrorTracker tracker) {
         this.helper = helper;
         this.marshaller = marshaller;
+        this.tracker = tracker;
     }
 
     @Override
@@ -70,7 +72,7 @@ public final class AndroidPeopleEventsPersister implements PeopleEventsPersister
             }
             database.setTransactionSuccessful();
         } catch (SQLException ex) {
-            ErrorTracker.track(ex);
+            tracker.track(ex);
         } finally {
             database.endTransaction();
         }

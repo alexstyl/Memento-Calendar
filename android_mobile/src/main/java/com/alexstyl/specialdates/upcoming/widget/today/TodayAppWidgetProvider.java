@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
@@ -39,6 +40,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
     @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,7 +48,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         applicationModule.inject(this);
         widgetImageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), imageLoader);
         preferences = new UpcomingWidgetPreferences(context);
-        permissionChecker = new AndroidPermissionChecker(context);
+        permissionChecker = new AndroidPermissionChecker(tracker, context);
         super.onReceive(context, intent);
     }
 

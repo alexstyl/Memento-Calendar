@@ -5,9 +5,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.alexstyl.specialdates.Strings;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
@@ -37,11 +37,13 @@ public final class HomeNavigator {
     private final Analytics analytics;
     private final Strings strings;
     private final FacebookPreferences facebookPreferences;
+    private final CrashAndErrorTracker tracker;
 
-    public HomeNavigator(Analytics analytics, Strings strings, FacebookPreferences facebookPreferences) {
+    public HomeNavigator(Analytics analytics, Strings strings, FacebookPreferences facebookPreferences, CrashAndErrorTracker tracker) {
         this.analytics = analytics;
         this.strings = strings;
         this.facebookPreferences = facebookPreferences;
+        this.tracker = tracker;
         this.attributeExtractor = new AttributeExtractor();
     }
 
@@ -82,7 +84,7 @@ public final class HomeNavigator {
             intent.setData(SUPPORT_URL);
             activity.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
         }
     }
 

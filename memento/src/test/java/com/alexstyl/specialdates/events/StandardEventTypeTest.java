@@ -1,9 +1,6 @@
 package com.alexstyl.specialdates.events;
 
-import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.database.EventColumns;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
-import com.novoda.notils.exception.DeveloperError;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

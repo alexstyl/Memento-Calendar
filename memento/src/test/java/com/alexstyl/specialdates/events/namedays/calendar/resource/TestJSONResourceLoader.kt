@@ -7,15 +7,14 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.util.*
 
-class JavaJSONResourceLoader : NamedayJSONResourceLoader {
+class TestJSONResourceLoader : NamedayJSONResourceLoader {
 
     @Throws(JSONException::class)
     override fun loadJSON(locale: NamedayLocale): JSONObject {
         var stream: InputStream? = null
         try {
-            stream = CLASS_LOADER.getResourceAsStream(locale.fileName())
+            stream = CLASS_LOADER.getResourceAsStream("gr_namedays.json")
 
             val bufferedReader = BufferedReader(InputStreamReader(stream!!))
             return JSONObject(bufferedReader.readLine())
@@ -32,10 +31,5 @@ class JavaJSONResourceLoader : NamedayJSONResourceLoader {
     }
 
     private val CLASS_LOADER = Thread.currentThread().contextClassLoader
-
-
-    private fun NamedayLocale.fileName(): String {
-        return String.format(Locale.US, "%s_namedays.json", this.countryCode)
-    }
 
 }

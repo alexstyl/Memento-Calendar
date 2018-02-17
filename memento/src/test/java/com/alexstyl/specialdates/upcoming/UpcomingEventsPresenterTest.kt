@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.permissions.ContactPermissionRequest
+import com.alexstyl.specialdates.permissions.MementoPermissionsChecker
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +19,7 @@ class UpcomingEventsPresenterTest {
     private val STARTING_DATE = Date.on(1, Months.APRIL, 2017)
 
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
-    private val mockPermissions = Mockito.mock(ContactPermissionRequest::class.java)
+    private val mockPermissions = Mockito.mock(MementoPermissionsChecker::class.java)
     private val mockProvider = Mockito.mock(IUpcomingEventsProvider::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
@@ -34,7 +34,7 @@ class UpcomingEventsPresenterTest {
 
     @Test
     fun whenStartPresentingWithoutPermission_askForPermission() {
-        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(false)
+        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(false)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
@@ -43,7 +43,7 @@ class UpcomingEventsPresenterTest {
 
     @Test
     fun whenStartPresentingWithPermission_showLoading() {
-        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
+        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(true)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
@@ -55,7 +55,7 @@ class UpcomingEventsPresenterTest {
         val theDate = Date.on(1, Months.MARCH, 2017)
         val expectedEvents = arrayListOf<UpcomingRowViewModel>()
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(expectedEvents)
-        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
+        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(true)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
@@ -67,7 +67,7 @@ class UpcomingEventsPresenterTest {
     fun givenEventsWereUpdated_whenAskedToUpdate_thenNewEventsArePushedToTheView() {
         val initialEvents = arrayListOf<UpcomingRowViewModel>()
         Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(initialEvents)
-        Mockito.`when`(mockPermissions.permissionIsPresent()).thenReturn(true)
+        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(true)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 

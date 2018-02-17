@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.alexstyl.specialdates.BuildConfig;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -27,8 +27,8 @@ public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();
     private static final int NOTIFICATION_ID = 123;
 
-    @Inject
-    PeopleEventsViewRefresher uiRefresher;
+    @Inject PeopleEventsViewRefresher uiRefresher;
+    @Inject CrashAndErrorTracker tracker;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -44,23 +44,24 @@ public class FacebookFriendsIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         FacebookCalendarLoader calendarLoader = new FacebookCalendarLoader();
         FacebookContactFactory factory = new FacebookContactFactory();
-        ContactEventSerialiser serialiser = new ContactEventSerialiser(factory);
+        ContactEventSerialiser serialiser = new ContactEventSerialiser(factory, tracker);
         FacebookBirthdaysProvider calendarFetcher = new FacebookBirthdaysProvider(calendarLoader, serialiser);
 
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         UserCredentials userCredentials = preferences.retrieveCredentials();
         if (isAnnonymous(userCredentials)) {
-            ErrorTracker.track(new RuntimeException("Tried to fetch events, but was anonymous"));
+            tracker.track(new RuntimeException("Tried to fetch events, but was anonymous"));
             return;
         }
-        CalendarURLCreator calendarURLCreator = new CalendarURLCreator();
+        CalendarURLCreator calendarURLCreator = new CalendarURLCreator(tracker);
 
         URL calendarUrl = calendarURLCreator.createFrom(userCredentials);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(
                         new EventSQLiteOpenHelper(this),
-                        marshaller
+                        marshaller,
+                        tracker
                 )
         );
         try {
@@ -68,7 +69,7 @@ public class FacebookFriendsIntentService extends IntentService {
             persister.keepOnly(friends);
             uiRefresher.refreshViews();
         } catch (CalendarFetcherException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
         }
 
         if (BuildConfig.DEBUG) {

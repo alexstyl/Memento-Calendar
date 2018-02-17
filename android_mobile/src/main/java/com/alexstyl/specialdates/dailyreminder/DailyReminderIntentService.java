@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -41,6 +42,7 @@ public class DailyReminderIntentService extends IntentService {
     @Inject NamedayUserSettings namedayPreferences;
     @Inject DailyReminderNotifier notifier;
     @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -53,7 +55,7 @@ public class DailyReminderIntentService extends IntentService {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         bankHolidaysPreferences = AndroidBankHolidaysPreferences.newInstance(this);
-        checker = new AndroidPermissionChecker(this);
+        checker = new AndroidPermissionChecker(tracker, this);
     }
 
     @Override

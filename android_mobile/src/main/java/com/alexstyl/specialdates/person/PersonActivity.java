@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
@@ -39,9 +39,9 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -84,11 +84,11 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Inject
     AndroidPeopleEventsPersister peoplePersister;
 
-
     private PersonDetailsNavigator navigator;
 
     private Optional<Contact> displayingContact = Optional.absent();
     private TabLayout tabLayout;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +98,15 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         analytics.trackScreen(Screen.PERSON);
-        navigator = new PersonDetailsNavigator(new ExternalNavigator(this, analytics));
+        navigator = new PersonDetailsNavigator(new ExternalNavigator(this, analytics, tracker));
         ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
         presenter = new PersonPresenter(
                 this,
                 peopleEventsProvider,
                 new PersonCallProvider(
-                        new AndroidContactActionsProvider(getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory),
+                        new AndroidContactActionsProvider(
+                                getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory, tracker
+                        ),
                         new FacebookContactActionsProvider(strings, getResources(), actionsFactory)
                 ),
                 Schedulers.io(),
@@ -139,7 +141,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         if (displayingContact.isPresent()) {
             presenter.startPresenting(displayingContact.get());
         } else {
-            ErrorTracker.track(new IllegalArgumentException("No contact to display"));
+            tracker.track(new IllegalArgumentException("No contact to display"));
             finish();
         }
     }
@@ -172,7 +174,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         try {
             return new Optional<>(contactsProvider.getContact(contactID, contactSource));
         } catch (ContactNotFoundException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
             return Optional.absent();
         }
     }
@@ -259,7 +261,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 //        invalidateOptionsMenu();
     }
 
-
     private Optional<Boolean> isVisibleContactOptional = Optional.absent();
 
     @Override
@@ -309,7 +310,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
                 intent.getAction().run();
             } catch (ActivityNotFoundException ex) {
                 Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show();
-                ErrorTracker.track(ex);
+                tracker.track(ex);
             }
         }
     };

@@ -24,10 +24,12 @@ public class ExternalNavigator {
 
     private final MementoActivity activity;
     private final Analytics analytics;
+    private final CrashAndErrorTracker tracker;
 
-    public ExternalNavigator(MementoActivity activity, Analytics analytics) {
+    public ExternalNavigator(MementoActivity activity, Analytics analytics, CrashAndErrorTracker tracker) {
         this.activity = activity;
         this.analytics = analytics;
+        this.tracker = tracker;
         SimpleChromeCustomTabs.initialize(activity);
     }
 
@@ -42,7 +44,7 @@ public class ExternalNavigator {
             activity.startActivity(intent);
             analytics.trackScreen(Screen.PLAY_STORE);
         } catch (ActivityNotFoundException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
         }
     }
 

@@ -17,6 +17,7 @@ import android.text.format.DateFormat;
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.android.preferences.widget.TimePreference;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TimeOfDay;
@@ -40,6 +41,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     private DailyReminderScheduler scheduler;
     private DailyReminderPreferences preferences;
     @Inject Analytics analytics;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
         AppComponent applicationModule = ((MementoApplication) getActivity().getApplication()).getApplicationModule();
         applicationModule.inject(this);
         addPreferencesFromResource(R.xml.preference_dailyreminder);
-        permissionChecker = new AndroidPermissionChecker(getActivity());
+        permissionChecker = new AndroidPermissionChecker(tracker, getActivity());
         enablePreference = findPreference(R.string.key_daily_reminder);
 
         preferences = DailyReminderPreferences.newInstance(getActivity());

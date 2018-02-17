@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.facebook.friendimport;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.date.ContactEvent;
 
 import java.io.BufferedReader;
@@ -21,9 +21,11 @@ class ContactEventSerialiser {
     private static final String EVENT_UID = "UID";
 
     private final FacebookContactFactory factory;
+    private final CrashAndErrorTracker tracker;
 
-    ContactEventSerialiser(FacebookContactFactory factory) {
+    ContactEventSerialiser(FacebookContactFactory factory, CrashAndErrorTracker tracker) {
         this.factory = factory;
+        this.tracker = tracker;
     }
 
     List<ContactEvent> createEventsFrom(InputStream inputStream) throws IOException {
@@ -39,7 +41,7 @@ class ContactEventSerialiser {
                     ContactEvent contactEvent = factory.createContactFrom(map);
                     contactEvents.add(contactEvent);
                 } catch (InvalidFacebookContactException ex) {
-                    ErrorTracker.track(ex);
+                    tracker.track(ex);
                 }
             } else if (line.startsWith(EVENT_DATE)) {
                 parse(line, map, EVENT_DATE);

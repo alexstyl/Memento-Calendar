@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -40,6 +41,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Inject Analytics analytics;
     @Inject ImageLoader imageLoader;
     @Inject PeopleEventsViewRefresher uiRefresher;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,9 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
-                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller));
+                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
         FacebookPreferences preferences = FacebookPreferences.newInstance(this);
-        navigator = new ExternalNavigator(this, analytics);
+        navigator = new ExternalNavigator(this, analytics, tracker);
 
         FacebookLogoutService service = new FacebookLogoutService(
                 AndroidSchedulers.mainThread(),

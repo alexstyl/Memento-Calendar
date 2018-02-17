@@ -20,7 +20,7 @@ public class TestNamedayCalendarBuilder {
     }
 
     public NamedayCalendar build() {
-        NamedayJSONProvider jsonProvider = new NamedayJSONProvider(new JavaJSONResourceLoader());
+        NamedayJSONProvider jsonProvider = new NamedayJSONProvider(new TestJSONResourceLoader());
         NamedayCalendarProvider namedayCalendarProvider = new NamedayCalendarProvider(jsonProvider, factory);
         return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, year);
     }

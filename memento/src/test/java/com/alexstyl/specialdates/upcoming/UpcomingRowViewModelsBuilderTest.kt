@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.upcoming
 
-import android.content.Context
+import com.alexstyl.TestColors
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.JavaStrings
 import com.alexstyl.specialdates.Optional
@@ -19,7 +19,6 @@ import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Matchers.anyInt
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.runners.MockitoJUnitRunner
@@ -32,17 +31,18 @@ class UpcomingRowViewModelsBuilderTest {
     private var upcomingEventRowViewModelFactory: UpcomingEventRowViewModelFactory? = null
     private val mockStrings = JavaStrings()
 
-    @Mock private val mockColors: Colors? = null
-    @Mock private val mockContext: Context? = null
+    @Mock
+    private val mockColors: Colors? = TestColors()
+    private val mockDateStringCreator = DateStringCreator()
 
     @Before
     fun setUp() {
-        `when`(mockColors!!.getColor(anyInt())).thenReturn(5)
+        `when`(mockColors!!.getTodayHeaderTextColor()).thenReturn(5)
         val today = Date.today()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
-                mockColorResources,
-                UpcomingDateStringCreator(JavaStrings(), today, mockContext),
+                mockColors,
+                mockDateStringCreator,
                 ContactViewModelFactory(mockColors, mockStrings)
         )
 
@@ -157,7 +157,6 @@ class UpcomingRowViewModelsBuilderTest {
         return UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory!!, UpcomingEventsFreeUserAdRules())
     }
 
-    private val NO_DEVICE_EVENT_ID = Optional.absent<Long>()
 
     private fun aBankHoliday(): BankHoliday {
         return BankHoliday("A bank holiday", Date.on(1, JANUARY, 1990))
@@ -170,4 +169,14 @@ class UpcomingRowViewModelsBuilderTest {
     private fun entireYear(year: Int): TimePeriod {
         return TimePeriod.between(Date.startOfYear(year), Date.endOfYear(year))
     }
+
+    companion object {
+        private val NO_DEVICE_EVENT_ID = Optional.absent<Long>()
+    }
+
+}
+
+class DateStringCreator : UpcomingDateStringCreator {
+    override fun createLabelFor(date: Date): String = "Header Label"
+
 }

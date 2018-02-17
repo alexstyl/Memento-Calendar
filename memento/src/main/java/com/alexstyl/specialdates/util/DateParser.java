@@ -1,10 +1,9 @@
 package com.alexstyl.specialdates.util;
 
-import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.date.MonthInt;
+import com.alexstyl.specialdates.date.Months;
 
 import java.util.Locale;
 
@@ -65,7 +64,7 @@ public enum DateParser {
                     }
 
                 } catch (IllegalArgumentException e) {
-                    if (BuildConfig.DEBUG && isNotAboutInvalidFormat(e)) {
+                    if (isNotAboutInvalidFormat(e)) {
                         e.printStackTrace();
                     }
                 }
