@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.annotation.Px;
 
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
@@ -23,11 +23,11 @@ final class CircularAvatarFactory {
     private static final Typeface ROBOTO_LIGHT = Typeface.create("sans-serif-light", Typeface.NORMAL);
 
     private final ImageLoader imageLoader;
-    private final ColorResources colorResources;
+    private final Colors colors;
 
-    CircularAvatarFactory(ImageLoader imageLoader, ColorResources colorResources) {
+    CircularAvatarFactory(ImageLoader imageLoader, Colors colors) {
         this.imageLoader = imageLoader;
-        this.colorResources = colorResources;
+        this.colors = colors;
     }
 
     Optional<Bitmap> circularAvatarFor(Contact contact, @Px int targetSize) {
@@ -77,7 +77,7 @@ final class CircularAvatarFactory {
 
     private Paint createBackgroundPaint() {
         Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backgroundPaint.setColor(colorResources.getColor(R.color.widget_upcoming_avatar_background_color));
+        backgroundPaint.setColor(colors.getDailyReminderColor());
         return backgroundPaint;
     }
 

@@ -24,9 +24,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import javax.inject.Inject;
+
+import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
@@ -42,7 +42,7 @@ public class MementoApplication extends Application {
         appComponent =
                 DaggerAppComponent.builder()
                         .appModule(new AppModule(this))
-                        .resourcesModule(new ResourcesModule(getResources()))
+                        .resourcesModule(new ResourcesModule(this, getResources()))
                         .imageModule(new ImageModule(getResources()))
                         .peopleEventsModule(new PeopleEventsModule(this))
                         .viewModule(new ViewModule(getResources()))
@@ -64,14 +64,12 @@ public class MementoApplication extends Application {
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
         }
 
-
         if (contactPermissions.canReadAndWriteContacts()) {
             Intent intent = new Intent(this, EventUpdatedService.class);
             startService(intent);
             // TODO use JobScheduler
         }
     }
-
 
     protected void initialiseDependencies() {
         Log.setShowLogs(BuildConfig.DEBUG);

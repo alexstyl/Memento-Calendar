@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.dailyreminder;
 import android.app.NotificationManager;
 import android.content.Context;
 
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -18,11 +18,11 @@ public class DailyReminderModule {
     DailyReminderNotifier notifier(Context context,
                                    ImageLoader imageLoader,
                                    Strings strings,
-                                   ColorResources colorResources,
+                                   Colors colors,
                                    DimensionResources dimensionResources,
                                    DailyReminderPreferences preferences) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        return new DailyReminderNotifier(context, notificationManager, imageLoader, strings, colorResources, dimensionResources, preferences);
+        return new DailyReminderNotifier(context, notificationManager, imageLoader, strings, colors, dimensionResources, preferences);
     }
 
     @Provides

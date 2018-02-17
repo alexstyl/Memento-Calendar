@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.upcoming
 
 import android.content.Context
-import com.alexstyl.resources.ColorResources
+import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.JavaStrings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture.aContact
@@ -32,18 +32,18 @@ class UpcomingRowViewModelsBuilderTest {
     private var upcomingEventRowViewModelFactory: UpcomingEventRowViewModelFactory? = null
     private val mockStrings = JavaStrings()
 
-    @Mock private val mockColorResources: ColorResources? = null
+    @Mock private val mockColors: Colors? = null
     @Mock private val mockContext: Context? = null
 
     @Before
     fun setUp() {
-        `when`(mockColorResources!!.getColor(anyInt())).thenReturn(5)
+        `when`(mockColors!!.getColor(anyInt())).thenReturn(5)
         val today = Date.today()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
                 mockColorResources,
                 UpcomingDateStringCreator(JavaStrings(), today, mockContext),
-                ContactViewModelFactory(mockColorResources, mockStrings)
+                ContactViewModelFactory(mockColors, mockStrings)
         )
 
     }
