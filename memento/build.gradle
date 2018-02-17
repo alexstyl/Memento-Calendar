@@ -12,12 +12,6 @@ for (File file : sdkHandler.sdkLoader.repositories) {
     }
 }
 
-
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-    test.java.srcDirs += 'src/main/kotlin'
-}
-
 repositories {
     jcenter()
     mavenCentral()
