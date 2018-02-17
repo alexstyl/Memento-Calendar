@@ -5,11 +5,11 @@ import android.support.annotation.ColorInt;
 
 import com.alexstyl.specialdates.R;
 
-public class LetterPainter {
+public class AndroidLetterPainter implements LetterPainter {
 
     private final Resources resources;
 
-    LetterPainter(Resources resources) {
+    AndroidLetterPainter(Resources resources) {
         this.resources = resources;
     }
 
@@ -26,6 +26,7 @@ public class LetterPainter {
 
     private static final int VARIANT_COUNT = BACKGROUND_VARIANTS.length;
 
+    @Override
     @ColorInt
     public int getVariant(int i2) {
         int variant = Math.abs(i2);

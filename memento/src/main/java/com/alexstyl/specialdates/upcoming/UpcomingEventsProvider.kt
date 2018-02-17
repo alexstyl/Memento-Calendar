@@ -69,6 +69,7 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
         private val COMPARATOR = DateComparator.INSTANCE
     }
 
+
 }
 
 interface IUpcomingEventsProvider { // This is temporarily until we figure out how to mock kotlin classes with Mockito

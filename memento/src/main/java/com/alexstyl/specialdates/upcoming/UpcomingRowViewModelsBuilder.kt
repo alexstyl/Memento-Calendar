@@ -105,3 +105,5 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
 }
 
 private fun Date.toAnnualDate(): AnnualDate = AnnualDate(this.dayOfMonth, this.month)
+
+

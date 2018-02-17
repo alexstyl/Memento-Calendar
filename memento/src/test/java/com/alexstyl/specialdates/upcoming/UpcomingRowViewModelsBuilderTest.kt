@@ -113,7 +113,7 @@ class UpcomingRowViewModelsBuilderTest {
 
         assertThat(viewModels.size).isEqualTo(2)
         assertThat(viewModels[0]).isInstanceOf(DateHeaderViewModel::class.java)
-        assertThat(viewModels[1]).isInstanceOf(NamedaysViewModel::class.java)
+        assertThat(viewModels[1]).isInstanceOf(UpcomingNamedaysViewModel::class.java)
     }
 
     @Test
@@ -136,7 +136,7 @@ class UpcomingRowViewModelsBuilderTest {
         assertThat(viewModels.size).isEqualTo(7)
         assertThat(viewModels[0]).isInstanceOf(DateHeaderViewModel::class.java)
         assertThat(viewModels[1]).isInstanceOf(BankHolidayViewModel::class.java)
-        assertThat(viewModels[2]).isInstanceOf(NamedaysViewModel::class.java)
+        assertThat(viewModels[2]).isInstanceOf(UpcomingNamedaysViewModel::class.java)
         assertThat(viewModels[3]).isInstanceOf(UpcomingContactEventViewModel::class.java)
         assertThat(viewModels[4]).isInstanceOf(AdViewModel::class.java)
         assertThat(viewModels[5]).isInstanceOf(DateHeaderViewModel::class.java)

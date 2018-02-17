@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.namedays.activity;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.ui.widget.LetterPainter;
+import com.alexstyl.specialdates.ui.widget.AndroidLetterPainter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 public class NamedaysInADayModule {
 
     @Provides
-    NamedaysViewModelFactory viewModelFactory(LetterPainter letterPainter) {
+    NamedaysViewModelFactory viewModelFactory(AndroidLetterPainter letterPainter) {
         return new NamedaysViewModelFactory(letterPainter);
     }
 

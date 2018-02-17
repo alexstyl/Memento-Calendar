@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 
-public final class UpcomingDateStringCreator {
+public final class AndroidUpcomingDateStringCreator implements UpcomingDateStringCreator {
 
     private static final String DAY_OF_WEEK_SEPARATOR = ", ";
 
@@ -15,13 +15,14 @@ public final class UpcomingDateStringCreator {
     private final Date today;
     private final Context context;
 
-    UpcomingDateStringCreator(Strings strings, Date today, Context context) {
+    AndroidUpcomingDateStringCreator(Strings strings, Date today, Context context) {
         this.strings = strings;
         this.today = today;
         this.context = context;
     }
 
-    String createLabelFor(Date date) {
+    @Override
+    public String createLabelFor(Date date) {
         int formatFlags = DateUtils.FORMAT_NO_NOON_MIDNIGHT | DateUtils.FORMAT_CAP_AMPM | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
 
         StringBuilder stringBuilder = new StringBuilder();

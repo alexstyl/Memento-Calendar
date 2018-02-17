@@ -72,15 +72,15 @@ public class PeopleEventsModule {
     PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher(SQLiteOpenHelper eventSQlite, ContentResolver contentResolver, ContactsProvider contactsProvider) {
         AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
-        PeopleEventsPersister peopleEventsPersister = new PeopleEventsPersister(eventSQlite);
-        return new PeopleEventsStaticEventsRefresher(repository, marshaller, peopleEventsPersister);
+        AndroidPeopleEventsPersister androidPeopleEventsPersister = new AndroidPeopleEventsPersister(eventSQlite, marshaller);
+        return new PeopleEventsStaticEventsRefresher(repository, androidPeopleEventsPersister);
     }
 
     @Provides
     NamedayDatabaseRefresher namedayDatabaseRefresher(NamedayUserSettings namedayUserSettings,
-                                                      PeopleEventsPersister databaseProvider,
+                                                      AndroidPeopleEventsPersister databaseProvider,
                                                       PeopleNamedaysCalculator calculator) {
-        return new NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, new ContactEventsMarshaller(), calculator);
+        return new NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, calculator);
     }
 
     @Provides
@@ -95,8 +95,8 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleEventsPersister peopleEventsPersister() {
-        return new PeopleEventsPersister(new EventSQLiteOpenHelper(context));
+    AndroidPeopleEventsPersister peopleEventsPersister() {
+        return new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(context), new ContactEventsMarshaller());
     }
 
     @Provides

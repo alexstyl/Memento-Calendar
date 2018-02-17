@@ -7,4 +7,7 @@ data class NamedaysViewModel(val name: String)
         get() = NamedayScreenViewType.NAMEDAY
     override val id: Long
         get() = hashCode().toLong()
+
+
 }
+

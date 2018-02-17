@@ -9,22 +9,28 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.alexstyl.specialdates.ErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactSource;
+import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventTypeId;
+
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_NAMEDAY;
 
-public final class PeopleEventsPersister {
+public final class AndroidPeopleEventsPersister implements PeopleEventsPersister {
 
     private final SQLiteOpenHelper helper;
+    private final ContactEventsMarshaller marshaller;
 
-    public PeopleEventsPersister(SQLiteOpenHelper helper) {
+    public AndroidPeopleEventsPersister(SQLiteOpenHelper helper, ContactEventsMarshaller marshaller) {
         this.helper = helper;
+        this.marshaller = marshaller;
     }
 
+    @Override
     public void deleteAllNamedays() {
         deleteAllEventsOfType(TYPE_NAMEDAY);
     }
@@ -34,18 +40,22 @@ public final class PeopleEventsPersister {
         database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.EVENT_TYPE + "==" + eventType, null);
     }
 
+    @Override
     public void deleteAllEventsOfSource(@ContactSource int source) {
         SQLiteDatabase database = helper.getWritableDatabase();
         database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + "==" + source, null);
     }
 
-    void deleteAllDeviceEvents() {
+    @Override
+    public void deleteAllDeviceEvents() {
         SQLiteDatabase database = helper.getWritableDatabase();
         database.delete(AnnualEventsContract.TABLE_NAME, AnnualEventsContract.SOURCE + " == " + SOURCE_DEVICE, null);
     }
 
-    public void insertAnnualEvents(ContentValues[] values) {
-        insertEventsInTable(values, AnnualEventsContract.TABLE_NAME);
+    @Override
+    public void insertAnnualEvents(List<ContactEvent> events) {
+        ContentValues[] contentValues = marshaller.marshall(events);
+        insertEventsInTable(contentValues, AnnualEventsContract.TABLE_NAME);
     }
 
     private void insertEventsInTable(ContentValues[] values, String tableName) {
@@ -66,6 +76,7 @@ public final class PeopleEventsPersister {
         }
     }
 
+    @Override
     public void markContactAsVisible(Contact contact) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
@@ -81,6 +92,7 @@ public final class PeopleEventsPersister {
         );
     }
 
+    @Override
     public void markContactAsHidden(Contact contact) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
@@ -96,6 +108,7 @@ public final class PeopleEventsPersister {
         );
     }
 
+    @Override
     public boolean getVisibilityFor(@NotNull Contact contact) {
         SQLiteDatabase database = helper.getWritableDatabase();
         // TODO just COUNT() events the contact has

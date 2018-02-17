@@ -6,17 +6,18 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-class AppModule {
+class AndroidApplicationModule {
 
     private final Context context;
 
-    AppModule(Context appContext) {
+    AndroidApplicationModule(Context appContext) {
         this.context = appContext;
     }
 
@@ -41,7 +42,7 @@ class AppModule {
     }
 
     @Provides
-    PermissionChecker permissionChecker() {
-        return new PermissionChecker(context);
+    MementoPermissionsChecker permissionChecker() {
+        return new AndroidPermissionChecker(context);
     }
 }

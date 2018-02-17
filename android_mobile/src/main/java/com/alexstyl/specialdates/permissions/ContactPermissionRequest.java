@@ -9,9 +9,9 @@ public class ContactPermissionRequest {
 
     private final PermissionNavigator navigator;
     private final PermissionCallbacks callbacks;
-    private final PermissionChecker checker;
+    private final AndroidPermissionChecker checker;
 
-    public ContactPermissionRequest(PermissionNavigator navigator, PermissionChecker checker, PermissionCallbacks callbacks) {
+    public ContactPermissionRequest(PermissionNavigator navigator, AndroidPermissionChecker checker, PermissionCallbacks callbacks) {
         this.navigator = navigator;
         this.checker = checker;
         this.callbacks = callbacks;

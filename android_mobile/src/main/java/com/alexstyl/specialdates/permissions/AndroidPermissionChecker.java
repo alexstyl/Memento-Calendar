@@ -7,20 +7,22 @@ import android.support.v4.app.ActivityCompat;
 import com.alexstyl.specialdates.ErrorTracker;
 
 import static android.Manifest.permission.READ_CONTACTS;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_CONTACTS;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
-public class PermissionChecker {
+public class AndroidPermissionChecker implements MementoPermissionsChecker {
     private final Context context;
 
-    public PermissionChecker(Context context) {
+    public AndroidPermissionChecker(Context context) {
         this.context = context;
     }
 
+    @Override
     public boolean canReadAndWriteContacts() {
         return hasPermission(context, READ_CONTACTS) && hasPermission(context, WRITE_CONTACTS);
     }
 
+    @Override
     public boolean canReadExternalStorage() {
         return hasPermission(context, READ_EXTERNAL_STORAGE);
     }

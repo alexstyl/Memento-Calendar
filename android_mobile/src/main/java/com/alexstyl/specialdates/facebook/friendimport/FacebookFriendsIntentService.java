@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.UserCredentials;
@@ -27,7 +27,8 @@ public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();
     private static final int NOTIFICATION_ID = 123;
 
-    @Inject PeopleEventsViewRefresher uiRefresher;
+    @Inject
+    PeopleEventsViewRefresher uiRefresher;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -56,7 +57,12 @@ public class FacebookFriendsIntentService extends IntentService {
 
         URL calendarUrl = calendarURLCreator.createFrom(userCredentials);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
-        FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
+        FacebookFriendsPersister persister = new FacebookFriendsPersister(
+                new AndroidPeopleEventsPersister(
+                        new EventSQLiteOpenHelper(this),
+                        marshaller
+                )
+        );
         try {
             List<ContactEvent> friends = calendarFetcher.fetchCalendarFrom(calendarUrl);
             persister.keepOnly(friends);

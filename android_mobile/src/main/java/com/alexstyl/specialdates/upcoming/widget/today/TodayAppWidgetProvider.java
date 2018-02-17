@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
@@ -29,7 +29,7 @@ import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private PermissionChecker permissionChecker;
+    private AndroidPermissionChecker permissionChecker;
     private UpcomingWidgetPreferences preferences;
     private WidgetImageLoader widgetImageLoader;
     @Inject Analytics analytics;
@@ -46,7 +46,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         applicationModule.inject(this);
         widgetImageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), imageLoader);
         preferences = new UpcomingWidgetPreferences(context);
-        permissionChecker = new PermissionChecker(context);
+        permissionChecker = new AndroidPermissionChecker(context);
         super.onReceive(context, intent);
     }
 
