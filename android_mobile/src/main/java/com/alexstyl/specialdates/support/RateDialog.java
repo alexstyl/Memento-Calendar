@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -24,6 +25,7 @@ public class RateDialog extends MementoActivity {
     private AskForSupport askForSupport;
     private ExternalNavigator externalNavigator;
     @Inject Analytics analytics;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class RateDialog extends MementoActivity {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        externalNavigator = new ExternalNavigator(this, analytics);
+        externalNavigator = new ExternalNavigator(this, analytics, tracker);
         Views.findById(this, R.id.support_rate_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

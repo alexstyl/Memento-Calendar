@@ -5,12 +5,12 @@ import android.widget.TextView
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener
 
 class NamedaysViewHolder(view: View, private val namedays: TextView)
-    : UpcomingRowViewHolder<NamedaysViewModel>(view) {
+    : UpcomingRowViewHolder<UpcomingNamedaysViewModel>(view) {
 
 
-    override fun bind(viewModel: NamedaysViewModel, listener: OnUpcomingEventClickedListener) {
-        namedays.text = viewModel.namesLabel
-        itemView.setOnClickListener { listener.onNamedayClicked(viewModel.date) }
+    override fun bind(viewModelUpcoming: UpcomingNamedaysViewModel, listener: OnUpcomingEventClickedListener) {
+        namedays.text = viewModelUpcoming.namesLabel
+        itemView.setOnClickListener { listener.onNamedayClicked(viewModelUpcoming.date) }
     }
 
 

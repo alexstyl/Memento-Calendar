@@ -27,12 +27,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/localised_app_name">
 
-        <activity android:name="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
+        <activity android:name="com.alexstyl.specialdates.home.HomeActivity" />
 
         <!-- Activity alias used so that we can modify the UpcomingEventsActivity file without worrying about the name -->
         <activity-alias
             android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
-            android:targetActivity=".upcoming.UpcomingEventsActivity">
+            android:targetActivity=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -43,20 +43,20 @@
         <activity
             android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".upcoming.UpcomingEventsActivity">
+            android:parentActivityName=".home.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".upcoming.UpcomingEventsActivity" />
+                android:value=".home.HomeActivity" />
         </activity>
 
 
         <activity
             android:name="com.alexstyl.specialdates.search.SearchActivity"
-            android:parentActivityName="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity"
+            android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
+                android:value="com.alexstyl.specialdates.home.HomeActivity" />
         </activity>
 
 
@@ -77,12 +77,12 @@
             android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
             android:exported="true"
             android:label="@string/add_event_title"
-            android:parentActivityName="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity"
+            android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
+                android:value="com.alexstyl.specialdates.home.HomeActivity" />
         </activity>
 
 
@@ -90,11 +90,11 @@
             android:name="com.alexstyl.specialdates.support.RateDialog"
             android:label="@string/support_app"
             android:noHistory="true"
-            android:parentActivityName="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity"
+            android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
             android:theme="@style/Theme.Dayslight.DialogNoTitle">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alexstyl.specialdates.upcoming.UpcomingEventsActivity" />
+                android:value="com.alexstyl.specialdates.home.HomeActivity" />
         </activity>
 
         <activity
@@ -116,7 +116,7 @@
         <activity
             android:name=".donate.DonateActivity"
             android:label="@string/donate_welcome"
-            android:parentActivityName=".upcoming.UpcomingEventsActivity"
+            android:parentActivityName=".home.HomeActivity"
             android:theme="@style/Theme.Donate" />
 
         <activity
@@ -129,7 +129,7 @@
 
         <activity
             android:name=".person.PersonActivity"
-            android:parentActivityName=".upcoming.UpcomingEventsActivity">
+            android:parentActivityName=".home.HomeActivity">
 
             <intent-filter>
                 <action android:name="com.android.contacts.action.QUICK_CONTACT" />
@@ -152,15 +152,15 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".upcoming.UpcomingEventsActivity" />
+                android:value=".home.HomeActivity" />
         </activity>
 
         <activity
             android:name=".events.namedays.activity.NamedayActivity"
-            android:parentActivityName=".upcoming.UpcomingEventsActivity">
+            android:parentActivityName=".home.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".upcoming.UpcomingEventsActivity" />
+                android:value=".home.HomeActivity" />
         </activity>
 
         <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
@@ -219,7 +219,7 @@
             android:name=".facebook.friendimport.FacebookFriendsIntentService"
             android:label="@string/title_facebook_friends_import" />
 
-        <service android:name=".contact.ContactMonitorService" />
+        <service android:name=".contact.EventUpdatedService" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

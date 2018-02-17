@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,65 +14,58 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.resources.ColorResources;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.PeopleEventsView;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
 import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.home.HomeNavigator;
+import com.alexstyl.specialdates.home.ViewPagerAware;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
 import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
 import com.alexstyl.specialdates.permissions.PermissionNavigator;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
-import java.util.List;
-
 import javax.inject.Inject;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
+public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView, ViewPagerAware {
 
     private ViewGroup root;
     private ProgressBar progressBar;
     private TextView emptyView;
     private RecyclerView upcomingList;
+    private FloatingActionButton addEventView;
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
-    private UpcomingEventsNavigator navigator;
     private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
-    @Inject
-    Analytics analytics;
-    @Inject
-    Strings strings;
-    @Inject
-    ColorResources colorResources;
-    @Inject
-    ImageLoader imageLoader;
-    @Inject
-    UpcomingEventsProvider provider;
-    @Inject
-    PeopleEventsViewRefresher refresher;
-    @Inject
-    PeopleEventsMonitor eventsMonitor;
-    @Inject
-    EventPreferences eventPreferences;
+    @Inject HomeNavigator navigator;
+    @Inject Analytics analytics;
+    @Inject ImageLoader imageLoader;
+    @Inject UpcomingEventsProvider provider;
+    @Inject PeopleEventsViewRefresher refresher;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
+    @Inject MementoPermissionsChecker permissionsChecker;
+    @Inject CrashAndErrorTracker tracker;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
@@ -91,14 +85,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
         permissions = new ContactPermissionRequest(
                 new PermissionNavigator(getActivity(), analytics),
-                new PermissionChecker(getActivity()), permissionCallbacks
+                new AndroidPermissionChecker(tracker, getActivity()), permissionCallbacks
         );
-
-        navigator = new UpcomingEventsNavigator(analytics, getActivity(), strings, FacebookPreferences.newInstance(getActivity()));
 
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
-                permissions,
+                permissionsChecker,
                 provider,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
@@ -112,6 +104,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         root = Views.findById(view, R.id.root);
         progressBar = Views.findById(view, R.id.upcoming_events_progress);
         emptyView = Views.findById(view, R.id.upcoming_events_emptyview);
+        addEventView = Views.findById(view, R.id.upcoming_events_add_event);
+        addEventView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigator.toAddEvent(getActivity());
+            }
+        });
 
         upcomingList = Views.findById(view, R.id.upcoming_events_list);
         upcomingList.setHasFixedSize(true);
@@ -127,12 +126,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
                     @Override
                     public void onContactClicked(Contact contact) {
-                        navigator.toContactDetails(contact);
+                        navigator.toContactDetails(contact, getActivity());
                     }
 
                     @Override
                     public void onNamedayClicked(Date date) {
-                        navigator.toDateDetails(date);
+                        navigator.toDateDetails(date, getActivity());
                     }
                 });
         upcomingList.setAdapter(adapter);
@@ -215,4 +214,14 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
             }
         }
     };
+
+    @Override
+    public void onPagerIdled() {
+        addEventView.show();
+    }
+
+    @Override
+    public void onPagerScrolled() {
+        addEventView.hide();
+    }
 }

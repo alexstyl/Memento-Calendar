@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
@@ -20,16 +21,16 @@ import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private PermissionChecker permissionChecker;
+    private AndroidPermissionChecker permissionChecker;
     private UpcomingWidgetPreferences preferences;
     private WidgetImageLoader widgetImageLoader;
     @Inject Analytics analytics;
@@ -39,6 +40,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
     @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,7 +48,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         applicationModule.inject(this);
         widgetImageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), imageLoader);
         preferences = new UpcomingWidgetPreferences(context);
-        permissionChecker = new PermissionChecker(context);
+        permissionChecker = new AndroidPermissionChecker(tracker, context);
         super.onReceive(context, intent);
     }
 
@@ -90,7 +92,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     private void updateForDate(Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds, ContactEventsOnADate contactEvents) {
         Date eventDate = contactEvents.getDate();
         Date date = Date.Companion.on(eventDate.getDayOfMonth(), eventDate.getMonth(), Date.Companion.today().getYear());
-        Intent intent = UpcomingEventsActivity.getStartIntent(context);
+        Intent intent = HomeActivity.getStartIntent(context);
         intent.setData(Uri.parse(String.valueOf(date.hashCode())));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -143,7 +145,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
                     context.getPackageName(),
                     R.layout.widget_today_nocontacts
             );
-            Intent intent = new Intent(context, UpcomingEventsActivity.class);
+            Intent intent = new Intent(context, HomeActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT
@@ -163,7 +165,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     }
 
     private PendingIntent pendingIntentToMain(Context context) {
-        Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
+        Intent clickIntent = new Intent(context, HomeActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

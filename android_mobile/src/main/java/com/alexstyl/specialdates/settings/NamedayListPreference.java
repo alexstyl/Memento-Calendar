@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 
@@ -19,6 +20,7 @@ import java.util.Comparator;
 public class NamedayListPreference extends ListPreference {
 
     @Inject NamedayUserSettings userSettings;
+    @Inject Strings strings;
 
     public NamedayListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,14 +41,10 @@ public class NamedayListPreference extends ListPreference {
         CharSequence[] entryValues = new CharSequence[locales.length];
         for (int i = 0; i < locales.length; i++) {
             entries[i] = locales[i].getCountryCode();
-            entryValues[i] = getString(locales[i].getLanguageNameResId());
+            entryValues[i] = strings.localeName(locales[i]);
         }
         setEntries(entryValues);
         setEntryValues(entries);
-    }
-
-    private CharSequence getString(@StringRes int nameResId) {
-        return getContext().getString(nameResId);
     }
 
     private static final Comparator<NamedayLocale> COUNTRY_CODE_COMPARATOR = new Comparator<NamedayLocale>() {

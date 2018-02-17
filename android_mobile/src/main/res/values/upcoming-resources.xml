@@ -6,7 +6,7 @@
     <string name="plus_x_more">+%d more</string>
     <string name="upcoming_select_date">@string/Select_date</string>
 
-    <dimen name="upcoming_event_header_vertical_spacing">30dp</dimen>
+    <dimen name="upcoming_event_header_vertical_spacing">40dp</dimen>
     <dimen name="upcoming_event_vertical_spacing">20dp</dimen>
 
     <dimen name="upcoming_space_between_title_and_content">15dp</dimen>

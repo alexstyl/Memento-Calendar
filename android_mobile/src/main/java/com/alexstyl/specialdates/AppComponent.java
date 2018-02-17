@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
-import com.alexstyl.specialdates.contact.ContactMonitorService;
+import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.images.ImageModule;
+import com.alexstyl.specialdates.people.PeopleFragment;
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
@@ -31,7 +32,7 @@ import com.alexstyl.specialdates.support.RateDialog;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.alexstyl.specialdates.ui.widget.CompactCardView;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
@@ -47,7 +48,7 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        AppModule.class,
+        AndroidApplicationModule.class,
         AnalyticsModule.class,
         ResourcesModule.class,
         ContactsModule.class,
@@ -64,7 +65,7 @@ import dagger.Component;
 public interface AppComponent {
     void inject(MementoApplication application);
 
-    void inject(UpcomingEventsActivity activity);
+    void inject(HomeActivity activity);
 
     void inject(UpcomingEventsFragment fragment);
 
@@ -120,5 +121,7 @@ public interface AppComponent {
 
     void inject(BootCompleteReceiver receiver);
 
-    void inject(ContactMonitorService contactMonitorService);
+    void inject(EventUpdatedService eventUpdatedService);
+
+    void inject(PeopleFragment peopleFragment);
 }

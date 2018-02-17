@@ -11,7 +11,7 @@ public class DebugApplication extends MementoApplication {
         super.onCreate();
         debugAppComponent =
                 DaggerDebugAppComponent.builder()
-                        .appModule(new AppModule(this))
+                        .androidApplicationModule(new AndroidApplicationModule(this))
                         .peopleEventsModule(new PeopleEventsModule(this))
                         .build();
     }

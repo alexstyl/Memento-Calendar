@@ -7,7 +7,7 @@ import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
-import com.alexstyl.specialdates.contact.ContactMonitorService;
+import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
@@ -17,23 +17,25 @@ import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
+import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import javax.inject.Inject;
+
+import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
     @Inject
-    PermissionChecker contactPermissions;
+    MementoPermissionsChecker contactPermissions;
+    @Inject
+    CrashAndErrorTracker tracker;
 
     @Override
     public void onCreate() {
@@ -41,8 +43,8 @@ public class MementoApplication extends Application {
 
         appComponent =
                 DaggerAppComponent.builder()
-                        .appModule(new AppModule(this))
-                        .resourcesModule(new ResourcesModule(getResources()))
+                        .androidApplicationModule(new AndroidApplicationModule(this))
+                        .resourcesModule(new ResourcesModule(this, getResources()))
                         .imageModule(new ImageModule(getResources()))
                         .peopleEventsModule(new PeopleEventsModule(this))
                         .viewModule(new ViewModule(getResources()))
@@ -52,7 +54,7 @@ public class MementoApplication extends Application {
         appComponent.inject(this);
 
         initialiseDependencies();
-        ErrorTracker.startTracking(this);
+        tracker.startTracking();
 
         DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
         if (preferences.isEnabled()) {
@@ -64,13 +66,12 @@ public class MementoApplication extends Application {
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
         }
 
-
         if (contactPermissions.canReadAndWriteContacts()) {
-            Intent intent = new Intent(this, ContactMonitorService.class);
+            Intent intent = new Intent(this, EventUpdatedService.class);
             startService(intent);
+            // TODO use JobScheduler
         }
     }
-
 
     protected void initialiseDependencies() {
         Log.setShowLogs(BuildConfig.DEBUG);

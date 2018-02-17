@@ -29,7 +29,7 @@ public class ColorImageView extends FrameLayout {
     private static final String UKNOWN_CHARACTER = "?";
 
     @Inject
-    LetterPainter letterPainter;
+    AndroidLetterPainter letterPainter;
 
     private boolean drawCircle = true;
 

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
@@ -24,6 +24,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.theming.MementoTheme;
 import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Classes;
 
 import javax.inject.Inject;
@@ -35,11 +36,12 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     private NamedayListPreference namedayLanguageListPreferences;
     private ThemingPreferences themingPreferences;
     private Preference appThemePreference;
-    private MainPreferenceActivity activity;
+    private ThemedMementoActivity activity;
     private DonationService donationService;
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject NamedayUserSettings namedaysPreferences;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onAttach(Activity activity) {
@@ -85,7 +87,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean enabled = (boolean) newValue;
-                ErrorTracker.onNamedayLocaleChanged(enabled ? getLocale() : null);
+                tracker.onNamedayLocaleChanged(enabled ? getLocale() : null);
                 return true;
             }
         });
@@ -98,7 +100,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                     @Override
                     public boolean onNamedayChanged(NamedayLocale locale) {
                         namedaysPreferences.setSelectedLanguage(locale.getCountryCode());
-                        namedayLanguageListPreferences.setSummary(locale.getLanguageNameResId());
+                        namedayLanguageListPreferences.setSummary(strings.localeName(locale));
                         return true;
                     }
 
@@ -110,7 +112,8 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
                 getActivity(),
                 DonationPreferences.newInstance(getActivity()),
-                analytics
+                analytics,
+                tracker
         );
         donationService.setup(new DonationCallbacks() {
             @Override
@@ -148,7 +151,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        namedayLanguageListPreferences.setSummary(namedaysPreferences.getSelectedLanguage().getLanguageNameResId());
+        namedayLanguageListPreferences.setSummary(strings.localeName(namedaysPreferences.getSelectedLanguage()));
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
     }
 

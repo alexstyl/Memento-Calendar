@@ -83,7 +83,7 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
 
     companion object {
 
-        private val IS_A_FACEBOOK_CONTACT = AnnualEventsContract.SOURCE + "== " + SOURCE_FACEBOOK
+        private const val IS_A_FACEBOOK_CONTACT = AnnualEventsContract.SOURCE + "== " + SOURCE_FACEBOOK
 
         private fun createContactFrom(cursor: Cursor): Contact {
             val uid = cursor.getLong(cursor.getColumnIndexOrThrow(AnnualEventsContract.CONTACT_ID))

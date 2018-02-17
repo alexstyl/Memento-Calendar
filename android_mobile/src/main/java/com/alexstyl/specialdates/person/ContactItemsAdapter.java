@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import com.alexstyl.specialdates.R;
 import com.novoda.notils.caster.Views;
 
+import java.util.Collections;
+import java.util.List;
+
 class ContactItemsAdapter extends PagerAdapter {
 
     private static final int PAGE_COUNT = 3;
@@ -20,7 +23,8 @@ class ContactItemsAdapter extends PagerAdapter {
     private final LayoutInflater inflater;
     private final EventPressedListener listener;
 
-    private PersonAvailableActionsViewModel viewModel;
+    private PersonAvailableActionsViewModel viewModel = new PersonAvailableActionsViewModel(Collections.<ContactEventViewModel>emptyList(),
+            Collections.<ContactActionViewModel>emptyList(), Collections.<ContactActionViewModel>emptyList());
 
     ContactItemsAdapter(LayoutInflater inflater, EventPressedListener listener) {
         this.inflater = inflater;
@@ -63,7 +67,15 @@ class ContactItemsAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return PAGE_COUNT;
+        return pageCountOf(viewModel);
+    }
+
+    private int pageCountOf(PersonAvailableActionsViewModel viewModel) {
+        return count(viewModel.getCalls()) + count(viewModel.getMessages()) + count(viewModel.getEvents());
+    }
+
+    private int count(List<?> item) {
+        return item.isEmpty() ? 0 : 1;
     }
 
     @Override

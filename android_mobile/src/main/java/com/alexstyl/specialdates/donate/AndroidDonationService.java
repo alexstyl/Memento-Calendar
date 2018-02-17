@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.donate;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
@@ -16,14 +16,21 @@ public class AndroidDonationService implements DonationService {
     private final IabHelper iabHelper;
     private final Activity activity;
     private final DonationPreferences donationPreferences;
-    private DonationCallbacks listener;
     private final Analytics analytics;
+    private final CrashAndErrorTracker tracker;
 
-    public AndroidDonationService(IabHelper iabHelper, Activity activity, DonationPreferences donationPreferences, Analytics analytics) {
+    private DonationCallbacks listener;
+
+    public AndroidDonationService(IabHelper iabHelper,
+                                  Activity activity,
+                                  DonationPreferences donationPreferences,
+                                  Analytics analytics,
+                                  CrashAndErrorTracker tracker) {
         this.iabHelper = iabHelper;
         this.activity = activity;
         this.donationPreferences = donationPreferences;
         this.analytics = analytics;
+        this.tracker = tracker;
     }
 
     @Override
@@ -55,7 +62,7 @@ public class AndroidDonationService implements DonationService {
                     }
             );
         } catch (IabHelper.IabAsyncInProgressException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
             listener.onDonateException(e.getMessage());
         }
     }
@@ -88,7 +95,7 @@ public class AndroidDonationService implements DonationService {
 
             });
         } catch (IabHelper.IabAsyncInProgressException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
         }
     }
 

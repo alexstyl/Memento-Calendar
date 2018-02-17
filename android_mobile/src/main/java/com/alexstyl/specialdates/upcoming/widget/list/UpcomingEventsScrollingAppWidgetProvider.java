@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
@@ -16,14 +17,15 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.upcoming.UpcomingEventsActivity;
+import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.home.HomeActivity;
 
 import javax.inject.Inject;
 
 public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider {
     @Inject Analytics analytics;
     @Inject DateLabelCreator dateLabelCreator;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -48,7 +50,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        PermissionChecker permissionChecker = new PermissionChecker(context);
+        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(tracker, context);
         if (permissionChecker.canReadAndWriteContacts()) {
             showUpcomingEvents(context, appWidgetManager, appWidgetIds);
         } else {
@@ -91,7 +93,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     }
 
     private PendingIntent pendingIntentToMain(Context context) {
-        Intent clickIntent = new Intent(context, UpcomingEventsActivity.class);
+        Intent clickIntent = new Intent(context, HomeActivity.class);
         return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
