@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.PeopleEventsView;
@@ -38,9 +38,8 @@ import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
 
-import java.util.List;
-
 import javax.inject.Inject;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -61,13 +60,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject HomeNavigator navigator;
     @Inject Analytics analytics;
     @Inject Strings strings;
-    @Inject ColorResources colorResources;
+    @Inject Colors colors;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
     @Inject PeopleEventsViewRefresher refresher;
     @Inject PeopleEventsMonitor eventsMonitor;
     @Inject EventPreferences eventPreferences;
-
+    
     private final PeopleEventsView listener = new PeopleEventsView() {
         @Override
         public void onEventsUpdated() {
