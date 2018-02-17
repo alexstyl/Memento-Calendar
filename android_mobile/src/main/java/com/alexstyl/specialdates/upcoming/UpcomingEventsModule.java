@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.upcoming;
 import android.content.Context;
 
 import com.alexstyl.resources.Colors;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.date.Date;
@@ -75,7 +76,7 @@ public class UpcomingEventsModule {
     }
 
     @Provides
-    HomeNavigator navigator(Analytics analytics, Strings strings, Context context) {
-        return new HomeNavigator(analytics, strings, FacebookPreferences.newInstance(context));
+    HomeNavigator navigator(Analytics analytics, Strings strings, Context context, CrashAndErrorTracker tracker) {
+        return new HomeNavigator(analytics, strings, FacebookPreferences.newInstance(context), tracker);
     }
 }

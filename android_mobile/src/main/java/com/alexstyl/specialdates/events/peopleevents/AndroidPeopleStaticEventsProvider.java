@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 import android.database.Cursor;
 import android.database.MergeCursor;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.SQLArgumentBuilder;
 import com.alexstyl.specialdates.contact.Contact;
@@ -56,11 +56,16 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
     private final EventSQLiteOpenHelper eventSQLHelper;
     private final ContactsProvider contactsProvider;
     private final CustomEventProvider customEventProvider;
+    private final CrashAndErrorTracker tracker;
 
-    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper, ContactsProvider contactsProvider, CustomEventProvider customEventProvider) {
+    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
+                                      ContactsProvider contactsProvider,
+                                      CustomEventProvider customEventProvider,
+                                      CrashAndErrorTracker tracker) {
         this.eventSQLHelper = sqLiteOpenHelper;
         this.contactsProvider = contactsProvider;
         this.customEventProvider = customEventProvider;
+        this.tracker = tracker;
     }
 
     @Override
@@ -107,7 +112,7 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
                     contactEvents.add(contactEvent);
                 }
             } catch (ContactNotFoundException e) {
-                ErrorTracker.track(e);
+                tracker.track(e);
             }
         }
         cursor.close();

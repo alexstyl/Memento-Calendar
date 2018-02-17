@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.DebugAppComponent;
 import com.alexstyl.specialdates.DebugApplication;
 import com.alexstyl.specialdates.R;
@@ -25,7 +26,6 @@ import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
-import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
@@ -39,12 +39,10 @@ public class DebugFragment extends MementoPreferenceFragment {
     private static final int RESULT_PICK_CONTACT = 4929;
 
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
-    @Inject
-    NamedayUserSettings namedayUserSettings;
-    @Inject
-    ContactsProvider contactsProvider;
-    @Inject
-    PeopleEventsViewRefresher refresher;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
+    @Inject PeopleEventsViewRefresher refresher;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -58,7 +56,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider).refresh();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker).refresh();
                 showToast("Refreshing Database");
                 return true;
             }

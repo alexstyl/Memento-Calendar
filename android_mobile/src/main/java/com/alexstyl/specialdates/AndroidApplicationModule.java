@@ -42,7 +42,13 @@ class AndroidApplicationModule {
     }
 
     @Provides
-    MementoPermissionsChecker permissionChecker() {
-        return new AndroidPermissionChecker(context);
+    MementoPermissionsChecker permissionChecker(CrashAndErrorTracker tracker) {
+        return new AndroidPermissionChecker(tracker, context);
+    }
+
+
+    @Provides
+    CrashAndErrorTracker tracker(){
+        return new FabricTracker(context);
     }
 }

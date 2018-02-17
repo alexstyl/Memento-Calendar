@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
@@ -31,10 +32,9 @@ import java.util.List;
 
 public class WearSyncService extends IntentService {
 
-    @Inject
-    NamedayUserSettings namedayUserSettings;
-    @Inject
-    PeopleEventsProvider peopleEventsProvider;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
@@ -65,7 +65,7 @@ public class WearSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(this);
+        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(tracker, this);
         if (!permissionChecker.canReadAndWriteContacts()) {
             return;
         }

@@ -10,20 +10,23 @@ import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 
-public final class ErrorTracker {
+public final class FabricTracker implements CrashAndErrorTracker {
 
-    private static final String TAG = ErrorTracker.class.getSimpleName();
+    private static final String TAG = FabricTracker.class.getSimpleName();
     private static final String KEY_LOCALE = "user_locale";
     private static final String KEY_NAMEDAY_LOCALE = "nameday_locale";
     private static final String NONE = "no_locale";
 
     private static boolean hasBeenInitialised = false;
 
-    private ErrorTracker() {
-        // hide this
+    private final Context context;
+
+    public FabricTracker(Context context) {
+        this.context = context;
     }
 
-    static void startTracking(Context context) {
+    @Override
+    public void startTracking() {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Ignoring Crash Tracking in DEBUG builds");
             return;
@@ -36,26 +39,30 @@ public final class ErrorTracker {
         Crashlytics.setString(KEY_LOCALE, String.valueOf(Locale.getDefault()));
     }
 
-    public static void track(Exception e) {
+    @Override
+    public void track(Exception e) {
         if (hasBeenInitialised) {
             Crashlytics.logException(e);
         }
         Log.w(e);
     }
 
-    public static void onNamedayLocaleChanged(NamedayLocale locale) {
+    @Override
+    public void onNamedayLocaleChanged(NamedayLocale locale) {
         if (hasBeenInitialised) {
             Crashlytics.setString(KEY_NAMEDAY_LOCALE, locale == null ? NONE : locale.name());
         }
     }
 
-    public static void updateLocaleUsed() {
+    @Override
+    public void updateLocaleUsed() {
         if (hasBeenInitialised) {
             Crashlytics.setString(KEY_LOCALE, String.valueOf(Locale.getDefault()));
         }
     }
 
-    public static void log(String message) {
+    @Override
+    public void log(String message) {
         if (hasBeenInitialised) {
             Crashlytics.log(message);
         }

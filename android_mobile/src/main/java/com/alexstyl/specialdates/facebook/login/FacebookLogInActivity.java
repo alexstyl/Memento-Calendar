@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ShareAppIntentCreator;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
@@ -50,6 +50,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private Button closeButton;
     @Inject Analytics analytics;
     @Inject Strings stringResource;
+    @Inject CrashAndErrorTracker tracker;
     @Inject ImageLoader imageLoader;
 
     @Override
@@ -109,8 +110,8 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
             }
         };
     }
-
     private final FacebookLogInCallback facebookCallback = new FacebookLogInCallback() {
+
         @Override
         public void onUserCredentialsSubmitted() {
             AndroidUtils.requestHideKeyboard(thisActivity(), webView);
@@ -138,7 +139,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         @Override
         public void onError(Exception e) {
             showError();
-            ErrorTracker.track(e);
+            tracker.track(e);
         }
     };
 

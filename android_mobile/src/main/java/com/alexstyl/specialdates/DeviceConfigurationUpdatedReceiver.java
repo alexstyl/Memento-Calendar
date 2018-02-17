@@ -15,6 +15,7 @@ import javax.inject.Inject;
 public class DeviceConfigurationUpdatedReceiver extends BroadcastReceiver {
 
     @Inject PeopleEventsViewRefresher viewRefresher;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -22,7 +23,7 @@ public class DeviceConfigurationUpdatedReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
         if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
-            ErrorTracker.updateLocaleUsed();
+            tracker.updateLocaleUsed();
             viewRefresher.refreshViews();
         } else if (Intent.ACTION_DATE_CHANGED.equals(action)) {
             viewRefresher.refreshViews();

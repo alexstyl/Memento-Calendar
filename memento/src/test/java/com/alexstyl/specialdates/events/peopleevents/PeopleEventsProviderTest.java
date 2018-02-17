@@ -4,13 +4,10 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.TestContactEventsBuilder;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactFixture;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.novoda.notils.logger.simple.Log;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,24 +30,14 @@ public class PeopleEventsProviderTest {
 
     private static final Contact PETER = ContactFixture.aContactCalled("Peter");
 
-    @Mock
-    private ContactsProvider mockContactsProvider;
-    @Mock
-    private NamedayUserSettings mockNamedaysPreferences;
-    @Mock
-    private CustomEventProvider customEventProvider;
-    @Mock
-    private AndroidPeopleStaticEventsProvider mockStaticEventProvider;
-    @Mock
-    private NamedayCalendarProvider mockNamedayCalendarProvider;
-    @Mock
-    private PeopleNamedaysCalculator mockPeopleNamedaysCalculator;
+    @Mock private NamedayUserSettings mockNamedaysPreferences;
+    @Mock private PeopleStaticEventsProvider mockStaticEventProvider;
+    @Mock private PeopleNamedaysCalculator mockPeopleNamedaysCalculator;
 
     private PeopleEventsProvider peopleEventsProvider;
 
     @Before
     public void setUp() {
-        Log.setShowLogs(false);
         peopleEventsProvider = new PeopleEventsProvider(
                 mockNamedaysPreferences,
                 mockPeopleNamedaysCalculator,

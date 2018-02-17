@@ -19,6 +19,7 @@ import android.view.ViewTreeObserver;
 
 import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
@@ -86,6 +87,7 @@ public class SearchActivity extends ThemedMementoActivity {
     @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayCalendarProvider calendarProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
         PermissionNavigator navigator = new PermissionNavigator(this, analytics);
-        AndroidPermissionChecker checker = new AndroidPermissionChecker(this);
+        AndroidPermissionChecker checker = new AndroidPermissionChecker(tracker, this);
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
 
         if (savedInstanceState != null) {

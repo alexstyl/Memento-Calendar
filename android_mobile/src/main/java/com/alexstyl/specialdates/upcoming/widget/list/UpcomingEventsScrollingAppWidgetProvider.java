@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider {
     @Inject Analytics analytics;
     @Inject DateLabelCreator dateLabelCreator;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -48,7 +50,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(context);
+        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(tracker, context);
         if (permissionChecker.canReadAndWriteContacts()) {
             showUpcomingEvents(context, appWidgetManager, appWidgetIds);
         } else {

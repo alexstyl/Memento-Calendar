@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.R;
@@ -65,6 +65,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,7 +107,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 ShortDateLabelCreator.INSTANCE
         );
         MessageDisplayer messageDisplayer = new ToastDisplayer(getApplicationContext());
-        ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver());
+        ContactOperationsExecutor operationsExecutor = new ContactOperationsExecutor(getContentResolver(), tracker);
         ImageDecoder imageDecoder = new ImageDecoder();
         AvatarPresenter avatarPresenter = new AvatarPresenter(imageLoader, avatarView, createToolbarAnimator(toolbar), imageDecoder);
         EventsPresenter eventsPresenter = new EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory);
@@ -117,7 +118,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 messageDisplayer,
                 operationsExecutor
         );
-        permissionChecker = new AndroidPermissionChecker(this);
+        permissionChecker = new AndroidPermissionChecker(tracker, this);
         presenter.startPresenting(
                 new OnCameraClickedListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -200,7 +201,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 presenter.presentAvatar(result.getUri() == null ? null : URI.create(result.getUri().toString()));
 
             } else if (resultCode == RESULT_CANCELED && result != null) {
-                ErrorTracker.track(result.getError());
+                tracker.track(result.getError());
             }
         }
     }

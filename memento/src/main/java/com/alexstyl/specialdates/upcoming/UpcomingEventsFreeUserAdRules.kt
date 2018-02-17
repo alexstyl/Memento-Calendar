@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.upcoming
 
-internal class UpcomingEventsFreeUserAdRules : UpcomingEventsAdRules {
+class UpcomingEventsFreeUserAdRules : UpcomingEventsAdRules {
 
     private var adAdded: Boolean = false
 

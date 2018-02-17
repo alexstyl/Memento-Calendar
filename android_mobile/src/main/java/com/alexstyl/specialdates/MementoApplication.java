@@ -34,6 +34,8 @@ public class MementoApplication extends Application {
 
     @Inject
     MementoPermissionsChecker contactPermissions;
+    @Inject
+    CrashAndErrorTracker tracker;
 
     @Override
     public void onCreate() {
@@ -52,7 +54,7 @@ public class MementoApplication extends Application {
         appComponent.inject(this);
 
         initialiseDependencies();
-        ErrorTracker.startTracking(this);
+        tracker.startTracking();
 
         DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
         if (preferences.isEnabled()) {
