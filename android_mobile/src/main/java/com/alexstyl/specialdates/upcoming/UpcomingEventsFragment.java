@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.PeopleEventsView;
@@ -61,7 +61,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject
     Strings strings;
     @Inject
-    ColorResources colorResources;
+    Colors colors;
     @Inject
     ImageLoader imageLoader;
     @Inject

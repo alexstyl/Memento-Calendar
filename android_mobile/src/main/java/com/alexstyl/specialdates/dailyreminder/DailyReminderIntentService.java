@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.BuildConfig;
@@ -45,7 +45,8 @@ public class DailyReminderIntentService extends IntentService {
     @Inject NamedayUserSettings namedayPreferences;
     @Inject Strings strings;
     @Inject DimensionResources dimensions;
-    @Inject ColorResources colorResources;
+    @Inject
+    Colors colors;
     @Inject ImageLoader imageLoader;
     @Inject DailyReminderNotifier notifier;
     @Inject PeopleEventsProvider peopleEventsProvider;

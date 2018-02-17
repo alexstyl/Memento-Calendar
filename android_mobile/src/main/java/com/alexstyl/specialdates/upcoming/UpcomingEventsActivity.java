@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alexstyl.resources.ColorResources;
+import com.alexstyl.resources.Colors;
 import com.alexstyl.resources.DimensionResources;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
@@ -50,7 +50,8 @@ public class UpcomingEventsActivity extends ThemedMementoActivity implements Dat
     @Inject Analytics analytics;
     @Inject Strings stringResource;
     @Inject DimensionResources dimensions;
-    @Inject ColorResources colorResources;
+    @Inject
+    Colors colors;
     @Inject ImageLoader imageLoader;
     @Inject DailyReminderNotifier dailyReminderNotifier;
 

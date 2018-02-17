@@ -1,14 +1,13 @@
 package com.alexstyl.specialdates.upcoming
 
-import com.alexstyl.resources.ColorResources
-import com.alexstyl.specialdates.R
+import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 
 class UpcomingEventRowViewModelFactory(private val today: Date,
-                                       private val colors: ColorResources,
+                                       private val colors: Colors,
                                        private val dateCreator: UpcomingDateStringCreator,
                                        private val contactViewModelFactory: ContactViewModelFactory) {
 
@@ -19,9 +18,9 @@ class UpcomingEventRowViewModelFactory(private val today: Date,
 
     private fun colorFor(date: Date): Int {
         return if (date == today) {
-            colors.getColor(R.color.upcoming_header_today_text_color)
+            colors.getTodayHeaderTextColor()
         } else {
-            colors.getColor(R.color.upcoming_header_text_color)
+            colors.getDateHeaderTextColor()
         }
     }
 
