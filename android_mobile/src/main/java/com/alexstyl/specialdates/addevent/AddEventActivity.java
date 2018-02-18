@@ -290,7 +290,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        inflateThemedMenu(R.menu.menu_add_event, menu);
+        getMenuInflater().inflate(R.menu.menu_add_event, menu);
         return true;
     }
 

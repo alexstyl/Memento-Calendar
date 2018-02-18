@@ -42,8 +42,8 @@
           android:visibility="gone"
           tools:src="@drawable/black_to_transparent_gradient_facing_down" />
 
-        <android.support.v7.widget.Toolbar
-          android:id="@+id/toolbar"
+        <com.alexstyl.specialdates.ui.widget.MementoToolbar
+          android:id="@+id/person_toolbar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:minHeight="@dimen/toolbar_minHeight"

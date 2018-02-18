@@ -16,8 +16,6 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.theming.ThemeMonitor;
-import com.alexstyl.specialdates.theming.ThemingPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
@@ -31,7 +29,6 @@ import static com.novoda.notils.caster.Views.findById;
 
 public class HomeActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
-    private ThemeMonitor themeMonitor;
     private SearchTransitioner searchTransitioner;
 
     @Inject
@@ -49,7 +46,6 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics.trackScreen(Screen.HOME);
 
         ExposedSearchToolbar toolbar = findById(this, R.id.home_toolbar);
@@ -95,9 +91,6 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Override
     protected void onResume() {
         super.onResume();
-        if (themeMonitor.hasThemeChanged()) {
-            applyNewTheme();
-        }
         searchTransitioner.onActivityResumed();
     }
 

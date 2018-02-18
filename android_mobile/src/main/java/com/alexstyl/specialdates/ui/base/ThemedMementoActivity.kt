@@ -29,6 +29,13 @@ open class ThemedMementoActivity : MementoActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        if(supportActionBar!=null){
+
+        }
+    }
+
     fun setContentView(@LayoutRes layoutResID: Int, theme: MementoTheme) {
         val wrapper = ContextThemeWrapper(this, theme.androidTheme())
         val inflate = LayoutInflater.from(wrapper).inflate(layoutResID, null, false)
@@ -42,16 +49,18 @@ open class ThemedMementoActivity : MementoActivity() {
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
-
-    protected fun inflateThemedMenu(@MenuRes menuResId: Int, menu: Menu) {
-        menuInflater.inflate(menuResId, menu)
-
-        for (i in 0 until menu.size()) {
+    
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        for (i in 0 until menu?.size()!!) {
             val item = menu.getItem(i)
+            if (item.icon == null) {
+                continue
+            }
             val wrappedDrawable = DrawableCompat.wrap(item.icon)
             val color = attributeExtractor!!.extractToolbarIconColors(this)
             DrawableCompat.setTintList(wrappedDrawable, ColorStateList.valueOf(color))
         }
+        return super.onPrepareOptionsMenu(menu)
     }
 
     fun getTintedDrawable(@DrawableRes drawableResId: Int): Drawable {

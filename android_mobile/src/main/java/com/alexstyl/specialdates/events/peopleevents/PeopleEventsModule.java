@@ -84,7 +84,7 @@ public class PeopleEventsModule {
 
     @Provides
     NamedayDatabaseRefresher namedayDatabaseRefresher(NamedayUserSettings namedayUserSettings,
-                                                      AndroidPeopleEventsPersister databaseProvider,
+                                                      PeopleEventsPersister databaseProvider,
                                                       PeopleNamedaysCalculator calculator) {
         return new NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, calculator);
     }
@@ -101,7 +101,7 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    AndroidPeopleEventsPersister peopleEventsPersister(CrashAndErrorTracker tracker) {
+    PeopleEventsPersister peopleEventsPersister(CrashAndErrorTracker tracker) {
         return new AndroidPeopleEventsPersister(
                 new EventSQLiteOpenHelper(context),
                 new ContactEventsMarshaller(),

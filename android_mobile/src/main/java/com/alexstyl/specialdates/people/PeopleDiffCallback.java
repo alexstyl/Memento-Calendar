@@ -27,7 +27,7 @@ class PeopleDiffCallback extends DiffUtil.Callback {
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         PeopleViewModel oldViewModel = oldViewModels.get(oldItemPosition);
-        PeopleViewModel newViewModel = newViewModels.get(oldItemPosition);
+        PeopleViewModel newViewModel = newViewModels.get(newItemPosition);
 
         return (oldViewModel.getPersonId() == newViewModel.getPersonId()) &&
                 oldViewModel.getPersonSource() == newViewModel.getPersonSource();
@@ -36,7 +36,7 @@ class PeopleDiffCallback extends DiffUtil.Callback {
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         PeopleViewModel oldViewModel = oldViewModels.get(oldItemPosition);
-        PeopleViewModel newViewModel = newViewModels.get(oldItemPosition);
+        PeopleViewModel newViewModel = newViewModels.get(newItemPosition);
 
         return (oldViewModel.getPersonName().equals(newViewModel.getPersonName())) &&
                 oldViewModel.getAvatarURI() == newViewModel.getAvatarURI();
