@@ -69,9 +69,9 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
         TabLayout tabLayout = findViewById(R.id.home_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_events);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_contacts);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings);
+        tabLayout.getTabAt(0).setIcon(getTintedDrawable(R.drawable.ic_events));
+        tabLayout.getTabAt(1).setIcon(getTintedDrawable(R.drawable.ic_contacts));
+        tabLayout.getTabAt(2).setIcon(getTintedDrawable(R.drawable.ic_settings));
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
@@ -90,6 +90,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             viewPager.setCurrentItem(2);
         }
     }
+
 
     @Override
     protected void onResume() {

@@ -2,7 +2,9 @@ package com.alexstyl.specialdates.ui.base
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
 import android.support.transition.TransitionManager
@@ -50,6 +52,13 @@ open class ThemedMementoActivity : MementoActivity() {
             val color = attributeExtractor!!.extractToolbarIconColors(this)
             DrawableCompat.setTintList(wrappedDrawable, ColorStateList.valueOf(color))
         }
+    }
+
+    fun getTintedDrawable(@DrawableRes drawableResId: Int): Drawable {
+        val wrappedDrawable = DrawableCompat.wrap(resources.getDrawable(drawableResId))
+        val color = attributeExtractor!!.extractToolbarIconColors(this)
+        DrawableCompat.setTintList(wrappedDrawable, ColorStateList.valueOf(color))
+        return wrappedDrawable
     }
 
     companion object {
