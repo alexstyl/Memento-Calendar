@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.people;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -21,7 +20,7 @@ class PeopleViewHolder extends RecyclerView.ViewHolder {
         this.nameView = nameView;
     }
 
-    public void bind(final PeopleViewModel viewModel, final PeopleViewHolderListener listener) {
+    public void bind(final PersonViewModel viewModel, final PeopleViewHolderListener listener) {
         nameView.setText(viewModel.getPersonName());
         imageView.setCircleColorVariant((int) viewModel.getPersonId());
         imageView.setLetter(viewModel.getPersonName(), true);

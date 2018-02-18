@@ -6,10 +6,10 @@ import java.util.List;
 
 class PeopleDiffCallback extends DiffUtil.Callback {
 
-    private final List<PeopleViewModel> oldViewModels;
-    private final List<PeopleViewModel> newViewModels;
+    private final List<PeopleRowViewModel> oldViewModels;
+    private final List<PeopleRowViewModel> newViewModels;
 
-    PeopleDiffCallback(List<PeopleViewModel> oldViewModels, List<PeopleViewModel> newViewModels) {
+    PeopleDiffCallback(List<PeopleRowViewModel> oldViewModels, List<PeopleRowViewModel> newViewModels) {
         this.oldViewModels = oldViewModels;
         this.newViewModels = newViewModels;
     }
@@ -26,19 +26,38 @@ class PeopleDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        PeopleViewModel oldViewModel = oldViewModels.get(oldItemPosition);
-        PeopleViewModel newViewModel = newViewModels.get(newItemPosition);
+        PeopleRowViewModel oldViewModel = oldViewModels.get(oldItemPosition);
+        PeopleRowViewModel newViewModel = newViewModels.get(newItemPosition);
 
-        return (oldViewModel.getPersonId() == newViewModel.getPersonId()) &&
-                oldViewModel.getPersonSource() == newViewModel.getPersonSource();
+        if (oldViewModel instanceof FacebookViewModel && newViewModel instanceof FacebookViewModel) {
+            return true;
+        }
+        if (oldViewModel instanceof PersonViewModel && newViewModel instanceof PersonViewModel) {
+            PersonViewModel oldPersonViewModel = (PersonViewModel) oldViewModels.get(oldItemPosition);
+            PersonViewModel newPersonViewModel = (PersonViewModel) newViewModels.get(newItemPosition);
+            return (oldPersonViewModel.getPersonId() == newPersonViewModel.getPersonId()) &&
+                    oldPersonViewModel.getPersonSource() == newPersonViewModel.getPersonSource();
+        }
+        return false;
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        PeopleViewModel oldViewModel = oldViewModels.get(oldItemPosition);
-        PeopleViewModel newViewModel = newViewModels.get(newItemPosition);
+        PeopleRowViewModel oldViewModel = oldViewModels.get(oldItemPosition);
+        PeopleRowViewModel newViewModel = newViewModels.get(newItemPosition);
 
-        return (oldViewModel.getPersonName().equals(newViewModel.getPersonName())) &&
-                oldViewModel.getAvatarURI() == newViewModel.getAvatarURI();
+        if (oldViewModel instanceof FacebookViewModel && newViewModel instanceof FacebookViewModel) {
+            return true;
+        }
+
+        if (oldViewModel instanceof PersonViewModel && newViewModel instanceof PersonViewModel) {
+            PersonViewModel oldPersonViewModel = (PersonViewModel) oldViewModels.get(oldItemPosition);
+            PersonViewModel newPersonViewModel = (PersonViewModel) newViewModels.get(newItemPosition);
+
+            return (oldPersonViewModel.getPersonName().equals(newPersonViewModel.getPersonName())) &&
+                    oldPersonViewModel.getAvatarURI() == newPersonViewModel.getAvatarURI();
+        }
+
+        return false;
     }
 }

@@ -8,5 +8,4 @@ interface ContactsProviderSource {
     Contacts queryContacts(List<Long> contactIds);
 
     Contacts getAllContacts();
-
 }

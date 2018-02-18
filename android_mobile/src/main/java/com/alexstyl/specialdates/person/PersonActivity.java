@@ -130,6 +130,11 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         tabLayout = Views.findById(this, R.id.person_tabs);
         tabLayout.setupWithViewPager(viewPager, true);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         displayingContact = extractContactFrom(getIntent());
         if (displayingContact.isPresent()) {
             presenter.startPresenting(displayingContact.get());
@@ -138,6 +143,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
             finish();
         }
     }
+
 
     private boolean wasCalledFromMemento() {
         Bundle extras = getIntent().getExtras();
@@ -291,8 +297,8 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         presenter.stopPresenting();
     }
 

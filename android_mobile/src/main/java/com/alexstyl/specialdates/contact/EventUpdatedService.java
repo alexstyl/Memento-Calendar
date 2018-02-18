@@ -24,10 +24,8 @@ public class EventUpdatedService extends Service {
 
     private static final int A_NUMBER = 5;
     
-    @Inject
-    PeopleEventsMonitor eventsMonitor;
-    @Inject
-    EventPreferences eventPreferences;
+    @Inject PeopleEventsMonitor eventsMonitor;
+    @Inject EventPreferences eventPreferences;
 
     private PreferenceChangedEventsUpdateTrigger preferenceChangedEventsUpdateTrigger;
 
