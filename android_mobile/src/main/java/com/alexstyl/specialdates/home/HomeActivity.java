@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -32,7 +31,6 @@ import static com.novoda.notils.caster.Views.findById;
 
 public class HomeActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
-
     private ThemeMonitor themeMonitor;
     private SearchTransitioner searchTransitioner;
 
@@ -54,11 +52,9 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         themeMonitor = ThemeMonitor.startMonitoring(ThemingPreferences.newInstance(this));
         analytics.trackScreen(Screen.HOME);
 
-
         ExposedSearchToolbar toolbar = findById(this, R.id.home_toolbar);
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
-
 
         final ViewPager viewPager = findViewById(R.id.home_viewpager);
         final HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
@@ -89,18 +85,20 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
             }
         });
-    }
 
+        if (ACTION_UPDATE_THEME.equals(getIntent().getAction())) {
+            viewPager.setCurrentItem(2);
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (themeMonitor.hasThemeChanged()) {
-            reapplyTheme();
+            applyNewTheme();
         }
         searchTransitioner.onActivityResumed();
     }
-
 
     @Override
     public void onDateSelected(Date dateSelected) {

@@ -76,13 +76,6 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
-        appThemePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                activity.reapplyTheme();
-                return true;
-            }
-        });
         findPreference(R.string.key_enable_namedays).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -166,7 +159,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
         public void onThemeSelected(MementoTheme theme) {
             analytics.trackAction(new ActionWithParameters(Action.SELECT_THEME, "theme name", getString(theme.getThemeName())));
             themingPreferences.setSelectedTheme(theme);
-            activity.reapplyTheme();
+            activity.applyNewTheme();
         }
     };
 
