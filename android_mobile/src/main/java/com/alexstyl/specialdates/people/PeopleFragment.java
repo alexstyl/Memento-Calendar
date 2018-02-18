@@ -12,32 +12,27 @@ import android.view.ViewGroup;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.ContactsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.alexstyl.specialdates.home.HomeNavigator;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import javax.inject.Inject;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class PeopleFragment extends MementoFragment implements PeopleView {
 
-    @Inject
-    ImageLoader imageLoader;
-    @Inject
-    ContactsProvider contactProvider;
-
-    PeoplePresenter peoplePresenter;
-
+    @Inject ImageLoader imageLoader;
+    @Inject PeopleEventsProvider contactProvider;
+    @Inject HomeNavigator navigator;
+    
+    private PeoplePresenter peoplePresenter;
     private PeopleAdapter adapter;
-    @Inject
-    HomeNavigator navigator;
 
 
     @Override
