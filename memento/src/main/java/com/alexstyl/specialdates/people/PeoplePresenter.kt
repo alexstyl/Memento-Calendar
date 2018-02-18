@@ -19,12 +19,16 @@ class PeoplePresenter(
                     peopleEventsProvider.getContactEventsFor(TimePeriod.aYearFromNow())
                 }
                         .map { contacts ->
-                            val viewModels = arrayListOf<PeopleViewModel>()
+                            val viewModels = arrayListOf<PeopleRowViewModel>()
                             val contactIDs = HashSet<Long>()
+
+                            viewModels.add(FacebookViewModel())
+
+                            contacts.sortedWith(compareBy({ it.contact.displayName.toString() }))
                             contacts.forEach { contactEvent ->
                                 val contact = contactEvent.contact
                                 if (!contactIDs.contains(contact.contactID)) {
-                                    viewModels.add(PeopleViewModel(contact,
+                                    viewModels.add(PersonViewModel(contact,
                                             contact.displayName.toString(),
                                             contact.imagePath,
                                             contact.contactID,
@@ -32,7 +36,7 @@ class PeoplePresenter(
                                     contactIDs.add(contact.contactID)
                                 }
                             }
-                            viewModels.sortedWith(compareBy({ it.personName }))
+                            viewModels
                         }
                         .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)

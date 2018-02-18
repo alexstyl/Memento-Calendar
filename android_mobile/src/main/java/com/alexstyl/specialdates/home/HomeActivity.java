@@ -117,7 +117,6 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             AndroidUtils.toggleKeyboard(v.getContext());
             onSearchRequested();
         }
-
     };
 
     public static Intent getStartIntent(Context context) {

@@ -20,8 +20,6 @@ import com.alexstyl.specialdates.ui.base.MementoFragment;
 import javax.inject.Inject;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -30,10 +28,9 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
     @Inject ImageLoader imageLoader;
     @Inject PeopleEventsProvider contactProvider;
     @Inject HomeNavigator navigator;
-    
+
     private PeoplePresenter peoplePresenter;
     private PeopleAdapter adapter;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +40,9 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
         peoplePresenter = new PeoplePresenter(
                 contactProvider,
                 Schedulers.io(),
-                AndroidSchedulers.mainThread());
+                AndroidSchedulers.mainThread()
+        );
     }
-
 
     @Nullable
     @Override
@@ -69,7 +66,8 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
         recyclerView.addItemDecoration(
                 new PeopleItemDecorator(
                         getResources().getDimensionPixelSize(R.dimen.people_import_bottom_spacing),
-                        getResources().getDimensionPixelSize(R.dimen.people_inbetween_spacing)));
+                        getResources().getDimensionPixelSize(R.dimen.people_inbetween_spacing)
+                ));
         return inflate;
     }
 
@@ -79,7 +77,6 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
         peoplePresenter.startPresentingInto(this);
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -87,8 +84,7 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
     }
 
     @Override
-    public void displayPeople(@NotNull List<PeopleViewModel> viewModels) {
+    public void displayPeople(List<PeopleRowViewModel> viewModels) {
         adapter.updateWith(viewModels);
     }
-
 }

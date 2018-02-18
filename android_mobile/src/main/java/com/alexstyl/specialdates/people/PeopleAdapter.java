@@ -16,13 +16,10 @@ import java.util.List;
 
 class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int HEADER_COUNT = 1;
-    
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_IMPORT_FACEBOOK = 1;
 
-
-    private final List<PeopleViewModel> people = new ArrayList<>();
+    private final List<PeopleRowViewModel> people = new ArrayList<>();
     private final LayoutInflater inflater;
     private final PeopleViewHolderListener listener;
     private final ImageLoader imageLoader;
@@ -35,10 +32,14 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
+        PeopleRowViewModel personViewModel = people.get(position);
+        if (personViewModel instanceof PersonViewModel) {
+            return VIEW_TYPE_PERSON;
+        }
+        if (personViewModel instanceof FacebookViewModel) {
             return VIEW_TYPE_IMPORT_FACEBOOK;
         }
-        return VIEW_TYPE_PERSON;
+        throw new IllegalStateException("Unhandled view type for " + personViewModel.getClass());
     }
 
     @Override
@@ -62,14 +63,13 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         int itemViewType = getItemViewType(position);
 
         if (itemViewType == VIEW_TYPE_PERSON) {
-            int itemPosition = position - 1;
-            ((PeopleViewHolder) holder).bind(people.get(itemPosition), listener);
+            ((PeopleViewHolder) holder).bind((PersonViewModel) people.get(position), listener);
         } else if (itemViewType == VIEW_TYPE_IMPORT_FACEBOOK) {
             ((ImportFromFacebookViewHolder) holder).bind(listener);
         }
     }
 
-    void updateWith(final List<PeopleViewModel> viewModels) {
+    void updateWith(List<PeopleRowViewModel> viewModels) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new PeopleDiffCallback(people, viewModels));
         this.people.clear();
         this.people.addAll(viewModels);
@@ -78,7 +78,7 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return people.size() + HEADER_COUNT;
+        return people.size();
     }
 
 }

@@ -35,8 +35,8 @@ internal class PersonPresenter(private val personView: PersonView,
                             val isVisible = persister.getVisibilityFor(contact)
                             toPersonViewModel(contact, it.keepOnlyBirthday(), isVisible)
                         }
-                        .observeOn(resultScheduler)
                         .subscribeOn(workScheduler)
+                        .observeOn(resultScheduler)
                         .subscribe({
                             personView.displayPersonInfo(it)
                         }))
@@ -68,7 +68,7 @@ internal class PersonPresenter(private val personView: PersonView,
 
 
     fun stopPresenting() {
-        disposable.dispose()
+        disposable.clear()
     }
 
     fun hideContact() {
@@ -89,13 +89,15 @@ internal class PersonPresenter(private val personView: PersonView,
         if (!contactOptional.isPresent) {
             return
         }
-        disposable.add(Observable.fromCallable {
-            persister.markContactAsVisible(contactOptional.get())
-        }.observeOn(resultScheduler)
-                .subscribeOn(workScheduler)
-                .subscribe {
-                    personView.showPersonAsVisible()
-                })
+        disposable.add(
+                Observable.fromCallable {
+                    persister.markContactAsVisible(contactOptional.get())
+                }
+                        .observeOn(resultScheduler)
+                        .subscribeOn(workScheduler)
+                        .subscribe {
+                            personView.showPersonAsVisible()
+                        })
     }
 }
 
