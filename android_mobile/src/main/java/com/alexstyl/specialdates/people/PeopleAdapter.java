@@ -5,10 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -19,8 +16,11 @@ import java.util.List;
 
 class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int HEADER_COUNT = 1;
+    
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_IMPORT_FACEBOOK = 1;
+
 
     private final List<PeopleViewModel> people = new ArrayList<>();
     private final LayoutInflater inflater;
@@ -62,7 +62,8 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         int itemViewType = getItemViewType(position);
 
         if (itemViewType == VIEW_TYPE_PERSON) {
-            ((PeopleViewHolder) holder).bind(people.get(position), listener);
+            int itemPosition = position - 1;
+            ((PeopleViewHolder) holder).bind(people.get(itemPosition), listener);
         } else if (itemViewType == VIEW_TYPE_IMPORT_FACEBOOK) {
             ((ImportFromFacebookViewHolder) holder).bind(listener);
         }
@@ -77,7 +78,7 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return people.size();
+        return people.size() + HEADER_COUNT;
     }
 
 }
