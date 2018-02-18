@@ -13,7 +13,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,11 +37,12 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
+import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -67,22 +67,14 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     private TextView ageAndSignView;
     private ContactItemsAdapter adapter;
     private ImageView toolbarGradient;
-    @Inject
-    Analytics analytics;
-    @Inject
-    Strings strings;
-    @Inject
-    ImageLoader imageLoader;
-    @Inject
-    NamedayUserSettings namedayUserSettings;
-    @Inject
-    ContactsProvider contactsProvider;
-    @Inject
-    DateLabelCreator dateLabelCreator;
-    @Inject
-    PeopleEventsProvider peopleEventsProvider;
-    @Inject
-    AndroidPeopleEventsPersister peoplePersister;
+    @Inject Analytics analytics;
+    @Inject Strings strings;
+    @Inject ImageLoader imageLoader;
+    @Inject NamedayUserSettings namedayUserSettings;
+    @Inject ContactsProvider contactsProvider;
+    @Inject DateLabelCreator dateLabelCreator;
+    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject PeopleEventsPersister peoplePersister;
 
     private PersonDetailsNavigator navigator;
 
@@ -116,12 +108,13 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
                 peoplePersister
         );
 
-        Toolbar toolbar = Views.findById(this, R.id.toolbar);
+        MementoToolbar toolbar = Views.findById(this, R.id.person_toolbar);
         if (wasCalledFromMemento()) {
-            toolbar.setNavigationIcon(R.drawable.ic_action_arrow_light_back);
+            toolbar.displayNavigationIconAsUp();
         } else {
-            toolbar.setNavigationIcon(R.drawable.ic_close_white);
+            toolbar.displayNavigationIconAsClose();
         }
+
         setSupportActionBar(toolbar);
         setTitle(null);
         avatarView = Views.findById(this, R.id.person_avatar);

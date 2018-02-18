@@ -152,6 +152,7 @@
     parent="Widget.AppCompat.Toolbar">
     <item name="android:theme">?attr/toolbarTheme</item>
     <item name="elevation">@dimen/toolbar_elevation</item>
+    <item name="android:background">?attr/colorPrimary</item>
   </style>
 
   <style name="Divider">

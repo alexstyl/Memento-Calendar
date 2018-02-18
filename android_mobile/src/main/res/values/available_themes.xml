@@ -16,6 +16,7 @@
     <item name="colorPrimaryDark">#EEEEEE</item>
     <item name="colorSecondary">#424242</item>
     <item name="colorAccent">#424242</item>
+    <item name="primaryTextColorInverse">@color/black_light</item>
   </style>
 
   <style name="Theme.Memento.Eggplant"

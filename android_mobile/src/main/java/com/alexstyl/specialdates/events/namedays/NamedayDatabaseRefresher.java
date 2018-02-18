@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator;
 
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.List;
 public class NamedayDatabaseRefresher {
 
     private final NamedayUserSettings namedayUserSettings;
-    private final AndroidPeopleEventsPersister perister;
+    private final PeopleEventsPersister perister;
     private final PeopleNamedaysCalculator calculator;
 
     public NamedayDatabaseRefresher(NamedayUserSettings namedayPreferences,
-                                    AndroidPeopleEventsPersister databaseProvider,
+                                    PeopleEventsPersister databaseProvider,
                                     PeopleNamedaysCalculator calculator) {
         this.namedayUserSettings = namedayPreferences;
         this.perister = databaseProvider;
