@@ -10,6 +10,7 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
                                       private val cache: ContactCache)
     : ContactsProviderSource {
 
+
     @Throws(ContactNotFoundException::class)
     override fun getOrCreateContact(contactID: Long): Contact {
         var contact: Contact? = cache.getContact(contactID)
@@ -58,12 +59,14 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         }
     }
 
-    override fun getAllContacts(): Contacts {
-        return queryAllContacts().apply {
-            cache.evictAll()
-            cache.addContacts(this)
+    override val allContacts: Contacts
+        get() {
+            return queryAllContacts().apply {
+                cache.evictAll()
+                cache.addContacts(this)
+            }
         }
-    }
+
 
     private fun queryAllContacts(): Contacts {
         val db = eventSQLHelper.readableDatabase
