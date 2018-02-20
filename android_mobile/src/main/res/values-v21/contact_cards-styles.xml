@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-  <style name="ActionButton">
-    <item name="android:foreground">@drawable/neutral_ripple_no_mask</item>
-  </style>
-</resources>

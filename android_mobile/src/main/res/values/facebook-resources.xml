@@ -15,8 +15,7 @@
   <dimen name="facebook_avatar_height">120dp</dimen>
   <dimen name="facebook_avatar_stroke">2dp</dimen>
 
-  <style name="FacebookImport.CTAButton"
-    parent="ActionButton">
+  <style name="FacebookImport.CTAButton" parent="None">
     <item name="android:textColor">?colorAccent</item>
     <item name="android:background">@drawable/selectable_background_dayslight</item>
   </style>
