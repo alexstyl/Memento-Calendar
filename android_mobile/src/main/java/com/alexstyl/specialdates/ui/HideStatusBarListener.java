@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.donate;
+package com.alexstyl.specialdates.ui;
 
 import android.annotation.TargetApi;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.view.Window;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-final class HideStatusBarListener implements AppBarLayout.OnOffsetChangedListener {
+public final class HideStatusBarListener implements AppBarLayout.OnOffsetChangedListener {
 
     private static final int STATE_DEFAULT = 1;
     private static final int STATE_TRANSPARENT = 2;
@@ -22,7 +22,7 @@ final class HideStatusBarListener implements AppBarLayout.OnOffsetChangedListene
 
     private int state = 0;
 
-    HideStatusBarListener(Window window) {
+    public HideStatusBarListener(Window window) {
         this.window = window;
         this.defaultColor = window.getStatusBarColor();
         this.targetColor = Color.TRANSPARENT;
