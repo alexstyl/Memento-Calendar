@@ -144,7 +144,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         }
     }
 
-
     private boolean wasCalledFromMemento() {
         Bundle extras = getIntent().getExtras();
         return extras != null && getIntent().getExtras().containsKey(EXTRA_CONTACT_ID);
@@ -237,7 +236,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
     private void updateTabIfNeeded(int index, @DrawableRes int iconResId) {
         if (tabLayout.getTabAt(index) != null) {
-            tabLayout.getTabAt(index).setIcon(iconResId);
+            tabLayout.getTabAt(index).setIcon(getTintedDrawable(iconResId));
         }
     }
 
