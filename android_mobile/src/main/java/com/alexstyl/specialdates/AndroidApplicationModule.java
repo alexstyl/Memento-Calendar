@@ -46,9 +46,8 @@ class AndroidApplicationModule {
         return new AndroidPermissionChecker(tracker, context);
     }
 
-
     @Provides
-    CrashAndErrorTracker tracker(){
+    CrashAndErrorTracker tracker() {
         return new FabricTracker(context);
     }
 }

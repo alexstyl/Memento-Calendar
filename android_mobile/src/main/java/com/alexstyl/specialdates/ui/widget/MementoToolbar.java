@@ -11,26 +11,19 @@ import android.util.AttributeSet;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.theming.AttributeExtractor;
 
-import javax.inject.Inject;
-
 public class MementoToolbar extends Toolbar {
     
-    @Inject AttributeExtractor attributeExtractor;
+    AttributeExtractor attributeExtractor = new AttributeExtractor();
 
     public MementoToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         
         setMinimumHeight(getResources().getDimensionPixelSize(R.dimen.toolbar_minHeight));
-
-        if (isInEditMode()) {
-            return;
-        }
-        attributeExtractor = new AttributeExtractor();
     }
     
     public void displayNavigationIconAsUp() {
         int color = attributeExtractor.extractToolbarIconColors(getContext());
-        Drawable closeIconDrawable = DrawableCompat.wrap(getResources().getDrawable(R.drawable.ic_action_arrow_light_back));
+        Drawable closeIconDrawable = DrawableCompat.wrap(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
         DrawableCompat.setTintList(closeIconDrawable, ColorStateList.valueOf(color));
         setNavigationIcon(closeIconDrawable);
     }

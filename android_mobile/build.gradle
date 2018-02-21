@@ -78,11 +78,6 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-//    sourceSets {
-//        test {
-//            resources.srcDirs = ['src/main/res/raw']
-//        }
-//    }
 }
 
 dependencies {
