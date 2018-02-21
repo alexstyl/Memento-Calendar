@@ -5,6 +5,8 @@
     <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     <item name="android:windowBackground">@color/light_grey</item>
     <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/useDarkIcons</item>
+    <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/white</item>
+    <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     <item name="toolbarIconColor">@color/light_toolbar_icon_color</item>
     <item name="primaryTextColor">@color/black_light</item>
     <item name="primaryTextColorInverse">@android:color/white</item>
