@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-public class BackKeyEditText extends EditText {
+public class BackKeyEditText extends android.support.v7.widget.AppCompatEditText {
     public BackKeyEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
