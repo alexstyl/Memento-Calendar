@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/root"
   android:layout_width="match_parent"
@@ -15,7 +16,6 @@
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/upcoming_events_list"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -24,6 +24,11 @@
     android:paddingRight="16dp"
     android:scrollbarStyle="outsideOverlay"
     android:scrollbars="vertical"
+    app:fastScrollEnabled="true"
+    app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+    app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
+    app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+    app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable"
     tools:listitem="@layout/row_upcoming_events_bankholiday"
     tools:visibility="gone" />
 

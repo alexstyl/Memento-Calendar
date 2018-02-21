@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
@@ -10,7 +11,12 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:paddingBottom="30dp"
-    android:paddingTop="30dp" />
+    android:paddingTop="30dp"
+    app:fastScrollEnabled="true"
+    app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+    app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
+    app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+    app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable"/>
 
   <ProgressBar
     android:id="@+id/people_loading"

@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="30dp"
-    android:fontFamily="sans-serif-medium"
-    android:text="@string/no_contacts_text" />
+    android:text="@string/no_contacts_text"
+    android:textColor="@color/black_light" />
 
 </com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>
