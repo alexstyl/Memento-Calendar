@@ -108,7 +108,7 @@ public class SearchActivity extends ThemedMementoActivity {
         setSupportActionBar(searchbar);
         content = Views.findById(this, R.id.search_content);
 
-        resultView = Views.findById(this, android.R.id.list);
+        resultView = Views.findById(this, R.id.search_results);
         resultView.setHasFixedSize(true);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.search_result_card_vertical_padding) / HALF;
@@ -117,7 +117,7 @@ public class SearchActivity extends ThemedMementoActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context());
         resultView.setLayoutManager(mLayoutManager);
 
-        namesSuggestionsView = Views.findById(this, R.id.nameday_suggestions);
+        namesSuggestionsView = Views.findById(this, R.id.search_nameday_suggestions);
         PermissionNavigator navigator = new PermissionNavigator(this, analytics);
         AndroidPermissionChecker checker = new AndroidPermissionChecker(tracker, this);
         permissions = new ContactPermissionRequest(navigator, checker, permissionCallbacks);
