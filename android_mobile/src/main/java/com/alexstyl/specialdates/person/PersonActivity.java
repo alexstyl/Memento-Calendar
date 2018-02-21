@@ -211,6 +211,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
 
+        ageAndSignView.setVisibility(viewModel.getAgeAndStarSignVisibility());
         // TODO coming up
         //        if (viewModel.isVisible()) {
         //            showPersonAsVisible();
