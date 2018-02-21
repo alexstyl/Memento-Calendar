@@ -19,13 +19,12 @@
 
     <ImageView
       android:id="@+id/row_person_call_icon"
-      android:layout_width="42dp"
-      android:layout_height="42dp"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
       android:layout_marginEnd="22dp"
       android:layout_marginRight="22dp"
-      android:padding="4dp"
-      tools:src="@drawable/ic_call"
-      tools:tint="?colorAccent" />
+      tools:tint="?colorAccent"
+      tools:src="@drawable/ic_call" />
 
     <LinearLayout
       android:layout_width="match_parent"
