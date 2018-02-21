@@ -23,7 +23,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="30dp"
-    android:fontFamily="sans-serif-medium"
     android:textColor="@color/black_light"
     tools:text="Hello FriendArin" />
 
