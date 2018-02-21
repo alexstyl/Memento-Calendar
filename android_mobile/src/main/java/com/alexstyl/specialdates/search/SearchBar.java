@@ -34,7 +34,7 @@ public class SearchBar extends Toolbar {
 
     private void addTintedUpNavigation() {
         DrawableTinter drawableTinter = new DrawableTinter(new AttributeExtractor());
-        Drawable backDrawable = getResources().getDrawable(R.drawable.ic_action_arrow_light_back).mutate();
+        Drawable backDrawable = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp).mutate();
         Drawable tintedUpDrawable = drawableTinter.tintWithAccentColor(backDrawable, getContext());
         setNavigationIcon(tintedUpDrawable);
     }
