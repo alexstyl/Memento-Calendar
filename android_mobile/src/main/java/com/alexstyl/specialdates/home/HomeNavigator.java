@@ -15,8 +15,8 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
@@ -36,13 +36,13 @@ public final class HomeNavigator {
     private final AttributeExtractor attributeExtractor;
     private final Analytics analytics;
     private final Strings strings;
-    private final FacebookPreferences facebookPreferences;
+    private final FacebookUserSettings facebookUserSettings;
     private final CrashAndErrorTracker tracker;
 
-    public HomeNavigator(Analytics analytics, Strings strings, FacebookPreferences facebookPreferences, CrashAndErrorTracker tracker) {
+    public HomeNavigator(Analytics analytics, Strings strings, FacebookUserSettings facebookUserSettings, CrashAndErrorTracker tracker) {
         this.analytics = analytics;
         this.strings = strings;
-        this.facebookPreferences = facebookPreferences;
+        this.facebookUserSettings = facebookUserSettings;
         this.tracker = tracker;
         this.attributeExtractor = new AttributeExtractor();
     }
@@ -94,7 +94,7 @@ public final class HomeNavigator {
     }
 
     public void toFacebookImport(Activity activity) {
-        if (facebookPreferences.isLoggedIn()) {
+        if (facebookUserSettings.isLoggedIn()) {
             Intent intent = new Intent(activity, FacebookProfileActivity.class);
             activity.startActivity(intent);
         } else {

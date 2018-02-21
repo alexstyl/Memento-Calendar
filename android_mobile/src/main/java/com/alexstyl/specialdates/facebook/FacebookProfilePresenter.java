@@ -3,18 +3,18 @@ package com.alexstyl.specialdates.facebook;
 class FacebookProfilePresenter {
     private final FacebookLogoutService service;
     private final FacebookProfileView view;
-    private final FacebookPreferences preferences;
+    private final FacebookUserSettings settings;
 
     FacebookProfilePresenter(FacebookLogoutService service,
                              FacebookProfileView view,
-                             FacebookPreferences preferences) {
+                             FacebookUserSettings settings) {
         this.service = service;
         this.view = view;
-        this.preferences = preferences;
+        this.settings = settings;
     }
 
     void startPresenting() {
-        UserCredentials userCredentials = preferences.retrieveCredentials();
+        UserCredentials userCredentials = settings.retrieveCredentials();
         view.display(userCredentials);
     }
 

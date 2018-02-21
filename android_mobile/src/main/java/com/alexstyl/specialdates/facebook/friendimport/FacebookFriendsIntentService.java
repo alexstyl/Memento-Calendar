@@ -13,10 +13,10 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 
 import javax.inject.Inject;
@@ -29,6 +29,7 @@ public class FacebookFriendsIntentService extends IntentService {
 
     @Inject PeopleEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
+    @Inject FacebookUserSettings facebookUserSettings;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -47,8 +48,7 @@ public class FacebookFriendsIntentService extends IntentService {
         ContactEventSerialiser serialiser = new ContactEventSerialiser(factory, tracker);
         FacebookBirthdaysProvider calendarFetcher = new FacebookBirthdaysProvider(calendarLoader, serialiser);
 
-        FacebookPreferences preferences = FacebookPreferences.newInstance(this);
-        UserCredentials userCredentials = preferences.retrieveCredentials();
+        UserCredentials userCredentials = facebookUserSettings.retrieveCredentials();
         if (isAnnonymous(userCredentials)) {
             tracker.track(new RuntimeException("Tried to fetch events, but was anonymous"));
             return;

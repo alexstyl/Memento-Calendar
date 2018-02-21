@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:gravity="center_vertical"
@@ -14,14 +13,13 @@
   <ImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:src="@drawable/ic_facebook_import_friends" />
+    android:src="@drawable/ic_add_contact_42px" />
 
   <TextView
-    android:id="@+id/row_people_facebook_import"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="30dp"
     android:fontFamily="sans-serif-medium"
-    tools:text="@string/title_facebook_friends_import" />
+    android:text="@string/no_contacts_text" />
 
 </com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>

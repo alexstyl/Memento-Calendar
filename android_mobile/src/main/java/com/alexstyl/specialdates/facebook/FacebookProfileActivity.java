@@ -42,6 +42,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Inject ImageLoader imageLoader;
     @Inject PeopleEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
+    @Inject FacebookUserSettings facebookSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +66,11 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
-        FacebookPreferences preferences = FacebookPreferences.newInstance(this);
         navigator = new ExternalNavigator(this, analytics, tracker);
 
         FacebookLogoutService service = new FacebookLogoutService(
                 AndroidSchedulers.mainThread(),
-                preferences,
+                facebookSettings,
                 persister,
                 uiRefresher,
                 onLogOut()
@@ -78,7 +78,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
         presenter = new FacebookProfilePresenter(
                 service,
                 this,
-                preferences
+                facebookSettings
         );
         presenter.startPresenting();
     }

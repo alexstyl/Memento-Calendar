@@ -8,6 +8,7 @@ import io.reactivex.disposables.Disposable
 
 class PeoplePresenter(
         private val peopleEventsProvider: PeopleEventsProvider,
+        private val viewModelFactory: PeopleViewModelFactory,
         private val workScheduler: Scheduler,
         private val resultScheduler: Scheduler) {
 
@@ -18,22 +19,26 @@ class PeoplePresenter(
                 Observable.fromCallable {
                     peopleEventsProvider.getContactEventsFor(TimePeriod.aYearFromNow())
                 }
+                        .doOnSubscribe {
+                            view.showLoading()
+                        }
                         .map { contacts ->
                             val viewModels = arrayListOf<PeopleRowViewModel>()
                             val contactIDs = HashSet<Long>()
 
-                            viewModels.add(FacebookViewModel())
+                            viewModels.add(viewModelFactory.facebookViewModel())
 
-                            contacts.sortedWith(compareBy({ it.contact.displayName.toString() }))
-                            contacts.forEach { contactEvent ->
-                                val contact = contactEvent.contact
-                                if (!contactIDs.contains(contact.contactID)) {
-                                    viewModels.add(PersonViewModel(contact,
-                                            contact.displayName.toString(),
-                                            contact.imagePath,
-                                            contact.contactID,
-                                            contact.source))
-                                    contactIDs.add(contact.contactID)
+                            if (contacts.isEmpty()) {
+                                viewModels.add(viewModelFactory.noContactsViewModel())
+                            } else {
+                                val mutableList = contacts.toMutableList()
+                                mutableList.sortWith(compareBy(String.CASE_INSENSITIVE_ORDER, { it.contact.displayName.toString() }))
+                                mutableList.forEach { contactEvent ->
+                                    val contact = contactEvent.contact
+                                    if (!contactIDs.contains(contact.contactID)) {
+                                        viewModels.add(viewModelFactory.personViewModel(contact))
+                                        contactIDs.add(contact.contactID)
+                                    }
                                 }
                             }
                             viewModels
@@ -51,5 +56,6 @@ class PeoplePresenter(
         disposable?.dispose()
     }
 }
+
 
 

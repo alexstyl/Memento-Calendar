@@ -18,6 +18,7 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_IMPORT_FACEBOOK = 1;
+    private static final int VIEW_TYPE_NO_CONTACTS = 2;
 
     private final List<PeopleRowViewModel> people = new ArrayList<>();
     private final LayoutInflater inflater;
@@ -36,8 +37,11 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (personViewModel instanceof PersonViewModel) {
             return VIEW_TYPE_PERSON;
         }
-        if (personViewModel instanceof FacebookViewModel) {
+        if (personViewModel instanceof FacebookImportViewModel) {
             return VIEW_TYPE_IMPORT_FACEBOOK;
+        }
+        if (personViewModel instanceof NoContactsViewModel) {
+            return VIEW_TYPE_NO_CONTACTS;
         }
         throw new IllegalStateException("Unhandled view type for " + personViewModel.getClass());
     }
@@ -52,8 +56,10 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return new PeopleViewHolder(rowView, imageLoader, imageView, nameView);
         } else if (viewType == VIEW_TYPE_IMPORT_FACEBOOK) {
             View rowView = inflater.inflate(R.layout.row_people_import_from_facebook, parent, false);
-            return new ImportFromFacebookViewHolder(rowView);
-
+            return new ImportFromFacebookViewHolder(rowView, (TextView) rowView.findViewById(R.id.row_people_facebook_import));
+        } else if (viewType == VIEW_TYPE_NO_CONTACTS) {
+            View rowView = inflater.inflate(R.layout.row_people_no_contacts, parent, false);
+            return new NoContactViewHolder(rowView);
         }
         throw new IllegalArgumentException("Cannot create holder for viewType " + viewType);
     }
@@ -65,7 +71,9 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (itemViewType == VIEW_TYPE_PERSON) {
             ((PeopleViewHolder) holder).bind((PersonViewModel) people.get(position), listener);
         } else if (itemViewType == VIEW_TYPE_IMPORT_FACEBOOK) {
-            ((ImportFromFacebookViewHolder) holder).bind(listener);
+            ((ImportFromFacebookViewHolder) holder).bind((FacebookImportViewModel) people.get(position), listener);
+        } else if (itemViewType == VIEW_TYPE_NO_CONTACTS) {
+            ((NoContactViewHolder) holder).bind(listener);
         }
     }
 
@@ -74,6 +82,7 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.people.clear();
         this.people.addAll(viewModels);
         diffResult.dispatchUpdatesTo(this);
+        notifyDataSetChanged();
     }
 
     @Override

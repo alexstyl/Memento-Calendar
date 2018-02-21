@@ -26,10 +26,10 @@
       android:orientation="vertical">
 
       <TextView
-        android:id="@id/search_result_contact_name"
-        style="@style/SearchResult.ContactName"
+        android:id="@+id/search_result_contact_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/SearchResult.ContactName"
         tools:text="Darth Vader" />
 
       <TextView

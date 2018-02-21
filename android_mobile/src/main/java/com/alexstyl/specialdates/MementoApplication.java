@@ -12,7 +12,8 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.FacebookModule;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
@@ -32,10 +33,9 @@ public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject
-    MementoPermissionsChecker contactPermissions;
-    @Inject
-    CrashAndErrorTracker tracker;
+    @Inject MementoPermissionsChecker contactPermissions;
+    @Inject CrashAndErrorTracker tracker;
+    @Inject FacebookUserSettings facebookSettings;
 
     @Override
     public void onCreate() {
@@ -48,6 +48,7 @@ public class MementoApplication extends Application {
                         .imageModule(new ImageModule(getResources()))
                         .peopleEventsModule(new PeopleEventsModule(this))
                         .viewModule(new ViewModule(getResources()))
+                        .facebookModule(new FacebookModule(this))
                         .namedaysInADayModule(new NamedaysInADayModule())
                         .build();
 
@@ -61,7 +62,7 @@ public class MementoApplication extends Application {
             AlarmManagerCompat alarmManager = AlarmManagerCompat.from(this);
             new DailyReminderScheduler(alarmManager, this).setupReminder(preferences);
         }
-        if (FacebookPreferences.newInstance(this).isLoggedIn()) {
+        if (facebookSettings.isLoggedIn()) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
         }

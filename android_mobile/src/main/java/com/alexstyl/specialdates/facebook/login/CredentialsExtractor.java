@@ -41,14 +41,14 @@ class CredentialsExtractor {
 
     }
 
-    String obtainName(String pageSource) {
+    private String obtainName(String pageSource) {
         try {
             String userDetails = pageSource.split("data-testid=\"blue_bar_profile_link\">")[USER_DETAILS];
             int startOfName = userDetails.indexOf(OPENNING_SPAN) + OPENNING_SPAN.length();
             int endOfName = userDetails.indexOf(CLOSING_SPAN);
             return userDetails.substring(startOfName, endOfName);
         } catch (Exception e) {
-            return "Facebook-User";
+            return "";
         }
     }
 

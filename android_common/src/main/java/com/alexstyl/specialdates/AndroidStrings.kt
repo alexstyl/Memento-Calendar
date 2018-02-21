@@ -64,7 +64,7 @@ class AndroidStrings(private val resources: Resources) : Strings {
         }
     }
 
-    override fun localeName(locale: NamedayLocale): String = when (locale){
+    override fun localeName(locale: NamedayLocale): String = when (locale) {
         NamedayLocale.GREEK -> resources.getString(R.string.Greek)
         NamedayLocale.ROMANIAN -> resources.getString(R.string.Romanian)
         NamedayLocale.RUSSIAN -> resources.getString(R.string.Russian)
@@ -75,4 +75,8 @@ class AndroidStrings(private val resources: Resources) : Strings {
         NamedayLocale.CZECH -> resources.getString(R.string.Czech)
         NamedayLocale.HUNGARIAN -> resources.getString(R.string.Hungarian)
     }
+
+    override fun viewFacebookProfile(): String = resources.getString(R.string.View_Facebook_Profile)
+
+    override fun importFromFacebook(): String = resources.getString(R.string.Import_from_Facebook)
 }
