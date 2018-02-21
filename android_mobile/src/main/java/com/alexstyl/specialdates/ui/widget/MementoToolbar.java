@@ -19,8 +19,7 @@ public class MementoToolbar extends Toolbar {
 
     public MementoToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-
+        
         setMinimumHeight(getResources().getDimensionPixelSize(R.dimen.toolbar_minHeight));
 
         if (isInEditMode()) {
@@ -31,7 +30,7 @@ public class MementoToolbar extends Toolbar {
     
     public void displayNavigationIconAsUp() {
         int color = attributeExtractor.extractToolbarIconColors(getContext());
-        Drawable closeIconDrawable = DrawableCompat.wrap(getResources().getDrawable(R.drawable.ic_action_left_semitransparent));
+        Drawable closeIconDrawable = DrawableCompat.wrap(getResources().getDrawable(R.drawable.ic_action_arrow_light_back));
         DrawableCompat.setTintList(closeIconDrawable, ColorStateList.valueOf(color));
         setNavigationIcon(closeIconDrawable);
     }

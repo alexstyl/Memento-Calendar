@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
@@ -36,6 +38,7 @@ import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
+import com.alexstyl.specialdates.ui.HideStatusBarListener;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
@@ -59,14 +62,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
     private static final String EXTRA_CONTACT_SOURCE = "extra:source";
     private static final String EXTRA_CONTACT_ID = "extra:id";
-    private static final int ID_TOGGLE_VISIBILITY = 1023;
 
-    private PersonPresenter presenter;
-    private ImageView avatarView;
-    private TextView personNameView;
-    private TextView ageAndSignView;
-    private ContactItemsAdapter adapter;
-    private ImageView toolbarGradient;
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject ImageLoader imageLoader;
@@ -75,17 +71,28 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Inject DateLabelCreator dateLabelCreator;
     @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject PeopleEventsPersister peoplePersister;
+    @Inject CrashAndErrorTracker tracker;
 
-    private PersonDetailsNavigator navigator;
+    private static final int ID_TOGGLE_VISIBILITY = 1023;
+    
+    private AppBarLayout appBarLayout;
+    private ImageView toolbarGradient;
+    private ImageView avatarView;
+    private TextView personNameView;
+    private TextView ageAndSignView;
+    private TabLayout tabLayout;
 
     private Optional<Contact> displayingContact = Optional.absent();
-    private TabLayout tabLayout;
-    @Inject CrashAndErrorTracker tracker;
+    private PersonPresenter presenter;
+    private PersonDetailsNavigator navigator;
+    private ContactItemsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
+
+        appBarLayout = findViewById(R.id.person_appbar);
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
@@ -186,6 +193,9 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
                     @Override
                     public void onImageLoaded(Bitmap loadedImage) {
+                        if (Version.hasLollipop()) {
+                            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+                        }
                         new FadeInBitmapDisplayer(ANIMATION_DURATION).display(loadedImage, new ImageViewAware(avatarView), LoadedFrom.DISC_CACHE);
                         Drawable[] layers = new Drawable[2];
                         layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
@@ -210,7 +220,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
 
         personNameView.setText(viewModel.getDisplayName());
         ageAndSignView.setText(viewModel.getAgeAndStarSignlabel());
-
         ageAndSignView.setVisibility(viewModel.getAgeAndStarSignVisibility());
         // TODO coming up
         //        if (viewModel.isVisible()) {

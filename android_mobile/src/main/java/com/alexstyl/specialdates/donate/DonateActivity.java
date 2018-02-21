@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.ui.HideStatusBarListener;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
