@@ -8,19 +8,19 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
 
-final class NameViewHolder extends RecyclerView.ViewHolder {
+final class SuggstedNameViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView nameView;
 
-    public static NameViewHolder createFor(ViewGroup parent) {
+    public static SuggstedNameViewHolder createFor(ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_name, parent, false);
-        return new NameViewHolder(view);
+        View view = layoutInflater.inflate(R.layout.row_suggested_name, parent, false);
+        return new SuggstedNameViewHolder(view);
     }
 
-    private NameViewHolder(View itemView) {
+    private SuggstedNameViewHolder(View itemView) {
         super(itemView);
-        nameView = (TextView) itemView.findViewById(android.R.id.text1);
+        nameView = itemView.findViewById(R.id.suggested_name_text);
     }
 
     public void bind(final String name, final NameSuggestionsAdapter.OnNameSelectedListener listener) {
