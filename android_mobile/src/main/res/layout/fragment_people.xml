@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/people_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:clipToPadding="false"
+    android:paddingBottom="30dp"
+    android:paddingTop="30dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/people_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="30dp"
-        android:paddingTop="30dp" />
+  <ProgressBar
+    android:id="@+id/people_loading"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center" />
 
-</LinearLayout>
+</FrameLayout>

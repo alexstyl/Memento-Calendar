@@ -28,7 +28,15 @@ public class ContactsModule {
         Map<Integer, ContactsProviderSource> sources = new HashMap<>();
         sources.put(SOURCE_DEVICE, buildAndroidSource(context, tracker));
         sources.put(SOURCE_FACEBOOK, buildFacebookSource(context));
+
+//        sources.put(SOURCE_DEVICE, noContacts(SOURCE_DEVICE));
+//        sources.put(SOURCE_FACEBOOK, noContacts(SOURCE_FACEBOOK));
+
         return new ContactsProvider(sources);
+    }
+
+    private ContactsProviderSource noContacts(int source) {
+        return new EmptyContactSource(source);
     }
 
     private static ContactsProviderSource buildAndroidSource(Context context, CrashAndErrorTracker tracker) {

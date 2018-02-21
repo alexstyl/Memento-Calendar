@@ -7,6 +7,10 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
+    override fun importFromFacebook(): String = "Import from Facebook"
+
+    override fun viewFacebookProfile(): String = "View Facebook Friends"
+
     override fun postOnFacebook(): String = "Post on Facebook"
 
     override fun facebook(): String = "Facebook"

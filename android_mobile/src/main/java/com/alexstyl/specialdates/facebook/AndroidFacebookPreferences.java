@@ -1,27 +1,23 @@
 package com.alexstyl.specialdates.facebook;
 
-import android.content.Context;
-
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-public final class FacebookPreferences {
+public final class AndroidFacebookPreferences implements FacebookUserSettings {
     private final EasyPreferences preferences;
 
-    public static FacebookPreferences newInstance(Context context) {
-        return new FacebookPreferences(EasyPreferences.createForPrivatePreferences(context, R.string.pref_facebook));
-    }
-
-    private FacebookPreferences(EasyPreferences preferences) {
+    AndroidFacebookPreferences(EasyPreferences preferences) {
         this.preferences = preferences;
     }
 
+    @Override
     public void store(UserCredentials userCredentials) {
         preferences.setLong(R.string.key_facebook_user_id, userCredentials.getUid());
         preferences.setString(R.string.key_facebook_user_key, userCredentials.getKey());
         preferences.setString(R.string.key_facebook_user_name, userCredentials.getName());
     }
 
+    @Override
     public UserCredentials retrieveCredentials() {
         long uid = preferences.getLong(R.string.key_facebook_user_id, -1);
         String key = preferences.getString(R.string.key_facebook_user_key, "");
@@ -29,6 +25,7 @@ public final class FacebookPreferences {
         return new UserCredentials(uid, key, name);
     }
 
+    @Override
     public boolean isLoggedIn() {
         return !UserCredentials.ANNONYMOUS.equals(retrieveCredentials());
     }

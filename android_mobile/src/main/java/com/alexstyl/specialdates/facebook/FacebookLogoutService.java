@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 class FacebookLogoutService {
 
     private final PeopleEventsViewRefresher refresher;
-    private final FacebookPreferences preferences;
+    private final FacebookUserSettings preferences;
     private final FacebookFriendsPersister persister;
     private final Scheduler resultScheduler;
     private final OnFacebookLogOutCallback callback;
@@ -20,7 +20,7 @@ class FacebookLogoutService {
     private CompositeDisposable disposable = new CompositeDisposable();
 
     FacebookLogoutService(Scheduler resultScheduler,
-                          FacebookPreferences preferences,
+                          FacebookUserSettings preferences,
                           FacebookFriendsPersister persister,
                           PeopleEventsViewRefresher refresher, OnFacebookLogOutCallback callback) {
         this.resultScheduler = resultScheduler;

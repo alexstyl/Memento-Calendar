@@ -31,12 +31,9 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
     private SearchTransitioner searchTransitioner;
 
-    @Inject
-    HomeNavigator navigator;
-    @Inject
-    Analytics analytics;
-    @Inject
-    DailyReminderNotifier dailyReminderNotifier;
+    @Inject HomeNavigator navigator;
+    @Inject Analytics analytics;
+    @Inject DailyReminderNotifier dailyReminderNotifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +83,6 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             viewPager.setCurrentItem(2);
         }
     }
-
 
     @Override
     protected void onResume() {

@@ -7,16 +7,6 @@
     <attr name="letterSize"
       format="dimension" />
   </declare-styleable>
-  <declare-styleable name="CompactCardView">
-    <attr name="android:src" />
-    <attr name="backgroundHeroColor"
-      format="reference" />
-    <attr name="primaryText"
-      format="string" />
-    <attr name="secondaryText"
-      format="string" />
-  </declare-styleable>
-
 
   <declare-styleable name="TitledTextView">
     <attr name="eventTitleColor"

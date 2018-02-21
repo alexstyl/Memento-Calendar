@@ -22,5 +22,7 @@ interface Strings {
     fun nameOfEvent(event: EventType): String
     fun postOnFacebook(): String
     fun facebook(): String
-    fun localeName(locale:NamedayLocale):String
+    fun localeName(locale: NamedayLocale): String
+    fun viewFacebookProfile(): String
+    fun importFromFacebook(): String
 }

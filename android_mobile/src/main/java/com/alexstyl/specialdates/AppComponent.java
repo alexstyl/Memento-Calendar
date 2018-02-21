@@ -5,8 +5,8 @@ import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
-import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.contact.ContactsModule;
+import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.date.DateModule;
@@ -16,11 +16,15 @@ import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
+import com.alexstyl.specialdates.facebook.FacebookModule;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
+import com.alexstyl.specialdates.facebook.login.FacebookWebView;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.people.PeopleFragment;
+import com.alexstyl.specialdates.people.PeopleModule;
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
@@ -30,9 +34,7 @@ import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.support.RateDialog;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
-import com.alexstyl.specialdates.ui.widget.CompactCardView;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
-import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
@@ -60,7 +62,9 @@ import dagger.Component;
         NamedaysInADayModule.class,
         DailyReminderModule.class,
         DonateModule.class,
-        PeopleEventsModule.class
+        PeopleEventsModule.class,
+        FacebookModule.class,
+        PeopleModule.class
 })
 public interface AppComponent {
     void inject(MementoApplication application);
@@ -106,9 +110,7 @@ public interface AppComponent {
     void inject(WearSyncService service);
 
     void inject(ColorImageView view);
-
-    void inject(CompactCardView view);
-
+    
     void inject(UpcomingWidgetConfigureActivity activity);
 
     void inject(WidgetRouterActivity widgetRouterActivity);
@@ -124,4 +126,6 @@ public interface AppComponent {
     void inject(EventUpdatedService eventUpdatedService);
 
     void inject(PeopleFragment peopleFragment);
+
+    void inject(FacebookWebView peopleFragment);
 }

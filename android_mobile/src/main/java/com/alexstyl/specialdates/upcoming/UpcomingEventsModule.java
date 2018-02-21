@@ -15,7 +15,8 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.AndroidFacebookPreferences;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.upcoming.widget.list.NoAds;
 
@@ -76,7 +77,7 @@ public class UpcomingEventsModule {
     }
 
     @Provides
-    HomeNavigator navigator(Analytics analytics, Strings strings, Context context, CrashAndErrorTracker tracker) {
-        return new HomeNavigator(analytics, strings, FacebookPreferences.newInstance(context), tracker);
+    HomeNavigator navigator(Analytics analytics, Strings strings, CrashAndErrorTracker tracker, FacebookUserSettings facebookUserSettings) {
+        return new HomeNavigator(analytics, strings, facebookUserSettings, tracker);
     }
 }

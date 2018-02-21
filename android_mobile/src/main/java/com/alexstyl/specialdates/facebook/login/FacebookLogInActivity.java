@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
@@ -52,6 +52,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     @Inject Strings stringResource;
     @Inject CrashAndErrorTracker tracker;
     @Inject ImageLoader imageLoader;
+    @Inject FacebookUserSettings facebookUserSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
         webView.setCallback(facebookCallback);
 
-        UserCredentials userCredentials = FacebookPreferences.newInstance(this).retrieveCredentials();
+        UserCredentials userCredentials = facebookUserSettings.retrieveCredentials();
         if (savedInstanceState == null || userCredentials.equals(UserCredentials.ANNONYMOUS)) {
             new CookieResetter(CookieManager.getInstance()).clearAll();
             webView.loadLogInPage();
@@ -110,6 +111,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
             }
         };
     }
+
     private final FacebookLogInCallback facebookCallback = new FacebookLogInCallback() {
 
         @Override
@@ -174,7 +176,13 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
 
         animateAvatarWithBounce();
         avatar.setVisibility(View.VISIBLE);
-        helloView.setText(getString(R.string.facebook_hi, userCredentials.getName()));
+
+        String name = userCredentials.getName();
+        if (name.isEmpty()) {
+            helloView.setText(R.string.Welcome);
+        } else {
+            helloView.setText(getString(R.string.facebook_hi, name));
+        }
     }
 
     private void animateAvatarWithBounce() {

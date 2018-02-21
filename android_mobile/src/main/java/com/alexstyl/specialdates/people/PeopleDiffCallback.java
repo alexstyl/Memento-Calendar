@@ -29,14 +29,18 @@ class PeopleDiffCallback extends DiffUtil.Callback {
         PeopleRowViewModel oldViewModel = oldViewModels.get(oldItemPosition);
         PeopleRowViewModel newViewModel = newViewModels.get(newItemPosition);
 
-        if (oldViewModel instanceof FacebookViewModel && newViewModel instanceof FacebookViewModel) {
-            return true;
+        if (oldViewModel instanceof FacebookImportViewModel && newViewModel instanceof FacebookImportViewModel) {
+            return ((FacebookImportViewModel) oldViewModel).getLabel().equals(((FacebookImportViewModel) newViewModel).getLabel());
         }
         if (oldViewModel instanceof PersonViewModel && newViewModel instanceof PersonViewModel) {
             PersonViewModel oldPersonViewModel = (PersonViewModel) oldViewModels.get(oldItemPosition);
             PersonViewModel newPersonViewModel = (PersonViewModel) newViewModels.get(newItemPosition);
             return (oldPersonViewModel.getPersonId() == newPersonViewModel.getPersonId()) &&
                     oldPersonViewModel.getPersonSource() == newPersonViewModel.getPersonSource();
+        }
+
+        if (oldViewModel instanceof NoContactsViewModel && newViewModel instanceof  NoContactsViewModel){
+            return true;
         }
         return false;
     }
@@ -46,8 +50,12 @@ class PeopleDiffCallback extends DiffUtil.Callback {
         PeopleRowViewModel oldViewModel = oldViewModels.get(oldItemPosition);
         PeopleRowViewModel newViewModel = newViewModels.get(newItemPosition);
 
-        if (oldViewModel instanceof FacebookViewModel && newViewModel instanceof FacebookViewModel) {
+        if (oldViewModel instanceof NoContactsViewModel && newViewModel instanceof NoContactsViewModel) {
             return true;
+        }
+        
+        if (oldViewModel instanceof FacebookImportViewModel && newViewModel instanceof FacebookImportViewModel) {
+            return ((FacebookImportViewModel) oldViewModel).getLabel().equals(((FacebookImportViewModel) newViewModel).getLabel());
         }
 
         if (oldViewModel instanceof PersonViewModel && newViewModel instanceof PersonViewModel) {

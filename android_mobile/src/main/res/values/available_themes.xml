@@ -41,6 +41,8 @@
     <item name="colorPrimaryDark">#FF8F00</item>
     <item name="colorSecondary">#FFD54F</item>
     <item name="colorAccent">#D50000</item>
+    <item name="primaryTextColor">@color/black_light</item>
+    <item name="primaryTextColorInverse">@android:color/white</item>
   </style>
 
   <style name="Theme.Memento.GlossPink"
