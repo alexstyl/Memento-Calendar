@@ -16,7 +16,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import java.util.ArrayList;
 import java.util.List;
 
-final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
+final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameViewHolder> implements Filterable {
 
     private final OnNameSelectedListener listener;
     private final NamesFilter filter;
@@ -45,12 +45,12 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> 
     }
 
     @Override
-    public NameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return NameViewHolder.createFor(parent);
+    public SuggstedNameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return SuggstedNameViewHolder.createFor(parent);
     }
 
     @Override
-    public void onBindViewHolder(NameViewHolder holder, int position) {
+    public void onBindViewHolder(SuggstedNameViewHolder holder, int position) {
         holder.bind(displayingNames.get(position), listener);
     }
 
