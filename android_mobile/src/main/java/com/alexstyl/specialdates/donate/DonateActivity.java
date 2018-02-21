@@ -70,7 +70,7 @@ public class DonateActivity extends MementoActivity {
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
         if (Version.hasLollipop()) {
-            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()) );
         }
 
         DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics, tracker);
