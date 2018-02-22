@@ -1,46 +1,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <FrameLayout
+    android:id="@+id/home_toolbar_holder"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="@dimen/toolbar_semi_expanded_height"
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/home_toolbar_holder"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_semi_expanded_height"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
+    <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
+      android:id="@+id/home_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/padding_tight"
+      app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
+  </FrameLayout>
 
-        <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
-            android:id="@+id/home_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/padding_tight"
-            app:titleTextAppearance="@style/Upcoming.Toolbar.TitleText" />
-    </FrameLayout>
+  <LinearLayout
+    android:id="@+id/home_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/home_toolbar_holder"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/home_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/home_toolbar_holder"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/home_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:elevation="@dimen/toolbar_elevation"
-            app:tabMinWidth="52dp"
-            app:tabMode="fixed" />
+    <android.support.design.widget.TabLayout
+      android:id="@+id/home_tabs"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorPrimary"
+      android:elevation="@dimen/toolbar_elevation"
+      app:tabMinWidth="52dp"
+      app:tabMode="fixed" />
 
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/home_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <android.support.v4.view.ViewPager
+      android:id="@+id/home_viewpager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
-    </LinearLayout>
+  </LinearLayout>
+
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/home_add_event"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:layout_margin="16dp"
+    android:src="@drawable/ic_add_person_24px" />
 
 </RelativeLayout>
