@@ -126,6 +126,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                     }
                 }
         );
+        adapter.setHasStableIds(true);
         upcomingList.setAdapter(adapter);
         return view;
     }

@@ -53,4 +53,8 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
         diffResult.dispatchUpdatesTo(this);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return viewModels.get(position).getId();
+    }
 }
