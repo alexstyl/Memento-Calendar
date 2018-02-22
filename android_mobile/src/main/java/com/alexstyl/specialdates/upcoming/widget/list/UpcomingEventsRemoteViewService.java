@@ -10,16 +10,12 @@ import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
-    @Inject
-    Colors colors;
+    @Inject Colors colors;
     @Inject ImageLoader imageLoader;
-    @Inject
-    @Named("widget")
-    UpcomingEventsProvider peopleEventsProvider;
+    @Inject UpcomingEventsProvider peopleEventsProvider;
 
     @Override
     public void onCreate() {

@@ -9,8 +9,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.util.HashMapList
 
 class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
-                                   private val viewModelFactory: UpcomingEventRowViewModelFactory,
-                                   private val adRules: UpcomingEventsAdRules
+                                   private val viewModelFactory: UpcomingEventRowViewModelFactory
 ) {
 
     private val dateComparator = DateComparator.INSTANCE
@@ -71,10 +70,6 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
                 getEventsOn(annualDate).forEach {
                     rowsViewModels.add(viewModelFactory.createViewModelFor(it))
 
-                }
-                if (adRules.shouldAppendAd()) {
-                    rowsViewModels.add(AdViewModel(indexDate))
-                    adRules.onNewAdAdded()
                 }
                 index++
             }

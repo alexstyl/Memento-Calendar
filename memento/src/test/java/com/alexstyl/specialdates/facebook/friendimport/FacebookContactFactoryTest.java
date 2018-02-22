@@ -32,7 +32,7 @@ public class FacebookContactFactoryTest {
         map.put("SUMMARY", "Thanasis Thomopoulos's birthday");
         ContactEvent contactEvent = factory.createContactFrom(map);
         Contact contact = contactEvent.getContact();
-        assertThat(contact.getDisplayName()).isEqualTo(DisplayName.from("Thanasis Thomopoulos"));
+        assertThat(contact.getDisplayName()).isEqualTo(DisplayName.Companion.from("Thanasis Thomopoulos"));
         assertThat(contact.getContactID()).isEqualTo(123124);
     }
 }

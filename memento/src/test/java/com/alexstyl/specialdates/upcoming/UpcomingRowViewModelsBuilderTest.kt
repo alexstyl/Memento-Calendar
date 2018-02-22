@@ -14,7 +14,6 @@ import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
-import com.alexstyl.specialdates.upcoming.widget.list.NoAds
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -138,9 +137,8 @@ class UpcomingRowViewModelsBuilderTest {
         assertThat(viewModels[1]).isInstanceOf(BankHolidayViewModel::class.java)
         assertThat(viewModels[2]).isInstanceOf(UpcomingNamedaysViewModel::class.java)
         assertThat(viewModels[3]).isInstanceOf(UpcomingContactEventViewModel::class.java)
-        assertThat(viewModels[4]).isInstanceOf(AdViewModel::class.java)
-        assertThat(viewModels[5]).isInstanceOf(DateHeaderViewModel::class.java)
-        assertThat(viewModels[6]).isInstanceOf(UpcomingContactEventViewModel::class.java)
+        assertThat(viewModels[4]).isInstanceOf(DateHeaderViewModel::class.java)
+        assertThat(viewModels[5]).isInstanceOf(UpcomingContactEventViewModel::class.java)
     }
 
     private fun namedayOf(date: Date, maria: String): List<NamesInADate> {
@@ -150,11 +148,11 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
     private fun builderFor(timePeriod: TimePeriod): UpcomingRowViewModelsBuilder {
-        return UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory!!, NoAds())
+        return UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory!!)
     }
 
     private fun builderWithAds(timePeriod: TimePeriod): UpcomingRowViewModelsBuilder {
-        return UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory!!, UpcomingEventsFreeUserAdRules())
+        return UpcomingRowViewModelsBuilder(timePeriod, upcomingEventRowViewModelFactory!!)
     }
 
 
