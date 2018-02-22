@@ -10,21 +10,15 @@ import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 
 import java.util.HashMap;
 
-
 class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
     private HashMap<Integer, Fragment> pages = new HashMap<>();
 
     private static final int PAGE_COUNT = 3;
 
-    private static final int PAGE_UPCOMING = 0;
-    private static final int PAGE_CONTACTS = 1;
-    private static final int PAGE_SETTINGS = 2;
-
     HomeViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
-
 
     @Override
     public Fragment getItem(int position) {
@@ -38,35 +32,18 @@ class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
     private Fragment createFragmentFor(int position) {
         switch (position) {
-            case PAGE_UPCOMING:
+            case HomeActivity.PAGE_EVENTS:
                 return new UpcomingEventsFragment();
-            case PAGE_CONTACTS:
+            case HomeActivity.PAGE_CONTACTS:
                 return new PeopleFragment();
-            case PAGE_SETTINGS:
+            case HomeActivity.PAGE_SETTINGS:
                 return new MainPreferenceFragment();
         }
         throw new IllegalArgumentException("Position " + position + " is invalid");
     }
 
-
     @Override
     public int getCount() {
         return PAGE_COUNT;
-    }
-
-    void onViewPagerIdled(int currentItem) {
-        Fragment fragment = pages.get(currentItem);
-        if (fragment instanceof ViewPagerAware) {
-            ((ViewPagerAware) fragment).onPagerIdled();
-        }
-    }
-
-    void onViewPagerScrolled() {
-        for (Fragment fragment : pages.values()) {
-            if (fragment instanceof ViewPagerAware) {
-                ((ViewPagerAware) fragment).onPagerScrolled();
-            }
-
-        }
     }
 }

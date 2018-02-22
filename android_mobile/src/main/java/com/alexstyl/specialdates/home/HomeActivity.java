@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -29,7 +30,12 @@ import static com.novoda.notils.caster.Views.findById;
 
 public class HomeActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
+    public static final int PAGE_EVENTS = 0;
+    public static final int PAGE_CONTACTS = 1;
+    public static final int PAGE_SETTINGS = 2;
+
     private SearchTransitioner searchTransitioner;
+    private FloatingActionButton actionButton;
 
     @Inject HomeNavigator navigator;
     @Inject Analytics analytics;
@@ -62,25 +68,31 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
         TabLayout tabLayout = findViewById(R.id.home_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(getTintedDrawable(R.drawable.ic_events));
-        tabLayout.getTabAt(1).setIcon(getTintedDrawable(R.drawable.ic_contacts));
-        tabLayout.getTabAt(2).setIcon(getTintedDrawable(R.drawable.ic_settings));
+        tabLayout.getTabAt(HomeActivity.PAGE_EVENTS).setIcon(getTintedDrawable(R.drawable.ic_events));
+        tabLayout.getTabAt(HomeActivity.PAGE_CONTACTS).setIcon(getTintedDrawable(R.drawable.ic_contacts));
+        tabLayout.getTabAt(HomeActivity.PAGE_SETTINGS).setIcon(getTintedDrawable(R.drawable.ic_settings));
 
+        actionButton = findViewById(R.id.home_add_event);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigator.toAddEvent(HomeActivity.this);
+            }
+        });
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    adapter.onViewPagerIdled(viewPager.getCurrentItem());
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == HomeActivity.PAGE_SETTINGS || (position < HomeActivity.PAGE_SETTINGS && positionOffset >= 0.5)) {
+                    actionButton.hide();
                 } else {
-                    adapter.onViewPagerScrolled();
+                    actionButton.show();
                 }
-
             }
         });
 
         if (ACTION_UPDATE_THEME.equals(getIntent().getAction())) {
-            viewPager.setCurrentItem(2);
+            viewPager.setCurrentItem(HomeActivity.PAGE_SETTINGS);
         }
     }
 
