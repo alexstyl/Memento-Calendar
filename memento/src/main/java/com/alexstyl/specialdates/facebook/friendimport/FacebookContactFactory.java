@@ -39,7 +39,7 @@ class FacebookContactFactory {
     private DisplayName nameFrom(Map<String, String> map) {
         String summary = getOrThrow(map, "SUMMARY");
         int endOfName = summary.indexOf("'s birthday");
-        return DisplayName.from(summary.substring(0, endOfName));
+        return DisplayName.Companion.from(summary.substring(0, endOfName));
     }
 
     private long idOf(Map<String, String> map) {

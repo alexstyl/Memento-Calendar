@@ -11,7 +11,7 @@ public class DisplayNameTest {
 
     @Test
     public void givenFirstName_thenDisplayNameHasOneFirstNameAndNoLastName() {
-        DisplayName name = DisplayName.from("Alex");
+        DisplayName name = DisplayName.Companion.from("Alex");
 
         assertThat(name.getFirstNames().getCount()).isEqualTo(1);
         assertThat(name.getLastName()).isEmpty();
@@ -19,19 +19,19 @@ public class DisplayNameTest {
 
     @Test
     public void givenFirstAndLastName_thenFirstNameIsCorrect() {
-        DisplayName displayName = DisplayName.from("Alex Styl");
+        DisplayName displayName = DisplayName.Companion.from("Alex Styl");
         assertThat(displayName.getFirstNames().getPrimary()).isEqualTo("Alex");
     }
 
     @Test
     public void givenFirstAndLastName_thenLastNameIsCorrect() {
-        DisplayName displayName = DisplayName.from("Alex Styl");
+        DisplayName displayName = DisplayName.Companion.from("Alex Styl");
         assertThat(displayName.getLastName()).isEqualTo("Styl");
     }
 
     @Test
     public void givenFirstAndLastName_thenDisplayNameHasOneFirstAndLastName() {
-        DisplayName displayName = DisplayName.from("Alex Styl");
+        DisplayName displayName = DisplayName.Companion.from("Alex Styl");
 
         assertThat(displayName.getFirstNames().getCount()).isEqualTo(1);
         assertThat(displayName.getLastName()).isNotEmpty();
@@ -39,7 +39,7 @@ public class DisplayNameTest {
 
     @Test
     public void givenMultipleFirstNames_thenDisplayNameHasMultipleNamesAndLastName() {
-        DisplayName displayName = DisplayName.from("John Peters Jackson");
+        DisplayName displayName = DisplayName.Companion.from("John Peters Jackson");
 
         assertThat(displayName.hasMultipleFirstNames()).isTrue();
         assertThat(displayName.getFirstNames().getCount()).isEqualTo(2);
@@ -48,7 +48,7 @@ public class DisplayNameTest {
 
     @Test
     public void givenFirstNameWithSemicolumnAndLastName_thenDisplayNameHasTwoFirstNameAndLastName() {
-        DisplayName displayName = DisplayName.from("John-Peters Jackson");
+        DisplayName displayName = DisplayName.Companion.from("John-Peters Jackson");
 
         assertThat(displayName.hasMultipleFirstNames()).isTrue();
         assertThat(displayName.getFirstNames().getCount()).isEqualTo(2);
@@ -57,27 +57,27 @@ public class DisplayNameTest {
 
     @Test
     public void givenEmptyName_NoNameIsReturned() {
-        DisplayName displayName = DisplayName.from("");
+        DisplayName displayName = DisplayName.Companion.from("");
 
-        assertThat(displayName).isEqualTo(DisplayName.NO_NAME);
+        assertThat(displayName).isEqualTo(DisplayName.Companion.getNO_NAME());
     }
 
     @Test
     public void givenNullName_NoNameIsReturned() {
-        DisplayName displayName = DisplayName.from(null);
+        DisplayName displayName = DisplayName.Companion.from(null);
 
-        assertThat(displayName).isEqualTo(DisplayName.NO_NAME);
+        assertThat(displayName).isEqualTo(DisplayName.Companion.getNO_NAME());
     }
 
     @Test
     public void noName_ReturnsEmptyName() {
-        DisplayName displayName = DisplayName.NO_NAME;
+        DisplayName displayName = DisplayName.Companion.getNO_NAME();
         assertThat(displayName.toString()).isEqualTo("");
     }
 
     @Test
     public void allNames() {
-        DisplayName displayName = DisplayName.from("Alex Bob Derek Styl");
+        DisplayName displayName = DisplayName.Companion.from("Alex Bob Derek Styl");
         Names names = displayName.getAllNames();
         List<String> namesList = asList(names);
         assertThat(namesList).contains("Alex", "Bob", "Derek", "Styl");
@@ -86,7 +86,7 @@ public class DisplayNameTest {
     @Test
     public void toStringReturnsTheFullName() {
         String nameRaw = "Alex Styl";
-        String toString = DisplayName.from(nameRaw).toString();
+        String toString = DisplayName.Companion.from(nameRaw).toString();
         assertThat(nameRaw).isEqualTo(toString);
     }
 

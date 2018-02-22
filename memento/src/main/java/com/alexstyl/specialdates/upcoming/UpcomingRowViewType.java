@@ -12,13 +12,11 @@ import static com.alexstyl.specialdates.upcoming.UpcomingRowViewType.*;
         DATE_HEADER,
         BANKHOLIDAY,
         NAMEDAY_CARD,
-        CONTACT_EVENT,
-        AD
+        CONTACT_EVENT
 })
 public @interface UpcomingRowViewType {
     int DATE_HEADER = 0;
     int BANKHOLIDAY = 1;
     int NAMEDAY_CARD = 2;
     int CONTACT_EVENT = 3;
-    int AD = 4;
 }

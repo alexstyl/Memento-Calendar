@@ -12,7 +12,7 @@ public class ContactTest {
 
     @Test
     public void toStringReturnsTheDisplayNameRepresentation() {
-        Contact contact = new Contact(404, DisplayName.from("Alex Styl"), someImageURI, -1);
+        Contact contact = new Contact(404, DisplayName.Companion.from("Alex Styl"), someImageURI, -1);
         assertThat(contact.toString()).isEqualTo("Alex Styl");
     }
 

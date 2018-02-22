@@ -9,7 +9,7 @@ public class ContactCacheTest {
 
     private static final int CACHE_SIZE = 1024 * 5;
 
-    private static final DisplayName ANY_DISPLAY_NAME = DisplayName.from("Alex Styl");
+    private static final DisplayName ANY_DISPLAY_NAME = DisplayName.Companion.from("Alex Styl");
 
     private ContactCache contactCache;
 

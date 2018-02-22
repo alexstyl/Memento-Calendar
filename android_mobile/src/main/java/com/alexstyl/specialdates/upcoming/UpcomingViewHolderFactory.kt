@@ -2,14 +2,10 @@ package com.alexstyl.specialdates.upcoming
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.widget.ColorImageView
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.NativeExpressAdView
 import com.novoda.notils.exception.DeveloperError
 
 internal class UpcomingViewHolderFactory(private val layoutInflater: LayoutInflater, private val imageLoader: ImageLoader) {
@@ -37,13 +33,6 @@ internal class UpcomingViewHolderFactory(private val layoutInflater: LayoutInfla
                 val contactName = view.findViewById<TextView>(R.id.row_upcoming_event_contact_name)
                 val eventLabel = view.findViewById<TextView>(R.id.row_upcoming_event_contact_event)
                 return ContactEventViewHolder(view, avatarView, contactName, eventLabel, imageLoader)
-            }
-            UpcomingRowViewType.AD -> {
-                val adView = NativeExpressAdView(parent.context)
-                adView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                adView.adSize = AdSize(AdSize.FULL_WIDTH, 132)
-                adView.adUnitId = parent.resources.getString(R.string.admob_unit_id)
-                return AdViewHolder(adView, adView)
             }
             else -> {
                 throw DeveloperError("Unhandled viewType [$viewType]")

@@ -14,16 +14,14 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
                              private val namedayCalendarProvider: NamedayCalendarProvider,
                              private val bankHolidaysPreferences: BankHolidaysPreferences,
                              private val bankHolidayProvider: BankHolidayProvider,
-                             private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory,
-                             private val adRules: UpcomingEventsAdRules)
+                             private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory)
     : IUpcomingEventsProvider {
 
     override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
         val contactEvents = peopleEventsProvider.getContactEventsFor(timePeriod)
         val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
                 timePeriod,
-                upcomingRowViewModelFactory,
-                adRules
+                upcomingRowViewModelFactory
         )
                 .withContactEvents(contactEvents)
 
