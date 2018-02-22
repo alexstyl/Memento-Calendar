@@ -29,7 +29,7 @@
     app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
     app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
     app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable"
-    tools:listitem="@layout/row_upcoming_events_bankholiday"
+    tools:listitem="@layout/row_upcoming_events_contact_event"
     tools:visibility="gone" />
 
 
