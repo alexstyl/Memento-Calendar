@@ -83,7 +83,8 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == HomeActivity.PAGE_SETTINGS || (position < HomeActivity.PAGE_SETTINGS && positionOffset >= 0.5)) {
+                if (position == HomeActivity.PAGE_SETTINGS
+                        || (position == HomeActivity.PAGE_CONTACTS && positionOffset >= 0.5)) {
                     actionButton.hide();
                 } else {
                     actionButton.show();
