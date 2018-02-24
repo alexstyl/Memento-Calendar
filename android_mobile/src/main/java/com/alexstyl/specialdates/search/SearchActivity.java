@@ -175,7 +175,6 @@ public class SearchActivity extends ThemedMementoActivity {
     protected void onResume() {
         super.onResume();
         searchbar.requestFocus();
-        AndroidUtils.toggleKeyboard(this);
     }
 
     @Override
