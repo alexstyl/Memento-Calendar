@@ -70,7 +70,6 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         overridePendingTransition(R.anim.slide_in_from_below, R.anim.stay);
         setContentView(R.layout.activity_add_event);
 

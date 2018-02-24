@@ -45,9 +45,8 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
     }
 
     void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows) {
-        final UpcomingEventsDiffCallback diffCallback = new UpcomingEventsDiffCallback(viewModels, upcomingEventRows);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
+        UpcomingEventsDiffCallback diffCallback = new UpcomingEventsDiffCallback(viewModels, upcomingEventRows);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
         this.viewModels.clear();
         this.viewModels.addAll(upcomingEventRows);
         diffResult.dispatchUpdatesTo(this);

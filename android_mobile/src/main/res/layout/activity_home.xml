@@ -1,14 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
   <FrameLayout
     android:id="@+id/home_toolbar_holder"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_semi_expanded_height"
+    android:layout_height="62dp"
     android:background="?attr/colorPrimary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
       android:id="@+id/home_toolbar"
@@ -22,9 +26,9 @@
   <LinearLayout
     android:id="@+id/home_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@id/home_toolbar_holder"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@+id/home_toolbar_holder">
 
     <android.support.design.widget.TabLayout
       android:id="@+id/home_tabs"
@@ -33,23 +37,26 @@
       android:background="?attr/colorPrimary"
       android:elevation="@dimen/toolbar_elevation"
       app:tabMinWidth="52dp"
-      app:tabMode="fixed" />
+      app:tabMode="fixed"
+      tools:layout_height="48dp" />
 
 
     <android.support.v4.view.ViewPager
       android:id="@+id/home_viewpager"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
-
   </LinearLayout>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/home_add_event"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentEnd="true"
     android:layout_margin="16dp"
-    android:src="@drawable/ic_add_person_24px" />
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginRight="8dp"
+    android:src="@drawable/ic_add_person_24px"
+    app:layout_constraintBottom_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
