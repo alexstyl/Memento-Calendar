@@ -1,3 +1,3 @@
 package com.alexstyl.specialdates.people
 
-class FacebookImportViewModel(val label: String) : PeopleRowViewModel
+data class FacebookImportViewModel(val label: String) : PeopleRowViewModel

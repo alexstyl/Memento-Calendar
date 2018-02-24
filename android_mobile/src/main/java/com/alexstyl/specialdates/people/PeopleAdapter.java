@@ -82,7 +82,6 @@ class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.people.clear();
         this.people.addAll(viewModels);
         diffResult.dispatchUpdatesTo(this);
-        notifyDataSetChanged();
     }
 
     @Override
