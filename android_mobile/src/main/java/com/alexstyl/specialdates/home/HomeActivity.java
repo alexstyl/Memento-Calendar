@@ -40,6 +40,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Inject HomeNavigator navigator;
     @Inject Analytics analytics;
     @Inject DailyReminderNotifier dailyReminderNotifier;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         toolbar.setOnClickListener(onToolbarClickListener);
         setSupportActionBar(toolbar);
 
-        final ViewPager viewPager = findViewById(R.id.home_viewpager);
+        viewPager = findViewById(R.id.home_viewpager);
         final HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());
@@ -127,6 +128,15 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             onSearchRequested();
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == HomeActivity.PAGE_EVENTS) {
+            super.onBackPressed();
+        } else {
+            viewPager.setCurrentItem(HomeActivity.PAGE_EVENTS);
+        }
+    }
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, HomeActivity.class);
