@@ -8,15 +8,14 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.transition.FadeInTransition;
 import com.alexstyl.specialdates.transition.FadeOutTransition;
 import com.alexstyl.specialdates.transition.SimpleTransitionListener;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
-import com.alexstyl.android.Version;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;

@@ -21,6 +21,7 @@ import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
+import com.google.android.gms.ads.MobileAds;
 import com.novoda.notils.meta.AndroidUtils;
 
 import javax.inject.Inject;
@@ -46,6 +47,8 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        MobileAds.initialize(this, getString(R.string.admob_unit_id));
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
@@ -93,6 +96,13 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             }
         });
 
+        DonationBannerView banner = findViewById(R.id.home_ad_banner);
+        banner.setOnCloseBannerListener(new OnCloseBannerListener() {
+            @Override
+            public void onCloseButtonPressed() {
+                navigator.toDonate(HomeActivity.this);
+            }
+        });
         if (ACTION_UPDATE_THEME.equals(getIntent().getAction())) {
             viewPager.setCurrentItem(HomeActivity.PAGE_SETTINGS);
         }
@@ -101,6 +111,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Override
     protected void onResume() {
         super.onResume();
+        actionButton.show();
         searchTransitioner.onActivityResumed();
     }
 
@@ -111,6 +122,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
 
     @Override
     public boolean onSearchRequested() {
+        actionButton.hide();
         searchTransitioner.transitionToSearch();
         return true;
     }

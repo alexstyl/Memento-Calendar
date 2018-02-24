@@ -8,7 +8,7 @@ ext {
     // Libraries
     androidBuildToolsVersion = '27.0.3'
     android_support_version = '27.0.2'
-    play_services_version = '10.0.1'
+    play_services_version = '11.8.0'
 
     // Code Quality
     checkstyleVersion = '8.0'
