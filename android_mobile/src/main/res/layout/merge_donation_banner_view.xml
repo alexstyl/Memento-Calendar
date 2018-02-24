@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:ads="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:layout_height="wrap_content"
+  tools:layout_width="match_parent"
+  tools:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout">
+
+  <com.google.android.gms.ads.AdView
+    android:id="@+id/banner_ad"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    ads:adSize="BANNER"
+    ads:adUnitId="@string/admob_unit_id" />
+  
+  <ImageButton
+    android:id="@+id/banner_close"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginLeft="8dp"
+    android:background="?android:selectableItemBackground"
+    android:minHeight="56dp"
+    android:src="@drawable/ic_close_black" />
+</merge>

@@ -229,4 +229,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="person_show">Show</string>
   <string name="person_hide">Hide</string>
   <string name="Welcome">Welcome</string>
+  <string name="donate_hint">"Want to support Memento's development?"</string>
 </resources>

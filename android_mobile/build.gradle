@@ -104,7 +104,7 @@ dependencies {
     }
     compile "com.google.android.gms:play-services-wearable:$play_services_version"
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
-    compile "com.google.firebase:firebase-core:$play_services_version"
+    compile "com.google.firebase:firebase-core:$play_services_version"              
     compile "com.google.firebase:firebase-ads:$play_services_version"
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
