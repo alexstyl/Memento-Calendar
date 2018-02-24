@@ -5,10 +5,7 @@ import org.joda.time.IllegalFieldValueException
 import org.joda.time.LocalDate
 import java.util.*
 
-/**
- * A specific date on a specific year
- */
-data class Date private constructor(private val localDate: LocalDate, private val year: Optional<Int>) : Comparable<Date> {
+data class Date(private val localDate: LocalDate, private val year: Optional<Int>) : Comparable<Date> {
 
     fun addDay(i: Int): Date {
         val addedDate = localDate.plusDays(i)
