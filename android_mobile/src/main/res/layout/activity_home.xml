@@ -27,12 +27,8 @@
     android:id="@+id/home_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="#000"
     android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@+id/home_toolbar_holder"
-    app:layout_constraintBottom_toTopOf="@+id/home_ad_banner"
-
-    >
+    app:layout_constraintTop_toBottomOf="@+id/home_toolbar_holder">
 
     <android.support.design.widget.TabLayout
       android:id="@+id/home_tabs"
@@ -54,6 +50,9 @@
     android:id="@+id/home_ad_banner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:visibility="gone"
+    app:elevation="4dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
 
