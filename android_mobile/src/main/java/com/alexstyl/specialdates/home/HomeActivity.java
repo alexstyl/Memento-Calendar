@@ -17,6 +17,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
@@ -41,7 +42,9 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Inject HomeNavigator navigator;
     @Inject Analytics analytics;
     @Inject DailyReminderNotifier dailyReminderNotifier;
+    @Inject DonationPreferences donationPreferences;
     private ViewPager viewPager;
+    private DonationBannerView banner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +99,14 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             }
         });
 
-        DonationBannerView banner = findViewById(R.id.home_ad_banner);
+        banner = findViewById(R.id.home_ad_banner);
         banner.setOnCloseBannerListener(new OnCloseBannerListener() {
             @Override
             public void onCloseButtonPressed() {
                 navigator.toDonate(HomeActivity.this);
             }
         });
+
         if (ACTION_UPDATE_THEME.equals(getIntent().getAction())) {
             viewPager.setCurrentItem(HomeActivity.PAGE_SETTINGS);
         }
@@ -113,6 +117,16 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         super.onResume();
         actionButton.show();
         searchTransitioner.onActivityResumed();
+
+        banner.setVisibility(bannerVisibility());
+    }
+
+    private int bannerVisibility() {
+//        if (donationPreferences.hasDonated()) {
+//            return View.GONE;
+//        } else {
+            return View.VISIBLE;
+//        }
     }
 
     @Override

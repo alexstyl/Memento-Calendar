@@ -2,19 +2,24 @@ package com.alexstyl.specialdates.home
 
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.widget.LinearLayoutCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
+import com.alexstyl.specialdates.BuildConfig
 import com.alexstyl.specialdates.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 
-class DonationBannerView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
+class DonationBannerView(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(context, attrs) {
 
     private var closeView: View? = null
     private var listener: OnCloseBannerListener? = null
+
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -26,19 +31,33 @@ class DonationBannerView(context: Context, attrs: AttributeSet?) : LinearLayout(
 
         val adView = findViewById<AdView>(R.id.banner_ad)
 
-
         adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(p0: Int) {
-                println("Couldn't load stuff")
+                showAsCallToAction()
             }
         }
 
-        adView.loadAd(AdRequest.Builder()
-                .addTestDevice("544D83E87B224A20DDBE6B1FE2710E74")
-                .build())
+        adView.loadAd(adRequest())
 
         closeView = findViewById(R.id.banner_close)
-        closeView!!.setOnClickListener { listener!!.onCloseButtonPressed() }
+        closeView!!.setOnClickListener { listener?.onCloseButtonPressed() }
+    }
+
+    private fun showAsCallToAction() {
+        val supportButton = findViewById<Button>(R.id.banner_support_holder)
+        supportButton.visibility = View.VISIBLE
+        supportButton.setOnClickListener { listener?.onCloseButtonPressed() }
+
+        findViewById<ViewGroup>(R.id.banner_ad_holder).visibility = View.GONE
+
+    }
+
+    private fun adRequest(): AdRequest {
+        val builder = AdRequest.Builder()
+        if (BuildConfig.DEBUG) {
+            builder.addTestDevice("544D83E87B224A20DDBE6B1FE2710E74")
+        }
+        return builder.build()
     }
 
     fun setOnCloseBannerListener(listener: OnCloseBannerListener) {
