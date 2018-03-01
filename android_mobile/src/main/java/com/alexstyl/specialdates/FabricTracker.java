@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.crashlytics.android.Crashlytics;
@@ -21,7 +22,7 @@ public final class FabricTracker implements CrashAndErrorTracker {
 
     private final Context context;
 
-    public FabricTracker(Context context) {
+    FabricTracker(Context context) {
         this.context = context;
     }
 
@@ -40,7 +41,7 @@ public final class FabricTracker implements CrashAndErrorTracker {
     }
 
     @Override
-    public void track(Exception e) {
+    public void track(@NonNull Throwable e) {
         if (hasBeenInitialised) {
             Crashlytics.logException(e);
         }

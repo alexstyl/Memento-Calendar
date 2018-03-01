@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.people;
 
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
@@ -18,10 +19,13 @@ public class PeopleModule {
     }
 
     @Provides
-    PeoplePresenter presenter(PeopleEventsProvider peopleEventsProvider, PeopleViewModelFactory viewModelFactory) {
+    PeoplePresenter presenter(PeopleEventsProvider peopleEventsProvider,
+                              PeopleViewModelFactory viewModelFactory,
+                              CrashAndErrorTracker errorTracker) {
         return new PeoplePresenter(
                 peopleEventsProvider,
                 viewModelFactory,
+                errorTracker,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );

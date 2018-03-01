@@ -72,14 +72,14 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         presenter.startPresentingInto(this);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         presenter.stopPresenting();
     }
 
