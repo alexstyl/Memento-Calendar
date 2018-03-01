@@ -3,12 +3,12 @@ package com.alexstyl.specialdates.events.peopleevents
 import com.alexstyl.specialdates.date.ContactEvent
 
 class PeopleEventsStaticEventsRefresher(
-        private val repository: AndroidEventsRepository,
-        private val persister: AndroidPeopleEventsPersister) {
+        private val repositoryPeople: PeopleEventsRepository,
+        private val persister: PeopleEventsPersister) {
 
     fun rebuildEvents() {
         persister.deleteAllDeviceEvents()
-        val contacts = repository.fetchPeopleWithEvents()
+        val contacts = repositoryPeople.fetchPeopleWithEvents()
         storeContactsToProvider(contacts)
     }
 

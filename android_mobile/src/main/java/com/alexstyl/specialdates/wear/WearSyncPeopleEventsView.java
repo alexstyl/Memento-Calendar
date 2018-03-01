@@ -18,7 +18,7 @@ public class WearSyncPeopleEventsView implements PeopleEventsView {
 
     @TargetApi(Build.VERSION_CODES.O)
     @Override
-    public void onEventsUpdated() {
+    public void refreshEventsView() {
         Intent service = new Intent(context, WearSyncService.class);
         if (Version.hasOreo()) {
             context.startForegroundService(service);

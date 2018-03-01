@@ -6,11 +6,11 @@ class PeopleEventsViewRefresher(private val views: MutableSet<PeopleEventsView>)
 
     fun refreshViews() {
         for (view in views) {
-            view.onEventsUpdated()
+            view.refreshEventsView()
         }
     }
 
-    fun addView(view: PeopleEventsView) {
+    fun addEventsView(view: PeopleEventsView) {
         this.views.add(view)
     }
 

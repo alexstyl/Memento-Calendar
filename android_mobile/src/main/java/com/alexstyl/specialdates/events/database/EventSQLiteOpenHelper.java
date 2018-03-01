@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
+import com.alexstyl.specialdates.events.peopleevents.AndroidUpcomingEventSettings;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
@@ -16,11 +16,11 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "events.db";
     private static final int DATABASE_VERSION = 5;
 
-    private final EventPreferences eventPreferences;
+    private final AndroidUpcomingEventSettings androidUpcomingEventSettings;
 
     public EventSQLiteOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        eventPreferences = new EventPreferences(context);
+        androidUpcomingEventSettings = new AndroidUpcomingEventSettings(context);
     }
 
     private static final String SQL_CREATE_ANNUAL_EVENTS =
@@ -41,7 +41,7 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS dynamic_events;");
         db.execSQL("DROP TABLE IF EXISTS annual_events;");
         // TODO keep facebook contacts
-        eventPreferences.reset();
+        androidUpcomingEventSettings.reset();
         onCreate(db);
     }
 

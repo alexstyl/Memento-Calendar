@@ -20,6 +20,8 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
+import com.alexstyl.specialdates.events.peopleevents.AndroidUpcomingEventSettings;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -35,7 +37,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView {
+public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView, PeopleEventsView {
 
     private ViewGroup root;
     private ProgressBar progressBar;
@@ -53,14 +55,9 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject PeopleEventsViewRefresher refresher;
     @Inject PeopleEventsMonitor eventsMonitor;
     @Inject MementoPermissions permissionsChecker;
+    @Inject AndroidUpcomingEventSettings androidUpcomingEventSettings;
     @Inject CrashAndErrorTracker tracker;
-
-    private final PeopleEventsView listener = new PeopleEventsView() {
-        @Override
-        public void onEventsUpdated() {
-            presenter.refreshEvents();
-        }
-    };
+    @Inject PeopleEventsUpdater peopleEventsUpdater;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,10 +71,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
                 Date.Companion.today(),
                 permissionsChecker,
                 provider,
+                androidUpcomingEventSettings,
+                peopleEventsUpdater,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
-        refresher.addView(listener);
+        refresher.addEventsView(this);
     }
 
     @Override
@@ -163,6 +162,11 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        refresher.removeView(listener);
+        refresher.removeView(this);
+    }
+
+    @Override
+    public void refreshEventsView() {
+        presenter.refreshEvents();
     }
 }

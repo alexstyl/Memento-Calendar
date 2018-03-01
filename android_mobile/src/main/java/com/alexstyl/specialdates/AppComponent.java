@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.contact.ContactsModule;
-import com.alexstyl.specialdates.contact.EventUpdatedService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.date.DateModule;
@@ -124,9 +123,7 @@ public interface AppComponent {
     void inject(ContactPermissionActivity activity);
 
     void inject(BootCompleteReceiver receiver);
-
-    void inject(EventUpdatedService eventUpdatedService);
-
+    
     void inject(PeopleFragment peopleFragment);
 
     void inject(FacebookWebView peopleFragment);

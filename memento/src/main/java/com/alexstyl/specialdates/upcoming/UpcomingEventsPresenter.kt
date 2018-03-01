@@ -2,14 +2,19 @@ package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.permissions.MementoPermissions
-import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
+import com.alexstyl.specialdates.permissions.MementoPermissions
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
+import io.reactivex.Scheduler
+
 class UpcomingEventsPresenter(private val firstDay: Date,
                               private val permissions: MementoPermissions,
-                              private val provider: IUpcomingEventsProvider,
+                              private val provider: UpcomingEventsProvider,
+                              private val upcomingEventsSettings: UpcomingEventsSettings,
+                              private val peopleEventsUpdater: PeopleEventsUpdater,
                               private val workScheduler: Scheduler,
                               private val resultScheduler: Scheduler) {
 
@@ -29,7 +34,13 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                             }
                         }
                         .observeOn(workScheduler)
-                        .map { provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay)) }
+                        .map {
+                            if (!upcomingEventsSettings.hasBeenInitialised()) {
+                                peopleEventsUpdater.updateEvents()
+                                upcomingEventsSettings.markEventsAsInitialised()
+                            }
+                            provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
+                        }
                         .observeOn(resultScheduler)
                         .onErrorReturn { emptyList() }
                         .subscribe { upcomingRowViewModels ->
