@@ -1,9 +1,9 @@
 package com.alexstyl.specialdates.wear;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.PeopleEventsView;
@@ -16,7 +16,7 @@ public class WearSyncPeopleEventsView implements PeopleEventsView {
         this.context = context;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onEventsUpdated() {
         Intent service = new Intent(context, WearSyncService.class);

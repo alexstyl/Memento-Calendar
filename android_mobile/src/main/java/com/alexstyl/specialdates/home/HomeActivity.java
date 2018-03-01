@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.home;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +8,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.alexstyl.android.SimpleAnimatorListener;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -17,6 +21,7 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -43,6 +48,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Inject Analytics analytics;
     @Inject DailyReminderNotifier dailyReminderNotifier;
     @Inject DonationPreferences donationPreferences;
+    @Inject DonateMonitor donateMonitor;
     private ViewPager viewPager;
     private DonationBannerView banner;
 
@@ -117,16 +123,35 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         super.onResume();
         actionButton.show();
         searchTransitioner.onActivityResumed();
-
+        donateMonitor.addListener(new DonateMonitor.DonateMonitorListener() {
+            @Override
+            public void onUserDonated() {
+                Toast.makeText(HomeActivity.this, R.string.thanks_for_support, Toast.LENGTH_SHORT).show();
+                hideBanner();
+            }
+        });
         banner.setVisibility(bannerVisibility());
     }
 
+    private void hideBanner() {
+        banner
+                .animate()
+                .yBy(banner.getHeight())
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new SimpleAnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        banner.setVisibility(View.GONE);
+                    }
+                }).start();
+    }
+
     private int bannerVisibility() {
-//        if (donationPreferences.hasDonated()) {
-//            return View.GONE;
-//        } else {
+        if (donationPreferences.hasDonated()) {
+            return View.GONE;
+        } else {
             return View.VISIBLE;
-//        }
+        }
     }
 
     @Override

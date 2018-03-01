@@ -21,6 +21,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
+import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
@@ -43,6 +44,7 @@ public class DebugFragment extends MementoPreferenceFragment {
     @Inject ContactsProvider contactsProvider;
     @Inject PeopleEventsViewRefresher refresher;
     @Inject CrashAndErrorTracker tracker;
+    @Inject DonateMonitor monitor;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -119,7 +121,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_reset_donations).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugDonationPreferences.newInstance(preference.getContext()).reset();
+                DebugDonationPreferences.newInstance(preference.getContext(), monitor).reset();
                 Toast.makeText(preference.getContext(), "Donations reset. You should see ads from now on", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -154,8 +156,10 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_open_contact).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
-                        ContactsContract.Contacts.CONTENT_URI);
+                Intent contactPickerIntent = new Intent(
+                        Intent.ACTION_PICK,
+                        ContactsContract.Contacts.CONTENT_URI
+                );
                 startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
                 return true;
             }

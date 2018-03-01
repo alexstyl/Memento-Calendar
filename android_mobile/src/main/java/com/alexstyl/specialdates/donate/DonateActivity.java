@@ -47,6 +47,8 @@ public class DonateActivity extends MementoActivity {
     @Inject IabHelper iabHelper;
     @Inject DonationPreferences donationPreferences;
     @Inject CrashAndErrorTracker tracker;
+    @Inject DonateMonitor monitor;
+    @Inject DonateMonitor donateMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +72,10 @@ public class DonateActivity extends MementoActivity {
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
         if (Version.hasLollipop()) {
-            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()) );
+            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
         }
 
-        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics, tracker);
+        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics, tracker, donateMonitor);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
@@ -134,7 +136,7 @@ public class DonateActivity extends MementoActivity {
 
             @Override
             public void onDonationFinished(Donation donation) {
-                DonateMonitor.getInstance().onDonationUpdated();
+                monitor.onDonationUpdated();
 
                 Toast.makeText(DonateActivity.this, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
