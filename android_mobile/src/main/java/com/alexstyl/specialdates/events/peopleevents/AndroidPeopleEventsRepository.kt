@@ -23,7 +23,7 @@ class AndroidPeopleEventsRepository(private val contentResolver: ContentResolver
     override fun fetchPeopleWithEvents(): List<ContactEvent> {
         val cursor = contentResolver.query(CONTENT_URI, PROJECTION, SELECTION, SELECT_ARGS, SORT_ORDER)
         if (isInvalid(cursor)) {
-            return NO_EVENTS
+            return emptyList()
         }
         val events = ArrayList<ContactEvent>()
         try {
@@ -91,8 +91,6 @@ class AndroidPeopleEventsRepository(private val contentResolver: ContentResolver
 
         private val SELECT_ARGS = arrayOf(ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE)
         private val SORT_ORDER: String? = null
-
-        private val NO_EVENTS = emptyList<ContactEvent>()
 
         private fun getEventIdFrom(cursor: Cursor): Long {
             val eventIdIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Event._ID)
