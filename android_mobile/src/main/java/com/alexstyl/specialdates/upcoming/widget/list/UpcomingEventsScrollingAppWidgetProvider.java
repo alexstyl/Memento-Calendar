@@ -17,8 +17,8 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.alexstyl.specialdates.home.HomeActivity;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 
 import javax.inject.Inject;
 
@@ -26,6 +26,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     @Inject Analytics analytics;
     @Inject DateLabelCreator dateLabelCreator;
     @Inject CrashAndErrorTracker tracker;
+    @Inject MementoPermissions permissionChecker;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -50,7 +51,6 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(tracker, context);
         if (permissionChecker.canReadAndWriteContacts()) {
             showUpcomingEvents(context, appWidgetManager, appWidgetIds);
         } else {

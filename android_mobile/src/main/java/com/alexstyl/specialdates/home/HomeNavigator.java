@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
+import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.settings.MainPreferenceActivity;
@@ -115,7 +116,6 @@ public final class HomeNavigator {
         analytics.trackScreen(Screen.SEARCH);
     }
 
-
     public void toDateDetails(Date dateSelected, Activity activity) {
         Intent intent = NamedayActivity.Companion.getStartIntent(activity, dateSelected);
         activity.startActivity(intent);
@@ -140,5 +140,11 @@ public final class HomeNavigator {
         Intent intent = PersonActivity.buildIntentFor(activity, contact);
         activity.startActivity(intent);
         analytics.trackContactDetailsViewed(contact);
+    }
+
+    public void toContactPermission(Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, ContactPermissionActivity.class);
+        activity.startActivityForResult(intent, requestCode);
+        analytics.trackScreen(Screen.CONTACT_PERMISSION_REQUESTED);
     }
 }

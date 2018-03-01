@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonationPreferences;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment;
@@ -32,11 +33,14 @@ import com.novoda.notils.meta.AndroidUtils;
 
 import javax.inject.Inject;
 
+import org.jetbrains.annotations.Nullable;
+
 import static android.view.View.OnClickListener;
 import static com.novoda.notils.caster.Views.findById;
 
 public class HomeActivity extends ThemedMementoActivity implements DatePickerDialogFragment.OnDateSetListener {
 
+    private static final int CODE_PERMISSION = 150;
     public static final int PAGE_EVENTS = 0;
     public static final int PAGE_CONTACTS = 1;
     public static final int PAGE_SETTINGS = 2;
@@ -49,6 +53,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Inject DailyReminderNotifier dailyReminderNotifier;
     @Inject DonationPreferences donationPreferences;
     @Inject DonateMonitor donateMonitor;
+    @Inject MementoPermissions permissions;
     private ViewPager viewPager;
     private DonationBannerView banner;
 
@@ -121,6 +126,9 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Override
     protected void onResume() {
         super.onResume();
+        if (!permissions.canReadAndWriteContacts()) {
+            navigator.toContactPermission(this, CODE_PERMISSION);
+        }
         actionButton.show();
         searchTransitioner.onActivityResumed();
         donateMonitor.addListener(new DonateMonitor.DonateMonitorListener() {
@@ -131,6 +139,15 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             }
         });
         banner.setVisibility(bannerVisibility());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_PERMISSION && resultCode != RESULT_OK) {
+            finishAffinity();
+        }
+
     }
 
     private void hideBanner() {

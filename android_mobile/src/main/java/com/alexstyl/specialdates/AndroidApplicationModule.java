@@ -6,8 +6,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
-import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissions;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,8 +42,8 @@ class AndroidApplicationModule {
     }
 
     @Provides
-    MementoPermissionsChecker permissionChecker(CrashAndErrorTracker tracker) {
-        return new AndroidPermissionChecker(tracker, context);
+    MementoPermissions permissionChecker(CrashAndErrorTracker tracker) {
+        return new AndroidPermissions(tracker, context);
     }
 
     @Provides

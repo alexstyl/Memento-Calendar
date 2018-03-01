@@ -2,17 +2,16 @@ package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.permissions.MementoPermissionsChecker
+import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
 class UpcomingEventsPresenter(private val firstDay: Date,
-                              private val permissions: MementoPermissionsChecker,
+                              private val permissions: MementoPermissions,
                               private val provider: IUpcomingEventsProvider,
                               private val workScheduler: Scheduler,
                               private val resultScheduler: Scheduler) {
-
 
     companion object {
         private const val TRIGGER = 1
@@ -32,13 +31,14 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                         .observeOn(workScheduler)
                         .map { provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay)) }
                         .observeOn(resultScheduler)
+                        .onErrorReturn { emptyList() }
                         .subscribe { upcomingRowViewModels ->
                             view.display(upcomingRowViewModels)
                         }
         if (permissions.canReadAndWriteContacts()) {
             refreshEvents()
         } else {
-            view.askForContactPermission()
+            view.display(emptyList())
         }
     }
 

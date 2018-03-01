@@ -8,11 +8,11 @@ import com.alexstyl.specialdates.CrashAndErrorTracker;
 
 import static android.Manifest.permission.*;
 
-public class AndroidPermissionChecker implements MementoPermissionsChecker {
+public class AndroidPermissions implements MementoPermissions {
     private final CrashAndErrorTracker tracker;
     private final Context context;
 
-    public AndroidPermissionChecker(CrashAndErrorTracker tracker, Context context) {
+    public AndroidPermissions(CrashAndErrorTracker tracker, Context context) {
         this.tracker = tracker;
         this.context = context;
     }

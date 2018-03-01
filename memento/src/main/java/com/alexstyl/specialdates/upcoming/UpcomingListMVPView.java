@@ -9,6 +9,4 @@ public interface UpcomingListMVPView {
     void display(List<UpcomingRowViewModel> events);
 
     boolean isEmpty();
-
-    void askForContactPermission();
 }

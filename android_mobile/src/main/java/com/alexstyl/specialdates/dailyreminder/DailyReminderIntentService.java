@@ -24,7 +24,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
@@ -36,7 +36,7 @@ import java.util.List;
 public class DailyReminderIntentService extends IntentService {
 
     private AndroidBankHolidaysPreferences bankHolidaysPreferences;
-    private AndroidPermissionChecker checker;
+    private AndroidPermissions checker;
 
     @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayUserSettings namedayPreferences;
@@ -55,7 +55,7 @@ public class DailyReminderIntentService extends IntentService {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
         bankHolidaysPreferences = AndroidBankHolidaysPreferences.newInstance(this);
-        checker = new AndroidPermissionChecker(tracker, this);
+        checker = new AndroidPermissions(tracker, this);
     }
 
     @Override
