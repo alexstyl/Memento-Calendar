@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.AndroidDonationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationService;
+import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.Donation;
 import com.alexstyl.specialdates.donate.DonationCallbacks;
 import com.alexstyl.specialdates.donate.DonationPreferences;
@@ -42,6 +43,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Inject Strings strings;
     @Inject NamedayUserSettings namedaysPreferences;
     @Inject CrashAndErrorTracker tracker;
+    @Inject DonateMonitor donateMonitor;
 
     @Override
     public void onAttach(Activity activity) {
@@ -106,7 +108,8 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 getActivity(),
                 DonationPreferences.newInstance(getActivity()),
                 analytics,
-                tracker
+                tracker,
+                donateMonitor
         );
         donationService.setup(new DonationCallbacks() {
             @Override

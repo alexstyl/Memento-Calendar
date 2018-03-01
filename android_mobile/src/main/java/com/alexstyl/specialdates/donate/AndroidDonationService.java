@@ -18,6 +18,7 @@ public class AndroidDonationService implements DonationService {
     private final DonationPreferences donationPreferences;
     private final Analytics analytics;
     private final CrashAndErrorTracker tracker;
+    private final DonateMonitor monitor;
 
     private DonationCallbacks listener;
 
@@ -25,12 +26,14 @@ public class AndroidDonationService implements DonationService {
                                   Activity activity,
                                   DonationPreferences donationPreferences,
                                   Analytics analytics,
-                                  CrashAndErrorTracker tracker) {
+                                  CrashAndErrorTracker tracker,
+                                  DonateMonitor monitor) {
         this.iabHelper = iabHelper;
         this.activity = activity;
         this.donationPreferences = donationPreferences;
         this.analytics = analytics;
         this.tracker = tracker;
+        this.monitor = monitor;
     }
 
     @Override
@@ -86,7 +89,7 @@ public class AndroidDonationService implements DonationService {
                     if (hasDonated) {
                         Toast.makeText(activity, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
                         donationPreferences.markAsDonated();
-                        DonateMonitor.getInstance().onDonationUpdated();
+                        monitor.onDonationUpdated();
                         analytics.trackDonationRestored();
                     } else {
                         Toast.makeText(activity, R.string.donate_no_donation_found, Toast.LENGTH_SHORT).show();
