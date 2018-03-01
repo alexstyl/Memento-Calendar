@@ -1,4 +1,4 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -8,11 +8,9 @@
     android:id="@+id/home_toolbar_holder"
     android:layout_width="match_parent"
     android:layout_height="62dp"
+    android:layout_alignParentTop="true"
     android:background="?attr/colorPrimary"
-    android:orientation="vertical"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:orientation="vertical">
 
     <com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
       android:id="@+id/home_toolbar"
@@ -27,13 +25,14 @@
     android:id="@+id/home_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@+id/home_toolbar_holder">
+    android:layout_above="@+id/home_ad_banner"
+    android:layout_below="@id/home_toolbar_holder"
+    android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
       android:id="@+id/home_tabs"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:background="?attr/colorPrimary"
       android:elevation="@dimen/toolbar_elevation"
       app:tabMinWidth="52dp"
@@ -50,22 +49,23 @@
     android:id="@+id/home_ad_banner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
     android:paddingBottom="8dp"
     android:visibility="gone"
-    app:elevation="4dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
+    app:elevation="4dp" />
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/home_add_event"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_above="@id/home_ad_banner"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignWithParentIfMissing="true"
     android:layout_margin="16dp"
     android:layout_marginBottom="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
-    android:src="@drawable/ic_add_person_24px"
-    app:layout_constraintBottom_toTopOf="@+id/home_ad_banner"
-    app:layout_constraintEnd_toEndOf="parent" />
+    android:src="@drawable/ic_add_person_24px" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
