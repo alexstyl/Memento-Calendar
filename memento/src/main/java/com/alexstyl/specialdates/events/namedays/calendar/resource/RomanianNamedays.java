@@ -23,7 +23,7 @@ public class RomanianNamedays {
         return new RomanianNamedays(calculator, names);
     }
 
-    public RomanianNamedays(RomanianEasterSpecialCalculator calculator, List<String> names) {
+    private RomanianNamedays(RomanianEasterSpecialCalculator calculator, List<String> names) {
         this.calculator = calculator;
         this.names = names;
     }

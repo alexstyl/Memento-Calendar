@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
-import com.alexstyl.specialdates.events.peopleevents.AndroidUpcomingEventSettings;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 
 public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
 
@@ -16,11 +16,11 @@ public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "events.db";
     private static final int DATABASE_VERSION = 5;
 
-    private final AndroidUpcomingEventSettings androidUpcomingEventSettings;
+    private final UpcomingEventsSettings androidUpcomingEventSettings;
 
-    public EventSQLiteOpenHelper(Context context) {
+    public EventSQLiteOpenHelper(Context context, UpcomingEventsSettings eventsSettings) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        androidUpcomingEventSettings = new AndroidUpcomingEventSettings(context);
+        this.androidUpcomingEventSettings = eventsSettings;
     }
 
     private static final String SQL_CREATE_ANNUAL_EVENTS =

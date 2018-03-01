@@ -12,17 +12,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.PeopleEventsView;
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.PeopleEventsMonitor;
-import com.alexstyl.specialdates.events.peopleevents.AndroidUpcomingEventSettings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
@@ -49,14 +46,11 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private AskForSupport askForSupport;
 
     @Inject HomeNavigator navigator;
-    @Inject Analytics analytics;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
     @Inject PeopleEventsViewRefresher refresher;
-    @Inject PeopleEventsMonitor eventsMonitor;
     @Inject MementoPermissions permissionsChecker;
-    @Inject AndroidUpcomingEventSettings androidUpcomingEventSettings;
-    @Inject CrashAndErrorTracker tracker;
+    @Inject UpcomingEventsSettings androidUpcomingEventSettings;
     @Inject PeopleEventsUpdater peopleEventsUpdater;
 
     @Override
