@@ -116,6 +116,7 @@ public class DonateActivity extends MementoActivity {
             }
         });
         AndroidDonation[] values = AndroidDonation.values();
+        donateBar.setProgress(1);
         donateBar.setMax(values.length - 1);
     }
 
