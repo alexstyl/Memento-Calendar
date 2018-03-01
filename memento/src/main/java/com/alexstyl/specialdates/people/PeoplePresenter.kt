@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.people
 
+import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import io.reactivex.Observable
@@ -9,6 +10,7 @@ import io.reactivex.disposables.Disposable
 class PeoplePresenter(
         private val peopleEventsProvider: PeopleEventsProvider,
         private val viewModelFactory: PeopleViewModelFactory,
+        private val errorTracker: CrashAndErrorTracker,
         private val workScheduler: Scheduler,
         private val resultScheduler: Scheduler) {
 
@@ -45,6 +47,10 @@ class PeoplePresenter(
                         }
                         .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)
+                        .onErrorReturn { error ->
+                            errorTracker.track(error)
+                            arrayListOf()
+                        }
                         .subscribe { viewModels ->
                             view.displayPeople(viewModels)
                         }

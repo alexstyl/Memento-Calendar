@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayLocale
 interface CrashAndErrorTracker {
     fun startTracking()
 
-    fun track(e: Exception)
+    fun track(e: Throwable)
 
     fun onNamedayLocaleChanged(locale: NamedayLocale)
 
