@@ -8,11 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.alexstyl.specialdates.CrashAndErrorTracker;
-import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
 import com.alexstyl.specialdates.contact.ContactsProvider;
@@ -20,19 +20,19 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.home.HomeActivity;
+import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.util.NaturalLanguageUtils;
 
 import javax.inject.Inject;
 
 public class TodayAppWidgetProvider extends AppWidgetProvider {
 
-    private AndroidPermissionChecker permissionChecker;
     private UpcomingWidgetPreferences preferences;
     private WidgetImageLoader widgetImageLoader;
+    @Inject MementoPermissions permissionChecker;
     @Inject Analytics analytics;
     @Inject Strings strings;
     @Inject ImageLoader imageLoader;
@@ -48,7 +48,6 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
         applicationModule.inject(this);
         widgetImageLoader = new WidgetImageLoader(AppWidgetManager.getInstance(context), imageLoader);
         preferences = new UpcomingWidgetPreferences(context);
-        permissionChecker = new AndroidPermissionChecker(tracker, context);
         super.onReceive(context, intent);
     }
 

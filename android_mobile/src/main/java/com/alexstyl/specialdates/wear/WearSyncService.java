@@ -19,14 +19,13 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class WearSyncService extends IntentService {
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
+    @Inject MementoPermissions permissions;
 
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
@@ -65,8 +65,7 @@ public class WearSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        AndroidPermissionChecker permissionChecker = new AndroidPermissionChecker(tracker, this);
-        if (!permissionChecker.canReadAndWriteContacts()) {
+        if (!permissions.canReadAndWriteContacts()) {
             return;
         }
         Optional<ContactEventsOnADate> eventsOptional = fetchContactEvents();

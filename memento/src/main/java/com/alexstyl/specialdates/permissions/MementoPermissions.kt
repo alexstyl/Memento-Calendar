@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.permissions
 
 
-interface MementoPermissionsChecker {
+interface MementoPermissions {
     fun canReadAndWriteContacts(): Boolean
     fun canReadExternalStorage(): Boolean
 }

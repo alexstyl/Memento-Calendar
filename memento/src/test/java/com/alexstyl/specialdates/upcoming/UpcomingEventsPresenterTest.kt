@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.permissions.MementoPermissionsChecker
+import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +19,7 @@ class UpcomingEventsPresenterTest {
     private val STARTING_DATE = Date.on(1, Months.APRIL, 2017)
 
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
-    private val mockPermissions = Mockito.mock(MementoPermissionsChecker::class.java)
+    private val mockPermissions = Mockito.mock(MementoPermissions::class.java)
     private val mockProvider = Mockito.mock(IUpcomingEventsProvider::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
@@ -33,12 +33,12 @@ class UpcomingEventsPresenterTest {
     }
 
     @Test
-    fun whenStartPresentingWithoutPermission_askForPermission() {
+    fun whenStartPresentingWithoutPermission_returnsNoEvents() {
         Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(false)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
-        Mockito.verify(mockView).askForContactPermission()
+        Mockito.verify(mockView).display(emptyList())
     }
 
     @Test

@@ -38,7 +38,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
+import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
@@ -57,7 +57,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     private static final int CODE_PERMISSION_EXTERNAL_STORAGE = 406;
 
     private AddContactEventsPresenter presenter;
-    private AndroidPermissionChecker permissionChecker;
+    private AndroidPermissions permissionChecker;
     private FilePathProvider filePathProvider;
     @Inject Analytics analytics;
     @Inject Strings strings;
@@ -117,7 +117,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
                 messageDisplayer,
                 operationsExecutor
         );
-        permissionChecker = new AndroidPermissionChecker(tracker, this);
+        permissionChecker = new AndroidPermissions(tracker, this);
         presenter.startPresenting(
                 new OnCameraClickedListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)

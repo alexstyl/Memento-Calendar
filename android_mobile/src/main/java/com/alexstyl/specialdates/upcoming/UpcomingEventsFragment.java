@@ -1,7 +1,5 @@
 package com.alexstyl.specialdates.upcoming;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.transition.TransitionManager;
@@ -22,15 +20,10 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.PeopleEventsMonitor;
-import com.alexstyl.specialdates.events.peopleevents.EventPreferences;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.ContactPermissionRequest;
-import com.alexstyl.specialdates.permissions.ContactPermissionRequest.PermissionCallbacks;
-import com.alexstyl.specialdates.permissions.AndroidPermissionChecker;
-import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
-import com.alexstyl.specialdates.permissions.PermissionNavigator;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
@@ -51,7 +44,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
 
     private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
-    private ContactPermissionRequest permissions;
     private AskForSupport askForSupport;
 
     @Inject HomeNavigator navigator;
@@ -60,8 +52,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject UpcomingEventsProvider provider;
     @Inject PeopleEventsViewRefresher refresher;
     @Inject PeopleEventsMonitor eventsMonitor;
-    @Inject EventPreferences eventPreferences;
-    @Inject MementoPermissionsChecker permissionsChecker;
+    @Inject MementoPermissions permissionsChecker;
     @Inject CrashAndErrorTracker tracker;
 
     private final PeopleEventsView listener = new PeopleEventsView() {
@@ -79,12 +70,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         applicationModule.inject(this);
 
         askForSupport = new AskForSupport(getActivity());
-
-        permissions = new ContactPermissionRequest(
-                new PermissionNavigator(getActivity(), analytics),
-                new AndroidPermissionChecker(tracker, getActivity()), permissionCallbacks
-        );
-
         presenter = new UpcomingEventsPresenter(
                 Date.Companion.today(),
                 permissionsChecker,
@@ -170,11 +155,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void askForContactPermission() {
-        permissions.requestForPermission();
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         presenter.stopPresenting();
@@ -185,26 +165,4 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         super.onDestroy();
         refresher.removeView(listener);
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        permissions.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private final PermissionCallbacks permissionCallbacks = new PermissionCallbacks() {
-        @Override
-        public void onPermissionGranted() {
-            eventsMonitor.updateEvents();
-            eventPreferences.markEventsAsInitialised();
-        }
-
-        @Override
-        public void onPermissionDenied() {
-            Activity activity = getActivity();
-            if (activity != null) {
-                activity.finishAffinity();
-            }
-        }
-    };
 }

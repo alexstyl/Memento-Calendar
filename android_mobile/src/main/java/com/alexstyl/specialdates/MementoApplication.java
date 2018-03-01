@@ -18,7 +18,7 @@ import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
-import com.alexstyl.specialdates.permissions.MementoPermissionsChecker;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -33,7 +33,7 @@ public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject MementoPermissionsChecker contactPermissions;
+    @Inject MementoPermissions contactPermissions;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookSettings;
 

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 class SystemLogTracker implements CrashAndErrorTracker {
 
     @Override
-    public void track(@NotNull Exception e) {
+    public void track(@NotNull Throwable e) {
         e.printStackTrace();
     }
 

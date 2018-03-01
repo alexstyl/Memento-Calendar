@@ -29,6 +29,7 @@ import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
 import com.alexstyl.specialdates.search.SearchActivity;
+import com.alexstyl.specialdates.search.SearchModule;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
@@ -62,6 +63,7 @@ import dagger.Component;
         NamedaysInADayModule.class,
         DailyReminderModule.class,
         DonateModule.class,
+        SearchModule.class,
         PeopleEventsModule.class,
         FacebookModule.class,
         PeopleModule.class
@@ -110,7 +112,7 @@ public interface AppComponent {
     void inject(WearSyncService service);
 
     void inject(ColorImageView view);
-    
+
     void inject(UpcomingWidgetConfigureActivity activity);
 
     void inject(WidgetRouterActivity widgetRouterActivity);
