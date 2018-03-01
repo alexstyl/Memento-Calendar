@@ -1,5 +1,5 @@
 package com.alexstyl.specialdates
 
 interface PeopleEventsView {
-    fun onEventsUpdated()
+    fun refreshEventsView()
 }

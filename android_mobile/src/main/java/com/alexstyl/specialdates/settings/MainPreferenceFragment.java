@@ -102,7 +102,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 }
         );
 
-        final Preference restore = findPreference("key_donate_restore");
+        final Preference restorePreference = findPreference("key_donate_restore");
         donationService = new AndroidDonationService(
                 new IabHelper(getActivity(), AndroidDonationConstants.PUBLIC_KEY),
                 getActivity(),
@@ -114,7 +114,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
         donationService.setup(new DonationCallbacks() {
             @Override
             public void onDonateException(String message) {
-                getPreferenceScreen().removePreference(restore);
+                getPreferenceScreen().removePreference(restorePreference);
             }
 
             @Override
@@ -122,7 +122,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 // do nothing
             }
         });
-        restore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        restorePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 donationService.restoreDonations();

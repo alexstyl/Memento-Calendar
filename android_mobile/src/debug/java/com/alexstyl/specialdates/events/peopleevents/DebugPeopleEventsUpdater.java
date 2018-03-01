@@ -22,7 +22,7 @@ public final class DebugPeopleEventsUpdater {
                                                        NamedayUserSettings namedayUserSettings,
                                                        ContactsProvider contactsProvider,
                                                        CrashAndErrorTracker tracker) {
-        AndroidEventsRepository repository = new AndroidEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE, tracker);
+        AndroidPeopleEventsRepository repository = new AndroidPeopleEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE, tracker);
         AndroidPeopleEventsPersister databaseProvider = new AndroidPeopleEventsPersister(
                 new EventSQLiteOpenHelper(context),
                 new ContactEventsMarshaller(),

@@ -76,9 +76,9 @@ public class PeopleEventsModule {
             ContentResolver contentResolver,
             ContactsProvider contactsProvider,
             CrashAndErrorTracker tracker) {
-        AndroidEventsRepository repository = new AndroidEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE, tracker);
+        PeopleEventsRepository repository = new AndroidPeopleEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE, tracker);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
-        AndroidPeopleEventsPersister androidPeopleEventsPersister = new AndroidPeopleEventsPersister(eventSQlite, marshaller, tracker);
+        PeopleEventsPersister androidPeopleEventsPersister = new AndroidPeopleEventsPersister(eventSQlite, marshaller, tracker);
         return new PeopleEventsStaticEventsRefresher(repository, androidPeopleEventsPersister);
     }
 
@@ -110,7 +110,7 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    EventPreferences eventPreferences() {
-        return new EventPreferences(context);
+    AndroidUpcomingEventSettings eventPreferences() {
+        return new AndroidUpcomingEventSettings(context);
     }
 }

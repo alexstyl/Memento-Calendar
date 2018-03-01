@@ -14,10 +14,9 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
                              private val namedayCalendarProvider: NamedayCalendarProvider,
                              private val bankHolidaysPreferences: BankHolidaysPreferences,
                              private val bankHolidayProvider: BankHolidayProvider,
-                             private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory)
-    : IUpcomingEventsProvider {
+                             private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory) {
 
-    override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
+    fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
         val contactEvents = peopleEventsProvider.getContactEventsFor(timePeriod)
         val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
                 timePeriod,
@@ -68,8 +67,4 @@ class UpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvi
     }
 
 
-}
-
-interface IUpcomingEventsProvider { // This is temporarily until we figure out how to mock kotlin classes with Mockito
-    fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel>
 }
