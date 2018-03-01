@@ -129,16 +129,18 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         if (!permissions.canReadAndWriteContacts()) {
             navigator.toContactPermission(this, CODE_PERMISSION);
         }
-        actionButton.show();
+        if (viewPager.getCurrentItem() != PAGE_SETTINGS) {
+            actionButton.show();
+        }
         searchTransitioner.onActivityResumed();
-        donateMonitor.addListener(new DonateMonitor.DonateMonitorListener() {
-            @Override
-            public void onUserDonated() {
-                Toast.makeText(HomeActivity.this, R.string.thanks_for_support, Toast.LENGTH_SHORT).show();
-                hideBanner();
-            }
-        });
+        donateMonitor.addListener(donateMonitorListener);
         banner.setVisibility(bannerVisibility());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        donateMonitor.removeListener(donateMonitorListener);
     }
 
     @Override
@@ -209,4 +211,12 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     public static Intent getStartIntent(Context context) {
         return new Intent(context, HomeActivity.class);
     }
+
+    private DonateMonitor.DonateMonitorListener donateMonitorListener = new DonateMonitor.DonateMonitorListener() {
+        @Override
+        public void onUserDonated() {
+            Toast.makeText(HomeActivity.this, R.string.thanks_for_support, Toast.LENGTH_SHORT).show();
+            hideBanner();
+        }
+    };
 }
