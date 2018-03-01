@@ -1,15 +1,8 @@
 package com.alexstyl.specialdates.wear;
 
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 
-import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -46,21 +39,6 @@ public class WearSyncService extends IntentService {
         AppComponent applicationModule = ((MementoApplication) getApplication())
                 .getApplicationModule();
         applicationModule.inject(this);
-
-
-        if (Version.hasOreo()) {
-            initChannel();
-            Notification notification = new NotificationCompat
-                    .Builder(this, "Wear Service")
-                    .build();
-            startForeground(1, notification);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void initChannel() {
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.createNotificationChannel(new NotificationChannel("Wear Service", "derp", NotificationManager.IMPORTANCE_DEFAULT));
     }
 
     @Override

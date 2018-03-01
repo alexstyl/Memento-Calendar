@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
@@ -45,6 +46,7 @@ public class DebugFragment extends MementoPreferenceFragment {
     @Inject PeopleEventsViewRefresher refresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject DonateMonitor monitor;
+    @Inject UpcomingEventsSettings upcomingEventsSettings;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -58,7 +60,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker).refresh();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker, upcomingEventsSettings).refresh();
                 showToast("Refreshing Database");
                 return true;
             }

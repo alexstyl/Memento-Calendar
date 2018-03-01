@@ -18,6 +18,7 @@ import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -43,6 +44,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Inject PeopleEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookSettings;
+    @Inject UpcomingEventsSettings eventsSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
-                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
+                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this, eventsSettings), marshaller, tracker));
         navigator = new ExternalNavigator(this, analytics, tracker);
 
         FacebookLogoutService service = new FacebookLogoutService(

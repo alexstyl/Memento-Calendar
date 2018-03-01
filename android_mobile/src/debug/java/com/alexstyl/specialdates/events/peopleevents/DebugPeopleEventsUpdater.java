@@ -21,10 +21,10 @@ public final class DebugPeopleEventsUpdater {
     public static DebugPeopleEventsUpdater newInstance(Context context,
                                                        NamedayUserSettings namedayUserSettings,
                                                        ContactsProvider contactsProvider,
-                                                       CrashAndErrorTracker tracker) {
+                                                       CrashAndErrorTracker tracker, UpcomingEventsSettings androidUpcomingEventSettings) {
         AndroidPeopleEventsRepository repository = new AndroidPeopleEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE, tracker);
         AndroidPeopleEventsPersister databaseProvider = new AndroidPeopleEventsPersister(
-                new EventSQLiteOpenHelper(context),
+                new EventSQLiteOpenHelper(context, androidUpcomingEventSettings),
                 new ContactEventsMarshaller(),
                 tracker
         );

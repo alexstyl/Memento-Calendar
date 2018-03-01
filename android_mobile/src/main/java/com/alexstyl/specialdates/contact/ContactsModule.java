@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
@@ -24,10 +25,10 @@ public class ContactsModule {
 
     @Provides
     @Singleton
-    ContactsProvider provider(Context context, CrashAndErrorTracker tracker) {
+    ContactsProvider provider(Context context, CrashAndErrorTracker tracker, UpcomingEventsSettings upcomingEventsSettings) {
         Map<Integer, ContactsProviderSource> sources = new HashMap<>();
         sources.put(SOURCE_DEVICE, buildAndroidSource(context, tracker));
-        sources.put(SOURCE_FACEBOOK, buildFacebookSource(context));
+        sources.put(SOURCE_FACEBOOK, buildFacebookSource(context, upcomingEventsSettings));
 
 //        sources.put(SOURCE_DEVICE, noContacts(SOURCE_DEVICE));
 //        sources.put(SOURCE_FACEBOOK, noContacts(SOURCE_FACEBOOK));
@@ -46,8 +47,8 @@ public class ContactsModule {
         return new AndroidContactsProviderSource(contactCache, factory);
     }
 
-    private static ContactsProviderSource buildFacebookSource(Context context) {
+    private static ContactsProviderSource buildFacebookSource(Context context, UpcomingEventsSettings eventsSettings) {
         ContactCache contactCache = new ContactCache(CACHE_SIZE);
-        return new FacebookContactsSource(new EventSQLiteOpenHelper(context), contactCache);
+        return new FacebookContactsSource(new EventSQLiteOpenHelper(context, eventsSettings), contactCache);
     }
 }

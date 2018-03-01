@@ -3,6 +3,8 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -20,7 +22,9 @@ class UpcomingEventsPresenterTest {
 
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(MementoPermissions::class.java)
-    private val mockProvider = Mockito.mock(IUpcomingEventsProvider::class.java)
+    private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
+    private val peopleEventsUpdater = Mockito.mock(PeopleEventsUpdater::class.java)
+    private val upcomingEventsSettings = Mockito.mock(UpcomingEventsSettings::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 
@@ -28,7 +32,8 @@ class UpcomingEventsPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider, workScheduler, resultScheduler)
+        upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider,
+                upcomingEventsSettings, peopleEventsUpdater, workScheduler, resultScheduler)
         Mockito.`when`(mockView.isEmpty).thenReturn(true) // start each test with from scratch
     }
 

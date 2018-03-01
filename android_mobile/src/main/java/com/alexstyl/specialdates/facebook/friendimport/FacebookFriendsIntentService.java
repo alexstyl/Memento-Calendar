@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 
@@ -30,6 +31,7 @@ public class FacebookFriendsIntentService extends IntentService {
     @Inject PeopleEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookUserSettings;
+    @Inject UpcomingEventsSettings eventsSettings;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -59,7 +61,7 @@ public class FacebookFriendsIntentService extends IntentService {
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(
-                        new EventSQLiteOpenHelper(this),
+                        new EventSQLiteOpenHelper(this, eventsSettings),
                         marshaller,
                         tracker
                 )

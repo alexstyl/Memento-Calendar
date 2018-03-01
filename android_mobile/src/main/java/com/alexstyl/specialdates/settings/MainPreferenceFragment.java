@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.donate.DonationCallbacks;
 import com.alexstyl.specialdates.donate.DonationPreferences;
 import com.alexstyl.specialdates.donate.DonationService;
 import com.alexstyl.specialdates.donate.util.IabHelper;
+import com.alexstyl.specialdates.events.SettingsPresenter;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.theming.MementoTheme;
@@ -44,6 +45,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Inject NamedayUserSettings namedaysPreferences;
     @Inject CrashAndErrorTracker tracker;
     @Inject DonateMonitor donateMonitor;
+    @Inject SettingsPresenter eventPresenter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -59,14 +61,6 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
 
         addPreferencesFromResource(R.xml.preference_main);
         themingPreferences = ThemingPreferences.newInstance(getActivity());
-        Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
-        bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new OnlyGreekSupportedDialog().show(getFragmentManager(), "OnlyGreek");
-                return true;
-            }
-        });
 
         appThemePreference = findPreference(R.string.key_app_theme_id);
         appThemePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -78,17 +72,35 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
+
+        findPreference(R.string.key_enable_bank_holidays).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                eventPresenter.updateEvents();
+                return true;
+            }
+        });
+
+        Preference bankholidaysLanguage = findPreference(R.string.key_bankholidays_language);
+        bankholidaysLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new OnlyGreekSupportedDialog().show(getFragmentManager(), "OnlyGreek");
+                return true;
+            }
+        });
+
         findPreference(R.string.key_enable_namedays).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean enabled = (boolean) newValue;
                 tracker.onNamedayLocaleChanged(enabled ? getLocale() : null);
+                eventPresenter.updateEvents();
                 return true;
             }
         });
-        findPreference(R.string.key_namedays_contacts_only).setOnPreferenceChangeListener(onPreferenceChangeListener);
-        namedayLanguageListPreferences = findPreference(R.string.key_namedays_language);
 
+        namedayLanguageListPreferences = findPreference(R.string.key_namedays_language);
         namedayLanguageListPreferences.setOnNamedayLocaleChangeListener(
                 new NamedayListPreference.OnNamedayLocaleChangeListener() {
 
@@ -96,11 +108,27 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                     public boolean onNamedayChanged(NamedayLocale locale) {
                         namedaysPreferences.setSelectedLanguage(locale.getCountryCode());
                         namedayLanguageListPreferences.setSummary(strings.localeName(locale));
+                        eventPresenter.updateEvents();
                         return true;
                     }
 
                 }
         );
+        findPreference(R.string.key_namedays_contacts_only).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                namedaysPreferences.setEnabledForContactsOnly((boolean) newValue);
+                eventPresenter.updateEvents();
+                return true;
+            }
+        });
+        findPreference(R.string.key_namedays_full_name).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                eventPresenter.updateEvents();
+                return true;
+            }
+        });
 
         final Preference restorePreference = findPreference("key_donate_restore");
         donationService = new AndroidDonationService(
@@ -147,6 +175,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
+        eventPresenter.startMonitoring();
         namedayLanguageListPreferences.setSummary(strings.localeName(namedaysPreferences.getSelectedLanguage()));
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
     }
@@ -154,6 +183,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        eventPresenter.stopMonitoring();
         donationService.dispose();
     }
 
@@ -166,11 +196,4 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
         }
     };
 
-    private final Preference.OnPreferenceChangeListener onPreferenceChangeListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            namedaysPreferences.setEnabledForContactsOnly((boolean) newValue);
-            return true;
-        }
-    };
 }

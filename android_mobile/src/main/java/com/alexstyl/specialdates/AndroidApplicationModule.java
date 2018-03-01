@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 
@@ -37,8 +38,8 @@ class AndroidApplicationModule {
     }
 
     @Provides
-    SQLiteOpenHelper sqLiteOpenHelper() {
-        return new EventSQLiteOpenHelper(context);
+    SQLiteOpenHelper sqLiteOpenHelper(UpcomingEventsSettings eventsSettings) {
+        return new EventSQLiteOpenHelper(context, eventsSettings);
     }
 
     @Provides
