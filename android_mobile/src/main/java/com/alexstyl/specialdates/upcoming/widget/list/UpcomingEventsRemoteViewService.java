@@ -15,7 +15,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
 
     @Inject Colors colors;
     @Inject ImageLoader imageLoader;
-    @Inject UpcomingEventsProvider peopleEventsProvider;
+    @Inject UpcomingEventsProvider peopleUpcomingEventsProvider;
 
     @Override
     public void onCreate() {
@@ -32,7 +32,7 @@ public class UpcomingEventsRemoteViewService extends RemoteViewsService {
         );
         return new UpcomingEventsViewsFactory(
                 getPackageName(),
-                peopleEventsProvider,
+                peopleUpcomingEventsProvider,
                 this,
                 getResources(),
                 avatarFactory
