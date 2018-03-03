@@ -8,9 +8,9 @@ class NamedaysViewHolder(view: View, private val namedays: TextView)
     : UpcomingRowViewHolder<UpcomingNamedaysViewModel>(view) {
 
 
-    override fun bind(viewModelUpcoming: UpcomingNamedaysViewModel, listener: OnUpcomingEventClickedListener) {
-        namedays.text = viewModelUpcoming.namesLabel
-        itemView.setOnClickListener { listener.onNamedayClicked(viewModelUpcoming.date) }
+    override fun bind(viewModel: UpcomingNamedaysViewModel, listener: OnUpcomingEventClickedListener) {
+        namedays.text = viewModel.namesLabel
+        itemView.setOnClickListener { listener.onNamedayClicked(viewModel.date) }
     }
 
 
