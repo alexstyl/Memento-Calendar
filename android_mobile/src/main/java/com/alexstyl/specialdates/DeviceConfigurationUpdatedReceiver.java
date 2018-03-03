@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 
 import javax.inject.Inject;
 
@@ -14,7 +14,7 @@ import javax.inject.Inject;
  */
 public class DeviceConfigurationUpdatedReceiver extends BroadcastReceiver {
 
-    @Inject PeopleEventsViewRefresher viewRefresher;
+    @Inject UpcomingEventsViewRefresher viewRefresher;
     @Inject CrashAndErrorTracker tracker;
 
     @Override

@@ -66,10 +66,8 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
                 if (namedays[annualDate] != null) {
                     rowsViewModels.add(viewModelFactory.createViewModelFor(namedays[annualDate]!!))
                 }
-
-                getEventsOn(annualDate).forEach {
+                getPeopleEventsOn(annualDate).forEach {
                     rowsViewModels.add(viewModelFactory.createViewModelFor(it))
-
                 }
                 index++
             }
@@ -78,7 +76,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
         return rowsViewModels
     }
 
-    private fun getEventsOn(indexDate: AnnualDate): List<ContactEvent> {
+    private fun getPeopleEventsOn(indexDate: AnnualDate): List<ContactEvent> {
         val contactEvent = contactEvents.get(indexDate)
         if (contactEvent == null) {
             return NO_CONTACT_EVENTS
@@ -90,7 +88,7 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
     private fun noEventsArePresent(): Boolean = contactEvents.isEmpty && namedays.isEmpty() && bankHolidays.isEmpty()
 
     private fun containsAnyEventsOn(date: AnnualDate): Boolean =
-            getEventsOn(date).isNotEmpty() || namedays.containsKey(date) || bankHolidays.containsKey(date)
+            getPeopleEventsOn(date).isNotEmpty() || namedays.containsKey(date) || bankHolidays.containsKey(date)
 
     companion object {
 

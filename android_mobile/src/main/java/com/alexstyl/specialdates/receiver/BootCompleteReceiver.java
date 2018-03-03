@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 
@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 public class BootCompleteReceiver extends BroadcastReceiver {
 
-    @Inject PeopleEventsViewRefresher refresher;
+    @Inject UpcomingEventsViewRefresher refresher;
 
     @Override
     public void onReceive(Context context, Intent intent) {

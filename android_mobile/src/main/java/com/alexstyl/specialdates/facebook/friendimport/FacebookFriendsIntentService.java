@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.UserCredentials;
@@ -28,7 +28,7 @@ public class FacebookFriendsIntentService extends IntentService {
     private static final String TAG = FacebookFriendsIntentService.class.getSimpleName();
     private static final int NOTIFICATION_ID = 123;
 
-    @Inject PeopleEventsViewRefresher uiRefresher;
+    @Inject UpcomingEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookUserSettings;
     @Inject UpcomingEventsSettings eventsSettings;

@@ -28,16 +28,8 @@ public class ContactsModule {
     ContactsProvider provider(Context context, CrashAndErrorTracker tracker, UpcomingEventsSettings upcomingEventsSettings) {
         Map<Integer, ContactsProviderSource> sources = new HashMap<>();
         sources.put(SOURCE_DEVICE, buildAndroidSource(context, tracker));
-        sources.put(SOURCE_FACEBOOK, buildFacebookSource(context, upcomingEventsSettings));
-
-//        sources.put(SOURCE_DEVICE, noContacts(SOURCE_DEVICE));
-//        sources.put(SOURCE_FACEBOOK, noContacts(SOURCE_FACEBOOK));
-
+        sources.put(SOURCE_FACEBOOK, buildFacebookSource(new EventSQLiteOpenHelper(context, upcomingEventsSettings)));
         return new ContactsProvider(sources);
-    }
-
-    private ContactsProviderSource noContacts(int source) {
-        return new EmptyContactSource(source);
     }
 
     private static ContactsProviderSource buildAndroidSource(Context context, CrashAndErrorTracker tracker) {
@@ -47,8 +39,8 @@ public class ContactsModule {
         return new AndroidContactsProviderSource(contactCache, factory);
     }
 
-    private static ContactsProviderSource buildFacebookSource(Context context, UpcomingEventsSettings eventsSettings) {
+    private static ContactsProviderSource buildFacebookSource(EventSQLiteOpenHelper eventSQLHelper) {
         ContactCache contactCache = new ContactCache(CACHE_SIZE);
-        return new FacebookContactsSource(new EventSQLiteOpenHelper(context, eventsSettings), contactCache);
+        return new FacebookContactsSource(eventSQLHelper, contactCache);
     }
 }

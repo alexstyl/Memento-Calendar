@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -41,7 +41,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     private TextView userName;
     @Inject Analytics analytics;
     @Inject ImageLoader imageLoader;
-    @Inject PeopleEventsViewRefresher uiRefresher;
+    @Inject UpcomingEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookSettings;
     @Inject UpcomingEventsSettings eventsSettings;

@@ -13,9 +13,9 @@ import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingWidgetView;
-import com.alexstyl.specialdates.upcoming.widget.today.TodayPeopleEventsView;
+import com.alexstyl.specialdates.upcoming.widget.today.TodayUpcomingEventsView;
 import com.alexstyl.specialdates.util.DateParser;
-import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
+import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView;
 
 import javax.inject.Singleton;
 import java.util.Arrays;
@@ -64,10 +64,10 @@ public class PeopleEventsModule {
 
     @Provides
     @Singleton
-    PeopleEventsViewRefresher peopleEventsViewRefresher(Context appContext, AppWidgetManager appWidgetManager) {
-        return new PeopleEventsViewRefresher(new HashSet<>(Arrays.asList(
-                new WearSyncPeopleEventsView(appContext),
-                new TodayPeopleEventsView(appContext, appWidgetManager),
+    UpcomingEventsViewRefresher peopleEventsViewRefresher(Context appContext, AppWidgetManager appWidgetManager) {
+        return new UpcomingEventsViewRefresher(new HashSet<>(Arrays.asList(
+                new WearSyncUpcomingEventsView(appContext),
+                new TodayUpcomingEventsView(appContext, appWidgetManager),
                 new UpcomingEventsScrollingWidgetView(appContext, appWidgetManager)
         )));
     }
@@ -112,7 +112,7 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    SettingsPresenter peopleEventsDatabaseUpdater(PeopleEventsViewRefresher uiRefresher, PeopleEventsUpdater peopleEventsUpdater) {
+    SettingsPresenter peopleEventsDatabaseUpdater(UpcomingEventsViewRefresher uiRefresher, PeopleEventsUpdater peopleEventsUpdater) {
         return new SettingsPresenter(peopleEventsUpdater, uiRefresher, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

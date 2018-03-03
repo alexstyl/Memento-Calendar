@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.contact.Contact;
@@ -55,7 +56,7 @@ public final class AndroidPeopleEventsPersister implements PeopleEventsPersister
     }
 
     @Override
-    public void insertAnnualEvents(List<ContactEvent> events) {
+    public void insertAnnualEvents(@NonNull List<ContactEvent> events) {
         ContentValues[] contentValues = marshaller.marshall(events);
         insertEventsInTable(contentValues, AnnualEventsContract.TABLE_NAME);
     }
@@ -79,7 +80,7 @@ public final class AndroidPeopleEventsPersister implements PeopleEventsPersister
     }
 
     @Override
-    public void markContactAsVisible(Contact contact) {
+    public void markContactAsVisible(@NonNull Contact contact) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues values = new ContentValues(1);
@@ -95,7 +96,7 @@ public final class AndroidPeopleEventsPersister implements PeopleEventsPersister
     }
 
     @Override
-    public void markContactAsHidden(Contact contact) {
+    public void markContactAsHidden(@NonNull Contact contact) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues values = new ContentValues(1);
