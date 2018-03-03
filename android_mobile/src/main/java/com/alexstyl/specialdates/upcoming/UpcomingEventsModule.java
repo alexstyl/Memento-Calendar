@@ -27,7 +27,7 @@ import dagger.Provides;
 public class UpcomingEventsModule {
 
     @Provides
-    CompositeUpcomingEventsProvider providesUpcomingEventsProviderWithAds(Context context,
+    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(Context context,
                                                                  Strings strings,
                                                                  Colors colors,
                                                                  NamedayUserSettings namedayUserSettings,

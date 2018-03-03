@@ -18,8 +18,8 @@ import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.runners.MockitoJUnitRunner
 import java.util.*
 import java.util.Arrays.asList
@@ -36,7 +36,7 @@ class UpcomingRowViewModelsBuilderTest {
 
     @Before
     fun setUp() {
-        `when`(mockColors!!.getTodayHeaderTextColor()).thenReturn(5)
+        given(mockColors!!.getTodayHeaderTextColor()).willReturn(5)
         val today = Date.today()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
@@ -132,13 +132,22 @@ class UpcomingRowViewModelsBuilderTest {
                 .withBankHolidays(bankHolidays)
                 .build()
 
-        assertThat(viewModels.size).isEqualTo(7)
-        assertThat(viewModels[0]).isInstanceOf(DateHeaderViewModel::class.java)
-        assertThat(viewModels[1]).isInstanceOf(BankHolidayViewModel::class.java)
-        assertThat(viewModels[2]).isInstanceOf(UpcomingNamedaysViewModel::class.java)
-        assertThat(viewModels[3]).isInstanceOf(UpcomingContactEventViewModel::class.java)
-        assertThat(viewModels[4]).isInstanceOf(DateHeaderViewModel::class.java)
-        assertThat(viewModels[5]).isInstanceOf(UpcomingContactEventViewModel::class.java)
+        assertListContainsOrderedItems(viewModels, asList(
+                DateHeaderViewModel::class.java,
+                BankHolidayViewModel::class.java,
+                UpcomingNamedaysViewModel::class.java,
+                UpcomingContactEventViewModel::class.java,
+                DateHeaderViewModel::class.java,
+                UpcomingContactEventViewModel::class.java
+        ))
+    }
+
+    private fun assertListContainsOrderedItems(viewModels: List<UpcomingRowViewModel>,
+                                               classes: List<Class<out UpcomingRowViewModel>>) {
+        classes.forEachIndexed { index, clazz ->
+            assertThat(viewModels[index]).isInstanceOf(clazz)
+        }
+        assertThat(viewModels.size).isEqualTo(classes.size)
     }
 
     private fun namedayOf(date: Date, maria: String): List<NamesInADate> {
@@ -173,6 +182,7 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
 }
+
 
 class DateStringCreator : UpcomingDateStringCreator {
     override fun createLabelFor(date: Date): String = "Header Label"
