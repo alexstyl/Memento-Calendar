@@ -6,7 +6,6 @@ apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
-apply plugin: 'com.novoda.build-properties'
 
 detekt {
     version = "1.0.0.M13.2"
