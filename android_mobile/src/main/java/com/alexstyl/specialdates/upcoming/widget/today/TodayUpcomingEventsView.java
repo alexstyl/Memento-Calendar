@@ -5,20 +5,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.PeopleEventsView;
+import com.alexstyl.specialdates.UpcomingEventsView;
 
-public class TodayPeopleEventsView implements PeopleEventsView {
+public class TodayUpcomingEventsView implements UpcomingEventsView {
 
     private final Context context;
     private final AppWidgetManager instance;
 
-    public TodayPeopleEventsView(Context context, AppWidgetManager instance) {
+    public TodayUpcomingEventsView(Context context, AppWidgetManager instance) {
         this.context = context;
         this.instance = instance;
     }
 
     @Override
-    public void refreshEventsView() {
+    public void reloadView() {
         Intent intent = new Intent(context, TodayAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

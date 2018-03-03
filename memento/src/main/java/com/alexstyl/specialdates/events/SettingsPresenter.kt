@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events
 
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
@@ -13,7 +13,7 @@ import io.reactivex.subjects.PublishSubject
  * or external (such as a change in the device database)
  */
 class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
-                        private val uiRefresher: PeopleEventsViewRefresher,
+                        private val uiRefresher: UpcomingEventsViewRefresher,
                         private val workScheduler: Scheduler,
                         private val resultScheduler: Scheduler) {
 
@@ -36,7 +36,11 @@ class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
     fun stopMonitoring(){
         disposable?.dispose()
     }
-    fun updateEvents() {
+    fun refreshPeopleEvents() {
         subject.onNext(1)
+    }
+
+    fun updateEventOptions() {
+        uiRefresher.refreshViews()
     }
 }

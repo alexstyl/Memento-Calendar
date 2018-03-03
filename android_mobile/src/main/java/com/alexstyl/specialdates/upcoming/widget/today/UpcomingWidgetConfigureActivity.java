@@ -120,7 +120,7 @@ public class UpcomingWidgetConfigureActivity extends ThemedMementoActivity {
     private void saveConfigurations() {
         UserOptions userOptions = configurationPanel.getUserOptions();
         preferences.storeUserOptions(userOptions);
-        new TodayPeopleEventsView(this, AppWidgetManager.getInstance(this)).refreshEventsView();
+        new TodayUpcomingEventsView(this, AppWidgetManager.getInstance(this)).reloadView();
     }
 
     private void finishAsSuccess() {

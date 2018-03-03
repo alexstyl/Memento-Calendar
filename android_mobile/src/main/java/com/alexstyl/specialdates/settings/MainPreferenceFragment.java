@@ -76,7 +76,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_enable_bank_holidays).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                eventPresenter.updateEvents();
+                eventPresenter.updateEventOptions();
                 return true;
             }
         });
@@ -95,7 +95,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean enabled = (boolean) newValue;
                 tracker.onNamedayLocaleChanged(enabled ? getLocale() : null);
-                eventPresenter.updateEvents();
+                eventPresenter.refreshPeopleEvents();
                 return true;
             }
         });
@@ -108,24 +108,23 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                     public boolean onNamedayChanged(NamedayLocale locale) {
                         namedaysPreferences.setSelectedLanguage(locale.getCountryCode());
                         namedayLanguageListPreferences.setSummary(strings.localeName(locale));
-                        eventPresenter.updateEvents();
+                        eventPresenter.refreshPeopleEvents();
                         return true;
                     }
-
                 }
         );
         findPreference(R.string.key_namedays_contacts_only).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 namedaysPreferences.setEnabledForContactsOnly((boolean) newValue);
-                eventPresenter.updateEvents();
+                eventPresenter.updateEventOptions();
                 return true;
             }
         });
         findPreference(R.string.key_namedays_full_name).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                eventPresenter.updateEvents();
+                eventPresenter.refreshPeopleEvents();
                 return true;
             }
         });

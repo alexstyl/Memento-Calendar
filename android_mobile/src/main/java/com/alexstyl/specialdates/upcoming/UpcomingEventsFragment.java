@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.PeopleEventsView;
+import com.alexstyl.specialdates.UpcomingEventsView;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -34,7 +34,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView, PeopleEventsView {
+public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView, UpcomingEventsView {
 
     private ViewGroup root;
     private ProgressBar progressBar;
@@ -48,7 +48,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Inject HomeNavigator navigator;
     @Inject ImageLoader imageLoader;
     @Inject UpcomingEventsProvider provider;
-    @Inject PeopleEventsViewRefresher refresher;
+    @Inject UpcomingEventsViewRefresher refresher;
     @Inject MementoPermissions permissionsChecker;
     @Inject UpcomingEventsSettings androidUpcomingEventSettings;
     @Inject PeopleEventsUpdater peopleEventsUpdater;
@@ -160,7 +160,7 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void refreshEventsView() {
+    public void reloadView() {
         presenter.refreshEvents();
     }
 }
