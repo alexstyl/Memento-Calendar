@@ -2,17 +2,16 @@ package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
+import com.alexstyl.specialdates.permissions.MementoPermissions
+import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-import com.alexstyl.specialdates.permissions.MementoPermissions
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
-import io.reactivex.Scheduler
-
 class UpcomingEventsPresenter(private val firstDay: Date,
                               private val permissions: MementoPermissions,
-                              private val provider: UpcomingEventsProvider,
+                              private val providerUpcoming: UpcomingEventsProvider,
                               private val upcomingEventsSettings: UpcomingEventsSettings,
                               private val peopleEventsUpdater: PeopleEventsUpdater,
                               private val workScheduler: Scheduler,
@@ -39,10 +38,13 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                                 peopleEventsUpdater.updateEvents()
                                 upcomingEventsSettings.markEventsAsInitialised()
                             }
-                            provider.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
+                            providerUpcoming.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
                         }
                         .observeOn(resultScheduler)
-                        .onErrorReturn { emptyList() }
+                        .onErrorReturn {
+                            it.printStackTrace()
+                            emptyList()
+                        }
                         .subscribe { upcomingRowViewModels ->
                             view.display(upcomingRowViewModels)
                         }
