@@ -5,6 +5,7 @@ import android.content.Context;
 import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
+import com.alexstyl.specialdates.UpcomingEventsJobCreator;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.bankholidays.AndroidBankHolidaysPreferences;
@@ -14,6 +15,8 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.home.HomeNavigator;
 
@@ -49,5 +52,10 @@ public class UpcomingEventsModule {
     @Provides
     HomeNavigator navigator(Analytics analytics, Strings strings, CrashAndErrorTracker tracker, FacebookUserSettings facebookUserSettings) {
         return new HomeNavigator(analytics, strings, facebookUserSettings, tracker);
+    }
+
+    @Provides
+    UpcomingEventsJobCreator jobCreator(PeopleEventsUpdater updater, UpcomingEventsViewRefresher refresher) {
+        return new UpcomingEventsJobCreator(updater, refresher);
     }
 }
