@@ -27,14 +27,14 @@ import dagger.Provides;
 public class UpcomingEventsModule {
 
     @Provides
-    UpcomingEventsProvider providesUpcomingEventsProviderWithAds(Context context,
+    CompositeUpcomingEventsProvider providesUpcomingEventsProviderWithAds(Context context,
                                                                  Strings strings,
                                                                  Colors colors,
                                                                  NamedayUserSettings namedayUserSettings,
                                                                  NamedayCalendarProvider namedayCalendarProvider,
                                                                  PeopleEventsProvider eventsProvider) {
         Date date = Date.Companion.today();
-        return new UpcomingEventsProvider(
+        return new CompositeUpcomingEventsProvider(
                 eventsProvider,
                 namedayUserSettings,
                 namedayCalendarProvider,
