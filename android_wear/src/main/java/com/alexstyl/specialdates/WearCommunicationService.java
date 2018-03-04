@@ -24,14 +24,17 @@ class WearCommunicationService {
         result.setResultCallback(new ResultCallback<DataItemBuffer>() {
             @Override
             public void onResult(@NonNull DataItemBuffer dataItems) {
+                boolean found = false;
                 for (DataItem item : dataItems) {
                     if (uriIsUnsupported(item.getUri())) {
                         continue;
                     }
                     callback.onDataItemsLoaded(item);
-                    return;
+                    found = true;
                 }
-                callback.onNoDataItemsAvailable();
+                if (!found) {
+                    callback.onNoDataItemsAvailable();
+                }
             }
         });
     }
