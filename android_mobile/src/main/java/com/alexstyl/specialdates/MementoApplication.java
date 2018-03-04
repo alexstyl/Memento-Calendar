@@ -18,12 +18,16 @@ import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
+import com.evernote.android.job.DailyJob;
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
+import java.util.concurrent.TimeUnit;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -34,6 +38,7 @@ public class MementoApplication extends Application {
     @Inject MementoPermissions contactPermissions;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookSettings;
+    @Inject UpcomingEventsJobCreator jobCreator;
 
     @Override
     public void onCreate() {
@@ -66,7 +71,18 @@ public class MementoApplication extends Application {
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
         }
 
-        // TODO schedule refresh of events periodically
+        schedulePeopleEventJob();
+
+    }
+
+    private void schedulePeopleEventJob() {
+        JobManager.create(this).addJobCreator(jobCreator);
+        DailyJob.schedule(
+                new JobRequest.Builder("ANY_TAG"),
+                TimeUnit.HOURS.toMillis(1),
+                TimeUnit.HOURS.toMillis(3)
+        );
+
     }
 
     protected void initialiseDependencies() {

@@ -24,16 +24,15 @@ import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
-import com.alexstyl.specialdates.wear.WearSyncPeopleEventsView;
+import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView;
 
 import javax.inject.Inject;
-
 import java.util.Calendar;
 
 public class DebugFragment extends MementoPreferenceFragment {
@@ -43,7 +42,7 @@ public class DebugFragment extends MementoPreferenceFragment {
     private DailyReminderDebugPreferences dailyReminderDebugPreferences;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
-    @Inject PeopleEventsViewRefresher refresher;
+    @Inject UpcomingEventsViewRefresher refresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject DonateMonitor monitor;
     @Inject UpcomingEventsSettings upcomingEventsSettings;
@@ -116,7 +115,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new WearSyncPeopleEventsView(getActivity()).refreshEventsView();
+                new WearSyncUpcomingEventsView(getActivity()).reloadView();
                 return true;
             }
         });

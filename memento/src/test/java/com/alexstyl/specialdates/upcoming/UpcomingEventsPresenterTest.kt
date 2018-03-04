@@ -10,6 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.mockito.internal.verification.Times
 import org.mockito.runners.MockitoJUnitRunner
@@ -23,23 +24,30 @@ class UpcomingEventsPresenterTest {
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(MementoPermissions::class.java)
     private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
-    private val peopleEventsUpdater = Mockito.mock(PeopleEventsUpdater::class.java)
-    private val upcomingEventsSettings = Mockito.mock(UpcomingEventsSettings::class.java)
+    private val mockUpdater = Mockito.mock(PeopleEventsUpdater::class.java)
+    private val mockSettings = Mockito.mock(UpcomingEventsSettings::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 
     @Before
     fun setUp() {
-        val workScheduler = Schedulers.trampoline()
-        val resultScheduler = Schedulers.trampoline()
-        upcomingEventsPresenter = UpcomingEventsPresenter(STARTING_DATE, mockPermissions, mockProvider,
-                upcomingEventsSettings, peopleEventsUpdater, workScheduler, resultScheduler)
-        Mockito.`when`(mockView.isEmpty).thenReturn(true) // start each test with from scratch
+        upcomingEventsPresenter = UpcomingEventsPresenter(
+                STARTING_DATE,
+                mockPermissions,
+                mockProvider,
+                mockSettings,
+                mockUpdater,
+                Schedulers.trampoline(),
+                Schedulers.trampoline()
+        )
+        given(mockSettings.hasBeenInitialised()).willReturn(true)
+        given(mockView.isEmpty).willReturn(true) // start each test with from scratch
+        given(mockPermissions.canReadAndWriteContacts()).willReturn(true)
     }
 
     @Test
     fun whenStartPresentingWithoutPermission_returnsNoEvents() {
-        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(false)
+        given(mockPermissions.canReadAndWriteContacts()).willReturn(false)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
@@ -48,7 +56,7 @@ class UpcomingEventsPresenterTest {
 
     @Test
     fun whenStartPresentingWithPermission_showLoading() {
-        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(true)
+        given(mockPermissions.canReadAndWriteContacts()).willReturn(true)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
@@ -59,8 +67,7 @@ class UpcomingEventsPresenterTest {
     fun whenStartPresentingWithPermission_showEventsAfterDoneLoading() {
         val theDate = Date.on(1, Months.MARCH, 2017)
         val expectedEvents = arrayListOf<UpcomingRowViewModel>()
-        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).thenReturn(expectedEvents)
-        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(true)
+        given(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).willReturn(expectedEvents)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
@@ -69,20 +76,28 @@ class UpcomingEventsPresenterTest {
     }
 
     @Test
+    fun givenEventsAreNotInitialised_thenInitialiseBeforeCalculating() {
+        given(mockSettings.hasBeenInitialised()).willReturn(false)
+
+        upcomingEventsPresenter.startPresentingInto(mockView)
+
+        Mockito.verify(mockUpdater).updateEvents()
+        Mockito.verify(mockSettings).markEventsAsInitialised()
+    }
+
+    @Test
     fun givenEventsWereUpdated_whenAskedToUpdate_thenNewEventsArePushedToTheView() {
         val initialEvents = arrayListOf<UpcomingRowViewModel>()
-        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(initialEvents)
-        Mockito.`when`(mockPermissions.canReadAndWriteContacts()).thenReturn(true)
+        given(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).willReturn(initialEvents)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
         val updatedEvents = arrayListOf<UpcomingRowViewModel>(DateHeaderViewModel("February 2017", 2))
-        Mockito.`when`(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).thenReturn(updatedEvents)
+        given(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(STARTING_DATE))).willReturn(updatedEvents)
         upcomingEventsPresenter.refreshEvents()
 
         Mockito.verify(mockView, Times(1)).display(initialEvents)
         Mockito.verify(mockView, Times(1)).display(updatedEvents)
-
     }
 }
 

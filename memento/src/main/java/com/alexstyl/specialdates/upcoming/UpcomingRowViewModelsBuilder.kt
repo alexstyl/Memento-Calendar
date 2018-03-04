@@ -9,8 +9,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.util.HashMapList
 
 class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
-                                   private val viewModelFactory: UpcomingEventRowViewModelFactory
-) {
+                                   private val viewModelFactory: UpcomingEventRowViewModelFactory) {
 
     private val dateComparator = DateComparator.INSTANCE
     private val contactEvents = HashMapList<AnnualDate, ContactEvent>()

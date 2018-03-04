@@ -9,6 +9,9 @@ import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
+import com.evernote.android.job.JobManager;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -50,5 +53,11 @@ class AndroidApplicationModule {
     @Provides
     CrashAndErrorTracker tracker() {
         return new FabricTracker(context);
+    }
+
+    @Provides
+    @Singleton
+    JobManager manager(Context context) {
+        return JobManager.create(context);
     }
 }
