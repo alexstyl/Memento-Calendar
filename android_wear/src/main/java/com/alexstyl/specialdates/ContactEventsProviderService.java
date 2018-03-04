@@ -80,9 +80,7 @@ public class ContactEventsProviderService extends ComplicationProviderService {
         long date = dataMap.getLong(SharedConstants.KEY_DATE);
         ArrayList<String> namesList = dataMap.getStringArrayList(SharedConstants.KEY_CONTACTS_NAMES);
 
-        ComplicationData complicationData = createComplicationData(dataType, date, namesList);
-
-        return complicationData;
+        return createComplicationData(dataType, date, namesList);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -107,6 +105,7 @@ public class ContactEventsProviderService extends ComplicationProviderService {
                 break;
             default:
                 Log.w(TAG, "Unexpected complication type " + dataType);
+                break;
         }
         return complicationData;
     }

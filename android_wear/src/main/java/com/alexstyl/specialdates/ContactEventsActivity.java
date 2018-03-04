@@ -44,10 +44,10 @@ public class ContactEventsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_events);
 
-        dateText = (TextView) findViewById(R.id.contact_events_date_text);
-        namesText = (TextView) findViewById(R.id.contact_events_names_text);
-        emptyText = (TextView) findViewById(R.id.contact_events_empty_text);
-        eventContainer = (LinearLayout) findViewById(R.id.contact_events_event_container);
+        dateText = findViewById(R.id.contact_events_date_text);
+        namesText = findViewById(R.id.contact_events_names_text);
+        emptyText = findViewById(R.id.contact_events_empty_text);
+        eventContainer = findViewById(R.id.contact_events_event_container);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -72,10 +72,14 @@ public class ContactEventsActivity extends Activity {
     };
 
     private final GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+
+        private static final int CODE = 100;
+
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
             Log.d(TAG, "connectionFailed: " + connectionResult);
-            Dialog errorDialog = GoogleApiAvailability.getInstance().getErrorDialog(ContactEventsActivity.this, connectionResult.getErrorCode(), 100);
+            Dialog errorDialog = GoogleApiAvailability.getInstance()
+                    .getErrorDialog(ContactEventsActivity.this, connectionResult.getErrorCode(), CODE);
             errorDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
@@ -86,7 +90,7 @@ public class ContactEventsActivity extends Activity {
         }
     };
 
-    private WearCommunicationService.Callback itemsLoadedCallback = new WearCommunicationService.Callback() {
+    private final WearCommunicationService.Callback itemsLoadedCallback = new WearCommunicationService.Callback() {
         @Override
         public void onDataItemsLoaded(DataItem item) {
             displayDataItem(item);
