@@ -67,7 +67,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
-                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this, eventsSettings), marshaller, tracker));
+                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
         navigator = new ExternalNavigator(this, analytics, tracker);
 
         FacebookLogoutService service = new FacebookLogoutService(
