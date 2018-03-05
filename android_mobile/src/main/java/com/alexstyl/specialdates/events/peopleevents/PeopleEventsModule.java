@@ -41,7 +41,7 @@ public class PeopleEventsModule {
                                                           CrashAndErrorTracker tracker,
                                                           UpcomingEventsSettings androidUpcomingEventSettings) {
         return new AndroidPeopleStaticEventsProvider(
-                new EventSQLiteOpenHelper(context, androidUpcomingEventSettings),
+                new EventSQLiteOpenHelper(context),
                 contactsProvider,
                 new CustomEventProvider(context.getContentResolver()),
                 tracker
@@ -100,7 +100,7 @@ public class PeopleEventsModule {
     @Provides
     PeopleEventsPersister peopleEventsPersister(CrashAndErrorTracker tracker, UpcomingEventsSettings eventSettings) {
         return new AndroidPeopleEventsPersister(
-                new EventSQLiteOpenHelper(context, eventSettings),
+                new EventSQLiteOpenHelper(context),
                 new ContactEventsMarshaller(),
                 tracker
         );

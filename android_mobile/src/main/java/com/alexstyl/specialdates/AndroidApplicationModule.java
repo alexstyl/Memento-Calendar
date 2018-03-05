@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.evernote.android.job.JobManager;
@@ -41,8 +40,9 @@ class AndroidApplicationModule {
     }
 
     @Provides
-    SQLiteOpenHelper sqLiteOpenHelper(UpcomingEventsSettings eventsSettings) {
-        return new EventSQLiteOpenHelper(context, eventsSettings);
+    @Singleton
+    SQLiteOpenHelper sqLiteOpenHelper() {
+        return new EventSQLiteOpenHelper(context);
     }
 
     @Provides
@@ -57,7 +57,7 @@ class AndroidApplicationModule {
 
     @Provides
     @Singleton
-    JobManager manager(Context context) {
+    JobManager jobManager(Context context) {
         return JobManager.create(context);
     }
 }
