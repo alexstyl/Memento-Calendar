@@ -24,6 +24,7 @@
   <application
     android:name="com.alexstyl.specialdates.MementoApplication"
     android:allowBackup="true"
+    android:exported="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/localised_app_name">
 
