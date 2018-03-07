@@ -48,4 +48,8 @@
   <string name="key_facebook_user_key">key_facebook_user_key</string>
   <string name="key_facebook_user_name">key_facebook_user_name</string>
 
+  <string name="pref_events">pref_events</string>
+  <string name="key_events_are_initialised">key_events_are_initialised</string>
+  <string name="key_database_version">key_database_version</string>
+
 </resources>

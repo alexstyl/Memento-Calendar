@@ -6,7 +6,7 @@ class UpcomingEventsViewRefresher(private val views: MutableSet<UpcomingEventsVi
 
     fun refreshViews() {
         for (view in views) {
-            view.reloadView()
+            view.reloadUpcomingEventsView()
         }
     }
 
