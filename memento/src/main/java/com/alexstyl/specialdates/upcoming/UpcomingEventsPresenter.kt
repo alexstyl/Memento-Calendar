@@ -2,8 +2,6 @@ package com.alexstyl.specialdates.upcoming
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -12,8 +10,6 @@ import io.reactivex.subjects.PublishSubject
 class UpcomingEventsPresenter(private val firstDay: Date,
                               private val permissions: MementoPermissions,
                               private val providerUpcoming: UpcomingEventsProvider,
-                              private val upcomingEventsSettings: UpcomingEventsSettings,
-                              private val peopleEventsUpdater: PeopleEventsUpdater,
                               private val workScheduler: Scheduler,
                               private val resultScheduler: Scheduler) {
 
@@ -27,22 +23,18 @@ class UpcomingEventsPresenter(private val firstDay: Date,
     fun startPresentingInto(view: UpcomingListMVPView) {
         disposable =
                 subject
-                        .doOnSubscribe {
-                            if (view.isEmpty) {
+                        .doOnSubscribe { _ ->
+                            if (view.isShowingNoEvents) {
                                 view.showLoading()
                             }
                         }
                         .observeOn(workScheduler)
-                        .map {
-                            if (!upcomingEventsSettings.hasBeenInitialised()) {
-                                peopleEventsUpdater.updateEvents()
-                                upcomingEventsSettings.markEventsAsInitialised()
-                            }
+                        .map { _ ->
                             providerUpcoming.calculateEventsBetween(TimePeriod.aYearFrom(firstDay))
                         }
                         .observeOn(resultScheduler)
-                        .onErrorReturn {
-                            it.printStackTrace()
+                        .onErrorReturn { error ->
+                            error.printStackTrace()
                             emptyList()
                         }
                         .subscribe { upcomingRowViewModels ->

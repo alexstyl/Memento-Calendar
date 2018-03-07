@@ -8,5 +8,5 @@ public interface UpcomingListMVPView {
 
     void display(List<UpcomingRowViewModel> events);
 
-    boolean isEmpty();
+    boolean isShowingNoEvents();
 }

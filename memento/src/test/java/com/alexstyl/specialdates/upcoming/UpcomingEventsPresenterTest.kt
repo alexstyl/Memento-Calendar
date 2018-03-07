@@ -41,7 +41,7 @@ class UpcomingEventsPresenterTest {
                 Schedulers.trampoline()
         )
         given(mockSettings.hasBeenInitialised()).willReturn(true)
-        given(mockView.isEmpty).willReturn(true) // start each test with from scratch
+        given(mockView.isShowingNoEvents).willReturn(true) // start each test with from scratch
         given(mockPermissions.canReadAndWriteContacts()).willReturn(true)
     }
 

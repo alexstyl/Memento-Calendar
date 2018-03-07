@@ -10,6 +10,9 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookModule;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
@@ -31,14 +34,22 @@ import java.util.concurrent.TimeUnit;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
+
 public class MementoApplication extends Application {
 
     private AppComponent appComponent;
 
-    @Inject MementoPermissions contactPermissions;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookSettings;
     @Inject UpcomingEventsJobCreator jobCreator;
+    @Inject PeopleEventsUpdater peopleEventsUpdater;
+    @Inject UpcomingEventsViewRefresher viewRefresher;
+    @Inject MementoPermissions permissions;
+    @Inject UpcomingEventsSettings settings;
 
     @Override
     public void onCreate() {
@@ -71,8 +82,31 @@ public class MementoApplication extends Application {
             new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
         }
 
+        if (needsToInitialiseEvents()) {
+            peopleEventsUpdater
+                    .updateEvents()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map(refreshViews())
+                    .subscribe();
+        }
+
         schedulePeopleEventJob();
 
+    }
+
+    private Function<Unit, Object> refreshViews() {
+        return new Function<Unit, Object>() {
+            @Override
+            public Object apply(Unit unit) throws Exception {
+                viewRefresher.refreshViews();
+                return unit;
+            }
+        };
+    }
+
+    private boolean needsToInitialiseEvents() {
+        return permissions.canReadAndWriteContacts() && !settings.hasBeenInitialised();
     }
 
     private void schedulePeopleEventJob() {
