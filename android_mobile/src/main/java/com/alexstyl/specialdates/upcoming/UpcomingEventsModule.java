@@ -59,7 +59,7 @@ public class UpcomingEventsModule {
 
     @Provides
     UpcomingEventsJobCreator jobCreator(PeopleEventsUpdater updater, UpcomingEventsViewRefresher refresher) {
-        return new UpcomingEventsJobCreator(updater, refresher);
+        return new UpcomingEventsJobCreator(updater);
     }
 
     @Provides

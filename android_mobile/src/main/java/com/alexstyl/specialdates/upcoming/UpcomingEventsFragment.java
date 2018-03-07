@@ -24,7 +24,6 @@ import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -156,6 +155,5 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     @Override
     public void reloadUpcomingEventsView() {
         presenter.refreshEvents();
-        Log.d("Oh shit. I got updated");
     }
 }
