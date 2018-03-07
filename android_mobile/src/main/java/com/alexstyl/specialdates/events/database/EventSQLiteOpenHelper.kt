@@ -4,10 +4,9 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns._ID
-import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
 import com.alexstyl.specialdates.events.database.ContactColumns.CONTACT_ID
 import com.alexstyl.specialdates.events.database.ContactColumns.DISPLAY_NAME
-import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract
+import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract.TABLE_NAME
 import com.alexstyl.specialdates.events.database.EventColumns.DATE
 import com.alexstyl.specialdates.events.database.EventColumns.DEVICE_EVENT_ID
 import com.alexstyl.specialdates.events.database.EventColumns.EVENT_TYPE
@@ -18,12 +17,12 @@ class EventSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABA
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS dynamic_events;")
-        db.execSQL("DROP TABLE IF EXISTS ${AnnualEventsContract.TABLE_NAME} WHERE $SOURCE != $SOURCE_FACEBOOK;")
+        db.execSQL("DROP TABLE IF EXISTS annual_events;")
         onCreate(db)
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(("CREATE TABLE ${AnnualEventsContract.TABLE_NAME} ("
+        db.execSQL(("CREATE TABLE $TABLE_NAME ("
                 + "$_ID INTEGER NOT NULL, "
                 + "$DISPLAY_NAME TEXT NOT NULL, "
                 + "$DEVICE_EVENT_ID INTEGER NOT NULL, "
