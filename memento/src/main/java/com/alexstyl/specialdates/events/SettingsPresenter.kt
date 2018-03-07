@@ -8,8 +8,7 @@ import io.reactivex.subjects.PublishSubject
 
 class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
                         private val uiRefresher: UpcomingEventsViewRefresher,
-                        private val workScheduler: Scheduler,
-                        private val resultScheduler: Scheduler) {
+                        private val workScheduler: Scheduler) {
 
     private val subject = PublishSubject.create<Int>()
     private var disposable: Disposable? = null
@@ -19,10 +18,7 @@ class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
         subject
                 .observeOn(workScheduler)
                 .flatMap { peopleEventsUpdater.updateEvents() }
-                .observeOn(resultScheduler)
-                .subscribe {
-                    uiRefresher.refreshViews()
-                }
+                .subscribe()
     }
 
     fun stopMonitoring() {
