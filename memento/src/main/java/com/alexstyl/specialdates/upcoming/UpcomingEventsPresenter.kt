@@ -42,8 +42,6 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                         }
         if (permissions.canReadAndWriteContacts()) {
             refreshEvents()
-        } else {
-            view.display(emptyList())
         }
     }
 

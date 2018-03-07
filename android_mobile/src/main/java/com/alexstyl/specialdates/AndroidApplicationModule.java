@@ -3,7 +3,6 @@ package com.alexstyl.specialdates;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
@@ -41,7 +40,7 @@ class AndroidApplicationModule {
 
     @Provides
     @Singleton
-    SQLiteOpenHelper sqLiteOpenHelper() {
+    EventSQLiteOpenHelper sqLiteOpenHelper() {
         return new EventSQLiteOpenHelper(context);
     }
 

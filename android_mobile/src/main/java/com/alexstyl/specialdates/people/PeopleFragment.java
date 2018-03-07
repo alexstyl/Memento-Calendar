@@ -18,7 +18,6 @@ import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
-import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -109,6 +108,5 @@ public class PeopleFragment extends MementoFragment implements PeopleView, Upcom
     @Override
     public void reloadUpcomingEventsView() {
         presenter.refreshData();
-        Log.d("Oh shit. I got updated");
     }
 }
