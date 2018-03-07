@@ -18,9 +18,7 @@ class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
     fun startMonitoring() {
         subject
                 .observeOn(workScheduler)
-                .map {
-                    peopleEventsUpdater.updateEvents()
-                }
+                .flatMap { peopleEventsUpdater.updateEvents() }
                 .observeOn(resultScheduler)
                 .subscribe {
                     uiRefresher.refreshViews()

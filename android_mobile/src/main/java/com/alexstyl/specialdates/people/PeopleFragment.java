@@ -12,21 +12,23 @@ import android.widget.ProgressBar;
 
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.UpcomingEventsView;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
+import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class PeopleFragment extends MementoFragment implements PeopleView {
+public class PeopleFragment extends MementoFragment implements PeopleView, UpcomingEventsView {
 
     @Inject ImageLoader imageLoader;
-    @Inject PeopleEventsProvider contactProvider;
     @Inject HomeNavigator navigator;
     @Inject PeoplePresenter presenter;
+    @Inject UpcomingEventsViewRefresher refresher;
 
     private PeopleAdapter adapter;
     private ProgressBar loadingView;
@@ -75,12 +77,14 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
     public void onResume() {
         super.onResume();
         presenter.startPresentingInto(this);
+        refresher.addEventsView(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         presenter.stopPresenting();
+        refresher.removeView(this);
     }
 
     @Override
@@ -100,5 +104,11 @@ public class PeopleFragment extends MementoFragment implements PeopleView {
 
     private boolean isDisplayNoData() {
         return recyclerView.getChildCount() == 0;
+    }
+
+    @Override
+    public void reloadUpcomingEventsView() {
+        presenter.refreshData();
+        Log.d("Oh shit. I got updated");
     }
 }

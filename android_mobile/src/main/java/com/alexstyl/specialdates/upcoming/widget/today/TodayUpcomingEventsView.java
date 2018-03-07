@@ -18,7 +18,7 @@ public class TodayUpcomingEventsView implements UpcomingEventsView {
     }
 
     @Override
-    public void reloadView() {
+    public void reloadUpcomingEventsView() {
         Intent intent = new Intent(context, TodayAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

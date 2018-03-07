@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,10 +20,12 @@ public class PeopleModule {
     }
 
     @Provides
-    PeoplePresenter presenter(PeopleEventsProvider peopleEventsProvider,
+    PeoplePresenter presenter(MementoPermissions permissions,
+                              PeopleEventsProvider peopleEventsProvider,
                               PeopleViewModelFactory viewModelFactory,
                               CrashAndErrorTracker errorTracker) {
         return new PeoplePresenter(
+                permissions,
                 peopleEventsProvider,
                 viewModelFactory,
                 errorTracker,

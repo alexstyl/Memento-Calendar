@@ -13,26 +13,21 @@ import android.widget.TextView;
 
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.UpcomingEventsView;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.UpcomingEventsView;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.support.AskForSupport;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class UpcomingEventsFragment extends MementoFragment implements UpcomingListMVPView, UpcomingEventsView {
 
@@ -41,17 +36,13 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     private TextView emptyView;
     private RecyclerView upcomingList;
 
-    private UpcomingEventsPresenter presenter;
     private UpcomingEventsAdapter adapter;
     private AskForSupport askForSupport;
 
     @Inject HomeNavigator navigator;
     @Inject ImageLoader imageLoader;
-    @Inject UpcomingEventsProvider provider;
     @Inject UpcomingEventsViewRefresher refresher;
-    @Inject MementoPermissions permissionsChecker;
-    @Inject UpcomingEventsSettings androidUpcomingEventSettings;
-    @Inject PeopleEventsUpdater peopleEventsUpdater;
+    @Inject UpcomingEventsPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,15 +52,6 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
         applicationModule.inject(this);
 
         askForSupport = new AskForSupport(getActivity());
-        presenter = new UpcomingEventsPresenter(
-                Date.Companion.today(),
-                permissionsChecker,
-                provider,
-                androidUpcomingEventSettings,
-                peopleEventsUpdater,
-                Schedulers.io(),
-                AndroidSchedulers.mainThread()
-        );
         refresher.addEventsView(this);
     }
 
@@ -110,6 +92,12 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        refresher.addEventsView(this);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         presenter.startPresentingInto(this);
@@ -143,8 +131,14 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isShowingNoEvents() {
         return upcomingList.getChildCount() == 0;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        refresher.removeView(this);
     }
 
     @Override
@@ -160,7 +154,8 @@ public class UpcomingEventsFragment extends MementoFragment implements UpcomingL
     }
 
     @Override
-    public void reloadView() {
+    public void reloadUpcomingEventsView() {
         presenter.refreshEvents();
+        Log.d("Oh shit. I got updated");
     }
 }

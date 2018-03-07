@@ -8,8 +8,12 @@ class PeopleEventsRefreshJob(private val peopleEventsUpdater: PeopleEventsUpdate
                              private val uiRefresher: UpcomingEventsViewRefresher) : Job() {
 
     override fun onRunJob(params: Job.Params): Job.Result {
-        peopleEventsUpdater.updateEvents()
-        uiRefresher.refreshViews()
+        peopleEventsUpdater
+                .updateEvents()
+                .map {
+                    uiRefresher.refreshViews()
+                }
+                .subscribe()
         return Job.Result.SUCCESS
     }
 }

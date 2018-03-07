@@ -59,7 +59,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker, upcomingEventsSettings).refresh();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker).refresh();
                 showToast("Refreshing Database");
                 return true;
             }
@@ -115,7 +115,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_trigger_wear_service).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new WearSyncUpcomingEventsView(getActivity()).reloadView();
+                new WearSyncUpcomingEventsView(getActivity()).reloadUpcomingEventsView();
                 return true;
             }
         });
