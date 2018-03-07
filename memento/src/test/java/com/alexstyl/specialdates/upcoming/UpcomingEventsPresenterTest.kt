@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.schedulers.Schedulers
@@ -24,7 +23,6 @@ class UpcomingEventsPresenterTest {
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(MementoPermissions::class.java)
     private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
-    private val mockUpdater = Mockito.mock(PeopleEventsUpdater::class.java)
     private val mockSettings = Mockito.mock(UpcomingEventsSettings::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
@@ -35,8 +33,6 @@ class UpcomingEventsPresenterTest {
                 STARTING_DATE,
                 mockPermissions,
                 mockProvider,
-                mockSettings,
-                mockUpdater,
                 Schedulers.trampoline(),
                 Schedulers.trampoline()
         )
@@ -46,12 +42,12 @@ class UpcomingEventsPresenterTest {
     }
 
     @Test
-    fun whenStartPresentingWithoutPermission_returnsNoEvents() {
+    fun whenStartPresentingWithoutPermission_showsLoading() {
         given(mockPermissions.canReadAndWriteContacts()).willReturn(false)
 
         upcomingEventsPresenter.startPresentingInto(mockView)
 
-        Mockito.verify(mockView).display(emptyList())
+        Mockito.verify(mockView).showLoading()
     }
 
     @Test
@@ -73,16 +69,6 @@ class UpcomingEventsPresenterTest {
 
         Mockito.verify(mockView).showLoading()
         Mockito.verify(mockView).display(expectedEvents)
-    }
-
-    @Test
-    fun givenEventsAreNotInitialised_thenInitialiseBeforeCalculating() {
-        given(mockSettings.hasBeenInitialised()).willReturn(false)
-
-        upcomingEventsPresenter.startPresentingInto(mockView)
-
-        Mockito.verify(mockUpdater).updateEvents()
-        Mockito.verify(mockSettings).markEventsAsInitialised()
     }
 
     @Test
