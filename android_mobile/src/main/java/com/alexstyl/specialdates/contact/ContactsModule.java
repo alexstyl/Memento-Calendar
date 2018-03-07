@@ -28,7 +28,7 @@ public class ContactsModule {
     ContactsProvider provider(Context context, CrashAndErrorTracker tracker, UpcomingEventsSettings upcomingEventsSettings) {
         Map<Integer, ContactsProviderSource> sources = new HashMap<>();
         sources.put(SOURCE_DEVICE, buildAndroidSource(context, tracker));
-        sources.put(SOURCE_FACEBOOK, buildFacebookSource(new EventSQLiteOpenHelper(context, upcomingEventsSettings)));
+        sources.put(SOURCE_FACEBOOK, buildFacebookSource(new EventSQLiteOpenHelper(context)));
         return new ContactsProvider(sources);
     }
 

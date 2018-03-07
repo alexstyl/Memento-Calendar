@@ -19,7 +19,7 @@ public class UpcomingEventsScrollingWidgetView implements UpcomingEventsView {
     }
 
     @Override
-    public void reloadView() {
+    public void reloadUpcomingEventsView() {
         Intent intent = new Intent(context, UpcomingEventsScrollingAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

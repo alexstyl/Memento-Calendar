@@ -61,7 +61,7 @@ public class FacebookFriendsIntentService extends IntentService {
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(
-                        new EventSQLiteOpenHelper(this, eventsSettings),
+                        new EventSQLiteOpenHelper(this),
                         marshaller,
                         tracker
                 )

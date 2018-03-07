@@ -19,9 +19,12 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.home.HomeNavigator;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 @Module
 public class UpcomingEventsModule {
@@ -56,6 +59,18 @@ public class UpcomingEventsModule {
 
     @Provides
     UpcomingEventsJobCreator jobCreator(PeopleEventsUpdater updater, UpcomingEventsViewRefresher refresher) {
-        return new UpcomingEventsJobCreator(updater, refresher);
+        return new UpcomingEventsJobCreator(updater);
+    }
+
+    @Provides
+    UpcomingEventsPresenter presenter(MementoPermissions permissionsChecker, UpcomingEventsProvider provider) {
+        Date today = Date.Companion.today();
+        return new UpcomingEventsPresenter(
+                today,
+                permissionsChecker,
+                provider,
+                Schedulers.io(),
+                AndroidSchedulers.mainThread()
+        );
     }
 }

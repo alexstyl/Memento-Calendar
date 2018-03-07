@@ -14,7 +14,7 @@ public class WearSyncUpcomingEventsView implements UpcomingEventsView {
     }
 
     @Override
-    public void reloadView() {
+    public void reloadUpcomingEventsView() {
         Intent service = new Intent(context, WearSyncService.class);
         context.startService(service);
     }

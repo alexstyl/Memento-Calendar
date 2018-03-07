@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.donate.DonationPreferences;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.ui.ViewFader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -54,6 +55,8 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Inject DonationPreferences donationPreferences;
     @Inject DonateMonitor donateMonitor;
     @Inject MementoPermissions permissions;
+    @Inject PeopleEventsUpdater peopleEventsUpdater;
+
     private ViewPager viewPager;
     private DonationBannerView banner;
 
@@ -146,10 +149,15 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODE_PERMISSION && resultCode != RESULT_OK) {
-            finishAffinity();
+        if (requestCode == CODE_PERMISSION) {
+            if (resultCode == RESULT_OK) {
+                peopleEventsUpdater
+                        .updateEvents()
+                        .subscribe();
+            } else {
+                finishAffinity();
+            }
         }
-
     }
 
     private void hideBanner() {
