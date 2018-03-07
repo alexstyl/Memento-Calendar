@@ -28,7 +28,8 @@ class PeoplePresenter(
                 subject
                         .doOnSubscribe { _ ->
                             view.showLoading()
-                        }.map { _ ->
+                        }
+                        .map { _ ->
                             peopleEventsProvider.getContactEventsFor(TimePeriod.aYearFromNow())
                         }
                         .map { contacts ->
@@ -64,11 +65,7 @@ class PeoplePresenter(
 
         if (permissions.canReadAndWriteContacts()) {
             refreshData()
-        } else {
-            view.displayPeople(emptyList())
         }
-
-
     }
 
     fun refreshData() {

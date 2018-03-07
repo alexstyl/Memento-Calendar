@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.events.peopleevents;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.contact.ContactsProvider;
@@ -39,9 +38,9 @@ public class PeopleEventsModule {
     @Provides
     PeopleStaticEventsProvider peopleStaticEventsProvider(ContactsProvider contactsProvider,
                                                           CrashAndErrorTracker tracker,
-                                                          UpcomingEventsSettings androidUpcomingEventSettings) {
+                                                          EventSQLiteOpenHelper sqLiteOpenHelper) {
         return new AndroidPeopleStaticEventsProvider(
-                new EventSQLiteOpenHelper(context),
+                sqLiteOpenHelper,
                 contactsProvider,
                 new CustomEventProvider(context.getContentResolver()),
                 tracker
@@ -74,7 +73,7 @@ public class PeopleEventsModule {
 
     @Provides
     PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher(
-            SQLiteOpenHelper eventSQlite,
+            EventSQLiteOpenHelper eventSQlite,
             ContentResolver contentResolver,
             ContactsProvider contactsProvider,
             CrashAndErrorTracker tracker) {
@@ -92,18 +91,22 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleEventsUpdater peopleEventsUpdater(PeopleEventsStaticEventsRefresher staticRefresher, NamedayDatabaseRefresher namedayRefresher) {
-        return new PeopleEventsUpdater(staticRefresher, namedayRefresher);
+    PeopleEventsUpdater peopleEventsUpdater(PeopleEventsStaticEventsRefresher staticRefresher,
+                                            NamedayDatabaseRefresher namedayRefresher,
+                                            UpcomingEventsViewRefresher viewRefresher) {
+        return new PeopleEventsUpdater(
+                staticRefresher,
+                namedayRefresher,
+                viewRefresher,
+                Schedulers.io(),
+                AndroidSchedulers.mainThread()
+        );
     }
 
-
     @Provides
-    PeopleEventsPersister peopleEventsPersister(CrashAndErrorTracker tracker, UpcomingEventsSettings eventSettings) {
-        return new AndroidPeopleEventsPersister(
-                new EventSQLiteOpenHelper(context),
-                new ContactEventsMarshaller(),
-                tracker
-        );
+    PeopleEventsPersister peopleEventsPersister(CrashAndErrorTracker tracker, EventSQLiteOpenHelper helper) {
+        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
+        return new AndroidPeopleEventsPersister(helper, marshaller, tracker);
     }
 
     @Provides
@@ -113,6 +116,6 @@ public class PeopleEventsModule {
 
     @Provides
     SettingsPresenter peopleEventsDatabaseUpdater(UpcomingEventsViewRefresher uiRefresher, PeopleEventsUpdater peopleEventsUpdater) {
-        return new SettingsPresenter(peopleEventsUpdater, uiRefresher, Schedulers.io(), AndroidSchedulers.mainThread());
+        return new SettingsPresenter(peopleEventsUpdater, uiRefresher, Schedulers.io());
     }
 }
