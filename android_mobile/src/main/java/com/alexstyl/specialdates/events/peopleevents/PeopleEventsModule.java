@@ -93,11 +93,13 @@ public class PeopleEventsModule {
     @Provides
     PeopleEventsUpdater peopleEventsUpdater(PeopleEventsStaticEventsRefresher staticRefresher,
                                             NamedayDatabaseRefresher namedayRefresher,
-                                            UpcomingEventsViewRefresher viewRefresher) {
+                                            UpcomingEventsViewRefresher viewRefresher,
+                                            UpcomingEventsSettings settings) {
         return new PeopleEventsUpdater(
                 staticRefresher,
                 namedayRefresher,
                 viewRefresher,
+                settings,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         );
