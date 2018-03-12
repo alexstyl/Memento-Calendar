@@ -8,7 +8,6 @@ import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import java.net.URI
-import java.util.*
 
 internal class AndroidContactFactory(private val resolver: ContentResolver, private val tracker: CrashAndErrorTracker) {
 
@@ -63,8 +62,8 @@ internal class AndroidContactFactory(private val resolver: ContentResolver, priv
         return resolver.query(
                 AndroidContactsQuery.CONTENT_URI,
                 AndroidContactsQuery.PROJECTION,
-                "${AndroidContactsQuery._ID} IN (${Collections.nCopies(ids.size, "?").joinToString(",")})",
-                ids.map { it.toString() }.toTypedArray(),
+                "${AndroidContactsQuery._ID} IN (${ids.joinToString(",")})",
+                null,
                 SORT_ORDER
         )
     }
