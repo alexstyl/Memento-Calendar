@@ -156,7 +156,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
-
+        eventPresenter.startMonitoring();
         reattachThemeDialogIfNeeded();
     }
 
@@ -174,7 +174,6 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        eventPresenter.startMonitoring();
         namedayLanguageListPreferences.setSummary(strings.localeName(namedaysPreferences.getSelectedLanguage()));
         appThemePreference.setSummary(themingPreferences.getSelectedTheme().getThemeName());
     }
