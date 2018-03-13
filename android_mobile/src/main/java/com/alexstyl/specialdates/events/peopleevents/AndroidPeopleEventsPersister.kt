@@ -19,30 +19,28 @@ class AndroidPeopleEventsPersister(private val helper: SQLiteOpenHelper,
 
     override fun deleteAllNamedays() {
         helper.writableDatabase
-                .executeTransaction { db ->
-                    db.delete(
+                .executeTransaction {
+                    delete(
                             AnnualEventsContract.TABLE_NAME,
                             "${AnnualEventsContract.EVENT_TYPE}  ==  $TYPE_NAMEDAY",
-                            null
-                    )
+                            null)
                 }
     }
 
 
     override fun deleteAllEventsOfSource(@ContactSource source: Int) {
         helper.writableDatabase
-                .executeTransaction { db ->
-                    db.delete(AnnualEventsContract.TABLE_NAME,
+                .executeTransaction {
+                    delete(AnnualEventsContract.TABLE_NAME,
                             AnnualEventsContract.SOURCE + "==" + source,
-                            null
-                    )
+                            null)
                 }
     }
 
     override fun deleteAllDeviceEvents() {
         helper.writableDatabase
-                .executeTransaction { db ->
-                    db.delete(AnnualEventsContract.TABLE_NAME,
+                .executeTransaction {
+                    delete(AnnualEventsContract.TABLE_NAME,
                             "${EventColumns.SOURCE}  ==  ${ContactSource.SOURCE_DEVICE}" +
                                     " AND ${EventColumns.EVENT_TYPE}  != ${StandardEventType.NAMEDAY.id}"
                             , null)
@@ -51,24 +49,23 @@ class AndroidPeopleEventsPersister(private val helper: SQLiteOpenHelper,
 
     override fun insertAnnualEvents(events: List<ContactEvent>) {
         helper.writableDatabase
-                .executeTransaction { db ->
+                .executeTransaction {
                     marshaller
                             .marshall(events)
                             .forEach { contentValues ->
-                                db.insert(AnnualEventsContract.TABLE_NAME, null, contentValues)
+                                insert(AnnualEventsContract.TABLE_NAME, null, contentValues)
                             }
                 }
     }
 
     override fun markContactAsVisible(contact: Contact) {
         helper.writableDatabase
-                .executeTransaction { db ->
-                    db.update(
+                .executeTransaction {
+                    update(
                             AnnualEventsContract.TABLE_NAME,
                             visible(),
                             AnnualEventsContract.CONTACT_ID + " = " + contact.contactID
-                                    + " AND " + AnnualEventsContract.SOURCE + " = " + contact.source, null
-                    )
+                                    + " AND " + AnnualEventsContract.SOURCE + " = " + contact.source, null)
 
                 }
 
@@ -82,18 +79,19 @@ class AndroidPeopleEventsPersister(private val helper: SQLiteOpenHelper,
 
     override fun markContactAsHidden(contact: Contact) {
         helper.writableDatabase
-                .executeTransaction { db ->
-                    val values = ContentValues(1)
-                    values.put(AnnualEventsContract.VISIBLE, 0)
-
-                    db.update(
-                            AnnualEventsContract.TABLE_NAME,
-                            values,
+                .executeTransaction {
+                    update(AnnualEventsContract.TABLE_NAME,
+                            hidden(),
                             AnnualEventsContract.CONTACT_ID + " = " + contact.contactID
-                                    + " AND " + AnnualEventsContract.SOURCE + " = " + contact.source, null
-                    )
+                                    + " AND " + AnnualEventsContract.SOURCE + " = " + contact.source, null)
                 }
 
+    }
+
+    private fun hidden(): ContentValues {
+        val values = ContentValues(1)
+        values.put(AnnualEventsContract.VISIBLE, 0)
+        return values
     }
 
     override fun getVisibilityFor(contact: Contact): Boolean {
@@ -110,7 +108,7 @@ class AndroidPeopleEventsPersister(private val helper: SQLiteOpenHelper,
         return count > 0
     }
 
-    private inline fun SQLiteDatabase.executeTransaction(function: (SQLiteDatabase) -> Unit) {
+    private inline fun SQLiteDatabase.executeTransaction(function: SQLiteDatabase.() -> Unit) {
         try {
             this.beginTransaction()
             function(this)
