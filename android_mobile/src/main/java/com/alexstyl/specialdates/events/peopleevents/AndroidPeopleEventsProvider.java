@@ -71,12 +71,12 @@ class AndroidPeopleEventsProvider implements PeopleEventsProvider {
 
     @Override
     public ContactEventsOnADate fetchEventsOn(Date date) {
-        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
+        return ContactEventsOnADate.Companion.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
     }
 
     @Override
-    public List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
-        Cursor cursor = queryEventsFor(timeDuration);
+    public List<ContactEvent> fetchEventsBetween(TimePeriod timePeriod) {
+        Cursor cursor = queryEventsFor(timePeriod);
         List<ContactEvent> contactEvents = new ArrayList<>(cursor.getCount());
 
         List<Long> deviceIds = new ArrayList<>(cursor.getCount());

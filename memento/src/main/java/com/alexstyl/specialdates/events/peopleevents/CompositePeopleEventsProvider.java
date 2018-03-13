@@ -6,31 +6,24 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.Callable;
-
-import io.reactivex.Observable;
 
 public class CompositePeopleEventsProvider implements PeopleEventsProvider {
 
-    private static final DateComparator DATE_COMPARATOR = DateComparator.INSTANCE;
-
     private final NamedayUserSettings namedayPreferences;
     private final PeopleNamedaysCalculator peopleNamedaysCalculator;
-    private final PeopleEventsProvider staticEvents;
+    private final PeopleEventsProvider deviceEvents;
     private final ClosestEventsComparator closestEventsComparator = new ClosestEventsComparator();
 
     CompositePeopleEventsProvider(NamedayUserSettings namedayPreferences,
                                   PeopleNamedaysCalculator peopleNamedaysCalculator,
-                                  PeopleEventsProvider staticEvents) {
-        this.staticEvents = staticEvents;
+                                  PeopleEventsProvider deviceEvents) {
+        this.deviceEvents = deviceEvents;
         this.namedayPreferences = namedayPreferences;
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
     }
@@ -38,24 +31,25 @@ public class CompositePeopleEventsProvider implements PeopleEventsProvider {
     @NonNull
     @Override
     public ContactEventsOnADate fetchEventsOn(@NonNull Date date) {
-        TimePeriod timeDuration = TimePeriod.Companion.between(date, date);
         List<ContactEvent> contactEvents = new ArrayList<>();
-        contactEvents.addAll(staticEvents.fetchEventsBetween(timeDuration));
+        ContactEventsOnADate contactEventsOnADate = deviceEvents.fetchEventsOn(date);
+        contactEvents.addAll(contactEventsOnADate.getEvents());
         if (namedayPreferences.isEnabled()) {
-            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.fetchEventsOn(date).getEvents();
             contactEvents.addAll(namedaysContactEvents);
         }
 
-        return ContactEventsOnADate.createFrom(date, contactEvents);
+        return ContactEventsOnADate.Companion.createFrom(date, contactEvents);
     }
 
+    @NonNull
     @Override
-    public List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
+    public List<ContactEvent> fetchEventsBetween(@NonNull TimePeriod timePeriod) {
         List<ContactEvent> contactEvents = new ArrayList<>();
-        contactEvents.addAll(staticEvents.fetchEventsBetween(timeDuration));
+        contactEvents.addAll(deviceEvents.fetchEventsBetween(timePeriod));
 
         if (namedayPreferences.isEnabled()) {
-            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.fetchEventsBetween(timePeriod);
             contactEvents.addAll(namedaysContactEvents);
         }
         return Collections.unmodifiableList(contactEvents);
@@ -64,21 +58,12 @@ public class CompositePeopleEventsProvider implements PeopleEventsProvider {
     @Override
     public List<ContactEvent> fetchEventsFor(Contact contact) {
         List<ContactEvent> contactEvents = new ArrayList<>();
-        contactEvents.addAll(staticEvents.fetchEventsFor(contact));
+        contactEvents.addAll(deviceEvents.fetchEventsFor(contact));
         if (namedayPreferences.isEnabled()) {
-            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysFor(contact);
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.fetchEventsFor(contact);
             contactEvents.addAll(namedaysContactEvents);
         }
         return Collections.unmodifiableList(contactEvents);
-    }
-
-    public Observable<List<ContactEvent>> getContactEventsFor(final Contact contact) {
-        return Observable.fromCallable(new Callable<List<ContactEvent>>() {
-            @Override
-            public List<ContactEvent> call() {
-                return fetchEventsFor(contact);
-            }
-        });
     }
 
     @NonNull
@@ -97,50 +82,24 @@ public class CompositePeopleEventsProvider implements PeopleEventsProvider {
 
     private Optional<ContactEventsOnADate> findNextStaticEventsFor(Date date) {
         try {
-            Date closestStaticDate = staticEvents.findClosestEventDateOnOrAfter(date);
-            return new Optional<>(staticEvents.fetchEventsOn(closestStaticDate));
+            Date closestStaticDate = deviceEvents.findClosestEventDateOnOrAfter(date);
+            return new Optional<>(deviceEvents.fetchEventsOn(closestStaticDate));
         } catch (NoEventsFoundException e) {
             return Optional.absent();
         }
     }
 
     private Optional<ContactEventsOnADate> findNextDynamicEventFor(Date date) {
-        Optional<ContactEventsOnADate> dynamicEvents;
-        if (namedayPreferences.isEnabled()) {
-            dynamicEvents = findNextDynamicEventsOn(date);
-        } else {
-            dynamicEvents = Optional.absent();
-        }
-        return dynamicEvents;
-    }
-
-    private Optional<ContactEventsOnADate> findNextDynamicEventsOn(Date date) {
-        try {
-            Date closestDynamicDate = findNextDynamicEventDateAfter(date);
-            ContactEventsOnADate namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysOn(closestDynamicDate);
-            return new Optional<>(namedaysContactEvents);
-        } catch (NoEventsFoundException e) {
+        if (!namedayPreferences.isEnabled()) {
             return Optional.absent();
         }
-    }
-
-    private Date findNextDynamicEventDateAfter(final Date date) throws NoEventsFoundException {
-        TimePeriod timePeriod = TimePeriod.Companion.between(date, Date.Companion.endOfYear(date.getYear()));
-        List<ContactEvent> contactEvents = new ArrayList<>(peopleNamedaysCalculator.loadSpecialNamedaysBetween(timePeriod));
-        Collections.sort(contactEvents, new Comparator<ContactEvent>() {
-            @Override
-            public int compare(ContactEvent o1, ContactEvent o2) {
-                return DATE_COMPARATOR.compare(o1.getDate(), o2.getDate());
-            }
-        });
-
-        for (ContactEvent contactEvent : contactEvents) {
-            Date contactEventDate = contactEvent.getDate();
-            if (DATE_COMPARATOR.compare(contactEventDate, date) >= 0) {
-                return contactEventDate;
-            }
+        try {
+            Date closestEventDateOnOrAfter = peopleNamedaysCalculator.findClosestEventDateOnOrAfter(date);
+            return new Optional<>(peopleNamedaysCalculator.fetchEventsOn(closestEventDateOnOrAfter));
+        } catch (NoEventsFoundException e) {
+            e.printStackTrace();
         }
-        throw new NoEventsFoundException("No dynamic even found after or on " + date);
+        return Optional.absent();
     }
 
     private Optional<ContactEventsOnADate> returnClosestEventsOrMerge(Optional<ContactEventsOnADate> staticEvents,
@@ -163,7 +122,7 @@ public class CompositePeopleEventsProvider implements PeopleEventsProvider {
                                                              Optional<ContactEventsOnADate> dynamicEvents) {
         List<ContactEvent> combinedEvents = combine(dynamicEvents.get().getEvents(), staticEvents.get().getEvents());
         if (combinedEvents.size() > 0) {
-            return new Optional<>(ContactEventsOnADate.createFrom(
+            return new Optional<>(ContactEventsOnADate.Companion.createFrom(
                     staticEvents.get().getDate(),
                     combinedEvents
             ));

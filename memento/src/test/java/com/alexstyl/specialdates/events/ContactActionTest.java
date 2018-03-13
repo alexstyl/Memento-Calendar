@@ -29,7 +29,7 @@ public class ContactActionTest {
     @Test
     public void testTheSameDateIsReturned() throws Exception {
         Date expectedDate = Date.Companion.on(1, JANUARY, 1990);
-        ContactEventsOnADate events = ContactEventsOnADate.createFrom(expectedDate, ANY_CONTACTS);
+        ContactEventsOnADate events = ContactEventsOnADate.Companion.createFrom(expectedDate, ANY_CONTACTS);
 
         Date actualDate = events.getDate();
         assertThat(actualDate).isEqualTo(expectedDate);
@@ -41,7 +41,7 @@ public class ContactActionTest {
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
 
-        ContactEventsOnADate events = ContactEventsOnADate.createFrom(date, contactEvent);
+        ContactEventsOnADate events = ContactEventsOnADate.Companion.createFrom(date, contactEvent);
 
         List<Contact> contacts = events.getContacts();
         assertThat(contacts.get(0)).isEqualTo(CONTACT_ONE);
@@ -53,7 +53,7 @@ public class ContactActionTest {
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
-        ContactEventsOnADate events = ContactEventsOnADate.createFrom(date, contactEvent);
+        ContactEventsOnADate events = ContactEventsOnADate.Companion.createFrom(date, contactEvent);
 
         List<Contact> contacts = events.getContacts();
         assertThat(contacts).contains(CONTACT_ONE);
@@ -66,7 +66,7 @@ public class ContactActionTest {
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
-        ContactEventsOnADate events = ContactEventsOnADate.createFrom(date, contactEvent);
+        ContactEventsOnADate events = ContactEventsOnADate.Companion.createFrom(date, contactEvent);
 
         List<Contact> contacts = events.getContacts();
         assertThat(contacts.size()).isEqualTo(2);
