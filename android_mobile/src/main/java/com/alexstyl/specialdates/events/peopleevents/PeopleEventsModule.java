@@ -41,7 +41,7 @@ public class PeopleEventsModule {
                                               EventSQLiteOpenHelper sqLiteOpenHelper,
                                               ContactsProvider contactsProvider,
                                               CrashAndErrorTracker tracker) {
-        AndroidPeopleEventsProvider androidPeopleEventsProvider = new AndroidPeopleEventsProvider(
+        PeopleEventsProvider androidPeopleEventsProvider = new AndroidPeopleEventsProvider(
                 sqLiteOpenHelper,
                 contactsProvider,
                 new CustomEventProvider(context.getContentResolver()),
