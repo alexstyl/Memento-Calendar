@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.people
 
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -10,7 +10,7 @@ import io.reactivex.subjects.PublishSubject
 
 class PeoplePresenter(
         private val permissions: MementoPermissions,
-        private val peopleEventsProvider: PeopleEventsProvider,
+        private val peopleEventsProvider: CompositePeopleEventsProvider,
         private val viewModelFactory: PeopleViewModelFactory,
         private val errorTracker: CrashAndErrorTracker,
         private val workScheduler: Scheduler,

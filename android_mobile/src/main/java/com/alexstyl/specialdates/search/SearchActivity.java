@@ -33,7 +33,7 @@ import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.alexstyl.specialdates.transition.FadeInTransition;
@@ -78,7 +78,7 @@ public class SearchActivity extends ThemedMementoActivity {
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
-    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CompositePeopleEventsProvider peopleEventsProvider;
     @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayCalendarProvider calendarProvider;
     @Inject CrashAndErrorTracker tracker;

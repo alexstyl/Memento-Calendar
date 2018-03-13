@@ -4,7 +4,7 @@ import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
 
 internal class PersonPresenter(private val personView: PersonView,
-                               private val provider: PeopleEventsProvider,
+                               private val provider: CompositePeopleEventsProvider,
                                private val personCallProvider: PersonCallProvider,
                                private val workScheduler: Scheduler,
                                private val resultScheduler: Scheduler,

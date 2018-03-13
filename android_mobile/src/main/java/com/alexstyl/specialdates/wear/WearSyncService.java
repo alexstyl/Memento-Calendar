@@ -10,8 +10,8 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -25,7 +25,7 @@ import java.util.List;
 public class WearSyncService extends IntentService {
 
     @Inject NamedayUserSettings namedayUserSettings;
-    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CompositePeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
     @Inject MementoPermissions permissions;
 

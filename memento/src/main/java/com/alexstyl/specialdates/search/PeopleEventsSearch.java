@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.search;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.util.HashMapList;
 
@@ -12,9 +12,9 @@ import java.util.List;
 final class PeopleEventsSearch {
 
     private final NameMatcher nameMatcher;
-    private final PeopleEventsProvider peopleEventsProvider;
+    private final CompositePeopleEventsProvider peopleEventsProvider;
 
-    PeopleEventsSearch(PeopleEventsProvider peopleEventsProvider, NameMatcher nameMatcher) {
+    PeopleEventsSearch(CompositePeopleEventsProvider peopleEventsProvider, NameMatcher nameMatcher) {
         this.peopleEventsProvider = peopleEventsProvider;
         this.nameMatcher = nameMatcher;
     }

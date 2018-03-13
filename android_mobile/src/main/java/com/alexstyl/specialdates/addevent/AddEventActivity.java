@@ -39,7 +39,7 @@ import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.images.ImageDecoder;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.novoda.notils.caster.Views;
@@ -64,7 +64,7 @@ public class AddEventActivity extends ThemedMementoActivity implements Listener,
     @Inject ImageLoader imageLoader;
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
-    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CompositePeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
 
     @Override

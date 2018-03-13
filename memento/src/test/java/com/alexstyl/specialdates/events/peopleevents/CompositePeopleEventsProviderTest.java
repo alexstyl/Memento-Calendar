@@ -26,19 +26,19 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PeopleEventsProviderTest {
+public class CompositePeopleEventsProviderTest {
 
     private static final Contact PETER = ContactFixture.aContactCalled("Peter");
 
     @Mock private NamedayUserSettings mockNamedaysPreferences;
-    @Mock private PeopleStaticEventsProvider mockStaticEventProvider;
+    @Mock private PeopleEventsProvider mockStaticEventProvider;
     @Mock private PeopleNamedaysCalculator mockPeopleNamedaysCalculator;
 
-    private PeopleEventsProvider peopleEventsProvider;
+    private CompositePeopleEventsProvider peopleEventsProvider;
 
     @Before
     public void setUp() {
-        peopleEventsProvider = new PeopleEventsProvider(
+        peopleEventsProvider = new CompositePeopleEventsProvider(
                 mockNamedaysPreferences,
                 mockPeopleNamedaysCalculator,
                 mockStaticEventProvider
