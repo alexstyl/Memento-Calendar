@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.people;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 
@@ -21,7 +21,7 @@ public class PeopleModule {
 
     @Provides
     PeoplePresenter presenter(MementoPermissions permissions,
-                              CompositePeopleEventsProvider peopleEventsProvider,
+                              PeopleEventsProvider peopleEventsProvider,
                               PeopleViewModelFactory viewModelFactory,
                               CrashAndErrorTracker errorTracker) {
         return new PeoplePresenter(

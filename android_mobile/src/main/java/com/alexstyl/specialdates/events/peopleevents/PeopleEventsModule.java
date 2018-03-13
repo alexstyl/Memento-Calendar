@@ -36,22 +36,19 @@ public class PeopleEventsModule {
     }
 
     @Provides
-    PeopleEventsProvider peopleStaticEventsProvider(ContactsProvider contactsProvider,
-                                                    CrashAndErrorTracker tracker,
-                                                    EventSQLiteOpenHelper sqLiteOpenHelper) {
-        return new AndroidPeopleEventsProvider(
+    PeopleEventsProvider peopleEventsProvider(NamedayUserSettings namedayUserSettings,
+                                              PeopleNamedaysCalculator peopleNamedaysCalculator,
+                                              EventSQLiteOpenHelper sqLiteOpenHelper,
+                                              ContactsProvider contactsProvider,
+                                              CrashAndErrorTracker tracker) {
+        AndroidPeopleEventsProvider androidPeopleEventsProvider = new AndroidPeopleEventsProvider(
                 sqLiteOpenHelper,
                 contactsProvider,
                 new CustomEventProvider(context.getContentResolver()),
                 tracker
         );
-    }
-
-    @Provides
-    CompositePeopleEventsProvider peopleEventsProvider(NamedayUserSettings namedayUserSettings,
-                                                       PeopleNamedaysCalculator peopleNamedaysCalculator,
-                                                       PeopleEventsProvider staticEvents) {
-        return new CompositePeopleEventsProvider(namedayUserSettings, peopleNamedaysCalculator, staticEvents);
+        // TODO extract into separate provider
+        return new CompositePeopleEventsProvider(namedayUserSettings, peopleNamedaysCalculator, androidPeopleEventsProvider);
     }
 
     @Provides

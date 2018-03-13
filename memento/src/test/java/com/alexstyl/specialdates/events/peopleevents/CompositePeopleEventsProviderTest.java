@@ -85,7 +85,7 @@ public class CompositePeopleEventsProviderTest {
 
     @Test
     public void neitherStaticNorDynamicEvents_returnsNoClosestEvent() throws NoEventsFoundException {
-        when(mockStaticEventProvider.findClosestStaticEventDateFrom(any(Date.class))).thenThrow(NoEventsFoundException.class);
+        when(mockStaticEventProvider.findClosestEventDateOnOrAfter(any(Date.class))).thenThrow(NoEventsFoundException.class);
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
         when(mockPeopleNamedaysCalculator.loadSpecialNamedaysOn(any(Date.class)))
                 .thenReturn(ContactEventsOnADate.createFrom(Companion.on(1, JANUARY, 2017), Collections.<ContactEvent>emptyList()));
@@ -97,7 +97,7 @@ public class CompositePeopleEventsProviderTest {
 
     @Test
     public void onlyDynamicEvents_returnsTheDynamicEvents() throws NoEventsFoundException {
-        when(mockStaticEventProvider.findClosestStaticEventDateFrom(Companion.on(2, MARCH, 2017))).thenThrow(NoEventsFoundException.class);
+        when(mockStaticEventProvider.findClosestEventDateOnOrAfter(Companion.on(2, MARCH, 2017))).thenThrow(NoEventsFoundException.class);
         when(mockNamedaysPreferences.isEnabled()).thenReturn(true);
 
         List<ContactEvent> expectedEvents = new TestContactEventsBuilder()

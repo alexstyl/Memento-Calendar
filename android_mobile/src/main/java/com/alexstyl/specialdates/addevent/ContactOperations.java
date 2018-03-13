@@ -7,12 +7,12 @@ import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
-import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
+import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.Event;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.images.DecodedImage;
-import com.alexstyl.specialdates.date.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ class ContactOperations {
 
     private final ContentResolver contentResolver;
     private final WriteableAccountsProvider accountsProvider;
-    private final CompositePeopleEventsProvider peopleEventsProvider;
+    private final PeopleEventsProvider peopleEventsProvider;
     private final ShortDateLabelCreator displayStringCreator;
 
     ContactOperations(ContentResolver contentResolver,
                       WriteableAccountsProvider accountsProvider,
-                      CompositePeopleEventsProvider peopleEventsProvider,
+                      PeopleEventsProvider peopleEventsProvider,
                       ShortDateLabelCreator displayStringCreator) {
         this.contentResolver = contentResolver;
         this.accountsProvider = accountsProvider;
@@ -107,7 +107,7 @@ class ContactOperations {
 
     private List<ContactEvent> getAllDeviceEventsFor(Contact contact) {
         List<ContactEvent> contactEvents = new ArrayList<>();
-        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getContactEventsFor(TimePeriod.Companion.aYearFromNow());
+        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.fetchEventsBetween(TimePeriod.Companion.aYearFromNow());
         for (ContactEvent contactEvent : contactEventsOnDate) {
             Contact dbContact = contactEvent.getContact();
             if (dbContact.getContactID() == contact.getContactID() && contactEvent.getType() != StandardEventType.NAMEDAY) {

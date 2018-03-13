@@ -38,12 +38,12 @@ import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
-import com.alexstyl.specialdates.ui.HideStatusBarListener;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoadedConsumer;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.ui.HideStatusBarListener;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 import com.nostra13.universalimageloader.core.assist.LoadedFrom;
@@ -69,7 +69,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator dateLabelCreator;
-    @Inject CompositePeopleEventsProvider peopleEventsProvider;
+    @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject PeopleEventsPersister peoplePersister;
     @Inject CrashAndErrorTracker tracker;
 

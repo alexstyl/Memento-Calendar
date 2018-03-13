@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.database.Cursor;
 import android.database.MergeCursor;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Optional;
@@ -204,8 +205,9 @@ class AndroidPeopleEventsProvider implements PeopleEventsProvider {
         return timeDuration.getStartingDate().getYear() == timeDuration.getEndingDate().getYear();
     }
 
+    @NonNull
     @Override
-    public Date findClosestStaticEventDateFrom(Date date) throws NoEventsFoundException {
+    public Date findClosestEventDateOnOrAfter(@NonNull Date date) throws NoEventsFoundException {
         Cursor cursor = queryDateClosestTo(date);
         try {
             if (cursor.moveToFirst()) {

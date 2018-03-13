@@ -7,9 +7,9 @@ import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
-class CompositeUpcomingEventsProvider(private val peopleEventsProvider: CompositePeopleEventsProvider,
+class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
                                       private val namedayPreferences: NamedayUserSettings,
                                       private val namedayCalendarProvider: NamedayCalendarProvider,
                                       private val bankHolidaysPreferences: BankHolidaysPreferences,
@@ -17,7 +17,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: Composit
                                       private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory) : UpcomingEventsProvider {
 
     override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
-        val contactEvents = peopleEventsProvider.getContactEventsFor(timePeriod)
+        val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
         val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
                 timePeriod,
                 upcomingRowViewModelFactory

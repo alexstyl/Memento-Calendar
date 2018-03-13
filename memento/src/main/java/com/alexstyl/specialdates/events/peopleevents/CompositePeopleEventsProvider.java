@@ -1,5 +1,7 @@
 package com.alexstyl.specialdates.events.peopleevents;
 
+import android.support.annotation.NonNull;
+
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -16,7 +18,7 @@ import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 
-public class CompositePeopleEventsProvider {
+public class CompositePeopleEventsProvider implements PeopleEventsProvider {
 
     private static final DateComparator DATE_COMPARATOR = DateComparator.INSTANCE;
 
@@ -33,7 +35,9 @@ public class CompositePeopleEventsProvider {
         this.peopleNamedaysCalculator = peopleNamedaysCalculator;
     }
 
-    List<ContactEvent> getCelebrationDateOn(Date date) {
+    @NonNull
+    @Override
+    public ContactEventsOnADate fetchEventsOn(@NonNull Date date) {
         TimePeriod timeDuration = TimePeriod.Companion.between(date, date);
         List<ContactEvent> contactEvents = new ArrayList<>();
         contactEvents.addAll(staticEvents.fetchEventsBetween(timeDuration));
@@ -41,11 +45,12 @@ public class CompositePeopleEventsProvider {
             List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysBetween(timeDuration);
             contactEvents.addAll(namedaysContactEvents);
         }
-        return contactEvents;
 
+        return ContactEventsOnADate.createFrom(date, contactEvents);
     }
 
-    public List<ContactEvent> getContactEventsFor(TimePeriod timeDuration) {
+    @Override
+    public List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
         List<ContactEvent> contactEvents = new ArrayList<>();
         contactEvents.addAll(staticEvents.fetchEventsBetween(timeDuration));
 
@@ -56,33 +61,43 @@ public class CompositePeopleEventsProvider {
         return Collections.unmodifiableList(contactEvents);
     }
 
+    @Override
+    public List<ContactEvent> fetchEventsFor(Contact contact) {
+        List<ContactEvent> contactEvents = new ArrayList<>();
+        contactEvents.addAll(staticEvents.fetchEventsFor(contact));
+        if (namedayPreferences.isEnabled()) {
+            List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysFor(contact);
+            contactEvents.addAll(namedaysContactEvents);
+        }
+        return Collections.unmodifiableList(contactEvents);
+    }
+
     public Observable<List<ContactEvent>> getContactEventsFor(final Contact contact) {
         return Observable.fromCallable(new Callable<List<ContactEvent>>() {
             @Override
             public List<ContactEvent> call() {
-                List<ContactEvent> contactEvents = new ArrayList<>();
-                contactEvents.addAll(staticEvents.fetchEventsFor(contact));
-                if (namedayPreferences.isEnabled()) {
-                    List<ContactEvent> namedaysContactEvents = peopleNamedaysCalculator.loadSpecialNamedaysFor(contact);
-                    contactEvents.addAll(namedaysContactEvents);
-                }
-                return Collections.unmodifiableList(contactEvents);
+                return fetchEventsFor(contact);
             }
         });
     }
 
-    public Optional<ContactEventsOnADate> getCelebrationsClosestTo(Date date) {
+    @NonNull
+    @Override
+    public Date findClosestEventDateOnOrAfter(@NonNull Date date) throws NoEventsFoundException {
         ensureDateHasYear(date);
 
         Optional<ContactEventsOnADate> staticEvents = findNextStaticEventsFor(date);
         Optional<ContactEventsOnADate> dynamicEvents = findNextDynamicEventFor(date);
-        return returnClosestEventsOrMerge(staticEvents, dynamicEvents);
-
+        Optional<ContactEventsOnADate> contactEventsOnADateOptional = returnClosestEventsOrMerge(staticEvents, dynamicEvents);
+        if (contactEventsOnADateOptional.isPresent()) {
+            return contactEventsOnADateOptional.get().getDate();
+        }
+        throw new NoEventsFoundException("There are no events after " + date);
     }
 
     private Optional<ContactEventsOnADate> findNextStaticEventsFor(Date date) {
         try {
-            Date closestStaticDate = staticEvents.findClosestStaticEventDateFrom(date);
+            Date closestStaticDate = staticEvents.findClosestEventDateOnOrAfter(date);
             return new Optional<>(staticEvents.fetchEventsOn(closestStaticDate));
         } catch (NoEventsFoundException e) {
             return Optional.absent();
