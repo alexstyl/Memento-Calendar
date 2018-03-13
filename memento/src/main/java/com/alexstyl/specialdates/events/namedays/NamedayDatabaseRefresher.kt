@@ -2,11 +2,11 @@ package com.alexstyl.specialdates.events.namedays
 
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
-import com.alexstyl.specialdates.events.peopleevents.PeopleNamedaysCalculator
+import com.alexstyl.specialdates.events.peopleevents.PeopleDynamicNamedaysProvider
 
 class NamedayDatabaseRefresher(private val namedayUserSettings: NamedayUserSettings,
                                private val perister: PeopleEventsPersister,
-                               private val calculator: PeopleNamedaysCalculator) {
+                               private val provider: PeopleDynamicNamedaysProvider) {
 
     fun refreshNamedaysIfEnabled() {
         perister.deleteAllNamedays()
@@ -16,7 +16,7 @@ class NamedayDatabaseRefresher(private val namedayUserSettings: NamedayUserSetti
     }
 
     private fun initialiseNamedays() {
-        val namedays = calculator.loadDeviceStaticNamedays()
+        val namedays = provider.loadAllStaticNamedays()
         storeNamedaysToDisk(namedays)
     }
 

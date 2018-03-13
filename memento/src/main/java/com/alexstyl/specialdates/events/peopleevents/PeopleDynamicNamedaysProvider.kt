@@ -12,14 +12,14 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 
-open class PeopleNamedaysCalculator(
-        private val namedayPreferences: NamedayUserSettings,
+open class PeopleDynamicNamedaysProvider(
+        private val settings: NamedayUserSettings,
         private val namedayCalendarProvider: NamedayCalendarProvider,
         private val contactsProvider: ContactsProvider) : PeopleEventsProvider {
 
     private val namedayCalendar: NamedayCalendar
         get() {
-            val locale = namedayPreferences.selectedLanguage
+            val locale = settings.selectedLanguage
             return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR)
         }
 
@@ -29,6 +29,9 @@ open class PeopleNamedaysCalculator(
     }
 
     override fun fetchEventsBetween(timePeriod: TimePeriod): List<ContactEvent> {
+        if (!settings.isEnabled) {
+            return emptyList()
+        }
         val namedayEvents = ArrayList<ContactEvent>()
         for (contact in contactsProvider.allContacts) {
             for (firstName in contact.displayName.firstNames) {
@@ -51,6 +54,9 @@ open class PeopleNamedaysCalculator(
     }
 
     override fun fetchEventsFor(contact: Contact): List<ContactEvent> {
+        if (!settings.isEnabled) {
+            return emptyList()
+        }
         val namedays = ArrayList<ContactEvent>()
         for (name in contact.displayName.allNames) {
             val (_, specialDates) = getSpecialNamedaysOf(name)
@@ -65,6 +71,9 @@ open class PeopleNamedaysCalculator(
     }
 
     override fun findClosestEventDateOnOrAfter(date: Date): Date? {
+        if (!settings.isEnabled) {
+            return null
+        }
         val timePeriod = TimePeriod.between(date, Date.endOfYear(date.year))
         val contactEvents = ArrayList(fetchEventsBetween(timePeriod))
         contactEvents.sortWith(Comparator { (_, _, date1), (_, _, date2) -> DATE_COMPARATOR.compare(date1, date2) })
@@ -77,7 +86,10 @@ open class PeopleNamedaysCalculator(
         return null
     }
 
-    fun loadDeviceStaticNamedays(): List<ContactEvent> {
+    fun loadAllStaticNamedays(): List<ContactEvent> {
+        if (!settings.isEnabled) {
+            return emptyList()
+        }
         val namedayEvents = ArrayList<ContactEvent>()
         val contacts = contactsProvider.allContacts
         for (contact in contacts) {
