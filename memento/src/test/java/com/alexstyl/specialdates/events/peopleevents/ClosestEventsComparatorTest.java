@@ -54,7 +54,7 @@ public class ClosestEventsComparatorTest {
 
     @Test
     public void aPresentButBAbsent_thenAWins() {
-        Optional<ContactEventsOnADate> optionalA = new Optional<>(ContactEventsOnADate.createFrom(Companion.on(1, JANUARY, 1990), new ArrayList<ContactEvent>()));
+        Optional<ContactEventsOnADate> optionalA = new Optional<>(ContactEventsOnADate.Companion.createFrom(Companion.on(1, JANUARY, 1990), new ArrayList<ContactEvent>()));
         Optional<ContactEventsOnADate> optionalB = absent();
 
         assertThat(comparator.compare(optionalA, optionalB)).isNegative();
@@ -69,7 +69,7 @@ public class ClosestEventsComparatorTest {
     }
 
     private static Optional<ContactEventsOnADate> anOptional(Date date) {
-        return new Optional<>(ContactEventsOnADate.createFrom(date, new ArrayList<ContactEvent>()));
+        return new Optional<>(ContactEventsOnADate.Companion.createFrom(date, new ArrayList<ContactEvent>()));
     }
 
     private static Optional<ContactEventsOnADate> absent() {

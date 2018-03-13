@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.date.TimePeriod
 interface PeopleEventsProvider {
     fun fetchEventsOn(date: Date): ContactEventsOnADate
 
-    fun fetchEventsBetween(timeDuration: TimePeriod): List<ContactEvent>
+    fun fetchEventsBetween(timePeriod: TimePeriod): List<ContactEvent>
 
     fun fetchEventsFor(contact: Contact): List<ContactEvent>
 
