@@ -7,11 +7,11 @@ import android.provider.ContactsContract;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.Event;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.images.DecodedImage;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.date.TimePeriod;
 import com.novoda.notils.exception.DeveloperError;
 
@@ -23,12 +23,12 @@ class ContactOperations {
 
     private final ContentResolver contentResolver;
     private final WriteableAccountsProvider accountsProvider;
-    private final PeopleEventsProvider peopleEventsProvider;
+    private final CompositePeopleEventsProvider peopleEventsProvider;
     private final ShortDateLabelCreator displayStringCreator;
 
     ContactOperations(ContentResolver contentResolver,
                       WriteableAccountsProvider accountsProvider,
-                      PeopleEventsProvider peopleEventsProvider,
+                      CompositePeopleEventsProvider peopleEventsProvider,
                       ShortDateLabelCreator displayStringCreator) {
         this.contentResolver = contentResolver;
         this.accountsProvider = accountsProvider;

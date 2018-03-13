@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class PeopleEventsSearchTest {
 
     private PeopleEventsSearch search;
     @Mock
-    private PeopleEventsProvider mockProvider;
+    private CompositePeopleEventsProvider mockProvider;
 
     @Before
     public void setUp() {

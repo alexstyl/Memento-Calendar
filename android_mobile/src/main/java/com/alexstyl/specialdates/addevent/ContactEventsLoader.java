@@ -5,9 +5,9 @@ import android.content.Context;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
 import com.alexstyl.specialdates.date.TimePeriod;
 
@@ -20,14 +20,14 @@ final class ContactEventsLoader extends SimpleAsyncTaskLoader<List<AddEventConta
 
     private final Optional<Contact> contact;
 
-    private final PeopleEventsProvider peopleEventsProvider;
+    private final CompositePeopleEventsProvider peopleEventsProvider;
     private final AddEventContactEventViewModelFactory factory;
     private final AddEventViewModelFactory newEventFactory;
     private final List<AddEventContactEventViewModel> emptyEvents;
 
     ContactEventsLoader(Context context,
                         Optional<Contact> contact,
-                        PeopleEventsProvider peopleEventsProvider,
+                        CompositePeopleEventsProvider peopleEventsProvider,
                         AddEventContactEventViewModelFactory factory,
                         AddEventViewModelFactory newEventFactory) {
         super(context);

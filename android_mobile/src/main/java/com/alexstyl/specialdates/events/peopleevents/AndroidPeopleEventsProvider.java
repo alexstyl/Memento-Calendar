@@ -30,7 +30,7 @@ import java.util.Map;
 
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
 
-class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
+class AndroidPeopleEventsProvider implements PeopleEventsProvider {
 
     private static final String DATE_FROM = "substr(" + AnnualEventsContract.DATE + ",-5) >= ?";
     private static final String DATE_TO = "substr(" + AnnualEventsContract.DATE + ",-5) <= ?";
@@ -58,10 +58,10 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
     private final CustomEventProvider customEventProvider;
     private final CrashAndErrorTracker tracker;
 
-    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
-                                      ContactsProvider contactsProvider,
-                                      CustomEventProvider customEventProvider,
-                                      CrashAndErrorTracker tracker) {
+    AndroidPeopleEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
+                                ContactsProvider contactsProvider,
+                                CustomEventProvider customEventProvider,
+                                CrashAndErrorTracker tracker) {
         this.eventSQLHelper = sqLiteOpenHelper;
         this.contactsProvider = contactsProvider;
         this.customEventProvider = customEventProvider;

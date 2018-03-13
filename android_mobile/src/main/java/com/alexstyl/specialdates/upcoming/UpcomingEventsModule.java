@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
@@ -35,7 +35,7 @@ public class UpcomingEventsModule {
                                                                  Colors colors,
                                                                  NamedayUserSettings namedayUserSettings,
                                                                  NamedayCalendarProvider namedayCalendarProvider,
-                                                                 PeopleEventsProvider eventsProvider) {
+                                                                 CompositePeopleEventsProvider eventsProvider) {
         Date date = Date.Companion.today();
         return new CompositeUpcomingEventsProvider(
                 eventsProvider,
