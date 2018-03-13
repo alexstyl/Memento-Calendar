@@ -18,13 +18,13 @@ import org.mockito.runners.MockitoJUnitRunner
 class CompositePeopleEventsProviderTest {
 
     @Mock
-    private val mockNamedaysPreferences: NamedayUserSettings? = null
+    private lateinit var mockNamedaysPreferences: NamedayUserSettings
     @Mock
-    private val mockDeviceEvents: PeopleEventsProvider? = null
+    private lateinit var mockDeviceEvents: PeopleEventsProvider
     @Mock
-    private val mockPeopleNamedaysCalculator: PeopleNamedaysCalculator? = null
+    private lateinit var mockPeopleNamedaysCalculator: PeopleNamedaysCalculator
 
-    private var peopleEventsProvider: CompositePeopleEventsProvider? = null
+    private lateinit var peopleEventsProvider: CompositePeopleEventsProvider
 
     @Before
     fun setUp() {
@@ -40,10 +40,10 @@ class CompositePeopleEventsProviderTest {
         val date = Date.on(1, JANUARY, 2017)
         val expectedEvents = TestContactEventsBuilder().addAnniversaryFor(PETER, date).build()
 
-        given(mockDeviceEvents!!.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedEvents))
-        mockPeopleNamedaysCalculator!!.willReturnNoEventsOn(date)
+        given(mockDeviceEvents.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedEvents))
+        mockPeopleNamedaysCalculator.willReturnNoEventsOn(date)
 
-        val events = peopleEventsProvider!!.fetchEventsOn(date)
+        val events = peopleEventsProvider.fetchEventsOn(date)
         assertThat(events.events).containsOnly(expectedEvents[0])
     }
 
@@ -51,11 +51,11 @@ class CompositePeopleEventsProviderTest {
     fun whenOnlyNamedaysExist_willReturnsOnlyThoseEvents() {
         val date = Date.on(1, JANUARY, 2017)
         val expectedEvents = TestContactEventsBuilder().addNamedayFor(PETER, date).build()
-        given(mockNamedaysPreferences!!.isEnabled).willReturn(true)
-        given(mockPeopleNamedaysCalculator!!.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedEvents))
-        mockDeviceEvents!!.willReturnNoEventsOn(date)
+        given(mockNamedaysPreferences.isEnabled).willReturn(true)
+        given(mockPeopleNamedaysCalculator.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedEvents))
+        mockDeviceEvents.willReturnNoEventsOn(date)
 
-        val events = peopleEventsProvider!!.fetchEventsOn(date)
+        val events = peopleEventsProvider.fetchEventsOn(date)
         assertThat(events.events).containsOnly(expectedEvents[0])
     }
 
@@ -65,11 +65,11 @@ class CompositePeopleEventsProviderTest {
         val expectedDynamicEvents = TestContactEventsBuilder().addNamedayFor(PETER, date).build()
         val expectedStaticEvents = TestContactEventsBuilder().addAnniversaryFor(PETER, date).build()
 
-        given(mockNamedaysPreferences!!.isEnabled).willReturn(true)
-        given(mockPeopleNamedaysCalculator!!.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedDynamicEvents))
-        given(mockDeviceEvents!!.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedStaticEvents))
+        given(mockNamedaysPreferences.isEnabled).willReturn(true)
+        given(mockPeopleNamedaysCalculator.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedDynamicEvents))
+        given(mockDeviceEvents.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedStaticEvents))
 
-        val events = peopleEventsProvider!!.fetchEventsOn(date)
+        val events = peopleEventsProvider.fetchEventsOn(date)
         assertThat(events.events).containsAll(expectedDynamicEvents)
         assertThat(events.events).containsAll(expectedStaticEvents)
     }
@@ -79,10 +79,10 @@ class CompositePeopleEventsProviderTest {
     fun whenNoEventsExist_thenThrowsException() {
         val aDate = Date.on(1, JANUARY, 2017)
 
-        mockDeviceEvents!!.willReturnNoEventsOn(aDate)
-        mockPeopleNamedaysCalculator!!.willReturnNoEventsOn(aDate)
+        mockDeviceEvents.willReturnNoEventsOn(aDate)
+        mockPeopleNamedaysCalculator.willReturnNoEventsOn(aDate)
 
-        peopleEventsProvider!!.findClosestEventDateOnOrAfter(aDate)
+        peopleEventsProvider.findClosestEventDateOnOrAfter(aDate)
     }
 
     @Test
@@ -90,19 +90,19 @@ class CompositePeopleEventsProviderTest {
     fun onlyDynamicEvents_returnsTheDynamicEvents() {
         val aDate = Date.on(2, MARCH, 2017)
 
-        given(mockDeviceEvents!!.findClosestEventDateOnOrAfter(aDate)).willThrow(NoEventsFoundException::class.java)
+        given(mockDeviceEvents.findClosestEventDateOnOrAfter(aDate)).willThrow(NoEventsFoundException::class.java)
         given(mockDeviceEvents.fetchEventsOn(aDate)).willReturn(ContactEventsOnADate.createFrom(aDate, emptyList()))
 
-        given(mockNamedaysPreferences!!.isEnabled).willReturn(true)
-        given(mockPeopleNamedaysCalculator!!.findClosestEventDateOnOrAfter(aDate)).willReturn(aDate)
+        given(mockNamedaysPreferences.isEnabled).willReturn(true)
+        given(mockPeopleNamedaysCalculator.findClosestEventDateOnOrAfter(aDate)).willReturn(aDate)
 
         val expectedEvents = TestContactEventsBuilder()
                 .addNamedayFor(PETER, aDate)
                 .build()
         given(mockPeopleNamedaysCalculator.fetchEventsOn(aDate)).willReturn(ContactEventsOnADate.createFrom(aDate, expectedEvents))
 
-        val actualEvents = peopleEventsProvider!!.findClosestEventDateOnOrAfter(aDate)
-        val events = peopleEventsProvider!!.fetchEventsOn(actualEvents)
+        val actualEvents = peopleEventsProvider.findClosestEventDateOnOrAfter(aDate)
+        val events = peopleEventsProvider.fetchEventsOn(actualEvents)
         assertThat(events).isEqualTo(ContactEventsOnADate.createFrom(aDate, expectedEvents))
     }
 
