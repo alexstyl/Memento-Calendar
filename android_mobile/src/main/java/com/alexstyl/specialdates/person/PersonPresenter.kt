@@ -4,7 +4,7 @@ import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
 
 internal class PersonPresenter(private val personView: PersonView,
-                               private val provider: CompositePeopleEventsProvider,
+                               private val provider: PeopleEventsProvider,
                                private val personCallProvider: PersonCallProvider,
                                private val workScheduler: Scheduler,
                                private val resultScheduler: Scheduler,
@@ -29,7 +29,7 @@ internal class PersonPresenter(private val personView: PersonView,
         contactOptional = Optional(contact)
 
         disposable.add(
-                provider.getContactEventsFor(contact)
+                getEventsFor(contact)
                         .map {
 
                             val isVisible = persister.getVisibilityFor(contact)
@@ -60,8 +60,10 @@ internal class PersonPresenter(private val personView: PersonView,
                         }))
     }
 
+    private fun getEventsFor(contact: Contact) = Observable.fromCallable { provider.fetchEventsFor(contact) }
 
-    private fun eventsOf(contact: Contact) = provider.getContactEventsFor(contact)
+
+    private fun eventsOf(contact: Contact) = getEventsFor(contact)
             .map { toEventViewModel(it) }
 
     private fun List<ContactEvent>.keepOnlyBirthday() = find { it.type == StandardEventType.BIRTHDAY }

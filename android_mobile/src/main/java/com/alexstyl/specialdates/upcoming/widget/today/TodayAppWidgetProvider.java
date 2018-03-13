@@ -20,7 +20,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
@@ -39,7 +39,7 @@ public class TodayAppWidgetProvider extends AppWidgetProvider {
     @Inject NamedayUserSettings namedayUserSettings;
     @Inject ContactsProvider contactsProvider;
     @Inject DateLabelCreator labelCreator;
-    @Inject CompositePeopleEventsProvider peopleEventsProvider;
+    @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
 
     @Override

@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ final class ContactEventsFetcher {
 
     private final LoaderManager loaderManager;
     private final Context context;
-    private final CompositePeopleEventsProvider peopleEventsProvider;
+    private final PeopleEventsProvider peopleEventsProvider;
     private final AddEventContactEventViewModelFactory factory;
     private final AddEventViewModelFactory addEventViewModelFactory;
 
@@ -27,7 +27,7 @@ final class ContactEventsFetcher {
 
     ContactEventsFetcher(LoaderManager loaderManager,
                          Context context,
-                         CompositePeopleEventsProvider peopleEventsProvider,
+                         PeopleEventsProvider peopleEventsProvider,
                          AddEventContactEventViewModelFactory factory,
                          AddEventViewModelFactory addEventViewModelFactory) {
         this.loaderManager = loaderManager;

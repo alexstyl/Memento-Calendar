@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.novoda.notils.logger.simple.Log;
 
@@ -41,7 +41,7 @@ public class DailyReminderIntentService extends IntentService {
     @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayUserSettings namedayPreferences;
     @Inject DailyReminderNotifier notifier;
-    @Inject CompositePeopleEventsProvider peopleEventsProvider;
+    @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
 
     public DailyReminderIntentService() {
@@ -63,7 +63,7 @@ public class DailyReminderIntentService extends IntentService {
         Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {
-            List<ContactEvent> celebrationDate = peopleEventsProvider.getContactEventsFor(TimePeriod.Companion.between(today, today));
+            List<ContactEvent> celebrationDate = peopleEventsProvider.fetchEventsBetween(TimePeriod.Companion.between(today, today));
             if (containsAnyContactEvents(celebrationDate)) {
                 notifier.forDailyReminder(today, celebrationDate);
             }

@@ -10,8 +10,9 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
-import com.alexstyl.specialdates.events.peopleevents.CompositePeopleEventsProvider;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
+import com.alexstyl.specialdates.events.peopleevents.NoEventsFoundException;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -25,7 +26,7 @@ import java.util.List;
 public class WearSyncService extends IntentService {
 
     @Inject NamedayUserSettings namedayUserSettings;
-    @Inject CompositePeopleEventsProvider peopleEventsProvider;
+    @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
     @Inject MementoPermissions permissions;
 
@@ -61,8 +62,13 @@ public class WearSyncService extends IntentService {
     }
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
-        Date today = Date.Companion.today();
-        return peopleEventsProvider.getCelebrationsClosestTo(today);
+        try {
+            Date closestDate = peopleEventsProvider.findClosestEventDateOnOrAfter(Date.Companion.today());
+            return new Optional<>(peopleEventsProvider.fetchEventsOn(closestDate));
+        } catch (NoEventsFoundException e) {
+            e.printStackTrace();
+        }
+        return Optional.absent();
     }
 
     private PutDataRequest createDataRequest(ContactEventsOnADate contactEvents) {
