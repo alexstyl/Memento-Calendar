@@ -50,34 +50,34 @@ class AndroidPeopleEventsPersister(private val helper: SQLiteOpenHelper,
     }
 
     override fun insertAnnualEvents(events: List<ContactEvent>) {
-        val contentValues = marshaller.marshall(events)
-        insertEventsInTable(contentValues, AnnualEventsContract.TABLE_NAME)
-    }
-
-    private fun insertEventsInTable(values: Array<ContentValues>, tableName: String) {
         helper.writableDatabase
                 .executeTransaction { db ->
-                    for (value in values) {
-                        db.insert(tableName, null, value)
-                    }
+                    marshaller
+                            .marshall(events)
+                            .forEach { contentValues ->
+                                db.insert(AnnualEventsContract.TABLE_NAME, null, contentValues)
+                            }
                 }
     }
 
     override fun markContactAsVisible(contact: Contact) {
         helper.writableDatabase
                 .executeTransaction { db ->
-                    val values = ContentValues(1)
-                    values.put(AnnualEventsContract.VISIBLE, 1)
-
                     db.update(
                             AnnualEventsContract.TABLE_NAME,
-                            values,
+                            visible(),
                             AnnualEventsContract.CONTACT_ID + " = " + contact.contactID
                                     + " AND " + AnnualEventsContract.SOURCE + " = " + contact.source, null
                     )
 
                 }
 
+    }
+
+    private fun visible(): ContentValues {
+        return ContentValues(1).apply {
+            put(AnnualEventsContract.VISIBLE, 1)
+        }
     }
 
     override fun markContactAsHidden(contact: Contact) {
@@ -110,7 +110,7 @@ class AndroidPeopleEventsPersister(private val helper: SQLiteOpenHelper,
         return count > 0
     }
 
-    private fun SQLiteDatabase.executeTransaction(function: (SQLiteDatabase) -> Unit) {
+    private inline fun SQLiteDatabase.executeTransaction(function: (SQLiteDatabase) -> Unit) {
         try {
             this.beginTransaction()
             function(this)
