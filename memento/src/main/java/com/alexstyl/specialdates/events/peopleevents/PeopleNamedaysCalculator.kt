@@ -64,9 +64,8 @@ open class PeopleNamedaysCalculator(
         return namedays
     }
 
-    @Throws(NoEventsFoundException::class)
-    override fun findClosestEventDateOnOrAfter(date: Date): Date {
-        val timePeriod = TimePeriod.between(date, Date.endOfYear(date.getYear()))
+    override fun findClosestEventDateOnOrAfter(date: Date): Date? {
+        val timePeriod = TimePeriod.between(date, Date.endOfYear(date.year))
         val contactEvents = ArrayList(fetchEventsBetween(timePeriod))
         contactEvents.sortWith(Comparator { (_, _, date1), (_, _, date2) -> DATE_COMPARATOR.compare(date1, date2) })
 
@@ -75,7 +74,7 @@ open class PeopleNamedaysCalculator(
                 return contactEventDate
             }
         }
-        throw NoEventsFoundException("No nameday events found on or after $date")
+        return null
     }
 
     fun loadDeviceStaticNamedays(): List<ContactEvent> {

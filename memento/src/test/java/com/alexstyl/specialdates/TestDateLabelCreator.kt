@@ -9,7 +9,7 @@ class TestDateLabelCreator private constructor(private val monthLabels: MonthLab
 
     override fun createWithYearPreferred(date: Date): String {
         return if (date.hasYear()) {
-            monthLabels.getMonthOfYear(date.month) + " " + date.dayOfMonth + " " + date.getYear()
+            monthLabels.getMonthOfYear(date.month) + " " + date.dayOfMonth + " " + date.year
         } else {
             monthLabels.getMonthOfYear(date.month) + " " + date.dayOfMonth
         }
