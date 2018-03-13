@@ -63,7 +63,7 @@ public class DailyReminderIntentService extends IntentService {
         Date today = getDayDateToDisplay();
 
         if (hasContactPermission()) {
-            List<ContactEvent> celebrationDate = peopleEventsProvider.getContactEventsFor(TimePeriod.Companion.between(today, today));
+            List<ContactEvent> celebrationDate = peopleEventsProvider.fetchEventsBetween(TimePeriod.Companion.between(today, today));
             if (containsAnyContactEvents(celebrationDate)) {
                 notifier.forDailyReminder(today, celebrationDate);
             }

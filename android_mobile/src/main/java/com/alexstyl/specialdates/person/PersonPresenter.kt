@@ -29,7 +29,7 @@ internal class PersonPresenter(private val personView: PersonView,
         contactOptional = Optional(contact)
 
         disposable.add(
-                provider.getContactEventsFor(contact)
+                getEventsFor(contact)
                         .map {
 
                             val isVisible = persister.getVisibilityFor(contact)
@@ -60,8 +60,10 @@ internal class PersonPresenter(private val personView: PersonView,
                         }))
     }
 
+    private fun getEventsFor(contact: Contact) = Observable.fromCallable { provider.fetchEventsFor(contact) }
 
-    private fun eventsOf(contact: Contact) = provider.getContactEventsFor(contact)
+
+    private fun eventsOf(contact: Contact) = getEventsFor(contact)
             .map { toEventViewModel(it) }
 
     private fun List<ContactEvent>.keepOnlyBirthday() = find { it.type == StandardEventType.BIRTHDAY }
