@@ -27,9 +27,9 @@ import javax.inject.Singleton
 open class PeopleEventsModule(private val context: Context) {
 
     @Provides
-    open fun peopleEventsProvider(peopleNamedaysCalculator: PeopleNamedaysCalculator,
-                             androidPeopleEventsProvider: AndroidPeopleEventsProvider): PeopleEventsProvider {
-        return CompositePeopleEventsProvider(listOf(peopleNamedaysCalculator, androidPeopleEventsProvider))
+    open fun peopleEventsProvider(peopleDynamicNamedaysProvider: PeopleDynamicNamedaysProvider,
+                                  androidPeopleEventsProvider: AndroidPeopleEventsProvider): PeopleEventsProvider {
+        return CompositePeopleEventsProvider(listOf(peopleDynamicNamedaysProvider, androidPeopleEventsProvider))
     }
 
     @Provides
@@ -45,8 +45,8 @@ open class PeopleEventsModule(private val context: Context) {
     @Provides
     open fun peopleNamedayCalculator(namedayPreferences: NamedayUserSettings,
                                 namedaysCalendarProvider: NamedayCalendarProvider,
-                                contactsProvider: ContactsProvider): PeopleNamedaysCalculator {
-        return PeopleNamedaysCalculator(namedayPreferences, namedaysCalendarProvider, contactsProvider)
+                                contactsProvider: ContactsProvider): PeopleDynamicNamedaysProvider {
+        return PeopleDynamicNamedaysProvider(namedayPreferences, namedaysCalendarProvider, contactsProvider)
     }
 
     @Provides
@@ -73,9 +73,9 @@ open class PeopleEventsModule(private val context: Context) {
 
     @Provides
     open fun namedayDatabaseRefresher(namedayUserSettings: NamedayUserSettings,
-                                 databaseProvider: PeopleEventsPersister,
-                                 calculator: PeopleNamedaysCalculator): NamedayDatabaseRefresher {
-        return NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, calculator)
+                                      databaseProvider: PeopleEventsPersister,
+                                      provider: PeopleDynamicNamedaysProvider): NamedayDatabaseRefresher {
+        return NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, provider)
     }
 
     @Provides
