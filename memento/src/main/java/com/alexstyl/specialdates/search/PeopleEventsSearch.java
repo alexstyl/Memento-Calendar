@@ -2,8 +2,8 @@ package com.alexstyl.specialdates.search;
 
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.date.TimePeriod;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.util.HashMapList;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ final class PeopleEventsSearch {
         searchQuery = searchQuery.trim();
         HashMapList<Contact, ContactEvent> events = new HashMapList<>();
         TimePeriod between = TimePeriod.Companion.aYearFromNow();
-        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.getContactEventsFor(between);
+        List<ContactEvent> contactEventsOnDate = peopleEventsProvider.fetchEventsBetween(between);
         int size = 0;
         for (ContactEvent contactEvent : contactEventsOnDate) {
             Contact contact = contactEvent.getContact();

@@ -30,7 +30,7 @@ class PeoplePresenter(
                             view.showLoading()
                         }
                         .map { _ ->
-                            peopleEventsProvider.getContactEventsFor(TimePeriod.aYearFromNow())
+                            peopleEventsProvider.fetchEventsBetween(TimePeriod.aYearFromNow())
                         }
                         .map { contacts ->
                             val viewModels = arrayListOf<PeopleRowViewModel>()

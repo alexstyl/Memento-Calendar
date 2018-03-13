@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents;
 
 import android.database.Cursor;
 import android.database.MergeCursor;
+import android.support.annotation.NonNull;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Optional;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 import static com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM;
 
-class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
+class AndroidPeopleEventsProvider implements PeopleEventsProvider {
 
     private static final String DATE_FROM = "substr(" + AnnualEventsContract.DATE + ",-5) >= ?";
     private static final String DATE_TO = "substr(" + AnnualEventsContract.DATE + ",-5) <= ?";
@@ -58,10 +59,10 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
     private final CustomEventProvider customEventProvider;
     private final CrashAndErrorTracker tracker;
 
-    AndroidPeopleStaticEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
-                                      ContactsProvider contactsProvider,
-                                      CustomEventProvider customEventProvider,
-                                      CrashAndErrorTracker tracker) {
+    AndroidPeopleEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
+                                ContactsProvider contactsProvider,
+                                CustomEventProvider customEventProvider,
+                                CrashAndErrorTracker tracker) {
         this.eventSQLHelper = sqLiteOpenHelper;
         this.contactsProvider = contactsProvider;
         this.customEventProvider = customEventProvider;
@@ -70,12 +71,12 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
 
     @Override
     public ContactEventsOnADate fetchEventsOn(Date date) {
-        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
+        return ContactEventsOnADate.Companion.createFrom(date, fetchEventsBetween(TimePeriod.Companion.between(date, date)));
     }
 
     @Override
-    public List<ContactEvent> fetchEventsBetween(TimePeriod timeDuration) {
-        Cursor cursor = queryEventsFor(timeDuration);
+    public List<ContactEvent> fetchEventsBetween(TimePeriod timePeriod) {
+        Cursor cursor = queryEventsFor(timePeriod);
         List<ContactEvent> contactEvents = new ArrayList<>(cursor.getCount());
 
         List<Long> deviceIds = new ArrayList<>(cursor.getCount());
@@ -204,8 +205,9 @@ class AndroidPeopleStaticEventsProvider implements PeopleStaticEventsProvider {
         return timeDuration.getStartingDate().getYear() == timeDuration.getEndingDate().getYear();
     }
 
+    @NonNull
     @Override
-    public Date findClosestStaticEventDateFrom(Date date) throws NoEventsFoundException {
+    public Date findClosestEventDateOnOrAfter(@NonNull Date date) throws NoEventsFoundException {
         Cursor cursor = queryDateClosestTo(date);
         try {
             if (cursor.moveToFirst()) {

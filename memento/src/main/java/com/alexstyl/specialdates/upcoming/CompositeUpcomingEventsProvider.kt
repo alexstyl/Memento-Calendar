@@ -17,7 +17,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
                                       private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory) : UpcomingEventsProvider {
 
     override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
-        val contactEvents = peopleEventsProvider.getContactEventsFor(timePeriod)
+        val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
         val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
                 timePeriod,
                 upcomingRowViewModelFactory
