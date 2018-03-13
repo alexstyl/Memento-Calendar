@@ -7,8 +7,6 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 
-import java.util.ArrayList
-import java.util.Collections
 
 open class CompositePeopleEventsProvider(private val namedayPreferences: NamedayUserSettings,
                                     private val peopleNamedaysCalculator: PeopleNamedaysCalculator,
@@ -37,7 +35,7 @@ open class CompositePeopleEventsProvider(private val namedayPreferences: Nameday
             val namedaysContactEvents = peopleNamedaysCalculator.fetchEventsBetween(timePeriod)
             contactEvents.addAll(namedaysContactEvents)
         }
-        return Collections.unmodifiableList(contactEvents)
+        return contactEvents.toList()
     }
 
     override fun fetchEventsFor(contact: Contact): List<ContactEvent> {
@@ -47,7 +45,7 @@ open class CompositePeopleEventsProvider(private val namedayPreferences: Nameday
             val namedaysContactEvents = peopleNamedaysCalculator.fetchEventsFor(contact)
             contactEvents.addAll(namedaysContactEvents)
         }
-        return Collections.unmodifiableList(contactEvents)
+        return contactEvents.toList()
     }
 
     @Throws(NoEventsFoundException::class)
@@ -129,7 +127,7 @@ open class CompositePeopleEventsProvider(private val namedayPreferences: Nameday
         val contactEvents = ArrayList<T>()
         contactEvents.addAll(listA)
         contactEvents.addAll(listB)
-        return Collections.unmodifiableList(contactEvents)
+        return contactEvents.toList()
     }
 
     private fun ensureDateHasYear(date: Date) {

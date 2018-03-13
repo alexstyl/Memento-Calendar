@@ -11,10 +11,6 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import java.util.ArrayList
-import java.util.Collections
-import java.util.HashSet
-import kotlin.Comparator
 
 open class PeopleNamedaysCalculator(
         private val namedayPreferences: NamedayUserSettings,
@@ -51,7 +47,7 @@ open class PeopleNamedaysCalculator(
                 }
             }
         }
-        return Collections.unmodifiableList(namedayEvents)
+        return namedayEvents.toList()
     }
 
     override fun fetchEventsFor(contact: Contact): List<ContactEvent> {
@@ -79,7 +75,7 @@ open class PeopleNamedaysCalculator(
                 return contactEventDate
             }
         }
-        throw NoEventsFoundException("No dynamic even found after or on $date")
+        throw NoEventsFoundException("No nameday events found on or after $date")
     }
 
     fun loadDeviceStaticNamedays(): List<ContactEvent> {
