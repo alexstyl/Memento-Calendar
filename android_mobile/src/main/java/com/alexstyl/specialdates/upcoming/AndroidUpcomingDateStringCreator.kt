@@ -25,7 +25,7 @@ class AndroidUpcomingDateStringCreator constructor(
             formatFlags = formatFlags or (DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_WEEKDAY)
         }
 
-        if (date.getYear() != today.getYear()) {
+        if (date.year != today.year) {
             formatFlags = formatFlags or DateUtils.FORMAT_SHOW_YEAR
         }
         stringBuilder.append(DateUtils.formatDateTime(context, date.toMillis(), formatFlags))

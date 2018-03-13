@@ -5,22 +5,19 @@ import org.joda.time.IllegalFieldValueException
 import org.joda.time.LocalDate
 import java.util.*
 
-data class Date(private val localDate: LocalDate, private val year: Optional<Int>) : Comparable<Date> {
+data class Date(private val localDate: LocalDate, private val yearOptional: Optional<Int>) : Comparable<Date> {
 
     fun addDay(i: Int): Date {
         val addedDate = localDate.plusDays(i)
         return Date(addedDate, Optional(addedDate.year))
     }
 
-    val dayOfMonth: Int
-        get() = localDate.dayOfMonth
+    val dayOfMonth: Int get() = localDate.dayOfMonth
 
-    // JodaTime follows the same indexing as our project
-    val month: Int
-        @MonthInt
-        get() = localDate.monthOfYear
+    val month: Int @MonthInt get() = localDate.monthOfYear
 
-    fun getYear(): Int = year.get()
+    val year: Int get() = yearOptional.get()
+
 
     fun toMillis(): Long = localDate.toDate().time
 
@@ -37,18 +34,18 @@ data class Date(private val localDate: LocalDate, private val year: Optional<Int
     fun daysDifferenceTo(otherEvent: Date): Int {
         val dayOfYear = localDate.dayOfYear().get()
         val otherDayOfYear = otherEvent.localDate.dayOfYear().get()
-        val daysOfYearsDifference = (getYear() - otherEvent.getYear()) * 365
+        val daysOfYearsDifference = (year - otherEvent.year) * 365
         return otherDayOfYear - dayOfYear - daysOfYearsDifference
     }
 
-    fun hasYear(): Boolean = year.isPresent
+    fun hasYear(): Boolean = yearOptional.isPresent
 
-    fun hasNoYear(): Boolean = !year.isPresent
+    fun hasNoYear(): Boolean = !yearOptional.isPresent
 
     override fun compareTo(other: Date): Int {
         if (this.hasYear() && other.hasYear()) {
-            val yearOne = this.getYear()
-            val yearTwo = other.getYear()
+            val yearOne = this.year
+            val yearTwo = other.year
             if (yearOne > yearTwo) {
                 return 1
             } else if (yearOne < yearTwo) {

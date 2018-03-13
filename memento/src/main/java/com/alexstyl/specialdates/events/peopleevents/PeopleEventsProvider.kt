@@ -12,9 +12,5 @@ interface PeopleEventsProvider {
 
     fun fetchEventsFor(contact: Contact): List<ContactEvent>
 
-    @Throws(NoEventsFoundException::class)
-            /**
-             * Returns the date of first event found on or after the passing date. Throws exception if no event exist after that date
-             */
-    fun findClosestEventDateOnOrAfter(date: Date): Date
+    fun findClosestEventDateOnOrAfter(date: Date): Date?
 }
