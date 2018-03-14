@@ -19,7 +19,7 @@ import com.alexstyl.specialdates.date.TimePeriod;
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.database.EventTypeId;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.DateParser;
 import com.novoda.notils.exception.DeveloperError;
 import com.novoda.notils.logger.simple.Log;
 
@@ -58,15 +58,18 @@ class AndroidPeopleEventsProvider implements PeopleEventsProvider {
     private final ContactsProvider contactsProvider;
     private final CustomEventProvider customEventProvider;
     private final CrashAndErrorTracker tracker;
+    private final DateParser dateParser;
 
     AndroidPeopleEventsProvider(EventSQLiteOpenHelper sqLiteOpenHelper,
                                 ContactsProvider contactsProvider,
                                 CustomEventProvider customEventProvider,
-                                CrashAndErrorTracker tracker) {
+                                CrashAndErrorTracker tracker,
+                                DateParser dateParser) {
         this.eventSQLHelper = sqLiteOpenHelper;
         this.contactsProvider = contactsProvider;
         this.customEventProvider = customEventProvider;
         this.tracker = tracker;
+        this.dateParser = dateParser;
     }
 
     @Override
@@ -214,7 +217,7 @@ class AndroidPeopleEventsProvider implements PeopleEventsProvider {
                 Date closestDate = getDateFrom(cursor);
 
                 return Date.Companion.on(closestDate.getDayOfMonth(), closestDate.getMonth(),
-                        date.getYear()
+                                         date.getYear()
                 );
             }
             throw new NoEventsFoundException("No static even found after or on " + date);
@@ -241,11 +244,11 @@ class AndroidPeopleEventsProvider implements PeopleEventsProvider {
         };
     }
 
-    private static Date getDateFrom(Cursor cursor) {
+    private Date getDateFrom(Cursor cursor) {
         int index = cursor.getColumnIndexOrThrow(AnnualEventsContract.DATE);
         String rawDate = cursor.getString(index);
         try {
-            return DateParser.INSTANCE.parse(rawDate);
+            return dateParser.parse(rawDate);
         } catch (DateParseException e) {
             throw new DeveloperError("Invalid date stored to database. [" + rawDate + "]");
         }

@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingWidgetView;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayUpcomingEventsView;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.DateParser;
 import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView;
 
 import javax.inject.Singleton;
@@ -40,12 +40,13 @@ public class PeopleEventsModule {
                                               PeopleNamedaysCalculator peopleNamedaysCalculator,
                                               EventSQLiteOpenHelper sqLiteOpenHelper,
                                               ContactsProvider contactsProvider,
-                                              CrashAndErrorTracker tracker) {
+                                              CrashAndErrorTracker tracker, DateParser dateParser) {
         PeopleEventsProvider androidPeopleEventsProvider = new AndroidPeopleEventsProvider(
                 sqLiteOpenHelper,
                 contactsProvider,
                 new CustomEventProvider(context.getContentResolver()),
-                tracker
+                tracker,
+                dateParser
         );
         // TODO extract into separate provider
         return new CompositePeopleEventsProvider(namedayUserSettings, peopleNamedaysCalculator, androidPeopleEventsProvider);
@@ -73,8 +74,9 @@ public class PeopleEventsModule {
             EventSQLiteOpenHelper eventSQlite,
             ContentResolver contentResolver,
             ContactsProvider contactsProvider,
-            CrashAndErrorTracker tracker) {
-        PeopleEventsRepository repository = new AndroidPeopleEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE, tracker);
+            CrashAndErrorTracker tracker,
+            DateParser dateParser) {
+        PeopleEventsRepository repository = new AndroidPeopleEventsRepository(contentResolver, contactsProvider, dateParser, tracker);
         ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         PeopleEventsPersister androidPeopleEventsPersister = new AndroidPeopleEventsPersister(eventSQlite, marshaller, tracker);
         return new PeopleEventsStaticEventsRefresher(repository, androidPeopleEventsPersister);

@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.contact.DisplayName;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.DateParseException;
+import com.alexstyl.specialdates.date.DateParser;
 
 import java.util.HashMap;
 
@@ -21,7 +22,7 @@ public class FacebookContactFactoryTest {
 
     @Before
     public void setUp() {
-        factory = new FacebookContactFactory();
+        factory = new FacebookContactFactory(new DateParser(new SystemLogTracker()));
     }
 
     @Test
