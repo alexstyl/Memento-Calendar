@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateComparator
 
-class AndroidUpcomingDateStringCreator constructor(
+class AndroidUpcomingDateStringCreator(
         private val strings: Strings,
         private val today: Date,
         private val context: Context) : UpcomingDateStringCreator {
