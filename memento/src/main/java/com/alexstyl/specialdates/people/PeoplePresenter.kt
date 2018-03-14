@@ -29,6 +29,7 @@ class PeoplePresenter(
                         .doOnSubscribe { _ ->
                             view.showLoading()
                         }
+                        .observeOn(workScheduler)
                         .map { _ ->
                             peopleEventsProvider.fetchEventsBetween(TimePeriod.aYearFromNow())
                         }
@@ -53,7 +54,6 @@ class PeoplePresenter(
                             }
                             viewModels
                         }
-                        .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)
                         .onErrorReturn { error ->
                             errorTracker.track(error)
