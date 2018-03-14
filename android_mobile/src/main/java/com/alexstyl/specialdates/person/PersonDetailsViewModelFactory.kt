@@ -11,11 +11,11 @@ internal class PersonDetailsViewModelFactory(private val strings: Strings, priva
     operator fun invoke(contact: Contact, dateOfBirth: ContactEvent?, isVisible: Boolean): PersonInfoViewModel {
         val ageAndStarSignBuilder = StringBuilder()
         if (dateOfBirth != null) {
-            ageAndStarSignBuilder.append(ageCalculator.ageOf(dateOfBirth.date!!))
+            ageAndStarSignBuilder.append(ageCalculator.ageOf(dateOfBirth.date))
             if (ageAndStarSignBuilder.isNotEmpty()) {
                 ageAndStarSignBuilder.append(", ")
             }
-            ageAndStarSignBuilder.append(starSignOf(dateOfBirth.date!!))
+            ageAndStarSignBuilder.append(starSignOf(dateOfBirth.date))
         }
         return PersonInfoViewModel(contact.displayName.toString(),
                 ageAndStarSignBuilder.toString(),

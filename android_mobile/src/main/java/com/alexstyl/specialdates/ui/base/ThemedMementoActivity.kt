@@ -8,6 +8,7 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
 import android.support.transition.TransitionManager
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -31,7 +32,7 @@ open class ThemedMementoActivity : MementoActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        if(supportActionBar!=null){
+        if (supportActionBar != null) {
 
         }
     }
@@ -49,7 +50,7 @@ open class ThemedMementoActivity : MementoActivity() {
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
-    
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         for (i in 0 until menu?.size()!!) {
             val item = menu.getItem(i)
@@ -64,7 +65,7 @@ open class ThemedMementoActivity : MementoActivity() {
     }
 
     fun getTintedDrawable(@DrawableRes drawableResId: Int): Drawable {
-        val wrappedDrawable = DrawableCompat.wrap(resources.getDrawable(drawableResId))
+        val wrappedDrawable = DrawableCompat.wrap(ResourcesCompat.getDrawable(resources, drawableResId, null)!!)
         val color = attributeExtractor!!.extractToolbarIconColors(this)
         DrawableCompat.setTintList(wrappedDrawable, ColorStateList.valueOf(color))
         return wrappedDrawable

@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.person
 
 import android.content.res.Resources
+import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
@@ -22,22 +23,20 @@ class FacebookContactActionsProvider(
         return ContactActionViewModel(
                 action,
                 View.VISIBLE,
-                resources.getDrawable(R.drawable.ic_facebook_messenger))
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_facebook_messenger, null)!!)
                 .toList()
     }
 
-    override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel>
-            = arrayListOf(goToWallAction(contact), messengerAction(contact))
+    override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> = arrayListOf(goToWallAction(contact), messengerAction(contact))
 
-    private fun messengerAction(contact: Contact): ContactActionViewModel
-            = ContactActionViewModel(
+    private fun messengerAction(contact: Contact): ContactActionViewModel = ContactActionViewModel(
             ContactAction(
                     strings.viewConversation(),
                     strings.facebookMessenger(),
                     actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
             ),
             View.VISIBLE,
-            resources.getDrawable(R.drawable.ic_facebook_messenger))
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_facebook_messenger, null)!!)
 
     private fun goToWallAction(contact: Contact): ContactActionViewModel = ContactActionViewModel(
             ContactAction(
@@ -46,9 +45,7 @@ class FacebookContactActionsProvider(
                     actionsFactory.view(URI.create("https://www.facebook.com/profile.php?id=" + contact.contactID))
             ),
             View.VISIBLE,
-            resources.getDrawable(R.drawable.ic_f_icon))
-
-
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_f_icon, null)!!)
 }
 
 private fun ContactActionViewModel.toList(): List<ContactActionViewModel> {
