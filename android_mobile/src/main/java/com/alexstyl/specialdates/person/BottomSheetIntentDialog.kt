@@ -41,6 +41,7 @@ class BottomSheetIntentDialog : MementoDialog() {
         this.listener = Classes.from(activity)
     }
 
+    @Suppress("UNCHECKED_CAST")
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = activity
