@@ -6,6 +6,7 @@ import android.content.Context
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.UpcomingEventsView
 import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.events.SettingsPresenter
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher
@@ -13,13 +14,13 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingWidgetView
 import com.alexstyl.specialdates.upcoming.widget.today.TodayUpcomingEventsView
-import com.alexstyl.specialdates.util.DateParser
 import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView
 import dagger.Module
 import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import java.util.Arrays
+import java.util.HashSet
 import javax.inject.Singleton
 
 @Module
@@ -33,19 +34,23 @@ open class PeopleEventsModule(private val context: Context) {
     }
 
     @Provides
-    open fun androidPeopleEventsProvider(sqLiteOpenHelper: EventSQLiteOpenHelper, contactsProvider: ContactsProvider, tracker: CrashAndErrorTracker): AndroidPeopleEventsProvider {
+    open fun androidPeopleEventsProvider(sqLiteOpenHelper: EventSQLiteOpenHelper,
+                                         contactsProvider: ContactsProvider,
+                                         dateParser: DateParser,
+                                         tracker: CrashAndErrorTracker): AndroidPeopleEventsProvider {
         return AndroidPeopleEventsProvider(
                 sqLiteOpenHelper,
                 contactsProvider,
                 CustomEventProvider(context.contentResolver),
+                dateParser,
                 tracker
         )
     }
 
     @Provides
     open fun peopleNamedayCalculator(namedayPreferences: NamedayUserSettings,
-                                namedaysCalendarProvider: NamedayCalendarProvider,
-                                contactsProvider: ContactsProvider): PeopleDynamicNamedaysProvider {
+                                     namedaysCalendarProvider: NamedayCalendarProvider,
+                                     contactsProvider: ContactsProvider): PeopleDynamicNamedaysProvider {
         return PeopleDynamicNamedaysProvider(namedayPreferences, namedaysCalendarProvider, contactsProvider)
     }
 
@@ -64,8 +69,9 @@ open class PeopleEventsModule(private val context: Context) {
             eventSQlite: EventSQLiteOpenHelper,
             contentResolver: ContentResolver,
             contactsProvider: ContactsProvider,
+            dateParser: DateParser,
             tracker: CrashAndErrorTracker): PeopleEventsStaticEventsRefresher {
-        val repository = AndroidPeopleEventsRepository(contentResolver, contactsProvider, DateParser.INSTANCE, tracker)
+        val repository = AndroidPeopleEventsRepository(contentResolver, contactsProvider, dateParser, tracker)
         val marshaller = ContactEventsMarshaller()
         val androidPeopleEventsPersister = AndroidPeopleEventsPersister(eventSQlite, marshaller, tracker)
         return PeopleEventsStaticEventsRefresher(repository, androidPeopleEventsPersister)
@@ -80,9 +86,9 @@ open class PeopleEventsModule(private val context: Context) {
 
     @Provides
     open fun peopleEventsUpdater(staticRefresher: PeopleEventsStaticEventsRefresher,
-                            namedayRefresher: NamedayDatabaseRefresher,
-                            viewRefresher: UpcomingEventsViewRefresher,
-                            settings: UpcomingEventsSettings): PeopleEventsUpdater {
+                                 namedayRefresher: NamedayDatabaseRefresher,
+                                 viewRefresher: UpcomingEventsViewRefresher,
+                                 settings: UpcomingEventsSettings): PeopleEventsUpdater {
         return PeopleEventsUpdater(
                 staticRefresher,
                 namedayRefresher,
