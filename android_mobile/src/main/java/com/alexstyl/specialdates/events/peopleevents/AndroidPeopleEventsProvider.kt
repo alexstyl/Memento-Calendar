@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events.peopleevents
 
 import android.database.Cursor
 import android.database.MergeCursor
+import android.database.sqlite.SQLiteDatabase
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.SQLArgumentBuilder
@@ -12,14 +13,12 @@ import com.alexstyl.specialdates.contact.Contacts
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.DateParseException
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper
 import com.alexstyl.specialdates.events.database.EventTypeId
 import com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM
 import com.alexstyl.specialdates.util.DateParser
-import com.novoda.notils.exception.DeveloperError
 import com.novoda.notils.logger.simple.Log
 
 class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHelper,
@@ -136,29 +135,26 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         return timeDuration.startingDate.year == timeDuration.endingDate.year
     }
 
-    override fun findClosestEventDateOnOrAfter(date: Date): Date? {
-        queryDateClosestTo(date)
-                .use { cursor ->
-                    if (cursor.moveToFirst()) {
-                        val closestDate = getDateFrom(cursor)
-
-                        return Date.on(closestDate.dayOfMonth, closestDate.month,
-                                date.year
-                        )
+    override fun findClosestEventDateOnOrAfter(date: Date): Date? =
+            eventSQLHelper
+                    .readableDatabase
+                    .queryClosestDate(date)
+                    .use { cursor ->
+                        return if (cursor.moveToFirst()) {
+                            cursor.getDate()
+                        } else {
+                            null
+                        }
                     }
-                    return null
-                }
-    }
 
-    private fun queryDateClosestTo(date: Date): Cursor {
-        return eventSQLHelper.readableDatabase.query(
-                AnnualEventsContract.TABLE_NAME,
-                PEOPLE_PROJECTION,
-                "$DATE_COLUMN_WITHOUT_YEAR >= ?",
-                monthAndDayOf(date), null, null,
-                "$DATE_COLUMN_WITHOUT_YEAR ASC LIMIT 1"
-        )
-    }
+    private fun SQLiteDatabase.queryClosestDate(date: Date): Cursor =
+            query(
+                    AnnualEventsContract.TABLE_NAME,
+                    AndroidPeopleEventsProvider.PEOPLE_PROJECTION,
+                    "${AndroidPeopleEventsProvider.DATE_COLUMN_WITHOUT_YEAR} >= ?",
+                    monthAndDayOf(date),
+                    null, null,
+                    "${AndroidPeopleEventsProvider.DATE_COLUMN_WITHOUT_YEAR} ASC LIMIT 1")
 
     private fun monthAndDayOf(date: Date): Array<String> {
         return arrayOf(ShortDateLabelCreator.INSTANCE.createLabelWithNoYearFor(date))
@@ -178,7 +174,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
 
     @Throws(ContactNotFoundException::class)
     private fun getContactEventFrom(cursor: Cursor, contact: Contact): ContactEvent {
-        val date = getDateFrom(cursor)
+        val date = cursor.getDate()
         val eventType = getEventType(cursor)
 
         val eventId = getDeviceEventIdFrom(cursor)
@@ -226,16 +222,12 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
             )
         }
 
-        private fun getDateFrom(cursor: Cursor): Date {
-            val index = cursor.getColumnIndexOrThrow(AnnualEventsContract.DATE)
-            val rawDate = cursor.getString(index)
-            try {
-                return DateParser.INSTANCE.parse(rawDate)
-            } catch (e: DateParseException) {
-                throw DeveloperError("Invalid date stored to database. [$rawDate]")
-            }
-
+        private fun Cursor.getDate(): Date {
+            val index = getColumnIndexOrThrow(AnnualEventsContract.DATE)
+            val rawDate = getString(index)
+            return DateParser.INSTANCE.parse(rawDate)
         }
+
 
         private fun getContactIdFrom(cursor: Cursor): Long {
             val contactIdIndex = cursor.getColumnIndexOrThrow(AnnualEventsContract.CONTACT_ID)
@@ -253,5 +245,8 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         private fun isALegitEventId(deviceEventId: Long): Boolean {
             return deviceEventId == -1L
         }
+
     }
 }
+
+
