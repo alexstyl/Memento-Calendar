@@ -11,7 +11,7 @@ public class Optional<T> {
     @Nullable
     private final T object;
 
-    public Optional(T object) {
+    public Optional(@Nullable T object) {
         this.object = object;
     }
 

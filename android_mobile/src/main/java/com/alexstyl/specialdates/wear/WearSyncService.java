@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.events.peopleevents.NoEventsFoundException;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -62,13 +61,12 @@ public class WearSyncService extends IntentService {
     }
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
-        try {
-            Date closestDate = peopleEventsProvider.findClosestEventDateOnOrAfter(Date.Companion.today());
+        Date closestDate = peopleEventsProvider.findClosestEventDateOnOrAfter(Date.Companion.today());
+        if (closestDate != null) {
             return new Optional<>(peopleEventsProvider.fetchEventsOn(closestDate));
-        } catch (NoEventsFoundException e) {
-            e.printStackTrace();
+        } else {
+            return Optional.absent();
         }
-        return Optional.absent();
     }
 
     private PutDataRequest createDataRequest(ContactEventsOnADate contactEvents) {

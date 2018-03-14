@@ -37,7 +37,7 @@ public final class DebugPeopleEventsUpdater {
                 new NamedayJSONProvider(loader),
                 new SpecialNamedaysHandlerFactory()
         );
-        PeopleNamedaysCalculator peopleNamedaysCalculator = new PeopleNamedaysCalculator(
+        PeopleDynamicNamedaysProvider peopleDynamicNamedaysProvider = new PeopleDynamicNamedaysProvider(
                 namedayUserSettings,
                 namedayCalendarProvider,
                 contactsProvider
@@ -45,7 +45,7 @@ public final class DebugPeopleEventsUpdater {
         return new DebugPeopleEventsUpdater(databaseRefresher, new NamedayDatabaseRefresher(
                 namedayUserSettings,
                 databaseProvider,
-                peopleNamedaysCalculator
+                peopleDynamicNamedaysProvider
         ));
     }
 
