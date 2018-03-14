@@ -22,8 +22,6 @@
     android:paddingBottom="@dimen/fab_total_size"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:scrollbarStyle="outsideOverlay"
-    android:scrollbars="vertical"
     app:fastScrollEnabled="true"
     app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
     app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
