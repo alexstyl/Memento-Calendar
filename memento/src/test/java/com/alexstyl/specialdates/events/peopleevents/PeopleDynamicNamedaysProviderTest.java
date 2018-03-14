@@ -27,9 +27,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PeopleNamedaysCalculatorTest {
+public class PeopleDynamicNamedaysProviderTest {
 
-    private PeopleNamedaysCalculator calculator;
+    private PeopleDynamicNamedaysProvider calculator;
 
     private static final NamedayLocale LOCALE = NamedayLocale.GREEK;
 
@@ -51,7 +51,8 @@ public class PeopleNamedaysCalculatorTest {
 
         when(namedayCalendarProvider.loadNamedayCalendarForLocale(any(NamedayLocale.class), any(Integer.class))).thenReturn(namedayCalendar);
         when(mockSettings.getSelectedLanguage()).thenReturn(LOCALE);
-        calculator = new PeopleNamedaysCalculator(mockSettings, namedayCalendarProvider, mockContactsProvider);
+        when(mockSettings.isEnabled()).thenReturn(true);
+        calculator = new PeopleDynamicNamedaysProvider(mockSettings, namedayCalendarProvider, mockContactsProvider);
 
     }
 

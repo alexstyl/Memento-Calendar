@@ -9,7 +9,7 @@ val EXTRA_YEAR = "extra:year"
 fun Intent.putExtraDate(date: Date) {
     putExtra(EXTRA_DAY_OF_MONTH, date.dayOfMonth)
     putExtra(EXTRA_MONTH, date.month)
-    putExtra(EXTRA_YEAR, date.getYear())
+    putExtra(EXTRA_YEAR, date.year)
 }
 
 fun Intent.getDateExtraOrThrow(): Date {

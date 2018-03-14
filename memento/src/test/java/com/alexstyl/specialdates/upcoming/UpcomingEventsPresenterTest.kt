@@ -18,7 +18,9 @@ import org.mockito.runners.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class UpcomingEventsPresenterTest {
 
-    private val STARTING_DATE = Date.on(1, Months.APRIL, 2017)
+    companion object {
+        private val STARTING_DATE = Date.on(1, Months.APRIL, 2017)
+    }
 
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
     private val mockPermissions = Mockito.mock(MementoPermissions::class.java)

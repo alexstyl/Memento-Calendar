@@ -24,4 +24,11 @@ data class ContactEventsOnADate(val date: Date, val events: List<ContactEvent>, 
             return contacts.toList()
         }
     }
+
+    operator fun plus(otherEvents: ContactEventsOnADate): ContactEventsOnADate {
+        if (date != otherEvents.date) {
+            throw UnsupportedOperationException("Can only add ${javaClass.simpleName} of the same date")
+        }
+        return ContactEventsOnADate(date, events + otherEvents.events, contacts + otherEvents.contacts)
+    }
 }
