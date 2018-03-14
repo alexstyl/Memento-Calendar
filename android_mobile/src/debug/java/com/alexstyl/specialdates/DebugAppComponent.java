@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates;
 
 import com.alexstyl.specialdates.contact.ContactsModule;
+import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.debug.DebugFragment;
 import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
@@ -11,7 +12,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AndroidApplicationModule.class, NamedayModule.class, ContactsModule.class, PeopleEventsModule.class, DonateModule.class})
+@Component(modules = {AndroidApplicationModule.class,
+        NamedayModule.class,
+        ContactsModule.class,
+        PeopleEventsModule.class,
+        DonateModule.class,
+        DateModule.class})
 public interface DebugAppComponent {
     void inject(DebugFragment fragment);
 }

@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.facebook.FacebookImagePath;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.DateParser;
 
 import java.net.URI;
 import java.util.Map;
@@ -17,7 +17,11 @@ import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 class FacebookContactFactory {
 
-    private DateParser parser = DateParser.INSTANCE;
+    private final DateParser parser;
+
+    FacebookContactFactory(DateParser parser) {
+        this.parser = parser;
+    }
 
     ContactEvent createContactFrom(Map<String, String> map) throws InvalidFacebookContactException {
         try {

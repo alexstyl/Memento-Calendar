@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.DateParser;
 import com.novoda.notils.caster.Classes;
 import com.novoda.notils.caster.Views;
 
@@ -36,9 +36,8 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     private EventDatePicker datePicker;
 
     private Optional<Date> initialDate;
-    @Inject
-    Strings strings;
-
+    @Inject Strings strings;
+    @Inject DateParser dateParser;
 
     public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date) {
         EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
@@ -79,7 +78,7 @@ public class EventDatePickerDialogFragment extends MementoDialog {
 
     private Optional<Date> parseFrom(String birthday) {
         try {
-            Date parsedDate = DateParser.INSTANCE.parse(birthday);
+            Date parsedDate = dateParser.parse(birthday);
             return new Optional<>(parsedDate);
         } catch (DateParseException e) {
             e.printStackTrace();
