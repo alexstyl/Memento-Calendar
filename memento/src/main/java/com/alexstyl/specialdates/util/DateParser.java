@@ -11,6 +11,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import io.reactivex.annotations.NonNull;
+
 public enum DateParser {
     INSTANCE;
 
@@ -45,6 +47,7 @@ public enum DateParser {
         return parse(rawDate, true);
     }
 
+    @NonNull
     private Date parse(String rawDate, boolean removeYear) throws DateParseException {
         for (Locale locale : LOCALES) {
             for (String format : DATE_FORMATS) {
