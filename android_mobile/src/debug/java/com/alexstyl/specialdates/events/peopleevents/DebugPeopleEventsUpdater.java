@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.AndroidJSONRe
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONProvider;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedaysHandlerFactory;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.DateParser;
 
 public final class DebugPeopleEventsUpdater {
 
@@ -21,8 +21,9 @@ public final class DebugPeopleEventsUpdater {
     public static DebugPeopleEventsUpdater newInstance(Context context,
                                                        NamedayUserSettings namedayUserSettings,
                                                        ContactsProvider contactsProvider,
-                                                       CrashAndErrorTracker tracker) {
-        AndroidPeopleEventsRepository repository = new AndroidPeopleEventsRepository(context.getContentResolver(), contactsProvider, DateParser.INSTANCE, tracker);
+                                                       CrashAndErrorTracker tracker,
+                                                       DateParser dateParser) {
+        AndroidPeopleEventsRepository repository = new AndroidPeopleEventsRepository(context.getContentResolver(), contactsProvider, dateParser, tracker);
         AndroidPeopleEventsPersister databaseProvider = new AndroidPeopleEventsPersister(
                 new EventSQLiteOpenHelper(context),
                 new ContactEventsMarshaller(),

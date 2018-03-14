@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParseException
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType.*
-import com.alexstyl.specialdates.util.DateParser
+import com.alexstyl.specialdates.date.DateParser
 import com.novoda.notils.logger.simple.Log
 
 class AndroidPeopleEventsRepository(private val contentResolver: ContentResolver,

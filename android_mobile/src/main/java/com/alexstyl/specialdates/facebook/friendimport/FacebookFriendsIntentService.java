@@ -12,11 +12,11 @@ import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.ContactEvent;
+import com.alexstyl.specialdates.date.DateParser;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 
@@ -31,7 +31,7 @@ public class FacebookFriendsIntentService extends IntentService {
     @Inject UpcomingEventsViewRefresher uiRefresher;
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookUserSettings;
-    @Inject UpcomingEventsSettings eventsSettings;
+    @Inject DateParser parser;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -46,7 +46,7 @@ public class FacebookFriendsIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         FacebookCalendarLoader calendarLoader = new FacebookCalendarLoader();
-        FacebookContactFactory factory = new FacebookContactFactory();
+        FacebookContactFactory factory = new FacebookContactFactory(parser);
         ContactEventSerialiser serialiser = new ContactEventSerialiser(factory, tracker);
         FacebookBirthdaysProvider calendarFetcher = new FacebookBirthdaysProvider(calendarLoader, serialiser);
 
