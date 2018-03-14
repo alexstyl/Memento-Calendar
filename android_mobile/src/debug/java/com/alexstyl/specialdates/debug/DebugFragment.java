@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.date.DateParser;
 import com.alexstyl.specialdates.donate.DebugDonationPreferences;
 import com.alexstyl.specialdates.donate.DonateMonitor;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
@@ -46,6 +47,7 @@ public class DebugFragment extends MementoPreferenceFragment {
     @Inject CrashAndErrorTracker tracker;
     @Inject DonateMonitor monitor;
     @Inject UpcomingEventsSettings upcomingEventsSettings;
+    @Inject DateParser dateParser;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -59,7 +61,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker).refresh();
+                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker, dateParser).refresh();
                 showToast("Refreshing Database");
                 return true;
             }
