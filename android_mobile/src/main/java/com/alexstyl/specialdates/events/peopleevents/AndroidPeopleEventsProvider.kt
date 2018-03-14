@@ -139,7 +139,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
     override fun findClosestEventDateOnOrAfter(date: Date): Date? =
             eventSQLHelper
                     .readableDatabase
-                    .queryClosestDate(date)
+                    .queryFirstEventOnOrAfter(date)
                     .use { cursor ->
                         return if (cursor.moveToFirst()) {
                             cursor.getDate()
@@ -148,7 +148,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                         }
                     }
 
-    private fun SQLiteDatabase.queryClosestDate(date: Date): Cursor =
+    private fun SQLiteDatabase.queryFirstEventOnOrAfter(date: Date): Cursor =
             query(
                     AnnualEventsContract.TABLE_NAME,
                     AndroidPeopleEventsProvider.PEOPLE_PROJECTION,
@@ -184,8 +184,8 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
 
     @ContactSource
     private fun getContactSourceFrom(cursor: Cursor): Int {
-        val sourceTypeIdex = cursor.getColumnIndexOrThrow(AnnualEventsContract.SOURCE)
-        return cursor.getInt(sourceTypeIdex)
+        val sourceTypeIndex = cursor.getColumnIndexOrThrow(AnnualEventsContract.SOURCE)
+        return cursor.getInt(sourceTypeIndex)
     }
 
     private fun queryCustomEvent(deviceId: Long): EventType {
