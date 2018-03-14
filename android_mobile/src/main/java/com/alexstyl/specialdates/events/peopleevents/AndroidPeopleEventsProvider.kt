@@ -13,17 +13,18 @@ import com.alexstyl.specialdates.contact.Contacts
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper
 import com.alexstyl.specialdates.events.database.EventTypeId
 import com.alexstyl.specialdates.events.database.EventTypeId.TYPE_CUSTOM
-import com.alexstyl.specialdates.util.DateParser
 import com.novoda.notils.logger.simple.Log
 
 class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHelper,
                                   private val contactsProvider: ContactsProvider,
                                   private val customEventProvider: CustomEventProvider,
+                                  private val dateParser: DateParser,
                                   private val tracker: CrashAndErrorTracker) : PeopleEventsProvider {
 
     override fun fetchEventsOn(date: Date): ContactEventsOnADate {
@@ -191,6 +192,12 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         return customEventProvider.getEventWithId(deviceId)
     }
 
+    private fun Cursor.getDate(): Date {
+        val index = getColumnIndexOrThrow(AnnualEventsContract.DATE)
+        val rawDate = getString(index)
+        return dateParser.parse(rawDate)
+    }
+
     companion object {
 
         private const val DATE_FROM = "substr(" + AnnualEventsContract.DATE + ",-5) >= ?"
@@ -220,12 +227,6 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                     Date.startOfYear(timeDuration.endingDate.year),
                     timeDuration.endingDate
             )
-        }
-
-        private fun Cursor.getDate(): Date {
-            val index = getColumnIndexOrThrow(AnnualEventsContract.DATE)
-            val rawDate = getString(index)
-            return DateParser.INSTANCE.parse(rawDate)
         }
 
 
