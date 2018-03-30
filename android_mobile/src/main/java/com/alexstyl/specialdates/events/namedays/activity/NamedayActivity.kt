@@ -15,7 +15,6 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.getDateExtraOrThrow
 import com.alexstyl.specialdates.date.putExtraDate
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
@@ -24,8 +23,6 @@ import javax.inject.Inject
 
 class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
 
-    @Inject lateinit var namedayCalendar: NamedayCalendar
-    @Inject lateinit var namedaysViewModelFactory: NamedaysViewModelFactory
     @Inject lateinit var imageLoader: ImageLoader
     @Inject lateinit var presenter: NamedayPresenter
     @Inject lateinit var dateLabelCreator: DateLabelCreator
@@ -50,7 +47,7 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         toolbar.displayNavigationIconAsUp()
         setSupportActionBar(toolbar)
 
-        dateView = findViewById<TextView>(R.id.namedays_date)
+        dateView = findViewById(R.id.namedays_date)
 
         val recyclerView = findViewById<RecyclerView>(R.id.namedays_list)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
