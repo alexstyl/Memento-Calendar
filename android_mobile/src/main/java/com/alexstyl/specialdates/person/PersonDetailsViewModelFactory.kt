@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 
-internal class PersonDetailsViewModelFactory(private val strings: Strings, private val ageCalculator: AgeCalculator) {
+class PersonDetailsViewModelFactory(private val strings: Strings, private val ageCalculator: AgeCalculator) {
 
     operator fun invoke(contact: Contact, dateOfBirth: ContactEvent?, isVisible: Boolean): PersonInfoViewModel {
         val ageAndStarSignBuilder = StringBuilder()

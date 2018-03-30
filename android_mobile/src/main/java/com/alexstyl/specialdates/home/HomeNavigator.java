@@ -137,7 +137,7 @@ public final class HomeNavigator {
     }
 
     public void toContactDetails(Contact contact, Activity activity) {
-        Intent intent = PersonActivity.buildIntentFor(activity, contact);
+        Intent intent = PersonActivity.Companion.buildIntentFor(activity, contact);
         activity.startActivity(intent);
         analytics.trackContactDetailsViewed(contact);
     }
