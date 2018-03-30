@@ -70,7 +70,6 @@ class AndroidContactActionsProvider(
 
 
     override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
-
         val viewModels = ArrayList<ContactActionViewModel>()
         val cursor = contentResolver.query(Data.CONTENT_URI,
                 PROJECTION,

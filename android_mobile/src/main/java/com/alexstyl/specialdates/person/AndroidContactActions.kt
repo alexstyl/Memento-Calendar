@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import java.net.URI
 
-class AndroidContactActionsExecutor(val activity: Activity) : ContactActions {
+class AndroidContactActions(val activity: Activity) : ContactActions {
 
     override fun dial(phoneNumber: String) = {
         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))

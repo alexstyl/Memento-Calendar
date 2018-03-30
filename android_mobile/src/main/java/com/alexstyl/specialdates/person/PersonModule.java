@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.support.v7.view.ContextThemeWrapper;
 
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.Strings;
@@ -11,6 +12,8 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.theming.MementoTheme;
+import com.alexstyl.specialdates.theming.ThemingPreferences;
 
 import dagger.Module;
 import dagger.Provides;
@@ -27,10 +30,13 @@ public class PersonModule {
                                     PackageManager packageManager,
                                     CrashAndErrorTracker tracker,
                                     Strings strings) {
+
+        MementoTheme theme = ThemingPreferences.newInstance(context).getSelectedTheme();
+        ContextThemeWrapper wrapper = new ContextThemeWrapper(context, theme.androidTheme());
+
         return new PersonCallProvider(
                 new AndroidContactActionsProvider(
-                        contentResolver, resources, context, packageManager, tracker
-                ),
+                        contentResolver, resources, wrapper, packageManager, tracker),
                 new FacebookContactActionsProvider(strings, resources)
         );
     }
