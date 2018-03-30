@@ -13,11 +13,11 @@ import io.reactivex.functions.Function3
 
 internal class PersonPresenter(private val provider: PeopleEventsProvider,
                                private val personCallProvider: PersonCallProvider,
-                               private val workScheduler: Scheduler,
-                               private val resultScheduler: Scheduler,
                                private val toPersonViewModel: PersonDetailsViewModelFactory,
                                private val toEventViewModel: EventViewModelFactory,
-                               private val persister: PeopleEventsPersister) {
+                               private val persister: PeopleEventsPersister,
+                               private val workScheduler: Scheduler,
+                               private val resultScheduler: Scheduler) {
 
 
     private var disposable = CompositeDisposable()
