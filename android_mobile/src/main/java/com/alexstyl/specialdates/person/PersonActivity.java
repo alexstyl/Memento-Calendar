@@ -123,7 +123,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         super.onResume();
         displayingContact = extractContactFrom(getIntent());
         if (displayingContact.isPresent()) {
-            presenter.startPresentingInto(this, displayingContact.get(), new AndroidContactActionsExecutor(this));
+            presenter.startPresentingInto(this, displayingContact.get(), new AndroidContactActions(this));
         } else {
             tracker.track(new IllegalArgumentException("No contact to display"));
             finish();
