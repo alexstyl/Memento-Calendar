@@ -5,16 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import java.net.URI
 
-class AndroidContactActionsFactory(val activity: Activity) : ContactActionsFactory {
+class AndroidContactActionsExecutor(val activity: Activity) : ContactActions {
 
     override fun dial(phoneNumber: String) = {
-        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber))
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
         activity.startActivity(intent)
     }
 
     override fun message(phoneNumber: String) = {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("sms:" + phoneNumber)
+        intent.data = Uri.parse("sms:$phoneNumber")
         activity.startActivity(intent)
     }
 
@@ -38,10 +38,3 @@ class AndroidContactActionsFactory(val activity: Activity) : ContactActionsFacto
     }
 }
 
-interface ContactActionsFactory {
-    fun dial(phoneNumber: String): () -> Unit
-    fun view(data: URI, mimetype: String): () -> Unit
-    fun view(data: URI): () -> Unit
-    fun message(phoneNumber: String): () -> Unit
-    fun email(emailAdress: String): () -> Unit
-}

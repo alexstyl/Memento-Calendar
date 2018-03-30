@@ -36,7 +36,6 @@ import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactNotFoundException;
 import com.alexstyl.specialdates.contact.ContactSource;
 import com.alexstyl.specialdates.contact.ContactsProvider;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
@@ -52,9 +51,6 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE;
 
@@ -72,9 +68,10 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject PeopleEventsPersister peoplePersister;
     @Inject CrashAndErrorTracker tracker;
+    @Inject PersonPresenter presenter;
 
     private static final int ID_TOGGLE_VISIBILITY = 1023;
-    
+
     private AppBarLayout appBarLayout;
     private ImageView toolbarGradient;
     private ImageView avatarView;
@@ -83,7 +80,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
     private TabLayout tabLayout;
 
     private Optional<Contact> displayingContact = Optional.absent();
-    private PersonPresenter presenter;
     private PersonDetailsNavigator navigator;
     private ContactItemsAdapter adapter;
 
@@ -98,23 +94,6 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         applicationModule.inject(this);
         analytics.trackScreen(Screen.PERSON);
         navigator = new PersonDetailsNavigator(new ExternalNavigator(this, analytics, tracker));
-        ContactActionsFactory actionsFactory = new AndroidContactActionsFactory(thisActivity());
-        presenter = new PersonPresenter(
-                this,
-                peopleEventsProvider,
-                new PersonCallProvider(
-                        new AndroidContactActionsProvider(
-                                getContentResolver(), getResources(), thisActivity(), getPackageManager(), actionsFactory, tracker
-                        ),
-                        new FacebookContactActionsProvider(strings, getResources(), actionsFactory)
-                ),
-                Schedulers.io(),
-                AndroidSchedulers.mainThread(),
-                new PersonDetailsViewModelFactory(strings, new AgeCalculator(Date.Companion.today())),
-                new EventViewModelFactory(strings, dateLabelCreator),
-                peoplePersister
-        );
-
         MementoToolbar toolbar = Views.findById(this, R.id.person_toolbar);
         if (wasCalledFromMemento()) {
             toolbar.displayNavigationIconAsUp();
@@ -144,7 +123,7 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         super.onResume();
         displayingContact = extractContactFrom(getIntent());
         if (displayingContact.isPresent()) {
-            presenter.startPresenting(displayingContact.get());
+            presenter.startPresentingInto(this, displayingContact.get(), new AndroidContactActionsExecutor(this));
         } else {
             tracker.track(new IllegalArgumentException("No contact to display"));
             finish();
@@ -296,9 +275,9 @@ public class PersonActivity extends ThemedMementoActivity implements PersonView,
         } else if (itemId == ID_TOGGLE_VISIBILITY) {
             Boolean isVisible = isVisibleContactOptional.get();
             if (isVisible) {
-                presenter.hideContact();
+                presenter.hideContact(this);
             } else {
-                presenter.showContact();
+                presenter.showContact(this);
             }
 
         }

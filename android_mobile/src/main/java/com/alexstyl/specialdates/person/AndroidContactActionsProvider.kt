@@ -1,7 +1,11 @@
 package com.alexstyl.specialdates.person
 
 
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.ContentResolver
+import android.content.ContentUris
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.database.Cursor
@@ -22,7 +26,6 @@ class AndroidContactActionsProvider(
         private val resources: Resources,
         private val context: Context,
         private val packageManager: PackageManager,
-        private val actionsFactory: ContactActionsFactory,
         private val tracker: CrashAndErrorTracker)
     : ContactActionsProvider {
 
@@ -66,7 +69,7 @@ class AndroidContactActionsProvider(
     }
 
 
-    override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
+    override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
 
         val viewModels = ArrayList<ContactActionViewModel>()
         val cursor = contentResolver.query(Data.CONTENT_URI,
@@ -83,14 +86,14 @@ class AndroidContactActionsProvider(
                 if (Phone.CONTENT_ITEM_TYPE == mimeType) {
                     val phoneNumber = getPhoneNumberFrom(c)
                     val customLabel = getCallLabelFrom(c)
-                    val action = ContactAction(phoneNumber, customLabel, actionsFactory.dial(phoneNumber))
+                    val action = ContactAction(phoneNumber, customLabel, actions.dial(phoneNumber))
                     val icon = tinter.tintWithAccentColor(R.drawable.ic_call, context)
                     val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                     val viewModel = ContactActionViewModel(action, labelVisibility, icon)
                     viewModels.add(viewModel)
                 } else if (mimeType.isCustomCallType()) {
                     try {
-                        val action = createActionFor(c, mimeType)
+                        val action = createActionFor(c, mimeType, actions)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
                         tracker.track(ex)
@@ -101,7 +104,7 @@ class AndroidContactActionsProvider(
         return viewModels
     }
 
-    override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> {
+    override fun messagingActionsFor(contact: Contact, executor: ContactActions): List<ContactActionViewModel> {
         val viewModels = ArrayList<ContactActionViewModel>()
 
         val cursor = contentResolver.query(Data.CONTENT_URI,
@@ -119,7 +122,7 @@ class AndroidContactActionsProvider(
                     Phone.CONTENT_ITEM_TYPE == mimeType -> {
                         val phoneNumber = getPhoneNumberFrom(cursor)
                         val customLabel = getCallLabelFrom(cursor)
-                        val action = ContactAction(phoneNumber, customLabel, actionsFactory.message(phoneNumber))
+                        val action = ContactAction(phoneNumber, customLabel, executor.message(phoneNumber))
                         val icon = tinter.tintWithAccentColor(R.drawable.ic_message, context)
                         val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                         viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
@@ -127,13 +130,13 @@ class AndroidContactActionsProvider(
                     Email.CONTENT_ITEM_TYPE == mimeType -> {
                         val phoneNumber = getEmailAddressFrom(cursor)
                         val customLabel = getEmailLabelFrom(cursor)
-                        val action = ContactAction(phoneNumber, customLabel, actionsFactory.email(phoneNumber))
+                        val action = ContactAction(phoneNumber, customLabel, executor.email(phoneNumber))
                         val icon = tinter.tintWithAccentColor(R.drawable.ic_email, context)
                         val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                         viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
                     }
                     mimeType.isCustomMessagingType() -> try {
-                        val action = createActionFor(cursor, mimeType)
+                        val action = createActionFor(cursor, mimeType, executor)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
                         tracker.track(ex)
@@ -146,14 +149,14 @@ class AndroidContactActionsProvider(
     }
 
     @Throws(ActivityNotFoundException::class)
-    private fun createActionFor(cursor: Cursor, mimeType: String): ContactActionViewModel {
+    private fun createActionFor(cursor: Cursor, mimeType: String, executor: ContactActions): ContactActionViewModel {
         val uri = ContentUris.withAppendedId(Data.CONTENT_URI, cursor.getLong(cursor.getColumnIndex(Data._ID)))
         val intent = Intent(Intent.ACTION_VIEW)
         intent.setDataAndType(uri, mimeType)
         val resolveInfos = packageManager.queryIntentActivities(intent, 0)
         if (resolveInfos != null && resolveInfos.isNotEmpty()) {
             val customLabel = cursor.getString(cursor.getColumnIndex(CUSTOM_LABEL))
-            val viewAction = actionsFactory.view(URI.create(uri.toString()), mimeType)
+            val viewAction = executor.view(URI.create(uri.toString()), mimeType)
             val label = resolveInfos[0].loadLabel(packageManager)
             val contactAction = ContactAction(customLabel, label.toString(), viewAction)
             val icon = resolveInfos[0].loadIcon(packageManager)
