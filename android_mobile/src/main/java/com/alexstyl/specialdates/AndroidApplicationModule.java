@@ -3,6 +3,8 @@ package com.alexstyl.specialdates;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
 
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
@@ -26,6 +28,16 @@ class AndroidApplicationModule {
     @Provides
     Context appContext() {
         return context;
+    }
+
+    @Provides
+    Resources resources() {
+        return context.getResources();
+    }
+
+    @Provides
+    PackageManager pkgManager() {
+        return context.getPackageManager();
     }
 
     @Provides

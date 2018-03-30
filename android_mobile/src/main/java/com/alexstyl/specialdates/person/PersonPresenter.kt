@@ -11,8 +11,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
 
-internal class PersonPresenter(private val personView: PersonView,
-                               private val provider: PeopleEventsProvider,
+internal class PersonPresenter(private val provider: PeopleEventsProvider,
                                private val personCallProvider: PersonCallProvider,
                                private val workScheduler: Scheduler,
                                private val resultScheduler: Scheduler,
@@ -25,7 +24,7 @@ internal class PersonPresenter(private val personView: PersonView,
 
     private var contactOptional = Optional.absent<Contact>()
 
-    fun startPresenting(contact: Contact) {
+    fun startPresentingInto(personView: PersonView, contact: Contact, executor: ContactActions) {
         contactOptional = Optional(contact)
 
         disposable.add(
@@ -45,8 +44,8 @@ internal class PersonPresenter(private val personView: PersonView,
         disposable.add(
                 Observable.combineLatest(
                         eventsOf(contact),
-                        personCallProvider.getCallsFor(contact),
-                        personCallProvider.getMessagesFor(contact),
+                        personCallProvider.getCallsFor(contact, executor),
+                        personCallProvider.getMessagesFor(contact, executor),
                         Function3
                         <List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
                         { t1, t2, t3 ->
@@ -73,7 +72,7 @@ internal class PersonPresenter(private val personView: PersonView,
         disposable.clear()
     }
 
-    fun hideContact() {
+    fun hideContact(personView: PersonView) {
         if (!contactOptional.isPresent) {
             return
         }
@@ -87,7 +86,7 @@ internal class PersonPresenter(private val personView: PersonView,
 
     }
 
-    fun showContact() {
+    fun showContact(personView: PersonView) {
         if (!contactOptional.isPresent) {
             return
         }

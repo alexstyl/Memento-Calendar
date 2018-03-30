@@ -10,15 +10,14 @@ import java.net.URI
 
 class FacebookContactActionsProvider(
         private val strings: Strings,
-        private val resources: Resources,
-        private val actionsFactory: ContactActionsFactory)
+        private val resources: Resources)
     : ContactActionsProvider {
 
-    override fun callActionsFor(contact: Contact): List<ContactActionViewModel> {
+    override fun callActionsFor(contact: Contact, executor: ContactActions): List<ContactActionViewModel> {
         val action = ContactAction(
                 strings.viewConversation(),
                 strings.facebookMessenger(),
-                actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
+                executor.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
         )
         return ContactActionViewModel(
                 action,
@@ -27,22 +26,24 @@ class FacebookContactActionsProvider(
                 .toList()
     }
 
-    override fun messagingActionsFor(contact: Contact): List<ContactActionViewModel> = arrayListOf(goToWallAction(contact), messengerAction(contact))
+    override fun messagingActionsFor(contact: Contact, executor: ContactActions):
+            List<ContactActionViewModel> = arrayListOf(goToWallAction(contact, executor),
+            messengerAction(contact, executor))
 
-    private fun messengerAction(contact: Contact): ContactActionViewModel = ContactActionViewModel(
+    private fun messengerAction(contact: Contact, executor: ContactActions): ContactActionViewModel = ContactActionViewModel(
             ContactAction(
                     strings.viewConversation(),
                     strings.facebookMessenger(),
-                    actionsFactory.view(URI.create("fb-messenger://user/" + contact.contactID))
+                    executor.view(URI.create("fb-messenger://user/" + contact.contactID))
             ),
             View.VISIBLE,
             ResourcesCompat.getDrawable(resources, R.drawable.ic_facebook_messenger, null)!!)
 
-    private fun goToWallAction(contact: Contact): ContactActionViewModel = ContactActionViewModel(
+    private fun goToWallAction(contact: Contact, executor: ContactActions): ContactActionViewModel = ContactActionViewModel(
             ContactAction(
                     strings.postOnFacebook(),
                     strings.facebook(),
-                    actionsFactory.view(URI.create("https://www.facebook.com/profile.php?id=" + contact.contactID))
+                    executor.view(URI.create("https://www.facebook.com/profile.php?id=" + contact.contactID))
             ),
             View.VISIBLE,
             ResourcesCompat.getDrawable(resources, R.drawable.ic_f_icon, null)!!)
