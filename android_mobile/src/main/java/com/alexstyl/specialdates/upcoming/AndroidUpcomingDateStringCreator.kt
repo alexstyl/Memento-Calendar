@@ -17,12 +17,10 @@ class AndroidUpcomingDateStringCreator(
 
         val stringBuilder = StringBuilder()
 
-        if (isToday(date)) {
-            stringBuilder.append(strings.today()).append(DAY_OF_WEEK_SEPARATOR)
-        } else if (isTomorrow(date)) {
-            stringBuilder.append(strings.tomorrow()).append(DAY_OF_WEEK_SEPARATOR)
-        } else {
-            formatFlags = formatFlags or (DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_WEEKDAY)
+        when {
+            isToday(date) -> stringBuilder.append(strings.today()).append(DAY_OF_WEEK_SEPARATOR)
+            isTomorrow(date) -> stringBuilder.append(strings.tomorrow()).append(DAY_OF_WEEK_SEPARATOR)
+            else -> formatFlags = formatFlags or (DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_WEEKDAY)
         }
 
         if (date.year != today.year) {

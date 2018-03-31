@@ -69,15 +69,6 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
     private val isVisibleContactOptional = Optional.absent<Boolean>()
 
-    private val onEventPressed = EventPressedListener { (action) ->
-        try {
-            action.run()
-        } catch (ex: ActivityNotFoundException) {
-            Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show()
-            tracker!!.track(ex)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_person)
@@ -102,7 +93,15 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         ageAndSignView = Views.findById(this, R.id.person_age_and_sign)
         val viewPager = Views.findById<ViewPager>(this, R.id.person_viewpager)
         toolbarGradient = Views.findById(this, R.id.person_toolbar_gradient)
-        adapter = ContactItemsAdapter(LayoutInflater.from(thisActivity()), onEventPressed)
+        adapter = ContactItemsAdapter(LayoutInflater.from(thisActivity()), EventPressedListener { (action) ->
+            try {
+                action.run()
+            } catch (ex: ActivityNotFoundException) {
+                Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show()
+                tracker!!.track(ex)
+            }
+        }
+        )
 
         viewPager.adapter = adapter
         viewPager.offscreenPageLimit = 2
@@ -157,10 +156,13 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
     }
 
     override fun displayPersonInfo(viewModel: PersonInfoViewModel) {
+        personNameView!!.text = viewModel.displayName
+        ageAndSignView!!.text = viewModel.ageAndStarSignlabel
+        ageAndSignView!!.visibility = viewModel.AgeAndStarSignVisibility
+        
         imageLoader!!.load(viewModel.image)
                 .withSize(avatarView!!.width, avatarView!!.height)
                 .into(object : ImageLoadedConsumer {
-                    private val ANIMATION_DURATION = 400
 
                     override fun onImageLoaded(loadedImage: Bitmap) {
                         if (Version.hasLollipop()) {
@@ -186,10 +188,6 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
                         toolbarGradient!!.visibility = View.GONE
                     }
                 })
-
-        personNameView!!.text = viewModel.displayName
-        ageAndSignView!!.text = viewModel.ageAndStarSignlabel
-        ageAndSignView!!.visibility = viewModel.AgeAndStarSignVisibility
     }
 
     override fun displayAvailableActions(viewModel: PersonAvailableActionsViewModel) {
@@ -262,6 +260,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
         private const val EXTRA_CONTACT_SOURCE = "extra:source"
         private const val EXTRA_CONTACT_ID = "extra:id"
+        private const val ANIMATION_DURATION = 400
 
         private const val ID_TOGGLE_VISIBILITY = 1023
 
