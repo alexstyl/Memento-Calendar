@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
+import com.alexstyl.specialdates.theming.ThemingModule;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.evernote.android.job.DailyJob;
 import com.evernote.android.job.JobManager;
@@ -56,6 +57,7 @@ public class MementoApplication extends Application {
                         .resourcesModule(new ResourcesModule(this, getResources()))
                         .imageModule(new ImageModule(getResources()))
                         .peopleEventsModule(new PeopleEventsModule(this))
+                        .themingModule(new ThemingModule())
                         .viewModule(new ViewModule(getResources()))
                         .facebookModule(new FacebookModule(this))
                         .namedaysInADayModule(new NamedaysInADayModule())
