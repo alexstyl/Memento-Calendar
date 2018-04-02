@@ -6,35 +6,29 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
-import android.support.annotation.MenuRes
-import android.support.transition.TransitionManager
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
+import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.theming.AttributeExtractor
 import com.alexstyl.specialdates.theming.MementoTheme
 import com.alexstyl.specialdates.theming.Themer
+import javax.inject.Inject
 
 open class ThemedMementoActivity : MementoActivity() {
 
-    private var themer: Themer? = null
-    private var attributeExtractor: AttributeExtractor? = null
+    var themer: Themer? = null
+        @Inject set
+    var attributeExtractor: AttributeExtractor? = null
+        @Inject set
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        themer = Themer.get(this)
-        attributeExtractor = AttributeExtractor()
-        themer!!.initialiseActivity(this)
+        (application as MementoApplication).applicationModule.inject(this)
+        themer!!.applyThemeTo(this)
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        if (supportActionBar != null) {
-
-        }
     }
 
     fun setContentView(@LayoutRes layoutResID: Int, theme: MementoTheme) {

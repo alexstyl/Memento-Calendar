@@ -34,6 +34,8 @@ import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.MainPreferenceFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.support.RateDialog;
+import com.alexstyl.specialdates.theming.ThemingModule;
+import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
@@ -46,6 +48,8 @@ import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureAc
 import com.alexstyl.specialdates.wear.WearSyncService;
 
 import javax.inject.Singleton;
+
+import org.jetbrains.annotations.NotNull;
 
 import dagger.Component;
 
@@ -67,6 +71,7 @@ import dagger.Component;
         PeopleEventsModule.class,
         FacebookModule.class,
         PeopleModule.class,
+        ThemingModule.class,
         PersonModule.class
 })
 public interface AppComponent {
@@ -129,4 +134,6 @@ public interface AppComponent {
     void inject(PeopleFragment peopleFragment);
 
     void inject(FacebookWebView peopleFragment);
+
+    void inject(@NotNull ThemedMementoActivity themedMementoActivity);
 }
