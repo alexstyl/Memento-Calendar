@@ -13,11 +13,11 @@ class FacebookContactActionsProvider(
         private val resources: Resources)
     : ContactActionsProvider {
 
-    override fun callActionsFor(contact: Contact, executor: ContactActions): List<ContactActionViewModel> {
+    override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
         val action = ContactAction(
                 strings.viewConversation(),
                 strings.facebookMessenger(),
-                executor.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
+                actions.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
         )
         return ContactActionViewModel(
                 action,

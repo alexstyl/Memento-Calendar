@@ -103,7 +103,7 @@ class AndroidContactActionsProvider(
         return viewModels
     }
 
-    override fun messagingActionsFor(contact: Contact, executor: ContactActions): List<ContactActionViewModel> {
+    override fun messagingActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
         val viewModels = ArrayList<ContactActionViewModel>()
 
         val cursor = contentResolver.query(Data.CONTENT_URI,
@@ -121,7 +121,7 @@ class AndroidContactActionsProvider(
                     Phone.CONTENT_ITEM_TYPE == mimeType -> {
                         val phoneNumber = getPhoneNumberFrom(cursor)
                         val customLabel = getCallLabelFrom(cursor)
-                        val action = ContactAction(phoneNumber, customLabel, executor.message(phoneNumber))
+                        val action = ContactAction(phoneNumber, customLabel, actions.message(phoneNumber))
                         val icon = tinter.tintWithAccentColor(R.drawable.ic_message, context)
                         val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                         viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
@@ -129,13 +129,13 @@ class AndroidContactActionsProvider(
                     Email.CONTENT_ITEM_TYPE == mimeType -> {
                         val phoneNumber = getEmailAddressFrom(cursor)
                         val customLabel = getEmailLabelFrom(cursor)
-                        val action = ContactAction(phoneNumber, customLabel, executor.email(phoneNumber))
+                        val action = ContactAction(phoneNumber, customLabel, actions.email(phoneNumber))
                         val icon = tinter.tintWithAccentColor(R.drawable.ic_email, context)
                         val labelVisibility = if (customLabel.isEmpty()) View.GONE else View.VISIBLE
                         viewModels.add(ContactActionViewModel(action, labelVisibility, icon))
                     }
                     mimeType.isCustomMessagingType() -> try {
-                        val action = createActionFor(cursor, mimeType, executor)
+                        val action = createActionFor(cursor, mimeType, actions)
                         viewModels.add(action)
                     } catch (ex: ActivityNotFoundException) {
                         tracker.track(ex)
