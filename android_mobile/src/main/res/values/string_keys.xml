@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
   tools:ignore="MissingTranslation">
-
   <string name="key_enable_namedays">enable_disable_namedays</string>
   <string name="key_version_name">version_name</string>
   <string name="key_contact_dev">contact_dev</string>
   <string name="key_daily_reminder">daily_reminder</string>
   <string name="key_daily_reminder_screen">key_daily_reminder_screen</string>
-  <!-- daily reminder -->
   <string name="key_daily_reminder_ringtone">key_daily_reminder_ringtone</string>
   <string name="key_daily_reminder_vibrate_enabled">key_daily_reminder_vibrate_enabled</string>
   <string name="key_daily_reminder_time">key_daily_reminder_time</string>
   <string name="key_daily_reminder_hour">key_daily_reminder_hour</string>
   <string name="key_daily_reminder_minute">key_daily_reminder_minute</string>
-
-
   <string name="key_translucent_bars">key_translucent_bars</string>
   <string name="key_notification_namedays">key_notification_namedays</string>
   <string name="key_has_played_about_anim">key_has_played_about_anim</string>
-
   <string name="key_nameday_lang">key_nameday_lang</string>
   <string name="key_namedays_language">key_namedays_language</string>
-
   <string name="pref_app">pref_app</string>
   <string name="prev_app_version">prev_app_version</string>
   <string name="key_enable_namedays_notification">key_enable_namedays_notification</string>
@@ -32,7 +26,6 @@
   <string name="key_rate_previous_time_asked">key_rate_previous_time_asked</string>
   <string name="key_rate_triggered">key_rate_triggered</string>
   <string name="pref_namedays">pref_namedays</string>
-  <!-- Value: Integer-->
   <string name="key_app_theme_id">key_app_theme_id</string>
   <string name="pref_upcoming_widget_config">pref_upcoming_widget_config</string>
   <string name="key_upcoming_widget_variant">key_upcoming_widget_variant</string>
@@ -42,14 +35,11 @@
   <string name="key_namedays_full_name">key_namedays_full_name</string>
   <string name="key_has_donated">key_has_donated</string>
   <string name="key_donate_restore">key_donate_restore</string>
-
   <string name="pref_facebook">pref_facebook</string>
   <string name="key_facebook_user_id">key_facebook_user_id</string>
   <string name="key_facebook_user_key">key_facebook_user_key</string>
   <string name="key_facebook_user_name">key_facebook_user_name</string>
-
   <string name="pref_events">pref_events</string>
   <string name="key_events_are_initialised">key_events_are_initialised</string>
   <string name="key_database_version">key_database_version</string>
-
 </resources>
