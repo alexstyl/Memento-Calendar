@@ -3,14 +3,17 @@ package com.alexstyl.specialdates.person
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.TabLayout
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.Menu
@@ -159,7 +162,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         personNameView!!.text = viewModel.displayName
         ageAndSignView!!.text = viewModel.ageAndStarSignlabel
         ageAndSignView!!.visibility = viewModel.AgeAndStarSignVisibility
-        
+
         imageLoader!!.load(viewModel.image)
                 .withSize(avatarView!!.width, avatarView!!.height)
                 .into(object : ImageLoadedConsumer {
@@ -170,8 +173,8 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
                         }
                         FadeInBitmapDisplayer(ANIMATION_DURATION).display(loadedImage, ImageViewAware(avatarView!!), LoadedFrom.DISC_CACHE)
                         val layers = arrayOfNulls<Drawable>(2)
-                        layers[0] = ColorDrawable(resources.getColor(android.R.color.transparent))
-                        layers[1] = resources.getDrawable(R.drawable.black_to_transparent_gradient_facing_down)
+                        layers[0] = resources.getColorDrawable(android.R.color.transparent)
+                        layers[1] = resources.getDrawableCompat(R.drawable.black_to_transparent_gradient_facing_down)
                         val transitionDrawable = TransitionDrawable(layers)
                         toolbarGradient!!.setImageDrawable(transitionDrawable)
                         transitionDrawable.startTransition(ANIMATION_DURATION)
@@ -180,8 +183,8 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
                     override fun onLoadingFailed() {
                         val layers = arrayOfNulls<Drawable>(2)
-                        layers[0] = ColorDrawable(resources.getColor(android.R.color.transparent))
-                        layers[1] = resources.getDrawable(R.drawable.ic_person_96dp)
+                        layers[0] = resources.getColorDrawable(android.R.color.transparent)
+                        layers[1] = resources.getDrawableCompat(R.drawable.ic_person_96dp)
                         val transitionDrawable = TransitionDrawable(layers)
                         avatarView!!.setImageDrawable(transitionDrawable)
                         transitionDrawable.startTransition(ANIMATION_DURATION)
@@ -272,3 +275,9 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         }
     }
 }
+
+private fun Resources.getDrawableCompat(@DrawableRes drawableResId: Int): Drawable? =
+        ResourcesCompat.getDrawable(this, drawableResId, null)
+
+private fun Resources.getColorDrawable(@ColorRes colorRes: Int): Drawable? =
+        ColorDrawable(ResourcesCompat.getColor(this, colorRes, null))
