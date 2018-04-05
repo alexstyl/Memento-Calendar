@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.dailyreminder
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -46,101 +45,14 @@ class DailyReminderNotifier constructor(private val context: Context,
 
 
     fun forDailyReminder(date: Date, events: List<ContactEvent>) {
-        var largeIcon: Bitmap? = null
-        val contactCount = events.size
-
-        if (shouldDisplayContactImage(contactCount)) {
-            val (_, _, imagePath) = events[0].contact
-            val size = dimensions.getPixelSize(android.R.dimen.notification_large_icon_width)
-            val loadedIcon = imageLoader.load(imagePath)
-                    .withSize(size, size)
-                    .synchronously()
-            if (Version.hasLollipop() && loadedIcon.isPresent) {
-                // in Lollipop the notifications is the default to use Rounded Images
-                largeIcon = getCircleBitmap(loadedIcon.get())
-            }
-        }
-
-        val startIntent = HomeActivity.getStartIntent(context)
-        val intent = PendingIntent.getActivity(
-                context, NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
-                startIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        createDailyReminderChannel()
+        val width = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
+        val height = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
 
         val contacts = ArrayList<Contact>()
         for ((_, _, _, contact) in events) {
             contacts.add(contact)
         }
-        val title = NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS)
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
-                .setSmallIcon(R.drawable.ic_stat_memento)
-                .setContentTitle(title)
-                .setLargeIcon(largeIcon)
-                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-                .setAutoCancel(true)
-                .setContentIntent(intent)
-                .setNumber(events.size)
-                .setColor(colors.getDailyReminderColor())
-                .setSound(preferences.ringtoneSelected)
-
-        if (events.size == 1) {
-            val event = events[0]
-            val msg = event.getLabel(date, strings)
-
-            val bigTextStyle = NotificationCompat.BigTextStyle().bigText(msg)
-            bigTextStyle.setBigContentTitle(title)
-            builder.setContentText(msg)
-
-            builder.setStyle(bigTextStyle)
-
-        } else if (contacts.size > 1) {
-            val inboxStyle = NotificationCompat.InboxStyle()
-            inboxStyle.setBigContentTitle(title)
-
-            for (i in events.indices) {
-
-                val event = events[i]
-                val contact = event.contact
-                val name = contact.displayName.toString()
-
-                val lineFormatted = name + "\t\t" + event.getLabel(date, strings)
-
-                val sb = SpannableString(lineFormatted)
-                sb.setSpan(StyleSpan(Typeface.BOLD), 0, name.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                inboxStyle.addLine(sb)
-            }
-
-            builder.setStyle(inboxStyle)
-            builder.setContentText(TextUtils.join(", ", contacts))
-        }
-
-        if (supportsPublicNotifications()) {
-            val publicTitle = context.getString(R.string.contact_celebration_count, contactCount)
-            builder.setPublicVersion(
-                    NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
-                            .setSmallIcon(R.drawable.ic_stat_memento)
-                            .setAutoCancel(true)
-                            .setContentIntent(intent)
-                            .setContentTitle(publicTitle)
-                            .setColor(colors.getDailyReminderColor()).build())
-        }
-
-        if (preferences.vibrationSet) {
-            builder.setDefaults(Notification.DEFAULT_VIBRATE)
-        }
-
-        val notification = builder.build()
-
-        createDailyReminderChannel()
-        notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, notification)
-    }
-
-    fun forDailyReminderAll(date: Date, events: List<ContactEvent>) {
-        createDailyReminderChannel()
-        val width = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
-        val height = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
 
         events.forEach {
             val startIntent = PersonActivity.buildIntentFor(context, it.contact)
@@ -168,6 +80,18 @@ class DailyReminderNotifier constructor(private val context: Context,
                                                 setLargeIcon(get().toCircle())
                                             }
                                         }
+                            }.apply {
+                                if (supportsPublicNotifications()) {
+                                    val publicTitle = context.getString(R.string.contact_celebration_count, contacts.size)
+                                    setPublicVersion(
+                                            NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
+                                                    .setSmallIcon(R.drawable.ic_stat_memento)
+                                                    .setAutoCancel(true)
+                                                    .setContentIntent(pendingIntent)
+                                                    .setContentTitle(publicTitle)
+                                                    .setColor(colors.getDailyReminderColor())
+                                                    .build())
+                                }
                             }
                             .build()
             )
@@ -179,10 +103,7 @@ class DailyReminderNotifier constructor(private val context: Context,
                 startIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val contacts = ArrayList<Contact>()
-        for ((_, _, _, contact) in events) {
-            contacts.add(contact)
-        }
+
         val groupBuilder = NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
                 .setContentTitle(NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS))
                 .setContentText("Content Text")
@@ -217,10 +138,6 @@ class DailyReminderNotifier constructor(private val context: Context,
 
     private fun supportsPublicNotifications(): Boolean {
         return Version.hasLollipop()
-    }
-
-    private fun shouldDisplayContactImage(contactCount: Int): Boolean {
-        return contactCount == 1
     }
 
     fun forNamedays(names: List<String>, date: Date) {
