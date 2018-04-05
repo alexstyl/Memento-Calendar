@@ -2,59 +2,72 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+  <PreferenceScreen
+    android:key="@string/key_debug_refresh_db"
+    android:title="Refresh database" />
+  <PreferenceScreen
+    android:key="@string/key_debug_refresh_widget"
+    android:title="Refresh Widget" />
+
+  <PreferenceScreen android:title="Daily Reminder">
+    <Preference
+      android:key="@string/key_debug_daily_reminder"
+      android:title="Trigger Daily Reminder" />
+
+    <CheckBoxPreference
+      android:key="@string/key_debug_daily_reminder_date_enable"
+      android:title="Fake date" />
+
+    <Preference
+      android:dependency="@string/key_debug_daily_reminder_date_enable"
+      android:key="@string/key_debug_daily_reminder_date"
+      android:title="Daily Reminder Date" />
+  </PreferenceScreen>
+
+  <PreferenceScreen
+    android:key="@string/key_debug_start_calendar"
+    android:title="Start Calendar Intent" />
+
+  <PreferenceScreen
+    android:key="@string/key_debug_reset_donations"
+    android:title="Reset Donations" />
+  <PreferenceScreen
+    android:key="@string/key_debug_trigger_support"
+    android:title="Trigger support dialog time" />
+
+  <PreferenceScreen
+    android:key="@string/key_debug_refresh_db"
+    android:title="Refresh database" />
+
+  <PreferenceScreen
+    android:key="@string/key_debug_open_contact"
+    android:title="Open Contact" />
+
+  <PreferenceCategory android:title="Facebook">
     <PreferenceScreen
-        android:key="@string/key_debug_refresh_db"
-        android:title="Refresh database" />
+      android:key="@string/key_debug_facebook"
+      android:title="Open Facebook Sign in" />
     <PreferenceScreen
-        android:key="@string/key_debug_refresh_widget"
-        android:title="Refresh Widget" />
+      android:key="@string/key_debug_facebook_fetch_friends"
+      android:title="Update Friends" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="Wear">
+    <Preference
+      android:key="@string/key_debug_trigger_wear_service"
+      android:title="Trigger WearSyncService" />
+  </PreferenceCategory>
 
-    <PreferenceScreen android:title="Daily Reminder">
-        <Preference
-            android:key="@string/key_debug_daily_reminder"
-            android:title="Trigger Daily Reminder" />
+  <PreferenceCategory android:title="Notifications">
+    <Preference
+      android:key="@string/key_debug_trigger_daily_reminder_notification"
+      android:title="Show Daily Reminder notification" />
+    <Preference
+      android:key="@string/key_debug_trigger_namedays_notification"
+      android:title="Show Namedays notification" />
 
-        <CheckBoxPreference
-            android:key="@string/key_debug_daily_reminder_date_enable"
-            android:title="Fake date" />
-
-        <Preference
-            android:dependency="@string/key_debug_daily_reminder_date_enable"
-            android:key="@string/key_debug_daily_reminder_date"
-            android:title="Daily Reminder Date" />
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:key="@string/key_debug_start_calendar"
-        android:title="Start Calendar Intent" />
-
-    <PreferenceScreen
-        android:key="@string/key_debug_reset_donations"
-        android:title="Reset Donations" />
-    <PreferenceScreen
-        android:key="@string/key_debug_trigger_support"
-        android:title="Trigger support dialog time" />
-
-    <PreferenceScreen
-        android:key="@string/key_debug_refresh_db"
-        android:title="Refresh database" />
-
-    <PreferenceScreen
-        android:key="@string/key_debug_open_contact"
-        android:title="Open Contact" />
-
-    <PreferenceCategory android:title="Facebook">
-        <PreferenceScreen
-            android:key="@string/key_debug_facebook"
-            android:title="Open Facebook Sign in" />
-        <PreferenceScreen
-            android:key="@string/key_debug_facebook_fetch_friends"
-            android:title="Update Friends" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Wear">
-        <Preference
-            android:key="@string/key_debug_trigger_wear_service"
-            android:title="Trigger WearSyncService" />
-    </PreferenceCategory>
+    <Preference
+      android:key="@string/key_debug_trigger_bank_holiday"
+      android:title="Show Bank Holiday notification" />
+  </PreferenceCategory>
 
 </PreferenceScreen>
