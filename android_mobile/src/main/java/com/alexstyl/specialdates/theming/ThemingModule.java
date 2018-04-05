@@ -20,7 +20,7 @@ public class ThemingModule {
 
     @Provides
     ThemingPreferences themingPreferences(Context context) {
-        return ThemingPreferences.newInstance(context);
+        return ThemingPreferences.Companion.newInstance(context);
     }
 
 }
