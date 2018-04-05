@@ -137,15 +137,11 @@ class DailyReminderNotifier constructor(private val context: Context,
         notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, notification)
     }
 
-    fun forDailyReminderAll(events: List<ContactEvent>) {
+    fun forDailyReminderAll(date: Date, events: List<ContactEvent>) {
         createDailyReminderChannel()
-        // TODO pass available actions and include CALL + SEND WISHES
-        val contacts = ArrayList<Contact>()
-        for ((_, _, _, contact) in events) {
-            contacts.add(contact)
-        }
         val width = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
         val height = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
+
         events.forEach {
             val startIntent = PersonActivity.buildIntentFor(context, it.contact)
             val pendingIntent = PendingIntent.getActivity(
@@ -158,7 +154,7 @@ class DailyReminderNotifier constructor(private val context: Context,
                     NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + it.contact.contactID.toInt(),
                     NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
                             .setSmallIcon(R.drawable.ic_stat_memento)
-                            .setContentTitle(it.contact.displayName.toString())
+                            .setContentTitle(createTitleFor(it, date))
                             .setContentIntent(pendingIntent)
                             .setColor(colors.getDailyReminderColor())
                             .setSound(preferences.ringtoneSelected)
@@ -183,16 +179,28 @@ class DailyReminderNotifier constructor(private val context: Context,
                 startIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
+        val contacts = ArrayList<Contact>()
+        for ((_, _, _, contact) in events) {
+            contacts.add(contact)
+        }
         val groupBuilder = NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
-                .setContentTitle("Summary Title")
+                .setContentTitle(NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS))
                 .setContentText("Content Text")
                 .setGroupSummary(true)
                 .setGroup(NOTIFICATION_GROUP_DAILY_REMINDER)
+                .setColor(colors.getDailyReminderColor())
                 .setSmallIcon(R.drawable.ic_stat_memento)
-                .setStyle(NotificationCompat.BigTextStyle().bigText("Big Text"))
                 .setContentIntent(pendingIntent)
 
         notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, groupBuilder.build())
+    }
+
+    private fun createTitleFor(it: ContactEvent, date: Date): SpannableString {
+        val name = it.contact.displayName.toString()
+        val lineFormatted = it.contact.displayName.toString() + "\t\t" + it.getLabel(date, strings)
+        return SpannableString(lineFormatted).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 0, name.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
     }
 
     private fun createDailyReminderChannel() {

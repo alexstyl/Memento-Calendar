@@ -151,11 +151,11 @@ class DebugFragment : MementoPreferenceFragment() {
         }
         findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val date = Date.today()
-            notifier!!.forDailyReminderAll(arrayListOf(
-                    contactEventOn(date, Contact(336L, "Διονύσης Μόνε".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE)),
-                    contactEventOn(date, Contact(123L, "Χρήστος Πλατάκης".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE)),
-                    contactEventOn(date, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE))))
+            val eventDate = Date.today().minusDay(365 * 10)
+            notifier!!.forDailyReminderAll(Date.today(), arrayListOf(
+                    contactEventOn(eventDate, Contact(336L, "Διονύσης Μόνε".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE)),
+                    contactEventOn(eventDate, Contact(123L, "Χρήστος Πλατάκης".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE)),
+                    contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE))))
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
