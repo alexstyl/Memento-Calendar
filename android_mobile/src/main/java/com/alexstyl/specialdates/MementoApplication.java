@@ -2,6 +2,7 @@ package com.alexstyl.specialdates;
 
 import android.app.AlarmManager;
 import android.app.Application;
+import android.app.NotificationManager;
 import android.content.Context;
 
 import com.alexstyl.android.AlarmManagerCompat;
@@ -46,6 +47,8 @@ public class MementoApplication extends Application {
     @Inject UpcomingEventsViewRefresher viewRefresher;
     @Inject MementoPermissions permissions;
     @Inject UpcomingEventsSettings settings;
+    @Inject NotificationManager notificationManager;
+    @Inject Strings strings;
 
     @Override
     public void onCreate() {

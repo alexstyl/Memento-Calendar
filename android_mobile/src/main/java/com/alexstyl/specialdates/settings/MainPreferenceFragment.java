@@ -60,7 +60,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
         applicationModule.inject(this);
 
         addPreferencesFromResource(R.xml.preference_main);
-        themingPreferences = ThemingPreferences.newInstance(getActivity());
+        themingPreferences = ThemingPreferences.Companion.newInstance(getActivity());
 
         appThemePreference = findPreference(R.string.key_app_theme_id);
         appThemePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
