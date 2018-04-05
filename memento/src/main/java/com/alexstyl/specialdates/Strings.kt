@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.person.StarSign
 
 interface Strings {
     fun viewConversation(): String
+    fun dailyReminder(): String
     fun facebookMessenger(): String
     fun nameOf(starSign: StarSign): String
     fun turnsAge(age: Int): String
@@ -25,4 +26,6 @@ interface Strings {
     fun localeName(locale: NamedayLocale): String
     fun viewFacebookProfile(): String
     fun importFromFacebook(): String
+    fun namedays(): String
+    fun bankholidays(): String
 }
