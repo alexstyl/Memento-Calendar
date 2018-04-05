@@ -101,7 +101,10 @@ class DebugFragment : MementoPreferenceFragment() {
         }
 
         findPreference<Preference>(R.string.key_debug_daily_reminder).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            DailyReminderIntentService.startService(activity)
+
+            val service = Intent(context, DailyReminderIntentService::class.java)
+            activity?.startService(service)
+
             showToast("Daily Reminder Triggered")
             true
         }
@@ -149,10 +152,10 @@ class DebugFragment : MementoPreferenceFragment() {
         findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val date = Date.today()
-            notifier!!.forDailyReminder(date, arrayListOf(
-                    contactEventOn(date, "Alex"),
-                    contactEventOn(date, "Martha"),
-                    contactEventOn(date, "Kate")))
+            notifier!!.forDailyReminderAll(arrayListOf(
+                    contactEventOn(date, Contact(336L, "Διονύσης Μόνε".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE)),
+                    contactEventOn(date, Contact(123L, "Χρήστος Πλατάκης".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE)),
+                    contactEventOn(date, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE))))
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
@@ -167,8 +170,8 @@ class DebugFragment : MementoPreferenceFragment() {
         }
     }
 
-    private fun contactEventOn(date: Date, name: String) = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY,
-            date, Contact(1, name.toDisplayName(), URI.create("http://www.alexstyl.com/image/author"), SOURCE_DEVICE))
+    private fun contactEventOn(date: Date, contact: Contact) = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY,
+            date, contact)
 
     private fun showToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()

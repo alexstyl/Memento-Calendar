@@ -32,6 +32,7 @@ import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
+import com.alexstyl.specialdates.person.PersonActivity
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 import java.util.ArrayList
 
@@ -134,6 +135,64 @@ class DailyReminderNotifier constructor(private val context: Context,
 
         createDailyReminderChannel()
         notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, notification)
+    }
+
+    fun forDailyReminderAll(events: List<ContactEvent>) {
+        createDailyReminderChannel()
+        // TODO pass available actions and include CALL + SEND WISHES
+        val contacts = ArrayList<Contact>()
+        for ((_, _, _, contact) in events) {
+            contacts.add(contact)
+        }
+        val width = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
+        val height = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
+        events.forEach {
+            val startIntent = PersonActivity.buildIntentFor(context, it.contact)
+            val pendingIntent = PendingIntent.getActivity(
+                    context,
+                    NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + it.contact.contactID.toInt(),
+                    startIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT)
+
+            notificationManager.notify(
+                    NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + it.contact.contactID.toInt(),
+                    NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
+                            .setSmallIcon(R.drawable.ic_stat_memento)
+                            .setContentTitle(it.contact.displayName.toString())
+                            .setContentIntent(pendingIntent)
+                            .setColor(colors.getDailyReminderColor())
+                            .setSound(preferences.ringtoneSelected)
+                            .setGroup(NOTIFICATION_GROUP_DAILY_REMINDER)
+                            .apply {
+                                imageLoader
+                                        .load(it.contact.imagePath)
+                                        .withSize(width, height)
+                                        .synchronously().apply {
+                                            if (isPresent) {
+                                                setLargeIcon(get().toCircle())
+                                            }
+                                        }
+                            }
+                            .build()
+            )
+        }
+        val startIntent = HomeActivity.getStartIntent(context)
+        val pendingIntent = PendingIntent.getActivity(
+                context,
+                NOTIFICATION_ID_DAILY_REMINDER_CONTACTS,
+                startIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val groupBuilder = NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
+                .setContentTitle("Summary Title")
+                .setContentText("Content Text")
+                .setGroupSummary(true)
+                .setGroup(NOTIFICATION_GROUP_DAILY_REMINDER)
+                .setSmallIcon(R.drawable.ic_stat_memento)
+                .setStyle(NotificationCompat.BigTextStyle().bigText("Big Text"))
+                .setContentIntent(pendingIntent)
+
+        notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, groupBuilder.build())
     }
 
     private fun createDailyReminderChannel() {
@@ -244,6 +303,7 @@ class DailyReminderNotifier constructor(private val context: Context,
         private const val NOTIFICATION_ID_DAILY_REMINDER_CONTACTS = 0
         private const val NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS = 1
         private const val NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS = 2
+        private const val NOTIFICATION_GROUP_DAILY_REMINDER = "reminder_group"
         private const val MAX_CONTACTS = 3
         const val CHANNEL_DAY_REMINDER = BuildConfig.APPLICATION_ID + ".channel:daily_reminder"
         const val CHANNEL_NAMEDAYS = BuildConfig.APPLICATION_ID + ".channel:namedays"
@@ -273,4 +333,7 @@ class DailyReminderNotifier constructor(private val context: Context,
             return output
         }
     }
+
+    private fun Bitmap.toCircle(): Bitmap? = getCircleBitmap(this)
 }
+
