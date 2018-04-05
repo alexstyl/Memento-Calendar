@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates;
 
+import android.app.NotificationManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -68,7 +69,12 @@ class AndroidApplicationModule {
 
     @Provides
     @Singleton
-    JobManager jobManager(Context context) {
+    JobManager jobManager() {
         return JobManager.create(context);
+    }
+
+    @Provides
+    NotificationManager notificationManager() {
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 }
