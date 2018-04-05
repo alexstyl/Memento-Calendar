@@ -17,4 +17,7 @@
   <string name="key_debug_facebook">key_debug_facebook</string>
   <string name="key_debug_facebook_fetch_friends">key_debug_facebook_fetch_friends</string>
   <string name="key_debug_open_contact">key_debug_open_contact</string>
+  <string name="key_debug_trigger_daily_reminder_notification">key_debug_trigger_daily_reminder_notification</string>
+  <string name="key_debug_trigger_namedays_notification">key_debug_trigger_namedays_notification</string>
+  <string name="key_debug_trigger_bank_holiday">key_debug_trigger_bank_holiday</string>
 </resources>
