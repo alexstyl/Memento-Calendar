@@ -12,12 +12,11 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
-import android.graphics.Typeface
 import android.support.v4.app.NotificationCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
-import android.text.style.StyleSpan
+import android.text.style.ForegroundColorSpan
 import com.alexstyl.android.Version
 import com.alexstyl.resources.Colors
 import com.alexstyl.resources.DimensionResources
@@ -54,26 +53,27 @@ class DailyReminderNotifier constructor(private val context: Context,
             contacts.add(contact)
         }
 
-        events.forEach {
-            val startIntent = PersonActivity.buildIntentFor(context, it.contact)
+        events.forEach { event ->
+            val startIntent = PersonActivity.buildIntentFor(context, event.contact)
             val pendingIntent = PendingIntent.getActivity(
                     context,
-                    NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + it.contact.contactID.toInt(),
+                    NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + event.contact.contactID.toInt(),
                     startIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT)
 
             notificationManager.notify(
-                    NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + it.contact.contactID.toInt(),
+                    NOTIFICATION_ID_DAILY_REMINDER_CONTACTS + event.contact.contactID.toInt(),
                     NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
                             .setSmallIcon(R.drawable.ic_stat_memento)
-                            .setContentTitle(createTitleFor(it, date))
+                            .setContentTitle(event.contact.displayName.toString())
+                            .setContentText(createTextFor(event, date))
                             .setContentIntent(pendingIntent)
                             .setColor(colors.getDailyReminderColor())
                             .setSound(preferences.ringtoneSelected)
                             .setGroup(NOTIFICATION_GROUP_DAILY_REMINDER)
                             .apply {
                                 imageLoader
-                                        .load(it.contact.imagePath)
+                                        .load(event.contact.imagePath)
                                         .withSize(width, height)
                                         .synchronously().apply {
                                             if (isPresent) {
@@ -106,7 +106,7 @@ class DailyReminderNotifier constructor(private val context: Context,
 
         val groupBuilder = NotificationCompat.Builder(context, CHANNEL_DAY_REMINDER)
                 .setContentTitle(NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS))
-                .setContentText("Content Text")
+                // .setContentText("Content Text")
                 .setGroupSummary(true)
                 .setGroup(NOTIFICATION_GROUP_DAILY_REMINDER)
                 .setColor(colors.getDailyReminderColor())
@@ -116,11 +116,10 @@ class DailyReminderNotifier constructor(private val context: Context,
         notificationManager.notify(NOTIFICATION_ID_DAILY_REMINDER_CONTACTS, groupBuilder.build())
     }
 
-    private fun createTitleFor(it: ContactEvent, date: Date): SpannableString {
-        val name = it.contact.displayName.toString()
-        val lineFormatted = it.contact.displayName.toString() + "\t\t" + it.getLabel(date, strings)
-        return SpannableString(lineFormatted).apply {
-            setSpan(StyleSpan(Typeface.BOLD), 0, name.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    private fun createTextFor(it: ContactEvent, date: Date): SpannableString {
+        val label = it.getLabel(date, strings)
+        return SpannableString(label).apply {
+            setSpan(ForegroundColorSpan(colors.getColorFor(it.type)), 0, label.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 

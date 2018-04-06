@@ -153,9 +153,10 @@ class DebugFragment : MementoPreferenceFragment() {
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val eventDate = Date.today().minusDay(365 * 10)
             notifier!!.forDailyReminder(Date.today(), arrayListOf(
-                    contactEventOn(eventDate, Contact(336L, "Διονύσης Μόνε".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE)),
-                    contactEventOn(eventDate, Contact(123L, "Χρήστος Πλατάκης".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE)),
-                    contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE))))
+                    contactEventOn(eventDate, Contact(336L, "Διονύσης Μόνε".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE), StandardEventType.NAMEDAY),
+                    contactEventOn(eventDate, Contact(123L, "Χρήστος Πλατάκης".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE), StandardEventType.BIRTHDAY),
+                    contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
+                    contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.OTHER)))
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
@@ -170,7 +171,7 @@ class DebugFragment : MementoPreferenceFragment() {
         }
     }
 
-    private fun contactEventOn(date: Date, contact: Contact) = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY,
+    private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(Optional.absent(), standardEventType,
             date, contact)
 
     private fun showToast(message: String) {
