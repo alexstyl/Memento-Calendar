@@ -8,6 +8,13 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class AndroidStrings(private val resources: Resources) : Strings {
+    
+    override fun namedays(): String = resources.getString(R.string.namedays)
+
+    override fun bankholidays(): String = resources.getString(R.string.Bank_holidays)
+
+    override fun dailyReminder(): String = resources.getString(R.string.daily_reminder)
+
     override fun postOnFacebook(): String = resources.getString(R.string.Post_on_Facebook)
 
     override fun facebook(): String = resources.getString(R.string.Facebook)
