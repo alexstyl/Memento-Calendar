@@ -15,22 +15,23 @@ import org.json.JSONArray;
 
 public final class GreekNamedays {
 
-    private final OrthodoxEasterCalculator easterCalculator = OrthodoxEasterCalculator.INSTANCE;
+    private final OrthodoxEasterCalculator easterCalculator;
 
     private final SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator;
 
     private Date easter;
     private NamedayBundle namedays;
 
-    public GreekNamedays(SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator) {
+    private GreekNamedays(OrthodoxEasterCalculator easterCalculator, SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator) {
+        this.easterCalculator = easterCalculator;
         this.specialGreekNamedaysCalculator = specialGreekNamedaysCalculator;
     }
 
-    public static GreekNamedays from(JSONArray specialJSON) {
+    public static GreekNamedays from(JSONArray specialJSON, OrthodoxEasterCalculator easterCalculator) {
         EasternNamedaysExtractor extractor = new EasternNamedaysExtractor(specialJSON);
         List<EasternNameday> namedays = extractor.parse();
         SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator = new SpecialGreekNamedaysCalculator(namedays);
-        return new GreekNamedays(specialGreekNamedaysCalculator);
+        return new GreekNamedays(easterCalculator, specialGreekNamedaysCalculator);
     }
 
     NamesInADate getNamedayByDate(Date date) {

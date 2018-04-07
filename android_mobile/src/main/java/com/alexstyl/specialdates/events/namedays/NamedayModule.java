@@ -1,12 +1,15 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.AndroidJSONResourceLoader;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONProvider;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianEasterSpecialCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedaysHandlerFactory;
 
 import javax.inject.Singleton;
@@ -19,10 +22,33 @@ import dagger.Provides;
 public class NamedayModule {
 
     @Provides
+    NamedayJSONProvider namedayJSONProvider(Resources resources) {
+        return new NamedayJSONProvider(new AndroidJSONResourceLoader(resources));
+    }
+
+    @Provides
+    RomanianEasterSpecialCalculator romanianEasterSpecialCalculator(OrthodoxEasterCalculator calculator) {
+        return new RomanianEasterSpecialCalculator(calculator);
+    }
+
+    @Provides
+    OrthodoxEasterCalculator calculator() {
+        return new OrthodoxEasterCalculator();
+    }
+
+    @Provides
+    SpecialNamedaysHandlerFactory handlerFactory(OrthodoxEasterCalculator easterCalculator,
+                                                 RomanianEasterSpecialCalculator romanianEasterCalculator) {
+        return new SpecialNamedaysHandlerFactory(easterCalculator, romanianEasterCalculator);
+    }
+
+    @Provides
     @Singleton
-    NamedayCalendarProvider provider(Context context) {
-        AndroidJSONResourceLoader loader = new AndroidJSONResourceLoader(context.getResources());
-        return new NamedayCalendarProvider(new NamedayJSONProvider(loader), new SpecialNamedaysHandlerFactory());
+    NamedayCalendarProvider provider(OrthodoxEasterCalculator easterCalculator, NamedayJSONProvider namedayJSONProvider, SpecialNamedaysHandlerFactory factory) {
+        return new NamedayCalendarProvider(
+                namedayJSONProvider,
+                factory
+        );
     }
 
     @Provides
