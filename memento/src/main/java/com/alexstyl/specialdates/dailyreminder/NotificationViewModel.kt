@@ -1,0 +1,3 @@
+package com.alexstyl.specialdates.dailyreminder
+
+interface NotificationViewModel

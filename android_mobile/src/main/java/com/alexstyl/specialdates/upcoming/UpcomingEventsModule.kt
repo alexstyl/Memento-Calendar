@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.UpcomingEventsJobCreator
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator

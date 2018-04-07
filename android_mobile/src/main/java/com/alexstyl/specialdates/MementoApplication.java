@@ -7,8 +7,8 @@ import android.content.Context;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
@@ -49,6 +49,7 @@ public class MementoApplication extends Application {
     @Inject UpcomingEventsSettings settings;
     @Inject NotificationManager notificationManager;
     @Inject Strings strings;
+    @Inject DailyReminderUserSettings dailyReminderUserSettings;
 
     @Override
     public void onCreate() {
@@ -71,10 +72,9 @@ public class MementoApplication extends Application {
         initialiseDependencies();
         tracker.startTracking();
 
-        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
-        if (preferences.isEnabled()) {
+        if (dailyReminderUserSettings.isEnabled()) {
             AlarmManagerCompat alarmManager = AlarmManagerCompat.from(this);
-            new DailyReminderScheduler(alarmManager, this).setupReminder(preferences);
+            new DailyReminderScheduler(alarmManager, this).setupReminder(dailyReminderUserSettings);
         }
 
         if (facebookSettings.isLoggedIn()) {

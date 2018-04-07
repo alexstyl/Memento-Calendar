@@ -22,12 +22,13 @@ import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.analytics.Analytics;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment;
 
 import javax.inject.Inject;
+import java.net.URI;
 import java.util.Calendar;
 
 public class DailyReminderFragment extends MementoPreferenceFragment {
@@ -39,9 +40,9 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     private TimePreference timePreference;
     private AndroidPermissions permissionChecker;
     private DailyReminderScheduler scheduler;
-    private DailyReminderPreferences preferences;
     @Inject Analytics analytics;
     @Inject CrashAndErrorTracker tracker;
+    @Inject DailyReminderUserSettings preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,6 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
         permissionChecker = new AndroidPermissions(tracker, getActivity());
         enablePreference = findPreference(R.string.key_daily_reminder);
 
-        preferences = DailyReminderPreferences.newInstance(getActivity());
         enablePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -91,7 +91,8 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
 
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                updateRingtoneSummaryFor(Uri.parse((String) newValue));
+                URI ringtoneUri = URI.create((String) newValue);
+                updateRingtoneSummaryFor(ringtoneUri);
                 return true;
             }
         });
@@ -130,9 +131,9 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
     public void onResume() {
         super.onResume();
         enablePreference.setChecked(preferences.isEnabled());
-        updateRingtoneSummaryFor(preferences.getRingtoneSelected());
+        updateRingtoneSummaryFor(preferences.getRingtone());
 
-        TimeOfDay timeOfDay = preferences.getDailyReminderTimeSet();
+        TimeOfDay timeOfDay = preferences.getTimeSet();
         updateTimeSet(timeOfDay);
     }
 
@@ -173,10 +174,10 @@ public class DailyReminderFragment extends MementoPreferenceFragment {
         }
     }
 
-    private void updateRingtoneSummaryFor(Uri ringtoneUri) {
+    private void updateRingtoneSummaryFor(URI ringtoneUri) {
         String name = null;
         if (ringtoneUri.toString().length() > 0) {
-            Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), ringtoneUri);
+            Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), Uri.parse(ringtoneUri.toString()));
             if (ringtone != null) {
                 name = ringtone.getTitle(getActivity());
             }

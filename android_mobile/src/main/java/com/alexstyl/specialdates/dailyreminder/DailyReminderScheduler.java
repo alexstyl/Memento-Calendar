@@ -21,8 +21,8 @@ public final class DailyReminderScheduler {
         this.context = context;
     }
 
-    public void setupReminder(DailyReminderPreferences preferences) {
-        TimeOfDay timeOfDay = preferences.getDailyReminderTimeSet();
+    public void setupReminder(DailyReminderUserSettings preferences) {
+        TimeOfDay timeOfDay = preferences.getTimeSet();
         updateReminderTime(timeOfDay);
     }
 

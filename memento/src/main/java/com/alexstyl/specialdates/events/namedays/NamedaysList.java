@@ -18,7 +18,7 @@ public class NamedaysList {
         if (index != -1) {
             return namedays.get(index);
         }
-        return new NamesInADate(date);
+        return new NamesInADate(date, new ArrayList<String>());
     }
 
     public void addNameday(Date date, String name) {
@@ -31,9 +31,9 @@ public class NamedaysList {
     private NamesInADate getOrCreateNameDateFor(Date date) {
         int index = indexOf(date);
         if (index == -1) {
-            NamesInADate lol = new NamesInADate(date);
-            namedays.add(lol);
-            return lol;
+            NamesInADate namesInADate = new NamesInADate(date, new ArrayList<String>());
+            namedays.add(namesInADate);
+            return namesInADate;
         } else {
             return namedays.get(index);
         }

@@ -25,7 +25,7 @@ class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
         disposable =
                 Observable.fromCallable { namedayCalendar.getAllNamedaysOn(forDate) }
                         .observeOn(workScheduler)
-                        .map { findAndCreateViewModelsOf(it.names) }
+                        .map { findAndCreateViewModelsOf(it.getNames()) }
                         .observeOn(resultScheduler)
                         .subscribe { namedaysViewModel ->
                             into.displayNamedays(namedaysViewModel)
