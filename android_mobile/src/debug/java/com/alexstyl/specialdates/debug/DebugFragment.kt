@@ -61,6 +61,8 @@ class DebugFragment : MementoPreferenceFragment() {
         @Inject set
     var notifier: DailyReminderNotifier? = null
         @Inject set
+    var peopleEventsUpdater: DebugPeopleEventsUpdater? = null
+        @Inject set
 
     private val onDailyReminderDateSelectedListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         val month1 = month + 1 // dialog picker months have 0 index
@@ -76,7 +78,7 @@ class DebugFragment : MementoPreferenceFragment() {
         addPreferencesFromResource(R.xml.preference_debug)
         dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(activity)
         findPreference<Preference>(R.string.key_debug_refresh_db).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            DebugPeopleEventsUpdater.newInstance(activity, namedayUserSettings, contactsProvider, tracker, dateParser).refresh()
+            peopleEventsUpdater?.refresh()
             showToast("Refreshing Database")
             true
         }

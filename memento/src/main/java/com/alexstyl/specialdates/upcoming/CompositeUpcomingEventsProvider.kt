@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
                                       private val namedayPreferences: NamedayUserSettings,
                                       private val namedayCalendarProvider: NamedayCalendarProvider,
-                                      private val bankHolidaysPreferences: BankHolidaysPreferences,
+                                      private val bankHolidaysUserSettings: BankHolidaysUserSettings,
                                       private val bankHolidayProvider: BankHolidayProvider,
                                       private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory) : UpcomingEventsProvider {
 
@@ -55,7 +55,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
     }
 
     private fun shouldLoadBankHolidays(): Boolean {
-        return bankHolidaysPreferences.isEnabled
+        return bankHolidaysUserSettings.isEnabled
     }
 
     private fun shouldLoadNamedays(): Boolean {

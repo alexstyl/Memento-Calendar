@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.AndroidBankHolidaysPreferences
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
@@ -27,9 +28,6 @@ import javax.inject.Inject
  */
 class DailyReminderIntentService : IntentService("DailyReminder") {
 
-    private var bankHolidaysPreferences: AndroidBankHolidaysPreferences? = null
-    private var checker: AndroidPermissions? = null
-
     var namedayCalendarProvider: NamedayCalendarProvider? = null
         @Inject set
     var namedayPreferences: NamedayUserSettings? = null
@@ -43,11 +41,8 @@ class DailyReminderIntentService : IntentService("DailyReminder") {
 
     override fun onCreate() {
         super.onCreate()
-
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
-        bankHolidaysPreferences = AndroidBankHolidaysPreferences.newInstance(this)
-        checker = AndroidPermissions(tracker, this)
     }
 
     override fun onHandleIntent(intent: Intent?) {

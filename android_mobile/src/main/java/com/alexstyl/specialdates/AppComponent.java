@@ -6,11 +6,11 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.contact.ContactsModule;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.donate.DonateModule;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
@@ -69,6 +69,7 @@ import dagger.Component;
         DonateModule.class,
         SearchModule.class,
         PeopleEventsModule.class,
+        BankHolidaysModule.class,
         FacebookModule.class,
         PeopleModule.class,
         ThemingModule.class,

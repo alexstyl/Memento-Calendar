@@ -13,7 +13,6 @@ public class NamedayCalendarProvider {
     private final SpecialNamedaysHandlerFactory factory;
     private final NamedayJSONProvider jsonProvider;
 
-
     public NamedayCalendarProvider(NamedayJSONProvider jsonProvider, SpecialNamedaysHandlerFactory factory) {
         this.factory = factory;
         this.jsonProvider = jsonProvider;
