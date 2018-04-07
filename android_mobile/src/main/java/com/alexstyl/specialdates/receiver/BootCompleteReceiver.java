@@ -6,15 +6,16 @@ import android.content.Intent;
 
 import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.MementoApplication;
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 
 import javax.inject.Inject;
 
 public class BootCompleteReceiver extends BroadcastReceiver {
 
     @Inject UpcomingEventsViewRefresher refresher;
+    @Inject DailyReminderUserSettings dailyReminderUserSettings;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -24,16 +25,16 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)) {
-            rescheduleDailyReminder(context, DailyReminderPreferences.newInstance(context));
+            rescheduleDailyReminder(context, dailyReminderUserSettings);
             refresher.refreshViews();
         }
     }
 
-    private void rescheduleDailyReminder(Context context, DailyReminderPreferences preferences) {
-        if (preferences.isEnabled()) {
+    private void rescheduleDailyReminder(Context context, DailyReminderUserSettings userSettings) {
+        if (userSettings.isEnabled()) {
             AlarmManagerCompat alarmManager = AlarmManagerCompat.from(context);
             DailyReminderScheduler scheduler = new DailyReminderScheduler(alarmManager, context.getApplicationContext());
-            scheduler.setupReminder(preferences);
+            scheduler.setupReminder(userSettings);
         }
     }
 

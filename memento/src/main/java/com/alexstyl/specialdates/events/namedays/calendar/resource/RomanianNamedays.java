@@ -31,7 +31,7 @@ public class RomanianNamedays {
         if (romanianDate.equals(date)) {
             return namedays.getNamedaysFor(date);
         }
-        return new NamesInADate(date);
+        return new NamesInADate(date, new ArrayList<String>());
     }
 
     public NameCelebrations getNamedaysFor(String name, int year) {
