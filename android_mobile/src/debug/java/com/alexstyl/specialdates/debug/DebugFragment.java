@@ -48,12 +48,13 @@ public class DebugFragment extends MementoPreferenceFragment {
     @Inject DonateMonitor monitor;
     @Inject UpcomingEventsSettings upcomingEventsSettings;
     @Inject DateParser dateParser;
+    @Inject DebugPeopleEventsUpdater debugPeopleEventsUpdater;
 
     @Override
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
 
-        DebugAppComponent debugAppComponent = ((DebugApplication) getActivity().getApplication()).getDebugAppComponent();
+        final DebugAppComponent debugAppComponent = ((DebugApplication) getActivity().getApplication()).getDebugAppComponent();
         debugAppComponent.inject(this);
 
         addPreferencesFromResource(R.xml.preference_debug);
@@ -61,7 +62,7 @@ public class DebugFragment extends MementoPreferenceFragment {
         findPreference(R.string.key_debug_refresh_db).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DebugPeopleEventsUpdater.newInstance(getActivity(), namedayUserSettings, contactsProvider, tracker, dateParser).refresh();
+                debugPeopleEventsUpdater.refresh();
                 showToast("Refreshing Database");
                 return true;
             }
