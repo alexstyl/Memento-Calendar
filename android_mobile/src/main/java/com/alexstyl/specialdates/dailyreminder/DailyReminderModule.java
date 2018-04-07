@@ -20,8 +20,9 @@ public class DailyReminderModule {
                                    Strings strings,
                                    Colors colors,
                                    DimensionResources dimensionResources,
-                                   DailyReminderPreferences preferences) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                   DailyReminderPreferences preferences,
+                                   NotificationManager notificationManager) {
+
         return new DailyReminderNotifier(context, notificationManager, imageLoader, strings, colors, dimensionResources, preferences);
     }
 

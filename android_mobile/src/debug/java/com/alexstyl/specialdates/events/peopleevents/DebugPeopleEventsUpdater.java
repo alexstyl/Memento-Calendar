@@ -7,8 +7,8 @@ public final class DebugPeopleEventsUpdater {
     private final PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher;
     private final NamedayDatabaseRefresher namedayDatabaseRefresher;
 
-    DebugPeopleEventsUpdater(PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher,
-                             NamedayDatabaseRefresher namedayDatabaseRefresher) {
+    public DebugPeopleEventsUpdater(PeopleEventsStaticEventsRefresher peopleEventsStaticEventsRefresher,
+                                    NamedayDatabaseRefresher namedayDatabaseRefresher) {
         this.peopleEventsStaticEventsRefresher = peopleEventsStaticEventsRefresher;
         this.namedayDatabaseRefresher = namedayDatabaseRefresher;
     }
