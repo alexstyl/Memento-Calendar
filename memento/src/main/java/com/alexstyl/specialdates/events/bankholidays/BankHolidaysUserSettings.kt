@@ -1,5 +1,5 @@
 package com.alexstyl.specialdates.events.bankholidays
 
-interface BankHolidaysPreferences {
+interface BankHolidaysUserSettings {
     val isEnabled: Boolean
 }
