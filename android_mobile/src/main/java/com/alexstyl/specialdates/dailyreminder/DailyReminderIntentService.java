@@ -13,18 +13,16 @@ import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.TimePeriod;
-import com.alexstyl.specialdates.events.bankholidays.AndroidBankHolidaysPreferences;
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider;
-import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator;
+import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
-import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
-import com.alexstyl.specialdates.permissions.AndroidPermissions;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.novoda.notils.logger.simple.Log;
 
 import javax.inject.Inject;
@@ -35,14 +33,14 @@ import java.util.List;
  */
 public class DailyReminderIntentService extends IntentService {
 
-    private AndroidBankHolidaysPreferences bankHolidaysPreferences;
-    private AndroidPermissions checker;
-
+    @Inject MementoPermissions checker;
+    @Inject BankHolidaysUserSettings bankHolidaysPreferences;
     @Inject NamedayCalendarProvider namedayCalendarProvider;
     @Inject NamedayUserSettings namedayPreferences;
     @Inject DailyReminderNotifier notifier;
     @Inject PeopleEventsProvider peopleEventsProvider;
     @Inject CrashAndErrorTracker tracker;
+    @Inject BankHolidayProvider provider;
 
     public DailyReminderIntentService() {
         super("DailyReminder");
@@ -54,8 +52,6 @@ public class DailyReminderIntentService extends IntentService {
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
-        bankHolidaysPreferences = AndroidBankHolidaysPreferences.newInstance(this);
-        checker = new AndroidPermissions(tracker, this);
     }
 
     @Override
@@ -126,7 +122,6 @@ public class DailyReminderIntentService extends IntentService {
     }
 
     private Optional<BankHoliday> findBankholidayFor(Date date) {
-        BankHolidayProvider provider = new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE));
         return provider.calculateBankHolidayOn(date);
     }
 

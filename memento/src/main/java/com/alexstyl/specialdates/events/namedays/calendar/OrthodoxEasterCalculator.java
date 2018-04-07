@@ -3,8 +3,7 @@ package com.alexstyl.specialdates.events.namedays.calendar;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
 
-public enum OrthodoxEasterCalculator {
-    INSTANCE;
+public class OrthodoxEasterCalculator {
 
     /**
      * Calculates the date of the easter Sunday for the given year
