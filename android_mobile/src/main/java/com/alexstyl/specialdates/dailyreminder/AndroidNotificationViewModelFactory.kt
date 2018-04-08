@@ -15,8 +15,8 @@ import com.alexstyl.specialdates.util.NaturalLanguageUtils
 
 class AndroidNotificationViewModelFactory(private val strings: Strings,
                                           private val todaysDate: Date,
-                                          private val colors: Colors
-) : NotificationViewModelFactory {
+                                          private val colors: Colors)
+    : NotificationViewModelFactory {
 
     override fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel {
         val contacts = viewModels.fold(emptyList<Contact>(), { list, viewModel ->
@@ -44,14 +44,14 @@ class AndroidNotificationViewModelFactory(private val strings: Strings,
         )
     }
 
+    override fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel {
+        return NamedaysNotificationViewModel(namedays.date,
+                strings.todaysNamedays(namedays.getNames().size),
+                namedays.getNames().joinToString(", "))
+    }
 
-    override fun namedaysViewModel(namedays: NamesInADate): NamedaysNotificationViewModel =
-            NamedaysNotificationViewModel(namedays.date,
-                    strings.todaysNamedays(namedays.nameCount()),
-                    namedays.getNames().joinToString(", "))
-
-    override fun forBankHoliday(bankHoliday: BankHoliday): BankHolidayNotificationViewModel =
-            BankHolidayNotificationViewModel(bankHoliday.date, bankHoliday.holidayName, strings.bankholidays())
+    override fun viewModelFor(bankHoliday: BankHoliday): BankHolidayNotificationViewModel =
+            BankHolidayNotificationViewModel(bankHoliday.holidayName, strings.bankholidaySubtitle())
 
 
     companion object {

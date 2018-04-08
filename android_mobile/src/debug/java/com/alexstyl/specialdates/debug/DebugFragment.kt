@@ -172,8 +172,8 @@ class DebugFragment : MementoPreferenceFragment() {
                     DailyReminderViewModel(
                             notificationViewModelFactory!!.summaryOf(viewModels),
                             viewModels,
-                            Optional(notificationViewModelFactory!!.namedaysViewModel(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock")))),
-                            Optional(notificationViewModelFactory!!.forBankHoliday(BankHoliday("Test Bank Holiday", Date.today())))
+                            Optional(notificationViewModelFactory!!.viewModelFor(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock")))),
+                            Optional(notificationViewModelFactory!!.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
                     )
             )
 

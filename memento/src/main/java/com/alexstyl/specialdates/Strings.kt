@@ -29,4 +29,5 @@ interface Strings {
     fun namedays(): String
     fun bankholidays(): String
     fun contacts(): String
+    fun bankholidaySubtitle(): String
 }

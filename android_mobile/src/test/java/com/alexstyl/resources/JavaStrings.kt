@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
+    override fun bankholidaySubtitle(): String = "Tap to see more events."
     override fun contacts(): String = "Contacts"
     override fun bankholidays(): String = "Bank Holidays"
 

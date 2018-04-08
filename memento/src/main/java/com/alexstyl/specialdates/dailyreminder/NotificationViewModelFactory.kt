@@ -7,6 +7,6 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate
 interface NotificationViewModelFactory {
     fun viewModelFor(contactEvent: ContactEvent): ContactEventNotificationViewModel
     fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel
-    fun namedaysViewModel(namedays: NamesInADate): NamedaysNotificationViewModel
-    fun forBankHoliday(bankHoliday: BankHoliday): BankHolidayNotificationViewModel
+    fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel
+    fun viewModelFor(bankHoliday: BankHoliday): BankHolidayNotificationViewModel
 }

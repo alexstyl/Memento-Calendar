@@ -80,7 +80,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
         if (it.getNames().isEmpty()) {
             Optional.absent<NamedaysNotificationViewModel>()
         } else {
-            Optional(factory.namedaysViewModel(it))
+            Optional(factory.viewModelFor(it))
         }
     }
 
@@ -89,7 +89,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
         if (bankHolidaysUserSettings.isEnabled) {
             val calculateBankHolidayOn = bankHolidayProvider.calculateBankHolidayOn(date)
             if (calculateBankHolidayOn != null) {
-                val viewModel = factory.forBankHoliday(calculateBankHolidayOn)
+                val viewModel = factory.viewModelFor(calculateBankHolidayOn)
                 return@fromCallable Optional(viewModel)
             }
         }
