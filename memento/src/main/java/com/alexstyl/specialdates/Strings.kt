@@ -28,4 +28,5 @@ interface Strings {
     fun importFromFacebook(): String
     fun namedays(): String
     fun bankholidays(): String
+    fun contacts(): String
 }

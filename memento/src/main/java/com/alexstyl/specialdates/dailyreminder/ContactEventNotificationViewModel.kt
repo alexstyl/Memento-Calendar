@@ -1,12 +1,10 @@
 package com.alexstyl.specialdates.dailyreminder
 
-import com.alexstyl.specialdates.contact.Contact
-import java.net.URI
+import com.alexstyl.specialdates.date.ContactEvent
 
 data class ContactEventNotificationViewModel(
         val notificationId: Int,
-        val contact: Contact,
+        val contactEvent: ContactEvent,
         val title: CharSequence,
-        val label: CharSequence,
-        val sound: URI
-) : NotificationViewModel 
+        val label: CharSequence
+)

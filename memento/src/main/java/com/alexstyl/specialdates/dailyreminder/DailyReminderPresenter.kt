@@ -32,6 +32,9 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
 
         disposable =
                 contactEvents(today)
+                        .map {
+                            DailyReminderViewModel(factory.summaryOf(it), it)
+                        }
                         .observeOn(resultScheduler)
                         .doOnError { error ->
                             errorTracker.track(error)
@@ -51,7 +54,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                 }
             }.map {
                 it.events.map { contactEvent ->
-                    factory.contactEventsViewModel(contactEvent)
+                    factory.viewModelFor(contactEvent)
                 }
             }
 

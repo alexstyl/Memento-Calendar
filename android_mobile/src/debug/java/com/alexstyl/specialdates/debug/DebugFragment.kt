@@ -22,6 +22,7 @@ import com.alexstyl.specialdates.dailyreminder.ContactEventNotificationViewModel
 import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
+import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModel
 import com.alexstyl.specialdates.dailyreminder.NotificationViewModelFactory
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
@@ -157,26 +158,31 @@ class DebugFragment : MementoPreferenceFragment() {
         findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val eventDate = Date.today().minusDay(365 * 10)
-            
+
             val viewModels = arrayListOf(
                     contactEventOn(eventDate, Contact(336L, "Διονύσης Μόνε".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE), StandardEventType.NAMEDAY),
                     contactEventOn(eventDate, Contact(123L, "Χρήστος Πλατάκης".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE), StandardEventType.BIRTHDAY),
                     contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
-                    contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.OTHER))
-                    .toViewModels()
+                    contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.OTHER)
+            ).toViewModels()
 
-            notifier!!.forContacts(viewModels)
+            notifier!!.forContacts(
+                    DailyReminderViewModel(
+                            notificationViewModelFactory!!.summaryOf(viewModels),
+                            viewModels
+                    )
+            )
 
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-//            notifier!!.forNamedays(arrayListOf("Foo", "Bar", "Alex", "Kate", "Martha"), Date.today())
+            //            notifier!!.forNamedays(arrayListOf("Foo", "Bar", "Alex", "Kate", "Martha"), Date.today())
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-//            notifier!!.forBankholiday(BankHoliday("Test Bank Holiday", Date.today()))
+            //            notifier!!.forBankholiday(BankHoliday("Test Bank Holiday", Date.today()))
             true
         }
     }
@@ -219,7 +225,7 @@ class DebugFragment : MementoPreferenceFragment() {
     private fun ArrayList<ContactEvent>.toViewModels(): ArrayList<ContactEventNotificationViewModel> {
         val viewmodels = arrayListOf<ContactEventNotificationViewModel>()
         forEach {
-            viewmodels.add(notificationViewModelFactory!!.contactEventsViewModel(it))
+            viewmodels.add(notificationViewModelFactory!!.viewModelFor(it))
         }
         return viewmodels
     }
