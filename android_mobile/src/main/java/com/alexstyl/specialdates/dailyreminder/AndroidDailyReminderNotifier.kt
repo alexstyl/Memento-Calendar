@@ -39,7 +39,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
     }
 
     private fun notifyBankHolidays(bankHoliday: BankHolidayNotificationViewModel) {
-        val startIntent = NamedayActivity.getStartIntent(context, bankHoliday.date)
+        val startIntent = HomeActivity.getStartIntent(context)
         val requestCode = NotificationConstants.NOTIFICATION_ID_BANK_HOLIDAY
         val pendingIntent = PendingIntent.getActivity(
                 context,
@@ -48,7 +48,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification =
-                NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
+                NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_BANKHOLIDAY)
                         .setContentTitle(bankHoliday.title)
                         .setContentText(bankHoliday.label)
                         .setContentIntent(pendingIntent)
@@ -69,7 +69,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification =
-                NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
+                NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_NAMEDAYS)
                         .setContentTitle(namedays.title)
                         .setContentText(namedays.label)
                         .setContentIntent(pendingIntent)
