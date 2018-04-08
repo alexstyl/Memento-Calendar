@@ -14,6 +14,7 @@ import android.graphics.RectF
 import android.support.v4.app.NotificationCompat
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.R
+import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.person.PersonActivity
 import com.alexstyl.specialdates.settings.NotificationConstants
@@ -24,34 +25,58 @@ class AndroidDailyReminderNotifier(private val context: Context,
                                    private val imageLoader: ImageLoader,
                                    private val colors: Colors) : DailyReminderNotifier {
 
-    override fun forContacts(viewModels: List<ContactEventNotificationViewModel>) {
-        viewModels.forEach { viewModel ->
-            val startIntent = PersonActivity.buildIntentFor(context, viewModel.contact)
-            val requestCode = viewModel.contact.contactID.toInt()
-            val pendingIntent = PendingIntent.getActivity(
-                    context,
-                    requestCode,
-                    startIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+    override fun forContacts(dailyReminderViewModel: DailyReminderViewModel) {
+        dailyReminderViewModel
+                .contacts
+                .forEach { viewModel ->
+                    val startIntent = PersonActivity.buildIntentFor(context, viewModel.contactEvent.contact)
+                    val requestCode = NotificationConstants.CHANNEL_ID_CONTACTS.hashCode() + viewModel.contactEvent.contact.contactID.toInt()
+                    val pendingIntent = PendingIntent.getActivity(
+                            context,
+                            requestCode,
+                            startIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT)
 
-            val notification =
-                    NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
-                            .setContentTitle(viewModel.title)
-                            .setContentText(viewModel.label)
-                            .setContentIntent(pendingIntent)
-                            .loadLargeImage(viewModel.contact.imagePath)
-                            .setSmallIcon(R.drawable.ic_stat_memento)
-                            .setColor(colors.getDailyReminderColor())
-                            .build()
+                    val notification =
+                            NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
+                                    .setContentTitle(viewModel.title)
+                                    .setContentText(viewModel.label)
+                                    .setContentIntent(pendingIntent)
+                                    .loadLargeImage(viewModel.contactEvent.contact.imagePath)
+                                    .setSmallIcon(R.drawable.ic_stat_memento)
+                                    .setColor(colors.getDailyReminderColor())
+                                    .setGroup(NotificationConstants.GROUP_DAILY_REMINDER)
+                                    .build()
 
-            notificationManager.notify(viewModel.notificationId, notification)
-        }
+                    notificationManager.notify(viewModel.notificationId, notification)
+                }
+
+
+        val summary = dailyReminderViewModel.summaryViewModel
+        val startIntent = HomeActivity.getStartIntent(context)
+        val requestCode = NotificationConstants.NOTIFICATION_ID_CONTACTS_SUMMARY
+        val pendingIntent = PendingIntent.getActivity(
+                context,
+                requestCode,
+                startIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val notification =
+                NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
+                        .setContentTitle(summary.title)
+                        .setContentText(summary.label)
+                        .setContentIntent(pendingIntent)
+                        .setSmallIcon(R.drawable.ic_stat_memento)
+                        .setColor(colors.getDailyReminderColor())
+                        .setGroupSummary(true)
+                        .setGroup(NotificationConstants.GROUP_DAILY_REMINDER)
+                        .build()
+
+        notificationManager.notify(summary.notificationId, notification)
     }
 
     override fun cancelAllEvents() {
-        notificationManager.cancel(NotificationConstants.NOTIFICATION_ID_CONTACTS_SUMMARY)
-//        notificationManager.cancel(NOTIFICATION_ID_DAILY_REMINDER_NAMEDAYS)
-//        notificationManager.cancel(NOTIFICATION_ID_DAILY_REMINDER_BANKHOLIDAYS)
+        notificationManager.cancelAll()
     }
 
     private fun NotificationCompat.Builder.loadLargeImage(imagePath: URI): NotificationCompat.Builder = apply {

@@ -32,8 +32,8 @@ public class DailyReminderModule {
     }
 
     @Provides
-    NotificationViewModelFactory factory(Strings strings, Colors colors, DailyReminderUserSettings userSettings) {
-        return new AndroidNotificationViewModelFactory(strings, Date.Companion.today(), colors, userSettings);
+    NotificationViewModelFactory factory(Strings strings, Colors colors) {
+        return new AndroidNotificationViewModelFactory(strings, Date.Companion.today(), colors);
     }
 
     @Provides
