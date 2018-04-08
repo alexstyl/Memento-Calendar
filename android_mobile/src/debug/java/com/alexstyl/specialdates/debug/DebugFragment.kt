@@ -29,7 +29,9 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.donate.DebugDonationPreferences
 import com.alexstyl.specialdates.donate.DonateMonitor
+import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
+import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
@@ -170,8 +172,8 @@ class DebugFragment : MementoPreferenceFragment() {
                     DailyReminderViewModel(
                             notificationViewModelFactory!!.summaryOf(viewModels),
                             viewModels,
-                            Optional.absent(),
-                            Optional.absent()
+                            Optional(notificationViewModelFactory!!.namedaysViewModel(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock")))),
+                            Optional(notificationViewModelFactory!!.forBankHoliday(BankHoliday("Test Bank Holiday", Date.today())))
                     )
             )
 
