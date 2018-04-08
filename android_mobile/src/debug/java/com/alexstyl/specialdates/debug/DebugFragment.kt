@@ -28,7 +28,6 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.donate.DebugDonationPreferences
 import com.alexstyl.specialdates.donate.DonateMonitor
-import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
@@ -172,12 +171,12 @@ class DebugFragment : MementoPreferenceFragment() {
         }
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            notifier!!.forNamedays(arrayListOf("Foo", "Bar", "Alex", "Kate", "Martha"), Date.today())
+//            notifier!!.forNamedays(arrayListOf("Foo", "Bar", "Alex", "Kate", "Martha"), Date.today())
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            notifier!!.forBankholiday(BankHoliday("Test Bank Holiday", Date.today()))
+//            notifier!!.forBankholiday(BankHoliday("Test Bank Holiday", Date.today()))
             true
         }
     }

@@ -1,9 +1,13 @@
 package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.provider.Settings;
 
+import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -46,6 +50,8 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Inject CrashAndErrorTracker tracker;
     @Inject DonateMonitor donateMonitor;
     @Inject SettingsPresenter eventPresenter;
+    @Inject NotificationManager notificatioManager;
+    @Inject NotificationChannelCreator notificationChannelCreator;
 
     @Override
     public void onAttach(Activity activity) {
@@ -61,6 +67,8 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
 
         addPreferencesFromResource(R.xml.preference_main);
         themingPreferences = ThemingPreferences.Companion.newInstance(getActivity());
+
+        notificationChannelCreator.createDailyReminderChannel();
 
         appThemePreference = findPreference(R.string.key_app_theme_id);
         appThemePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -156,8 +164,28 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
+
+        findPreference(R.string.key_daily_reminder_settings).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (Version.hasOreo()) {
+                    openDailyReminderChannelSettings();
+                } else {
+                    Intent intent = new Intent(getContext(), DailyReminderActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
         eventPresenter.startMonitoring();
         reattachThemeDialogIfNeeded();
+    }
+
+    private void openDailyReminderChannelSettings() {
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationConstants.CHANNEL_ID_CONTACTS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+        startActivity(intent);
     }
 
     private void reattachThemeDialogIfNeeded() {
