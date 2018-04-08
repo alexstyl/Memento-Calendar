@@ -9,6 +9,8 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.events.bankholidays.BankHoliday
+import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.settings.NotificationConstants
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 
@@ -44,16 +46,17 @@ class AndroidNotificationViewModelFactory(private val strings: Strings,
     }
 
 
+    override fun namedaysViewModel(namedays: NamesInADate): NamedaysNotificationViewModel =
+            NamedaysNotificationViewModel(namedays.date,
+                    strings.todaysNamedays(namedays.nameCount()),
+                    namedays.getNames().joinToString(", "))
+
+    override fun forBankHoliday(bankHoliday: BankHoliday): BankHolidayNotificationViewModel =
+            BankHolidayNotificationViewModel(bankHoliday.date, bankHoliday.holidayName, strings.bankholidays())
+
+
     companion object {
         private const val MAX_CONTACTS = 3
     }
-//    fun namedaysViewModel(namedays: NamesInADate): NamedaysNotificationViewModel =
-//            NamedaysNotificationViewModel(namedays.date, namedays.getNames())
-//
-//
-//    fun forBankHoliday(bankHoliday: BankHoliday?): BankHolidayNotificationViewModel? =
-//            if (bankHoliday != null)
-//                BankHolidayNotificationViewModel(bankHoliday.date, bankHoliday.holidayName)
-//            else null
 
 }

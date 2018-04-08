@@ -36,7 +36,7 @@ final class CircularAvatarFactory {
                 .withSize(targetSize, targetSize)
                 .synchronously();
         if (!bitmapOptional.isPresent()) {
-            return Optional.absent();
+            return Optional.Companion.absent();
         }
 
         Bitmap avatar = bitmapOptional.get();

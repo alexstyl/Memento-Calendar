@@ -17,7 +17,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ContactEventTest {
 
-    private static final Optional<Long> NO_DEVICE_ID = Optional.absent();
+    private static final Optional<Long> NO_DEVICE_ID = Optional.Companion.absent();
     private static final Date SOME_DATE = Date.Companion.on(1, JANUARY, 1990);
     private static final Date SOME_DATE_WITHOUT_YEAR = Date.Companion.on(1, JANUARY);
     private static final int CURRENT_YEAR = Date.Companion.getCURRENT_YEAR();

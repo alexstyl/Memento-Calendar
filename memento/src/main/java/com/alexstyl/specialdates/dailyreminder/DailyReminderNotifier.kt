@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.dailyreminder
 
 interface DailyReminderNotifier {
-    fun forContacts(viewModel: DailyReminderViewModel)
+    fun notifyFor(viewModel: DailyReminderViewModel)
     fun cancelAllEvents()
 }

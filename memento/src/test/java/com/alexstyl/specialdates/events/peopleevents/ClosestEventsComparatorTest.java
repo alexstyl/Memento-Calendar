@@ -73,6 +73,6 @@ public class ClosestEventsComparatorTest {
     }
 
     private static Optional<ContactEventsOnADate> absent() {
-        return Optional.absent();
+        return Optional.Companion.absent();
     }
 }

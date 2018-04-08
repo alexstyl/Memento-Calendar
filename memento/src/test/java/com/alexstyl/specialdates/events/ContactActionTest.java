@@ -18,7 +18,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ContactActionTest {
 
-    private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
+    private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.Companion.absent();
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
     private final Contact CONTACT_ONE = ContactFixture.aContactCalled("Alex Styl");
     private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.Companion.on(1, JANUARY, 1990), CONTACT_ONE);

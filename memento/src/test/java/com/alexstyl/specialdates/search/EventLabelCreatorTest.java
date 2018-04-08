@@ -87,6 +87,6 @@ public class EventLabelCreatorTest {
     }
 
     private ContactEvent contactEventOn(Date date, EventType eventType) {
-        return new ContactEvent(Optional.<Long>absent(), eventType, date, mockContact);
+        return new ContactEvent(Optional.Companion.<Long>absent(), eventType, date, mockContact);
     }
 }

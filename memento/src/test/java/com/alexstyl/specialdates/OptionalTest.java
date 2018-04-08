@@ -9,7 +9,7 @@ public class OptionalTest {
     @Test
     public void presentNotEqualToAbsent() {
         Optional<String> one = new Optional<>("Hi");
-        assertThat(one).isNotEqualTo(Optional.<String>absent());
+        assertThat(one).isNotEqualTo(Optional.Companion.<String>absent());
     }
 
     @Test
@@ -19,7 +19,7 @@ public class OptionalTest {
 
     @Test
     public void absentsAreEqual() {
-        assertThat(Optional.<String>absent()).isEqualTo(Optional.<String>absent());
+        assertThat(Optional.Companion.<String>absent()).isEqualTo(Optional.Companion.<String>absent());
     }
 
     @Test
@@ -30,7 +30,7 @@ public class OptionalTest {
 
     @Test
     public void absentToStringPrintsAbsent() {
-        Optional<String> stringOptional = Optional.absent();
+        Optional<String> stringOptional = Optional.Companion.absent();
         assertThat(stringOptional.toString()).isEqualTo("absent");
     }
 }

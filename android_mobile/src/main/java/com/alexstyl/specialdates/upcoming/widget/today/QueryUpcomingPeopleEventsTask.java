@@ -22,7 +22,7 @@ abstract class QueryUpcomingPeopleEventsTask extends AsyncTask<Object, Object, O
         if (date != null) {
             return new Optional<>(eventsProvider.fetchEventsOn(date));
         }
-        return Optional.absent();
+        return Optional.Companion.absent();
     }
 
     @Override

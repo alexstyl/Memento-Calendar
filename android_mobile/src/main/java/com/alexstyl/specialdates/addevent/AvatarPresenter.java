@@ -21,7 +21,7 @@ final class AvatarPresenter {
     private final ToolbarBackgroundAnimator toolbarAnimator;
     private final ImageDecoder imageDecoder;
 
-    private Optional<Bitmap> currentImageLoaded = Optional.absent();
+    private Optional<Bitmap> currentImageLoaded = Optional.Companion.absent();
 
     AvatarPresenter(ImageLoader imageLoader,
                     AvatarPickerView avatarView,
@@ -78,7 +78,7 @@ final class AvatarPresenter {
 
     void removeAvatar() {
         avatarView.setImageBitmap(null);
-        currentImageLoaded = Optional.absent();
+        currentImageLoaded = Optional.Companion.absent();
         toolbarAnimator.fadeIn();
     }
 

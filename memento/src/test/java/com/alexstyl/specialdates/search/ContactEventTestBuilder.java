@@ -11,7 +11,7 @@ import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.NA
 
 final class ContactEventTestBuilder {
 
-    private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.absent();
+    private static final Optional<Long> NO_DEVICE_EVENT_ID = Optional.Companion.absent();
 
     private final Contact contact;
 
