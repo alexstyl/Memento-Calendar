@@ -172,8 +172,8 @@ class DebugFragment : MementoPreferenceFragment() {
                     DailyReminderViewModel(
                             notificationViewModelFactory!!.summaryOf(viewModels),
                             viewModels,
-                            Optional(notificationViewModelFactory!!.viewModelFor(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock")))),
-                            Optional(notificationViewModelFactory!!.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
+                            Optional.absent(),
+                            Optional.absent()
                     )
             )
 
@@ -181,15 +181,34 @@ class DebugFragment : MementoPreferenceFragment() {
         }
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            //            notifier!!.forNamedays(arrayListOf("Foo", "Bar", "Alex", "Kate", "Martha"), Date.today())
+            notifier!!.notifyFor(
+                    DailyReminderViewModel(
+                            notificationViewModelFactory!!.summaryOf(emptyList()),
+                            emptyList(),
+                            namedaysNotifications(),
+                            Optional.absent()
+                    )
+            )
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            //            notifier!!.forBankholiday(BankHoliday("Test Bank Holiday", Date.today()))
+            notifier!!.notifyFor(
+                    DailyReminderViewModel(
+                            notificationViewModelFactory!!.summaryOf(emptyList()),
+                            emptyList(),
+                            Optional.absent(),
+                            bankholidayNotification()
+                    )
+            )
             true
         }
     }
+
+    private fun bankholidayNotification() = Optional(notificationViewModelFactory!!.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
+
+    private fun namedaysNotifications() =
+            Optional(notificationViewModelFactory!!.viewModelFor(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock"))))
 
     private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(Optional.absent(), standardEventType,
             date, contact)
