@@ -78,7 +78,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
         }
     }.map {
         if (it.getNames().isEmpty()) {
-            Optional.absent<NamedaysNotificationViewModel>()
+            Optional.absent()
         } else {
             Optional(factory.viewModelFor(it))
         }
