@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
-import com.alexstyl.specialdates.settings.NotificationConstants
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 
 class AndroidNotificationViewModelFactory(private val strings: Strings,
