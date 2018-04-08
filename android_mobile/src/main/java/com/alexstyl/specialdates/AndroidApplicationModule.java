@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 
+import com.alexstyl.Logger;
+import com.alexstyl.android.AndroidLogger;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
@@ -76,5 +78,10 @@ class AndroidApplicationModule {
     @Provides
     NotificationManager notificationManager() {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    @Provides
+    Logger logger() {
+        return new AndroidLogger();
     }
 }

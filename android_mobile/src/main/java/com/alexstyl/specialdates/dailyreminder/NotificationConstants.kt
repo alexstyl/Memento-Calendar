@@ -1,4 +1,4 @@
-package com.alexstyl.specialdates.settings
+package com.alexstyl.specialdates.dailyreminder
 
 import com.alexstyl.specialdates.BuildConfig
 

@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.dailyreminder;
 import android.app.NotificationManager;
 import android.content.Context;
 
+import com.alexstyl.Logger;
 import com.alexstyl.resources.Colors;
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.EasyPreferences;
@@ -15,7 +16,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
-import com.alexstyl.specialdates.settings.NotificationChannelCreator;
 
 import dagger.Module;
 import dagger.Provides;
@@ -60,15 +60,13 @@ public class DailyReminderModule {
     @Provides
     DailyReminderNotifier notifier(Context context,
                                    ImageLoader imageLoader,
-                                   Strings strings,
                                    Colors colors,
-                                   NotificationManager notificationManager,
-                                   DailyReminderUserSettings userSettings) {
+                                   NotificationManager notificationManager) {
         return new AndroidDailyReminderNotifier(context, notificationManager, imageLoader, colors);
     }
 
     @Provides
-    NotificationChannelCreator channelCreator(NotificationManager notificatioManager, Strings strings) {
-        return new NotificationChannelCreator(notificatioManager, strings);
+    DailyReminderOreoChannelCreator channelCreator(NotificationManager notificatioManager, Strings strings, Logger logger) {
+        return new DailyReminderOreoChannelCreator(notificatioManager, strings, logger);
     }
 }

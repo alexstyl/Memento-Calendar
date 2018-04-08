@@ -1,23 +1,32 @@
-package com.alexstyl.specialdates.settings
+package com.alexstyl.specialdates.dailyreminder
 
-import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.graphics.Color
+import android.os.Build
+import com.alexstyl.Logger
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.Strings
 
-@SuppressLint("NewApi")
-class NotificationChannelCreator(private val notificationManager: NotificationManager,
-                                 private val strings: Strings) {
+@TargetApi(Build.VERSION_CODES.O)
+class DailyReminderOreoChannelCreator(private val notificationManager: NotificationManager,
+                                      private val strings: Strings,
+                                      private val logger: Logger) {
 
 
     fun createDailyReminderChannel() {
         if (!Version.hasOreo()) {
             return
         }
+
         val group = NotificationChannelGroup(NotificationConstants.GROUP_DAILY_REMINDER, strings.dailyReminder())
+        if (notificationManager.notificationChannelGroups.contains(group)) {
+            logger.warning("Already contains Group '${group.name}'. Won't create new channels [$group]")
+            return
+        }
+
         notificationManager.createNotificationChannelGroup(group)
 
         createContactsChannel()

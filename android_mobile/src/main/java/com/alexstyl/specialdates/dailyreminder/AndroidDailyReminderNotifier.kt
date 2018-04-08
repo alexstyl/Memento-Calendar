@@ -18,7 +18,6 @@ import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.person.PersonActivity
-import com.alexstyl.specialdates.settings.NotificationConstants
 import java.net.URI
 
 class AndroidDailyReminderNotifier(private val context: Context,

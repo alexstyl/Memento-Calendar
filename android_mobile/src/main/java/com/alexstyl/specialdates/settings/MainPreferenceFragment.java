@@ -16,6 +16,8 @@ import com.alexstyl.specialdates.Strings;
 import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator;
+import com.alexstyl.specialdates.dailyreminder.NotificationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationService;
 import com.alexstyl.specialdates.donate.DonateMonitor;
@@ -51,7 +53,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Inject DonateMonitor donateMonitor;
     @Inject SettingsPresenter eventPresenter;
     @Inject NotificationManager notificatioManager;
-    @Inject NotificationChannelCreator notificationChannelCreator;
+    @Inject DailyReminderOreoChannelCreator dailyReminderOreoChannelCreator;
 
     @Override
     public void onAttach(Activity activity) {
@@ -68,7 +70,7 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
         addPreferencesFromResource(R.xml.preference_main);
         themingPreferences = ThemingPreferences.Companion.newInstance(getActivity());
 
-        notificationChannelCreator.createDailyReminderChannel();
+        dailyReminderOreoChannelCreator.createDailyReminderChannel();
 
         appThemePreference = findPreference(R.string.key_app_theme_id);
         appThemePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
