@@ -15,6 +15,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
+import com.alexstyl.specialdates.settings.NotificationChannelCreator;
 
 import dagger.Module;
 import dagger.Provides;
@@ -63,6 +64,11 @@ public class DailyReminderModule {
                                    Colors colors,
                                    NotificationManager notificationManager,
                                    DailyReminderUserSettings userSettings) {
-        return new AndroidDailyReminderNotifier(context, notificationManager, imageLoader, strings, userSettings, colors);
+        return new AndroidDailyReminderNotifier(context, notificationManager, imageLoader, colors);
+    }
+
+    @Provides
+    NotificationChannelCreator channelCreator(NotificationManager notificatioManager, Strings strings) {
+        return new NotificationChannelCreator(notificatioManager, strings);
     }
 }
