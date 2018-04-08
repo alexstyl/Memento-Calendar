@@ -51,7 +51,7 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
                     public Optional<Bitmap> synchronously() {
                         Bitmap bitmap = uil.loadImageSync(imagePath.toString(), new ImageSize(width, height), builder.build());
                         if (bitmap == null) {
-                            return Optional.absent();
+                            return Optional.Companion.absent();
                         } else {
                             return new Optional<>(bitmap);
                         }

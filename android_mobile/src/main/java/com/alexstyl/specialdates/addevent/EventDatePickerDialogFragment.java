@@ -72,7 +72,7 @@ public class EventDatePickerDialogFragment extends MementoDialog {
             String birthday = arguments.getString(KEY_DATE);
             return parseFrom(birthday);
         } else {
-            return Optional.absent();
+            return Optional.Companion.absent();
         }
     }
 
@@ -82,7 +82,7 @@ public class EventDatePickerDialogFragment extends MementoDialog {
             return new Optional<>(parsedDate);
         } catch (DateParseException e) {
             e.printStackTrace();
-            return Optional.absent();
+            return Optional.Companion.absent();
         }
     }
 

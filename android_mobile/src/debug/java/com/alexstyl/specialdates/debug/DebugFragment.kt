@@ -166,10 +166,12 @@ class DebugFragment : MementoPreferenceFragment() {
                     contactEventOn(eventDate, Contact(108L, "Μαριάννα".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.OTHER)
             ).toViewModels()
 
-            notifier!!.forContacts(
+            notifier!!.notifyFor(
                     DailyReminderViewModel(
                             notificationViewModelFactory!!.summaryOf(viewModels),
-                            viewModels
+                            viewModels,
+                            Optional.absent(),
+                            Optional.absent()
                     )
             )
 

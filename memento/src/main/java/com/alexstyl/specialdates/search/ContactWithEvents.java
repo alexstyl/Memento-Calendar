@@ -10,7 +10,7 @@ import java.util.List;
 
 final class ContactWithEvents {
 
-    private static final Optional<ContactEvent> NO_EVENT = Optional.absent();
+    private static final Optional<ContactEvent> NO_EVENT = Optional.Companion.absent();
 
     private final Contact contact;
     private final List<ContactEvent> events;

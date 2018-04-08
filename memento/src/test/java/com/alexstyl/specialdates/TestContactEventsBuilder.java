@@ -15,7 +15,7 @@ import static com.alexstyl.specialdates.events.peopleevents.StandardEventType.NA
 
 public class TestContactEventsBuilder {
 
-    private static final Optional<Long> NO_DEVICE_CONTACT_ID = Optional.absent();
+    private static final Optional<Long> NO_DEVICE_CONTACT_ID = Optional.Companion.absent();
     private List<ContactEvent> contactEvents = new ArrayList<>();
 
     public TestContactEventsBuilder addBirthdayFor(Contact contact, Date date) {

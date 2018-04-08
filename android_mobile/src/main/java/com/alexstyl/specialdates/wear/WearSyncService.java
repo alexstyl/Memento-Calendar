@@ -65,7 +65,7 @@ public class WearSyncService extends IntentService {
         if (closestDate != null) {
             return new Optional<>(peopleEventsProvider.fetchEventsOn(closestDate));
         } else {
-            return Optional.absent();
+            return Optional.Companion.absent();
         }
     }
 

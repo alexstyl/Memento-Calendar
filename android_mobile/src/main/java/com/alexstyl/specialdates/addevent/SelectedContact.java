@@ -9,11 +9,11 @@ final class SelectedContact {
     private final String displayName;
 
     static SelectedContact anonymous() {
-        return new SelectedContact(Optional.<Contact>absent(), "");
+        return new SelectedContact(Optional.Companion.<Contact>absent(), "");
     }
 
     static SelectedContact anonymous(String displayName) {
-        return new SelectedContact(Optional.<Contact>absent(), displayName);
+        return new SelectedContact(Optional.Companion.<Contact>absent(), displayName);
     }
 
     private SelectedContact(Optional<Contact> contact, String displayName) {

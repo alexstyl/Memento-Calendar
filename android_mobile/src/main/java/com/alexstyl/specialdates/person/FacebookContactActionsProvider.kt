@@ -26,9 +26,9 @@ class FacebookContactActionsProvider(
                 .toList()
     }
 
-    override fun messagingActionsFor(contact: Contact, executor: ContactActions):
-            List<ContactActionViewModel> = arrayListOf(goToWallAction(contact, executor),
-            messengerAction(contact, executor))
+    override fun messagingActionsFor(contact: Contact, actions: ContactActions):
+            List<ContactActionViewModel> = arrayListOf(goToWallAction(contact, actions),
+            messengerAction(contact, actions))
 
     private fun messengerAction(contact: Contact, executor: ContactActions): ContactActionViewModel = ContactActionViewModel(
             ContactAction(

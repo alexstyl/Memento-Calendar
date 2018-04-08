@@ -29,7 +29,7 @@ class FacebookContactFactory {
             DisplayName name = nameFrom(map);
             long uid = idOf(map);
             URI imagePath = FacebookImagePath.forUid(uid);
-            return new ContactEvent(Optional.<Long>absent(), StandardEventType.BIRTHDAY, date, new Contact(uid, name, imagePath, SOURCE_FACEBOOK));
+            return new ContactEvent(Optional.Companion.<Long>absent(), StandardEventType.BIRTHDAY, date, new Contact(uid, name, imagePath, SOURCE_FACEBOOK));
         } catch (DateParseException | IndexOutOfBoundsException ex) {
             throw new InvalidFacebookContactException(ex);
         }

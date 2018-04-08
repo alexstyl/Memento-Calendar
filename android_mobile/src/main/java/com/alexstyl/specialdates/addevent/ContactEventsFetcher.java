@@ -42,7 +42,7 @@ final class ContactEventsFetcher {
     }
 
     void loadEmptyEvents(OnDataFetchedCallback callback) {
-        loadEventsFor(Optional.<Contact>absent(), callback);
+        loadEventsFor(Optional.Companion.<Contact>absent(), callback);
     }
 
     private void loadEventsFor(Optional<Contact> contactOptional, OnDataFetchedCallback callback) {

@@ -235,7 +235,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
             navigator!!.toViewContact(displayingContact)
         } else if (itemId == ID_TOGGLE_VISIBILITY) {
             val isVisible = isVisibleContactOptional.get()
-            if (isVisible!!) {
+            if (isVisible) {
                 presenter!!.hideContact(this)
             } else {
                 presenter!!.showContact(this)
