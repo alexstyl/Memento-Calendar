@@ -75,4 +75,10 @@ public class DailyReminderModule {
     DailyReminderNavigator navigator() {
         return new DailyReminderNavigator();
     }
+
+
+    @Provides
+    DailyReminderScheduler scheduler(AlarmManagerCompat alarmManager, Context context) {
+        return new DailyReminderScheduler(alarmManager, context);
+    }
 }

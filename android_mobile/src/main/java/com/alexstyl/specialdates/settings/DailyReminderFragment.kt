@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.TimeOfDay
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler
 import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
-import com.alexstyl.specialdates.permissions.AndroidPermissions
+import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import java.net.URI
 import java.util.Calendar
@@ -33,9 +33,9 @@ class DailyReminderFragment : MementoPreferenceFragment() {
     private var ringtonePreference: ClickableRingtonePreference? = null
     private var timePreference: TimePreference? = null
 
-    private var permissionChecker: AndroidPermissions? = null
+    var permissions: MementoPermissions? = null
         @Inject set
-    private var scheduler: DailyReminderScheduler? = null
+    var scheduler: DailyReminderScheduler? = null
         @Inject set
     var analytics: Analytics? = null
         @Inject set
@@ -54,7 +54,6 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
         addPreferencesFromResource(R.xml.preference_dailyreminder)
 
-        permissionChecker = AndroidPermissions(tracker!!, activity!!)
         enablePreference = findPreference(R.string.key_daily_reminder)
 
         enablePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { preference, newValue ->
@@ -84,7 +83,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
         ringtonePreference = findPreference(R.string.key_daily_reminder_ringtone)
         ringtonePreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            if (permissionChecker!!.canReadExternalStorage()) {
+            if (permissions!!.canReadExternalStorage()) {
                 // the permission exists. Let the system handle the event
                 false
             } else {
@@ -98,22 +97,17 @@ class DailyReminderFragment : MementoPreferenceFragment() {
             true
         }
 
-
+        findPreference<Preference>(R.string.key_daily_reminder_vibrate_enabled)?.apply {
+            if (hasNoVibratorHardware()) {
+                preferenceScreen.removePreference(this)
+            }
+        }
 
         findPreference<Preference>(R.string.key_daily_reminder_advanced_settings)?.setOnPreferenceClickListener { _ ->
             navigator!!.openAdvancedSettings(activity as Activity)
-            false
+            true
         }
 
-
-        hideVibratorSettingIfNotPresent()
-    }
-
-    private fun hideVibratorSettingIfNotPresent() {
-        if (hasNoVibratorHardware()) {
-            val vibratePreference = findPreference(getString(R.string.key_daily_reminder_vibrate_enabled))
-            preferenceScreen.removePreference(vibratePreference)
-        }
     }
 
     private fun hasNoVibratorHardware(): Boolean {
@@ -146,7 +140,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == EXTERNAL_STORAGE_REQUEST_CODE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == EXTERNAL_STORAGE_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             ringtonePreference!!.onClick()
         }
     }
@@ -161,17 +155,17 @@ class DailyReminderFragment : MementoPreferenceFragment() {
         } else {
             name = getString(R.string.no_sound)
         }
-        ringtonePreference!!.summary = name
+        summary = name
     }
 
     companion object {
 
-        private val EXTERNAL_STORAGE_REQUEST_CODE = 15
+        private const val EXTERNAL_STORAGE_REQUEST_CODE = 15
 
         // Char sequence for a 12 hour format.
-        private val DEFAULT_FORMAT_12_HOUR = "hh:mm a"
+        private const val DEFAULT_FORMAT_12_HOUR = "hh:mm a"
         // Char sequence for a 24 hour format.
-        private val DEFAULT_FORMAT_24_HOUR = "kk:mm"
+        private const val DEFAULT_FORMAT_24_HOUR = "kk:mm"
 
         fun getHour(context: Context?, cal: Calendar): CharSequence {
             val is24Hour = DateFormat.is24HourFormat(context)

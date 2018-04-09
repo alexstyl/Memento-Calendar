@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings;
@@ -16,6 +15,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
     @Inject UpcomingEventsViewRefresher refresher;
     @Inject DailyReminderUserSettings dailyReminderUserSettings;
+    @Inject DailyReminderScheduler scheduler;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -32,8 +32,6 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
     private void rescheduleDailyReminder(Context context, DailyReminderUserSettings userSettings) {
         if (userSettings.isEnabled()) {
-            AlarmManagerCompat alarmManager = AlarmManagerCompat.from(context);
-            DailyReminderScheduler scheduler = new DailyReminderScheduler(alarmManager, context.getApplicationContext());
             scheduler.setupReminder(userSettings);
         }
     }

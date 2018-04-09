@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.specialdates.TimeOfDay;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateAndTime;
