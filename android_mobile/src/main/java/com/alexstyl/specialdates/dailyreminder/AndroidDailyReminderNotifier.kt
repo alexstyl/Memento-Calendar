@@ -129,7 +129,9 @@ class AndroidDailyReminderNotifier(private val context: Context,
     }
 
     override fun cancelAllEvents() {
-        notificationManager.cancelAll()
+        notificationManager.cancel(NotificationConstants.NOTIFICATION_ID_CONTACTS_SUMMARY)
+        notificationManager.cancel(NotificationConstants.NOTIFICATION_ID_BANK_HOLIDAY)
+        notificationManager.cancel(NotificationConstants.NOTIFICATION_ID_NAMEDAYS)
     }
 
     private fun NotificationCompat.Builder.loadLargeImage(imagePath: URI): NotificationCompat.Builder = apply {
