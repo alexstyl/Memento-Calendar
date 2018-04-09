@@ -83,22 +83,22 @@ class DebugFragment : MementoPreferenceFragment() {
 
         addPreferencesFromResource(R.xml.preference_debug)
         dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(activity)
-        findPreference<Preference>(R.string.key_debug_refresh_db).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_refresh_db)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             peopleEventsUpdater?.refresh()
             showToast("Refreshing Database")
             true
         }
-        findPreference<Preference>(R.string.key_debug_refresh_widget).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_refresh_widget)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             refresher!!.refreshViews()
             showToast("Widget(s) refreshed")
             true
         }
 
-        findPreference<Preference>(R.string.key_debug_daily_reminder_date_enable).onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+        findPreference<Preference>(R.string.key_debug_daily_reminder_date_enable)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             dailyReminderDebugPreferences!!.setEnabled(newValue as Boolean)
             true
         }
-        findPreference<Preference>(R.string.key_debug_daily_reminder_date).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_daily_reminder_date)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val today = dailyReminderDebugPreferences!!.selectedDate
             val datePickerDialog = DatePickerDialog(
                     activity!!, onDailyReminderDateSelectedListener,
@@ -108,7 +108,7 @@ class DebugFragment : MementoPreferenceFragment() {
             false
         }
 
-        findPreference<Preference>(R.string.key_debug_daily_reminder).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_daily_reminder)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
             val service = Intent(context, DailyReminderIntentService::class.java)
             activity?.startService(service)
@@ -117,39 +117,39 @@ class DebugFragment : MementoPreferenceFragment() {
             true
         }
 
-        findPreference<Preference>(R.string.key_debug_start_calendar).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_start_calendar)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             startDateIntent()
             true
         }
 
-        findPreference<Preference>(R.string.key_debug_trigger_wear_service).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_trigger_wear_service)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             WearSyncUpcomingEventsView(activity).reloadUpcomingEventsView()
             true
         }
-        findPreference<Preference>(R.string.key_debug_reset_donations).onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+        findPreference<Preference>(R.string.key_debug_reset_donations)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             DebugDonationPreferences.newInstance(preference.context, monitor).reset()
             Toast.makeText(preference.context, "Donations reset. You should see ads from now on", Toast.LENGTH_SHORT).show()
             true
         }
-        findPreference<Preference>(R.string.key_debug_trigger_support).onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+        findPreference<Preference>(R.string.key_debug_trigger_support)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             DebugPreferences.newInstance(preference.context, R.string.pref_call_to_rate).wipe()
             AskForSupport(preference.context).requestForRatingSooner()
             val message = "Support triggered. You should now see a prompt to rate the app when you launch it"
             showToast(message)
             true
         }
-        findPreference<Preference>(R.string.key_debug_facebook).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_facebook)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val intent = Intent(activity, FacebookLogInActivity::class.java)
             startActivity(intent)
             true
         }
-        findPreference<Preference>(R.string.key_debug_facebook_fetch_friends).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_facebook_fetch_friends)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val intent = Intent(activity, FacebookFriendsIntentService::class.java)
             activity!!.startService(intent)
             true
         }
 
-        findPreference<Preference>(R.string.key_debug_open_contact).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference<Preference>(R.string.key_debug_open_contact)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val contactPickerIntent = Intent(
                     Intent.ACTION_PICK,
                     ContactsContract.Contacts.CONTENT_URI
@@ -157,7 +157,7 @@ class DebugFragment : MementoPreferenceFragment() {
             startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT)
             true
         }
-        findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification)
+        findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val eventDate = Date.today().minusDay(365 * 10)
 
@@ -179,7 +179,7 @@ class DebugFragment : MementoPreferenceFragment() {
 
             true
         }
-        findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)
+        findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             notifier!!.notifyFor(
                     DailyReminderViewModel(
@@ -191,7 +191,7 @@ class DebugFragment : MementoPreferenceFragment() {
             )
             true
         }
-        findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)
+        findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             notifier!!.notifyFor(
                     DailyReminderViewModel(
