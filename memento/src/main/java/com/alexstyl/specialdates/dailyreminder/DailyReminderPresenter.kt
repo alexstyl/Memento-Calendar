@@ -21,7 +21,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                              private var namedayPreferences: NamedayUserSettings,
                              private var bankHolidaysUserSettings: BankHolidaysUserSettings,
                              private var namedayCalendarProvider: NamedayCalendarProvider,
-                             private var factory: NotificationViewModelFactory,
+                             private var factory: DailyReminderViewModelFactory,
                              private var errorTracker: CrashAndErrorTracker,
                              private var bankHolidayProvider: BankHolidayProvider,
 
