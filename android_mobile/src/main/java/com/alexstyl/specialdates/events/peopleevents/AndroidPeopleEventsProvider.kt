@@ -142,11 +142,13 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                     .queryFirstEventOnOrAfter(date)
                     .use { cursor ->
                         return if (cursor.moveToFirst()) {
-                            cursor.getDate()
+                            return cursor.getDate().withYear(date.year)
                         } else {
                             null
                         }
                     }
+
+    private fun Date.withYear(year: Int): Date = Date.on(this.dayOfMonth, this.month, year)
 
     private fun SQLiteDatabase.queryFirstEventOnOrAfter(date: Date): Cursor =
             query(
@@ -248,6 +250,8 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         }
 
     }
+
 }
+
 
 

@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.date.TimePeriod
 
 open class CompositePeopleEventsProvider(private var providers: List<PeopleEventsProvider>)
     : PeopleEventsProvider {
-    
+
     override fun fetchEventsOn(date: Date): ContactEventsOnADate {
         val empty = ContactEventsOnADate.createFrom(date, emptyList())
 
@@ -29,16 +29,17 @@ open class CompositePeopleEventsProvider(private var providers: List<PeopleEvent
 
 
     override fun findClosestEventDateOnOrAfter(date: Date): Date? {
-        ensureDateHasYear(date)
+        date.ensureHasYear()
 
         return providers.mapNotNull {
             it.findClosestEventDateOnOrAfter(date)
         }.min()
     }
 
-    private fun ensureDateHasYear(date: Date) {
-        if (!date.hasYear()) {
+    private fun Date.ensureHasYear() {
+        if (!this.hasYear()) {
             throw IllegalArgumentException("Date must contain year")
         }
     }
 }
+
