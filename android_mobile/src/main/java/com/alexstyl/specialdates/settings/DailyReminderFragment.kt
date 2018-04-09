@@ -71,7 +71,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
         }
 
         timePreference = findPreference(R.string.key_daily_reminder_time)
-        timePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { preference, newValue ->
+        timePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val time = newValue as IntArray
             val timeOfDay = TimeOfDay(time[0], time[1])
             updateTimeSet(timeOfDay)
