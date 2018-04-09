@@ -33,8 +33,8 @@ public class DailyReminderModule {
     }
 
     @Provides
-    NotificationViewModelFactory factory(Strings strings, Colors colors) {
-        return new AndroidNotificationViewModelFactory(strings, Date.Companion.today(), colors);
+    DailyReminderViewModelFactory factory(Strings strings, Colors colors) {
+        return new AndroidDailyReminderViewModelFactory(strings, Date.Companion.today(), colors);
     }
 
     @Provides
@@ -43,7 +43,7 @@ public class DailyReminderModule {
                                      NamedayUserSettings namedaySettings,
                                      BankHolidaysUserSettings bankholidaySettings,
                                      NamedayCalendarProvider namedayCalendarProvider,
-                                     NotificationViewModelFactory factory,
+                                     DailyReminderViewModelFactory factory,
                                      CrashAndErrorTracker errorTracker,
                                      BankHolidayProvider bankHolidayProvider) {
         return new DailyReminderPresenter(permissions,

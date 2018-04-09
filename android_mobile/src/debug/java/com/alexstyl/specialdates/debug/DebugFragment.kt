@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
 import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModel
-import com.alexstyl.specialdates.dailyreminder.NotificationViewModelFactory
+import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModelFactory
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParser
@@ -67,7 +67,7 @@ class DebugFragment : MementoPreferenceFragment() {
         @Inject set
     var peopleEventsUpdater: DebugPeopleEventsUpdater? = null
         @Inject set
-    var notificationViewModelFactory: NotificationViewModelFactory? = null
+    var dailyReminderViewModelFactory: DailyReminderViewModelFactory? = null
         @Inject set
 
     private val onDailyReminderDateSelectedListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -170,7 +170,7 @@ class DebugFragment : MementoPreferenceFragment() {
 
             notifier!!.notifyFor(
                     DailyReminderViewModel(
-                            notificationViewModelFactory!!.summaryOf(viewModels),
+                            dailyReminderViewModelFactory!!.summaryOf(viewModels),
                             viewModels,
                             Optional.absent(),
                             Optional.absent()
@@ -183,7 +183,7 @@ class DebugFragment : MementoPreferenceFragment() {
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             notifier!!.notifyFor(
                     DailyReminderViewModel(
-                            notificationViewModelFactory!!.summaryOf(emptyList()),
+                            dailyReminderViewModelFactory!!.summaryOf(emptyList()),
                             emptyList(),
                             namedaysNotifications(),
                             Optional.absent()
@@ -195,7 +195,7 @@ class DebugFragment : MementoPreferenceFragment() {
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             notifier!!.notifyFor(
                     DailyReminderViewModel(
-                            notificationViewModelFactory!!.summaryOf(emptyList()),
+                            dailyReminderViewModelFactory!!.summaryOf(emptyList()),
                             emptyList(),
                             Optional.absent(),
                             bankholidayNotification()
@@ -205,10 +205,10 @@ class DebugFragment : MementoPreferenceFragment() {
         }
     }
 
-    private fun bankholidayNotification() = Optional(notificationViewModelFactory!!.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
+    private fun bankholidayNotification() = Optional(dailyReminderViewModelFactory!!.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
 
     private fun namedaysNotifications() =
-            Optional(notificationViewModelFactory!!.viewModelFor(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock"))))
+            Optional(dailyReminderViewModelFactory!!.viewModelFor(NamesInADate(Date.today(), arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock"))))
 
     private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(Optional.absent(), standardEventType,
             date, contact)
@@ -248,7 +248,7 @@ class DebugFragment : MementoPreferenceFragment() {
     private fun ArrayList<ContactEvent>.toViewModels(): ArrayList<ContactEventNotificationViewModel> {
         val viewmodels = arrayListOf<ContactEventNotificationViewModel>()
         forEach {
-            viewmodels.add(notificationViewModelFactory!!.viewModelFor(it))
+            viewmodels.add(dailyReminderViewModelFactory!!.viewModelFor(it))
         }
         return viewmodels
     }

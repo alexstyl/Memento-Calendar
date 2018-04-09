@@ -13,10 +13,10 @@ import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 
-class AndroidNotificationViewModelFactory(private val strings: Strings,
-                                          private val todaysDate: Date,
-                                          private val colors: Colors)
-    : NotificationViewModelFactory {
+class AndroidDailyReminderViewModelFactory(private val strings: Strings,
+                                           private val todaysDate: Date,
+                                           private val colors: Colors)
+    : DailyReminderViewModelFactory {
 
     override fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel {
         val contacts = viewModels.fold(emptyList<Contact>(), { list, viewModel ->
