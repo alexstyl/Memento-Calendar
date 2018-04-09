@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
+import com.alexstyl.specialdates.settings.DailyReminderNavigator;
 
 import dagger.Module;
 import dagger.Provides;
@@ -68,5 +69,10 @@ public class DailyReminderModule {
     @Provides
     DailyReminderOreoChannelCreator channelCreator(NotificationManager notificatioManager, Strings strings, Logger logger) {
         return new DailyReminderOreoChannelCreator(notificatioManager, strings, logger);
+    }
+
+    @Provides
+    DailyReminderNavigator navigator() {
+        return new DailyReminderNavigator();
     }
 }

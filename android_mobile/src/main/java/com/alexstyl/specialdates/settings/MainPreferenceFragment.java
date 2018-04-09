@@ -2,12 +2,9 @@ package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.provider.Settings;
 
-import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
@@ -17,7 +14,6 @@ import com.alexstyl.specialdates.analytics.Action;
 import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator;
-import com.alexstyl.specialdates.dailyreminder.NotificationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationConstants;
 import com.alexstyl.specialdates.donate.AndroidDonationService;
 import com.alexstyl.specialdates.donate.DonateMonitor;
@@ -166,28 +162,8 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
                 return true;
             }
         });
-
-        findPreference(R.string.key_daily_reminder_settings).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (Version.hasOreo()) {
-                    openDailyReminderChannelSettings();
-                } else {
-                    Intent intent = new Intent(getContext(), DailyReminderActivity.class);
-                    startActivity(intent);
-                }
-                return false;
-            }
-        });
         eventPresenter.startMonitoring();
         reattachThemeDialogIfNeeded();
-    }
-
-    private void openDailyReminderChannelSettings() {
-        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-        intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationConstants.CHANNEL_ID_CONTACTS);
-        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
-        startActivity(intent);
     }
 
     private void reattachThemeDialogIfNeeded() {

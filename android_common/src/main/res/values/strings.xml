@@ -231,4 +231,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Welcome">Welcome</string>
   <string name="donate_hint">"Want to support Memento's development?"</string>
   <string name="Bank_holiday_subtitle">Tap to see more events.</string>
+  <string name="Advanced_notification_settings">Advanced notification settings</string>
+  <string name="daily_reminder_advanced_settings_summary">Change sounds, vibration, lights and more.</string>
 </resources>
