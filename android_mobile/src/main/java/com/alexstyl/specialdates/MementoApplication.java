@@ -2,10 +2,8 @@ package com.alexstyl.specialdates;
 
 import android.app.AlarmManager;
 import android.app.Application;
-import android.app.NotificationManager;
 import android.content.Context;
 
-import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings;
@@ -13,7 +11,6 @@ import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.FacebookModule;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
@@ -44,12 +41,10 @@ public class MementoApplication extends Application {
     @Inject FacebookUserSettings facebookSettings;
     @Inject UpcomingEventsJobCreator jobCreator;
     @Inject PeopleEventsUpdater peopleEventsUpdater;
-    @Inject UpcomingEventsViewRefresher viewRefresher;
     @Inject MementoPermissions permissions;
     @Inject UpcomingEventsSettings settings;
-    @Inject NotificationManager notificationManager;
-    @Inject Strings strings;
     @Inject DailyReminderUserSettings dailyReminderUserSettings;
+    @Inject DailyReminderScheduler dailyReminderScheduler;
 
     @Override
     public void onCreate() {
@@ -73,13 +68,12 @@ public class MementoApplication extends Application {
         tracker.startTracking();
 
         if (dailyReminderUserSettings.isEnabled()) {
-            AlarmManagerCompat alarmManager = AlarmManagerCompat.from(this);
-            new DailyReminderScheduler(alarmManager, this).setupReminder(dailyReminderUserSettings);
+            dailyReminderScheduler.setupReminder(dailyReminderUserSettings); // TODO use job scheduler
         }
 
         if (facebookSettings.isLoggedIn()) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
+            new FacebookFriendsScheduler(this, alarmManager).scheduleNext();// TODO use job scheduler
         }
 
         if (needsToInitialiseEvents()) {

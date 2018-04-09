@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.dailyreminder
 
 import android.app.IntentService
 import android.content.Intent
-import com.alexstyl.android.AlarmManagerCompat
 import com.alexstyl.specialdates.MementoApplication
 import javax.inject.Inject
 
@@ -16,6 +15,8 @@ class DailyReminderIntentService : IntentService("DailyReminder") {
         @Inject set
     var userSettings: DailyReminderUserSettings? = null
         @Inject set
+    var scheduler: DailyReminderScheduler? = null
+        @Inject set
 
     override fun onCreate() {
         super.onCreate()
@@ -25,14 +26,11 @@ class DailyReminderIntentService : IntentService("DailyReminder") {
 
     override fun onHandleIntent(intent: Intent?) {
         val view = NotificationDailyReminderView(notifier!!)
-        presenter?.startPresentingInto(view)
+        presenter!!.startPresentingInto(view)
 
         if (dailyReminderOptions!!.isEnabled()) {
-            val alarmManagerCompat = AlarmManagerCompat.from(this)
-
-            val scheduler = DailyReminderScheduler(alarmManagerCompat, this)
-            scheduler.setupReminder(userSettings)
+            scheduler!!.setupReminder(userSettings)
         }
-        presenter?.stopPresenting()
+        presenter!!.stopPresenting()
     }
 }

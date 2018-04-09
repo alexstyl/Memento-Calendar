@@ -1,18 +1,14 @@
-package com.alexstyl.android;
+package com.alexstyl.specialdates.dailyreminder;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
+
+import com.alexstyl.android.Version;
 
 public final class AlarmManagerCompat {
     private final AlarmManager alarmManager;
 
-    public static AlarmManagerCompat from(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        return new AlarmManagerCompat(alarmManager);
-    }
-
-    private AlarmManagerCompat(AlarmManager alarmManager) {
+    public AlarmManagerCompat(AlarmManager alarmManager) {
         this.alarmManager = alarmManager;
     }
 
