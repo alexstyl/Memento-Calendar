@@ -1,5 +1,5 @@
 package com.alexstyl.specialdates
 
 object MementoConstants {
-    var PACKAGE_NAME = BuildConfig.APPLICATION_ID
+    var PACKAGE = BuildConfig.APPLICATION_ID
 }

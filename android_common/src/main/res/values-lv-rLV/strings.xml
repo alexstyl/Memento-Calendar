@@ -28,7 +28,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Atradi kļūdu? Ir ieteikumi? Padod man ziņu!</string>
     <string name="choose">Izvēlēties</string>
     <string name="number">numurs</string>
-    <string name="action_call">Zvanīt</string>
+    <string name="Call">Zvanīt</string>
     <string name="action_text">Sūtīt SMS</string>
     <string name="action_send_mail">Sūtīt e-pastu</string>
     <string name="no_app_found">Nav nevienas piemērotas lietotnes, lai paveiktu darbību</string>

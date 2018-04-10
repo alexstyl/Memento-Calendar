@@ -30,4 +30,6 @@ interface Strings {
     fun bankholidays(): String
     fun contacts(): String
     fun bankholidaySubtitle(): String
+    fun call(): String
+    fun sendWishes(): String
 }

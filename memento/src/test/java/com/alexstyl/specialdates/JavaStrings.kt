@@ -1,13 +1,15 @@
 package com.alexstyl.specialdates
 
+
 import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
+    override fun call(): String = "Call"
+    override fun sendWishes(): String = "Send wishes"
     override fun bankholidaySubtitle(): String = "Tap to see more events."
-
     override fun contacts(): String = "Contacts"
 
     override fun bankholidays(): String = "Bank Holidays"

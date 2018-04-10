@@ -164,8 +164,10 @@
         android:value=".home.HomeActivity" />
     </activity>
 
-    <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
 
+    <activity android:name=".dailyreminder.actions.ContactActionsActivity" />
+
+    <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
     <!-- Services -->
     <service
       android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"

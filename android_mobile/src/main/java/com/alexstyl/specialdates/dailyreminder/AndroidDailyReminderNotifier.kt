@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.dailyreminder
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -14,6 +15,7 @@ import android.graphics.RectF
 import android.support.v4.app.NotificationCompat
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.R
+import com.alexstyl.specialdates.dailyreminder.actions.ContactActionsActivity
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
@@ -81,6 +83,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
     }
 
     private fun notifySummary(summary: SummaryNotificationViewModel) {
+        // TODO public version
         val startIntent = HomeActivity.getStartIntent(context)
         val requestCode = NotificationConstants.NOTIFICATION_ID_CONTACTS_SUMMARY
         val pendingIntent = PendingIntent.getActivity(
@@ -103,10 +106,10 @@ class AndroidDailyReminderNotifier(private val context: Context,
         notificationManager.notify(summary.notificationId, notification)
     }
 
-    private fun notifyContacts(contacts: List<ContactEventNotificationViewModel>) {
-        contacts.forEach { contactViewModel ->
-            val startIntent = PersonActivity.buildIntentFor(context, contactViewModel.contactEvent.contact)
-            val requestCode = NotificationConstants.CHANNEL_ID_CONTACTS.hashCode() + contactViewModel.contactEvent.contact.contactID.toInt()
+    private fun notifyContacts(viewModels: List<ContactEventNotificationViewModel>) {
+        viewModels.forEach { viewModel ->
+            val startIntent = PersonActivity.buildIntentFor(context, viewModel.contactEvent.contact)
+            val requestCode = NotificationConstants.CHANNEL_ID_CONTACTS.hashCode() + viewModel.contactEvent.contact.contactID.toInt()
             val pendingIntent = PendingIntent.getActivity(
                     context,
                     requestCode,
@@ -115,16 +118,19 @@ class AndroidDailyReminderNotifier(private val context: Context,
 
             val notification =
                     NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
-                            .setContentTitle(contactViewModel.title)
-                            .setContentText(contactViewModel.label)
+                            .setContentTitle(viewModel.title)
+                            .setContentText(viewModel.label)
                             .setContentIntent(pendingIntent)
-                            .loadLargeImage(contactViewModel.contactEvent.contact.imagePath)
+                            .setActions(viewModel)
+                            .loadLargeImage(viewModel.contactEvent.contact.imagePath)
                             .setSmallIcon(R.drawable.ic_stat_memento)
                             .setColor(colors.getDailyReminderColor())
                             .setGroup(NotificationConstants.GROUP_DAILY_REMINDER)
+                            .setAutoCancel(true)
+                            .setContentInfo("Content info")
                             .build()
 
-            notificationManager.notify(contactViewModel.notificationId, notification)
+            notificationManager.notify(viewModel.notificationId, notification)
         }
     }
 
@@ -172,7 +178,22 @@ class AndroidDailyReminderNotifier(private val context: Context,
         return output
     }
 
+    private fun NotificationCompat.Builder.setActions(contactEventViewModel: ContactEventNotificationViewModel): NotificationCompat.Builder {
+        contactEventViewModel.actions.forEach { actionViewModel ->
+            val intent = buildIntentFor(actionViewModel, contactEventViewModel)
+            val pendingIntent = PendingIntent.getActivity(context, actionViewModel.id, intent, 0)
+            addAction(NotificationCompat.Action(0, actionViewModel.label, pendingIntent))
+        }
+        return this
+    }
+
+    private fun buildIntentFor(actionViewModel: ContactActionViewModel, contactEventViewModel: ContactEventNotificationViewModel): Intent =
+            when (actionViewModel.type) {
+                ActionType.CALL -> ContactActionsActivity.buildCallIntentFor(context, contactEventViewModel.contact)
+                ActionType.SEND_WISH -> ContactActionsActivity.buildSendIntentFor(context, contactEventViewModel.contact)
+            }
 }
+
 
 
 

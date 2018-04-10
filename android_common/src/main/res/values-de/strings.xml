@@ -28,7 +28,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Haben Sie einen Bug gefunden? Oder Sie haben einen Vorschlag? Lassen Sie es uns wissen!</string>
     <string name="choose">Wähle</string>
     <string name="number">Nummer</string>
-    <string name="action_call">Anrufen</string>
+    <string name="Call">Anrufen</string>
     <string name="action_text">SMS schreiben</string>
     <string name="action_send_mail">Email schreiben</string>
     <string name="no_app_found">Es wurde keine Anwendung zum Durchführen dieser Aktion gefunden</string>
