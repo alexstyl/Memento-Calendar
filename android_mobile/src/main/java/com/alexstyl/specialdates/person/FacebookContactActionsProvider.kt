@@ -15,7 +15,7 @@ class FacebookContactActionsProvider(
 
     override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
         val action = ContactAction(
-                strings.viewConversation(),
+                strings.call(),
                 strings.facebookMessenger(),
                 actions.view(URI.create("fb-messenger://user/" + contact.contactID)) // TODO check what happens if no messenger installed
         )
