@@ -6,8 +6,10 @@ import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.contact.ContactsModule;
+import com.alexstyl.specialdates.dailyreminder.actions.ContactActionsActivity;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
+import com.alexstyl.specialdates.dailyreminder.actions.ContactActionsModule;
 import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.donate.DonateModule;
@@ -58,6 +60,7 @@ import dagger.Component;
 @Component(modules = {
         AndroidApplicationModule.class,
         AnalyticsModule.class,
+        ContactActionsModule.class,
         ResourcesModule.class,
         ContactsModule.class,
         DateModule.class,
@@ -139,4 +142,6 @@ public interface AppComponent {
     void inject(FacebookWebView peopleFragment);
 
     void inject(@NotNull ThemedMementoActivity themedMementoActivity);
+
+    void inject(@NotNull ContactActionsActivity contactActionsActivity);
 }

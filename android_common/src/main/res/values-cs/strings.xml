@@ -28,7 +28,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Nalezl/a jste chybu? Máte námět? Dejte mi vědět!</string>
     <string name="choose">Vybrat</string>
     <string name="number">číslo</string>
-    <string name="action_call">Zavolat</string>
+    <string name="Call">Zavolat</string>
     <string name="action_text">Poslat SMS</string>
     <string name="action_send_mail">Poslat e-mail</string>
     <string name="no_app_found">Pro provedení této akce nebyla nalezena zádná aplikace</string>

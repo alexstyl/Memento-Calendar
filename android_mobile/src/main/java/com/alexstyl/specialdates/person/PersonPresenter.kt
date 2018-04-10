@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
 
 class PersonPresenter(private val provider: PeopleEventsProvider,
-                      private val personCallProvider: PersonCallProvider,
+                      private val personActionsProvider: PersonActionsProvider,
                       private val toPersonViewModel: PersonDetailsViewModelFactory,
                       private val toEventViewModel: EventViewModelFactory,
                       private val persister: PeopleEventsPersister,
@@ -44,8 +44,8 @@ class PersonPresenter(private val provider: PeopleEventsProvider,
         disposable.add(
                 Observable.combineLatest(
                         eventsOf(contact),
-                        personCallProvider.getCallsFor(contact, executor),
-                        personCallProvider.getMessagesFor(contact, executor),
+                        personActionsProvider.getCallsFor(contact, executor),
+                        personActionsProvider.getMessagesFor(contact, executor),
                         Function3
                         <List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
                         { t1, t2, t3 ->

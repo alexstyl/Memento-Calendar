@@ -28,7 +28,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="contact_dev_summary">Found a bug? Have a suggestion? Let me know!</string>
   <string name="choose">Choose</string>
   <string name="number">number</string>
-  <string name="action_call">Call</string>
+  <string name="Call">Call</string>
   <string name="action_text">Send SMS</string>
   <string name="action_send_mail">Send e-mail</string>
   <string name="no_app_found">No application found in order to perform this action</string>
@@ -233,4 +233,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Bank_holiday_subtitle">Tap to see more events.</string>
   <string name="Advanced_notification_settings">Advanced notification settings</string>
   <string name="daily_reminder_advanced_settings_summary">Change sounds, vibration, lights and more.</string>
+  <string name="Send_wishes">Send wishes</string>
 </resources>

@@ -28,7 +28,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="contact_dev_summary">Παρουσιάστηκε κάποιο πρόβλημα; Έχετε κάποια πρόταση για την εφαρμογή; Πατήστε εδώ</string>
   <string name="choose">Επιλογή</string>
   <string name="number">αριθμού</string>
-  <string name="action_call">Κλήση</string>
+  <string name="Call">Κλήση</string>
   <string name="action_text">Αποστολή SMS</string>
   <string name="action_send_mail">Αποστολή e-mail</string>
   <string name="no_app_found">Δεν βρέθηκε κάποια εγκατεστημένη εφαρμογή για να ολοκληρωθεί αυτή η ενέργεια</string>

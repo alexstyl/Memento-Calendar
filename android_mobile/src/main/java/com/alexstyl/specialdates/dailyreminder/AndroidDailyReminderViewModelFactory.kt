@@ -40,7 +40,12 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
         return ContactEventNotificationViewModel(contact.hashCode(),
                 contactEvent,
                 contact.displayName.toString(),
-                coloredLabel
+                coloredLabel,
+                arrayListOf(     // TODO check if they actually have numbers/emails to call/send wishes
+                        ContactActionViewModel(
+                                (ActionType.CALL.hashCode() + contact.contactID).toInt(), strings.call(), ActionType.CALL),
+                        ContactActionViewModel(
+                                (ActionType.SEND_WISH.hashCode() + contact.contactID).toInt(), strings.sendWishes(), ActionType.SEND_WISH))
         )
     }
 
