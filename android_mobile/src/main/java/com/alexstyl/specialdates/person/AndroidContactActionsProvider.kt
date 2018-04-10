@@ -161,7 +161,7 @@ class AndroidContactActionsProvider(
             val icon = resolveInfos[0].loadIcon(packageManager)
             return ContactActionViewModel(contactAction, View.VISIBLE, icon)
         }
-        throw ActivityNotFoundException("Couldn't find activity for " + mimeType)
+        throw ActivityNotFoundException("Couldn't find activity for $mimeType")
     }
 
 

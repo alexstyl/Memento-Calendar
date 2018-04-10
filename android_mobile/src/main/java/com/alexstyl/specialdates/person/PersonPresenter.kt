@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
 
 class PersonPresenter(private val provider: PeopleEventsProvider,
-                      private val personActionsProvider: PersonActionsProvider,
+                      private val compositeContactActionsProvider: ContactActionsProvider,
                       private val toPersonViewModel: PersonDetailsViewModelFactory,
                       private val toEventViewModel: EventViewModelFactory,
                       private val persister: PeopleEventsPersister,
@@ -24,7 +24,7 @@ class PersonPresenter(private val provider: PeopleEventsProvider,
 
     private var contactOptional = Optional.absent<Contact>()
 
-    fun startPresentingInto(personView: PersonView, contact: Contact, executor: ContactActions) {
+    fun startPresentingInto(personView: PersonView, contact: Contact, actions: ContactActions) {
         contactOptional = Optional(contact)
 
         disposable.add(
@@ -44,8 +44,8 @@ class PersonPresenter(private val provider: PeopleEventsProvider,
         disposable.add(
                 Observable.combineLatest(
                         eventsOf(contact),
-                        personActionsProvider.getCallsFor(contact, executor),
-                        personActionsProvider.getMessagesFor(contact, executor),
+                        callActions(contact, actions),
+                        messagingActions(contact, actions),
                         Function3
                         <List<ContactEventViewModel>, List<ContactActionViewModel>, List<ContactActionViewModel>, PersonAvailableActionsViewModel>
                         { t1, t2, t3 ->
@@ -57,6 +57,18 @@ class PersonPresenter(private val provider: PeopleEventsProvider,
                         .subscribe({
                             personView.displayAvailableActions(it)
                         }))
+    }
+
+    private fun messagingActions(contact: Contact, actions: ContactActions): Observable<List<ContactActionViewModel>>? {
+        return Observable.fromCallable {
+            compositeContactActionsProvider.messagingActionsFor(contact, actions)
+        }
+    }
+
+    private fun callActions(contact: Contact, actions: ContactActions): Observable<List<ContactActionViewModel>>? {
+        return Observable.fromCallable {
+            compositeContactActionsProvider.callActionsFor(contact, actions)
+        }
     }
 
     private fun getEventsFor(contact: Contact) = Observable.fromCallable { provider.fetchEventsFor(contact) }

@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
+import com.alexstyl.specialdates.person.ContactActionsProvider;
 import com.alexstyl.specialdates.settings.DailyReminderNavigator;
 
 import dagger.Module;
@@ -33,8 +34,8 @@ public class DailyReminderModule {
     }
 
     @Provides
-    DailyReminderViewModelFactory factory(Strings strings, Colors colors) {
-        return new AndroidDailyReminderViewModelFactory(strings, Date.Companion.today(), colors);
+    DailyReminderViewModelFactory factory(Strings strings, Colors colors, ContactActionsProvider provider) {
+        return new AndroidDailyReminderViewModelFactory(strings, Date.Companion.today(), colors, provider);
     }
 
     @Provides
@@ -75,7 +76,6 @@ public class DailyReminderModule {
     DailyReminderNavigator navigator() {
         return new DailyReminderNavigator();
     }
-
 
     @Provides
     DailyReminderScheduler scheduler(AlarmManagerCompat alarmManager, Context context) {

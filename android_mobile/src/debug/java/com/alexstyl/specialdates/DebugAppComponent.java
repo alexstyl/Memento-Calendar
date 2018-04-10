@@ -10,6 +10,7 @@ import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.images.ImageModule;
+import com.alexstyl.specialdates.person.PersonModule;
 
 import javax.inject.Singleton;
 
@@ -19,6 +20,7 @@ import dagger.Component;
 @Component(modules = {
         AndroidApplicationModule.class,
         NamedayModule.class,
+        PersonModule.class,
         ContactsModule.class,
         PeopleEventsModule.class,
         DonateModule.class,

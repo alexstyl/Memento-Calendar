@@ -26,15 +26,14 @@ class PersonModule {
                      context: Context,
                      packageManager: PackageManager,
                      tracker: CrashAndErrorTracker,
-                     strings: Strings): PersonActionsProvider {
+                     strings: Strings): ContactActionsProvider {
 
         val theme = ThemingPreferences.newInstance(context).selectedTheme
         val wrapper = ContextThemeWrapper(context, theme.androidTheme())
 
-        return PersonActionsProvider(
-                AndroidContactActionsProvider(
-                        contentResolver, resources, wrapper, packageManager, tracker),
-                FacebookContactActionsProvider(strings, resources)
+        return CompositeContactActionsProvider(
+                arrayListOf(AndroidContactActionsProvider(contentResolver, resources, wrapper, packageManager, tracker),
+                        FacebookContactActionsProvider(strings, resources))
         )
     }
 
@@ -55,13 +54,13 @@ class PersonModule {
 
     @Provides
     fun presenter(peopleEventsProvider: PeopleEventsProvider,
-                  personActionsProvider: PersonActionsProvider,
+                  compositeContactActionsProvider: ContactActionsProvider,
                   peoplePersister: PeopleEventsPersister,
                   factory: PersonDetailsViewModelFactory,
                   toEventViewModel: EventViewModelFactory): PersonPresenter {
         return PersonPresenter(
                 peopleEventsProvider,
-                personActionsProvider,
+                compositeContactActionsProvider,
                 factory, toEventViewModel, peoplePersister, Schedulers.io(),
                 AndroidSchedulers.mainThread()
         )
