@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.content.ContentResolver
 import android.content.Context
 import com.alexstyl.specialdates.CrashAndErrorTracker
-import com.alexstyl.specialdates.UpcomingEventsView
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.events.SettingsPresenter
@@ -19,25 +18,23 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.Arrays
-import java.util.HashSet
 import javax.inject.Singleton
 
 @Module
 @Singleton
-open class PeopleEventsModule(private val context: Context) {
+class PeopleEventsModule(private val context: Context) {
 
     @Provides
-    open fun peopleEventsProvider(peopleDynamicNamedaysProvider: PeopleDynamicNamedaysProvider,
-                                  androidPeopleEventsProvider: AndroidPeopleEventsProvider): PeopleEventsProvider {
+    fun peopleEventsProvider(peopleDynamicNamedaysProvider: PeopleDynamicNamedaysProvider,
+                             androidPeopleEventsProvider: AndroidPeopleEventsProvider): PeopleEventsProvider {
         return CompositePeopleEventsProvider(listOf(peopleDynamicNamedaysProvider, androidPeopleEventsProvider))
     }
 
     @Provides
-    open fun androidPeopleEventsProvider(sqLiteOpenHelper: EventSQLiteOpenHelper,
-                                         contactsProvider: ContactsProvider,
-                                         dateParser: DateParser,
-                                         tracker: CrashAndErrorTracker): AndroidPeopleEventsProvider {
+    fun androidPeopleEventsProvider(sqLiteOpenHelper: EventSQLiteOpenHelper,
+                                    contactsProvider: ContactsProvider,
+                                    dateParser: DateParser,
+                                    tracker: CrashAndErrorTracker): AndroidPeopleEventsProvider {
         return AndroidPeopleEventsProvider(
                 sqLiteOpenHelper,
                 contactsProvider,
@@ -48,24 +45,24 @@ open class PeopleEventsModule(private val context: Context) {
     }
 
     @Provides
-    open fun peopleNamedayCalculator(namedayPreferences: NamedayUserSettings,
-                                     namedaysCalendarProvider: NamedayCalendarProvider,
-                                     contactsProvider: ContactsProvider): PeopleDynamicNamedaysProvider {
+    fun peopleNamedayCalculator(namedayPreferences: NamedayUserSettings,
+                                namedaysCalendarProvider: NamedayCalendarProvider,
+                                contactsProvider: ContactsProvider): PeopleDynamicNamedaysProvider {
         return PeopleDynamicNamedaysProvider(namedayPreferences, namedaysCalendarProvider, contactsProvider)
     }
 
     @Provides
     @Singleton
-    open fun peopleEventsViewRefresher(appContext: Context, appWidgetManager: AppWidgetManager): UpcomingEventsViewRefresher {
-        return UpcomingEventsViewRefresher(HashSet(Arrays.asList<UpcomingEventsView>(
+    fun peopleEventsViewRefresher(appContext: Context, appWidgetManager: AppWidgetManager): UpcomingEventsViewRefresher {
+        return UpcomingEventsViewRefresher(mutableSetOf(
                 WearSyncUpcomingEventsView(appContext),
                 TodayUpcomingEventsView(appContext, appWidgetManager),
                 UpcomingEventsScrollingWidgetView(appContext, appWidgetManager)
-        )))
+        ))
     }
 
     @Provides
-    open fun peopleEventsStaticEventsRefresher(
+    fun peopleEventsStaticEventsRefresher(
             eventSQlite: EventSQLiteOpenHelper,
             contentResolver: ContentResolver,
             contactsProvider: ContactsProvider,
@@ -78,17 +75,17 @@ open class PeopleEventsModule(private val context: Context) {
     }
 
     @Provides
-    open fun namedayDatabaseRefresher(namedayUserSettings: NamedayUserSettings,
-                                      databaseProvider: PeopleEventsPersister,
-                                      provider: PeopleDynamicNamedaysProvider): NamedayDatabaseRefresher {
+    fun namedayDatabaseRefresher(namedayUserSettings: NamedayUserSettings,
+                                 databaseProvider: PeopleEventsPersister,
+                                 provider: PeopleDynamicNamedaysProvider): NamedayDatabaseRefresher {
         return NamedayDatabaseRefresher(namedayUserSettings, databaseProvider, provider)
     }
 
     @Provides
-    open fun peopleEventsUpdater(staticRefresher: PeopleEventsStaticEventsRefresher,
-                                 namedayRefresher: NamedayDatabaseRefresher,
-                                 viewRefresher: UpcomingEventsViewRefresher,
-                                 settings: UpcomingEventsSettings): PeopleEventsUpdater {
+    fun peopleEventsUpdater(staticRefresher: PeopleEventsStaticEventsRefresher,
+                            namedayRefresher: NamedayDatabaseRefresher,
+                            viewRefresher: UpcomingEventsViewRefresher,
+                            settings: UpcomingEventsSettings): PeopleEventsUpdater {
         return PeopleEventsUpdater(
                 staticRefresher,
                 namedayRefresher,
@@ -100,18 +97,18 @@ open class PeopleEventsModule(private val context: Context) {
     }
 
     @Provides
-    open fun peopleEventsPersister(tracker: CrashAndErrorTracker, helper: EventSQLiteOpenHelper): PeopleEventsPersister {
+    fun peopleEventsPersister(tracker: CrashAndErrorTracker, helper: EventSQLiteOpenHelper): PeopleEventsPersister {
         val marshaller = ContactEventsMarshaller()
         return AndroidPeopleEventsPersister(helper, marshaller, tracker)
     }
 
     @Provides
-    open fun eventPreferences(): UpcomingEventsSettings {
+    fun eventPreferences(): UpcomingEventsSettings {
         return AndroidUpcomingEventSettings(context)
     }
 
     @Provides
-    open fun peopleEventsDatabaseUpdater(uiRefresher: UpcomingEventsViewRefresher, peopleEventsUpdater: PeopleEventsUpdater): SettingsPresenter {
+    fun peopleEventsDatabaseUpdater(uiRefresher: UpcomingEventsViewRefresher, peopleEventsUpdater: PeopleEventsUpdater): SettingsPresenter {
         return SettingsPresenter(peopleEventsUpdater, uiRefresher, Schedulers.io())
     }
 }
