@@ -165,7 +165,7 @@
     </activity>
 
 
-    <activity android:name=".dailyreminder.actions.ContactActionsActivity" />
+    <activity android:name=".dailyreminder.actions.PersonActionsActivity" />
 
     <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
     <!-- Services -->

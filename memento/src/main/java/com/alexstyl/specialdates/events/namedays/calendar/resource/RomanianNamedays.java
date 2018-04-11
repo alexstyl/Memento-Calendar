@@ -17,7 +17,7 @@ public class RomanianNamedays {
     private NamedayBundle namedays;
     private Date romanianDate;
 
-    RomanianNamedays(RomanianEasterSpecialCalculator calculator, List<String> names) {
+    public RomanianNamedays(RomanianEasterSpecialCalculator calculator, List<String> names) {
         this.calculator = calculator;
         this.names = names;
     }

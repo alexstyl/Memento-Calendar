@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.person.ContactActionsAdapter
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import javax.inject.Inject
 
-class ContactActionsActivity : ThemedMementoActivity() {
+class PersonActionsActivity : ThemedMementoActivity() {
 
     var presenter: ContactActionsPresenter? = null
         @Inject set
@@ -77,13 +77,13 @@ class ContactActionsActivity : ThemedMementoActivity() {
     companion object {
 
         fun buildCallIntentFor(context: Context, contact: Contact): Intent {
-            return Intent(context, ContactActionsActivity::class.java)
+            return Intent(context, PersonActionsActivity::class.java)
                     .setAction(ACTION_CALL)
                     .putContactExtra(contact)
         }
 
         fun buildSendIntentFor(context: Context, contact: Contact): Intent {
-            return Intent(context, ContactActionsActivity::class.java)
+            return Intent(context, PersonActionsActivity::class.java)
                     .setAction(ACTION_SENDTO)
                     .putContactExtra(contact)
         }

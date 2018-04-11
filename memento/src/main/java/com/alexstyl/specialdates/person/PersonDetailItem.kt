@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.person
 
 interface PersonDetailItem {
-    fun getValue(): String
-    fun getLabel(): String
+    val value:String
+    val label:String
 }

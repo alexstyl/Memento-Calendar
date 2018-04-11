@@ -7,6 +7,8 @@ import android.content.res.Resources
 import android.support.v7.view.ContextThemeWrapper
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Strings
+import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
+import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
@@ -32,9 +34,10 @@ class PersonModule {
         val wrapper = ContextThemeWrapper(context, theme.androidTheme())
 
         return CompositeContactActionsProvider(
-                arrayListOf(AndroidContactActionsProvider(contentResolver, resources, wrapper, packageManager, tracker),
-                        FacebookContactActionsProvider(strings, resources))
-        )
+                mapOf(
+                        Pair(SOURCE_DEVICE, AndroidContactActionsProvider(contentResolver, resources, wrapper, packageManager, tracker)),
+                        Pair(SOURCE_FACEBOOK, FacebookContactActionsProvider(strings, resources))
+                ))
     }
 
     @Provides

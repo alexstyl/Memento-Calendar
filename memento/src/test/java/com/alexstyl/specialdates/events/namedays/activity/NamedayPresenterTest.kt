@@ -39,7 +39,7 @@ class NamedayPresenterTest {
 
     @Test
     fun whenNoNamedaysExistOnASpecificDate_thenNoViewModelsArePassedToTheView() {
-        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, emptyList()))
+        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf()))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 

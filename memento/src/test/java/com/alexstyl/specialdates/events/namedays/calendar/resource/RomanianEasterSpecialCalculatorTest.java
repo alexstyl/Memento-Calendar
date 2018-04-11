@@ -12,9 +12,11 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class RomanianEasterSpecialCalculatorTest {
 
+    private static final OrthodoxEasterCalculator easterCalculator = new OrthodoxEasterCalculator();
+
     @Test
     public void calculatesSundayBeforeEasterCorrectly() {
-        RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator(OrthodoxEasterCalculator.INSTANCE);
+        RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator(easterCalculator);
         List<Date> expectedDates = buildExpectedDates();
         for (Date expectedDate : expectedDates) {
             Date actualDate = calculator.calculateSpecialRomanianDayForYear(expectedDate.getYear());

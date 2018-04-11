@@ -6,6 +6,7 @@ import android.view.View
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
 import java.net.URI
 
 class FacebookContactActionsProvider(
@@ -14,6 +15,7 @@ class FacebookContactActionsProvider(
     : ContactActionsProvider {
 
     override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
+        ensureItsAFacebookContact(contact)
         val action = ContactAction(
                 strings.call(),
                 strings.facebookMessenger(),
@@ -26,9 +28,12 @@ class FacebookContactActionsProvider(
                 .toList()
     }
 
-    override fun messagingActionsFor(contact: Contact, actions: ContactActions):
-            List<ContactActionViewModel> = arrayListOf(goToWallAction(contact, actions),
-            messengerAction(contact, actions))
+    override fun messagingActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
+        ensureItsAFacebookContact(contact)
+        return arrayListOf(
+                goToWallAction(contact, actions),
+                messengerAction(contact, actions))
+    }
 
     private fun messengerAction(contact: Contact, executor: ContactActions): ContactActionViewModel = ContactActionViewModel(
             ContactAction(
@@ -47,6 +52,12 @@ class FacebookContactActionsProvider(
             ),
             View.VISIBLE,
             ResourcesCompat.getDrawable(resources, R.drawable.ic_f_icon, null)!!)
+
+    private fun ensureItsAFacebookContact(contact: Contact) {
+        if (contact.source != SOURCE_FACEBOOK) {
+            throw IllegalArgumentException("Can only create actions for Facebook contacts. Asked for [$contact] instead")
+        }
+    }
 }
 
 private fun ContactActionViewModel.toList(): List<ContactActionViewModel> {
