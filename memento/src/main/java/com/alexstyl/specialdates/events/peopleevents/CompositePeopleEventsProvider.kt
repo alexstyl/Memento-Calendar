@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
 
 
-open class CompositePeopleEventsProvider(private var providers: List<PeopleEventsProvider>)
+class CompositePeopleEventsProvider(private var providers: List<PeopleEventsProvider>)
     : PeopleEventsProvider {
 
     override fun fetchEventsOn(date: Date): ContactEventsOnADate {
