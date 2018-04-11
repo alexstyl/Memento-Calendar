@@ -16,6 +16,7 @@ import android.view.View
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.theming.AttributeExtractor
 import com.alexstyl.specialdates.theming.DrawableTinter
 import java.net.URI
@@ -70,6 +71,7 @@ class AndroidContactActionsProvider(
 
 
     override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
+        ensureItsADeviceContact(contact)
         val viewModels = ArrayList<ContactActionViewModel>()
         val cursor = contentResolver.query(Data.CONTENT_URI,
                 PROJECTION,
@@ -104,6 +106,7 @@ class AndroidContactActionsProvider(
     }
 
     override fun messagingActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
+        ensureItsADeviceContact(contact)
         val viewModels = ArrayList<ContactActionViewModel>()
 
         val cursor = contentResolver.query(Data.CONTENT_URI,
@@ -145,6 +148,12 @@ class AndroidContactActionsProvider(
             cursor.close()
         }
         return viewModels
+    }
+
+    private fun ensureItsADeviceContact(contact: Contact) {
+        if (contact.source != ContactSource.SOURCE_DEVICE) {
+            throw IllegalArgumentException("Can only create actions for Device (Android) contacts. Asked for [$contact] instead")
+        }
     }
 
     @Throws(ActivityNotFoundException::class)

@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import java.util.*
+import java.util.ArrayList
 import java.util.Arrays.asList
 
 @RunWith(MockitoJUnitRunner::class)
@@ -152,7 +152,7 @@ class UpcomingRowViewModelsBuilderTest {
 
     private fun namedayOf(date: Date, maria: String): List<NamesInADate> {
         val namedays = ArrayList<NamesInADate>()
-        namedays.add(NamesInADate(date, listOf(maria)))
+        namedays.add(NamesInADate(date, arrayListOf(maria)))
         return namedays
     }
 

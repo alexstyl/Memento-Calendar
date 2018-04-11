@@ -2,21 +2,19 @@ package com.alexstyl.specialdates.person
 
 import com.alexstyl.specialdates.contact.Contact
 
-class CompositeContactActionsProvider(private val providers: ArrayList<ContactActionsProvider>) : ContactActionsProvider {
+class CompositeContactActionsProvider(private val providers: Map<Int, ContactActionsProvider>) : ContactActionsProvider {
 
     override fun callActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
-        val empty = emptyList<ContactActionViewModel>()
-
-        return providers.fold(empty, { contactEvents, provider ->
-            contactEvents + provider.callActionsFor(contact, actions)
-        })
+        if (providers[contact.source] != null) {
+            return providers[contact.source]!!.callActionsFor(contact, actions)
+        }
+        return emptyList()
     }
 
     override fun messagingActionsFor(contact: Contact, actions: ContactActions): List<ContactActionViewModel> {
-        val empty = emptyList<ContactActionViewModel>()
-
-        return providers.fold(empty, { contactEvents, provider ->
-            contactEvents + provider.messagingActionsFor(contact, actions)
-        })
+        if (providers[contact.source] != null) {
+            return providers[contact.source]!!.messagingActionsFor(contact, actions)
+        }
+        return emptyList()
     }
 }

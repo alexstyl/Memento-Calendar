@@ -32,7 +32,8 @@ public class PeopleDynamicNamedaysProviderTest {
     private PeopleDynamicNamedaysProvider calculator;
 
     private static final NamedayLocale LOCALE = NamedayLocale.GREEK;
-
+    private static final OrthodoxEasterCalculator calculator1 = new OrthodoxEasterCalculator();
+    private final Contact EASTER_CELEBRATING_CONTACT = ContactFixture.aContactCalled("Λάμπρος");
     private static final int YEAR = 2016;
     @Mock
     private NamedayCalendarProvider namedayCalendarProvider;
@@ -40,7 +41,6 @@ public class PeopleDynamicNamedaysProviderTest {
     private NamedayUserSettings mockSettings;
     @Mock
     private ContactsProvider mockContactsProvider;
-    private final Contact EASTER_CELEBRATING_CONTACT = ContactFixture.aContactCalled("Λάμπρος");
 
     @Before
     public void setUp() {
@@ -62,7 +62,7 @@ public class PeopleDynamicNamedaysProviderTest {
         testContacts.add(EASTER_CELEBRATING_CONTACT);
         when(mockContactsProvider.getAllContacts()).thenReturn(testContacts);
 
-        Date easterDate = OrthodoxEasterCalculator.INSTANCE.calculateEasterForYear(YEAR);
+        Date easterDate = calculator1.calculateEasterForYear(YEAR);
         List<ContactEvent> contactEvents = calculator.fetchEventsBetween(TimePeriod.Companion.between(easterDate, easterDate));
         assertThat(contactEvents).hasSize(1);
         assertThat(contactEvents.get(0).getContact()).isEqualTo(EASTER_CELEBRATING_CONTACT);

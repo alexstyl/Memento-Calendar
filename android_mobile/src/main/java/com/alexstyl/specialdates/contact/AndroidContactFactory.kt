@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import java.net.URI
 
-internal class AndroidContactFactory(private val resolver: ContentResolver, private val tracker: CrashAndErrorTracker) {
+class AndroidContactFactory(private val resolver: ContentResolver, private val tracker: CrashAndErrorTracker) {
 
     fun getAllContacts(): Contacts {
         val cursor: Cursor?

@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.events.namedays;
 
 import com.alexstyl.specialdates.date.Date;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
+import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianEasterSpecialCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianNamedays;
 
 import java.util.ArrayList;
@@ -15,11 +17,13 @@ import static org.fest.assertions.api.Assertions.fail;
 
 public class RomanianNamedaysTest {
 
+    private final RomanianEasterSpecialCalculator calculator = new RomanianEasterSpecialCalculator(new OrthodoxEasterCalculator());
+
     @Test
     public void whenCreatingRomanianNamedaysAllNamesAreReturnedCorrectly() throws Exception {
         List<String> celebratingNames = Arrays.asList("Florin", "Viorel", "Viorica", "Florin");
 
-        RomanianNamedays namedays = RomanianNamedays.from(celebratingNames);
+        RomanianNamedays namedays = new RomanianNamedays(calculator, celebratingNames);
 
         ArrayList<String> allNames = namedays.getAllNames();
         assertThat(allNames).isEqualTo(celebratingNames);
@@ -29,7 +33,7 @@ public class RomanianNamedaysTest {
     public void whenCreatingRomanianNamedaysDateIsCalculatedProperly() throws Exception {
         List<String> expectedNames = Arrays.asList("Florin", "Viorel", "Viorica", "Florin");
 
-        RomanianNamedays namedays = RomanianNamedays.from(expectedNames);
+        RomanianNamedays namedays = new RomanianNamedays(calculator, expectedNames);
 
         List<Date> expectedDates = buildExpectedDates();
         for (Date expectedDate : expectedDates) {

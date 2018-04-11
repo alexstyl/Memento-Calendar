@@ -15,7 +15,7 @@ import android.graphics.RectF
 import android.support.v4.app.NotificationCompat
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.dailyreminder.actions.ContactActionsActivity
+import com.alexstyl.specialdates.dailyreminder.actions.PersonActionsActivity
 import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
@@ -189,8 +189,8 @@ class AndroidDailyReminderNotifier(private val context: Context,
 
     private fun buildIntentFor(actionViewModel: ContactActionViewModel, contactEventViewModel: ContactEventNotificationViewModel): Intent =
             when (actionViewModel.type) {
-                ActionType.CALL -> ContactActionsActivity.buildCallIntentFor(context, contactEventViewModel.contact)
-                ActionType.SEND_WISH -> ContactActionsActivity.buildSendIntentFor(context, contactEventViewModel.contact)
+                ActionType.CALL -> PersonActionsActivity.buildCallIntentFor(context, contactEventViewModel.contact)
+                ActionType.SEND_WISH -> PersonActionsActivity.buildSendIntentFor(context, contactEventViewModel.contact)
             }
 }
 
