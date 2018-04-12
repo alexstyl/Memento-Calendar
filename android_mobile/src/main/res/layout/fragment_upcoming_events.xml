@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/root"
   android:layout_width="match_parent"
@@ -22,11 +21,6 @@
     android:paddingBottom="@dimen/fab_total_size"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    app:fastScrollEnabled="true"
-    app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
-    app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
-    app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
-    app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable"
     tools:listitem="@layout/row_upcoming_events_contact_event"
     tools:visibility="gone" />
 
