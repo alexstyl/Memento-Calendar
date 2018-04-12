@@ -11,13 +11,11 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
-import com.alexstyl.specialdates.person.ContactActionsProvider
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 
 class AndroidDailyReminderViewModelFactory(private val strings: Strings,
                                            private val todaysDate: Date,
-                                           private val colors: Colors,
-                                           private val actionsProvider: ContactActionsProvider)
+                                           private val colors: Colors)
     : DailyReminderViewModelFactory {
 
     override fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel {
@@ -40,21 +38,11 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
             setSpan(ForegroundColorSpan(colors.getColorFor(contactEvent.type)), 0, this.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
-        val noAction = NoActions()
-
-        val actions = ArrayList<ContactActionViewModel>()
-        if (actionsProvider.callActionsFor(contact, noAction).isNotEmpty()) {
-            actions.add(ContactActionViewModel((ActionType.CALL.hashCode() + contact.contactID).toInt(), strings.call(), ActionType.CALL))
-        }
-        if (actionsProvider.messagingActionsFor(contact, noAction).isNotEmpty()) {
-            actions.add(ContactActionViewModel((ActionType.SEND_WISH.hashCode() + contact.contactID).toInt(), strings.sendWishes(), ActionType.SEND_WISH))
-        }
-
         return ContactEventNotificationViewModel(contact.hashCode(),
                 contactEvent,
                 contact.displayName.toString(),
                 coloredLabel,
-                actions
+                emptyList() // TODO feature coming from the notification_actions branch
         )
     }
 
