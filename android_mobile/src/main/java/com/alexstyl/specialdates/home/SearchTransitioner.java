@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
+import android.support.v4.view.ViewCompat;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -55,7 +56,7 @@ final class SearchTransitioner {
         if (supportsTransitions()) {
             Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
             TransitionManager.beginDelayedTransition(toolbar, transition);
-            toolbarHolder.setElevation(activity.getResources().getDimensionPixelSize(R.dimen.toolbar_elevation));
+            ViewCompat.setElevation(toolbarHolder, activity.getResources().getDimensionPixelSize(R.dimen.toolbar_elevation));
             expandToolbar();
             viewFader.hideContentOf(toolbar);
 
@@ -104,7 +105,7 @@ final class SearchTransitioner {
 
             TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.IN));
             activityContent.setVisibility(VISIBLE);
-            toolbarHolder.setElevation(0);
+            ViewCompat.setElevation(toolbarHolder, 0);
         }
     }
 }
