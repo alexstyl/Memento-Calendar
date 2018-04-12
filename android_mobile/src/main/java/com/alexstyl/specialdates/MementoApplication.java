@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates;
 
 import android.app.AlarmManager;
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class MementoApplication extends Application {
+public class MementoApplication extends MultiDexApplication {
 
     private AppComponent appComponent;
 
