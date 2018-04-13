@@ -9,13 +9,7 @@ class DailyReminderIntentService : IntentService("DailyReminder") {
 
     var presenter: DailyReminderPresenter? = null
         @Inject set
-    var dailyReminderOptions: DailyReminderUserSettings? = null
-        @Inject set
     var notifier: DailyReminderNotifier? = null
-        @Inject set
-    var userSettings: DailyReminderUserSettings? = null
-        @Inject set
-    var scheduler: DailyReminderScheduler? = null
         @Inject set
 
     override fun onCreate() {
@@ -27,10 +21,6 @@ class DailyReminderIntentService : IntentService("DailyReminder") {
     override fun onHandleIntent(intent: Intent?) {
         val view = NotificationDailyReminderView(notifier!!)
         presenter!!.startPresentingInto(view)
-
-        if (dailyReminderOptions!!.isEnabled()) {
-            scheduler!!.setupReminder(userSettings)
-        }
         presenter!!.stopPresenting()
     }
 }

@@ -5,6 +5,10 @@ import com.evernote.android.job.Job
 
 class PeopleEventsRefreshJob(private val peopleEventsUpdater: PeopleEventsUpdater) : Job() {
 
+    companion object {
+        const val TAG = "People_Job"
+    }
+
     override fun onRunJob(params: Job.Params): Job.Result {
         peopleEventsUpdater
                 .updateEvents()

@@ -3,11 +3,12 @@ package com.alexstyl.specialdates.upcoming
 import android.content.Context
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.CrashAndErrorTracker
+import com.alexstyl.specialdates.JobsCreator
 import com.alexstyl.specialdates.Strings
-import com.alexstyl.specialdates.UpcomingEventsJobCreator
 import com.alexstyl.specialdates.analytics.Analytics
+import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
+import com.alexstyl.specialdates.dailyreminder.DailyReminderPresenter
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.events.bankholidays.BankHolidaysPreferences
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
@@ -62,8 +63,8 @@ class UpcomingEventsModule {
     }
 
     @Provides
-    fun jobCreator(updater: PeopleEventsUpdater): UpcomingEventsJobCreator {
-        return UpcomingEventsJobCreator(updater)
+    fun jobCreator(updater: PeopleEventsUpdater, presenter: DailyReminderPresenter, notifier: DailyReminderNotifier): JobsCreator {
+        return JobsCreator(updater, presenter, notifier)
     }
 
     @Provides
