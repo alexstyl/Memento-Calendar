@@ -32,4 +32,5 @@ interface Strings {
     fun bankholidaySubtitle(): String
     fun call(): String
     fun sendWishes(): String
+    fun dontForgetToSendWishes(): String
 }

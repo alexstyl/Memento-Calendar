@@ -1,9 +1,10 @@
 package com.alexstyl.specialdates.dailyreminder
 
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
@@ -12,6 +13,7 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
+import java.net.URI
 
 class AndroidDailyReminderViewModelFactory(private val strings: Strings,
                                            private val todaysDate: Date,
@@ -24,11 +26,22 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
         })
 
         val title = NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS)
-        val label = TextUtils.join(", ", contacts)
+        val label = strings.dontForgetToSendWishes()
 
+        val lines = arrayListOf<CharSequence>()
+        viewModels.forEach { contactViewModel ->
+            val sb = SpannableString("${contactViewModel.title}\t\t${contactViewModel.label}")
+            sb.setSpan(StyleSpan(Typeface.BOLD), 0, contactViewModel.title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            lines.add(sb)
+        }
+
+        val images = viewModels.fold(emptyList<URI>(), { list, viewModel ->
+            list + viewModel.contactEvent.contact.imagePath
+        })
+        
         return SummaryNotificationViewModel(
                 NotificationConstants.NOTIFICATION_ID_CONTACTS_SUMMARY,
-                title, label
+                title, label, lines, images
         )
     }
 

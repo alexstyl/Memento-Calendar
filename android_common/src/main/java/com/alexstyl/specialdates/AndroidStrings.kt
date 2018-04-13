@@ -8,6 +8,7 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class AndroidStrings(private val resources: Resources) : Strings {
+    override fun dontForgetToSendWishes(): String = resources.getString(R.string.Dont_forget_to_send_your_wishes)
     override fun call(): String = resources.getString(R.string.Call)
     override fun sendWishes(): String = resources.getString(R.string.Send_wishes)
 
