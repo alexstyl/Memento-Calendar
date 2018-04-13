@@ -59,8 +59,12 @@
 
   <PreferenceCategory android:title="Notifications">
     <Preference
-      android:key="@string/key_debug_trigger_daily_reminder_notification"
-      android:title="Show Daily Reminder notification" />
+      android:key="@string/key_debug_trigger_daily_reminder_notification_one"
+      android:title="Show Daily Reminder notification for one contact" />
+
+    <Preference
+      android:key="@string/key_debug_trigger_daily_reminder_notification_many"
+      android:title="Show Daily Reminder notification for multiple contact" />
     <Preference
       android:key="@string/key_debug_trigger_namedays_notification"
       android:title="Show Namedays notification" />

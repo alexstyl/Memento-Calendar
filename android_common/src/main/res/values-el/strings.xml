@@ -187,4 +187,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="romanian">Ρωμάνικα</string>
   <string name="Advanced_notification_settings">Περισσότερες ρυθμίσεις</string>
   <string name="daily_reminder_advanced_settings_summary">Αλλάξτε τον ήχο, την δόνηση, το χρώμα του LED και άλλα.</string>
+  <string name="Dont_forget_to_send_your_wishes">"Μην ξεχάσετε να τους ευχηθείτε."</string>
 </resources>
