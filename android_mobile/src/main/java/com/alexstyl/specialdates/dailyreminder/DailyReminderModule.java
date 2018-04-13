@@ -20,8 +20,6 @@ import com.alexstyl.specialdates.settings.DailyReminderNavigator;
 
 import dagger.Module;
 import dagger.Provides;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 @Module
 public class DailyReminderModule {
@@ -46,15 +44,15 @@ public class DailyReminderModule {
                                      DailyReminderViewModelFactory factory,
                                      CrashAndErrorTracker errorTracker,
                                      BankHolidayProvider bankHolidayProvider) {
-        return new DailyReminderPresenter(permissions,
-                                          peopleEventsProvider,
-                                          namedaySettings,
-                                          bankholidaySettings,
-                                          namedayCalendarProvider,
-                                          factory,
-                                          errorTracker,
-                                          bankHolidayProvider,
-                                          Schedulers.io(), AndroidSchedulers.mainThread()
+        return new DailyReminderPresenter(
+                permissions,
+                peopleEventsProvider,
+                namedaySettings,
+                bankholidaySettings,
+                namedayCalendarProvider,
+                factory,
+                errorTracker,
+                bankHolidayProvider
         );
     }
 
@@ -67,8 +65,8 @@ public class DailyReminderModule {
     }
 
     @Provides
-    DailyReminderOreoChannelCreator channelCreator(NotificationManager notificatioManager, Strings strings, Logger logger) {
-        return new DailyReminderOreoChannelCreator(notificatioManager, strings, logger);
+    DailyReminderOreoChannelCreator channelCreator(NotificationManager notificationManager, Strings strings, Logger logger) {
+        return new DailyReminderOreoChannelCreator(notificationManager, strings, logger);
     }
 
     @Provides
@@ -77,7 +75,7 @@ public class DailyReminderModule {
     }
 
     @Provides
-    DailyReminderScheduler scheduler(AlarmManagerCompat alarmManager, Context context) {
-        return new DailyReminderScheduler(alarmManager, context);
+    DailyReminderScheduler scheduler() {
+        return new AndroidDailyReminderScheduler();
     }
 }

@@ -35,7 +35,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
     var permissions: MementoPermissions? = null
         @Inject set
-    var scheduler: DailyReminderScheduler? = null
+    var schedulerAndroid: DailyReminderScheduler? = null
         @Inject set
     var analytics: Analytics? = null
         @Inject set
@@ -56,16 +56,16 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
         enablePreference = findPreference(R.string.key_daily_reminder)
 
-        enablePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { preference, newValue ->
+        enablePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val isEnabled = newValue as Boolean
             preferences!!.setEnabled(isEnabled)
 
             if (isEnabled) {
                 analytics!!.trackDailyReminderEnabled()
-                scheduler!!.setupReminder(preferences)
+                schedulerAndroid!!.scheduleReminderFor(preferences!!.getTimeSet())
             } else {
                 analytics!!.trackDailyReminderDisabled()
-                scheduler!!.cancelReminder()
+                schedulerAndroid!!.cancelReminder()
             }
             true
         }
@@ -74,10 +74,10 @@ class DailyReminderFragment : MementoPreferenceFragment() {
         timePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val time = newValue as IntArray
             val timeOfDay = TimeOfDay(time[0], time[1])
-            updateTimeSet(timeOfDay)
+            updateTimeSet(timeOfDay) // TODO could be moved to resume
             analytics!!.trackDailyReminderTimeUpdated(timeOfDay)
             preferences!!.setDailyReminderTime(timeOfDay)
-            scheduler!!.updateReminderTime(timeOfDay)
+            schedulerAndroid!!.scheduleReminderFor(timeOfDay)
             true
         }
 
@@ -91,7 +91,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
                 true
             }
         }
-        ringtonePreference?.onPreferenceChangeListener = OnPreferenceChangeListener { preference, newValue ->
+        ringtonePreference?.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val ringtoneUri = URI.create(newValue as String)
             ringtonePreference!!.updateRingtoneSummaryWith(ringtoneUri)
             true

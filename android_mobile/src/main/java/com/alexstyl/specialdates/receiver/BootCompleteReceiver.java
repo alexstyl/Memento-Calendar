@@ -25,14 +25,14 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)) {
-            rescheduleDailyReminder(context, dailyReminderUserSettings);
+            rescheduleDailyReminder(dailyReminderUserSettings);
             refresher.refreshViews();
         }
     }
 
-    private void rescheduleDailyReminder(Context context, DailyReminderUserSettings userSettings) {
+    private void rescheduleDailyReminder(DailyReminderUserSettings userSettings) {
         if (userSettings.isEnabled()) {
-            scheduler.setupReminder(userSettings);
+            scheduler.scheduleReminderFor(userSettings.getTimeSet());
         }
     }
 
