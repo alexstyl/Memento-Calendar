@@ -15,7 +15,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class OrthodoxEasterCalculatorTest {
 
     private final HashMap<Integer, Date> EXPECTED_DATES = new HashMap<>();
-    private final OrthodoxEasterCalculator calculator = OrthodoxEasterCalculator.INSTANCE;
+    private final OrthodoxEasterCalculator calculator = new OrthodoxEasterCalculator();
 
     @Before
     public void initExpectedDates() {
