@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.ContactsSearch;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;

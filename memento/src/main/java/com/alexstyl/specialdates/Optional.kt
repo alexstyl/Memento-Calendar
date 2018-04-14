@@ -4,7 +4,8 @@ package com.alexstyl.specialdates
  * A simplified version of Java 8's Optional class.
  * See: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
  */
-class Optional<T>(private val `object`: T?) {
+data class Optional<T>(private val `object`: T?) {
+
 
     val isPresent: Boolean
         get() = `object` != null
@@ -22,6 +23,10 @@ class Optional<T>(private val `object`: T?) {
         } else {
             `object` == null
         }
+    }
+
+    override fun toString(): String {
+        return `object`?.toString() ?: "absent"
     }
 
     companion object {
