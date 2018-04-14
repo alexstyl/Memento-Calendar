@@ -1,33 +1,19 @@
 package com.alexstyl.specialdates.contact
 
-import java.util.ArrayList
-import java.util.Collections
-
 class ContactsProvider(private val sources: Map<Int, ContactsProviderSource>) {
 
     val allContacts: List<Contact>
-        get() {
-            val contacts = ArrayList<Contact>()
-            for (providerSource in sources.values) {
-                contacts.addAll(providerSource.allContacts.contacts)
-            }
-            return Collections.unmodifiableList(contacts)
-        }
+        get() = sources.values.fold(emptyList(), { list, source ->
+            list + source.allContacts
+        })
 
     fun getContacts(contactIds: List<Long>, @ContactSource source: Int): Contacts {
-        if (sources.containsKey(source)) {
-            return sources[source]!!.queryContacts(contactIds)
-        }
-        throw IllegalArgumentException("Unknown source type: $source")
+        return sources[source]!!.queryContacts(contactIds)
     }
 
     @Throws(ContactNotFoundException::class)
     fun getContact(contactID: Long, @ContactSource source: Int): Contact {
-        if (sources.containsKey(source)) {
-            return sources[source]!!.getOrCreateContact(contactID)
-        }
-        throw IllegalArgumentException("Unknown source type: $source")
-
+        return sources[source]!!.getOrCreateContact(contactID)
     }
 
 }

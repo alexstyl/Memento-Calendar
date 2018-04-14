@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.alexstyl.specialdates.AppComponent;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.ContactsSearch;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;

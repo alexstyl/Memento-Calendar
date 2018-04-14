@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.addevent.ui;
 
 import android.widget.Filter;
 
+import com.alexstyl.specialdates.addevent.ContactsSearch;
 import com.alexstyl.specialdates.contact.Contact;
 
 import java.util.ArrayList;
