@@ -1,8 +1,6 @@
 package com.alexstyl.specialdates.addevent.ui
 
 import com.alexstyl.specialdates.addevent.ContactsSearch
-import com.alexstyl.specialdates.contact.ContactFixture
-import com.alexstyl.specialdates.contact.Contacts
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.search.NameMatcher
@@ -10,7 +8,6 @@ import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.BDDMockito
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
@@ -74,11 +71,5 @@ class ContactsSearchTest {
         val results = search.searchForContacts("there is no contact with a name like this", 1)
         assertThat(results).isEmpty()
     }
-
-    private fun BDDMockito.BDDMyOngoingStubbing<Contacts>.willReturnContacts(name: String, vararg names: String) =
-            this.willReturn((Contacts(1, (names.toList() + name).map { ContactFixture.aContactCalled(it) })))
-
-    private fun BDDMockito.BDDMyOngoingStubbing<Contacts>.willReturnNoContact() =
-            this.willReturn((Contacts(1, kotlin.collections.emptyList())))
 }
 

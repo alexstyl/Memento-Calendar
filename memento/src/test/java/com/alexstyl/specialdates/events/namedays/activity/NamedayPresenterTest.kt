@@ -1,7 +1,10 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
+import com.alexstyl.specialdates.addevent.ui.willReturnContacts
+import com.alexstyl.specialdates.addevent.ui.willReturnNoContact
 import com.alexstyl.specialdates.contact.ContactFixture.aContactCalled
 import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
@@ -12,7 +15,9 @@ import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mockito
+import org.mockito.Mockito.verify
 import org.mockito.runners.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -23,7 +28,7 @@ class NamedayPresenterTest {
 
     private val ANY_DATE = Date.on(1, JANUARY, 2017)
     private val mockNamedayCalendar = Mockito.mock(NamedayCalendar::class.java)
-    private var mockContactsProvider = Mockito.mock(ContactsProvider::class.java)
+    private var mockSource = Mockito.mock(ContactsProviderSource::class.java)
     private var mockLetterPainter = Mockito.mock(LetterPainter::class.java)
     private val mockUserSettings = Mockito.mock(NamedayUserSettings::class.java)
 
@@ -33,14 +38,18 @@ class NamedayPresenterTest {
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
-        presenter = NamedayPresenter(mockNamedayCalendar, NamedaysViewModelFactory(mockLetterPainter), mockContactsProvider, mockUserSettings, workScheduler, resultScheduler)
-        Mockito.`when`(mockLetterPainter.getVariant(Mockito.anyInt())).thenReturn(LETTER_VARIANT)
+
+        presenter = NamedayPresenter(
+                mockNamedayCalendar,
+                NamedaysViewModelFactory(mockLetterPainter),
+                ContactsProvider(mapOf(Pair(0, mockSource))), mockUserSettings, workScheduler, resultScheduler)
+        given(mockLetterPainter.getVariant(Mockito.anyInt())).willReturn(LETTER_VARIANT)
+        given(mockSource.allContacts).willReturnNoContact()
     }
 
     @Test
     fun whenNoNamedaysExistOnASpecificDate_thenNoViewModelsArePassedToTheView() {
-        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf()))
-
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf()))
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
         Mockito.verify(mockView).displayNamedays(emptyList())
@@ -48,12 +57,12 @@ class NamedayPresenterTest {
 
     @Test
     fun aNamedayWithAContact_returnsAViewModelWithThatContact() {
-        Mockito.`when`(mockContactsProvider.allContacts).thenReturn(arrayListOf(aContactCalled("Kate Brown")))
-        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
+        given(mockSource.allContacts).willReturnContacts("Kate Brown")
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
-        Mockito.verify(mockView).displayNamedays(
+        verify(mockView).displayNamedays(
                 arrayListOf(
                         NamedaysViewModel("Kate"),
                         CelebratingContactViewModel(aContactCalled("Kate Brown"), "Kate Brown", LETTER_VARIANT)
@@ -62,8 +71,7 @@ class NamedayPresenterTest {
 
     @Test
     fun aNamedayWithoutRelatedContacts_returnsOnlyTheNameday() {
-        Mockito.`when`(mockContactsProvider.allContacts).thenReturn(emptyList())
-        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
@@ -73,8 +81,8 @@ class NamedayPresenterTest {
 
     @Test
     fun irida() {
-        Mockito.`when`(mockContactsProvider.allContacts).thenReturn(arrayListOf(aContactCalled("Irida")))
-        Mockito.`when`(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).thenReturn(NamesInADate(ANY_DATE, arrayListOf("Ιριδα")))
+        given(mockSource.allContacts).willReturnContacts("Irida")
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf("Ιριδα")))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
