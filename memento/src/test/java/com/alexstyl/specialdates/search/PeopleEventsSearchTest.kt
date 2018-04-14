@@ -12,7 +12,6 @@ import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import java.util.ArrayList
 
 @RunWith(MockitoJUnitRunner::class)
 class PeopleEventsSearchTest {

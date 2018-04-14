@@ -10,7 +10,8 @@ import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 
 @Retention(RetentionPolicy.CLASS)
 @IntDef({SOURCE_DEVICE, SOURCE_FACEBOOK})
-public @interface ContactSource {
+public @interface
+ContactSource {
     int SOURCE_DEVICE = 1;
     int SOURCE_FACEBOOK = 2;
 }
