@@ -2,7 +2,9 @@ package com.alexstyl.specialdates.events.peopleevents
 
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactFixture
+import com.alexstyl.specialdates.contact.Contacts
 import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
@@ -21,13 +23,13 @@ import org.mockito.runners.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class PeopleDynamicNamedaysProviderTest {
 
-    private var calculator: PeopleDynamicNamedaysProvider? = null
+    private lateinit var calculator: PeopleDynamicNamedaysProvider
     @Mock
-    private val namedayCalendarProvider: NamedayCalendarProvider? = null
+    private lateinit var namedayCalendarProvider: NamedayCalendarProvider
     @Mock
-    private val mockSettings: NamedayUserSettings? = null
+    private lateinit var mockSettings: NamedayUserSettings
     @Mock
-    private val mockContactsProvider: ContactsProvider? = null
+    private lateinit var mockSource: ContactsProviderSource
     private val EASTER_CELEBRATING_CONTACT = ContactFixture.aContactCalled("Λάμπρος")
 
     @Before
@@ -37,10 +39,12 @@ class PeopleDynamicNamedaysProviderTest {
                 .forYear(YEAR)
                 .build()
 
-        given(namedayCalendarProvider!!.loadNamedayCalendarForLocale(any(NamedayLocale::class.java), any(Int::class.java))).willReturn(namedayCalendar)
-        given(mockSettings!!.selectedLanguage).willReturn(LOCALE)
+        given(namedayCalendarProvider.loadNamedayCalendarForLocale(any(NamedayLocale::class.java), any(Int::class.java))).willReturn(namedayCalendar)
+        given(mockSettings.selectedLanguage).willReturn(LOCALE)
         given(mockSettings.isEnabled).willReturn(true)
-        calculator = PeopleDynamicNamedaysProvider(mockSettings, namedayCalendarProvider, mockContactsProvider!!)
+        calculator = PeopleDynamicNamedaysProvider(mockSettings, namedayCalendarProvider,
+                ContactsProvider(mapOf(Pair(1, mockSource)))
+        )
 
     }
 
@@ -48,11 +52,11 @@ class PeopleDynamicNamedaysProviderTest {
     fun gettingSpecialNamedaysOnSpecificDateOnlyReturnsTheEventsForThatDate() {
         val testContacts = createSomeContacts()
         testContacts.add(EASTER_CELEBRATING_CONTACT)
-        given(mockContactsProvider!!.allContacts).willReturn(testContacts)
+        given(mockSource.allContacts).willReturn(Contacts(1, testContacts))
 
         val orthodoxEasterCalculator = OrthodoxEasterCalculator()
         val easterDate = orthodoxEasterCalculator.calculateEasterForYear(YEAR)
-        val contactEvents = calculator!!.fetchEventsBetween(TimePeriod.between(easterDate, easterDate))
+        val contactEvents = calculator.fetchEventsBetween(TimePeriod.between(easterDate, easterDate))
         assertThat(contactEvents).hasSize(1)
         assertThat(contactEvents[0].contact).isEqualTo(EASTER_CELEBRATING_CONTACT)
     }
