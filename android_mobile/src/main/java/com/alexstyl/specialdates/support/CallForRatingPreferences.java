@@ -1,16 +1,14 @@
 package com.alexstyl.specialdates.support;
 
-import android.content.Context;
-
 import com.alexstyl.specialdates.EasyPreferences;
 import com.alexstyl.specialdates.R;
 
-class CallForRatingPreferences {
+public class CallForRatingPreferences {
 
-    private EasyPreferences preferences;
+    private final EasyPreferences preferences;
 
-    CallForRatingPreferences(Context context) {
-        preferences = EasyPreferences.createForPrivatePreferences(context, R.string.pref_call_to_rate);
+    public CallForRatingPreferences(EasyPreferences preferences) {
+        this.preferences = preferences;
     }
 
     boolean hasUserRated() {

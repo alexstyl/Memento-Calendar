@@ -8,7 +8,7 @@ import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.widget.ColorImageView
 import com.novoda.notils.exception.DeveloperError
 
-internal class UpcomingViewHolderFactory(private val layoutInflater: LayoutInflater, private val imageLoader: ImageLoader) {
+class UpcomingViewHolderFactory(private val layoutInflater: LayoutInflater, private val imageLoader: ImageLoader) {
 
     fun createFor(@UpcomingRowViewType viewType: Int, parent: ViewGroup): UpcomingRowViewHolder<*> {
         when (viewType) {

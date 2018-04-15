@@ -70,6 +70,8 @@ class DebugFragment : MementoPreferenceFragment() {
         @Inject set
     var dailyReminderViewModelFactory: DailyReminderViewModelFactory? = null
         @Inject set
+    var askForSupport: AskForSupport? = null
+        @Inject set
 
     private val onDailyReminderDateSelectedListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         val month1 = month + 1 // dialog picker months have 0 index
@@ -134,7 +136,7 @@ class DebugFragment : MementoPreferenceFragment() {
         }
         findPreference<Preference>(R.string.key_debug_trigger_support)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             DebugPreferences.newInstance(preference.context, R.string.pref_call_to_rate).wipe()
-            AskForSupport(preference.context).requestForRatingSooner()
+            askForSupport!!.requestForRatingSooner()
             val message = "Support triggered. You should now see a prompt to rate the app when you launch it"
             showToast(message)
             true

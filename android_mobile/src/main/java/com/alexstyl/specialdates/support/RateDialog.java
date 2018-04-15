@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class RateDialog extends MementoActivity {
 
     private final String smiley = " " + Emoticon.SMILEY.asText();
-    private AskForSupport askForSupport;
+    @Inject AskForSupport askForSupport;
     private ExternalNavigator externalNavigator;
     @Inject Analytics analytics;
     @Inject CrashAndErrorTracker tracker;
@@ -31,7 +31,6 @@ public class RateDialog extends MementoActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_dialog);
-        askForSupport = new AskForSupport(context());
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 

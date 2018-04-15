@@ -3,7 +3,9 @@ package com.alexstyl.specialdates.upcoming
 import android.content.Context
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.CrashAndErrorTracker
+import com.alexstyl.specialdates.EasyPreferences
 import com.alexstyl.specialdates.JobsCreator
+import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
@@ -19,6 +21,8 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.facebook.FacebookUserSettings
 import com.alexstyl.specialdates.home.HomeNavigator
 import com.alexstyl.specialdates.permissions.MementoPermissions
+import com.alexstyl.specialdates.support.AskForSupport
+import com.alexstyl.specialdates.support.CallForRatingPreferences
 import com.alexstyl.specialdates.theming.AttributeExtractor
 import dagger.Module
 import dagger.Provides
@@ -77,5 +81,12 @@ class UpcomingEventsModule {
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         )
+    }
+
+    @Provides
+    fun askForSupport(context: Context): AskForSupport {
+        val privatePreferences = EasyPreferences.createForPrivatePreferences(context, R.string.pref_call_to_rate)
+        val preferences = CallForRatingPreferences(privatePreferences)
+        return AskForSupport(preferences)
     }
 }
