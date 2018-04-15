@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> {
+public class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> {
 
     private final UpcomingViewHolderFactory viewHolderFactory;
 

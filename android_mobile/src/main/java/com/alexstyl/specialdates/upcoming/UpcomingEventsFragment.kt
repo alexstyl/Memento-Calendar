@@ -1,12 +1,12 @@
 package com.alexstyl.specialdates.upcoming
 
 import android.os.Bundle
-import android.support.transition.TransitionManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.alexstyl.specialdates.MementoApplication
@@ -20,18 +20,9 @@ import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.support.AskForSupport
 import com.alexstyl.specialdates.ui.base.MementoFragment
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener
-import com.novoda.notils.caster.Views
 import javax.inject.Inject
 
-class UpcomingEventsFragment : MementoFragment(), UpcomingListMVPView, UpcomingEventsView {
-
-    private lateinit var root: ViewGroup
-    private lateinit var progressBar: ProgressBar
-    private lateinit var emptyView: TextView
-    private lateinit var upcomingList: RecyclerView
-
-    private lateinit var adapter: UpcomingEventsAdapter
-    private lateinit var askForSupport: AskForSupport
+class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
 
     lateinit var navigator: HomeNavigator
         @Inject set
@@ -41,24 +32,27 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingListMVPView, UpcomingE
         @Inject set
     lateinit var presenter: UpcomingEventsPresenter
         @Inject set
+    lateinit var askForSupport: AskForSupport
+        @Inject set
+
+    lateinit var mvpView: UpcomingListMVPView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val applicationModule = (activity!!.application as MementoApplication).applicationModule
         applicationModule.inject(this)
-
-        askForSupport = AskForSupport(activity)
         refresher.addEventsView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_upcoming_events, container, false)
-        root = Views.findById(view, R.id.root)
-        progressBar = Views.findById(view, R.id.upcoming_events_progress)
-        emptyView = Views.findById(view, R.id.upcoming_events_emptyview)
+        val root = view.findViewById<FrameLayout>(R.id.root)
+        val progressBar = view.findViewById<ProgressBar>(R.id.upcoming_events_progress)
+        val emptyView = view.findViewById<TextView>(R.id.upcoming_events_emptyview)
 
-        upcomingList = Views.findById(view, R.id.upcoming_events_list)
+        val upcomingList = view.findViewById<RecyclerView>(R.id.upcoming_events_list)
         upcomingList.setHasFixedSize(true)
         upcomingList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         upcomingList.addItemDecoration(
@@ -67,7 +61,7 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingListMVPView, UpcomingE
                         resources.getDimensionPixelSize(R.dimen.upcoming_event_vertical_spacing)
                 ))
 
-        adapter = UpcomingEventsAdapter(
+        val adapter = UpcomingEventsAdapter(
                 UpcomingViewHolderFactory(inflater, imageLoader),
                 object : OnUpcomingEventClickedListener {
 
@@ -82,6 +76,9 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingListMVPView, UpcomingE
         )
         adapter.setHasStableIds(true)
         upcomingList.adapter = adapter
+        mvpView = AndroidUpcomingMVPView(
+                upcomingList, root, progressBar, emptyView, adapter, askForSupport, activity!!)
+
         return view
     }
 
@@ -92,35 +89,8 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingListMVPView, UpcomingE
 
     override fun onStart() {
         super.onStart()
-        presenter.startPresentingInto(this)
+        presenter.startPresentingInto(mvpView)
     }
-
-    override fun showLoading() {
-        progressBar.visibility = View.VISIBLE
-        upcomingList.visibility = View.GONE
-        emptyView.visibility = View.GONE
-    }
-
-    override fun display(events: List<UpcomingRowViewModel>) {
-        TransitionManager.beginDelayedTransition(root)
-
-        progressBar.visibility = View.GONE
-        adapter.displayUpcomingEvents(events)
-
-        if (events.size > 0) {
-            upcomingList.visibility = View.VISIBLE
-            emptyView.visibility = View.GONE
-        } else {
-            upcomingList.visibility = View.GONE
-            emptyView.visibility = View.VISIBLE
-        }
-
-        if (askForSupport.shouldAskForRating()) {
-            askForSupport.askForRatingFromUser(activity)
-        }
-    }
-
-    override val isShowingNoEvents: Boolean = upcomingList.childCount == 0
 
     override fun onPause() {
         super.onPause()

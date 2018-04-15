@@ -11,6 +11,7 @@ import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.person.PersonModule;
+import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
 
 import javax.inject.Singleton;
 
@@ -25,6 +26,7 @@ import dagger.Component;
         PeopleEventsModule.class,
         DonateModule.class,
         DebugModule.class,
+        UpcomingEventsModule.class,
         DailyReminderModule.class,
         ResourcesModule.class,
         ImageModule.class,
