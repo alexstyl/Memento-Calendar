@@ -15,6 +15,7 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.UpcomingEventsView;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
+import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.home.HomeNavigator;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.MementoFragment;
@@ -60,7 +61,7 @@ public class PeopleFragment extends MementoFragment implements PeopleView, Upcom
 
             @Override
             public void onAddContactClicked() {
-                navigator.toAddEvent(getActivity());
+                navigator.toAddEvent(getActivity(), HomeActivity.CODE_ADD_EVENT);
             }
         });
         recyclerView.setAdapter(adapter);

@@ -62,12 +62,11 @@ class HomeNavigator(private val analytics: Analytics,
         } catch (e: ActivityNotFoundException) {
             tracker.track(e)
         }
-
     }
 
-    fun toAddEvent(activity: Activity) {
+    fun toAddEvent(activity: Activity, code: Int) {
         val intent = Intent(activity, AddEventActivity::class.java)
-        activity.startActivity(intent)
+        activity.startActivityForResult(intent, code)
     }
 
     fun toFacebookImport(activity: Activity) {

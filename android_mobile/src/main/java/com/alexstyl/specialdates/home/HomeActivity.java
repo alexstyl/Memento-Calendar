@@ -45,6 +45,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
     public static final int PAGE_EVENTS = 0;
     public static final int PAGE_CONTACTS = 1;
     public static final int PAGE_SETTINGS = 2;
+    public static final int CODE_ADD_EVENT = 120;
 
     private SearchTransitioner searchTransitioner;
     private FloatingActionButton actionButton;
@@ -97,7 +98,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigator.toAddEvent(HomeActivity.this);
+                navigator.toAddEvent(thisActivity(), CODE_ADD_EVENT);
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -157,6 +158,10 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             } else {
                 finishAffinity();
             }
+        } else if (requestCode == CODE_ADD_EVENT && resultCode == RESULT_OK) {
+            peopleEventsUpdater
+                    .updateEvents()
+                    .subscribe();
         }
     }
 
