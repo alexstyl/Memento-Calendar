@@ -11,6 +11,6 @@ object NotificationConstants {
     const val NOTIFICATION_ID_NAMEDAYS = 4002
     const val NOTIFICATION_ID_BANK_HOLIDAY = 4003
 
-    const val GROUP_DAILY_REMINDER = BuildConfig.APPLICATION_ID + ".group.daily_reminder"
+    const val DAILY_REMINDER_GROUP_ID = BuildConfig.APPLICATION_ID + ".group.daily_reminder"
 
 }

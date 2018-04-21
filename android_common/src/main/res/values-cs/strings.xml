@@ -35,7 +35,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="send_mail_via">Poslat emailem</string>
     <string name="daily_reminder">Denní připomínání</string>
     <string name="daily_reminder_summary">"Připomínat každodenní události"</string>
-    <string name="ringtone">Vyzváněcí tón</string>
+    <string name="Sound">Vyzváněcí tón</string>
     <string name="vibrate">Vibrace</string>
     <string name="daily_reminder_time_summary">Každý den v %s</string>
     <string name="set_time">Čas připomínky</string>
