@@ -65,8 +65,11 @@ public class DailyReminderModule {
     }
 
     @Provides
-    DailyReminderOreoChannelCreator channelCreator(NotificationManager notificationManager, Strings strings, Logger logger) {
-        return new DailyReminderOreoChannelCreator(notificationManager, strings, logger);
+    DailyReminderOreoChannelCreator channelCreator(NotificationManager notificationManager,
+                                                   Strings strings,
+                                                   Logger logger,
+                                                   DailyReminderUserSettings preferences) {
+        return new DailyReminderOreoChannelCreator(notificationManager, strings, preferences, logger);
     }
 
     @Provides

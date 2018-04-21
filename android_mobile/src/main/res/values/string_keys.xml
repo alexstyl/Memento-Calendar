@@ -43,7 +43,6 @@
   <string name="pref_events">pref_events</string>
   <string name="key_events_are_initialised">key_events_are_initialised</string>
   <string name="key_database_version">key_database_version</string>
-
   <string name="key_daily_reminder_advanced_settings">key_daily_reminder_advanced_settings</string>
 
 </resources>

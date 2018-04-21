@@ -12,6 +12,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
+import android.provider.ContactsContract.Contacts.CONTENT_LOOKUP_URI
 import android.support.v4.app.NotificationCompat
 import com.alexstyl.android.Version
 import com.alexstyl.resources.Colors
@@ -53,13 +54,14 @@ class AndroidDailyReminderNotifier(private val context: Context,
 
     private fun notifyContacts(viewModels: List<ContactEventNotificationViewModel>) {
         viewModels.forEach { viewModel ->
-            val startIntent = PersonActivity.buildIntentFor(context, viewModel.contactEvent.contact)
-            val requestCode = NotificationConstants.CHANNEL_ID_CONTACTS.hashCode() + viewModel.contactEvent.contact.contactID.toInt()
+            val requestCode = NotificationConstants.CHANNEL_ID_CONTACTS.hashCode() + viewModel.hashCode()
+            val startIntent = PersonActivity.buildIntentFor(context, viewModel.contact)
             val pendingIntent = PendingIntent.getActivity(
                     context,
                     requestCode,
                     startIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT)
+
 
             val notification =
                     NotificationCompat.Builder(context, NotificationConstants.CHANNEL_ID_CONTACTS)
@@ -67,17 +69,15 @@ class AndroidDailyReminderNotifier(private val context: Context,
                             .setContentText(viewModel.label)
                             .setContentIntent(pendingIntent)
                             .setActions(viewModel)
-                            .loadLargeImage(viewModel.contactEvent.contact.imagePath)
+                            .loadLargeImage(viewModel.contact.imagePath)
                             .setSmallIcon(R.drawable.ic_stat_memento)
                             .setColor(colors.getDailyReminderColor())
-                            .setGroup(NotificationConstants.GROUP_DAILY_REMINDER)
+                            .setGroup(NotificationConstants.DAILY_REMINDER_GROUP_ID)
+                            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                             .setAutoCancel(true)
+                            .addPerson(CONTENT_LOOKUP_URI.buildUpon().appendPath(viewModel.contact.contactID.toString()).build().toString())
                             .build()
-
             notificationManager.notify(viewModel.notificationId, notification)
-
-
-            // summary
         }
     }
 
@@ -100,7 +100,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
                         .setSmallIcon(R.drawable.ic_stat_memento)
                         .setColor(colors.getDailyReminderColor())
                         .setGroupSummary(true)
-                        .setGroup(NotificationConstants.GROUP_DAILY_REMINDER)
+                        .setGroup(NotificationConstants.DAILY_REMINDER_GROUP_ID)
                         .setInboxStyle(viewModel.summaryViewModel)
                         .build()
 
