@@ -20,7 +20,6 @@ import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity
 import com.alexstyl.specialdates.person.PersonActivity
 import com.alexstyl.specialdates.search.SearchActivity
-import com.alexstyl.specialdates.settings.MainPreferenceActivity
 import com.alexstyl.specialdates.theming.AttributeExtractor
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -79,12 +78,6 @@ class HomeNavigator(private val analytics: Analytics,
             val intent = Intent(activity, FacebookLogInActivity::class.java)
             activity.startActivity(intent)
         }
-    }
-
-    fun toSettings(activity: Activity) {
-        val intent = Intent(activity, MainPreferenceActivity::class.java)
-        activity.startActivity(intent)
-        analytics.trackScreen(Screen.SETTINGS)
     }
 
     fun toSearch(activity: Activity) {
