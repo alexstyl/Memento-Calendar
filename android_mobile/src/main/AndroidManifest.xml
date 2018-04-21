@@ -40,17 +40,6 @@
       </intent-filter>
     </activity-alias>
 
-
-    <activity
-      android:name="com.alexstyl.specialdates.settings.MainPreferenceActivity"
-      android:label="@string/action_settings"
-      android:parentActivityName=".home.HomeActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".home.HomeActivity" />
-    </activity>
-
-
     <activity
       android:name="com.alexstyl.specialdates.search.SearchActivity"
       android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
