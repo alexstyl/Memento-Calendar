@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Theme.Memento.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
+
+  <bool name="lightNavigationBar">false</bool>
+  <color name="navigationBarColor">@android:color/black</color>
+
+  <style name="Theme.Memento.Light"
+    parent="@style/Theme.AppCompat.Light.NoActionBar">
     <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     <item name="android:windowBackground">@color/light_grey</item>
-    <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/useDarkIcons</item>
-    <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/white</item>
-    <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     <item name="toolbarIconColor">@color/light_toolbar_icon_color</item>
     <item name="primaryTextColor">@color/black_light</item>
+    <item name="primaryTextColorInverse">@android:color/white</item>
+    <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/useDarkIcons</item>
+    <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>
+    <item name="android:windowLightNavigationBar" tools:targetApi="27">@bool/lightNavigationBar</item>
+  </style>
+
+  <style name="Theme.Memento.Light.DarkToolbar">
+    <item name="useDarkIcons">false</item>
+    <item name="toolbarIconColor">@color/dark_toolbar_icon_color</item>
+    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <item name="primaryTextColor">@color/card_text</item>
     <item name="primaryTextColorInverse">@android:color/white</item>
   </style>
 
@@ -19,14 +32,6 @@
     <item name="toolbarIconColor">@color/dark_toolbar_icon_color</item>
   </style>
 
-
-  <style name="Theme.Memento.Light.DarkToolbar">
-    <item name="useDarkIcons">false</item>
-    <item name="toolbarIconColor">@color/dark_toolbar_icon_color</item>
-    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    <item name="primaryTextColor">@color/card_text</item>
-    <item name="primaryTextColorInverse">@android:color/white</item>
-  </style>
 
   <style name="Theme.Memento.Dark.DarkToolbar">
     <item name="useDarkIcons">false</item>
@@ -107,7 +112,10 @@
   <color name="dark_toolbar_icon_color">#fff</color>
   <color name="light_toolbar_icon_color">#85000000</color>
 
-  <attr name="primaryTextColor" format="reference|color" />
-  <attr name="primaryTextColorInverse" format="reference|color" />
-  <attr name="toolbarIconColor" format="color" />
+  <attr name="primaryTextColor"
+    format="reference|color" />
+  <attr name="primaryTextColorInverse"
+    format="reference|color" />
+  <attr name="toolbarIconColor"
+    format="color" />
 </resources>
