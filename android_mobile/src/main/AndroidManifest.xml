@@ -65,6 +65,7 @@
       android:name=".settings.DailyReminderActivity"
       android:exported="true"
       android:label="@string/daily_reminder"
+      android:launchMode="singleInstance"
       android:parentActivityName=".settings.MainPreferenceActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"

@@ -17,9 +17,7 @@
     android:title="@string/ringtone" />
 
   <CheckBoxPreference
-    android:defaultValue="false"
     android:key="@string/key_daily_reminder_vibrate_enabled"
     android:title="@string/vibrate" />
-
 
 </PreferenceScreen>

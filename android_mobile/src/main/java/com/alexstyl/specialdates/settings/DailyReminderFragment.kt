@@ -19,6 +19,7 @@ import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.TimeOfDay
 import com.alexstyl.specialdates.analytics.Analytics
+import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler
 import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
@@ -29,21 +30,24 @@ import javax.inject.Inject
 
 class DailyReminderFragment : MementoPreferenceFragment() {
 
-    private var enablePreference: CheckBoxPreference? = null
-    private var ringtonePreference: ClickableRingtonePreference? = null
-    private var timePreference: TimePreference? = null
+    private lateinit var enablePreference: CheckBoxPreference
+    private lateinit var timePreference: TimePreference
 
-    var permissions: MementoPermissions? = null
+    private var ringtoneLegacyPreference: ClickableRingtonePreference? = null
+
+    lateinit var permissions: MementoPermissions
         @Inject set
-    var schedulerAndroid: DailyReminderScheduler? = null
+    lateinit var dailyReminderScheduler: DailyReminderScheduler
         @Inject set
-    var analytics: Analytics? = null
+    lateinit var analytics: Analytics
         @Inject set
-    var tracker: CrashAndErrorTracker? = null
+    lateinit var tracker: CrashAndErrorTracker
         @Inject set
-    var preferences: DailyReminderUserSettings? = null
+    lateinit var preferences: DailyReminderUserSettings
         @Inject set
-    var navigator: DailyReminderNavigator? = null
+    lateinit var navigator: DailyReminderNavigator
+        @Inject set
+    lateinit var channelCreator: DailyReminderOreoChannelCreator
         @Inject set
 
 
@@ -54,36 +58,35 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
         addPreferencesFromResource(R.xml.preference_dailyreminder)
 
-        enablePreference = findPreference(R.string.key_daily_reminder)
-
-        enablePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
+        enablePreference = findPreferenceOrThrow(R.string.key_daily_reminder)
+        enablePreference.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val isEnabled = newValue as Boolean
-            preferences!!.setEnabled(isEnabled)
+            preferences.setEnabled(isEnabled)
 
             if (isEnabled) {
-                analytics!!.trackDailyReminderEnabled()
-                schedulerAndroid!!.scheduleReminderFor(preferences!!.getTimeSet())
+                analytics.trackDailyReminderEnabled()
+                dailyReminderScheduler.scheduleReminderFor(preferences.getTimeSet())
             } else {
-                analytics!!.trackDailyReminderDisabled()
-                schedulerAndroid!!.cancelReminder()
+                analytics.trackDailyReminderDisabled()
+                dailyReminderScheduler.cancelReminder()
             }
             true
         }
 
-        timePreference = findPreference(R.string.key_daily_reminder_time)
-        timePreference!!.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
+        timePreference = findPreferenceOrThrow(R.string.key_daily_reminder_time)
+        timePreference.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val time = newValue as IntArray
             val timeOfDay = TimeOfDay(time[0], time[1])
-            updateTimeSet(timeOfDay) // TODO could be moved to resume
-            analytics!!.trackDailyReminderTimeUpdated(timeOfDay)
-            preferences!!.setDailyReminderTime(timeOfDay)
-            schedulerAndroid!!.scheduleReminderFor(timeOfDay)
+            updateTimeSet(timeOfDay)
+            analytics.trackDailyReminderTimeUpdated(timeOfDay)
+            preferences.setDailyReminderTime(timeOfDay)
+            dailyReminderScheduler.scheduleReminderFor(timeOfDay)
             true
         }
 
-        ringtonePreference = findPreference(R.string.key_daily_reminder_ringtone)
-        ringtonePreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            if (permissions!!.canReadExternalStorage()) {
+        ringtoneLegacyPreference = findPreference(R.string.key_daily_reminder_ringtone)
+        ringtoneLegacyPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            if (permissions.canReadExternalStorage()) {
                 // the permission exists. Let the system handle the event
                 false
             } else {
@@ -91,20 +94,25 @@ class DailyReminderFragment : MementoPreferenceFragment() {
                 true
             }
         }
-        ringtonePreference?.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
+        ringtoneLegacyPreference?.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val ringtoneUri = URI.create(newValue as String)
-            ringtonePreference!!.updateRingtoneSummaryWith(ringtoneUri)
+            ringtoneLegacyPreference?.updateRingtoneSummaryWith(ringtoneUri)
             true
         }
 
-        findPreference<Preference>(R.string.key_daily_reminder_vibrate_enabled)?.apply {
+        val setVibrationPreference = findPreference<Preference>(R.string.key_daily_reminder_vibrate_enabled)
+        setVibrationPreference?.apply {
             if (hasNoVibratorHardware()) {
                 preferenceScreen.removePreference(this)
             }
         }
+        setVibrationPreference?.onPreferenceChangeListener =
+                OnPreferenceChangeListener { _: Preference, _: Any ->
+                    true
+                }
 
         findPreference<Preference>(R.string.key_daily_reminder_advanced_settings)?.setOnPreferenceClickListener { _ ->
-            navigator!!.openAdvancedSettings(activity as Activity)
+            navigator.openAdvancedSettings(activity as Activity)
             true
         }
 
@@ -117,17 +125,18 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
     override fun onResume() {
         super.onResume()
-        enablePreference!!.isChecked = preferences!!.isEnabled()
-        ringtonePreference?.updateRingtoneSummaryWith(preferences!!.getRingtone())
+        enablePreference.isChecked = preferences.isEnabled()
+        ringtoneLegacyPreference?.updateRingtoneSummaryWith(preferences.getRingtone())
 
-        val timeOfDay = preferences!!.getTimeSet()
+        val timeOfDay = preferences.getTimeSet()
         updateTimeSet(timeOfDay)
     }
+
 
     private fun updateTimeSet(time: TimeOfDay) {
         val timeString = getStringHour(time)
         val summary = String.format(getString(R.string.daily_reminder_time_summary), timeString)
-        timePreference!!.summary = summary
+        timePreference.summary = summary
 
     }
 
@@ -141,7 +150,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == EXTERNAL_STORAGE_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            ringtonePreference!!.onClick()
+            ringtoneLegacyPreference!!.onClick()
         }
     }
 

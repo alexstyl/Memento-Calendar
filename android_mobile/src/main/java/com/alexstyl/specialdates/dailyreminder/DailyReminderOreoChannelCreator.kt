@@ -5,14 +5,18 @@ import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.graphics.Color
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
 import com.alexstyl.Logger
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.Strings
+import java.net.URI
 
 @TargetApi(Build.VERSION_CODES.O)
 class DailyReminderOreoChannelCreator(private val notificationManager: NotificationManager,
                                       private val strings: Strings,
+                                      private val dailyReminderPreferences: DailyReminderUserSettings,
                                       private val logger: Logger) {
 
 
@@ -21,12 +25,11 @@ class DailyReminderOreoChannelCreator(private val notificationManager: Notificat
             return
         }
 
-        val group = NotificationChannelGroup(NotificationConstants.GROUP_DAILY_REMINDER, strings.dailyReminder())
+        val group = NotificationChannelGroup(NotificationConstants.DAILY_REMINDER_GROUP_ID, strings.dailyReminder())
         if (notificationManager.notificationChannelGroups.contains(group)) {
             logger.warning("Already contains Group '${group.name}'. Won't create new channels [$group]")
             return
         }
-
         notificationManager.createNotificationChannelGroup(group)
 
         createContactsChannel()
@@ -40,10 +43,14 @@ class DailyReminderOreoChannelCreator(private val notificationManager: Notificat
                 strings.contacts(),
                 NotificationManager.IMPORTANCE_DEFAULT)
 
-        contactsChannel.group = NotificationConstants.GROUP_DAILY_REMINDER
+        contactsChannel.group = NotificationConstants.DAILY_REMINDER_GROUP_ID
         contactsChannel.enableLights(true)
         contactsChannel.lightColor = Color.RED
-        contactsChannel.enableVibration(true)
+        contactsChannel.enableVibration(dailyReminderPreferences.isVibrationEnabled())
+        contactsChannel.setSound(dailyReminderPreferences.getRingtone().toUri(), AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build())
+
         notificationManager.createNotificationChannel(contactsChannel)
     }
 
@@ -51,11 +58,14 @@ class DailyReminderOreoChannelCreator(private val notificationManager: Notificat
         val namedaysChannel = NotificationChannel(
                 NotificationConstants.CHANNEL_ID_NAMEDAYS,
                 strings.namedays(),
-                NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationManager.IMPORTANCE_LOW)
 
-        namedaysChannel.group = NotificationConstants.GROUP_DAILY_REMINDER
+        namedaysChannel.group = NotificationConstants.DAILY_REMINDER_GROUP_ID
         namedaysChannel.enableLights(false)
-        namedaysChannel.enableVibration(false)
+        namedaysChannel.enableVibration(dailyReminderPreferences.isVibrationEnabled())
+        namedaysChannel.setSound(dailyReminderPreferences.getRingtone().toUri(), AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build())
         notificationManager.createNotificationChannel(namedaysChannel)
     }
 
@@ -63,12 +73,18 @@ class DailyReminderOreoChannelCreator(private val notificationManager: Notificat
         val bankHolidaysChannel = NotificationChannel(
                 NotificationConstants.CHANNEL_ID_BANKHOLIDAY,
                 strings.bankholidays(),
-                NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationManager.IMPORTANCE_LOW)
 
-        bankHolidaysChannel.group = NotificationConstants.GROUP_DAILY_REMINDER
+        bankHolidaysChannel.group = NotificationConstants.DAILY_REMINDER_GROUP_ID
         bankHolidaysChannel.enableLights(false)
-        bankHolidaysChannel.enableVibration(false)
+        bankHolidaysChannel.enableVibration(dailyReminderPreferences.isVibrationEnabled())
+        bankHolidaysChannel.setSound(dailyReminderPreferences.getRingtone().toUri(), AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build())
         notificationManager.createNotificationChannel(bankHolidaysChannel)
 
     }
+
+    private fun URI.toUri(): Uri = Uri.parse(this.toString())
 }
+
