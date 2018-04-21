@@ -48,15 +48,15 @@ import javax.inject.Inject
 
 class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentListener {
 
-    var analytics: Analytics? = null
+    lateinit var analytics: Analytics
         @Inject set
-    var imageLoader: ImageLoader? = null
+    lateinit var imageLoader: ImageLoader
         @Inject set
-    var contactsProvider: ContactsProvider? = null
+    lateinit var contactsProvider: ContactsProvider
         @Inject set
-    var tracker: CrashAndErrorTracker? = null
+    lateinit var tracker: CrashAndErrorTracker
         @Inject set
-    var presenter: PersonPresenter? = null
+    lateinit var presenter: PersonPresenter
         @Inject set
 
     private var appBarLayout: AppBarLayout? = null
@@ -80,7 +80,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
-        analytics!!.trackScreen(Screen.PERSON)
+        analytics.trackScreen(Screen.PERSON)
         navigator = PersonDetailsNavigator(ExternalNavigator(this, analytics, tracker))
         val toolbar = Views.findById<MementoToolbar>(this, R.id.person_toolbar)
         if (wasCalledFromMemento()) {
@@ -101,7 +101,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
                 action.run()
             } catch (ex: ActivityNotFoundException) {
                 Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show()
-                tracker!!.track(ex)
+                tracker.track(ex)
             }
         }
         )
@@ -118,9 +118,9 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         super.onResume()
         displayingContact = extractContactFrom(intent)
         if (displayingContact.isPresent) {
-            presenter!!.startPresentingInto(this, displayingContact.get(), AndroidContactActions(this))
+            presenter.startPresentingInto(this, displayingContact.get(), AndroidContactActions(this))
         } else {
-            tracker!!.track(IllegalArgumentException("No contact to display"))
+            tracker.track(IllegalArgumentException("No contact to display"))
             finish()
         }
     }
@@ -133,8 +133,8 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
     private fun extractContactFrom(intent: Intent): Optional<Contact> {
         val data = intent.data
         if (data != null) {
-            val contactId = java.lang.Long.valueOf(data.lastPathSegment)
-            return contactFor(contactId!!, SOURCE_DEVICE)
+            val contactId = data.lastPathSegment.toLong()
+            return contactFor(contactId, SOURCE_DEVICE)
         }
 
         val contactID = intent.getLongExtra(EXTRA_CONTACT_ID, -1)
@@ -150,9 +150,9 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
     private fun contactFor(contactID: Long, contactSource: Int): Optional<Contact> {
         return try {
-            Optional(contactsProvider!!.getContact(contactID, contactSource))
+            Optional(contactsProvider.getContact(contactID, contactSource))
         } catch (e: ContactNotFoundException) {
-            tracker!!.track(e)
+            tracker.track(e)
             Optional.absent()
         }
 
@@ -163,7 +163,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         ageAndSignView!!.text = viewModel.ageAndStarSignlabel
         ageAndSignView!!.visibility = viewModel.AgeAndStarSignVisibility
 
-        imageLoader!!.load(viewModel.image)
+        imageLoader.load(viewModel.image)
                 .withSize(avatarView!!.width, avatarView!!.height)
                 .into(object : ImageLoadedConsumer {
 
@@ -236,9 +236,9 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         } else if (itemId == ID_TOGGLE_VISIBILITY) {
             val isVisible = isVisibleContactOptional.get()
             if (isVisible) {
-                presenter!!.hideContact(this)
+                presenter.hideContact(this)
             } else {
-                presenter!!.showContact(this)
+                presenter.showContact(this)
             }
 
         }
@@ -247,7 +247,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
     override fun onPause() {
         super.onPause()
-        presenter!!.stopPresenting()
+        presenter.stopPresenting()
     }
 
     override fun onActivitySelected(intent: Intent) {
@@ -256,7 +256,6 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         } catch (ex: ActivityNotFoundException) {
             Toast.makeText(this, R.string.no_app_found, Toast.LENGTH_LONG).show()
         }
-
     }
 
     companion object {

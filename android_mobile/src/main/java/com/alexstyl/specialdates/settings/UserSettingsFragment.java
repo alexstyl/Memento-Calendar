@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.settings;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.os.Bundle;
 import android.preference.Preference;
 
@@ -33,7 +32,7 @@ import com.novoda.notils.caster.Classes;
 
 import javax.inject.Inject;
 
-public final class MainPreferenceFragment extends MementoPreferenceFragment {
+public final class UserSettingsFragment extends MementoPreferenceFragment {
 
     private static final String FM_THEME_TAG = "fm_theme";
 
@@ -48,7 +47,6 @@ public final class MainPreferenceFragment extends MementoPreferenceFragment {
     @Inject CrashAndErrorTracker tracker;
     @Inject DonateMonitor donateMonitor;
     @Inject SettingsPresenter eventPresenter;
-    @Inject NotificationManager notificatioManager;
     @Inject DailyReminderOreoChannelCreator dailyReminderOreoChannelCreator;
 
     @Override

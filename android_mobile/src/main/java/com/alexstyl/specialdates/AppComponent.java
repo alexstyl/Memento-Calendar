@@ -34,7 +34,7 @@ import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.search.SearchModule;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
-import com.alexstyl.specialdates.settings.MainPreferenceFragment;
+import com.alexstyl.specialdates.settings.UserSettingsFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.support.RateDialog;
 import com.alexstyl.specialdates.theming.ThemingModule;
@@ -97,7 +97,7 @@ public interface AppComponent {
 
     void inject(RateDialog activity);
 
-    void inject(MainPreferenceFragment fragment);
+    void inject(UserSettingsFragment fragment);
 
     void inject(DailyReminderFragment fragment);
 
