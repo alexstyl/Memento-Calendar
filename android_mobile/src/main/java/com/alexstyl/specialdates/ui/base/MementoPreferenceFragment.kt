@@ -4,7 +4,6 @@ import android.preference.Preference
 import android.preference.PreferenceCategory
 import android.support.annotation.StringRes
 import android.support.v4.preference.PreferenceFragment
-
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.util.GreekNameUtils
 
@@ -31,8 +30,12 @@ open class MementoPreferenceFragment : PreferenceFragment() {
         }
     }
 
-    protected fun <T : Preference> findPreference(@StringRes keyId: Int): T? {
+    fun <T : Preference> findPreference(@StringRes keyId: Int): T? {
         return findPreference(getString(keyId)) as T?
     }
 
+    fun <T : Preference> findPreferenceOrThrow(@StringRes keyId: Int): T {
+        @Suppress("UNCHECKED_CAST")
+        return findPreference(getString(keyId)) as T
+    }
 }
