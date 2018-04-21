@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 import java.net.URI
 
@@ -27,15 +28,17 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
             list + viewModel.contact
         })
 
-
         val title = NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS)
         val label = strings.dontForgetToSendWishes()
 
         val lines = arrayListOf<CharSequence>()
         viewModels.forEach { contactViewModel ->
-            val sb = SpannableString("${contactViewModel.title}\t\t${contactViewModel.label}")
-            sb.setSpan(StyleSpan(Typeface.BOLD), 0, contactViewModel.title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            lines.add(sb)
+
+            val boldedTitle = SpannableString(contactViewModel.title).apply {
+                setSpan(StyleSpan(Typeface.BOLD), 0, contactViewModel.title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+
+            lines.add(SpannableStringBuilder().append(boldedTitle).append("\t\t").append(contactViewModel.label))
         }
 
         val images = viewModels.fold(emptyList<URI>(), { list, viewModel ->
@@ -51,7 +54,7 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
     override fun viewModelFor(contact: Contact, events: List<ContactEvent>): ContactEventNotificationViewModel {
         val stringBuilder = SpannableStringBuilder()
         events.forEach { contactEvent ->
-            val coloredLabel = SpannableString(contactEvent.getLabel(todaysDate, strings)).apply {
+            val coloredLabel = SpannableString(contactEvent.getLabel(todaysDate, strings) + " " + emojiFor(contactEvent)).apply {
                 setSpan(ForegroundColorSpan(colors.getColorFor(contactEvent.type)), 0, this.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
             if (stringBuilder.isNotEmpty()) {
@@ -67,6 +70,15 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
                 emptyList() // TODO feature coming from the notification_actions branch
         )
     }
+
+    private fun emojiFor(contactEvent: ContactEvent): CharSequence =
+            when (contactEvent.type) {
+                StandardEventType.BIRTHDAY -> "🍰"
+                StandardEventType.NAMEDAY -> "🎈"
+                StandardEventType.ANNIVERSARY -> "💍"
+                StandardEventType.OTHER -> "🌸"
+                else -> ""
+            }
 
     override fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel {
         return NamedaysNotificationViewModel(namedays.date,
