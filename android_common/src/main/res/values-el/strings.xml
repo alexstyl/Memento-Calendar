@@ -35,7 +35,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="send_mail_via">Αποστολή e-mail μέσω</string>
   <string name="daily_reminder">Καθημερινή Υπενθύμιση</string>
   <string name="daily_reminder_summary">"Θύμιζέ μου τις γιορτές και τα γενέθλια της κάθε ημέρας"</string>
-  <string name="ringtone">Ήχος</string>
+  <string name="Sound">Ήχος</string>
   <string name="vibrate">Δόνηση</string>
   <string name="daily_reminder_time_summary">Κάθε μέρα στις %s</string>
   <string name="set_time">Ρύθμιση Ώρας</string>

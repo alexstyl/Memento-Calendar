@@ -35,7 +35,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="send_mail_via">Send e-mail via</string>
   <string name="daily_reminder">Daily Reminder</string>
   <string name="daily_reminder_summary">"Remind me for every day's events"</string>
-  <string name="ringtone">Ringtone</string>
+  <string name="Sound">Sound</string>
   <string name="vibrate">Vibrate</string>
   <string name="daily_reminder_time_summary">Every day at %s</string>
   <string name="set_time">Set time</string>
@@ -235,4 +235,5 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="daily_reminder_advanced_settings_summary">Change sounds, vibration, lights and more.</string>
   <string name="Send_wishes">Send wishes</string>
   <string name="Dont_forget_to_send_your_wishes">"Don't forget to send your wishes."</string>
+  <string name="dailyreminder_title_bankholiday">"Today's bank holiday"</string>
 </resources>
