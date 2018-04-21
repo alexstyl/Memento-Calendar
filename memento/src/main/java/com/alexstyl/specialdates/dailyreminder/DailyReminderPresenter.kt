@@ -57,9 +57,14 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                     ContactEventsOnADate.createFrom(date, emptyList())
                 }
             }.map {
-                it.events.map { contactEvent ->
-                    factory.viewModelFor(contactEvent)
+                val list = arrayListOf<ContactEventNotificationViewModel>()
+                val grouped = it.events.groupBy { it.contact }
+
+                grouped.keys.forEach { contact ->
+                    val events = grouped[contact]!!
+                    list.add(factory.viewModelFor(contact, events))
                 }
+                list.toList()
             }
 
 

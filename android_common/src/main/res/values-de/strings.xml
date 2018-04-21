@@ -35,7 +35,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="send_mail_via">Email schreiben via</string>
     <string name="daily_reminder">Tägliche Erinnerung</string>
     <string name="daily_reminder_summary">"Tägliche Erinnerung für jedes Ereignis"</string>
-    <string name="ringtone">Klingelton</string>
+    <string name="Sound">Klingelton</string>
     <string name="vibrate">Vibration</string>
     <string name="daily_reminder_time_summary">Jeden Tag um %s</string>
     <string name="set_time">Zeit festlegen</string>

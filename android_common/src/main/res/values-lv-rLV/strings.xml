@@ -35,7 +35,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="send_mail_via">Sūtīt e-pastu ar</string>
     <string name="daily_reminder">Ikdienas atgādinājums</string>
     <string name="daily_reminder_summary">"Atgādināt par katras dienas notikumiem"</string>
-    <string name="ringtone">Skaņas tonis</string>
+    <string name="Sound">Skaņas tonis</string>
     <string name="vibrate">Vibrācija</string>
     <string name="daily_reminder_time_summary">Katru dienu plkst. %s</string>
     <string name="set_time">Uzstādīt laiku</string>
