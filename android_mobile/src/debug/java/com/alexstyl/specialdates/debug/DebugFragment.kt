@@ -169,10 +169,10 @@ class DebugFragment : MementoPreferenceFragment() {
         findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification_many)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             notifyForContacts(arrayListOf(
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(336L, "Nameday Contact 🎈".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE), StandardEventType.NAMEDAY),
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Birthday Contact \uD83C\uDF70".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE), StandardEventType.BIRTHDAY),
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Multiple Celebrations 🍻".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Multiple Celebrations 🍻".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.OTHER)
+                    contactEventOn(Date.today().minusDay(365 * 10), Contact(336L, "Nameday Contact".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), SOURCE_DEVICE), StandardEventType.NAMEDAY),
+                    contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Birthday Contact".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), SOURCE_DEVICE), StandardEventType.BIRTHDAY),
+                    contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Multiple Celebrations".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
+                    contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Multiple Celebrations".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), SOURCE_DEVICE), StandardEventType.OTHER)
             ))
 
             true
