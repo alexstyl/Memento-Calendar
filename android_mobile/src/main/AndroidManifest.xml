@@ -66,12 +66,13 @@
       android:exported="true"
       android:label="@string/daily_reminder"
       android:parentActivityName=".settings.MainPreferenceActivity">
-      <intent-filter>
-        <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
-      </intent-filter>
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".settings.MainPreferenceActivity" />
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
+      </intent-filter>
     </activity>
 
     <activity
