@@ -34,11 +34,11 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
         val lines = arrayListOf<CharSequence>()
         viewModels.forEach { contactViewModel ->
 
-            val boldedTitle = SpannableString(contactViewModel.title).apply {
+            val boldedTitle = SpannableString("${contactViewModel.title}\t\t${contactViewModel.label}").apply {
                 setSpan(StyleSpan(Typeface.BOLD), 0, contactViewModel.title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
 
-            lines.add(SpannableStringBuilder().append(boldedTitle).append("\t\t").append(contactViewModel.label))
+            lines.add(boldedTitle)
         }
 
         val images = viewModels.fold(emptyList<URI>(), { list, viewModel ->
