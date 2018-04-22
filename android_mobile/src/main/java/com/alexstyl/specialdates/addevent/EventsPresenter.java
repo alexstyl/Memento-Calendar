@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import java.util.Collection;
 import java.util.List;
 
-final class EventsPresenter {
+public final class EventsPresenter {
 
     private final ContactEventsFetcher contactEventsFetcher;
     private final ContactDetailsAdapter adapter;

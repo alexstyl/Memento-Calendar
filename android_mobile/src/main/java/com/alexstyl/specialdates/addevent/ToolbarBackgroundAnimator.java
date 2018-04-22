@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.addevent;
 
-interface ToolbarBackgroundAnimator {
+public interface ToolbarBackgroundAnimator {
     void fadeOut();
 
     void fadeIn();

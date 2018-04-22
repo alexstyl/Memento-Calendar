@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.CrashAndErrorTracker;
 
 import java.util.ArrayList;
 
-final class ContactOperationsExecutor {
+public final class ContactOperationsExecutor {
 
     private final ContentResolver contentResolver;
     private final CrashAndErrorTracker tracker;

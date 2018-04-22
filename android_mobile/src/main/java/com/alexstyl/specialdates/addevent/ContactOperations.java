@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-class ContactOperations {
+public class ContactOperations {
 
     private final ContentResolver contentResolver;
     private final WriteableAccountsProvider accountsProvider;

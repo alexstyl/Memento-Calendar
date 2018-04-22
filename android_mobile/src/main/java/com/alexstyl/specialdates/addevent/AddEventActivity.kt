@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.addevent
 
 import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
@@ -10,12 +11,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.support.annotation.RequiresApi
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.alexstyl.android.toURI
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -37,16 +38,13 @@ import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
-import com.novoda.notils.caster.Views
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import java.net.URI
 import javax.inject.Inject
 
 class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
     lateinit var presenter: AddContactEventsPresenter
-
     lateinit var permissionChecker: MementoPermissions
         @Inject set
     lateinit var filePathProvider: FilePathProvider
@@ -62,27 +60,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     lateinit var tracker: CrashAndErrorTracker
         @Inject set
 
-    private val contactDetailsListener = object : ContactDetailsListener {
-        override fun onAddEventClicked(viewModel: AddEventContactEventViewModel) {
-            val eventType = viewModel.eventType
-            val initialDate = viewModel.date
-
-            val dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate)
-            dialog.show(supportFragmentManager, "pick_event")
-        }
-
-        override fun onRemoveEventClicked(eventType: EventType) {
-            presenter.removeEvent(eventType)
-        }
-
-        override fun onContactSelected(contact: Contact) {
-            presenter.onContactSelected(contact)
-        }
-
-        override fun onNameModified(newName: String) {
-            presenter.onNameModified(newName)
-        }
-    }
+    lateinit var view: AddEventView
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,12 +70,13 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
         analytics.trackScreen(Screen.ADD_EVENT)
-        val toolbar = Views.findById<MementoToolbar>(this, R.id.memento_toolbar)
+        val toolbar = findViewById<MementoToolbar>(R.id.memento_toolbar)
         setSupportActionBar(toolbar)
         toolbar.displayNavigationIconAsClose()
 
-        val avatarView = Views.findById<AvatarPickerView>(this, R.id.add_event_avatar)
-        val eventsView = Views.findById<RecyclerView>(this, R.id.add_event_events)
+        val avatarView = findViewById<AvatarPickerView>(R.id.add_event_avatar)
+        val eventsView = findViewById<RecyclerView>(R.id.add_event_events)
+
         eventsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         eventsView.setHasFixedSize(true)
         val adapter = ContactDetailsAdapter(contactDetailsListener)
@@ -122,45 +101,46 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         )
         val messageDisplayer = ToastDisplayer(applicationContext)
         val operationsExecutor = ContactOperationsExecutor(contentResolver, tracker)
-        val imageDecoder = ImageDecoder()
-        val avatarPresenter = AvatarPresenter(imageLoader, avatarView, createToolbarAnimator(toolbar), imageDecoder)
         val eventsPresenter = EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory)
-        presenter = AddContactEventsPresenter(
-                analytics, avatarPresenter,
+
+        presenter = AddContactEventsPresenter(    // TODO remove
+                analytics,
                 eventsPresenter,
                 contactOperations,
                 messageDisplayer,
-                operationsExecutor
+                operationsExecutor,
+                resources,
+                ImageDecoder()
         )
-        presenter.startPresenting(
-                object : OnCameraClickedListener {
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    override fun onPictureRetakenRequested() {
-                        if (permissionChecker.canReadExternalStorage()) {
-                            BottomSheetPicturesDialog
-                                    .includeClearImageOption()
-                                    .show(supportFragmentManager, "picture_pick")
-                        } else {
-                            requestExternalStoragePermission()
-                        }
-                    }
 
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    override fun onNewPictureTakenRequested() {
-                        if (permissionChecker.canReadExternalStorage()) {
-                            BottomSheetPicturesDialog.newInstance()
-                                    .show(supportFragmentManager, "picture_pick")
-                        } else {
-                            requestExternalStoragePermission()
-                        }
-                    }
-
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    private fun requestExternalStoragePermission() {
-                        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), CODE_PERMISSION_EXTERNAL_STORAGE)
-                    }
+        avatarView.setOnClickListener {
+            if (avatarView.isDisplayingAvatar) {
+                if (permissionChecker.canReadExternalStorage()) {
+                    BottomSheetPicturesDialog
+                            .includeClearImageOption()
+                            .show(supportFragmentManager, "picture_pick")
+                } else {
+                    requestExternalStoragePermission()
                 }
-        )
+            } else {
+                if (permissionChecker.canReadExternalStorage()) {
+                    BottomSheetPicturesDialog.newInstance()
+                            .show(supportFragmentManager, "picture_pick")
+                } else {
+                    requestExternalStoragePermission()
+                }
+            }
+        }
+
+        view = AndroidAddEventView(avatarView, adapter, imageLoader, createToolbarAnimator(toolbar))
+
+        presenter.startPresentingInto(view)
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private fun requestExternalStoragePermission() {
+        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), CODE_PERMISSION_EXTERNAL_STORAGE)
     }
 
     private fun createToolbarAnimator(toolbar: MementoToolbar): ToolbarBackgroundAnimator {
@@ -171,6 +151,28 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         }
     }
 
+    private val contactDetailsListener = object : ContactDetailsListener {
+        override fun onAddEventClicked(viewModel: AddEventContactEventViewModel) {
+            val eventType = viewModel.eventType
+            val initialDate = viewModel.date
+
+            val dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate)
+            dialog.show(supportFragmentManager, "pick_event")
+        }
+
+        override fun onRemoveEventClicked(eventType: EventType) {
+            presenter.removeEvent(eventType)
+        }
+
+        override fun onContactSelected(contact: Contact) {
+            presenter.presentContact(contact)
+        }
+
+        override fun onNameModified(newName: String) {
+            presenter.onNameModified(newName)
+        }
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CODE_PERMISSION_EXTERNAL_STORAGE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -178,7 +180,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
                 if (isFinishing) {
                     return@Runnable
                 }
-                if (presenter.displaysAvatar()) {
+                if (presenter.isDisplayingAvatar()) {
                     BottomSheetPicturesDialog
                             .includeClearImageOption()
                             .show(supportFragmentManager, "picture_pick")
@@ -204,8 +206,8 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         } else if (requestCode == CODE_CROP_IMAGE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
-                presenter.presentAvatar(if (result.uri == null) null else URI.create(result.uri.toString()))
-
+                analytics.trackAvatarSelected()
+                view.display(result.uri.toURI())
             } else if (resultCode == Activity.RESULT_CANCELED && result != null) {
                 tracker.track(result.error)
             }
@@ -230,8 +232,29 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         startActivityForResult(intent, getRequestCodeFor(intent))
     }
 
+    private fun queryCropSize(resolver: ContentResolver): Int {
+        resolver.query(
+                ContactsContract.DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
+                arrayOf(ContactsContract.DisplayPhoto.DISPLAY_MAX_DIM), null, null, null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0)
+            }
+        }
+        return MAX_RESOLUTION
+    }
+
+    private fun getRequestCodeFor(intent: Intent): Int {
+        val action = intent.action
+        return when (action) {
+            ImageIntentFactory.ACTION_IMAGE_CAPTURE -> CODE_TAKE_PICTURE
+            ImageIntentFactory.ACTION_IMAGE_PICK -> CODE_PICK_A_FILE
+            else -> throw IllegalArgumentException("Don't know how to handle $action")
+        }
+    }
+
     override fun onClearAvatarSelected() {
-        presenter.removeAvatar()
+        view.removeAvatar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -300,27 +323,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         private const val CODE_PERMISSION_EXTERNAL_STORAGE = 406
 
         private const val MAX_RESOLUTION = 720
-
-        private fun queryCropSize(resolver: ContentResolver): Int {
-            resolver.query(
-                    ContactsContract.DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
-                    arrayOf(ContactsContract.DisplayPhoto.DISPLAY_MAX_DIM), null, null, null
-            )?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    return cursor.getInt(0)
-                }
-            }
-            return MAX_RESOLUTION
-        }
-
-        private fun getRequestCodeFor(intent: Intent): Int {
-            val action = intent.action
-            return when (action) {
-                ImageIntentFactory.ACTION_IMAGE_CAPTURE -> CODE_TAKE_PICTURE
-                ImageIntentFactory.ACTION_IMAGE_PICK -> CODE_PICK_A_FILE
-                else -> throw IllegalArgumentException("Don't know how to handle $action")
-            }
-        }
 
         fun buildIntent(context: Context): Intent {
             return Intent(context, AddEventActivity::class.java)
