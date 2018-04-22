@@ -12,7 +12,7 @@ import com.novoda.notils.logger.simple.Log;
 
 import java.net.URI;
 
-class AddContactEventsPresenter {
+public class AddContactEventsPresenter {
 
     private final Analytics analytics;
     private final AvatarPresenter avatarPresenter;

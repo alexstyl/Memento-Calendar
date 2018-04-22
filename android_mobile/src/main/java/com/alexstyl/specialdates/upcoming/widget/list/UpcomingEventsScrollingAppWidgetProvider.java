@@ -76,7 +76,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     }
 
     private void setAddEventClickListener(Context context, RemoteViews remoteViews) {
-        Intent intent = AddEventActivity.buildIntent(context);
+        Intent intent = AddEventActivity.Companion.buildIntent(context);
         PendingIntent todayDatePendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         remoteViews.setOnClickPendingIntent(R.id.widget_upcoming_events_add_event, todayDatePendingIntent);
     }
