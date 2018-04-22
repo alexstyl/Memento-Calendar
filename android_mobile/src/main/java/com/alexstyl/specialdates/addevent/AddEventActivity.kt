@@ -20,7 +20,6 @@ import com.alexstyl.android.toURI
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener
@@ -28,12 +27,9 @@ import com.alexstyl.specialdates.addevent.ui.AvatarPickerView
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.contact.Contact
-import com.alexstyl.specialdates.date.AndroidDateLabelCreator
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.peopleevents.EventType
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
-import com.alexstyl.specialdates.images.ImageDecoder
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
@@ -45,19 +41,18 @@ import javax.inject.Inject
 class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
     lateinit var presenter: AddContactEventsPresenter
+        @Inject set
     lateinit var permissionChecker: MementoPermissions
         @Inject set
     lateinit var filePathProvider: FilePathProvider
         @Inject set
     lateinit var analytics: Analytics
         @Inject set
-    lateinit var strings: Strings
-        @Inject set
     lateinit var imageLoader: ImageLoader
         @Inject set
-    lateinit var peopleEventsProvider: PeopleEventsProvider
-        @Inject set
     lateinit var tracker: CrashAndErrorTracker
+        @Inject set
+    lateinit var shortDateLabelCreator: ShortDateLabelCreator
         @Inject set
 
     lateinit var view: AddEventView
@@ -81,37 +76,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         eventsView.setHasFixedSize(true)
         val adapter = ContactDetailsAdapter(contactDetailsListener)
         eventsView.adapter = adapter
-
-        val factory = AddEventContactEventViewModelFactory(AndroidDateLabelCreator(this))
-        val addEventFactory = AddEventViewModelFactory(strings)
-        val contactEventsFetcher = ContactEventsFetcher(
-                supportLoaderManager,
-                this,
-                peopleEventsProvider,
-                factory,
-                addEventFactory
-        )
-
-        val accountsProvider = WriteableAccountsProvider.from(this)
-        val contactOperations = ContactOperations(
-                contentResolver,
-                accountsProvider,
-                peopleEventsProvider,
-                ShortDateLabelCreator.INSTANCE
-        )
-        val messageDisplayer = ToastDisplayer(applicationContext)
-        val operationsExecutor = ContactOperationsExecutor(contentResolver, tracker)
-        val eventsPresenter = EventsPresenter(contactEventsFetcher, adapter, factory, addEventFactory)
-
-        presenter = AddContactEventsPresenter(    // TODO remove
-                analytics,
-                eventsPresenter,
-                contactOperations,
-                messageDisplayer,
-                operationsExecutor,
-                resources,
-                ImageDecoder()
-        )
 
         avatarView.setOnClickListener {
             if (avatarView.isDisplayingAvatar) {
@@ -156,7 +120,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             val eventType = viewModel.eventType
             val initialDate = viewModel.date
 
-            val dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate)
+            val dialog = EventDatePickerDialogFragment.newInstance(eventType, initialDate, shortDateLabelCreator)
             dialog.show(supportFragmentManager, "pick_event")
         }
 

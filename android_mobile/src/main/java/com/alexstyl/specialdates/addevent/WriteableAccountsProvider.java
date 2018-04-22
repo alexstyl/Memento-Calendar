@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 
-final class WriteableAccountsProvider {
+public final class WriteableAccountsProvider {
 
     private static final String GOOGLE_ACCOUNT = "com.google";
 

@@ -71,7 +71,7 @@ public final class ContactDetailsAdapter extends RecyclerView.Adapter<ViewHolder
         return viewModels.size() + HEADER_COUNT;
     }
 
-    void replace(List<AddEventContactEventViewModel> viewModels) {
+    void display(List<AddEventContactEventViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();

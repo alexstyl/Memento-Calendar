@@ -45,7 +45,7 @@ public class ContactOperations {
     }
 
     ContactOperationsBuilder createNewContact(String contactName) {
-        OperationsFactory operationsFactory = OperationsFactory.Companion.forNewContact();
+        OperationsFactory operationsFactory = OperationsFactory.Companion.forNewContact(displayStringCreator);
         ArrayList<ContentProviderOperation> operations = operationsFactory.createContactIn(getAccountToStoreContact(), contactName);
         return new ContactOperationsBuilder(operations, operationsFactory);
     }

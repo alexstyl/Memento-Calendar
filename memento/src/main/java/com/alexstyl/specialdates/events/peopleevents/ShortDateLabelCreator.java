@@ -5,8 +5,7 @@ import com.alexstyl.specialdates.date.Date;
 /**
  * Creates date labels in a YYYY-MM-DD fashion. This class should be used to describe a date for non-user facing components, such as database entries.
  */
-public enum ShortDateLabelCreator {
-    INSTANCE;
+public class ShortDateLabelCreator {
 
     private static final int TEN = 10;
     private static final String SEPARATOR = "-";

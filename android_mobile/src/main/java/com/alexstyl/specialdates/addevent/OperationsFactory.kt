@@ -118,8 +118,9 @@ internal class OperationsFactory(private val rawContactID: Int, private val disp
 
         private val NO_RAW_CONTACT_ID = 0
 
-        fun forNewContact(): OperationsFactory {
-            return OperationsFactory(NO_RAW_CONTACT_ID, ShortDateLabelCreator.INSTANCE)
+        fun forNewContact(displayStringCreator: ShortDateLabelCreator): OperationsFactory {
+            return OperationsFactory(NO_RAW_CONTACT_ID, displayStringCreator)
         }
     }
+
 }
