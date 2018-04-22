@@ -16,7 +16,7 @@ import com.novoda.notils.caster.Views;
 import java.util.ArrayList;
 import java.util.List;
 
-final class ContactDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
+public final class ContactDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final int HEADER_COUNT = 1;
     private static final int TYPE_CONTACT_SUGGESTION = 0;
