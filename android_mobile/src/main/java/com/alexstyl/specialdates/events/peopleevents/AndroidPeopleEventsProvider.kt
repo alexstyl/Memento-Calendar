@@ -25,7 +25,8 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                                   private val contactsProvider: ContactsProvider,
                                   private val customEventProvider: CustomEventProvider,
                                   private val dateParser: DateParser,
-                                  private val tracker: CrashAndErrorTracker) : PeopleEventsProvider {
+                                  private val tracker: CrashAndErrorTracker,
+                                  private val shortDateLabelCreator: ShortDateLabelCreator) : PeopleEventsProvider {
 
     override fun fetchEventsOn(date: Date): ContactEventsOnADate {
         return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.between(date, date)))
@@ -160,7 +161,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                     "${AndroidPeopleEventsProvider.DATE_COLUMN_WITHOUT_YEAR} ASC LIMIT 1")
 
     private fun monthAndDayOf(date: Date): Array<String> {
-        return arrayOf(ShortDateLabelCreator.INSTANCE.createLabelWithNoYearFor(date))
+        return arrayOf(shortDateLabelCreator.createLabelWithNoYearFor(date))
     }
 
     private fun getEventType(cursor: Cursor): EventType {

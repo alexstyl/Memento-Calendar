@@ -31,7 +31,7 @@ class AddContactEventsPresenter(private val analytics: Analytics,
     var view: AddEventView? = null
 
     fun startPresentingInto(view: AddEventView) {
-        eventsPresenter.startPresenting()
+        eventsPresenter.startPresentingInto(view)
         this.view = view
     }
 
@@ -40,7 +40,7 @@ class AddContactEventsPresenter(private val analytics: Analytics,
         eventsPresenter.onContactSelected(contact)
         selectedContact = SelectedContact.forContact(contact)
         isHoldingModifiedData = false
-        this.view?.display(contact.imagePath)
+        this.view?.displayContact(contact)
     }
 
     fun onEventDatePicked(eventType: EventType, date: Date) {
@@ -81,7 +81,7 @@ class AddContactEventsPresenter(private val analytics: Analytics,
                     val contact = selectedContact.contact
 
                     val builder = contactOperations.updateExistingContact(contact)
-                            .withEvents(eventsPresenter.events)
+                            .withEvents(eventsPresenter.events.events)
                             .updateContactImage(getDecodedImage())
                     return operationsExecutor.execute(builder.build())
                 }
@@ -101,7 +101,7 @@ class AddContactEventsPresenter(private val analytics: Analytics,
                 override fun doInBackground(vararg params: Void): Boolean? {
 
                     val builder = contactOperations.createNewContact(selectedContact.displayName)
-                            .withEvents(eventsPresenter.events)
+                            .withEvents(eventsPresenter.events.events)
                     val decodedImage = getDecodedImage()
                     if (decodedImage != DecodedImage.EMPTY) {
                         builder.addContactImage(decodedImage)

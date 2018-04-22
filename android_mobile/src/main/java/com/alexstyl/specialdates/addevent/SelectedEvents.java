@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType;
 import java.util.Collection;
 import java.util.HashMap;
 
-final class SelectedEvents {
+public final class SelectedEvents {
 
     private final HashMap<Integer, Event> mappedEvents;
 

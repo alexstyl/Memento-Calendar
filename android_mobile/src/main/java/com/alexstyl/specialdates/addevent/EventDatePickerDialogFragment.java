@@ -39,12 +39,12 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     @Inject Strings strings;
     @Inject DateParser dateParser;
 
-    public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date) {
+    public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date, ShortDateLabelCreator shortDateLabelCreator) {
         EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
         Bundle args = new Bundle(2);
         args.putInt(ARG_EVENT_TYPE_ID, eventType.getId());
         if (date.isPresent()) {
-            String label = ShortDateLabelCreator.INSTANCE.createLabelWithYearPreferredFor(date.get());
+            String label = shortDateLabelCreator.createLabelWithYearPreferredFor(date.get());
             args.putString(KEY_DATE, label);
         }
         dialogFragment.setArguments(args);

@@ -45,6 +45,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookSettings;
     @Inject UpcomingEventsSettings eventsSettings;
+    @Inject ContactEventsMarshaller marshaller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,6 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
             }
         });
 
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
         navigator = new ExternalNavigator(this, analytics, tracker);

@@ -32,6 +32,7 @@ public class FacebookFriendsIntentService extends IntentService {
     @Inject CrashAndErrorTracker tracker;
     @Inject FacebookUserSettings facebookUserSettings;
     @Inject DateParser parser;
+    @Inject ContactEventsMarshaller marshaller;
 
     public FacebookFriendsIntentService() {
         super(TAG);
@@ -58,7 +59,6 @@ public class FacebookFriendsIntentService extends IntentService {
         CalendarURLCreator calendarURLCreator = new CalendarURLCreator(tracker);
 
         URL calendarUrl = calendarURLCreator.createFrom(userCredentials);
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(
                         new EventSQLiteOpenHelper(this),

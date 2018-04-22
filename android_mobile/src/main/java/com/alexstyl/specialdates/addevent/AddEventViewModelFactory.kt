@@ -1,14 +1,12 @@
 package com.alexstyl.specialdates.addevent
 
-import android.view.View
-
-import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.Optional
+import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 
-internal class AddEventViewModelFactory(private val strings: Strings) {
+class AddEventViewModelFactory(private val strings: Strings) {
 
 
     companion object {
@@ -31,7 +29,7 @@ internal class AddEventViewModelFactory(private val strings: Strings) {
 
     fun createAddEventViewModelsFor(eventType: EventType): AddEventContactEventViewModel {
         val eventName = eventType.getEventName(strings)
-        return AddEventContactEventViewModel(eventName, eventType, NO_DATE, View.GONE, EventIcons.iconOf(eventType))
+        return AddEventContactEventViewModel(eventName, eventType, NO_DATE, false, EventIcons.iconOf(eventType))
     }
 
 }

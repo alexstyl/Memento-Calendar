@@ -34,13 +34,15 @@ class PeopleEventsModule(private val context: Context) {
     fun androidPeopleEventsProvider(sqLiteOpenHelper: EventSQLiteOpenHelper,
                                     contactsProvider: ContactsProvider,
                                     dateParser: DateParser,
-                                    tracker: CrashAndErrorTracker): AndroidPeopleEventsProvider {
+                                    tracker: CrashAndErrorTracker,
+                                    shortLabelCreator: ShortDateLabelCreator): AndroidPeopleEventsProvider {
         return AndroidPeopleEventsProvider(
                 sqLiteOpenHelper,
                 contactsProvider,
                 CustomEventProvider(context.contentResolver),
                 dateParser,
-                tracker
+                tracker,
+                shortLabelCreator
         )
     }
 
@@ -67,9 +69,9 @@ class PeopleEventsModule(private val context: Context) {
             contentResolver: ContentResolver,
             contactsProvider: ContactsProvider,
             dateParser: DateParser,
+            marshaller: ContactEventsMarshaller,
             tracker: CrashAndErrorTracker): PeopleEventsStaticEventsRefresher {
         val repository = AndroidPeopleEventsRepository(contentResolver, contactsProvider, dateParser, tracker)
-        val marshaller = ContactEventsMarshaller()
         val androidPeopleEventsPersister = AndroidPeopleEventsPersister(eventSQlite, marshaller, tracker)
         return PeopleEventsStaticEventsRefresher(repository, androidPeopleEventsPersister)
     }
@@ -96,9 +98,14 @@ class PeopleEventsModule(private val context: Context) {
         )
     }
 
+
     @Provides
-    fun peopleEventsPersister(tracker: CrashAndErrorTracker, helper: EventSQLiteOpenHelper): PeopleEventsPersister {
-        val marshaller = ContactEventsMarshaller()
+    fun marshaller(dateLabelCreator: ShortDateLabelCreator) = ContactEventsMarshaller(dateLabelCreator)
+
+    @Provides
+    fun peopleEventsPersister(tracker: CrashAndErrorTracker,
+                              marshaller: ContactEventsMarshaller,
+                              helper: EventSQLiteOpenHelper): PeopleEventsPersister {
         return AndroidPeopleEventsPersister(helper, marshaller, tracker)
     }
 
@@ -111,4 +118,9 @@ class PeopleEventsModule(private val context: Context) {
     fun peopleEventsDatabaseUpdater(uiRefresher: UpcomingEventsViewRefresher, peopleEventsUpdater: PeopleEventsUpdater): SettingsPresenter {
         return SettingsPresenter(peopleEventsUpdater, uiRefresher, Schedulers.io())
     }
+
+    @Provides
+    fun shortDateCreator() = ShortDateLabelCreator()
+
+
 }
