@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.theming;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import dagger.Module;
 import dagger.Provides;
@@ -9,8 +10,8 @@ import dagger.Provides;
 public class ThemingModule {
 
     @Provides
-    Themer themer(ThemingPreferences preferences, AttributeExtractor attributeExtractor) {
-        return new Themer(preferences, attributeExtractor);
+    Themer themer(ThemingPreferences preferences, AttributeExtractor attributeExtractor, Resources resources) {
+        return new Themer(preferences, attributeExtractor, resources);
     }
 
     @Provides

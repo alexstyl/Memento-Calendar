@@ -158,10 +158,6 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
             } else {
                 finishAffinity();
             }
-        } else if (requestCode == CODE_ADD_EVENT && resultCode == RESULT_OK) {
-            peopleEventsUpdater
-                    .updateEvents()
-                    .subscribe();
         }
     }
 

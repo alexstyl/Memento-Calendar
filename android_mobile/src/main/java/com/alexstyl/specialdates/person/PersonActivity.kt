@@ -3,26 +3,16 @@ package com.alexstyl.specialdates.person
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.TabLayout
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.alexstyl.android.Version
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.ExternalNavigator
 import com.alexstyl.specialdates.MementoApplication
@@ -35,18 +25,14 @@ import com.alexstyl.specialdates.contact.ContactNotFoundException
 import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
-import com.alexstyl.specialdates.images.ImageLoadedConsumer
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.HideStatusBarListener
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
-import com.nostra13.universalimageloader.core.assist.LoadedFrom
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware
 import com.novoda.notils.caster.Views
 import javax.inject.Inject
 
-class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentListener {
+class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
 
     lateinit var analytics: Analytics
         @Inject set
@@ -59,24 +45,18 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
     lateinit var presenter: PersonPresenter
         @Inject set
 
-    private var appBarLayout: AppBarLayout? = null
-    private var toolbarGradient: ImageView? = null
-    private var avatarView: ImageView? = null
-    private var personNameView: TextView? = null
-    private var ageAndSignView: TextView? = null
-    private var tabLayout: TabLayout? = null
-
-    private var displayingContact = Optional.absent<Contact>()
     private var navigator: PersonDetailsNavigator? = null
+    private var displayingContact = Optional.absent<Contact>()
     private var adapter: ContactItemsAdapter? = null
 
     private val isVisibleContactOptional = Optional.absent<Boolean>()
+
+    private lateinit var personView: AndroidPersonView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_person)
 
-        appBarLayout = findViewById(R.id.person_appbar)
 
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
@@ -91,11 +71,6 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
         setSupportActionBar(toolbar)
         title = null
-        avatarView = Views.findById(this, R.id.person_avatar)
-        personNameView = Views.findById(this, R.id.person_name)
-        ageAndSignView = Views.findById(this, R.id.person_age_and_sign)
-        val viewPager = Views.findById<ViewPager>(this, R.id.person_viewpager)
-        toolbarGradient = Views.findById(this, R.id.person_toolbar_gradient)
         adapter = ContactItemsAdapter(LayoutInflater.from(thisActivity()), EventPressedListener { (action) ->
             try {
                 action.run()
@@ -103,22 +78,35 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
                 Toast.makeText(thisActivity(), R.string.no_app_found, Toast.LENGTH_SHORT).show()
                 tracker.track(ex)
             }
-        }
-        )
+        })
+
+        val appBarLayout = findViewById<AppBarLayout>(R.id.person_appbar)
+        val avatarView = findViewById<ImageView>(R.id.person_avatar)
+        val personNameView = findViewById<TextView>(R.id.person_name)
+        val ageAndSignView = findViewById<TextView>(R.id.person_age_and_sign)
+        val viewPager = findViewById<ViewPager>(R.id.person_viewpager)
+        val toolbarGradient = findViewById<ImageView>(R.id.person_toolbar_gradient)
+        val tabLayout = findViewById<TabLayout>(R.id.person_tabs)
 
         viewPager.adapter = adapter
         viewPager.offscreenPageLimit = 2
 
-        tabLayout = Views.findById(this, R.id.person_tabs)
-        tabLayout!!.setupWithViewPager(viewPager, true)
+        tabLayout.setupWithViewPager(viewPager, true)
+
+        personView = AndroidPersonView(
+                personNameView,
+                ageAndSignView, imageLoader, avatarView, adapter!!, tabLayout, appBarLayout,
+                toolbarGradient, resources,
+                HideStatusBarListener(window),
+                themer)
 
     }
 
     override fun onResume() {
         super.onResume()
-        displayingContact = extractContactFrom(intent)
+        val displayingContact = extractContactFrom(intent)
         if (displayingContact.isPresent) {
-            presenter.startPresentingInto(this, displayingContact.get(), AndroidContactActions(this))
+            presenter.startPresentingInto(personView, displayingContact.get(), AndroidContactActions(this))
         } else {
             tracker.track(IllegalArgumentException("No contact to display"))
             finish()
@@ -127,7 +115,7 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
     private fun wasCalledFromMemento(): Boolean {
         val extras = intent.extras
-        return extras != null && intent.extras!!.containsKey(EXTRA_CONTACT_ID)
+        return extras != null && intent.extras.containsKey(EXTRA_CONTACT_ID)
     }
 
     private fun extractContactFrom(intent: Intent): Optional<Contact> {
@@ -155,70 +143,6 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
             tracker.track(e)
             Optional.absent()
         }
-
-    }
-
-    override fun displayPersonInfo(viewModel: PersonInfoViewModel) {
-        personNameView!!.text = viewModel.displayName
-        ageAndSignView!!.text = viewModel.ageAndStarSignlabel
-        ageAndSignView!!.visibility = viewModel.AgeAndStarSignVisibility
-
-        imageLoader.load(viewModel.image)
-                .withSize(avatarView!!.width, avatarView!!.height)
-                .into(object : ImageLoadedConsumer {
-
-                    override fun onImageLoaded(loadedImage: Bitmap) {
-                        if (Version.hasLollipop()) {
-                            appBarLayout!!.addOnOffsetChangedListener(HideStatusBarListener(window))
-                        }
-                        FadeInBitmapDisplayer(ANIMATION_DURATION).display(loadedImage, ImageViewAware(avatarView!!), LoadedFrom.DISC_CACHE)
-                        val layers = arrayOfNulls<Drawable>(2)
-                        layers[0] = resources.getColorDrawable(android.R.color.transparent)
-                        layers[1] = resources.getDrawableCompat(R.drawable.black_to_transparent_gradient_facing_down)
-                        val transitionDrawable = TransitionDrawable(layers)
-                        toolbarGradient!!.setImageDrawable(transitionDrawable)
-                        transitionDrawable.startTransition(ANIMATION_DURATION)
-                        toolbarGradient!!.visibility = View.VISIBLE
-                    }
-
-                    override fun onLoadingFailed() {
-                        val layers = arrayOfNulls<Drawable>(2)
-                        layers[0] = resources.getColorDrawable(android.R.color.transparent)
-                        layers[1] = resources.getDrawableCompat(R.drawable.ic_person_96dp)
-                        val transitionDrawable = TransitionDrawable(layers)
-                        avatarView!!.setImageDrawable(transitionDrawable)
-                        transitionDrawable.startTransition(ANIMATION_DURATION)
-                        toolbarGradient!!.visibility = View.GONE
-                    }
-                })
-    }
-
-    override fun displayAvailableActions(viewModel: PersonAvailableActionsViewModel) {
-        adapter!!.displayEvents(viewModel)
-
-        updateTabIfNeeded(0, R.drawable.ic_gift)
-        updateTabIfNeeded(1, R.drawable.ic_call)
-        updateTabIfNeeded(2, R.drawable.ic_message)
-
-        if (tabLayout!!.tabCount <= 1) {
-            tabLayout!!.visibility = View.GONE
-        } else {
-            tabLayout!!.visibility = View.VISIBLE
-        }
-    }
-
-    private fun updateTabIfNeeded(index: Int, @DrawableRes iconResId: Int) {
-        if (tabLayout!!.getTabAt(index) != null) {
-            tabLayout!!.getTabAt(index)!!.icon = getTintedDrawable(iconResId)
-        }
-    }
-
-    override fun showPersonAsVisible() {
-        throw UnsupportedOperationException("Visibility is not currently available")
-    }
-
-    override fun showPersonAsHidden() {
-        throw UnsupportedOperationException("Visibility is not currently available")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -236,9 +160,9 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
         } else if (itemId == ID_TOGGLE_VISIBILITY) {
             val isVisible = isVisibleContactOptional.get()
             if (isVisible) {
-                presenter.hideContact(this)
+                presenter.hideContact(personView)
             } else {
-                presenter.showContact(this)
+                presenter.showContact(personView)
             }
 
         }
@@ -262,7 +186,6 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
 
         private const val EXTRA_CONTACT_SOURCE = "extra:source"
         private const val EXTRA_CONTACT_ID = "extra:id"
-        private const val ANIMATION_DURATION = 400
 
         private const val ID_TOGGLE_VISIBILITY = 1023
 
@@ -275,8 +198,3 @@ class PersonActivity : ThemedMementoActivity(), PersonView, BottomSheetIntentLis
     }
 }
 
-private fun Resources.getDrawableCompat(@DrawableRes drawableResId: Int): Drawable? =
-        ResourcesCompat.getDrawable(this, drawableResId, null)
-
-private fun Resources.getColorDrawable(@ColorRes colorRes: Int): Drawable? =
-        ColorDrawable(ResourcesCompat.getColor(this, colorRes, null))
