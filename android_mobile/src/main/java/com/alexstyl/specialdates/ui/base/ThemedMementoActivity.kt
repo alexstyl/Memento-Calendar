@@ -20,14 +20,14 @@ import javax.inject.Inject
 
 open class ThemedMementoActivity : MementoActivity() {
 
-    var themer: Themer? = null
+    lateinit var themer: Themer
         @Inject set
-    var attributeExtractor: AttributeExtractor? = null
+    lateinit var attributeExtractor: AttributeExtractor
         @Inject set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MementoApplication).applicationModule.inject(this)
-        themer!!.applyThemeTo(this)
+        themer.applyThemeTo(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -58,12 +58,7 @@ open class ThemedMementoActivity : MementoActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    fun getTintedDrawable(@DrawableRes drawableResId: Int): Drawable {
-        val wrappedDrawable = DrawableCompat.wrap(ResourcesCompat.getDrawable(resources, drawableResId, null)!!)
-        val color = attributeExtractor!!.extractToolbarIconColors(this)
-        DrawableCompat.setTintList(wrappedDrawable, ColorStateList.valueOf(color))
-        return wrappedDrawable
-    }
+    fun getTintedDrawable(@DrawableRes drawableResId: Int): Drawable = themer.getTintedDrawable(drawableResId, this)
 
     companion object {
         /**

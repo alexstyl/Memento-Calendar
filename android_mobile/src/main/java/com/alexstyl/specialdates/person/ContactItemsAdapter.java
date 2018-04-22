@@ -13,7 +13,7 @@ import com.novoda.notils.caster.Views;
 import java.util.Collections;
 import java.util.List;
 
-class ContactItemsAdapter extends PagerAdapter {
+public class ContactItemsAdapter extends PagerAdapter {
 
     private static final int PAGE_COUNT = 3;
     private static final int PAGE_EVENTS = 0;
