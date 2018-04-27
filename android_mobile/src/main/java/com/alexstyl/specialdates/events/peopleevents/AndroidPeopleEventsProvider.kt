@@ -113,7 +113,9 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
     }
 
     private fun queryPeopleEvents(timePeriod: TimePeriod, sortOrder: String): Cursor {
-        val selectArgs = arrayOf(SQLArgumentBuilder.dateWithoutYear(timePeriod.startingDate), SQLArgumentBuilder.dateWithoutYear(timePeriod.endingDate))
+        val selectArgs = arrayOf(SQLArgumentBuilder.dateWithoutYear(timePeriod.startingDate),
+                SQLArgumentBuilder.dateWithoutYear(timePeriod.endingDate)
+        )
 
         return eventSQLHelper.readableDatabase.query(
                 AnnualEventsContract.TABLE_NAME,
@@ -207,8 +209,13 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         private const val DATE_TO = "substr(" + AnnualEventsContract.DATE + ",-5) <= ?"
         private const val DATE_BETWEEN_IGNORING_YEAR = DATE_FROM + " AND " + DATE_TO + " AND " + AnnualEventsContract.VISIBLE + " == 1"
         private val PEOPLE_PROJECTION = arrayOf(AnnualEventsContract.DATE)
-        //    private static final Uri PEOPLE_EVENTS = PeopleEventsContract.PeopleEvents.CONTENT_URI;
-        private val PROJECTION = arrayOf(AnnualEventsContract.CONTACT_ID, AnnualEventsContract.DEVICE_EVENT_ID, AnnualEventsContract.DATE, AnnualEventsContract.EVENT_TYPE, AnnualEventsContract.SOURCE)
+        private val PROJECTION = arrayOf(
+                AnnualEventsContract.CONTACT_ID,
+                AnnualEventsContract.DEVICE_EVENT_ID,
+                AnnualEventsContract.DATE,
+                AnnualEventsContract.EVENT_TYPE,
+                AnnualEventsContract.SOURCE
+        )
 
         /*
         We use this column in order to be able to do comparisons of dates, without having to worry about the year
