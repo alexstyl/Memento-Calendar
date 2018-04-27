@@ -10,7 +10,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ShortDateLabelCreatorTest {
 
-    private static ShortDateLabelCreator CREATOR = ShortDateLabelCreator.INSTANCE;
+    private static ShortDateLabelCreator CREATOR = new ShortDateLabelCreator();
 
     @Test
     public void givenDateWithYear_whenAskingYear_thenYearIsReturned() {
