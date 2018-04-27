@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.images.DecodedImage
 import com.alexstyl.specialdates.images.ImageDecoder
 import com.novoda.notils.logger.simple.Log
+import io.reactivex.Scheduler
 
 
 class AddContactEventsPresenter(private val analytics: Analytics,
@@ -20,7 +21,9 @@ class AddContactEventsPresenter(private val analytics: Analytics,
                                 private val messageDisplayer: MessageDisplayer,
                                 private val operationsExecutor: ContactOperationsExecutor,
                                 private val resources: Resources,
-                                private val imageDecoder: ImageDecoder) {
+                                private val imageDecoder: ImageDecoder,
+                                private val workScheduler: Scheduler,
+                                private val resultScheduler: Scheduler) {
 
     private val currentImageLoaded = Optional.absent<Bitmap>()
 

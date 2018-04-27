@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.date
 import com.alexstyl.specialdates.Optional
 import org.joda.time.IllegalFieldValueException
 import org.joda.time.LocalDate
-import java.util.*
+import java.util.Locale
 
 data class Date(private val localDate: LocalDate, private val yearOptional: Optional<Int>) : Comparable<Date> {
 
@@ -11,6 +11,8 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
         val addedDate = localDate.plusDays(i)
         return Date(addedDate, Optional(addedDate.year))
     }
+
+    operator fun plus(i: Int): Date = addDay(i)
 
     val dayOfMonth: Int get() = localDate.dayOfMonth
 

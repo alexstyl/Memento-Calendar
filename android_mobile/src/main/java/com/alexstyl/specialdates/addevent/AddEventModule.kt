@@ -32,18 +32,17 @@ class AddEventModule {
             messageDisplayer,
             operationsExecutor,
             resources,
-            imageDecoder
-    )
+            imageDecoder,
+            Schedulers.io(),
+            AndroidSchedulers.mainThread())
 
     @Provides
-    fun factory(dateLabelCreator: DateLabelCreator) = AddEventContactEventViewModelFactory(dateLabelCreator)
+    fun factory(dateLabelCreator: DateLabelCreator, strings: Strings) = AddEventContactEventViewModelFactory(
+            dateLabelCreator, strings, AndroidEventIcons)
 
     @Provides
     fun messageDisplayer(context: Context): MessageDisplayer = ToastDisplayer(context)
 
-
-    @Provides
-    fun viewModelFactory(strings: Strings) = AddEventViewModelFactory(strings)
 
     @Provides
     fun accountsProvider(context: Context) = WriteableAccountsProvider.from(context)
@@ -65,9 +64,8 @@ class AddEventModule {
 
     @Provides
     fun eventsPresenter(peopleEventsProvider: PeopleEventsProvider,
-                        factory: AddEventContactEventViewModelFactory,
-                        addEventFactory: AddEventViewModelFactory) =
-            EventsPresenter(peopleEventsProvider, factory, addEventFactory, Schedulers.io(), AndroidSchedulers.mainThread())
+                        factory: AddEventContactEventViewModelFactory) =
+            EventsPresenter(peopleEventsProvider, factory, Schedulers.io(), AndroidSchedulers.mainThread())
 
     @Provides
     fun filePathProvider(context: Context) = FilePathProvider(context)

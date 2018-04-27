@@ -21,11 +21,6 @@ class AndroidAddEventView(private val avatarView: AvatarPickerView,
         AndroidUtils.requestHideKeyboard(avatarView.context, avatarView)
     }
 
-    override fun replace(viewModel: AddEventContactEventViewModel) {
-        eventsAdapter.replace(viewModel)
-    }
-
-
     override fun display(viewModels: List<AddEventContactEventViewModel>) {
         eventsAdapter.display(viewModels)
     }
