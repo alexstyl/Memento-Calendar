@@ -10,7 +10,7 @@ import com.novoda.notils.meta.AndroidUtils
 import java.net.URI
 
 class AndroidAddEventView(private val avatarView: AvatarPickerView,
-                          private val eventsAdapter: ContactDetailsAdapter,
+                          private val eventsAdapter: ContactEventsAdapter,
                           private val imageLoader: ImageLoader,
                           private val toolbarAnimator: ToolbarBackgroundAnimator) : AddEventView {
 

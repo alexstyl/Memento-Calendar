@@ -74,7 +74,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
 
         eventsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         eventsView.setHasFixedSize(true)
-        val adapter = ContactDetailsAdapter(contactDetailsListener)
+        val adapter = ContactEventsAdapter(contactDetailsListener)
         eventsView.adapter = adapter
 
         avatarView.setOnClickListener {
