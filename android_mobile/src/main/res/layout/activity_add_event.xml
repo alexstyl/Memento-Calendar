@@ -20,6 +20,7 @@
     <com.alexstyl.specialdates.ui.widget.MementoToolbar
       android:id="@+id/memento_toolbar"
       style="@style/Widget.Memento.Toolbar"
+      android:background="@android:color/transparent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:elevation="@dimen/toolbar_elevation">

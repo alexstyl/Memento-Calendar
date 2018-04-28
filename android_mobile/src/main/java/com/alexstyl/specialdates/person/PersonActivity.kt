@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.alexstyl.android.Version
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.ExternalNavigator
 import com.alexstyl.specialdates.MementoApplication
@@ -26,7 +27,8 @@ import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.images.ImageLoader
-import com.alexstyl.specialdates.ui.HideStatusBarListener
+import com.alexstyl.specialdates.ui.DummyHideStatusBarListener
+import com.alexstyl.specialdates.ui.LolipopHideStatusBarListener
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import com.novoda.notils.caster.Views
@@ -93,11 +95,13 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
 
         tabLayout.setupWithViewPager(viewPager, true)
 
+        val onOffsetChangedListener = if (Version.hasLollipop()) LolipopHideStatusBarListener(window) else DummyHideStatusBarListener()
+
         personView = AndroidPersonView(
                 personNameView,
                 ageAndSignView, imageLoader, avatarView, adapter!!, tabLayout, appBarLayout,
                 toolbarGradient, resources,
-                HideStatusBarListener(window),
+                onOffsetChangedListener,
                 themer)
 
     }
