@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.images.DecodedImage
 
-internal class OperationsFactory(private val rawContactID: Int, private val displayStringCreator: ShortDateLabelCreator) {
+class OperationsFactory(private val rawContactID: Int, private val displayStringCreator: ShortDateLabelCreator) {
 
     fun newInsertFor(eventType: EventType, date: Date): ContentProviderOperation {
         val builder = ContentProviderOperation

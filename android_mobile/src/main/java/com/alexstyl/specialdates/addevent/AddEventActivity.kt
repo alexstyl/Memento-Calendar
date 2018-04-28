@@ -129,7 +129,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         }
 
         override fun onContactSelected(contact: Contact) {
-            presenter.presentContact(contact)
+            presenter.onContactSelected(contact)
         }
 
         override fun onNameModified(newName: String) {
