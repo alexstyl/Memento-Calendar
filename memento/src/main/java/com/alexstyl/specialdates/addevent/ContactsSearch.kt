@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.search.NameMatcher
 import java.util.ArrayList
 
-internal class ContactsSearch(private val contactsProvider: ContactsProvider, private val nameMatcher: NameMatcher) {
+class ContactsSearch(private val contactsProvider: ContactsProvider, private val nameMatcher: NameMatcher) {
 
     fun searchForContacts(searchQuery: String, numberOfResults: Int): List<Contact> {
         var searchQuery = searchQuery

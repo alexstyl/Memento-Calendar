@@ -1,21 +1,36 @@
 package com.alexstyl.specialdates.addevent
 
+import com.alexstyl.specialdates.addevent.operations.ContactOperation
+import com.alexstyl.specialdates.addevent.operations.InsertContact
+import com.alexstyl.specialdates.addevent.operations.InsertEvent
+import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.events.Event
-import java.net.URI
 
-interface ContactOperations {
-    fun updateExistingContact(contact: Contact): ContactOperationsBuilder
-    fun createNewContact(contactName: String): ContactOperationsBuilder
+class ContactOperations {
 
+    fun updateExistingContact(contact: Contact): ContactOperationsBuilder {
+        return ContactOperationsBuilder(arrayListOf(UpdateContact(contact)))
+    }
 
-    interface ContactOperationsBuilder {
-        fun withEvents(events: Collection<Event>): ContactOperationsBuilder
-        fun addContactImage(decodedImage: URI): ContactOperationsBuilder
-        fun updateContactImage(decodedImage: URI): ContactOperationsBuilder
-        fun build(): List<Any>
+    fun newContact(contactName: String): ContactOperationsBuilder {
+        return ContactOperationsBuilder(arrayListOf(InsertContact(contactName)))
+    }
+
+    class ContactOperationsBuilder(private val existingOperations: List<ContactOperation>) {
+        private var events: List<Event>? = null
+
+        fun withEvents(events: List<Event>): ContactOperationsBuilder {
+            this.events = events
+            return this
+        }
+
+        // TODO image
+
+        fun build(): List<ContactOperation> {
+            return existingOperations +
+                    (events?.map { InsertEvent(it.eventType, it.date) }
+                            ?: emptyList())
+        }
     }
 }
-
-
-

@@ -74,6 +74,6 @@ public final class ContactEventsAdapter extends RecyclerView.Adapter<ViewHolder>
     void display(List<AddEventContactEventViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
-        notifyDataSetChanged();
+        notifyItemRangeChanged(1, getItemCount() - 1);
     }
 }

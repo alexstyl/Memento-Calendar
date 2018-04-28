@@ -21,6 +21,18 @@
     android:layout_marginLeft="@dimen/padding"
     android:layout_marginRight="@dimen/padding"
     android:layout_weight="1"
-    android:hint="@string/addbirthday_autocomplete_hint" />
+    android:textColor="?primaryTextColor"
+    android:hint="@string/addbirthday_autocomplete_hint"
+     />
+
+  <ImageButton
+    android:id="@+id/add_event_remove_contact"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/selectable_back_no_bounds"
+    android:src="@drawable/ic_clear"
+    android:visibility="gone"
+    tools:visibility="visible" />
 
 </merge>

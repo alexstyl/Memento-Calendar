@@ -9,5 +9,8 @@ interface AddEventView {
     fun display(viewModels: List<AddEventContactEventViewModel>)
     fun displayContact(contact: Contact)
     
-    fun removeAvatar()
+    fun allowSave()
+    fun preventSave()
+    
+    fun clearAvatar()
 }

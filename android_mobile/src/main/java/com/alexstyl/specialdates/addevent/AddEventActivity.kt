@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.alexstyl.android.toURI
@@ -40,7 +39,7 @@ import javax.inject.Inject
 
 class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
-    lateinit var presenter: AddContactEventsPresenter
+    lateinit var presenter: AddEventsPresenter
         @Inject set
     lateinit var permissionChecker: MementoPermissions
         @Inject set
@@ -96,10 +95,16 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             }
         }
 
-        view = AndroidAddEventView(avatarView, adapter, imageLoader, createToolbarAnimator(toolbar))
-
+        val saveButton = findViewById<View>(R.id.add_event_save)
+        saveButton.setOnClickListener {
+            presenter.saveChanges()
+            finishActivitySuccessfully()
+        }
+        view = AndroidAddEventView(avatarView, adapter, imageLoader, createToolbarAnimator(toolbar), saveButton)
         presenter.startPresentingInto(view)
     }
+
+
 
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -116,6 +121,10 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     }
 
     private val contactDetailsListener = object : ContactDetailsListener {
+        override fun onContactCleared() {
+            presenter.removeContact()
+        }
+
         override fun onAddEventClicked(viewModel: AddEventContactEventViewModel) {
             val eventType = viewModel.eventType
             val initialDate = viewModel.date
@@ -129,11 +138,12 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         }
 
         override fun onContactSelected(contact: Contact) {
-            presenter.onContactSelected(contact)
+            presenter.presentContact(contact)
         }
 
         override fun onNameModified(newName: String) {
-            presenter.onNameModified(newName)
+            presenter.removeContact()
+            presenter.presentName(newName)
         }
     }
 
@@ -192,7 +202,10 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     }
 
     override fun onActivitySelected(intent: Intent) {
-        grantUriPermission(intent.component.packageName, filePathProvider.createTemporaryCacheFile(), Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        grantUriPermission(intent.component.packageName,
+                filePathProvider.createTemporaryCacheFile(),
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
         startActivityForResult(intent, getRequestCodeFor(intent))
     }
 
@@ -218,12 +231,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     }
 
     override fun onClearAvatarSelected() {
-        view.removeAvatar()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_add_event, menu)
-        return true
+        view.clearAvatar()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -234,11 +242,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
                 } else {
                     cancelActivity()
                 }
-                return true
-            }
-            R.id.menu_add_event_save -> {
-                presenter.saveChanges()
-                finishActivitySuccessfully()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -273,6 +276,11 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.stopPresenting()
     }
 
     override fun onDiscardChangesSelected() {

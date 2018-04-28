@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.addevent.ui;
 
 import android.content.Context;
+import android.support.transition.TransitionManager;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
@@ -48,6 +49,19 @@ public class ContactSuggestionView extends LinearLayout {
         if (isInEditMode()) {
             return;
         }
+
+        final View clearContact = findViewById(R.id.add_event_remove_contact);
+        clearContact.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autoCompleteView.setText("");
+                clearContact.setVisibility(GONE);
+                listener.onContactCleared();
+                autoCompleteView.setEnabled(true);
+                autoCompleteView.getBackground().setAlpha(255);
+            }
+        });
+
         ContactsSearch contactsSearch = new ContactsSearch(contactsProvider, NameMatcher.INSTANCE);
         final ContactsAdapter adapter = new ContactsAdapter(contactsSearch, imageLoader);
         autoCompleteView.setAdapter(adapter);
@@ -56,6 +70,11 @@ public class ContactSuggestionView extends LinearLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listener.onContactSelected(adapter.getItem(position));
                 AndroidUtils.requestHideKeyboard(view.getContext(), view);
+                
+                TransitionManager.beginDelayedTransition(ContactSuggestionView.this);
+                clearContact.setVisibility(VISIBLE);
+                autoCompleteView.setEnabled(false);
+                autoCompleteView.getBackground().setAlpha(0);
             }
         });
     }
@@ -77,6 +96,13 @@ public class ContactSuggestionView extends LinearLayout {
                 Log.w("onContactSelected called with no callbacks");
             }
 
+            @Override
+            public void onContactCleared() {
+                Log.w("onContactCleared without a listener");
+            }
+
         };
+
+        void onContactCleared();
     }
 }

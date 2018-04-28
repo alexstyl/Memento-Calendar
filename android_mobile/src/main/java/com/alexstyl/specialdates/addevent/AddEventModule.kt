@@ -7,7 +7,6 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
-import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.images.ImageDecoder
 import dagger.Module
 import dagger.Provides
@@ -19,14 +18,14 @@ class AddEventModule {
 
     @Provides
     fun presenter(analytics: Analytics,
-                  androidContactOperations: AndroidContactOperations,
+                  contactOperations: ContactOperations,
                   messageDisplayer: MessageDisplayer,
                   operationsExecutorAndroid: AndroidContactOperationsExecutor,
                   strings: Strings,
                   peopleEventsProvider: PeopleEventsProvider,
-                  factory: AddEventContactEventViewModelFactory) = AddContactEventsPresenter(
+                  factory: AddEventViewModelFactory) = AddEventsPresenter(
             analytics,
-            androidContactOperations,
+            contactOperations,
             messageDisplayer,
             operationsExecutorAndroid,
             strings,
@@ -37,7 +36,7 @@ class AddEventModule {
     )
 
     @Provides
-    fun factory(dateLabelCreator: DateLabelCreator, strings: Strings) = AddEventContactEventViewModelFactory(
+    fun factory(dateLabelCreator: DateLabelCreator, strings: Strings) = AddEventViewModelFactory(
             dateLabelCreator, strings, AndroidEventIcons)
 
     @Provides
@@ -49,15 +48,7 @@ class AddEventModule {
 
 
     @Provides
-    fun operations(contentResolver: ContentResolver,
-                   accountsProvider: WriteableAccountsProvider,
-                   peopleEventsProvider: PeopleEventsProvider,
-                   shortLabeblCreator: ShortDateLabelCreator) = AndroidContactOperations(
-            contentResolver,
-            accountsProvider,
-            peopleEventsProvider,
-            shortLabeblCreator
-    )
+    fun operations() = ContactOperations()
 
     @Provides
     fun operationsExectutor(contentResolver: ContentResolver, tracker: CrashAndErrorTracker) = AndroidContactOperationsExecutor(contentResolver, tracker)
