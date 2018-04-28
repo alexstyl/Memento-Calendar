@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.Event
+import com.alexstyl.specialdates.events.peopleevents.CustomEventType
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
@@ -147,7 +148,7 @@ class AddEventsPresenter(private val analytics: Analytics,
     }
 
     private fun isNotEditableEvent(eventType: EventType) =
-            eventType != StandardEventType.NAMEDAY && eventType != StandardEventType.CUSTOM
+            eventType != StandardEventType.NAMEDAY && eventType != StandardEventType.CUSTOM && eventType !is CustomEventType
 
     fun onEventDatePicked(eventType: EventType, date: Date) {
         analytics.trackEventDatePicked(eventType)
