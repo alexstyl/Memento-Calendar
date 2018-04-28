@@ -21,6 +21,9 @@
     android:id="@+id/avatar_picker_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_below="@+id/avatar_picker_gradient_top"
     android:scaleType="centerCrop"
     tools:background="@color/white_semi_transparents" />
 
@@ -46,7 +49,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_alignParentRight="true"
-    android:padding="12dp"
+    android:padding="16dp"
     android:src="@drawable/ic_camera" />
 
 </merge>

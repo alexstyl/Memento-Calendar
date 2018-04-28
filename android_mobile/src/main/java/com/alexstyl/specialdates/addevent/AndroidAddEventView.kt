@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.addevent
 
 import android.graphics.Bitmap
+import android.view.View
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView
 import com.alexstyl.specialdates.contact.Contact
@@ -12,7 +13,16 @@ import java.net.URI
 class AndroidAddEventView(private val avatarView: AvatarPickerView,
                           private val eventsAdapter: ContactEventsAdapter,
                           private val imageLoader: ImageLoader,
-                          private val toolbarAnimator: ToolbarBackgroundAnimator) : AddEventView {
+                          private val toolbarAnimator: ToolbarBackgroundAnimator,
+                          private val saveButton: View) : AddEventView {
+
+    override fun allowSave() {
+        saveButton.isEnabled = true
+    }
+
+    override fun preventSave() {
+        saveButton.isEnabled = false
+    }
 
     private var currentImageLoaded = Optional.absent<Bitmap>()
 
@@ -37,12 +47,12 @@ class AndroidAddEventView(private val avatarView: AvatarPickerView,
                     }
 
                     override fun onLoadingFailed() {
-                        removeAvatar()
+                        clearAvatar()
                     }
                 })
     }
 
-    override fun removeAvatar() {
+    override fun clearAvatar() {
         avatarView.setImageBitmap(null)
         currentImageLoaded = Optional.absent()
         toolbarAnimator.fadeIn()

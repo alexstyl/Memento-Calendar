@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.addevent
 
-import java.util.ArrayList
+import com.alexstyl.specialdates.addevent.operations.ContactOperation
 
 interface ContactOperationsExecutor {
-    fun execute(operations: ArrayList<out ContactOperations>): Boolean
+    fun execute(operations: List<ContactOperation>): Boolean
 }

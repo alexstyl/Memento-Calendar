@@ -7,9 +7,9 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.EventType
 
-class AddEventContactEventViewModelFactory(private val creator: DateLabelCreator,
-                                           private val strings: Strings,
-                                           private val eventIcons: EventIcons) {
+class AddEventViewModelFactory(private val creator: DateLabelCreator,
+                               private val strings: Strings,
+                               private val eventIcons: EventIcons) {
     companion object {
         private val NO_DATE = Optional.absent<Date>()
     }
