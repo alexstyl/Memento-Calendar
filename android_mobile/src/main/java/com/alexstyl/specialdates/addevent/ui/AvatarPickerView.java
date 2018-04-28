@@ -29,8 +29,8 @@ public final class AvatarPickerView extends RelativeLayout implements ImageAware
         inflate(getContext(), R.layout.merge_avatar_picker_view, this);
 
         imageView = Views.findById(this, R.id.avatar_picker_image);
-        gradientTopView = Views.findById(this, R.id.avatar_picker_gradient_top);
-        gradientBottomView = Views.findById(this, R.id.avatar_picker_gradient_bottom);
+        gradientTopView = Views.findById(this, R.id.avatar_picker_gradient__top);
+        gradientBottomView = Views.findById(this, R.id.avatar_picker_gradient__bottom);
     }
 
     @Override

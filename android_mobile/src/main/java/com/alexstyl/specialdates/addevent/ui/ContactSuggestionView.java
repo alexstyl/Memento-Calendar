@@ -59,6 +59,7 @@ public class ContactSuggestionView extends LinearLayout {
                 listener.onContactCleared();
                 autoCompleteView.setEnabled(true);
                 autoCompleteView.getBackground().setAlpha(255);
+                autoCompleteView.requestFocus();
             }
         });
 
@@ -70,11 +71,12 @@ public class ContactSuggestionView extends LinearLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listener.onContactSelected(adapter.getItem(position));
                 AndroidUtils.requestHideKeyboard(view.getContext(), view);
-                
+
                 TransitionManager.beginDelayedTransition(ContactSuggestionView.this);
                 clearContact.setVisibility(VISIBLE);
                 autoCompleteView.setEnabled(false);
                 autoCompleteView.getBackground().setAlpha(0);
+
             }
         });
     }
