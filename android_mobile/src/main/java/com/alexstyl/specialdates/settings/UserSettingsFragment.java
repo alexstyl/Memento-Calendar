@@ -9,8 +9,6 @@ import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
-import com.alexstyl.specialdates.analytics.Action;
-import com.alexstyl.specialdates.analytics.ActionWithParameters;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator;
 import com.alexstyl.specialdates.donate.AndroidDonationConstants;
@@ -192,7 +190,7 @@ public final class UserSettingsFragment extends MementoPreferenceFragment {
     private final ThemeSelectDialog.OnThemeSelectedListener themeSelectedListener = new ThemeSelectDialog.OnThemeSelectedListener() {
         @Override
         public void onThemeSelected(MementoTheme theme) {
-            analytics.trackAction(new ActionWithParameters(Action.SELECT_THEME, "theme name", getString(theme.getThemeName())));
+            analytics.trackThemeSelected(getString(theme.getThemeName()));
             themingPreferences.setSelectedTheme(theme);
             activity.applyNewTheme();
         }
