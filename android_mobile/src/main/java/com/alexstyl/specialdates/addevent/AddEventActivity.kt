@@ -105,8 +105,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     }
 
 
-
-
     @TargetApi(Build.VERSION_CODES.M)
     private fun requestExternalStoragePermission() {
         requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), CODE_PERMISSION_EXTERNAL_STORAGE)

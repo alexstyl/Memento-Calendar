@@ -4,7 +4,7 @@
   tools:background="#000"
   tools:layout_height="@dimen/add_event_avatar_height"
   tools:layout_width="match_parent"
-  tools:parentTag="RelativeLayout">
+  tools:parentTag="android.widget.RelativeLayout">
 
   <android.support.v4.widget.Space
     android:id="@+id/camera_button_image_top_space"
@@ -21,28 +21,32 @@
     android:id="@+id/avatar_picker_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:layout_below="@+id/avatar_picker_gradient_top"
     android:scaleType="centerCrop"
     tools:background="@color/white_semi_transparents" />
 
   <ImageView
-    android:id="@+id/avatar_picker_gradient_top"
+    android:id="@+id/avatar_picker_gradient__top"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_minHeight"
     android:layout_alignParentTop="true"
     android:src="@drawable/black_to_transparent_gradient_facing_down"
-    android:visibility="gone" />
+    android:visibility="gone"
+    tools:visibility="visible"
+
+    />
 
   <ImageView
-    android:id="@+id/avatar_picker_gradient_bottom"
+    android:id="@+id/avatar_picker_gradient__bottom"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_minHeight"
     android:layout_alignParentBottom="true"
     android:rotation="180"
     android:src="@drawable/black_to_transparent_gradient_facing_down"
-    android:visibility="gone" />
+    android:visibility="gone"
+    tools:visibility="visible" />
 
   <ImageView
     android:layout_width="wrap_content"
