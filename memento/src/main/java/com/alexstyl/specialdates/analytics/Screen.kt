@@ -1,6 +1,6 @@
-package com.alexstyl.specialdates.analytics;
+package com.alexstyl.specialdates.analytics
 
-public enum Screen {
+enum class Screen(private val screenName: String) {
     HOME("upcoming"),
     ADD_EVENT("add event"),
     SEARCH("search"),
@@ -18,18 +18,11 @@ public enum Screen {
     NAMEDAYS("namedays"),
     PERSON("person");
 
-    private final String screenName;
-
-    Screen(String screenName) {
-        this.screenName = screenName;
+    fun screenName(): String {
+        return screenName
     }
 
-    public String screenName() {
-        return screenName;
-    }
-
-    @Override
-    public String toString() {
-        return screenName;
+    override fun toString(): String {
+        return screenName
     }
 }
