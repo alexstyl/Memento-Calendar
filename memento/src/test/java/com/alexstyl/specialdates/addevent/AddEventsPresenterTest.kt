@@ -61,7 +61,7 @@ class AddEventsPresenterTest {
 
     private fun emptyModelsFor(standardEventType: StandardEventType, vararg others: StandardEventType): List<AddEventContactEventViewModel> {
         return (listOf(standardEventType) + others.toList())
-                .map { viewModelFactory.createAddEventViewModelFor(it) }
+                .map { viewModelFactory.createViewModelFor(it) }
     }
 
     @Test
@@ -88,7 +88,7 @@ class AddEventsPresenterTest {
 
         presenter.presentContact(contact)
 
-        val expectedViewModels = listOf(viewModelFactory.createViewModel(birthday), viewModelFactory.createViewModel(anniversary), viewModelFactory.createViewModel(other))
+        val expectedViewModels = listOf(viewModelFactory.createViewModelFor(birthday), viewModelFactory.createViewModelFor(anniversary), viewModelFactory.createViewModelFor(other))
         Mockito.verify(mockView).display(expectedViewModels)
     }
 
@@ -115,7 +115,7 @@ class AddEventsPresenterTest {
 
         presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.today())
 
-        val dateViewModel = viewModelFactory.createViewModelWith(StandardEventType.BIRTHDAY, Date.today())
+        val dateViewModel = viewModelFactory.createViewModelFor(StandardEventType.BIRTHDAY, Date.today())
         Mockito.verify(mockView).display(listOf(dateViewModel) + emptyModelsFor(StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
     }
 
@@ -133,9 +133,9 @@ class AddEventsPresenterTest {
 
         presenter.removeEvent(StandardEventType.BIRTHDAY)
 
-        val expectedViewModels = listOf(viewModelFactory.createAddEventViewModelFor(StandardEventType.BIRTHDAY),
-                viewModelFactory.createViewModel(anniversary),
-                viewModelFactory.createViewModel(other)
+        val expectedViewModels = listOf(viewModelFactory.createViewModelFor(StandardEventType.BIRTHDAY),
+                viewModelFactory.createViewModelFor(anniversary),
+                viewModelFactory.createViewModelFor(other)
         )
         Mockito.verify(mockView).display(expectedViewModels)
     }
@@ -182,7 +182,7 @@ class AddEventsPresenterTest {
 
     @Test
     fun whenAllEventsAreRemoved_givenAContact_thenSaveIsDisabled() {
-        presenter.startPresentingInto(mockView)
+        presenter.startPresentingInto(mockView) // prevent save 1
 
         val contact = ContactFixture.aContactCalled("Chrysa")
         given(mockPeopleEventsProvider.fetchEventsFor(contact))
@@ -190,10 +190,10 @@ class AddEventsPresenterTest {
                         ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.today(), contact))
                 )
 
-        presenter.presentContact(contact)
-        presenter.removeEvent(StandardEventType.BIRTHDAY)
+        presenter.presentContact(contact)    // prevent save 2
+        presenter.removeEvent(StandardEventType.BIRTHDAY)     // prevent save 3
 
-        verify(mockView, times(2)).preventSave()
+        verify(mockView, times(3)).preventSave()
     }
 
 

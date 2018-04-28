@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.images.ImageLoader;
-import com.alexstyl.specialdates.ui.HideStatusBarListener;
+import com.alexstyl.specialdates.ui.LolipopHideStatusBarListener;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -72,7 +72,7 @@ public class DonateActivity extends MementoActivity {
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
         if (Version.hasLollipop()) {
-            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+            appBarLayout.addOnOffsetChangedListener(new LolipopHideStatusBarListener(getWindow()));
         }
 
         DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics, tracker, donateMonitor);

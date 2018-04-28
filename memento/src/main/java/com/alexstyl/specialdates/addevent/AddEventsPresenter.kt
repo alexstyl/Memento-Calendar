@@ -31,15 +31,20 @@ class AddEventsPresenter(private val analytics: Analytics,
 
     private val saveUISubject = ReplaySubject.create<Boolean>()
     private val eventsUISubject = ReplaySubject.create<List<AddEventContactEventViewModel>>()
+    private var startingEvents = emptyViewModels()
 
     private val imageSubject = ReplaySubject.create<URI>()
     private val contactSubject = ReplaySubject.create<Optional<Contact>>()
     private val contactNameSubject = ReplaySubject.create<String>()
 
-    val isHoldingModifiedData: Boolean
-        get() = eventsUISubject.hasValue() || contactNameSubject.hasValue() || contactSubject.hasValue() || imageSubject.hasValue()
 
-    val events: List<AddEventContactEventViewModel>
+    val isHoldingModifiedData: Boolean
+        get() =
+            (!contactSubject.hasContact() && contactNameSubject.value.isNotEmpty())
+                    || contactSubject.hasContact() && (eventsUISubject.value != startingEvents)
+                    || imageSubject.hasValue()
+
+    private val eventViewModels: List<AddEventContactEventViewModel>
         get() = eventsUISubject.value.toList()
 
     private val disposable = CompositeDisposable()
@@ -47,6 +52,14 @@ class AddEventsPresenter(private val analytics: Analytics,
 
     fun startPresentingInto(view: AddEventView) {
         disposable.addAll(
+                saveUISubject
+                        .subscribe { enable ->
+                            if (enable) {
+                                view.allowSave()
+                            } else {
+                                view.preventSave()
+                            }
+                        },
                 eventsUISubject
                         .subscribe { viewModels ->
                             view.display(viewModels)
@@ -57,14 +70,6 @@ class AddEventsPresenter(private val analytics: Analytics,
                                 view.display(contact.get().imagePath)
                             } else {
                                 view.clearAvatar()
-                            }
-                        },
-                saveUISubject
-                        .subscribe { enable ->
-                            if (enable) {
-                                view.allowSave()
-                            } else {
-                                view.preventSave()
                             }
                         }
         )
@@ -79,18 +84,19 @@ class AddEventsPresenter(private val analytics: Analytics,
             throw UnsupportedOperationException("Changing names of contacts is not supported")
         }
         contactNameSubject.onNext(name)
+        startingEvents = emptyViewModels()
         invalidateSave()
     }
 
     private fun invalidateSave() {
         if (contactSubject.hasContact()) {
-            TODO("need to handle new contact")
-        }
-
-        if (contactNameSubject.value.isNotEmpty() && eventsUISubject.value.containsEventsWithDates()) {
-            saveUISubject.onNext(true)
+            // for a contact, check if the events are different, and we have at least one event
+            val eventsHaveChanged = eventsUISubject.values.first() != eventsUISubject.values.last()
+            val containsEvents = eventViewModels.containsEventsWithDates()
+            saveUISubject.onNext(eventsHaveChanged && containsEvents)
         } else {
-            saveUISubject.onNext(false)
+            // for no contact, we allow a save if we have at least one event and a name
+            saveUISubject.onNext(contactNameSubject.hasValue() && eventViewModels.containsEventsWithDates())
         }
     }
 
@@ -113,7 +119,7 @@ class AddEventsPresenter(private val analytics: Analytics,
             StandardEventType.values().filter {
                 it != StandardEventType.NAMEDAY && it != StandardEventType.CUSTOM
             }.map {
-                factory.createAddEventViewModelFor(it)
+                factory.createViewModelFor(it)
             }
 
     fun presentContact(contact: Contact) {
@@ -126,14 +132,14 @@ class AddEventsPresenter(private val analytics: Analytics,
                         .flatMapIterable { it }
                         .filter { isNotEditableEvent(it.type) }
                         .map { event ->
-                            factory.createViewModel(event)
+                            factory.createViewModelFor(event)
                         }
                         .toList()
                         .map { viewModels ->
                             val contactEvents = viewModels.associateBy({ it.eventType }, { it })
                             StandardEventType.values().forEach { eventType ->
                                 if (isNotEditableEvent(eventType) && !contactEvents.containsKey(eventType)) {
-                                    viewModels.add(factory.createAddEventViewModelFor(eventType))
+                                    viewModels.add(factory.createViewModelFor(eventType))
                                 }
                             }
                             viewModels.toList()
@@ -142,7 +148,9 @@ class AddEventsPresenter(private val analytics: Analytics,
                         .observeOn(resultScheduler)
                         .subscribe { viewModels ->
                             eventsUISubject.onNext(viewModels)
+                            eventsUISubject.values
                             contactSubject.onNext(Optional(contact))
+                            startingEvents = viewModels
                         }
         )
     }
@@ -154,7 +162,7 @@ class AddEventsPresenter(private val analytics: Analytics,
         analytics.trackEventDatePicked(eventType)
 
         Observable.fromCallable {
-            factory.createViewModelWith(eventType, date)
+            factory.createViewModelFor(eventType, date)
         }.map {
             val lastElement = eventsUISubject.value.toMutableList()
             val find = lastElement.indexOfFirst { it.eventType == eventType }
@@ -176,17 +184,18 @@ class AddEventsPresenter(private val analytics: Analytics,
         analytics.trackEventRemoved(eventType)
 
         Observable.fromCallable {
-            factory.createAddEventViewModelFor(eventType)
+            factory.createViewModelFor(eventType)
         }.map {
-            val lastElement = eventsUISubject.value.toMutableList()
-            val find = lastElement.indexOfFirst { it.eventType == eventType }
-            lastElement[find] = it
-            lastElement.toList()
+            val existingViewModels = eventsUISubject.value.toMutableList()
+            val find = existingViewModels.indexOfFirst { it.eventType == eventType }
+            existingViewModels[find] = it
+            existingViewModels.toList()
         }
                 .subscribeOn(workScheduler)
                 .observeOn(resultScheduler)
                 .subscribe { viewModels ->
                     eventsUISubject.onNext(viewModels)
+                    invalidateSave()
                 }
     }
 
@@ -200,7 +209,7 @@ class AddEventsPresenter(private val analytics: Analytics,
                     Observable.fromCallable {
                         val operations = contactOperations
                                 .updateExistingContact(contactSubject.value.get())
-                                .withEvents(events.toEvent())
+                                .withEvents(eventViewModels.toEvent())
                                 .build()
                         operationsExecutor.execute(operations)
                     }.map {
@@ -210,20 +219,21 @@ class AddEventsPresenter(private val analytics: Analytics,
                         } else {
                             strings.contactUpdateFailed()
                         }
-                    }.observeOn(workScheduler)
+                    }
+                            .subscribeOn(workScheduler)
+                            .observeOn(resultScheduler)
                             .subscribe {
                                 messageDisplayer.showMessage(it)
                             }
             )
         } else {
-
             disposable.add(
                     Observable.fromCallable {
                         // TODO image
                         operationsExecutor.execute(
                                 contactOperations
                                         .newContact(contactNameSubject.value)
-                                        .withEvents(events.toEvent())
+                                        .withEvents(eventViewModels.toEvent())
                                         .build()
                         )
                     }.map {

@@ -50,7 +50,7 @@
           android:id="@+id/person_toolbar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="25dp"
+          android:layout_marginTop="@dimen/content_padding_vertical"
           android:minHeight="@dimen/toolbar_minHeight"
           app:layout_collapseMode="pin"
           app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />

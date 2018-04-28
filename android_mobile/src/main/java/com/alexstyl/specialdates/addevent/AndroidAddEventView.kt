@@ -43,7 +43,6 @@ class AndroidAddEventView(private val avatarView: AvatarPickerView,
                     override fun onImageLoaded(loadedImage: Bitmap?) {
                         avatarView.setImageBitmap(loadedImage)
                         toolbarAnimator.fadeOut()
-                        avatarView.requestFocus()
                     }
 
                     override fun onLoadingFailed() {

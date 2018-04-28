@@ -78,4 +78,5 @@
   <dimen name="fab_margin">16dp</dimen>
   <dimen name="fab_size_normal">48dp</dimen>
   <dimen name="fab_total_size">64dp</dimen>
+  <dimen name="content_padding_vertical">0dp</dimen>
 </resources>
