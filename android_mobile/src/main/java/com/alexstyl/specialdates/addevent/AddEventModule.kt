@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.addevent
 
 import android.content.ContentResolver
 import android.content.Context
-import android.content.res.Resources
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
@@ -20,21 +19,22 @@ class AddEventModule {
 
     @Provides
     fun presenter(analytics: Analytics,
-                  eventsPresenter: EventsPresenter,
-                  contactOperations: ContactOperations,
+                  androidContactOperations: AndroidContactOperations,
                   messageDisplayer: MessageDisplayer,
-                  operationsExecutor: ContactOperationsExecutor,
-                  resources: Resources,
-                  imageDecoder: ImageDecoder) = AddContactEventsPresenter(
+                  operationsExecutorAndroid: AndroidContactOperationsExecutor,
+                  strings: Strings,
+                  peopleEventsProvider: PeopleEventsProvider,
+                  factory: AddEventContactEventViewModelFactory) = AddContactEventsPresenter(
             analytics,
-            eventsPresenter,
-            contactOperations,
+            androidContactOperations,
             messageDisplayer,
-            operationsExecutor,
-            resources,
-            imageDecoder,
+            operationsExecutorAndroid,
+            strings,
+            peopleEventsProvider,
+            factory,
             Schedulers.io(),
-            AndroidSchedulers.mainThread())
+            AndroidSchedulers.mainThread()
+    )
 
     @Provides
     fun factory(dateLabelCreator: DateLabelCreator, strings: Strings) = AddEventContactEventViewModelFactory(
@@ -52,7 +52,7 @@ class AddEventModule {
     fun operations(contentResolver: ContentResolver,
                    accountsProvider: WriteableAccountsProvider,
                    peopleEventsProvider: PeopleEventsProvider,
-                   shortLabeblCreator: ShortDateLabelCreator) = ContactOperations(
+                   shortLabeblCreator: ShortDateLabelCreator) = AndroidContactOperations(
             contentResolver,
             accountsProvider,
             peopleEventsProvider,
@@ -60,12 +60,8 @@ class AddEventModule {
     )
 
     @Provides
-    fun operationsExectutor(contentResolver: ContentResolver, tracker: CrashAndErrorTracker) = ContactOperationsExecutor(contentResolver, tracker)
+    fun operationsExectutor(contentResolver: ContentResolver, tracker: CrashAndErrorTracker) = AndroidContactOperationsExecutor(contentResolver, tracker)
 
-    @Provides
-    fun eventsPresenter(peopleEventsProvider: PeopleEventsProvider,
-                        factory: AddEventContactEventViewModelFactory) =
-            EventsPresenter(peopleEventsProvider, factory, Schedulers.io(), AndroidSchedulers.mainThread())
 
     @Provides
     fun filePathProvider(context: Context) = FilePathProvider(context)

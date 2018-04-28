@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.addevent
 import com.alexstyl.specialdates.JavaStrings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.TestDateLabelCreator
+import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
@@ -11,13 +12,13 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
 
-class EventsPresenterTest {
-
-    private lateinit var presenter: EventsPresenter
+class AddContactEventsPresenterTest {
+    private lateinit var presenter: AddContactEventsPresenter
 
     private val mockView = Mockito.mock(AddEventView::class.java)
     private val mockPeopleEventsProvider = Mockito.mock(PeopleEventsProvider::class.java)
@@ -25,7 +26,12 @@ class EventsPresenterTest {
 
     @Before
     fun setUp() {
-        presenter = EventsPresenter(
+        presenter = AddContactEventsPresenter(
+                mock(Analytics::class.java),
+                mock(ContactOperations::class.java),
+                com.alexstyl.specialdates.addevent.JavaMessageDisplayer(),
+                mock(ContactOperationsExecutor::class.java),
+                JavaStrings(),
                 mockPeopleEventsProvider,
                 factory,
                 Schedulers.trampoline(),
@@ -35,14 +41,13 @@ class EventsPresenterTest {
 
     @Test
     fun whenStartPresenting_thenAlwaysStartsWithEmptyViewModelsForStandardTypes() {
-
         presenter.startPresentingInto(mockView)
 
         val expectedViewModels = viewModelsFor(StandardEventType.BIRTHDAY,
                 StandardEventType.ANNIVERSARY,
                 StandardEventType.OTHER)
 
-        verify(mockView).display(expectedViewModels)
+        Mockito.verify(mockView).display(expectedViewModels)
     }
 
     private fun viewModelsFor(standardEventType: StandardEventType, vararg others: StandardEventType): List<AddEventContactEventViewModel> {
@@ -55,12 +60,11 @@ class EventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(emptyList())
+        BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(emptyList())
 
         presenter.onContactSelected(contact)
 
-        val expectedViewModels = viewModelsFor(StandardEventType.ANNIVERSARY, StandardEventType.OTHER)
-        verify(mockView).display(expectedViewModels)
+        Mockito.verify(mockView, times(2)).display(viewModelsFor(StandardEventType.BIRTHDAY, StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
     }
 
     @Test
@@ -71,23 +75,23 @@ class EventsPresenterTest {
         val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.today(), contact)
         val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, Date.today() + 1, contact)
         val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, Date.today() + 2, contact)
-        given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
+        BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
 
         presenter.onContactSelected(contact)
 
         val expectedViewModels = listOf(factory.createViewModel(birthday), factory.createViewModel(anniversary), factory.createViewModel(other))
-        verify(mockView).display(expectedViewModels)
+        Mockito.verify(mockView).display(expectedViewModels)
     }
 
     @Test
     fun givenADateAndEventIsSelected_thenTheViewModelsOfThatEventPlusAllOtherEmptyViewModelsArePassedToTheView() {
         presenter.startPresentingInto(mockView)
-        verify(mockView).display(viewModelsFor(StandardEventType.BIRTHDAY, StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
+        Mockito.verify(mockView).display(viewModelsFor(StandardEventType.BIRTHDAY, StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
 
         presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.today())
 
         val dateViewModel = factory.createViewModelWith(StandardEventType.BIRTHDAY, Date.today())
-        verify(mockView).display(listOf(dateViewModel) + viewModelsFor(StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
+        Mockito.verify(mockView).display(listOf(dateViewModel) + viewModelsFor(StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
     }
 
     @Test
@@ -98,7 +102,7 @@ class EventsPresenterTest {
         val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.today(), contact)
         val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, Date.today() + 1, contact)
         val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, Date.today() + 2, contact)
-        given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
+        BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
 
         presenter.onContactSelected(contact)
 
@@ -108,6 +112,6 @@ class EventsPresenterTest {
                 factory.createViewModel(anniversary),
                 factory.createViewModel(other)
         )
-        verify(mockView).display(expectedViewModels)
+        Mockito.verify(mockView).display(expectedViewModels)
     }
 }

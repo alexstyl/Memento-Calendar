@@ -8,6 +8,14 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class AndroidStrings(private val resources: Resources) : Strings {
+    override fun contactAddedFailed(): String = resources.getString(R.string.failed_to_add_contact)
+
+    override fun contactAdded(): String = resources.getString(R.string.contact_added)
+
+    override fun contactUpdated(): String = resources.getString(R.string.contact_updated)
+
+    override fun contactUpdateFailed(): String = resources.getString(R.string.failed_to_update_contact)
+
     override fun dontForgetToSendWishes(): String = resources.getString(R.string.Dont_forget_to_send_your_wishes)
     override fun call(): String = resources.getString(R.string.Call)
     override fun sendWishes(): String = resources.getString(R.string.Send_wishes)
