@@ -13,6 +13,7 @@ import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
+import com.alexstyl.specialdates.images.ImageDecoder
 import com.novoda.notils.exception.DeveloperError
 import java.util.ArrayList
 
@@ -21,7 +22,8 @@ class AndroidContactOperationsExecutor(
         private val tracker: CrashAndErrorTracker,
         private val displayStringCreator: ShortDateLabelCreator,
         private val peopleEventsProvider: PeopleEventsProvider,
-        private val accountsProvider: WriteableAccountsProvider)
+        private val accountsProvider: WriteableAccountsProvider,
+        private val imageDecoder: ImageDecoder)
     : ContactOperationsExecutor {
 
     override fun execute(operations: List<ContactOperation>): Boolean {
@@ -43,10 +45,10 @@ class AndroidContactOperationsExecutor(
 
     private fun makeFactoryFor(contactOperation: ContactOperation): OperationsFactory {
         if (contactOperation is InsertContact) {
-            return OperationsFactory.forNewContact(displayStringCreator, peopleEventsProvider, accountsProvider)
+            return OperationsFactory.forNewContact(displayStringCreator, peopleEventsProvider, accountsProvider, imageDecoder)
         } else if (contactOperation is UpdateContact) {
             val rawContactID = rawContactID(contactOperation.contact)
-            return OperationsFactory(rawContactID, displayStringCreator, peopleEventsProvider, accountsProvider)
+            return OperationsFactory(rawContactID, displayStringCreator, peopleEventsProvider, accountsProvider, imageDecoder)
         }
         throw IllegalArgumentException("Cannot make factory for $contactOperation")
     }

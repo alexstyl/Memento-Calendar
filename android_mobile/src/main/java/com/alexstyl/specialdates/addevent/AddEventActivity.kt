@@ -179,12 +179,13 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 analytics.trackAvatarSelected()
-                view.display(result.uri.toURI())
+                presenter.present(result.uri.toURI())
             } else if (resultCode == Activity.RESULT_CANCELED && result != null) {
                 tracker.track(result.error)
             }
         }
     }
+
 
     private fun startCropIntent(imageToCrop: Uri) {
         val size = queryCropSize(contentResolver)
