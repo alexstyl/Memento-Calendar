@@ -8,7 +8,10 @@ interface AddEventView {
     fun display(uri: URI)
     fun display(viewModels: List<AddEventContactEventViewModel>)
     fun displayContact(contact: Contact)
-    
+
+    fun allowImagePick()
+    fun preventImagePick()
+
     fun allowSave()
     fun preventSave()
     
