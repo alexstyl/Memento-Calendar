@@ -10,6 +10,7 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.images.ImageDecoder
+import com.alexstyl.specialdates.images.ImageLoader
 import dagger.Module
 import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -58,8 +59,14 @@ class AddEventModule {
     fun operationsExectutor(contentResolver: ContentResolver,
                             tracker: CrashAndErrorTracker,
                             peopleEventsProvider: PeopleEventsProvider,
-                            accountsProvider: WriteableAccountsProvider): ContactOperationsExecutor {
-        return AndroidContactOperationsExecutor(contentResolver, tracker, ShortDateLabelCreator(), peopleEventsProvider, accountsProvider)
+                            accountsProvider: WriteableAccountsProvider,
+                            imageDecoder: ImageDecoder): ContactOperationsExecutor {
+        return AndroidContactOperationsExecutor(contentResolver,
+                tracker,
+                ShortDateLabelCreator(),
+                peopleEventsProvider,
+                accountsProvider,
+                imageDecoder)
     }
 
 
@@ -67,5 +74,7 @@ class AddEventModule {
     fun filePathProvider(context: Context) = FilePathProvider(context)
 
     @Provides
-    fun imageDecoder() = ImageDecoder()
+    fun imageDecoder(imageLoader: ImageLoader): ImageDecoder {
+        return ImageDecoder(imageLoader)
+    }
 }

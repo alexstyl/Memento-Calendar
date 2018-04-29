@@ -2,12 +2,14 @@ package com.alexstyl.specialdates.addevent
 
 import android.content.ContentProviderOperation
 import android.provider.ContactsContract
-import android.provider.ContactsContract.CommonDataKinds
+import android.provider.ContactsContract.CommonDataKinds.Event
+import android.provider.ContactsContract.CommonDataKinds.Photo
 import android.provider.ContactsContract.CommonDataKinds.StructuredName
 import android.provider.ContactsContract.Data
 import com.alexstyl.specialdates.addevent.operations.ContactOperation
 import com.alexstyl.specialdates.addevent.operations.InsertContact
 import com.alexstyl.specialdates.addevent.operations.InsertEvent
+import com.alexstyl.specialdates.addevent.operations.InsertImage
 import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
@@ -18,36 +20,54 @@ import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
+import com.alexstyl.specialdates.images.ImageDecoder
+import java.net.URI
 
 class OperationsFactory(private val rawContactID: Int,
                         private val displayStringCreator: ShortDateLabelCreator,
                         private val peopleEventsProvider: PeopleEventsProvider,
-                        private val accountsProvider: WriteableAccountsProvider) {
+                        private val accountsProvider: WriteableAccountsProvider,
+                        private val imageDecoder: ImageDecoder) {
 
     fun createOperationsFor(contactOperation: ContactOperation): List<ContentProviderOperation> {
         when (contactOperation) {
             is InsertContact -> return createContactIn(accountToStoreContact, contactOperation.contactName)
             is UpdateContact -> return updateExistingContact(contactOperation.contact)
             is InsertEvent -> return newInsertFor(contactOperation.eventType, contactOperation.date)
+            is InsertImage -> return insertImageFor(contactOperation.imageUri)
         }
         throw IllegalArgumentException("Unable to create operation for $contactOperation")
     }
 
+    private fun insertImageFor(imageUri: URI): List<ContentProviderOperation> {
+        val decodeFrom = imageDecoder.decodeFrom(imageUri)
+        if (decodeFrom != null) {
+            val builder = ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                    .withValue(Data.MIMETYPE, Photo.CONTENT_ITEM_TYPE)
+                    .withValue(Photo.PHOTO, decodeFrom.bytes)
+            addRawContactID(builder)
+            return listOf(builder.build())
+        } else {
+            return emptyList()
+        }
+    }
+
+
     private fun newInsertFor(eventType: EventType, date: Date): List<ContentProviderOperation> {
         val builder = ContentProviderOperation
                 .newInsert(Data.CONTENT_URI)
-                .withValue(Data.MIMETYPE, CommonDataKinds.Event.CONTENT_ITEM_TYPE)
-                .withValue(CommonDataKinds.Event.TYPE, androidIdOf(eventType))
-                .withValue(CommonDataKinds.Event.START_DATE, displayStringCreator.createLabelWithYearPreferredFor(date))
+                .withValue(Data.MIMETYPE, Event.CONTENT_ITEM_TYPE)
+                .withValue(Event.TYPE, androidIdOf(eventType))
+                .withValue(Event.START_DATE, displayStringCreator.createLabelWithYearPreferredFor(date))
         addRawContactID(builder)
         return listOf(builder.build())
     }
 
     private fun androidIdOf(eventType: EventType): Int = when (eventType.id) {
-        EventTypeId.TYPE_BIRTHDAY -> CommonDataKinds.Event.TYPE_BIRTHDAY
-        EventTypeId.TYPE_ANNIVERSARY -> CommonDataKinds.Event.TYPE_ANNIVERSARY
-        EventTypeId.TYPE_CUSTOM -> CommonDataKinds.Event.TYPE_CUSTOM
-        EventTypeId.TYPE_OTHER -> CommonDataKinds.Event.TYPE_OTHER
+        EventTypeId.TYPE_BIRTHDAY -> Event.TYPE_BIRTHDAY
+        EventTypeId.TYPE_ANNIVERSARY -> Event.TYPE_ANNIVERSARY
+        EventTypeId.TYPE_CUSTOM -> Event.TYPE_CUSTOM
+        EventTypeId.TYPE_OTHER -> Event.TYPE_OTHER
         else -> {
             throw IllegalStateException("There is no Android type of $eventType")
         }
@@ -69,7 +89,7 @@ class OperationsFactory(private val rawContactID: Int,
             ops.add(
                     ContentProviderOperation
                             .newDelete(Data.CONTENT_URI)
-                            .withSelection(CommonDataKinds.Event._ID + "= " + eventId, null)
+                            .withSelection(Event._ID + "= " + eventId, null)
                             .build())
         }
         return ops
@@ -126,8 +146,10 @@ class OperationsFactory(private val rawContactID: Int,
 
         fun forNewContact(displayStringCreator: ShortDateLabelCreator,
                           peopleEventsProvider: PeopleEventsProvider,
-                          accountsProvider: WriteableAccountsProvider): OperationsFactory {
-            return OperationsFactory(NO_RAW_CONTACT_ID, displayStringCreator, peopleEventsProvider, accountsProvider)
+                          accountsProvider: WriteableAccountsProvider,
+                          imageDecoder: ImageDecoder): OperationsFactory {
+            return OperationsFactory(NO_RAW_CONTACT_ID, displayStringCreator, peopleEventsProvider, accountsProvider,
+                    imageDecoder)
         }
     }
 }

@@ -108,7 +108,7 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
 
     override fun onResume() {
         super.onResume()
-        val displayingContact = extractContactFrom(intent)
+        displayingContact = extractContactFrom(intent)
         if (displayingContact.isPresent) {
             presenter.startPresentingInto(personView, displayingContact.get(), AndroidContactActions(this))
         } else {

@@ -65,6 +65,9 @@ class AddEventsPresenter(private val analytics: Analytics,
                         .subscribe { viewModels ->
                             view.display(viewModels)
                         },
+                imageSubject.subscribe {
+                    view.display(it)
+                },
                 contactSubject
                         .subscribe { contact ->
                             if (contact.isPresent) {
@@ -78,6 +81,7 @@ class AddEventsPresenter(private val analytics: Analytics,
         contactSubject.onNext(Optional.absent())
         saveUISubject.onNext(false)
         contactNameSubject.onNext("")
+        imageSubject.onNext(URI.create(""))
     }
 
     fun presentName(name: String) {
@@ -125,9 +129,6 @@ class AddEventsPresenter(private val analytics: Analytics,
 
     fun presentContact(contact: Contact) {
         analytics.trackContactSelected()
-        contactSubject.onNext(Optional(contact))
-        saveUISubject.onNext(false)
-
         disposable.add(
                 Observable.fromCallable { peopleEventsProvider.fetchEventsFor(contact) }
                         .flatMapIterable { it }
@@ -148,10 +149,10 @@ class AddEventsPresenter(private val analytics: Analytics,
                         .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)
                         .subscribe { viewModels ->
-                            eventsUISubject.onNext(viewModels)
-                            eventsUISubject.values
-                            contactSubject.onNext(Optional(contact))
                             startingEvents = viewModels
+                            saveUISubject.onNext(false)
+                            eventsUISubject.onNext(viewModels)
+                            contactSubject.onNext(Optional(contact))
                         }
         )
     }
@@ -237,11 +238,11 @@ class AddEventsPresenter(private val analytics: Analytics,
         } else {
             disposable.add(
                     Observable.fromCallable {
-                        // TODO image
                         operationsExecutor.execute(
                                 contactOperations
                                         .newContact(contactNameSubject.value)
                                         .withEvents(eventViewModels.toEvent())
+                                        .withImage(imageSubject.value)
                                         .build()
                         )
                     }.doOnNext { result ->
@@ -282,6 +283,10 @@ class AddEventsPresenter(private val analytics: Analytics,
             contactSubject.onNext(Optional.absent())
         }
         eventsUISubject.onNext(emptyViewModels())
+    }
+
+    fun present(uri: URI) {
+        imageSubject.onNext(uri)
     }
 }
 
