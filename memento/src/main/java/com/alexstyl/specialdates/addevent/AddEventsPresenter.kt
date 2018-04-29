@@ -72,7 +72,9 @@ class AddEventsPresenter(private val analytics: Analytics,
                         .subscribe { contact ->
                             if (contact.isPresent) {
                                 view.display(contact.get().imagePath)
+                                view.preventImagePick()
                             } else {
+                                view.allowImagePick()
                                 view.clearAvatar()
                             }
                         }

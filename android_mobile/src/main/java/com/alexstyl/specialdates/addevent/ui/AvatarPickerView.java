@@ -18,6 +18,7 @@ public final class AvatarPickerView extends RelativeLayout implements ImageAware
     private ImageView imageView;
     private ImageView gradientTopView;
     private ImageView gradientBottomView;
+    private View icon;
 
     public AvatarPickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,6 +29,7 @@ public final class AvatarPickerView extends RelativeLayout implements ImageAware
         super.onFinishInflate();
         inflate(getContext(), R.layout.merge_avatar_picker_view, this);
 
+        icon = findViewById(R.id.avatar_picker_icon);
         imageView = Views.findById(this, R.id.avatar_picker_image);
         gradientTopView = Views.findById(this, R.id.avatar_picker_gradient__top);
         gradientBottomView = Views.findById(this, R.id.avatar_picker_gradient__bottom);
@@ -83,5 +85,15 @@ public final class AvatarPickerView extends RelativeLayout implements ImageAware
 
     public boolean isDisplayingAvatar() {
         return imageView.getDrawable() != null;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled) {
+            icon.setVisibility(VISIBLE);
+        } else {
+            icon.setVisibility(GONE);
+        }
+        super.setEnabled(enabled);
     }
 }

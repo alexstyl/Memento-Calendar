@@ -16,6 +16,14 @@ class AndroidAddEventView(private val avatarView: AvatarPickerView,
                           private val toolbarAnimator: ToolbarBackgroundAnimator,
                           private val saveButton: View) : AddEventView {
 
+    override fun allowImagePick() {
+        avatarView.isEnabled = true
+    }
+
+    override fun preventImagePick() {
+        avatarView.isEnabled = false
+    }
+
     override fun allowSave() {
         saveButton.isEnabled = true
     }
