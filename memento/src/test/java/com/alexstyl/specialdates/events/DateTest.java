@@ -30,7 +30,7 @@ public class DateTest {
     }
 
     @Test
-    public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOftheNextYearIsReturned() {
+    public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOfTheNextYearIsReturned() {
         Date lastDayOfYear = Date.Companion.on(31, DECEMBER, 1990);
         Date firstDayOfNextYear = lastDayOfYear.addDay(1);
 
@@ -38,6 +38,41 @@ public class DateTest {
         assertThat(firstDayOfNextYear.getDayOfMonth()).isEqualTo(1);
         int nextYear = lastDayOfYear.getYear() + 1;
         assertThat(firstDayOfNextYear.getYear()).isEqualTo(nextYear);
+    }
+
+    @Test
+    public void testMaxJanuaryDate() {
+        Date date = Date.Companion.on(1, JANUARY);
+
+        assertThat(date.maxDaysInMonth()).isEqualTo(31);
+    }
+
+    @Test
+    public void testMaxFebruaryDateNoYear() {
+        Date date = Date.Companion.on(1, FEBRUARY);
+
+        assertThat(date.maxDaysInMonth()).isEqualTo(28);
+    }
+
+    @Test
+    public void testMaxFebruaryDateCommonYear() {
+        Date date = Date.Companion.on(1, FEBRUARY, 2018);
+
+        assertThat(date.maxDaysInMonth()).isEqualTo(28);
+    }
+
+    @Test
+    public void testMaxFebruaryDateInLeapYear() {
+        Date date = Date.Companion.on(1, FEBRUARY, 2020);
+
+        assertThat(date.maxDaysInMonth()).isEqualTo(29);
+    }
+
+    @Test
+    public void testMaxAprilDate() {
+        Date date = Date.Companion.on(1, APRIL);
+
+        assertThat(date.maxDaysInMonth()).isEqualTo(30);
     }
 
     @Test

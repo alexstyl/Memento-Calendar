@@ -42,6 +42,16 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
 
     fun hasNoYear(): Boolean = !yearOptional.isPresent
 
+    fun maxDaysInMonth(): Int {
+        if (month == Months.FEBRUARY && hasNoYear()) {
+            // Yoda time returns max 29 for February when no year provided,
+            // it is more common to have 28 days in date picker
+            return 28
+        }
+
+        return localDate.dayOfMonth().maximumValue
+    }
+
     override fun compareTo(other: Date): Int {
         if (this.hasYear() && other.hasYear()) {
             val yearOne = this.year
@@ -75,7 +85,7 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
 
         fun on(dayOfMonth: Int, @MonthInt month: Int): Date {
             val localDate = LocalDate(Months.NO_YEAR, month, dayOfMonth)
-            return Date(localDate, Optional.absent<Int>())
+            return Date(localDate, Optional.absent())
         }
 
         fun on(dayOfMonth: Int, @MonthInt month: Int, year: Int): Date {
