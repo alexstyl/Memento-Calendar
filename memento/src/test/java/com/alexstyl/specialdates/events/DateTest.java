@@ -41,38 +41,24 @@ public class DateTest {
     }
 
     @Test
-    public void testMaxJanuaryDate() {
-        Date date = Date.Companion.on(1, JANUARY);
-
-        assertThat(date.maxDaysInMonth()).isEqualTo(31);
-    }
-
-    @Test
-    public void testMaxFebruaryDateNoYear() {
+    public void givenDateWithShortMonth_thenReturn29Days() {
         Date date = Date.Companion.on(1, FEBRUARY);
 
-        assertThat(date.maxDaysInMonth()).isEqualTo(28);
+        assertThat(date.daysInCurrentMonth()).isEqualTo(29);
     }
 
     @Test
-    public void testMaxFebruaryDateCommonYear() {
+    public void givenDateWithShortMonthAndCommonYear_thenReturn28Days() {
         Date date = Date.Companion.on(1, FEBRUARY, 2018);
 
-        assertThat(date.maxDaysInMonth()).isEqualTo(28);
+        assertThat(date.daysInCurrentMonth()).isEqualTo(28);
     }
 
     @Test
-    public void testMaxFebruaryDateInLeapYear() {
+    public void givenDateWithShortMonthAndLeapYear_thenReturn29Days() {
         Date date = Date.Companion.on(1, FEBRUARY, 2020);
 
-        assertThat(date.maxDaysInMonth()).isEqualTo(29);
-    }
-
-    @Test
-    public void testMaxAprilDate() {
-        Date date = Date.Companion.on(1, APRIL);
-
-        assertThat(date.maxDaysInMonth()).isEqualTo(30);
+        assertThat(date.daysInCurrentMonth()).isEqualTo(29);
     }
 
     @Test
