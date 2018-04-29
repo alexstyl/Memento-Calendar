@@ -15,10 +15,10 @@ open class PeopleEventsUpdater(private val peopleEventsStaticEventsRefresher: Pe
         peopleEventsStaticEventsRefresher.rebuildEvents()
         namedayDatabaseRefresher.refreshNamedaysIfEnabled()
         peopleSettings.markEventsAsInitialised()
+    }.map {
+        viewRefresher.refreshViews()
     }
             .subscribeOn(workScheduler)
-            .observeOn(resultScheduler)
-            .map {
-                viewRefresher.refreshViews()
-            }!!
+            .observeOn(resultScheduler)!!
+
 }

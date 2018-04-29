@@ -3,28 +3,44 @@ package com.alexstyl.specialdates.addevent
 import android.content.ContentProviderOperation
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds
-import android.provider.ContactsContract.CommonDataKinds.Photo
 import android.provider.ContactsContract.CommonDataKinds.StructuredName
 import android.provider.ContactsContract.Data
+import com.alexstyl.specialdates.addevent.operations.ContactOperation
+import com.alexstyl.specialdates.addevent.operations.InsertContact
+import com.alexstyl.specialdates.addevent.operations.InsertEvent
+import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.events.Event
+import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.database.EventTypeId
 import com.alexstyl.specialdates.events.peopleevents.EventType
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
-import com.alexstyl.specialdates.images.DecodedImage
+import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 
-class OperationsFactory(private val rawContactID: Int, private val displayStringCreator: ShortDateLabelCreator) {
+class OperationsFactory(private val rawContactID: Int,
+                        private val displayStringCreator: ShortDateLabelCreator,
+                        private val peopleEventsProvider: PeopleEventsProvider,
+                        private val accountsProvider: WriteableAccountsProvider) {
 
-    fun newInsertFor(eventType: EventType, date: Date): ContentProviderOperation {
+    fun createOperationsFor(contactOperation: ContactOperation): List<ContentProviderOperation> {
+        when (contactOperation) {
+            is InsertContact -> return createContactIn(accountToStoreContact, contactOperation.contactName)
+            is UpdateContact -> return updateExistingContact(contactOperation.contact)
+            is InsertEvent -> return newInsertFor(contactOperation.eventType, contactOperation.date)
+        }
+        throw IllegalArgumentException("Unable to create operation for $contactOperation")
+    }
+
+    private fun newInsertFor(eventType: EventType, date: Date): List<ContentProviderOperation> {
         val builder = ContentProviderOperation
                 .newInsert(Data.CONTENT_URI)
                 .withValue(Data.MIMETYPE, CommonDataKinds.Event.CONTENT_ITEM_TYPE)
                 .withValue(CommonDataKinds.Event.TYPE, androidIdOf(eventType))
                 .withValue(CommonDataKinds.Event.START_DATE, displayStringCreator.createLabelWithYearPreferredFor(date))
         addRawContactID(builder)
-        return builder.build()
+        return listOf(builder.build())
     }
 
     private fun androidIdOf(eventType: EventType): Int = when (eventType.id) {
@@ -46,7 +62,7 @@ class OperationsFactory(private val rawContactID: Int, private val displayString
         }
     }
 
-    fun deleteEvents(contactEvents: List<ContactEvent>): ArrayList<ContentProviderOperation> {
+    private fun deleteEvents(contactEvents: List<ContactEvent>): ArrayList<ContentProviderOperation> {
         val ops = ArrayList<ContentProviderOperation>()
         for (contactEvent in contactEvents) {
             val eventId = contactEvent.deviceEventId.get()
@@ -59,7 +75,7 @@ class OperationsFactory(private val rawContactID: Int, private val displayString
         return ops
     }
 
-    fun createContactIn(account: AccountData, contactName: String): ArrayList<ContentProviderOperation> {
+    private fun createContactIn(account: AccountData, contactName: String): ArrayList<ContentProviderOperation> {
         val ops = ArrayList<ContentProviderOperation>(2)
         ops.add(
                 ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
@@ -76,51 +92,42 @@ class OperationsFactory(private val rawContactID: Int, private val displayString
         return ops
     }
 
-    fun insertEvents(events: Collection<Event>): List<ContentProviderOperation> {
-        val operations = ArrayList<ContentProviderOperation>(events.size)
-        for (entry in events) {
-            val eventType = entry.eventType
-            val date = entry.date
-            val operation = newInsertFor(eventType, date)
-            operations.add(operation)
+
+    private val accountToStoreContact: AccountData
+        get() {
+            val availableAccounts = accountsProvider.availableAccounts
+            return if (availableAccounts.size == 0) {
+                AccountData.NO_ACCOUNT
+            } else {
+                availableAccounts[0]
+            }
         }
-        return operations
+
+    private fun updateExistingContact(contact: Contact): List<ContentProviderOperation> {
+        val contactEvents = getAllDeviceEventsFor(contact)
+        return deleteEvents(contactEvents)
     }
 
-    fun insertImageToContact(image: DecodedImage): ContentProviderOperation {
-        val builder = ContentProviderOperation.newInsert(Data.CONTENT_URI)
-                .withValue(Data.MIMETYPE, Photo.CONTENT_ITEM_TYPE)
-                .withValue(Photo.PHOTO, image.bytes)
-        addRawContactID(builder)
-        return builder.build()
-    }
-
-    fun updateImageContact(decodedImage: DecodedImage): ContentProviderOperation {
-        return ContentProviderOperation
-                .newUpdate(ContactsContract.Data.CONTENT_URI)
-                .withSelection(
-                        Data.RAW_CONTACT_ID + "= ?" + " AND " + ContactsContract.Data.MIMETYPE + "=?",
-                        arrayOf(rawContactID.toString(), CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
-                )
-                .withValue(CommonDataKinds.Photo.PHOTO, decodedImage.bytes)
-                .build()
-    }
-
-    fun deleteImageFor(contact: Contact): ContentProviderOperation {
-        return ContentProviderOperation.newDelete(Data.CONTENT_URI)
-                .withValueBackReference(Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(Data.MIMETYPE, Photo.CONTENT_ITEM_TYPE)
-                .withSelection(Photo.CONTACT_ID + "=?", arrayOf(contact.contactID.toString()))
-                .build()
+    private fun getAllDeviceEventsFor(contact: Contact): List<ContactEvent> {
+        val contactEvents = ArrayList<ContactEvent>()
+        val contactEventsOnDate = peopleEventsProvider.fetchEventsBetween(TimePeriod.aYearFromNow())
+        for (contactEvent in contactEventsOnDate) {
+            val (contactID) = contactEvent.contact
+            if (contactID == contact.contactID && contactEvent.type !== StandardEventType.NAMEDAY) {
+                contactEvents.add(contactEvent)
+            }
+        }
+        return contactEvents
     }
 
     companion object {
 
-        private val NO_RAW_CONTACT_ID = 0
+        private const val NO_RAW_CONTACT_ID = 0
 
-        fun forNewContact(displayStringCreator: ShortDateLabelCreator): OperationsFactory {
-            return OperationsFactory(NO_RAW_CONTACT_ID, displayStringCreator)
+        fun forNewContact(displayStringCreator: ShortDateLabelCreator,
+                          peopleEventsProvider: PeopleEventsProvider,
+                          accountsProvider: WriteableAccountsProvider): OperationsFactory {
+            return OperationsFactory(NO_RAW_CONTACT_ID, displayStringCreator, peopleEventsProvider, accountsProvider)
         }
     }
-
 }
