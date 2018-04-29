@@ -9,6 +9,7 @@ import com.alexstyl.specialdates.events.Event
 import com.alexstyl.specialdates.events.peopleevents.CustomEventType
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -24,7 +25,7 @@ class AddEventsPresenter(private val analytics: Analytics,
                          private val strings: Strings,
                          private val peopleEventsProvider: PeopleEventsProvider,
                          private val factory: AddEventViewModelFactory,
-
+                         private val updater: PeopleEventsUpdater,
                          private val workScheduler: Scheduler,
                          private val resultScheduler: Scheduler) {
 
@@ -212,14 +213,21 @@ class AddEventsPresenter(private val analytics: Analytics,
                                 .withEvents(eventViewModels.toEvent())
                                 .build()
                         operationsExecutor.execute(operations)
-                    }.map {
-                        if (it) {
-                            analytics.trackContactUpdated()
-                            strings.contactUpdated()
-                        } else {
-                            strings.contactUpdateFailed()
+                    }.doOnNext { result ->
+                        if (result) {
+                            updater.updateEvents()
+                                    .subscribeOn(workScheduler)
+                                    .subscribe()
                         }
                     }
+                            .map {
+                                if (it) {
+                                    analytics.trackContactUpdated()
+                                    strings.contactUpdated()
+                                } else {
+                                    strings.contactUpdateFailed()
+                                }
+                            }
                             .subscribeOn(workScheduler)
                             .observeOn(resultScheduler)
                             .subscribe {
@@ -236,6 +244,12 @@ class AddEventsPresenter(private val analytics: Analytics,
                                         .withEvents(eventViewModels.toEvent())
                                         .build()
                         )
+                    }.doOnNext { result ->
+                        if (result) {
+                            updater.updateEvents()
+                                    .subscribeOn(workScheduler)
+                                    .subscribe()
+                        }
                     }.map {
                         if (it) {
                             analytics.trackContactCreated()
@@ -244,7 +258,8 @@ class AddEventsPresenter(private val analytics: Analytics,
                             strings.contactAddedFailed()
                         }
                     }
-                            .observeOn(workScheduler)
+                            .subscribeOn(workScheduler)
+                            .observeOn(resultScheduler)
                             .subscribe {
                                 messageDisplayer.showMessage(it)
                             }

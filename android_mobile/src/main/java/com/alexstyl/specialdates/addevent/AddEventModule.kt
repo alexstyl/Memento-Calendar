@@ -7,6 +7,8 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.images.ImageDecoder
 import dagger.Module
 import dagger.Provides
@@ -20,9 +22,10 @@ class AddEventModule {
     fun presenter(analytics: Analytics,
                   contactOperations: ContactOperations,
                   messageDisplayer: MessageDisplayer,
-                  operationsExecutorAndroid: AndroidContactOperationsExecutor,
+                  operationsExecutorAndroid: ContactOperationsExecutor,
                   strings: Strings,
                   peopleEventsProvider: PeopleEventsProvider,
+                  peopleUpdater: PeopleEventsUpdater,
                   factory: AddEventViewModelFactory) = AddEventsPresenter(
             analytics,
             contactOperations,
@@ -31,6 +34,7 @@ class AddEventModule {
             strings,
             peopleEventsProvider,
             factory,
+            peopleUpdater,
             Schedulers.io(),
             AndroidSchedulers.mainThread()
     )
@@ -51,7 +55,12 @@ class AddEventModule {
     fun operations() = ContactOperations()
 
     @Provides
-    fun operationsExectutor(contentResolver: ContentResolver, tracker: CrashAndErrorTracker) = AndroidContactOperationsExecutor(contentResolver, tracker)
+    fun operationsExectutor(contentResolver: ContentResolver,
+                            tracker: CrashAndErrorTracker,
+                            peopleEventsProvider: PeopleEventsProvider,
+                            accountsProvider: WriteableAccountsProvider): ContactOperationsExecutor {
+        return AndroidContactOperationsExecutor(contentResolver, tracker, ShortDateLabelCreator(), peopleEventsProvider, accountsProvider)
+    }
 
 
     @Provides
