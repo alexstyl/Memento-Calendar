@@ -77,7 +77,7 @@ public class EventDatePicker extends LinearLayout {
 
     private void setupDayPicker() {
         dayPicker.setMinValue(FIRST_DAY_OF_MONTH);
-        dayPicker.setMaxValue(today.maxDaysInMonth());
+        dayPicker.setMaxValue(today.daysInCurrentMonth());
 
         dayPicker.setValue(today.getDayOfMonth());
 
@@ -155,9 +155,9 @@ public class EventDatePicker extends LinearLayout {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             if (isDisplayingYear()){
-                dayPicker.setMaxValue(Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth(), getYear()).maxDaysInMonth());
+                dayPicker.setMaxValue(Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth(), getYear()).daysInCurrentMonth());
             } else {
-                dayPicker.setMaxValue(Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth()).maxDaysInMonth());
+                dayPicker.setMaxValue(Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth()).daysInCurrentMonth());
             }
         }
 
