@@ -61,6 +61,7 @@ public class EventDatePicker extends LinearLayout {
                 } else {
                     hideYearPicker();
                 }
+                updateMaximumDaysInCurrentMonth();
             }
 
             private void hideYearPicker() {
@@ -77,7 +78,7 @@ public class EventDatePicker extends LinearLayout {
 
     private void setupDayPicker() {
         dayPicker.setMinValue(FIRST_DAY_OF_MONTH);
-        dayPicker.setMaxValue(today.daysInCurrentMonth());
+        dayPicker.setMaxValue(today.getDaysInCurrentMonth());
 
         dayPicker.setValue(today.getDayOfMonth());
 
@@ -95,13 +96,13 @@ public class EventDatePicker extends LinearLayout {
 
     private void setupYearPicker() {
         yearPicker.setMinValue(FIRST_YEAR);
-        yearPicker.setMaxValue(todaysYear());
+        yearPicker.setMaxValue(currentYear());
 
-        yearPicker.setValue(todaysYear());
+        yearPicker.setValue(currentYear());
         yearPicker.setOnValueChangedListener(dateValidator);
     }
 
-    private Integer todaysYear() {
+    private Integer currentYear() {
         return today.getYear();
     }
 
@@ -115,7 +116,7 @@ public class EventDatePicker extends LinearLayout {
         } else {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
-            yearPicker.setValue(todaysYear());
+            yearPicker.setValue(currentYear());
             yearPicker.setVisibility(GONE);
             includesYearCheckbox.setChecked(false);
         }
@@ -154,13 +155,20 @@ public class EventDatePicker extends LinearLayout {
 
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            if (isDisplayingYear()){
-                dayPicker.setMaxValue(Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth(), getYear()).daysInCurrentMonth());
-            } else {
-                dayPicker.setMaxValue(Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth()).daysInCurrentMonth());
-            }
+            updateMaximumDaysInCurrentMonth();
         }
 
     };
+
+    private void updateMaximumDaysInCurrentMonth() {
+        int maxDays;
+        if (isDisplayingYear()){
+            maxDays = Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth(), getYear()).getDaysInCurrentMonth();
+        } else {
+            maxDays = Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth()).getDaysInCurrentMonth();
+        }
+
+        dayPicker.setMaxValue(maxDays);
+    }
 
 }
