@@ -41,24 +41,24 @@ public class DateTest {
     }
 
     @Test
-    public void givenDateWithShortMonth_thenReturn29Days() {
+    public void givenDateWithShortMonthAndNoYearSpecified_thenReturn29Days() {
         Date date = Date.Companion.on(1, FEBRUARY);
 
-        assertThat(date.daysInCurrentMonth()).isEqualTo(29);
+        assertThat(date.getDaysInCurrentMonth()).isEqualTo(29);
     }
 
     @Test
     public void givenDateWithShortMonthAndCommonYear_thenReturn28Days() {
         Date date = Date.Companion.on(1, FEBRUARY, 2018);
 
-        assertThat(date.daysInCurrentMonth()).isEqualTo(28);
+        assertThat(date.getDaysInCurrentMonth()).isEqualTo(28);
     }
 
     @Test
     public void givenDateWithShortMonthAndLeapYear_thenReturn29Days() {
         Date date = Date.Companion.on(1, FEBRUARY, 2020);
 
-        assertThat(date.daysInCurrentMonth()).isEqualTo(29);
+        assertThat(date.getDaysInCurrentMonth()).isEqualTo(29);
     }
 
     @Test
