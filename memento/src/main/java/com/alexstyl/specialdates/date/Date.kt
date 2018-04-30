@@ -44,6 +44,9 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
 
     fun hasNoYear(): Boolean = !yearOptional.isPresent
 
+    val daysInCurrentMonth: Int
+            get() = localDate.dayOfMonth().maximumValue
+
     override fun compareTo(other: Date): Int {
         if (this.hasYear() && other.hasYear()) {
             val yearOne = this.year
@@ -77,7 +80,7 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
 
         fun on(dayOfMonth: Int, @MonthInt month: Int): Date {
             val localDate = LocalDate(Months.NO_YEAR, month, dayOfMonth)
-            return Date(localDate, Optional.absent<Int>())
+            return Date(localDate, Optional.absent())
         }
 
         fun on(dayOfMonth: Int, @MonthInt month: Int, year: Int): Date {
