@@ -30,7 +30,7 @@ public class DateTest {
     }
 
     @Test
-    public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOftheNextYearIsReturned() {
+    public void givenAEndOfTheYearDate_whenAddingOneDay_thenTheFirstDayOfTheNextYearIsReturned() {
         Date lastDayOfYear = Date.Companion.on(31, DECEMBER, 1990);
         Date firstDayOfNextYear = lastDayOfYear.addDay(1);
 
@@ -38,6 +38,27 @@ public class DateTest {
         assertThat(firstDayOfNextYear.getDayOfMonth()).isEqualTo(1);
         int nextYear = lastDayOfYear.getYear() + 1;
         assertThat(firstDayOfNextYear.getYear()).isEqualTo(nextYear);
+    }
+
+    @Test
+    public void givenDateWithShortMonthAndNoYearSpecified_thenReturn29Days() {
+        Date date = Date.Companion.on(1, FEBRUARY);
+
+        assertThat(date.getDaysInCurrentMonth()).isEqualTo(29);
+    }
+
+    @Test
+    public void givenDateWithShortMonthAndCommonYear_thenReturn28Days() {
+        Date date = Date.Companion.on(1, FEBRUARY, 2018);
+
+        assertThat(date.getDaysInCurrentMonth()).isEqualTo(28);
+    }
+
+    @Test
+    public void givenDateWithShortMonthAndLeapYear_thenReturn29Days() {
+        Date date = Date.Companion.on(1, FEBRUARY, 2020);
+
+        assertThat(date.getDaysInCurrentMonth()).isEqualTo(29);
     }
 
     @Test
