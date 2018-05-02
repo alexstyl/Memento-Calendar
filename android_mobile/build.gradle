@@ -28,7 +28,7 @@ project.afterEvaluate {
 }
 
 android {
-    
+
     compileSdkVersion androidCompileSdkVersion
     buildToolsVersion androidBuildToolsVersion
 
@@ -47,8 +47,12 @@ android {
         targetSdkVersion 27
         versionCode androidVersionCode
         versionName androidVersionName
-        manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey]
         resValue "string", "admob_unit_id", "\"$adMobUnitId\""
+
+
+        buildConfigField "String", "FILE_PROVIDER", "\"com.alexstyl.specialdates.fileprovider\""
+        manifestPlaceholders = [crashlyticsApiKey: crashlyticsKey,
+                                fileProvider     : "com.alexstyl.specialdates.fileprovider"]
 
         multiDexEnabled true
     }

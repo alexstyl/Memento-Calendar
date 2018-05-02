@@ -71,7 +71,7 @@ class AddEventModule {
 
 
     @Provides
-    fun filePathProvider(context: Context) = FilePathProvider(context)
+    fun filePathProvider(context: Context) = UriFilePathProvider(context)
 
     @Provides
     fun imageDecoder(imageLoader: ImageLoader): ImageDecoder {

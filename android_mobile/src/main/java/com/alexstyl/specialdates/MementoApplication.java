@@ -116,6 +116,7 @@ public class MementoApplication extends MultiDexApplication {
                 .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))
                 .imageDownloader(new AndroidContactsImageDownloader(context));
         L.writeLogs(BuildConfig.DEBUG);
+
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
     }
 

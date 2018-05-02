@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.addevent
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.search.NameMatcher
-import java.util.ArrayList
 
 class ContactsSearch(private val contactsProvider: ContactsProvider, private val nameMatcher: NameMatcher) {
 
