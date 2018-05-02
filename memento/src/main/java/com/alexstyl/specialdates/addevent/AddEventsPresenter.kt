@@ -41,9 +41,14 @@ class AddEventsPresenter(private val analytics: Analytics,
 
     val isHoldingModifiedData: Boolean
         get() =
-            (!contactSubject.hasContact() && contactNameSubject.value.isNotEmpty())
-                    || contactSubject.hasContact() && (eventsUISubject.value != startingEvents)
-                    || imageSubject.hasValue()
+            (startedWritingAName())
+                    || hasChangedEvents()
+                    || hasChangedContactImage()
+
+
+    private fun startedWritingAName() = !contactSubject.hasContact() && contactNameSubject.value.isNotEmpty()
+    private fun hasChangedEvents() = contactSubject.hasContact() && (eventsUISubject.value != startingEvents)
+    private fun hasChangedContactImage() = !contactSubject.hasContact() && imageSubject.value.toString().isNotEmpty()
 
     private val eventViewModels: List<AddEventContactEventViewModel>
         get() = eventsUISubject.value.toList()
