@@ -16,15 +16,15 @@ public final class IntentResolver {
         this.packageManager = packageManager;
     }
 
-    public List<IntentOptionViewModel> createViewModelsFor(Intent intent) {
+    List<ImagePickerOptionViewModel> createViewModelsFor(Intent intent, String absolutePath) {
         List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(intent, 0);
-        List<IntentOptionViewModel> viewModels = new ArrayList<>(resolveInfos.size());
+        List<ImagePickerOptionViewModel> viewModels = new ArrayList<>(resolveInfos.size());
         for (ResolveInfo resolveInfo : resolveInfos) {
             Drawable icon = resolveInfo.loadIcon(packageManager);
             String label = String.valueOf(resolveInfo.loadLabel(packageManager));
             Intent launchingIntent = new Intent(intent.getAction());
             launchingIntent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
-            viewModels.add(new IntentOptionViewModel(icon, label, launchingIntent));
+            viewModels.add(new ImagePickerOptionViewModel(icon, label, launchingIntent, absolutePath));
         }
         return viewModels;
     }

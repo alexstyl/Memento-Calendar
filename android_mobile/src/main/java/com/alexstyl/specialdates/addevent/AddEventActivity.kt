@@ -22,6 +22,7 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener
+import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickerOptionViewModel
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
@@ -35,6 +36,7 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.net.URI
 import javax.inject.Inject
 
 class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
@@ -43,7 +45,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         @Inject set
     lateinit var permissionChecker: MementoPermissions
         @Inject set
-    lateinit var filePathProvider: FilePathProvider
+    lateinit var uriFilePathProvider: UriFilePathProvider
         @Inject set
     lateinit var analytics: Analytics
         @Inject set
@@ -107,7 +109,12 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun requestExternalStoragePermission() {
-        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), CODE_PERMISSION_EXTERNAL_STORAGE)
+        requestPermissions(
+                arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE, // read any images from disk to use as avatar
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE // save to disk any picture taken by camera
+                ),
+                CODE_PERMISSION_EXTERNAL_STORAGE)
     }
 
     private fun createToolbarAnimator(toolbar: MementoToolbar): ToolbarBackgroundAnimator {
@@ -165,15 +172,38 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         }
     }
 
+
+    var viewModel: ImagePickerOptionViewModel? = null
+
+    override fun onImagePickerOptionSelected(viewModel: ImagePickerOptionViewModel) {
+        this.viewModel = viewModel
+//        grantUriPermission(viewModel.intent.component.packageName,
+//                viewModel.absolutePath,
+//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+//        )
+        startActivityForResult(viewModel.intent, getRequestCodeFor(viewModel.intent))
+    }
+
+
+    private fun getRequestCodeFor(intent: Intent): Int {
+        val action = intent.action
+        return when (action) {
+            ImageIntentFactory.ACTION_IMAGE_CAPTURE -> CODE_TAKE_PICTURE
+            ImageIntentFactory.ACTION_IMAGE_PICK -> CODE_PICK_A_FILE
+            else -> throw IllegalArgumentException("Don't know how to handle $action")
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
             analytics.trackImageCaptured()
-            val imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(filePathProvider)
-            startCropIntent(imageUri)
+//            val imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(uriFilePathProvider)
+//            startCropIntent(parse)
+            presenter.present(URI.create(viewModel!!.absolutePath))
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == Activity.RESULT_OK) {
             analytics.trackExistingImagePicked()
-            val imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data)
+            val imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data!!)
             startCropIntent(imageUri)
         } else if (requestCode == CODE_CROP_IMAGE) {
             val result = CropImage.getActivityResult(data)
@@ -185,7 +215,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             }
         }
     }
-
 
     private fun startCropIntent(imageToCrop: Uri) {
         val size = queryCropSize(contentResolver)
@@ -200,14 +229,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         presenter.onEventDatePicked(eventType, date)
     }
 
-    override fun onActivitySelected(intent: Intent) {
-        grantUriPermission(intent.component.packageName,
-                filePathProvider.createTemporaryCacheFile(),
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
-        startActivityForResult(intent, getRequestCodeFor(intent))
-    }
-
     private fun queryCropSize(resolver: ContentResolver): Int {
         resolver.query(
                 ContactsContract.DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
@@ -218,15 +239,6 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             }
         }
         return MAX_RESOLUTION
-    }
-
-    private fun getRequestCodeFor(intent: Intent): Int {
-        val action = intent.action
-        return when (action) {
-            ImageIntentFactory.ACTION_IMAGE_CAPTURE -> CODE_TAKE_PICTURE
-            ImageIntentFactory.ACTION_IMAGE_PICK -> CODE_PICK_A_FILE
-            else -> throw IllegalArgumentException("Don't know how to handle $action")
-        }
     }
 
     override fun onClearAvatarSelected() {
