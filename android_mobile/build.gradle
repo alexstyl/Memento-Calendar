@@ -120,4 +120,7 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
 }
 
+
+apply from: "$rootDir/google_services.gradle"
+
 apply plugin: 'com.google.gms.google-services'

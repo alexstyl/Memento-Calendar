@@ -1,0 +1,24 @@
+task copyGoogleServicesData() {
+
+    doLast {
+
+        if (!file("$rootDir/android_mobile/google-services.json").exists()) {
+            copy {
+                from "$rootDir/.circleci/ci-scripts/mock-google-services.json"
+                into "$rootDir/android_mobile"
+
+                rename { String fileName ->
+                    fileName.replace("mock-google-services.json", "google-services.json")
+                }
+            }
+        }
+    }
+}
+
+
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'processDebugGoogleServices') {
+        task.dependsOn copyGoogleServicesData
+    }
+}
