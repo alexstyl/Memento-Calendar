@@ -18,7 +18,7 @@ task copyGoogleServicesData() {
 
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'processDebugGoogleServices') {
+    if (task.name == 'processDebugGoogleServices' || task.name == 'processReleaseGoogleServices') {
         task.dependsOn copyGoogleServicesData
     }
 }
