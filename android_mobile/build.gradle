@@ -99,7 +99,7 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.novoda:simple-chrome-custom-tabs:0.1.4'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
-        transitive = true;
+        transitive = true
     }
     compile "com.google.android.gms:play-services-wearable:$play_services_version"
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
@@ -119,5 +119,8 @@ dependencies {
     testCompile 'org.json:json:20140107'
     androidTestCompile 'junit:junit:4.12'
 }
+
+
+apply from: "$rootDir/android_mobile/google_services.gradle"
 
 apply plugin: 'com.google.gms.google-services'
