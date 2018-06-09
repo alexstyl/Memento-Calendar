@@ -12,7 +12,9 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
@@ -35,6 +37,10 @@ class AddEventsPresenterTest {
 
     @Before
     fun setUp() {
+        val mockPeopleEventsUpdater = mock(PeopleEventsUpdater::class.java)
+        // don't mind for updates
+        given(mockPeopleEventsUpdater.updateEvents()).willReturn(Observable.empty())
+
         presenter = AddEventsPresenter(
                 mock(Analytics::class.java),
                 ContactOperations(),
@@ -43,6 +49,7 @@ class AddEventsPresenterTest {
                 strings,
                 mockPeopleEventsProvider,
                 viewModelFactory,
+                mockPeopleEventsUpdater,
                 Schedulers.trampoline(),
                 Schedulers.trampoline()
         )
@@ -200,8 +207,10 @@ class AddEventsPresenterTest {
     @Test
     fun givenANameABirthday_thenAContactIsCreatedMessageIsShown() {
         given(mockExecutor.execute(
-                listOf(InsertContact("Alex"), InsertEvent(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))))
-        ).willReturn(true)
+                listOf(
+                        InsertContact("Alex"), InsertEvent(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+                )
+        )).willReturn(true)
 
         presenter.startPresentingInto(mockView)
         presenter.presentName("Alex")
@@ -244,14 +253,4 @@ class AddEventsPresenterTest {
                         InsertEvent(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
                 ))
     }
-
-//    @Test
-//    fun givenAView_whenNoUpdatesArePassed_thenNothingHappens() {
-//        presenter.startPresentingInto(mockView)
-//
-//        presenter.saveChanges()
-//
-//        verifyNoMoreInteractions(mockExecutor)
-//    }
-
 }
