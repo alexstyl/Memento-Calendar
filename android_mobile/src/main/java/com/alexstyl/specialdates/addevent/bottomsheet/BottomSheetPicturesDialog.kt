@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.addevent.bottomsheet
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.GridLayoutManager
@@ -20,20 +19,21 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.net.URI
 
 class BottomSheetPicturesDialog : MementoDialog() {
 
     private var parentListener: Listener? = null
 
     private lateinit var adapter: ImagePickerOptionsAdapter
-    private lateinit var imagePickViewModelFactory: ImagePickViewModelFactory
+    private lateinit var photoPickerViewModelFactory: PhotoPickerViewModelFactory
     private var disposable: Disposable? = null
 
     private val includeClear: Boolean
         get() = arguments != null && arguments!!.getBoolean(KEY_INCLUDE_CLEAR, false)
 
     private val internalListener = object : Listener {
-        override fun onImagePickerOptionSelected(viewModel: ImagePickerOptionViewModel) {
+        override fun onImagePickerOptionSelected(viewModel: PhotoPickerViewModel) {
             dismiss()
             parentListener?.onImagePickerOptionSelected(viewModel)
         }
@@ -51,10 +51,11 @@ class BottomSheetPicturesDialog : MementoDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        imagePickViewModelFactory = ImagePickViewModelFactory(
+        photoPickerViewModelFactory = PhotoPickerViewModelFactory(
                 UriFilePathProvider(activity!!),
                 IntentResolver(activity!!.packageManager),
-                ImageIntentFactory()
+                ImageIntentFactory(),
+                activity!!.packageManager
         )
     }
 
@@ -85,7 +86,7 @@ class BottomSheetPicturesDialog : MementoDialog() {
 
 
         disposable = Observable.fromCallable {
-            imagePickViewModelFactory.createViewModels()
+            photoPickerViewModelFactory.createViewModels()
         }.doOnError {
             it.printStackTrace()
         }
@@ -104,7 +105,7 @@ class BottomSheetPicturesDialog : MementoDialog() {
          * Called when the user selects the option to select an picture as an avatar, via the [BottomSheetPicturesDialog]
          *
          */
-        fun onImagePickerOptionSelected(viewModel: ImagePickerOptionViewModel)
+        fun onImagePickerOptionSelected(viewModel: PhotoPickerViewModel)
 
         /**
          * Called when the user selects the option to clear the existing avatar, via the [BottomSheetPicturesDialog]
@@ -128,8 +129,8 @@ class BottomSheetPicturesDialog : MementoDialog() {
             return fragment
         }
 
-        fun getImagePickResultUri(data: Intent): Uri {
-            return data.data
+        fun getImagePickResultUri(data: Intent): URI {
+            return URI.create(data.data.toString())
         }
     }
 }

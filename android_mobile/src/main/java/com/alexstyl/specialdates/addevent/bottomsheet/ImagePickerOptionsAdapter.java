@@ -18,7 +18,7 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int TYPE_CLEAR = 0;
     private static final int TYPE_OPTION = 1;
 
-    private final List<ImagePickerOptionViewModel> viewModels;
+    private final List<PhotoPickerViewModel> viewModels;
     private final Listener listener;
     private boolean includeClear;
     private final int includeClearCount;
@@ -66,7 +66,7 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
         if (itemViewType == TYPE_CLEAR) {
             ((ClearImageViewHolder) holder).bind(listener);
         } else if (itemViewType == TYPE_OPTION) {
-            ImagePickerOptionViewModel viewModel = viewModels.get(position - includeClearCount);
+            PhotoPickerViewModel viewModel = viewModels.get(position - includeClearCount);
             ((ImagePickerOptionViewHolder) holder).bind(viewModel, listener);
         } else {
             throw new IllegalStateException("Illegal view type " + itemViewType);
@@ -78,7 +78,7 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
         return viewModels.size() + includeClearCount;
     }
 
-    void updateWith(List<ImagePickerOptionViewModel> viewModels) {
+    void updateWith(List<PhotoPickerViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();
