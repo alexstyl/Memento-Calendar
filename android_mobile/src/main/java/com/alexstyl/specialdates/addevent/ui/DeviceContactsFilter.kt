@@ -29,14 +29,13 @@ internal abstract class DeviceContactsFilter(private val contactsSearch: Contact
         return filterResults
     }
 
-    override fun publishResults(constraint: CharSequence, results: Filter.FilterResults) {
+    override fun publishResults(constraint: CharSequence?, results: Filter.FilterResults) {
         onContactsFiltered(results.values as List<Contact>)
     }
 
     abstract fun onContactsFiltered(contacts: List<Contact>)
 
     companion object {
-
-        private val LOAD_A_SINGLE_CONTACT = 1
+        private const val LOAD_A_SINGLE_CONTACT = 1
     }
 }
