@@ -211,8 +211,15 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     }
 
     private fun startCropIntent(imageToCrop: URI) {
+
+        val prefix = if (imageToCrop.scheme == null) {
+            "file://"
+        } else {
+            ""
+        }
+
         val size = queryCropSize(contentResolver)
-        CropImage.activity(Uri.parse("file://" + imageToCrop.toString()))
+        CropImage.activity(Uri.parse(prefix + imageToCrop.toString()))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
                 .setRequestedSize(size, size)
