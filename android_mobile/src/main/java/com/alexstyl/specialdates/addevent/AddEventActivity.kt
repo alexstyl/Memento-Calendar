@@ -194,7 +194,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
             analytics.trackImageCaptured()
-            startCropIntent((URI.create(viewModel!!.absolutePath))) // TODO get rid of file
+            startCropIntent(viewModel!!.absolutePath)
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == Activity.RESULT_OK) {
             analytics.trackExistingImagePicked()
             val imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data!!)
