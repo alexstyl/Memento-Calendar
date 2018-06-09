@@ -50,6 +50,8 @@ class AddEventsPresenter(private val analytics: Analytics,
     private fun hasChangedEvents() = contactSubject.hasContact() && (eventsUISubject.value != startingEvents)
     private fun hasChangedContactImage() = !contactSubject.hasContact() && imageSubject.value.toString().isNotEmpty()
 
+    private fun ReplaySubject<Optional<Contact>>.hasContact(): Boolean = hasValue() && value.isPresent
+
     private val eventViewModels: List<AddEventContactEventViewModel>
         get() = eventsUISubject.value.toList()
 
@@ -113,7 +115,7 @@ class AddEventsPresenter(private val analytics: Analytics,
     }
 
     fun isDisplayingAvatar(): Boolean {
-        return imageSubject.hasValue()
+        return imageSubject.hasValue() && imageSubject.value.toString().isNotEmpty()
     }
 
 
@@ -275,7 +277,6 @@ class AddEventsPresenter(private val analytics: Analytics,
         }
     }
 
-    private fun ReplaySubject<Optional<Contact>>.hasContact(): Boolean = hasValue() && value.isPresent
 
     fun stopPresenting() {
         disposable.dispose()
