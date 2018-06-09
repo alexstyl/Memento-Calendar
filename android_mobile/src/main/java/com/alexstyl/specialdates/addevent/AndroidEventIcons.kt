@@ -4,7 +4,7 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.events.database.EventTypeId
 import com.alexstyl.specialdates.events.peopleevents.EventType
 
-object AndroidEventIcons : EventIcons {
+class AndroidEventIcons : EventIcons {
     override fun iconOf(eventType: EventType): Int = when (eventType.id) {
         EventTypeId.TYPE_BIRTHDAY -> R.drawable.ic_cake
         EventTypeId.TYPE_NAMEDAY -> R.drawable.ic_face
