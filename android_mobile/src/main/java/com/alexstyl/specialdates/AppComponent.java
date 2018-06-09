@@ -2,6 +2,7 @@ package com.alexstyl.specialdates;
 
 import com.alexstyl.resources.ResourcesModule;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
+import com.alexstyl.specialdates.addevent.AddEventModule;
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment;
 import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
@@ -74,6 +75,7 @@ import dagger.Component;
         SearchModule.class,
         PeopleEventsModule.class,
         BankHolidaysModule.class,
+        AddEventModule.class,
         FacebookModule.class,
         PeopleModule.class,
         BankHolidaysModule.class,

@@ -33,4 +33,8 @@ interface Strings {
     fun call(): String
     fun sendWishes(): String
     fun dontForgetToSendWishes(): String
+    fun contactUpdateFailed(): String
+    fun contactUpdated(): String
+    fun contactAdded():String
+    fun contactAddedFailed(): String
 }

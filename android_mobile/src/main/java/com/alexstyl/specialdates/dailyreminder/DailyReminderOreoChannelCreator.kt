@@ -6,12 +6,11 @@ import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.graphics.Color
 import android.media.AudioAttributes
-import android.net.Uri
 import android.os.Build
 import com.alexstyl.Logger
 import com.alexstyl.android.Version
+import com.alexstyl.android.toUri
 import com.alexstyl.specialdates.Strings
-import java.net.URI
 
 @TargetApi(Build.VERSION_CODES.O)
 class DailyReminderOreoChannelCreator(private val notificationManager: NotificationManager,
@@ -84,7 +83,5 @@ class DailyReminderOreoChannelCreator(private val notificationManager: Notificat
         notificationManager.createNotificationChannel(bankHolidaysChannel)
 
     }
-
-    private fun URI.toUri(): Uri = Uri.parse(this.toString())
 }
 

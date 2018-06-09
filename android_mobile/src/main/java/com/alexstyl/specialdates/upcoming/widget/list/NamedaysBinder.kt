@@ -11,7 +11,9 @@ internal class NamedaysBinder(private val views: RemoteViews, private val contex
     override fun bind(viewModelUpcoming: UpcomingNamedaysViewModel) {
         views.setTextViewText(R.id.row_upcoming_namedays, viewModelUpcoming.namesLabel)
 
-        views.setOnClickFillInIntent(R.id.widget_row_upcoming_nameday_background, WidgetRouterActivity.buildNamedayIntent(viewModelUpcoming.date, context))
+        views.setOnClickFillInIntent(R.id.widget_row_upcoming_nameday_background,
+                WidgetRouterActivity.buildNamedayIntent(viewModelUpcoming.date, context)
+        )
     }
 
     override fun getViews(): RemoteViews = views

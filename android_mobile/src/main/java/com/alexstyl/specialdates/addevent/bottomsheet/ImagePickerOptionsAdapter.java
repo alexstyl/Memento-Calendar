@@ -18,7 +18,7 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int TYPE_CLEAR = 0;
     private static final int TYPE_OPTION = 1;
 
-    private final List<IntentOptionViewModel> viewModels;
+    private final List<ImagePickerOptionViewModel> viewModels;
     private final Listener listener;
     private boolean includeClear;
     private final int includeClearCount;
@@ -49,8 +49,8 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_image_option, parent, false);
-        ImageView iconView = (ImageView) view.findViewById(R.id.pick_image_activity_icon);
-        TextView labelView = (TextView) view.findViewById(R.id.pick_image_activity_label);
+        ImageView iconView = view.findViewById(R.id.pick_image_activity_icon);
+        TextView labelView = view.findViewById(R.id.pick_image_activity_label);
         if (viewType == TYPE_CLEAR) {
             return new ClearImageViewHolder(view, iconView, labelView);
         } else if (viewType == TYPE_OPTION) {
@@ -66,7 +66,7 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
         if (itemViewType == TYPE_CLEAR) {
             ((ClearImageViewHolder) holder).bind(listener);
         } else if (itemViewType == TYPE_OPTION) {
-            IntentOptionViewModel viewModel = viewModels.get(position - includeClearCount);
+            ImagePickerOptionViewModel viewModel = viewModels.get(position - includeClearCount);
             ((ImagePickerOptionViewHolder) holder).bind(viewModel, listener);
         } else {
             throw new IllegalStateException("Illegal view type " + itemViewType);
@@ -78,7 +78,7 @@ final class ImagePickerOptionsAdapter extends RecyclerView.Adapter<RecyclerView.
         return viewModels.size() + includeClearCount;
     }
 
-    void updateWith(List<IntentOptionViewModel> viewModels) {
+    void updateWith(List<ImagePickerOptionViewModel> viewModels) {
         this.viewModels.clear();
         this.viewModels.addAll(viewModels);
         notifyDataSetChanged();

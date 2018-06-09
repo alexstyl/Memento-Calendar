@@ -7,6 +7,13 @@ import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class JavaStrings : Strings {
+    override fun contactUpdated(): String = "contactUpdated"
+
+    override fun contactAdded(): String = "contactAdded"
+
+    override fun contactAddedFailed(): String = "contactAddedFailed"
+
+    override fun contactUpdateFailed(): String = "contactUpdateFailed"
     override fun dontForgetToSendWishes(): String = "Don't forget to send your wishes!"
 
     override fun call(): String = "Call"

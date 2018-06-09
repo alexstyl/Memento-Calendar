@@ -18,7 +18,6 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.images.ImageLoadedConsumer
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.theming.Themer
-import com.alexstyl.specialdates.ui.HideStatusBarListener
 import com.nostra13.universalimageloader.core.assist.LoadedFrom
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware
@@ -32,7 +31,7 @@ class AndroidPersonView(private val personNameView: TextView,
                         private val appBarLayout: AppBarLayout,
                         private val toolbarGradient: ImageView,
                         private val resources: Resources,
-                        private val listener: HideStatusBarListener,
+                        private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener,
                         private val themer: Themer) : PersonView {
 
     override fun displayPersonInfo(viewModel: PersonInfoViewModel) {
@@ -46,7 +45,7 @@ class AndroidPersonView(private val personNameView: TextView,
 
                     override fun onImageLoaded(loadedImage: Bitmap) {
                         if (Version.hasLollipop()) {
-                            appBarLayout.addOnOffsetChangedListener(listener)
+                            appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
                         }
                         FadeInBitmapDisplayer(ANIMATION_DURATION).display(loadedImage, ImageViewAware(avatarView), LoadedFrom.DISC_CACHE)
                         val layers = arrayOfNulls<Drawable>(2)
