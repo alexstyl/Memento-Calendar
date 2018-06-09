@@ -20,6 +20,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.net.URI
 
 class BottomSheetPicturesDialog : MementoDialog() {
 
@@ -128,8 +129,8 @@ class BottomSheetPicturesDialog : MementoDialog() {
             return fragment
         }
 
-        fun getImagePickResultUri(data: Intent): Uri {
-            return data.data
+        fun getImagePickResultUri(data: Intent): URI {
+            return URI.create(data.data.toString())
         }
     }
 }

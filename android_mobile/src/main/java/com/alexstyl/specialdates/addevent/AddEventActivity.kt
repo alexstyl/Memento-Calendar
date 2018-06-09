@@ -198,9 +198,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
             analytics.trackImageCaptured()
-//            val imageUri = BottomSheetPicturesDialog.getImageCaptureResultUri(uriFilePathProvider)
-//            startCropIntent(parse)
-            presenter.present(URI.create(viewModel!!.absolutePath))
+            startCropIntent((URI.create("file://" + viewModel!!.absolutePath))) // TODO get rid of file
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == Activity.RESULT_OK) {
             analytics.trackExistingImagePicked()
             val imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data!!)
@@ -216,9 +214,9 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         }
     }
 
-    private fun startCropIntent(imageToCrop: Uri) {
+    private fun startCropIntent(imageToCrop: URI) {
         val size = queryCropSize(contentResolver)
-        CropImage.activity(imageToCrop)
+        CropImage.activity(Uri.parse(imageToCrop.toString()))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
                 .setRequestedSize(size, size)
