@@ -27,9 +27,9 @@ class UriFilePathProvider(private val context: Context) {
         val imageFileName = "JPEG_" + timeStamp + "_"
         val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(
-                imageFileName, /* prefix */
-                ".jpg", /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         )
         return image
     }
