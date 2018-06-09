@@ -14,7 +14,11 @@ public class ContactEventsMarshaller {
     private static final int DEFAULT_VALUES_SIZE = 5;
     private static final int IS_VISIBILE = 1;
 
-    private final ShortDateLabelCreator DATE_LABEL_CREATOR = ShortDateLabelCreator.INSTANCE;
+    private final ShortDateLabelCreator dateLabelCreator;
+
+    public ContactEventsMarshaller(ShortDateLabelCreator dateLabelCreator) {
+        this.dateLabelCreator = dateLabelCreator;
+    }
 
     public ContentValues[] marshall(List<ContactEvent> item) {
         ContentValues[] returningValues = new ContentValues[item.size()];
@@ -32,7 +36,7 @@ public class ContactEventsMarshaller {
 
         values.put(AnnualEventsContract.CONTACT_ID, contact.getContactID());
         values.put(AnnualEventsContract.DISPLAY_NAME, contact.getDisplayName().toString());
-        values.put(AnnualEventsContract.DATE, DATE_LABEL_CREATOR.createLabelWithYearPreferredFor(event.getDate()));
+        values.put(AnnualEventsContract.DATE, dateLabelCreator.createLabelWithYearPreferredFor(event.getDate()));
         values.put(AnnualEventsContract.EVENT_TYPE, event.getType().getId());
         values.put(AnnualEventsContract.SOURCE, contact.getSource());
         values.put(AnnualEventsContract.VISIBLE, IS_VISIBILE);

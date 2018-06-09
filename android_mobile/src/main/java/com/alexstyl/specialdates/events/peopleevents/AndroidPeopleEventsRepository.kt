@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParseException
-import com.alexstyl.specialdates.events.peopleevents.StandardEventType.*
 import com.alexstyl.specialdates.date.DateParser
 import com.novoda.notils.logger.simple.Log
 
@@ -65,10 +64,10 @@ class AndroidPeopleEventsRepository(private val contentResolver: ContentResolver
         val eventTypeIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Event.TYPE)
         val eventTypeRaw = cursor.getInt(eventTypeIndex)
         return when (eventTypeRaw) {
-            ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY -> BIRTHDAY
-            ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY -> ANNIVERSARY
-            ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM -> CUSTOM
-            else -> OTHER
+            ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY -> StandardEventType.BIRTHDAY
+            ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY -> StandardEventType.ANNIVERSARY
+            ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM -> StandardEventType.CUSTOM
+            else -> StandardEventType.OTHER
         }
     }
 

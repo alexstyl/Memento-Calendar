@@ -22,6 +22,11 @@ final class ContactSuggestionViewHolder extends RecyclerView.ViewHolder {
             public void onContactSelected(Contact contact) {
                 listener.onContactSelected(contact);
             }
+
+            @Override
+            public void onContactCleared() {
+                listener.onContactCleared();
+            }
         });
         contactSuggestionView.addTextChangedListener(new SimpleTextWatcher() {
             @Override

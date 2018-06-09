@@ -17,12 +17,30 @@
       android:background="@color/nameday_blue"
       android:elevation="@dimen/toolbar_elevation" />
 
+
     <com.alexstyl.specialdates.ui.widget.MementoToolbar
       android:id="@+id/memento_toolbar"
       style="@style/Widget.Memento.Toolbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:elevation="@dimen/toolbar_elevation" />
+      android:elevation="@dimen/toolbar_elevation">
+
+      <Button
+        android:id="@+id/add_event_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:background="?selectableItemBackground"
+        android:drawableLeft="@drawable/ic_check_white"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_check_white"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:text="@string/save"
+        android:textColor="#fff" />
+    </com.alexstyl.specialdates.ui.widget.MementoToolbar>
 
   </FrameLayout>
 

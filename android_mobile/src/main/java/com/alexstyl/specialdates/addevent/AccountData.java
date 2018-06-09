@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.addevent;
 
 import android.graphics.drawable.Drawable;
 
-class AccountData {
+public class AccountData {
 
     static final AccountData NO_ACCOUNT = new AccountData(null, null, null);
 
