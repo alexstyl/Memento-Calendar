@@ -12,7 +12,7 @@ class ImagePickerOptionViewHolder(view: View,
                                   private val labelView: TextView
 ) : RecyclerView.ViewHolder(view) {
 
-    fun bind(viewModel: ImagePickerOptionViewModel, listener: Listener) {
+    fun bind(viewModel: PhotoPickerViewModel, listener: Listener) {
         iconView.setImageDrawable(viewModel.activityIcon)
         labelView.text = viewModel.label
         itemView.setOnClickListener { listener.onImagePickerOptionSelected(viewModel) }

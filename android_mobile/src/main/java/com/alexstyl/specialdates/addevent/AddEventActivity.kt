@@ -22,7 +22,7 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.addevent.EventDatePickerDialogFragment.OnEventDatePickedListener
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog
 import com.alexstyl.specialdates.addevent.bottomsheet.BottomSheetPicturesDialog.Listener
-import com.alexstyl.specialdates.addevent.bottomsheet.ImagePickerOptionViewModel
+import com.alexstyl.specialdates.addevent.bottomsheet.PhotoPickerViewModel
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
@@ -173,14 +173,10 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
     }
 
 
-    var viewModel: ImagePickerOptionViewModel? = null
+    var viewModel: PhotoPickerViewModel? = null
 
-    override fun onImagePickerOptionSelected(viewModel: ImagePickerOptionViewModel) {
+    override fun onImagePickerOptionSelected(viewModel: PhotoPickerViewModel) {
         this.viewModel = viewModel
-//        grantUriPermission(viewModel.intent.component.packageName,
-//                viewModel.absolutePath,
-//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
-//        )
         startActivityForResult(viewModel.intent, getRequestCodeFor(viewModel.intent))
     }
 
@@ -198,7 +194,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
             analytics.trackImageCaptured()
-            startCropIntent((URI.create("file://" + viewModel!!.absolutePath))) // TODO get rid of file
+            startCropIntent((URI.create(viewModel!!.absolutePath))) // TODO get rid of file
         } else if (requestCode == CODE_PICK_A_FILE && resultCode == Activity.RESULT_OK) {
             analytics.trackExistingImagePicked()
             val imageUri = BottomSheetPicturesDialog.getImagePickResultUri(data!!)
@@ -216,7 +212,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
 
     private fun startCropIntent(imageToCrop: URI) {
         val size = queryCropSize(contentResolver)
-        CropImage.activity(Uri.parse(imageToCrop.toString()))
+        CropImage.activity(Uri.parse("file://" + imageToCrop.toString()))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
                 .setRequestedSize(size, size)
