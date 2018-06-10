@@ -3,8 +3,7 @@ package com.alexstyl.specialdates.events.peopleevents
 import com.alexstyl.specialdates.TestContactEventsBuilder
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.Months.JANUARY
-import com.alexstyl.specialdates.date.Months.MARCH
+import com.alexstyl.specialdates.date.Months.*
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -102,7 +101,17 @@ class CompositePeopleEventsProviderTest {
         private val PETER = ContactFixture.aContactCalled("Peter")
     }
 
+    @Test
+    fun findClosestEventDateOnOrAfterReturnsTheClosest() {
+        val date = Date.on(5, JANUARY, 2018)
+
+        given(mockDeviceEvents.findClosestEventDateOnOrAfter(date)).willReturn(Date.on(29, DECEMBER, 2018))
+        given(mockPeopleDynamicNamedaysProvider.findClosestEventDateOnOrAfter(date)).willReturn(Date.on(6, JANUARY,2018))
+
+        assertThat(peopleEventsProvider.findClosestEventDateOnOrAfter(date)).isEqualTo(Date.on(6, JANUARY, 2018))
+    }
 }
+
 
 private fun PeopleEventsProvider.willReturnNoEventsOn(date: Date) {
     given(fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, emptyList()))
