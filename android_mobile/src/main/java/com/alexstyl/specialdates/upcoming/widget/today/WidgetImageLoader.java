@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.images.SimpleImageLoadedConsumer;
 
 import java.util.List;
 
-class WidgetImageLoader {
+public class WidgetImageLoader {
 
     private final AppWidgetManager appWidgetManager;
     private final ImageLoader imageLoader;
@@ -32,6 +32,9 @@ class WidgetImageLoader {
                                     @AppWidgetId final int appWidgetId,
                                     final RemoteViews views,
                                     @Px final int size) {
+        if (contacts.size() == 0) {
+            return; //TODO temp fix. Don't merge this
+        }
         imageLoader
                 .load(contacts.get(contactIndex).getImagePath())
                 .withSize(size, size)
