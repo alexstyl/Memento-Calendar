@@ -106,10 +106,12 @@ class DailyReminderFragment : MementoPreferenceFragment() {
                 preferenceScreen.removePreference(this)
             }
         }
-        setVibrationPreference?.onPreferenceChangeListener =
-                OnPreferenceChangeListener { _: Preference, _: Any ->
-                    true
-                }
+
+        findPreference(getString(R.string.key_daily_reminder_vibrate_enabled))?.apply {
+            if (hasNoVibratorHardware()) {
+                preferenceScreen.removePreference(this)
+            }
+        }
 
         findPreference<Preference>(R.string.key_daily_reminder_advanced_settings)?.setOnPreferenceClickListener { _ ->
             navigator.openAdvancedSettings(activity as Activity)

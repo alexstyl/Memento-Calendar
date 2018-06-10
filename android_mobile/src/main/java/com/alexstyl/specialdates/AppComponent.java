@@ -44,6 +44,7 @@ import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsFragment;
 import com.alexstyl.specialdates.upcoming.UpcomingEventsModule;
+import com.alexstyl.specialdates.upcoming.widget.RecentUpcomingPeopleEventsModule;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsRemoteViewService;
 import com.alexstyl.specialdates.upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.list.WidgetRouterActivity;
@@ -80,6 +81,7 @@ import dagger.Component;
         PeopleModule.class,
         BankHolidaysModule.class,
         ThemingModule.class,
+        RecentUpcomingPeopleEventsModule.class,
         PersonModule.class
 })
 public interface AppComponent {
