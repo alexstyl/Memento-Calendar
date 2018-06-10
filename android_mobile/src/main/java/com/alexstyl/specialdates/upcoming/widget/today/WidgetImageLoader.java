@@ -18,7 +18,7 @@ public class WidgetImageLoader {
     private final AppWidgetManager appWidgetManager;
     private final ImageLoader imageLoader;
 
-    WidgetImageLoader(AppWidgetManager appWidgetManager, ImageLoader imageLoader) {
+    public WidgetImageLoader(AppWidgetManager appWidgetManager, ImageLoader imageLoader) {
         this.appWidgetManager = appWidgetManager;
         this.imageLoader = imageLoader;
     }
