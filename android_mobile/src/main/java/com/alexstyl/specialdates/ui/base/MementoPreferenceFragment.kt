@@ -20,7 +20,7 @@ open class MementoPreferenceFragment : PreferenceFragment() {
         val count = preferenceScreen.preferenceCount
         for (i in 0 until count) {
             val preference = preferenceScreen.getPreference(i)
-            val category = Version.`as`(PreferenceCategory::class.java, preference)
+            val category = preference as? PreferenceCategory
             if (category != null && category.title != null) {
 
                 val title = category.title.toString()
