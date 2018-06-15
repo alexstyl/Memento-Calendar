@@ -18,13 +18,7 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.DisplayName
-import com.alexstyl.specialdates.dailyreminder.ContactEventNotificationViewModel
-import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences
-import com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService
-import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
-import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModel
-import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModelFactory
-import com.alexstyl.specialdates.dailyreminder.NamedaysNotificationViewModel
+import com.alexstyl.specialdates.dailyreminder.*
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParser
@@ -42,6 +36,7 @@ import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity
 import com.alexstyl.specialdates.support.AskForSupport
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView
+import com.evernote.android.job.JobRequest
 import java.net.URI
 import java.util.Calendar
 import javax.inject.Inject
@@ -112,9 +107,10 @@ class DebugFragment : MementoPreferenceFragment() {
         }
 
         findPreference<Preference>(R.string.key_debug_daily_reminder)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-
-            val service = Intent(context, DailyReminderIntentService::class.java)
-            activity?.startService(service)
+            JobRequest.Builder(DailyReminderJob.TAG)
+                    .startNow()
+                    .build()
+                    .schedule()
 
             showToast("Daily Reminder Triggered")
             true

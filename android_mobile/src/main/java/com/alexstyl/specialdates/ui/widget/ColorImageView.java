@@ -56,7 +56,7 @@ public class ColorImageView extends FrameLayout {
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
 
-        if (Version.hasJellyBean()) {
+        if (Version.INSTANCE.hasJellyBean()) {
             paint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
         }
 

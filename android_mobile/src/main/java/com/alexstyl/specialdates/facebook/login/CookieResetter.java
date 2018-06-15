@@ -39,7 +39,7 @@ class CookieResetter {
     }
 
     private void removeAllCookies() {
-        if (Version.hasLollipop()) {
+        if (Version.INSTANCE.hasLollipop()) {
             cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
                 @Override
                 public void onReceiveValue(Boolean value) {
