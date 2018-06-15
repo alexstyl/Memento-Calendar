@@ -13,9 +13,9 @@ public final class AlarmManagerCompat {
     }
 
     public void setExact(int type, long triggerAtmillis, PendingIntent operation) {
-        if (Version.hasMarshmallow()) {
+        if (Version.INSTANCE.hasMarshmallow()) {
             alarmManager.setAndAllowWhileIdle(type, triggerAtmillis, operation);
-        } else if (Version.hasKitKat()) {
+        } else if (Version.INSTANCE.hasKitKat()) {
             alarmManager.setExact(type, triggerAtmillis, operation);
         } else {
             alarmManager.set(AlarmManager.RTC, triggerAtmillis, operation);
