@@ -21,7 +21,7 @@ public enum Emoticon {
     }
 
     private boolean supportsEmojis() {
-        return Version.hasKitKat();
+        return Version.INSTANCE.hasKitKat();
     }
 
 }

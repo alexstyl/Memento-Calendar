@@ -71,7 +71,7 @@ public class DonateActivity extends MementoActivity {
         final AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
-        if (Version.hasLollipop()) {
+        if (Version.INSTANCE.hasLollipop()) {
             appBarLayout.addOnOffsetChangedListener(new LolipopHideStatusBarListener(getWindow()));
         }
 

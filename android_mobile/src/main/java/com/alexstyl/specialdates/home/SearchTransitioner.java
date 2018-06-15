@@ -91,7 +91,7 @@ final class SearchTransitioner {
     }
 
     private static boolean supportsTransitions() {
-        return Version.hasKitKat();
+        return Version.INSTANCE.hasKitKat();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
