@@ -10,6 +10,7 @@ class DailyReminderJob(private val presenter: DailyReminderPresenter,
     }
 
     override fun onRunDailyJob(params: Params): DailyJobResult {
+
         val view = NotificationDailyReminderView(notifier)
         presenter.startPresentingInto(view)
         presenter.stopPresenting()
