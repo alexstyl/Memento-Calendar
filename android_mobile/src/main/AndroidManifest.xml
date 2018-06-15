@@ -61,10 +61,10 @@
       android:exported="true"
       android:label="@string/daily_reminder"
       android:launchMode="singleInstance"
-      android:parentActivityName=".settings.MainPreferenceActivity">
+      android:parentActivityName=".home.HomeActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".settings.MainPreferenceActivity" />
+        android:value=".home.HomeActivity" />
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
@@ -166,9 +166,6 @@
 
     <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
     <!-- Services -->
-    <service
-      android:name="com.alexstyl.specialdates.dailyreminder.DailyReminderIntentService"
-      android:label="@string/service_dailyreminder" />
 
     <service
       android:name="com.alexstyl.specialdates.wear.WearSyncService"
