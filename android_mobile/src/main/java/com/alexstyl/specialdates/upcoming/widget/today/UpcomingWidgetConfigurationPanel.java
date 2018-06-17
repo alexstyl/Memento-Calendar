@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -20,6 +22,7 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
     private ConfigurationListener listener = ConfigurationListener.NO_OP;
 
     private final CheckBox darkThemeCheckbox;
+    private final Button applyButton;
 
     public UpcomingWidgetConfigurationPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +50,14 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
                 WidgetVariant selectedVariant = (isChecked ? WidgetVariant.DARK : WidgetVariant.LIGHT);
                 setWidgetVariant(selectedVariant);
                 listener.onWidgetVariantSelected(selectedVariant);
+            }
+        });
+
+        applyButton = Views.findById(this, R.id.upcoming_widget_apply);
+        applyButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onApplyButtonPressed();
             }
         });
     }
@@ -97,10 +108,17 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
             public void onWidgetVariantSelected(WidgetVariant variant) {
                 Log.w("onWidgetVariantSelected with no listener set");
             }
+
+            @Override
+            public void onApplyButtonPressed() {
+                Log.w("onApplyButtonPressed with no listener set");
+            }
         };
 
         void onOpacityLevelChanged(float percentage);
 
         void onWidgetVariantSelected(WidgetVariant variant);
+
+        void onApplyButtonPressed();
     }
 }

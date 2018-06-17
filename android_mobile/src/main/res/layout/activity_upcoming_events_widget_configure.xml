@@ -1,43 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-
-
-  <ImageView
-    android:id="@+id/upcoming_widget_wallpaper"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scaleType="centerCrop"
-    tools:background="@android:color/black" />
+    android:layout_height="match_parent">
 
 
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/upcoming_widget_wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E8EAED"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.alexstyl.specialdates.ui.widget.MementoToolbar
-      android:id="@+id/memento_toolbar"
-      style="@style/Widget.Memento.Toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/scrim"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_minHeight"
+        android:src="@drawable/black_to_transparent_gradient_facing_down"
+        android:visibility="gone" />
 
-    <com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetPreviewLayout
-      android:id="@+id/upcoming_widget_preview"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="100" />
 
     <com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel
-      android:id="@+id/upcoming_widget_configure_panel"
-      android:layout_width="match_parent"
-      android:layout_height="240dp"
-      android:layout_gravity="center"
-      android:background="@drawable/card"
-      android:padding="@dimen/upcoming_widget_preview_horizontal_padding" />
+        android:id="@+id/upcoming_widget_configure_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/card"
+        android:paddingBottom="12dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="12dp"
+        app:elevation="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-  </LinearLayout>
+    <com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetPreviewLayout
+        android:id="@+id/upcoming_widget_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/upcoming_widget_configure_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+
+    <ImageButton
+        android:id="@+id/upcoming_widget_close"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/toolbar_minHeight"
+        android:minWidth="48dp"
+        android:src="@drawable/ic_close_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/upcoming_widget_load_wallpaper"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/toolbar_minHeight"
+        android:minWidth="48dp"
+        android:src="@drawable/ic_round_wallpaper_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

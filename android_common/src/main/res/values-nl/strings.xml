@@ -79,7 +79,7 @@ Bert Van Dooren voor de Nederlandse vertaling"</string>
     <!-- The name for contacts with empty Display name-->
     <string name="no_name">(Geen naam)</string>
     <string name="include_year">Jaar toevoegen?</string>
-    <string name="save">Opslaan</string>
+    <string name="Save">Opslaan</string>
     <string name="add">Toevoegen</string>
     <string name="contact_no_birthday">Geen verjaardag gezet</string>
     <string name="contact_no_nameday">Geen naamdag voor de naam %s</string>

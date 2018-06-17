@@ -80,7 +80,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <!-- The name for contacts with empty Display name-->
   <string name="no_name">(No name)</string>
   <string name="include_year">Include year?</string>
-  <string name="save">Save</string>
+  <string name="Save">Save</string>
   <string name="add">Add</string>
   <string name="contact_no_birthday">No birthday set</string>
   <string name="contact_no_nameday">No nameday for the name %s</string>
@@ -236,4 +236,6 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Send_wishes">Send wishes</string>
   <string name="Dont_forget_to_send_your_wishes">"Don't forget to send your wishes."</string>
   <string name="dailyreminder_title_bankholiday">"Today's bank holiday"</string>
+    <string name="Load_my_wallpaper">Load my wallpaper</string>
+    <string name="Close">Close</string>
 </resources>
