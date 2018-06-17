@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming.widget.today;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
@@ -18,13 +19,13 @@ public class UpcomingWidgetPreviewLayout extends FrameLayout {
     private static final TransparencyColorCalculator COLOR_CALCULATOR = new TransparencyColorCalculator();
 
     private final View background;
-    private final ImageView avatar;
     private final TextView header;
     private final TextView contactNames;
 
     private WidgetVariant selectedVariant = WidgetVariant.LIGHT;
     private float opacityLevel = 1.0f;
 
+    @SuppressLint("SetTextI18n")
     public UpcomingWidgetPreviewLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -32,9 +33,9 @@ public class UpcomingWidgetPreviewLayout extends FrameLayout {
 
         this.header = Views.findById(this, R.id.upcoming_widget_header);
         this.contactNames = Views.findById(this, R.id.upcoming_widget_events_text);
-        this.avatar = Views.findById(this, R.id.widget_avatar);
+        ImageView avatar = Views.findById(this, R.id.widget_avatar);
+        avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_contact_picture));
         this.background = Views.findById(this, R.id.upcoming_widget_background_image);
-        this.avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_contact_picture));
 
         if (isInEditMode()) {
             header.setText("This is a Header");

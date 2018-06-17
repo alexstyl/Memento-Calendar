@@ -1,36 +1,31 @@
 package com.alexstyl.specialdates.upcoming.widget.today;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import com.alexstyl.specialdates.R;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.logger.simple.Log;
 
-public class UpcomingWidgetConfigurationPanel extends LinearLayout {
+public class UpcomingWidgetConfigurationPanel extends ConstraintLayout {
 
     private final SeekBar seekbar;
     private final PercentToValueConverter valueConverter = new PercentToValueConverter();
     private ConfigurationListener listener = ConfigurationListener.NO_OP;
 
-    private final CheckBox darkThemeCheckbox;
-    private final Button applyButton;
+    private final SwitchCompat darkThemeSwitch;
 
     public UpcomingWidgetConfigurationPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         LayoutInflater.from(context).inflate(R.layout.merge_upcoming_widget_configure_panel, this, true);
-
-        super.setOrientation(VERTICAL);
-        super.setGravity(Gravity.CENTER_HORIZONTAL);
 
         seekbar = Views.findById(this, R.id.upcoming_widget_opacity);
         seekbar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
@@ -43,8 +38,8 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
             }
         });
 
-        darkThemeCheckbox = Views.findById(this, R.id.upcoming_widget_dark_theme);
-        darkThemeCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        darkThemeSwitch = Views.findById(this, R.id.upcoming_widget_dark_theme);
+        darkThemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 WidgetVariant selectedVariant = (isChecked ? WidgetVariant.DARK : WidgetVariant.LIGHT);
@@ -53,18 +48,13 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
             }
         });
 
-        applyButton = Views.findById(this, R.id.upcoming_widget_apply);
+        Button applyButton = Views.findById(this, R.id.upcoming_widget_apply);
         applyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onApplyButtonPressed();
             }
         });
-    }
-
-    @Override
-    public void setOrientation(int orientation) {
-        Log.w("Cannot change the orientation of [%s]", UpcomingWidgetConfigurationPanel.class.getSimpleName());
     }
 
     public void setOpacityLevel(float percentage) {
@@ -78,11 +68,11 @@ public class UpcomingWidgetConfigurationPanel extends LinearLayout {
     }
 
     public WidgetVariant getWidgetVariant() {
-        return darkThemeCheckbox.isChecked() ? WidgetVariant.DARK : WidgetVariant.LIGHT;
+        return darkThemeSwitch.isChecked() ? WidgetVariant.DARK : WidgetVariant.LIGHT;
     }
 
     public void setWidgetVariant(WidgetVariant variant) {
-        darkThemeCheckbox.setChecked(variant == WidgetVariant.DARK);
+        darkThemeSwitch.setChecked(variant == WidgetVariant.DARK);
     }
 
     public UserOptions getUserOptions() {
