@@ -77,7 +77,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <!-- The name for contacts with empty Display name-->
     <string name="no_name">(Nav vārda)</string>
     <string name="include_year">Iekļaut gadskaitli?</string>
-    <string name="save">Saglabāt</string>
+    <string name="Save">Saglabāt</string>
     <string name="add">Pievienot</string>
     <string name="contact_no_birthday">Dzimšanas diena nav norādīta</string>
     <string name="contact_no_nameday">%s vārda diena nav zināma</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="upcoming_widget_preview_vertical_margin">80dp</dimen>
-  <dimen name="upcoming_widget_preview_horizontal_padding">24dp</dimen>
 
   <string name="upcoming_widget_configure_save">@string/Done</string>
   <string name="upcoming_widget_preview_transparecy_label">@string/Transparency</string>

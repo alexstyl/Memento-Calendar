@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
 
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/upcoming_widget_preview_transparecy_label" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upcoming_widget_preview_transparecy_label" />
 
-    <SeekBar
-      android:id="@+id/upcoming_widget_opacity"
-      style="@style/UpcomingWidget.Seekbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="18dp" />
-  </LinearLayout>
+        <SeekBar
+            android:id="@+id/upcoming_widget_opacity"
+            style="@style/UpcomingWidget.Seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp" />
+    </LinearLayout>
 
-  <CheckBox
-    android:id="@+id/upcoming_widget_dark_theme"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="18dp"
-    android:text="@string/upcoming_widget_dark_theme_label" />
+    <CheckBox
+        android:id="@+id/upcoming_widget_dark_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:text="@string/upcoming_widget_dark_theme_label" />
+
+    <Button
+        android:id="@+id/upcoming_widget_apply"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/Save" />
 
 
 </merge>

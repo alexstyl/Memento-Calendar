@@ -75,7 +75,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <!-- The name for contacts with empty Display name-->
   <string name="no_name">(Ακατανόμαστος)</string>
   <string name="include_year">με έτος γέννησης;</string>
-  <string name="save">Αποθήκευση</string>
+  <string name="Save">Αποθήκευση</string>
   <string name="add">Προσθήκη</string>
   <string name="contact_no_birthday">Χωρίς γενέθλια</string>
   <string name="contact_no_nameday">Δεν υπάρχει ονομαστική εορτή για το όνομα %s</string>
