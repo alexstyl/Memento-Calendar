@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:id="@+id/upcoming_widget_wallpaper"
         android:layout_width="match_parent"
@@ -24,12 +25,59 @@
         android:src="@drawable/black_to_transparent_gradient_facing_down"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/toolbar_minHeight"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/upcoming_widget_close"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:src="@drawable/ic_close_black"
+            app:layout_constraintTop_toTopOf="@+id/status_bar_guideline" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/toolbar_minHeight"
+            android:text="@string/Configure_widget"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_close"
+            app:layout_constraintStart_toEndOf="@+id/upcoming_widget_close"
+            app:layout_constraintTop_toTopOf="@+id/upcoming_widget_close" />
+
+        <ImageButton
+            android:id="@+id/upcoming_widget_load_wallpaper"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:src="@drawable/ic_round_wallpaper_24px"
+            app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/upcoming_widget_close" />
+    </LinearLayout>
+
     <com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel
         android:id="@+id/upcoming_widget_configure_panel"
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:background="@drawable/card"
-        app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_wallpaper"
+        android:clipToPadding="false"
+        app:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -47,27 +95,7 @@
         app:layout_constraintBottom_toTopOf="@+id/upcoming_widget_configure_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/upcoming_widget_wallpaper" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <ImageButton
-        android:id="@+id/upcoming_widget_close"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/toolbar_minHeight"
-        android:minWidth="48dp"
-        android:src="@drawable/ic_close_black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/upcoming_widget_load_wallpaper"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/toolbar_minHeight"
-        android:minWidth="48dp"
-        android:src="@drawable/ic_round_wallpaper_24px"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
