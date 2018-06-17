@@ -3,8 +3,7 @@
   <dimen name="upcoming_widget_preview_vertical_margin">80dp</dimen>
 
   <string name="upcoming_widget_configure_save">@string/Done</string>
-  <string name="upcoming_widget_preview_transparecy_label">@string/Transparency</string>
-  <string name="upcoming_widget_dark_theme_label">@string/Dark_themeQ</string>
+  <string name="upcoming_widget_dark_theme_label">@string/Use_dark_theme</string>
   <string name="upcoming_widget_configure_subtitle">@string/Contact_names</string>
 
 

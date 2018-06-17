@@ -7,15 +7,21 @@ import android.app.WallpaperManager
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.Guideline
 import android.support.v7.widget.TooltipCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.widget.ImageButton
 import android.widget.ImageView
+import com.alexstyl.android.Version
 
 import com.alexstyl.specialdates.AppComponent
 import com.alexstyl.specialdates.MementoApplication
@@ -67,6 +73,11 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (supportsTransparentStatusbar()) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.statusBarColor = Color.TRANSPARENT
+        }
+
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
 
@@ -104,6 +115,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
                     REQUEST_CODE_PERMISSION_WALLPAPER)
         }
     }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -159,7 +171,13 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         scrimView.animate().alpha(1f).setDuration(250).start()
         scrimView.visibility = View.VISIBLE
+
+        if (supportsTransparentStatusbar()) {
+            window.statusBarColor = Color.TRANSPARENT
+        }
     }
+
+    private fun supportsTransparentStatusbar() = Version.hasLollipop()
 
     private fun saveConfigurations() {
         val userOptions = configurationPanel.userOptions

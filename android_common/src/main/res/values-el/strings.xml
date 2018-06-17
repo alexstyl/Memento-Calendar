@@ -141,7 +141,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
   <string name="Configure_widget">Ρύθμιση Γρ. Στοιχείου</string>
   <string name="Done">Αποθήκευση</string>
   <string name="Transparency">Διαφάνεια</string>
-  <string name="Dark_themeQ">Σκοτεινό θέμα;</string>
+  <string name="Use_dark_theme">Σκοτεινό θέμα;</string>
   <string name="Contact_names">Ονόματα επαφών</string>
   <string name="Bank_holiday">Αργία</string>
   <string name="Bank_holidays">Αργίες</string>

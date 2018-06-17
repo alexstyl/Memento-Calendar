@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clipToPadding="false"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
     tools:parentTag="android.support.constraint.ConstraintLayout">
@@ -14,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:gravity="center_vertical"
         android:minHeight="56dp"
-        android:text="Use Dark theme"
+        android:text="@string/Use_dark_theme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:text="@string/upcoming_widget_preview_transparecy_label"
+        android:text="@string/Opacity"
         android:textAppearance="@style/Memento.TextAppearance.ListSeparator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

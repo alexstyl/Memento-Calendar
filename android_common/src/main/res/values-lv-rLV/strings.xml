@@ -143,7 +143,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Configure_widget">Konfigurēt logrīku</string>
     <string name="Done">Darīts</string>
     <string name="Transparency">Caurspīdīgums</string>
-    <string name="Dark_themeQ">Tumšā tēma?</string>
+    <string name="Use_dark_theme">Tumšā tēma?</string>
     <string name="Contact_names">Kontaktpersonu vārdi</string>
     <string name="Bank_holiday">Valsts svētku diena</string>
     <string name="Bank_holidays">Valsts svētku dienas</string>

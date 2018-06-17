@@ -34,7 +34,7 @@ public class UpcomingWidgetPreviewLayout extends FrameLayout {
         this.header = Views.findById(this, R.id.upcoming_widget_header);
         this.contactNames = Views.findById(this, R.id.upcoming_widget_events_text);
         ImageView avatar = Views.findById(this, R.id.widget_avatar);
-        avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_contact_picture));
+        avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_contact_portrait));
         this.background = Views.findById(this, R.id.upcoming_widget_background_image);
 
         if (isInEditMode()) {
