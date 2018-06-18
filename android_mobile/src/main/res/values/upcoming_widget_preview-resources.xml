@@ -4,7 +4,6 @@
 
   <string name="upcoming_widget_configure_save">@string/Done</string>
   <string name="upcoming_widget_dark_theme_label">@string/Use_dark_theme</string>
-  <string name="upcoming_widget_configure_subtitle">@string/Contact_names</string>
 
 
   <color name="upcoming_widget_light_textcolor">@color/card_text</color>
