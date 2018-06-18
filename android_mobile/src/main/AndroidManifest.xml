@@ -98,7 +98,8 @@
         <activity
             android:name=".upcoming.widget.today.UpcomingWidgetConfigureActivity"
             android:label="@string/Configure_widget"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.Memento.Wallpaper">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

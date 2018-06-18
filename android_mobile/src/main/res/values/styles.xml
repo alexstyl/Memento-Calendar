@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
 
     <style name="TextAppearance.BloodCherry.AvatarNumber" parent="@android:style/TextAppearance.Large">
@@ -158,5 +158,9 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-
+    <style name="Theme.Memento.Wallpaper" parent="Theme.Memento.Modern">
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
 </resources>
