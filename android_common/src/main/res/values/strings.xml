@@ -238,4 +238,5 @@
     <string name="Load_my_wallpaper">Load my wallpaper</string>
     <string name="Close">Close</string>
     <string name="Opacity">Opacity</string>
+    <string name="Apply">Apply</string>
 </resources>
