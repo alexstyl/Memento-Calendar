@@ -168,7 +168,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        URI uri = FacebookImagePath.forUid(userCredentials.getUid());
+        URI uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
                 .asCircle()
