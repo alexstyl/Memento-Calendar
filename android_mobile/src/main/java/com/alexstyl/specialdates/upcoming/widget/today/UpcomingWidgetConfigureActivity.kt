@@ -7,38 +7,38 @@ import android.app.WallpaperManager
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.constraint.Guideline
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.TooltipCompat
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.Window
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.alexstyl.android.Version
+import com.alexstyl.android.toBitmap
 
-import com.alexstyl.specialdates.AppComponent
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
-import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel.*
 import com.novoda.notils.caster.Views
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 import javax.inject.Inject
 
 class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
-
+    lateinit var luminanceAnalyzer: LuminanceAnalyzer
+        @Inject set
     lateinit var preferences: UpcomingWidgetPreferences
         @Inject set
     lateinit var labelCreator: DateLabelCreator
@@ -51,6 +51,9 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
     private lateinit var configurationPanel: UpcomingWidgetConfigurationPanel
     private lateinit var loadWallpaperButton: ImageButton
     private lateinit var scrimView: ImageView
+    private lateinit var closeButton: ImageButton
+    private lateinit var titleView: TextView
+
 
     private var mAppWidgetId: Int = 0
 
@@ -74,7 +77,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         super.onCreate(savedInstanceState)
 
         if (supportsTransparentStatusbar()) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             window.statusBarColor = Color.TRANSPARENT
         }
 
@@ -87,10 +90,9 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         previewLayout = Views.findById(this, R.id.upcoming_widget_preview)
         configurationPanel = Views.findById(this, R.id.upcoming_widget_configure_panel)
         configurationPanel.setListener(configurationListener)
-
-        preferences = UpcomingWidgetPreferences(this)
-        initialisePreview(preferences)
-        considerAsNotComplete()
+        titleView = findViewById(R.id.upcoming_widget_title)
+        initialisePreview()
+        setResult(Activity.RESULT_CANCELED)
 
         val intent = intent
         val extras = intent.extras
@@ -101,7 +103,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
             )
         }
 
-        val closeButton = findViewById<View>(R.id.upcoming_widget_close)
+        closeButton = findViewById(R.id.upcoming_widget_close)
         TooltipCompat.setTooltipText(closeButton, getString(R.string.Close))
         closeButton.setOnClickListener {
             finish()
@@ -113,6 +115,14 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
             requestPermissions(
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     REQUEST_CODE_PERMISSION_WALLPAPER)
+        }
+
+
+        if (!supportsTransparentStatusbar()) {
+            val toolbar = findViewById<LinearLayout>(R.id.upcoming_widget_virtual_toolbar)
+            val params = toolbar.layoutParams as ConstraintLayout.LayoutParams
+            params.setMargins(0, 0, 0, 0)
+            toolbar.layoutParams = params
         }
     }
 
@@ -126,11 +136,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         }
     }
 
-    private fun considerAsNotComplete() {
-        setResult(Activity.RESULT_CANCELED)
-    }
-
-    private fun initialisePreview(preferences: UpcomingWidgetPreferences) {
+    private fun initialisePreview() {
         val startingOpacity = preferences.oppacityLevel
         val startingVariant = preferences.selectedVariant
         configurationPanel.opacityLevel = startingOpacity
@@ -164,20 +170,51 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
     private fun displayCurrentWallpaper() {
         val wallpaperManager = WallpaperManager.getInstance(this)
-        val wallpaperDrawable = wallpaperManager.drawable
-        backgroundView.setImageDrawable(wallpaperDrawable)
+        val wallpaper = wallpaperManager.drawable.toBitmap()
+
+        backgroundView.setImageBitmap(wallpaper)
         backgroundView.alpha = 0f
         backgroundView.animate().alpha(1f).setDuration(250).start()
 
-        scrimView.animate().alpha(1f).setDuration(250).start()
-        scrimView.visibility = View.VISIBLE
+        updateUIColorsFor(wallpaper)
+    }
 
+    private fun updateUIColorsFor(wallpaper: Bitmap) {
+
+        luminanceAnalyzer.analyse(wallpaper, { isLight ->
+            if (isLight) {
+                loadDarkUI()
+            } else {
+                loadLightUI()
+            }
+        })
+    }
+
+    private fun loadLightUI() {
+        scrimView.visibility = View.VISIBLE
+        // light icons and text
+        titleView.setTextColor(Color.WHITE)
+        closeButton.setImageResource(R.drawable.ic_close_white)
+        loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_light_24px)
         if (supportsTransparentStatusbar()) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             window.statusBarColor = Color.TRANSPARENT
         }
     }
 
-    private fun supportsTransparentStatusbar() = Version.hasLollipop()
+    private fun loadDarkUI() {
+        scrimView.visibility = View.GONE
+        titleView.setTextColor(ResourcesCompat.getColor(resources, R.color.dark_text, null))
+        closeButton.setImageResource(R.drawable.ic_close_black)
+        loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_dark_24px)
+        if (supportsTransparentStatusbar()) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.statusBarColor = Color.TRANSPARENT
+        }
+    }
+
+
+    private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
 
     private fun saveConfigurations() {
         val userOptions = configurationPanel.userOptions

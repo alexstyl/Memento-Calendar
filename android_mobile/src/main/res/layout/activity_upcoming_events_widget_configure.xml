@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <ImageView
         android:id="@+id/upcoming_widget_wallpaper"
@@ -21,18 +21,19 @@
     <ImageView
         android:id="@+id/scrim"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_minHeight"
+        android:layout_height="90dp"
         android:src="@drawable/black_to_transparent_gradient_facing_down"
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/upcoming_widget_virtual_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:gravity="center_vertical"
         android:minHeight="@dimen/toolbar_minHeight"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_marginTop="0dp">
 
         <ImageButton
             android:id="@+id/upcoming_widget_close"
@@ -44,7 +45,7 @@
             app:layout_constraintTop_toTopOf="@+id/status_bar_guideline" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/upcoming_widget_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -64,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="48dp"
-            android:src="@drawable/ic_round_wallpaper_24px"
+            android:src="@drawable/ic_round_wallpaper_dark_24px"
             app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/upcoming_widget_close" />
@@ -76,7 +77,6 @@
         android:layout_height="220dp"
         android:background="@drawable/card"
         android:clipToPadding="false"
-        app:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -95,7 +95,7 @@
         app:layout_constraintBottom_toTopOf="@+id/upcoming_widget_configure_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/upcoming_widget_virtual_toolbar" />
 
 
 </android.support.constraint.ConstraintLayout>
