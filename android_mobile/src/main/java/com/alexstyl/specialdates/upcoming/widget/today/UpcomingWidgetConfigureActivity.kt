@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.upcoming.widget.today
 
+import android.animation.Animator
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.WallpaperManager
@@ -15,11 +16,13 @@ import android.support.transition.TransitionManager
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.TooltipCompat
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.alexstyl.android.SimpleAnimatorListener
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -47,8 +50,11 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
     private lateinit var scrimView: ImageView
     private lateinit var closeButton: ImageButton
     private lateinit var titleView: TextView
+    private lateinit var constraintLayout: ConstraintLayout
 
     private var mAppWidgetId: Int? = null
+    private val enterConstraintSet = ConstraintSet()
+    private val exitConstraintSet = ConstraintSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +62,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
         setResult(Activity.RESULT_CANCELED)
-        setContentView(R.layout.activity_upcoming_events_widget_configure)
+        setContentView(R.layout.activity_upcoming_events_widget_configure__start)
 
         mAppWidgetId = extractAppWidgetIdFrom(intent)
 
@@ -66,6 +72,10 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         titleView = findViewById(R.id.upcoming_widget_title)
         closeButton = findViewById(R.id.upcoming_widget_close)
         scrimView = findViewById(R.id.scrim)
+        constraintLayout = findViewById(R.id.upcoming_widget_constraint)
+
+        enterConstraintSet.clone(this, R.layout.activity_upcoming_events_widget_configure__first_frame)
+        exitConstraintSet.clone(this, R.layout.activity_upcoming_events_widget_configure__start)
 
         introduceViews()
 
@@ -76,17 +86,14 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
     }
 
     private fun introduceViews() {
-        val constraintLayout = findViewById<ConstraintLayout>(R.id.upcoming_widget_constraint)
         constraintLayout.postDelayed({
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(this, R.layout.activity_upcoming_events_widget_configure_second_frame)
 
             val transition = ChangeBounds()
             transition.interpolator = AnticipateOvershootInterpolator(1.0f)
             transition.duration = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
 
             TransitionManager.beginDelayedTransition(constraintLayout, transition)
-            constraintSet.applyTo(constraintLayout)
+            enterConstraintSet.applyTo(constraintLayout)
         }, 450L)
 
         previewLayout.alpha = 0f
@@ -98,6 +105,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
                 .setDuration(400L)
                 .start()
     }
+
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun initialiseViews() {
@@ -126,8 +134,30 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         initialisePreview()
         TooltipCompat.setTooltipText(closeButton, getString(R.string.Close))
         closeButton.setOnClickListener {
-            finish()
+            playOffViews()
         }
+    }
+
+    override fun onBackPressed() {
+        playOffViews()
+    }
+
+    private fun playOffViews() {
+        val transition = ChangeBounds()
+        transition.interpolator = AccelerateInterpolator(1.0F)
+        transition.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        TransitionManager.beginDelayedTransition(constraintLayout, transition)
+        exitConstraintSet.applyTo(constraintLayout)
+        previewLayout.animate()
+                .alpha(0F)
+                .setStartDelay(400L)
+                .setListener(object : SimpleAnimatorListener() {
+                    override fun onAnimationEnd(animator: Animator?) {
+                        super.onAnimationEnd(animator)
+                        finish()
+                    }
+                })
+                .start()
     }
 
     private fun displayWallpaper() {
