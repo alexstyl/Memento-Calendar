@@ -67,7 +67,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         closeButton = findViewById(R.id.upcoming_widget_close)
         scrimView = findViewById(R.id.scrim)
 
-        animateViews()
+        introduceViews()
 
         initialiseViews()
         if (permission.canReadExternalStorage()) {
@@ -75,7 +75,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         }
     }
 
-    private fun animateViews() {
+    private fun introduceViews() {
         val constraintLayout = findViewById<ConstraintLayout>(R.id.upcoming_widget_constraint)
         constraintLayout.postDelayed({
             val constraintSet = ConstraintSet()
@@ -83,11 +83,20 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
 
             val transition = ChangeBounds()
             transition.interpolator = AnticipateOvershootInterpolator(1.0f)
-            transition.duration = 700
+            transition.duration = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
 
             TransitionManager.beginDelayedTransition(constraintLayout, transition)
             constraintSet.applyTo(constraintLayout)
         }, 450L)
+
+        previewLayout.alpha = 0f
+
+        previewLayout
+                .animate()
+                .setStartDelay(200L)
+                .alpha(1f)
+                .setDuration(400L)
+                .start()
     }
 
     @TargetApi(Build.VERSION_CODES.M)
