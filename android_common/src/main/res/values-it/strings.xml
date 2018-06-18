@@ -78,7 +78,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <!-- The name for contacts with empty Display name-->
     <string name="no_name">(Nessun nome)</string>
     <string name="include_year">Includi l\'anno?</string>
-    <string name="save">Salva</string>
+    <string name="Save">Salva</string>
     <string name="add">Aggiungi</string>
     <string name="contact_no_birthday">Compleanno non impostato</string>
     <string name="contact_no_nameday">Nessun onomastico per il nome %s</string>
@@ -144,7 +144,7 @@ Andrejs Kotovs per la traduzione in Lituano"</string>
     <string name="Configure_widget">Configura il widget</string>
     <string name="Done">Fatto</string>
     <string name="Transparency">Trasparenza</string>
-    <string name="Dark_themeQ">Tema scuro?</string>
+    <string name="Use_dark_theme">Tema scuro?</string>
     <string name="Contact_names">Nomi dei contatti</string>
     <string name="Bank_holiday">Festività</string>
     <string name="Bank_holidays">Festività</string>

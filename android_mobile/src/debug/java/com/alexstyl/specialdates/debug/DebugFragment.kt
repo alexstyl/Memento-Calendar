@@ -35,6 +35,7 @@ import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentServ
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity
 import com.alexstyl.specialdates.support.AskForSupport
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
+import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity
 import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView
 import com.evernote.android.job.JobRequest
 import java.net.URI
@@ -202,6 +203,13 @@ class DebugFragment : MementoPreferenceFragment() {
                             bankholidayNotification()
                     )
             )
+            true
+        }
+
+        findPreference<Preference>(R.string.key_debug_configure_widgets)!!
+                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            val intent = Intent(activity, UpcomingWidgetConfigureActivity::class.java)
+            activity!!.startActivity(intent)
             true
         }
     }

@@ -159,19 +159,18 @@ class AndroidDailyReminderNotifier(private val context: Context,
     private fun NotificationCompat.Builder.loadLargeImage(imagePath: URI): NotificationCompat.Builder = apply {
         val width = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
         val height = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
-        imageLoader
-                .load(imagePath)
-                .withSize(width, height)
-                .synchronously()
-                .apply {
-                    if (isPresent) {
-                        if (Version.hasLollipop()) {
-                            setLargeIcon(get().toCircle())
-                        } else {
-                            setLargeIcon(get())
-                        }
-                    }
-                }
+        val bitmap =
+                imageLoader
+                        .load(imagePath)
+                        .withSize(width, height)
+                        .synchronously()
+        if (bitmap.isPresent) {
+            if (Version.hasLollipop()) {
+                setLargeIcon(bitmap.get().toCircle())
+            } else {
+                setLargeIcon(bitmap.get())
+            }
+        }
     }
 
     private fun Bitmap.toCircle(): Bitmap? {
