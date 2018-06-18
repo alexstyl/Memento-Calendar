@@ -55,7 +55,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
     private var mAppWidgetId: Int? = null
 
-    @TargetApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -78,6 +77,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         initialiseViews()
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private fun initialiseViews() {
         configurationPanel.setListener(object : UpcomingWidgetConfigurationPanel.ConfigurationListener {
             override fun onApplyButtonPressed() {
@@ -113,12 +113,32 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
                     REQUEST_CODE_PERMISSION_WALLPAPER)
         }
         if (permissions.canReadExternalStorage()) {
-            loadWallpaper()
+            displayWallpaper()
         }
     }
 
+    private fun displayWallpaper() {
+        val wallpaperManager = WallpaperManager.getInstance(this)
+        val wallpaper = wallpaperManager.drawable.toBitmap()
 
-    private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
+        backgroundView.setImageBitmap(wallpaper)
+        updateUIColorsFor(wallpaper)
+        loadWallpaperButton.visibility = View.GONE
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSION_WALLPAPER && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            val wallpaperManager = WallpaperManager.getInstance(this)
+            val wallpaper = wallpaperManager.drawable.toBitmap()
+
+            revealWallpaper(wallpaper)
+            updateUIColorsFor(wallpaper)
+
+            loadWallpaperButton.visibility = View.GONE
+        }
+    }
 
     private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
         return intent?.extras?.getInt(
@@ -126,6 +146,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
                 AppWidgetManager.INVALID_APPWIDGET_ID
         )
     }
+
 
     private fun decorateStatusBarOrHide() {
         if (supportsTransparentStatusbar()) {
@@ -143,19 +164,9 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         }
     }
 
-
     private fun initialisePreview() {
         configurationPanel.opacityLevel = preferences.oppacityLevel
         configurationPanel.widgetVariant = preferences.selectedVariant
-    }
-
-    private fun loadWallpaper() {
-        val wallpaperManager = WallpaperManager.getInstance(this)
-        val wallpaper = wallpaperManager.drawable.toBitmap()
-
-        backgroundView.setImageBitmap(wallpaper)
-        updateUIColorsFor(wallpaper)
-        loadWallpaperButton.visibility = View.GONE
     }
 
     override fun onStart() {
@@ -170,14 +181,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         val oppacityLevel = preferences.oppacityLevel
         previewLayout.previewBackgroundOpacityLevel(oppacityLevel)
-    }
-
-    private fun displayCurrentWallpaper() {
-        val wallpaperManager = WallpaperManager.getInstance(this)
-        val wallpaper = wallpaperManager.drawable.toBitmap()
-
-        revealWallpaper(wallpaper)
-        updateUIColorsFor(wallpaper)
     }
 
 
@@ -244,16 +247,9 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         }
     }
 
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSION_WALLPAPER && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            displayCurrentWallpaper()
-            loadWallpaperButton.visibility = View.GONE
-        }
-    }
-
     companion object {
         private const val REQUEST_CODE_PERMISSION_WALLPAPER = 9990
+
+        private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
     }
 }
