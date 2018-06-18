@@ -1,238 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  package="com.alexstyl.specialdates"
-  android:installLocation="internalOnly">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.alexstyl.specialdates"
+    android:installLocation="internalOnly">
 
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.READ_CONTACTS" />
-  <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-  <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
-  <uses-permission
-    android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-    android:maxSdkVersion="18" />
-
-
-  <!-- The BLUETOOTH permission is used for mixpanel-->
-  <uses-permission android:name="android.permission.BLUETOOTH" />
-
-  <uses-permission android:name="com.android.vending.BILLING" />
-
-  <uses-feature
-    android:name="android.hardware.camera"
-    android:required="false" />
-
-  <application
-    android:name="com.alexstyl.specialdates.MementoApplication"
-    android:allowBackup="true"
-    android:exported="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/localised_app_name">
-
-    <activity android:name="com.alexstyl.specialdates.home.HomeActivity" />
-
-    <!-- Activity alias used so that we can modify the UpcomingEventsActivity file without worrying about the name -->
-    <activity-alias
-      android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
-      android:targetActivity=".home.HomeActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity-alias>
-
-    <activity
-      android:name="com.alexstyl.specialdates.search.SearchActivity"
-      android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
-      android:windowSoftInputMode="stateVisible|adjustResize">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.home.HomeActivity" />
-    </activity>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
 
-    <activity
-      android:name=".settings.DailyReminderActivity"
-      android:exported="true"
-      android:label="@string/daily_reminder"
-      android:launchMode="singleInstance"
-      android:parentActivityName=".home.HomeActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".home.HomeActivity" />
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
-      </intent-filter>
-    </activity>
+    <!-- The BLUETOOTH permission is used for mixpanel-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
-    <activity
-      android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
-      android:exported="true"
-      android:label="@string/add_event_title"
-      android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
-      android:screenOrientation="portrait"
-      android:windowSoftInputMode="stateHidden">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.home.HomeActivity" />
-    </activity>
+    <uses-permission android:name="com.android.vending.BILLING" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
-    <activity
-      android:name="com.alexstyl.specialdates.support.RateDialog"
-      android:label="@string/support_app"
-      android:noHistory="true"
-      android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
-      android:theme="@style/Theme.Dayslight.DialogNoTitle">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.alexstyl.specialdates.home.HomeActivity" />
-    </activity>
+    <application
+        android:name="com.alexstyl.specialdates.MementoApplication"
+        android:allowBackup="true"
+        android:exported="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/localised_app_name">
 
-    <activity
-      android:name=".upcoming.widget.today.UpcomingWidgetConfigureActivity"
-      android:label="@string/Configure_widget"
-      android:noHistory="true">
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-      </intent-filter>
-    </activity>
+        <activity android:name="com.alexstyl.specialdates.home.HomeActivity" />
 
-    <activity
-      android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-      android:theme="@style/Base.Theme.AppCompat" />
+        <!-- Activity alias used so that we can modify the UpcomingEventsActivity file without worrying about the name -->
+        <activity-alias
+            android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
+            android:targetActivity=".home.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name="com.alexstyl.specialdates.search.SearchActivity"
+            android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alexstyl.specialdates.home.HomeActivity" />
+        </activity>
 
 
-    <activity android:name=".permissions.ContactPermissionActivity" />
+        <activity
+            android:name=".settings.DailyReminderActivity"
+            android:exported="true"
+            android:label="@string/daily_reminder"
+            android:launchMode="singleInstance"
+            android:parentActivityName=".home.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home.HomeActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
+            </intent-filter>
+        </activity>
 
-    <activity
-      android:name=".donate.DonateActivity"
-      android:label="@string/donate_welcome"
-      android:parentActivityName=".home.HomeActivity"
-      android:theme="@style/Theme.Donate" />
-
-    <activity
-      android:name=".facebook.login.FacebookLogInActivity"
-      android:label="@string/title_facebook_log_in" />
-
-    <activity
-      android:name=".facebook.FacebookProfileActivity"
-      android:label="@string/title_facebook_profile" />
-
-    <activity
-      android:name=".person.PersonActivity"
-      android:parentActivityName=".home.HomeActivity">
-
-      <intent-filter>
-        <action android:name="com.android.contacts.action.QUICK_CONTACT" />
-        <action android:name="android.provider.action.QUICK_CONTACT" />
-
-        <category android:name="android.intent.category.DEFAULT" />
-
-        <data android:mimeType="vnd.android.cursor.item/contact" />
-        <data android:mimeType="vnd.android.cursor.item/person" />
-      </intent-filter>
-
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-
-        <data android:mimeType="vnd.android.cursor.item/person" />
-        <data android:mimeType="vnd.android.cursor.item/contact" />
-        <data android:mimeType="vnd.android.cursor.item/raw_contact" />
-      </intent-filter>
-
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".home.HomeActivity" />
-    </activity>
-
-    <activity
-      android:name=".events.namedays.activity.NamedayActivity"
-      android:parentActivityName=".home.HomeActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".home.HomeActivity" />
-    </activity>
+        <activity
+            android:name="com.alexstyl.specialdates.addevent.AddEventActivity"
+            android:exported="true"
+            android:label="@string/add_event_title"
+            android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alexstyl.specialdates.home.HomeActivity" />
+        </activity>
 
 
-    <activity android:name=".dailyreminder.actions.PersonActionsActivity" />
+        <activity
+            android:name="com.alexstyl.specialdates.support.RateDialog"
+            android:label="@string/support_app"
+            android:noHistory="true"
+            android:parentActivityName="com.alexstyl.specialdates.home.HomeActivity"
+            android:theme="@style/Theme.Dayslight.DialogNoTitle">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alexstyl.specialdates.home.HomeActivity" />
+        </activity>
 
-    <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
-    <!-- Services -->
+        <activity
+            android:name=".upcoming.widget.today.UpcomingWidgetConfigureActivity"
+            android:label="@string/Configure_widget"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
-    <service
-      android:name="com.alexstyl.specialdates.wear.WearSyncService"
-      android:exported="false" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
-    <receiver android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.LOCALE_CHANGED" />
-      </intent-filter>
-    </receiver>
 
-    <receiver android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.TIME_SET" />
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-      </intent-filter>
-    </receiver>
+        <activity android:name=".permissions.ContactPermissionActivity" />
 
-    <receiver
-      android:name=".upcoming.widget.today.TodayAppWidgetProvider"
-      android:label="@string/widget_upcoming_title_simple">
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-      </intent-filter>
+        <activity
+            android:name=".donate.DonateActivity"
+            android:label="@string/donate_welcome"
+            android:parentActivityName=".home.HomeActivity"
+            android:theme="@style/Theme.Donate" />
 
-      <meta-data
-        android:name="android.appwidget.provider"
-        android:resource="@xml/widget_info_upcoming_events_simple" />
-    </receiver>
+        <activity
+            android:name=".facebook.login.FacebookLogInActivity"
+            android:label="@string/title_facebook_log_in" />
 
-    <receiver
-      android:name=".upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider"
-      android:label="@string/widget_upcoming_title_list">
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-      </intent-filter>
+        <activity
+            android:name=".facebook.FacebookProfileActivity"
+            android:label="@string/title_facebook_profile" />
 
-      <meta-data
-        android:name="android.appwidget.provider"
-        android:resource="@xml/widget_info_upcoming_events_list" />
-    </receiver>
+        <activity
+            android:name=".person.PersonActivity"
+            android:parentActivityName=".home.HomeActivity">
 
-    <service
-      android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
-      android:permission="android.permission.BIND_REMOTEVIEWS" />
+            <intent-filter>
+                <action android:name="com.android.contacts.action.QUICK_CONTACT" />
+                <action android:name="android.provider.action.QUICK_CONTACT" />
 
-    <service
-      android:name=".facebook.friendimport.FacebookFriendsIntentService"
-      android:label="@string/title_facebook_friends_import" />
+                <category android:name="android.intent.category.DEFAULT" />
 
-    <meta-data
-      android:name="io.fabric.ApiKey"
-      android:value="${crashlyticsApiKey}" />
+                <data android:mimeType="vnd.android.cursor.item/contact" />
+                <data android:mimeType="vnd.android.cursor.item/person" />
+            </intent-filter>
 
-    <meta-data
-      android:name="com.google.android.gms.version"
-      android:value="@integer/google_play_services_version" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
 
-    <provider
-      android:name="android.support.v4.content.FileProvider"
-      android:authorities="${fileProvider}"
-      android:exported="false"
-      android:grantUriPermissions="true">
-      <meta-data
-        android:name="android.support.FILE_PROVIDER_PATHS"
-        android:resource="@xml/file_paths"/>
-    </provider>
-  </application>
+                <data android:mimeType="vnd.android.cursor.item/person" />
+                <data android:mimeType="vnd.android.cursor.item/contact" />
+                <data android:mimeType="vnd.android.cursor.item/raw_contact" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home.HomeActivity" />
+        </activity>
+
+        <activity
+            android:name=".events.namedays.activity.NamedayActivity"
+            android:parentActivityName=".home.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home.HomeActivity" />
+        </activity>
+
+
+        <activity android:name=".dailyreminder.actions.PersonActionsActivity" />
+
+        <activity android:name=".upcoming.widget.list.WidgetRouterActivity" />
+        <!-- Services -->
+
+        <service
+            android:name="com.alexstyl.specialdates.wear.WearSyncService"
+            android:exported="false" />
+
+        <receiver android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".upcoming.widget.today.TodayAppWidgetProvider"
+            android:label="@string/widget_upcoming_title_simple">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_upcoming_events_simple" />
+        </receiver>
+
+        <receiver
+            android:name=".upcoming.widget.list.UpcomingEventsScrollingAppWidgetProvider"
+            android:label="@string/widget_upcoming_title_list">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_upcoming_events_list" />
+        </receiver>
+
+        <service
+            android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name=".facebook.friendimport.FacebookFriendsIntentService"
+            android:label="@string/title_facebook_friends_import" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${crashlyticsApiKey}" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${fileProvider}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
 
 </manifest>

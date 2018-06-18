@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.upcoming.widget.today;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
@@ -18,23 +20,25 @@ public class UpcomingWidgetPreviewLayout extends FrameLayout {
     private static final TransparencyColorCalculator COLOR_CALCULATOR = new TransparencyColorCalculator();
 
     private final View background;
-    private final ImageView avatar;
     private final TextView header;
     private final TextView contactNames;
 
     private WidgetVariant selectedVariant = WidgetVariant.LIGHT;
     private float opacityLevel = 1.0f;
 
+    @SuppressLint("SetTextI18n")
     public UpcomingWidgetPreviewLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         LayoutInflater.from(context).inflate(R.layout.merge_upcoming_widget_preview, this, true);
 
         this.header = Views.findById(this, R.id.upcoming_widget_header);
+        this.header.setTextColor(Color.RED);
         this.contactNames = Views.findById(this, R.id.upcoming_widget_events_text);
-        this.avatar = Views.findById(this, R.id.widget_avatar);
+        ImageView avatar = Views.findById(this, R.id.widget_avatar);
+        avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_contact_portrait));
         this.background = Views.findById(this, R.id.upcoming_widget_background_image);
-        this.avatar.setImageDrawable(getResources().getDrawable(R.drawable.ic_contact_picture));
+
 
         if (isInEditMode()) {
             header.setText("This is a Header");
@@ -61,7 +65,6 @@ public class UpcomingWidgetPreviewLayout extends FrameLayout {
 
     private void setTextColor(@ColorRes int textColorRes) {
         int textColor = getResources().getColor(textColorRes);
-        header.setTextColor(textColor);
         contactNames.setTextColor(textColor);
     }
 
