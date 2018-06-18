@@ -6,8 +6,9 @@
   <string name="email">email</string>
   <string name="email_start">Email</string>
   <string name="link_translate_short">goo.gl/GxZd6M</string>
+    <string name="demo_contact_name">Mathilda Dawson</string>
 
-  <plurals name="plural_birthday">
+    <plurals name="plural_birthday">
     <item quantity="one">@string/birthday</item>
     <item quantity="other">@string/birthdays</item>
   </plurals>

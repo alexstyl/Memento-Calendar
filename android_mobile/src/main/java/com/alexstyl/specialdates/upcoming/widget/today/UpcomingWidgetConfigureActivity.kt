@@ -163,7 +163,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         val title = labelCreator.createWithYearPreferred(Date.today())
         previewLayout.setTitle(title)
-        previewLayout.setSubtitle(R.string.upcoming_widget_configure_subtitle)
+        previewLayout.setSubtitle(R.string.demo_contact_name)
 
         val variant = preferences.selectedVariant
         previewLayout.previewWidgetVariant(variant)
