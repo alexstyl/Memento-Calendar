@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.images.ImageLoader
+import com.alexstyl.specialdates.upcoming.widget.today.LuminanceAnalyzer
 import com.alexstyl.specialdates.upcoming.widget.today.RecentPeopleEventsPresenter
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetPreferences
 import com.alexstyl.specialdates.upcoming.widget.today.WidgetImageLoader
@@ -24,6 +25,12 @@ class RecentUpcomingPeopleEventsModule {
     fun widgetImageLoader(appWidgetManager: AppWidgetManager, imageLoader: ImageLoader)
             : WidgetImageLoader {
         return WidgetImageLoader(appWidgetManager, imageLoader)
+    }
+
+
+    @Provides
+    fun luminanceAnalyzer(): LuminanceAnalyzer {
+        return LuminanceAnalyzer(Schedulers.io(), AndroidSchedulers.mainThread())
     }
 
     @Provides
