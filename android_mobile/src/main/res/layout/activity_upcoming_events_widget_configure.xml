@@ -6,24 +6,10 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/upcoming_widget_wallpaper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#E8EAED"
-        android:contentDescription="@null"
-        android:importantForAccessibility="@null"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
         android:id="@+id/scrim"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:src="@drawable/black_to_transparent_gradient_facing_down"
-        android:visibility="gone" />
+        android:src="@drawable/black_to_transparent_gradient_facing_down" />
 
     <LinearLayout
         android:id="@+id/upcoming_widget_virtual_toolbar"
@@ -41,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="48dp"
-            android:src="@drawable/ic_close_black"
+            android:src="@drawable/ic_close_white"
             app:layout_constraintTop_toTopOf="@+id/status_bar_guideline" />
 
         <TextView
@@ -55,19 +41,9 @@
             android:minHeight="@dimen/toolbar_minHeight"
             android:text="@string/Configure_widget"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_close"
             app:layout_constraintStart_toEndOf="@+id/upcoming_widget_close"
-            app:layout_constraintTop_toTopOf="@+id/upcoming_widget_close" />
-
-        <ImageButton
-            android:id="@+id/upcoming_widget_load_wallpaper"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="48dp"
-            android:src="@drawable/ic_round_wallpaper_dark_24px"
-            app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_close"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/upcoming_widget_close" />
     </LinearLayout>
 
