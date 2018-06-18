@@ -67,10 +67,18 @@ class TodayAppWidgetProvider : AppWidgetProvider() {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
         if (permissionChecker.canReadAndWriteContacts()) {
-            val view = AndroidRecentPeopleEventsView(context, appWidgetManager, appWidgetIds, strings, preferences, widgetImageLoader, labelCreator)
+            val view = AndroidRecentPeopleEventsView(context,
+                    appWidgetManager,
+                    appWidgetIds,
+                    strings,
+                    preferences,
+                    widgetImageLoader,
+                    labelCreator
+            )
             presenter.startPresentingInto(view)
         } else {
-            // TODO asking for permission needs to go into the Presenter so that the WidgetProvider is responsible for triggering the updates of the events
+            // TODO asking for permission needs to go into the Presenter so that the WidgetProvider
+            // is responsible for triggering the updates of the events
             promptForContactPermission(context, appWidgetManager, appWidgetIds)
         }
     }
