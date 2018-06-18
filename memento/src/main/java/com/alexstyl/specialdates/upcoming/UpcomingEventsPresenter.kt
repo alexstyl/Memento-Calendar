@@ -30,8 +30,7 @@ class UpcomingEventsPresenter(private val firstDay: Date,
                         }
                         .observeOn(workScheduler)
                         .map { _ ->
-                            val timePeriod = TimePeriod.between(firstDay, firstDay.addDay(30))
-                            //TimePeriod.aYearFrom(firstDay)
+                            val timePeriod = TimePeriod.aYearFrom(firstDay)
                             providerUpcoming.calculateEventsBetween(timePeriod)
                         }
                         .observeOn(resultScheduler)
