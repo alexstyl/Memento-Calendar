@@ -2,14 +2,16 @@ package com.alexstyl.specialdates.upcoming.widget.today
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import com.alexstyl.android.toBitmap
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 
 class LuminanceAnalyzer(private val workScheduler: Scheduler, private val resultScheduler: Scheduler) {
 
-    fun analyse(bitmap: Bitmap, result: (Boolean) -> Unit) {
+    fun analyse(drawable: Drawable, result: (Boolean) -> Unit) {
         Observable.fromCallable {
-            isLight(bitmap)
+            isLight(drawable.toBitmap())
         }
                 .subscribeOn(workScheduler)
                 .observeOn(resultScheduler)

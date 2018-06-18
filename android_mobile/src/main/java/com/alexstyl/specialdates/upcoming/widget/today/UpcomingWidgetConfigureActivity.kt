@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.WallpaperManager
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -13,13 +12,11 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.TooltipCompat
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.alexstyl.android.Version
-import com.alexstyl.android.toBitmap
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
@@ -67,6 +64,9 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         scrimView = findViewById(R.id.scrim)
 
         initialiseViews()
+        if (permission.canReadExternalStorage()) {
+            displayWallpaper()
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -98,32 +98,24 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         closeButton.setOnClickListener {
             finish()
         }
-
-        if (permission.canReadExternalStorage()) {
-            displayWallpaper()
-        }
     }
 
     private fun displayWallpaper() {
         val wallpaper = WallpaperManager.getInstance(this).drawable
-        updateUIColorsFor(wallpaper.toBitmap())
+        luminanceAnalyzer.analyse(wallpaper, { isLight ->
+            if (isLight) {
+                loadDarkUI()
+            } else {
+                loadLightUI()
+            }
+        })
     }
-
-    private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
-        return intent?.extras?.getInt(
-                AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID
-        )
-    }
-
 
     private fun decorateStatusBarOrHide() {
         if (supportsTransparentStatusbar()) {
             window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
             window.statusBarColor = Color.TRANSPARENT
         } else {
             val toolbar = findViewById<LinearLayout>(R.id.upcoming_widget_virtual_toolbar)
@@ -131,6 +123,14 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
             params.setMargins(0, 0, 0, 0)
             toolbar.layoutParams = params
         }
+    }
+
+
+    private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
+        return intent?.extras?.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID
+        )
     }
 
     private fun initialisePreview() {
@@ -150,16 +150,6 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
 
         val oppacityLevel = preferences.oppacityLevel
         previewLayout.previewBackgroundOpacityLevel(oppacityLevel)
-    }
-
-    private fun updateUIColorsFor(wallpaper: Bitmap) {
-        luminanceAnalyzer.analyse(wallpaper, { isLight ->
-            if (isLight) {
-                loadDarkUI()
-            } else {
-                loadLightUI()
-            }
-        })
     }
 
     private fun loadLightUI() {

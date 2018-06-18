@@ -162,6 +162,5 @@
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:statusBarColor" tools:ignore="NewApi">@android:color/transparent</item>
     </style>
 </resources>
