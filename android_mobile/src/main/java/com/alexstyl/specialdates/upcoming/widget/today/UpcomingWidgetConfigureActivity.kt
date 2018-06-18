@@ -124,8 +124,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
             toolbar.layoutParams = params
         }
     }
-
-
+    
     private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
         return intent?.extras?.getInt(
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
