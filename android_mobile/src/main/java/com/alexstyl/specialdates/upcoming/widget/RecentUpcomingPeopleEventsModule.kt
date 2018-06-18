@@ -30,5 +30,4 @@ class RecentUpcomingPeopleEventsModule {
     fun presenter(eventsProvider: PeopleEventsProvider): RecentPeopleEventsPresenter {
         return RecentPeopleEventsPresenter(eventsProvider, Schedulers.io(), AndroidSchedulers.mainThread())
     }
-
 }
