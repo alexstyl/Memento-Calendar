@@ -17,6 +17,7 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.widget.TooltipCompat
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.view.animation.LinearInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -125,7 +126,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
             toolbar.layoutParams = params
         }
 
-//        loadWallpaperIfPossible()
+        loadWallpaperIfPossible()
     }
 
     private fun loadWallpaperIfPossible() {
@@ -145,7 +146,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         if (requestCode == REQUEST_CODE_PERMISSION_WALLPAPER && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             displayCurrentWallpaper()
             loadWallpaperButton.visibility = View.GONE
-
         }
     }
 
@@ -185,18 +185,20 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         backgroundView.visibility = View.INVISIBLE
 
         if (Version.hasLollipop()) {
-            val cx = loadWallpaperButton.x
-            val cy = loadWallpaperButton.y
+            val cx = loadWallpaperButton.x + loadWallpaperButton.width / 2
+            val cy = loadWallpaperButton.y + loadWallpaperButton.height / 2
 
-            // get the final radius for the clipping circle
-            val finalRadius = Math.hypot(cx.toDouble(), cy.toDouble())
+            val finalRadius = backgroundView.height
 
             // create the animator for this view (the start radius is zero)
             val anim =
-                    ViewAnimationUtils.createCircularReveal(backgroundView, cx.toInt(), cy.toInt(), 0F, finalRadius.toFloat());
-            anim.interpolator = FastOutSlowInInterpolator()
+                    ViewAnimationUtils.createCircularReveal(backgroundView, cx.toInt(),
+                            cy.toInt(), 0F, finalRadius.toFloat());
+            anim.interpolator = LinearInterpolator()
             // make the view visible and start the animation
             backgroundView.visibility = View.VISIBLE
+            anim.interpolator = FastOutSlowInInterpolator()
+            anim.duration = 700L
             anim.start()
         } else {
             backgroundView.alpha = 0f
