@@ -13,8 +13,10 @@ import android.os.Build
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.widget.TooltipCompat
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -30,8 +32,6 @@ import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel.*
 import com.novoda.notils.caster.Views
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 import javax.inject.Inject
 
@@ -124,6 +124,19 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
             params.setMargins(0, 0, 0, 0)
             toolbar.layoutParams = params
         }
+
+//        loadWallpaperIfPossible()
+    }
+
+    private fun loadWallpaperIfPossible() {
+        if (permissions.canReadExternalStorage()) {
+            val wallpaperManager = WallpaperManager.getInstance(this)
+            val wallpaper = wallpaperManager.drawable.toBitmap()
+
+            backgroundView.setImageBitmap(wallpaper)
+            updateUIColorsFor(wallpaper)
+            loadWallpaperButton.visibility = View.GONE
+        }
     }
 
 
@@ -158,25 +171,37 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (permissions.canReadExternalStorage()) {
-            loadWallpaperButton.visibility = View.GONE
-            displayCurrentWallpaper()
-        } else {
-            scrimView.visibility = View.GONE
-        }
-    }
-
     private fun displayCurrentWallpaper() {
         val wallpaperManager = WallpaperManager.getInstance(this)
         val wallpaper = wallpaperManager.drawable.toBitmap()
 
-        backgroundView.setImageBitmap(wallpaper)
-        backgroundView.alpha = 0f
-        backgroundView.animate().alpha(1f).setDuration(250).start()
-
+        revealWallpaper(wallpaper)
         updateUIColorsFor(wallpaper)
+    }
+
+
+    private fun revealWallpaper(wallpaper: Bitmap) {
+        backgroundView.setImageBitmap(wallpaper)
+        backgroundView.visibility = View.INVISIBLE
+
+        if (Version.hasLollipop()) {
+            val cx = loadWallpaperButton.x
+            val cy = loadWallpaperButton.y
+
+            // get the final radius for the clipping circle
+            val finalRadius = Math.hypot(cx.toDouble(), cy.toDouble())
+
+            // create the animator for this view (the start radius is zero)
+            val anim =
+                    ViewAnimationUtils.createCircularReveal(backgroundView, cx.toInt(), cy.toInt(), 0F, finalRadius.toFloat());
+            anim.interpolator = FastOutSlowInInterpolator()
+            // make the view visible and start the animation
+            backgroundView.visibility = View.VISIBLE
+            anim.start()
+        } else {
+            backgroundView.alpha = 0f
+            backgroundView.animate().alpha(1f).setDuration(250).start()
+        }
     }
 
     private fun updateUIColorsFor(wallpaper: Bitmap) {
