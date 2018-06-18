@@ -33,14 +33,14 @@ import io.reactivex.schedulers.Schedulers
 class UpcomingEventsModule {
 
     @Provides
-    fun providesUpcomingEventsProviderWithAds(context: Context,
-                                              strings: Strings,
-                                              colors: Colors,
-                                              namedayUserSettings: NamedayUserSettings,
-                                              namedayCalendarProvider: NamedayCalendarProvider,
-                                              eventsProvider: PeopleEventsProvider,
-                                              bankHolidaysUserSettings: BankHolidaysUserSettings,
-                                              greekBankHolidaysCalculator: GreekBankHolidaysCalculator): UpcomingEventsProvider {
+    fun upcomingEventsProvider(context: Context,
+                               strings: Strings,
+                               colors: Colors,
+                               namedayUserSettings: NamedayUserSettings,
+                               namedayCalendarProvider: NamedayCalendarProvider,
+                               eventsProvider: PeopleEventsProvider,
+                               bankHolidaysUserSettings: BankHolidaysUserSettings,
+                               greekBankHolidaysCalculator: GreekBankHolidaysCalculator): UpcomingEventsProvider {
         val date = Date.today()
         return CompositeUpcomingEventsProvider(
                 eventsProvider,
