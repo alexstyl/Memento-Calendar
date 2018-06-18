@@ -9,9 +9,13 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintSet
+import android.support.transition.ChangeBounds
+import android.support.transition.TransitionManager
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.TooltipCompat
 import android.view.View
+import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -63,10 +67,27 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         closeButton = findViewById(R.id.upcoming_widget_close)
         scrimView = findViewById(R.id.scrim)
 
+        animateViews()
+
         initialiseViews()
         if (permission.canReadExternalStorage()) {
             displayWallpaper()
         }
+    }
+
+    private fun animateViews() {
+        val constraintLayout = findViewById<ConstraintLayout>(R.id.upcoming_widget_constraint)
+        constraintLayout.postDelayed({
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(this, R.layout.activity_upcoming_events_widget_configure_second_frame)
+
+            val transition = ChangeBounds()
+            transition.interpolator = AnticipateOvershootInterpolator(1.0f)
+            transition.duration = 700
+
+            TransitionManager.beginDelayedTransition(constraintLayout, transition)
+            constraintSet.applyTo(constraintLayout)
+        }, 450L)
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -124,7 +145,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
             toolbar.layoutParams = params
         }
     }
-    
+
     private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
         return intent?.extras?.getInt(
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
