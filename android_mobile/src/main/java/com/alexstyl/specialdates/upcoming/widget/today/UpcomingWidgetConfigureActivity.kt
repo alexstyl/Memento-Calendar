@@ -126,20 +126,22 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
             toolbar.layoutParams = params
         }
 
-        loadWallpaperIfPossible()
-    }
-
-    private fun loadWallpaperIfPossible() {
         if (permissions.canReadExternalStorage()) {
-            val wallpaperManager = WallpaperManager.getInstance(this)
-            val wallpaper = wallpaperManager.drawable.toBitmap()
-
-            backgroundView.setImageBitmap(wallpaper)
-            updateUIColorsFor(wallpaper)
-            loadWallpaperButton.visibility = View.GONE
+            loadWallpaper()
         }
     }
 
+    private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
+
+
+    private fun loadWallpaper() {
+        val wallpaperManager = WallpaperManager.getInstance(this)
+        val wallpaper = wallpaperManager.drawable.toBitmap()
+
+        backgroundView.setImageBitmap(wallpaper)
+        updateUIColorsFor(wallpaper)
+        loadWallpaperButton.visibility = View.GONE
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -171,6 +173,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
     }
 
+
     private fun displayCurrentWallpaper() {
         val wallpaperManager = WallpaperManager.getInstance(this)
         val wallpaper = wallpaperManager.drawable.toBitmap()
@@ -178,7 +181,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         revealWallpaper(wallpaper)
         updateUIColorsFor(wallpaper)
     }
-
 
     private fun revealWallpaper(wallpaper: Bitmap) {
         backgroundView.setImageBitmap(wallpaper)
@@ -190,12 +192,10 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
             val finalRadius = backgroundView.height
 
-            // create the animator for this view (the start radius is zero)
             val anim =
                     ViewAnimationUtils.createCircularReveal(backgroundView, cx.toInt(),
-                            cy.toInt(), 0F, finalRadius.toFloat());
+                            cy.toInt(), 0F, finalRadius.toFloat())
             anim.interpolator = LinearInterpolator()
-            // make the view visible and start the animation
             backgroundView.visibility = View.VISIBLE
             anim.interpolator = FastOutSlowInInterpolator()
             anim.duration = 700L
@@ -219,7 +219,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
     private fun loadLightUI() {
         scrimView.visibility = View.VISIBLE
-        // light icons and text
+
         titleView.setTextColor(Color.WHITE)
         closeButton.setImageResource(R.drawable.ic_close_white)
         loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_light_24px)
@@ -229,8 +229,10 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         }
     }
 
+
     private fun loadDarkUI() {
         scrimView.visibility = View.GONE
+
         titleView.setTextColor(ResourcesCompat.getColor(resources, R.color.dark_text, null))
         closeButton.setImageResource(R.drawable.ic_close_black)
         loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_dark_24px)
@@ -239,9 +241,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
             window.statusBarColor = Color.TRANSPARENT
         }
     }
-
-
-    private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
 
     private fun saveConfigurations() {
         val userOptions = configurationPanel.userOptions
