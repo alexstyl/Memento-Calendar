@@ -59,7 +59,6 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_person)
 
-
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
         analytics.trackScreen(Screen.PERSON)

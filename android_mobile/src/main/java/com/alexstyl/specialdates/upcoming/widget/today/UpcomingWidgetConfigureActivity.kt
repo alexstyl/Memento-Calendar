@@ -24,16 +24,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.alexstyl.android.Version
 import com.alexstyl.android.toBitmap
-
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
-import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel.*
-import com.novoda.notils.caster.Views
-
 import javax.inject.Inject
 
 class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
@@ -46,6 +42,8 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         @Inject set
     lateinit var permissions: MementoPermissions
         @Inject set
+    lateinit var todayUpcomingEventsView: TodayUpcomingEventsView
+        @Inject set
 
     private lateinit var backgroundView: ImageView
     private lateinit var previewLayout: UpcomingWidgetPreviewLayout
@@ -55,84 +53,101 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
     private lateinit var closeButton: ImageButton
     private lateinit var titleView: TextView
 
-
-    private var mAppWidgetId: Int = 0
-
-    private val configurationListener = object : ConfigurationListener {
-        override fun onApplyButtonPressed() {
-            saveConfigurations()
-            finishAsSuccess()
-        }
-
-        override fun onOpacityLevelChanged(percentage: Float) {
-            previewLayout.previewBackgroundOpacityLevel(percentage)
-        }
-
-        override fun onWidgetVariantSelected(variant: WidgetVariant) {
-            previewLayout.previewWidgetVariant(variant)
-        }
-    }
+    private var mAppWidgetId: Int? = null
 
     @TargetApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (supportsTransparentStatusbar()) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            window.statusBarColor = Color.TRANSPARENT
-        }
-
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
-
+        setResult(Activity.RESULT_CANCELED)
         setContentView(R.layout.activity_upcoming_events_widget_configure)
 
-        backgroundView = Views.findById(this, R.id.upcoming_widget_wallpaper)
-        previewLayout = Views.findById(this, R.id.upcoming_widget_preview)
-        configurationPanel = Views.findById(this, R.id.upcoming_widget_configure_panel)
-        configurationPanel.setListener(configurationListener)
+        mAppWidgetId = extractAppWidgetIdFrom(intent)
+
+        decorateStatusBarOrHide()
+        backgroundView = findViewById(R.id.upcoming_widget_wallpaper)
+        previewLayout = findViewById(R.id.upcoming_widget_preview)
+        configurationPanel = findViewById(R.id.upcoming_widget_configure_panel)
         titleView = findViewById(R.id.upcoming_widget_title)
-        initialisePreview()
-        setResult(Activity.RESULT_CANCELED)
-
-        val intent = intent
-        val extras = intent.extras
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID
-            )
-        }
-
         closeButton = findViewById(R.id.upcoming_widget_close)
+        scrimView = findViewById(R.id.scrim)
+        loadWallpaperButton = findViewById(R.id.upcoming_widget_load_wallpaper)
+
+        initialiseViews()
+    }
+
+    private fun initialiseViews() {
+        configurationPanel.setListener(object : UpcomingWidgetConfigurationPanel.ConfigurationListener {
+            override fun onApplyButtonPressed() {
+                preferences.storeUserOptions(configurationPanel.userOptions)
+                todayUpcomingEventsView.reloadUpcomingEventsView()
+
+                if (mAppWidgetId != null) {
+                    val intent = Intent()
+                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId!!)
+                    setResult(Activity.RESULT_OK, intent)
+                }
+                finish()
+            }
+
+            override fun onOpacityLevelChanged(percentage: Float) {
+                previewLayout.previewBackgroundOpacityLevel(percentage)
+            }
+
+            override fun onWidgetVariantSelected(variant: WidgetVariant) {
+                previewLayout.previewWidgetVariant(variant)
+            }
+        })
+
+        initialisePreview()
         TooltipCompat.setTooltipText(closeButton, getString(R.string.Close))
+        TooltipCompat.setTooltipText(loadWallpaperButton, getString(R.string.Load_my_wallpaper))
         closeButton.setOnClickListener {
             finish()
         }
-        scrimView = findViewById(R.id.scrim)
-        loadWallpaperButton = findViewById(R.id.upcoming_widget_load_wallpaper)
-        TooltipCompat.setTooltipText(loadWallpaperButton, getString(R.string.Load_my_wallpaper))
         loadWallpaperButton.setOnClickListener {
             requestPermissions(
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     REQUEST_CODE_PERMISSION_WALLPAPER)
         }
-
-
-        if (!supportsTransparentStatusbar()) {
-            val toolbar = findViewById<LinearLayout>(R.id.upcoming_widget_virtual_toolbar)
-            val params = toolbar.layoutParams as ConstraintLayout.LayoutParams
-            params.setMargins(0, 0, 0, 0)
-            toolbar.layoutParams = params
-        }
-
         if (permissions.canReadExternalStorage()) {
             loadWallpaper()
         }
     }
 
+
     private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
 
+    private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
+        return intent?.extras?.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID
+        )
+    }
+
+    private fun decorateStatusBarOrHide() {
+        if (supportsTransparentStatusbar()) {
+            window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+            window.statusBarColor = Color.TRANSPARENT
+        } else {
+            val toolbar = findViewById<LinearLayout>(R.id.upcoming_widget_virtual_toolbar)
+            val params = toolbar.layoutParams as ConstraintLayout.LayoutParams
+            params.setMargins(0, 0, 0, 0)
+            toolbar.layoutParams = params
+        }
+    }
+
+
+    private fun initialisePreview() {
+        configurationPanel.opacityLevel = preferences.oppacityLevel
+        configurationPanel.widgetVariant = preferences.selectedVariant
+    }
 
     private fun loadWallpaper() {
         val wallpaperManager = WallpaperManager.getInstance(this)
@@ -141,21 +156,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         backgroundView.setImageBitmap(wallpaper)
         updateUIColorsFor(wallpaper)
         loadWallpaperButton.visibility = View.GONE
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSION_WALLPAPER && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            displayCurrentWallpaper()
-            loadWallpaperButton.visibility = View.GONE
-        }
-    }
-
-    private fun initialisePreview() {
-        val startingOpacity = preferences.oppacityLevel
-        val startingVariant = preferences.selectedVariant
-        configurationPanel.opacityLevel = startingOpacity
-        configurationPanel.widgetVariant = startingVariant
     }
 
     override fun onStart() {
@@ -170,9 +170,7 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         val oppacityLevel = preferences.oppacityLevel
         previewLayout.previewBackgroundOpacityLevel(oppacityLevel)
-
     }
-
 
     private fun displayCurrentWallpaper() {
         val wallpaperManager = WallpaperManager.getInstance(this)
@@ -180,6 +178,17 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         revealWallpaper(wallpaper)
         updateUIColorsFor(wallpaper)
+    }
+
+
+    private fun updateUIColorsFor(wallpaper: Bitmap) {
+        luminanceAnalyzer.analyse(wallpaper, { isLight ->
+            if (isLight) {
+                loadDarkUI()
+            } else {
+                loadLightUI()
+            }
+        })
     }
 
     private fun revealWallpaper(wallpaper: Bitmap) {
@@ -206,17 +215,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         }
     }
 
-    private fun updateUIColorsFor(wallpaper: Bitmap) {
-
-        luminanceAnalyzer.analyse(wallpaper, { isLight ->
-            if (isLight) {
-                loadDarkUI()
-            } else {
-                loadLightUI()
-            }
-        })
-    }
-
     private fun loadLightUI() {
         scrimView.visibility = View.VISIBLE
 
@@ -224,11 +222,12 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         closeButton.setImageResource(R.drawable.ic_close_white)
         loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_light_24px)
         if (supportsTransparentStatusbar()) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             window.statusBarColor = Color.TRANSPARENT
         }
     }
-
 
     private fun loadDarkUI() {
         scrimView.visibility = View.GONE
@@ -237,20 +236,21 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         closeButton.setImageResource(R.drawable.ic_close_black)
         loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_dark_24px)
         if (supportsTransparentStatusbar()) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             window.statusBarColor = Color.TRANSPARENT
         }
     }
 
-    private fun saveConfigurations() {
-        val userOptions = configurationPanel.userOptions
-        preferences.storeUserOptions(userOptions)
-        TodayUpcomingEventsView(this, AppWidgetManager.getInstance(this)).reloadUpcomingEventsView()
-    }
 
-    private fun finishAsSuccess() {
-        setResult(Activity.RESULT_OK, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId))
-        finish()
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSION_WALLPAPER && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            displayCurrentWallpaper()
+            loadWallpaperButton.visibility = View.GONE
+        }
     }
 
     companion object {
