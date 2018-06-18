@@ -1,23 +1,19 @@
 package com.alexstyl.specialdates.upcoming.widget.today
 
-import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.WallpaperManager
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.widget.TooltipCompat
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.animation.LinearInterpolator
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -29,10 +25,10 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.permissions.MementoPermissions
-import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
+import com.alexstyl.specialdates.ui.base.MementoActivity
 import javax.inject.Inject
 
-class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
+class UpcomingWidgetConfigureActivity : MementoActivity() {
 
     lateinit var luminanceAnalyzer: LuminanceAnalyzer
         @Inject set
@@ -40,15 +36,13 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         @Inject set
     lateinit var labelCreator: DateLabelCreator
         @Inject set
-    lateinit var permissions: MementoPermissions
-        @Inject set
     lateinit var todayUpcomingEventsView: TodayUpcomingEventsView
         @Inject set
+    lateinit var permission: MementoPermissions
+        @Inject set
 
-    private lateinit var backgroundView: ImageView
     private lateinit var previewLayout: UpcomingWidgetPreviewLayout
     private lateinit var configurationPanel: UpcomingWidgetConfigurationPanel
-    private lateinit var loadWallpaperButton: ImageButton
     private lateinit var scrimView: ImageView
     private lateinit var closeButton: ImageButton
     private lateinit var titleView: TextView
@@ -66,13 +60,11 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         mAppWidgetId = extractAppWidgetIdFrom(intent)
 
         decorateStatusBarOrHide()
-        backgroundView = findViewById(R.id.upcoming_widget_wallpaper)
         previewLayout = findViewById(R.id.upcoming_widget_preview)
         configurationPanel = findViewById(R.id.upcoming_widget_configure_panel)
         titleView = findViewById(R.id.upcoming_widget_title)
         closeButton = findViewById(R.id.upcoming_widget_close)
         scrimView = findViewById(R.id.scrim)
-        loadWallpaperButton = findViewById(R.id.upcoming_widget_load_wallpaper)
 
         initialiseViews()
     }
@@ -103,41 +95,18 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         initialisePreview()
         TooltipCompat.setTooltipText(closeButton, getString(R.string.Close))
-        TooltipCompat.setTooltipText(loadWallpaperButton, getString(R.string.Load_my_wallpaper))
         closeButton.setOnClickListener {
             finish()
         }
-        loadWallpaperButton.setOnClickListener {
-            requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_CODE_PERMISSION_WALLPAPER)
-        }
-        if (permissions.canReadExternalStorage()) {
+
+        if (permission.canReadExternalStorage()) {
             displayWallpaper()
         }
     }
 
     private fun displayWallpaper() {
-        val wallpaperManager = WallpaperManager.getInstance(this)
-        val wallpaper = wallpaperManager.drawable.toBitmap()
-
-        backgroundView.setImageBitmap(wallpaper)
-        updateUIColorsFor(wallpaper)
-        loadWallpaperButton.visibility = View.GONE
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSION_WALLPAPER && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            val wallpaperManager = WallpaperManager.getInstance(this)
-            val wallpaper = wallpaperManager.drawable.toBitmap()
-
-            revealWallpaper(wallpaper)
-            updateUIColorsFor(wallpaper)
-
-            loadWallpaperButton.visibility = View.GONE
-        }
+        val wallpaper = WallpaperManager.getInstance(this).drawable
+        updateUIColorsFor(wallpaper.toBitmap())
     }
 
     private fun extractAppWidgetIdFrom(intent: Intent?): Int? {
@@ -183,7 +152,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         previewLayout.previewBackgroundOpacityLevel(oppacityLevel)
     }
 
-
     private fun updateUIColorsFor(wallpaper: Bitmap) {
         luminanceAnalyzer.analyse(wallpaper, { isLight ->
             if (isLight) {
@@ -194,36 +162,11 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
         })
     }
 
-    private fun revealWallpaper(wallpaper: Bitmap) {
-        backgroundView.setImageBitmap(wallpaper)
-        backgroundView.visibility = View.INVISIBLE
-
-        if (Version.hasLollipop()) {
-            val cx = loadWallpaperButton.x + loadWallpaperButton.width / 2
-            val cy = loadWallpaperButton.y + loadWallpaperButton.height / 2
-
-            val finalRadius = backgroundView.height
-
-            val anim =
-                    ViewAnimationUtils.createCircularReveal(backgroundView, cx.toInt(),
-                            cy.toInt(), 0F, finalRadius.toFloat())
-            anim.interpolator = LinearInterpolator()
-            backgroundView.visibility = View.VISIBLE
-            anim.interpolator = FastOutSlowInInterpolator()
-            anim.duration = 700L
-            anim.start()
-        } else {
-            backgroundView.alpha = 0f
-            backgroundView.animate().alpha(1f).setDuration(250).start()
-        }
-    }
-
     private fun loadLightUI() {
         scrimView.visibility = View.VISIBLE
 
         titleView.setTextColor(Color.WHITE)
         closeButton.setImageResource(R.drawable.ic_close_white)
-        loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_light_24px)
         if (supportsTransparentStatusbar()) {
             window.decorView.systemUiVisibility =
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -237,7 +180,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
 
         titleView.setTextColor(ResourcesCompat.getColor(resources, R.color.dark_text, null))
         closeButton.setImageResource(R.drawable.ic_close_black)
-        loadWallpaperButton.setImageResource(R.drawable.ic_round_wallpaper_dark_24px)
         if (supportsTransparentStatusbar()) {
             window.decorView.systemUiVisibility =
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
@@ -248,8 +190,6 @@ class UpcomingWidgetConfigureActivity : ThemedMementoActivity() {
     }
 
     companion object {
-        private const val REQUEST_CODE_PERMISSION_WALLPAPER = 9990
-
         private fun supportsTransparentStatusbar() = Version.hasMarshmallow()
     }
 }
