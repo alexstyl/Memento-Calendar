@@ -117,7 +117,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
                             .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId!!)
                     setResult(Activity.RESULT_OK, intent)
                 }
-                finish()
+                animatedFinish()
             }
 
             override fun onOpacityLevelChanged(percentage: Float) {
