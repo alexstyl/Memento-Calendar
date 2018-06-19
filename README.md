@@ -29,8 +29,15 @@ This is the Android Wear module. It depends on *android_common*.
 This is the Android mobile app module. It depends on *android_common*.
 
 ## Architecture
-The Model-View-Presenter is used in order to architecture . 
+The Model-View-Presenter is used in order to architecture the app. 
 
+**Presenters** are platform agnostic and live in the **memento** module, in order to be able to be used across all platforms. They contain the core logic of forwarding *Models* to the *Views*.
+
+**Views** are responsible displaying information back to the user. For each view there is one interface that lives in the memento module. 
+
+**Models** contain the minimum amount of information needed to render the information on the screen.
+
+I did a talk in the GDG Android Athens about the structure of Memento Calendar. The talk is in Greek, but the slides contain more information about the structure [(see the slides)](https://speakerdeck.com/alexstyl/the-journey-towards-a-platform-agnostic-codebase).
 
 
 
