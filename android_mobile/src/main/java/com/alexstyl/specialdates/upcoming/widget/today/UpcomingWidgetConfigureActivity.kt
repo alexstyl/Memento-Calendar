@@ -87,7 +87,6 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
 
     private fun introduceViews() {
         constraintLayout.postDelayed({
-
             val transition = ChangeBounds()
             transition.interpolator = AnticipateOvershootInterpolator(1.0f)
             transition.duration = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
@@ -97,7 +96,6 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         }, 450L)
 
         previewLayout.alpha = 0f
-
         previewLayout
                 .animate()
                 .setStartDelay(200L)
@@ -134,15 +132,15 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         initialisePreview()
         TooltipCompat.setTooltipText(closeButton, getString(R.string.Close))
         closeButton.setOnClickListener {
-            playOffViews()
+            animatedFinish()
         }
     }
 
     override fun onBackPressed() {
-        playOffViews()
+        animatedFinish()
     }
 
-    private fun playOffViews() {
+    private fun animatedFinish() {
         val transition = ChangeBounds()
         transition.interpolator = AccelerateInterpolator(1.0F)
         transition.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
