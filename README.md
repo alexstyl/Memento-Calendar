@@ -12,6 +12,26 @@ This repo is open for PRs and they are more than welcome! Have a look [at the wi
 
 [![alt text](http://developer.android.com/images/brand/en_app_rgb_wo_60.png "Download Memento Calendar from the Play Store")](https://play.google.com/store/apps/details?id=com.alexstyl.specialdates)
 
+## Project Goal
+Memento Calendar is my pet project/playground in which I experiment with various platform features development patterns and share my foundings with the community my foundings via blog posts and talks. Memento started off as a side project app back in 2014 and has been on development on and off. Current goal of the project is to split out the business logic of the app from the app logic so that it could potentially be ported into other platforms with the help of Kotlin.
+
+## Modules
+The app is split into multiple modules. 
+The business logic of the app can be found in the **memento** module. There are three other Android Modules: 
+
+### android_common
+This is the shared resources across all Android specific modules. It depends on *memento*.
+
+### android_wear
+This is the Android Wear module. It depends on *android_common*.
+
+### android_mobile
+This is the Android mobile app module. It depends on *android_common*.
+
+## Architecture
+The Model-View-Presenter is used in order to architecture . 
+
+
 
 
 ## License
