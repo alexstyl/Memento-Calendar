@@ -31,9 +31,9 @@ This is the Android mobile app module. It depends on *android_common*.
 ## Architecture
 The Model-View-Presenter is used in order to architecture the app. 
 
-**Presenters** are platform agnostic and live in the **memento** module, in order to be able to be used across all platforms. They contain the core logic of forwarding *Models* to the *Views*.
+**Presenters** are platform agnostic and live in the **memento** module, in order to be able to be used across all platforms. They contain the core logic of forwarding *Models* to the *Views*. It is up for the specific platform component to create a View
 
-**Views** are responsible displaying information back to the user. For each view there is one interface that lives in the memento module. 
+**Views** are responsible displaying information back to the user. For each view there is one interface that lives in the memento module. A view is not to be confused with Android's View classes, Activities or Fragments. 
 
 **Models** contain the minimum amount of information needed to render the information on the screen.
 
