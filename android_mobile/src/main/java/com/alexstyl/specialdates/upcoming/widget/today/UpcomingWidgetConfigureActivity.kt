@@ -146,12 +146,12 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
         transition.duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
         TransitionManager.beginDelayedTransition(constraintLayout, transition)
         exitConstraintSet.applyTo(constraintLayout)
+
         previewLayout.animate()
                 .alpha(0F)
                 .setStartDelay(400L)
                 .setListener(object : SimpleAnimatorListener() {
                     override fun onAnimationEnd(animator: Animator?) {
-                        super.onAnimationEnd(animator)
                         finish()
                     }
                 })
