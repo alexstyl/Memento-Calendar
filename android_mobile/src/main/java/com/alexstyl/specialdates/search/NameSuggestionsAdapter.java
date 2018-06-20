@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.search;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -17,16 +16,15 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import java.util.ArrayList;
 import java.util.List;
 
-final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> implements Filterable {
+final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameViewHolder> implements Filterable {
 
     private final OnNameSelectedListener listener;
     private final NamesFilter filter;
     private final List<String> displayingNames;
 
-    public static NameSuggestionsAdapter newInstance(Context context,
-                                                     OnNameSelectedListener onNameSelectedListener,
-                                                     NamedayUserSettings namedayPreferences) {
-        NamedayCalendarProvider namedayCalendarProvider = NamedayCalendarProvider.newInstance(context.getResources());
+    public static NameSuggestionsAdapter newInstance(OnNameSelectedListener onNameSelectedListener,
+                                                     NamedayUserSettings namedayPreferences,
+                                                     NamedayCalendarProvider namedayCalendarProvider) {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         WordComparator compatator;
         if (locale.isComparedBySound()) {
@@ -47,12 +45,12 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<NameViewHolder> 
     }
 
     @Override
-    public NameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return NameViewHolder.createFor(parent);
+    public SuggstedNameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return SuggstedNameViewHolder.createFor(parent);
     }
 
     @Override
-    public void onBindViewHolder(NameViewHolder holder, int position) {
+    public void onBindViewHolder(SuggstedNameViewHolder holder, int position) {
         holder.bind(displayingNames.get(position), listener);
     }
 

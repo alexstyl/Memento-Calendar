@@ -1,10 +1,12 @@
 package com.alexstyl.specialdates
 
+import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.person.StarSign
 
 interface Strings {
     fun viewConversation(): String
+    fun dailyReminder(): String
     fun facebookMessenger(): String
     fun nameOf(starSign: StarSign): String
     fun turnsAge(age: Int): String
@@ -21,4 +23,18 @@ interface Strings {
     fun nameOfEvent(event: EventType): String
     fun postOnFacebook(): String
     fun facebook(): String
+    fun localeName(locale: NamedayLocale): String
+    fun viewFacebookProfile(): String
+    fun importFromFacebook(): String
+    fun namedays(): String
+    fun bankholidays(): String
+    fun contacts(): String
+    fun bankholidaySubtitle(): String
+    fun call(): String
+    fun sendWishes(): String
+    fun dontForgetToSendWishes(): String
+    fun contactUpdateFailed(): String
+    fun contactUpdated(): String
+    fun contactAdded():String
+    fun contactAddedFailed(): String
 }

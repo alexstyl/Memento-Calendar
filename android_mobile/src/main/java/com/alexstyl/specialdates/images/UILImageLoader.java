@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.images;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,38 +28,42 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
         this.uil = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
     }
 
+    @NonNull
     @Override
-    public Request load(final URI imagePath) {
+    public Request load(@NonNull final URI imagePath) {
         final DisplayImageOptions.Builder builder = standardBuilder();
         return new Request() {
 
             @Override
-            public void into(ImageView imageView) {
+            public void into(@NonNull ImageView imageView) {
                 uil.displayImage(imagePath.toString(), imageView, builder.build());
             }
 
+            @NonNull
             @Override
             public Request asCircle() {
                 builder.displayer(defaultCircleDisplayer);
                 return this;
             }
 
+            @NonNull
             @Override
             public FixedSizeRequest withSize(@Px final int width, @Px final int height) {
                 builder.displayer(DefaultConfigurationFactory.createBitmapDisplayer());
                 return new FixedSizeRequest() {
+                    @NonNull
                     @Override
                     public Optional<Bitmap> synchronously() {
                         Bitmap bitmap = uil.loadImageSync(imagePath.toString(), new ImageSize(width, height), builder.build());
                         if (bitmap == null) {
-                            return Optional.absent();
+                            return Optional.Companion.absent();
                         } else {
                             return new Optional<>(bitmap);
                         }
                     }
 
                     @Override
-                    public void into(final ImageLoadedConsumer consumer) {
+                    public void into(@NonNull final ImageLoadedConsumer consumer) {
                         builder.displayer(DefaultConfigurationFactory.createBitmapDisplayer());
                         uil.loadImage(imagePath.toString(), builder.build(), new SimpleImageLoadingListener() {
                             @Override

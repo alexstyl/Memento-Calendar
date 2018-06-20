@@ -11,6 +11,7 @@
     android:title="@string/theme_preference_title" />
 
   <Preference
+    android:key="@string/key_daily_reminder_settings"
     android:summary="@string/daily_reminder_summary"
     android:title="@string/daily_reminder">
 

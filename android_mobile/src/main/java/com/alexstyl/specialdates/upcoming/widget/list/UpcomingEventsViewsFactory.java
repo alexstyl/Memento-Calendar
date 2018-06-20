@@ -20,7 +20,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private static final int VIEW_TYPE_COUNT = 3;
     private static final int DAYS_IN_A_MONTH = 30;
     private final String packageName;
-    private final UpcomingEventsProvider peopleEventsProvider;
+    private final UpcomingEventsProvider upcomingEventsProvider;
     private final Resources resources;
     private final CircularAvatarFactory avatarFactory;
     private final Context context;
@@ -28,13 +28,13 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private List<UpcomingRowViewModel> rows;
 
     UpcomingEventsViewsFactory(String packageName,
-                               UpcomingEventsProvider peopleEventsProvider,
+                               UpcomingEventsProvider upcomingEventsProvider,
                                Context context, Resources resources,
                                CircularAvatarFactory avatarFactory) {
         this.packageName = packageName;
         this.context = context;
         this.resources = resources;
-        this.peopleEventsProvider = peopleEventsProvider;
+        this.upcomingEventsProvider = upcomingEventsProvider;
         this.avatarFactory = avatarFactory;
     }
 
@@ -46,7 +46,7 @@ class UpcomingEventsViewsFactory implements RemoteViewsService.RemoteViewsFactor
     @Override
     public void onDataSetChanged() {
         Date date = Date.Companion.today();
-        rows = peopleEventsProvider.calculateEventsBetween(aMonthFrom(date));
+        rows = upcomingEventsProvider.calculateEventsBetween(aMonthFrom(date));
     }
 
     private TimePeriod aMonthFrom(Date date) {

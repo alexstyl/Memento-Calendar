@@ -11,7 +11,6 @@ import android.widget.NumberPicker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.MonthInt;
-import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.upcoming.MonthLabels;
 import com.novoda.notils.caster.Views;
 
@@ -20,7 +19,6 @@ import java.util.Locale;
 public class EventDatePicker extends LinearLayout {
 
     private static final int FIRST_DAY_OF_MONTH = 1;
-    private static final int LAST_DAY_OF_MONTH = 31;
 
     private final MonthLabels labels;
 
@@ -63,6 +61,7 @@ public class EventDatePicker extends LinearLayout {
                 } else {
                     hideYearPicker();
                 }
+                updateMaximumDaysInCurrentMonth();
             }
 
             private void hideYearPicker() {
@@ -79,7 +78,7 @@ public class EventDatePicker extends LinearLayout {
 
     private void setupDayPicker() {
         dayPicker.setMinValue(FIRST_DAY_OF_MONTH);
-        dayPicker.setMaxValue(LAST_DAY_OF_MONTH);
+        dayPicker.setMaxValue(today.getDaysInCurrentMonth());
 
         dayPicker.setValue(today.getDayOfMonth());
 
@@ -97,13 +96,13 @@ public class EventDatePicker extends LinearLayout {
 
     private void setupYearPicker() {
         yearPicker.setMinValue(FIRST_YEAR);
-        yearPicker.setMaxValue(todaysYear());
+        yearPicker.setMaxValue(currentYear());
 
-        yearPicker.setValue(todaysYear());
+        yearPicker.setValue(currentYear());
         yearPicker.setOnValueChangedListener(dateValidator);
     }
 
-    private Integer todaysYear() {
+    private Integer currentYear() {
         return today.getYear();
     }
 
@@ -117,7 +116,7 @@ public class EventDatePicker extends LinearLayout {
         } else {
             dayPicker.setValue(dateToDisplay.getDayOfMonth());
             monthPicker.setValue(dateToDisplay.getMonth());
-            yearPicker.setValue(todaysYear());
+            yearPicker.setValue(currentYear());
             yearPicker.setVisibility(GONE);
             includesYearCheckbox.setChecked(false);
         }
@@ -154,31 +153,22 @@ public class EventDatePicker extends LinearLayout {
 
     private final NumberPicker.OnValueChangeListener dateValidator = new NumberPicker.OnValueChangeListener() {
 
-        private static final int LAST_DAY_OF_FEBRUARY_LONG = 29;
-        private static final int LAST_DAY_OF_FEBRUARY_SHORT = 28;
-
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            if (getMonth() == Months.FEBRUARY && isDisplayingYear()) {
-
-                if (isValidDate(LAST_DAY_OF_FEBRUARY_LONG, Months.FEBRUARY, getYear())) {
-                    dayPicker.setMaxValue(LAST_DAY_OF_FEBRUARY_LONG);
-                } else {
-                    dayPicker.setMaxValue(LAST_DAY_OF_FEBRUARY_SHORT);
-                }
-            } else {
-                dayPicker.setMaxValue(LAST_DAY_OF_MONTH);
-            }
+            updateMaximumDaysInCurrentMonth();
         }
 
-        private boolean isValidDate(int dayOfMonth, int month, int year) {
-            try {
-                Date.Companion.on(dayOfMonth, month, year);
-                return true;
-            } catch (IllegalArgumentException ex) {
-                return false;
-            }
-        }
     };
+
+    private void updateMaximumDaysInCurrentMonth() {
+        int maxDays;
+        if (isDisplayingYear()){
+            maxDays = Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth(), getYear()).getDaysInCurrentMonth();
+        } else {
+            maxDays = Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth()).getDaysInCurrentMonth();
+        }
+
+        dayPicker.setMaxValue(maxDays);
+    }
 
 }

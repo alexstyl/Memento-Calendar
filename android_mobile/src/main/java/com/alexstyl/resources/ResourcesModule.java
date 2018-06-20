@@ -1,5 +1,6 @@
 package com.alexstyl.resources;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import com.alexstyl.specialdates.AndroidStrings;
@@ -15,8 +16,10 @@ import dagger.Provides;
 public class ResourcesModule {
 
     private final Resources resources;
+    private final Context context;
 
-    public ResourcesModule(Resources resources) {
+    public ResourcesModule(Context context, Resources resources) {
+        this.context = context;
         this.resources = resources;
     }
 
@@ -34,7 +37,7 @@ public class ResourcesModule {
 
     @Provides
     @Singleton
-    ColorResources providesColorResources() {
-        return new AndroidColorResources(resources);
+    Colors providesColorResources() {
+        return new AndroidColors(context);
     }
 }

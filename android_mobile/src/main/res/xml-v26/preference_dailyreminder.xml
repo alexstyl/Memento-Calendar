@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <CheckBoxPreference
+    android:key="@string/key_daily_reminder"
+    android:title="@string/enable" />
+
+  <com.alexstyl.android.preferences.widget.TimePreference
+    android:defaultValue="8:00"
+    android:key="@string/key_daily_reminder_time"
+    android:summary="@string/daily_reminder_time_summary"
+    android:title="@string/set_time" />
+
+  <Preference
+    android:key="@string/key_daily_reminder_advanced_settings"
+    android:summary="@string/daily_reminder_advanced_settings_summary"
+    android:title="@string/Advanced_notification_settings" />
+
+</PreferenceScreen>

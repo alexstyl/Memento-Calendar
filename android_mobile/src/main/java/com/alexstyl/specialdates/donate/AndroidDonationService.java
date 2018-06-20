@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.donate;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
@@ -16,14 +16,24 @@ public class AndroidDonationService implements DonationService {
     private final IabHelper iabHelper;
     private final Activity activity;
     private final DonationPreferences donationPreferences;
-    private DonationCallbacks listener;
     private final Analytics analytics;
+    private final CrashAndErrorTracker tracker;
+    private final DonateMonitor monitor;
 
-    public AndroidDonationService(IabHelper iabHelper, Activity activity, DonationPreferences donationPreferences, Analytics analytics) {
+    private DonationCallbacks listener;
+
+    public AndroidDonationService(IabHelper iabHelper,
+                                  Activity activity,
+                                  DonationPreferences donationPreferences,
+                                  Analytics analytics,
+                                  CrashAndErrorTracker tracker,
+                                  DonateMonitor monitor) {
         this.iabHelper = iabHelper;
         this.activity = activity;
         this.donationPreferences = donationPreferences;
         this.analytics = analytics;
+        this.tracker = tracker;
+        this.monitor = monitor;
     }
 
     @Override
@@ -55,7 +65,7 @@ public class AndroidDonationService implements DonationService {
                     }
             );
         } catch (IabHelper.IabAsyncInProgressException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
             listener.onDonateException(e.getMessage());
         }
     }
@@ -79,7 +89,7 @@ public class AndroidDonationService implements DonationService {
                     if (hasDonated) {
                         Toast.makeText(activity, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
                         donationPreferences.markAsDonated();
-                        DonateMonitor.getInstance().onDonationUpdated();
+                        monitor.onDonationUpdated();
                         analytics.trackDonationRestored();
                     } else {
                         Toast.makeText(activity, R.string.donate_no_donation_found, Toast.LENGTH_SHORT).show();
@@ -88,7 +98,7 @@ public class AndroidDonationService implements DonationService {
 
             });
         } catch (IabHelper.IabAsyncInProgressException e) {
-            ErrorTracker.track(e);
+            tracker.track(e);
         }
     }
 

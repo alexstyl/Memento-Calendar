@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="@dimen/bottom_sheet_layout_width"
+  android:layout_height="match_parent"
+  android:layout_gravity="center_horizontal"
+  android:orientation="vertical"
+  android:paddingBottom="24dp"
+  android:paddingLeft="24dp"
+  android:paddingRight="24dp"
+  android:paddingTop="16dp"
+  tools:layout_width="match_parent">
+
+  <TextView
+    android:id="@+id/bottom_sheet_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="sans-serif-medium"
+    android:text="@string/add_event_pick_image_title"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/bottom_sheet_grid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="16dp"
+    app:layoutManager="GridLayoutManager"
+    app:spanCount="4"
+    tools:listitem="@layout/row_image_option" />
+
+</LinearLayout>

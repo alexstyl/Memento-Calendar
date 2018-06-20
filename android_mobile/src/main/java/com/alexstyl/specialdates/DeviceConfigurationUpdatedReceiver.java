@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
+
+import javax.inject.Inject;
 
 /**
  * A {@linkplain BroadcastReceiver} that keeps track whether the user has updated some option on their device
@@ -12,16 +14,19 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
  */
 public class DeviceConfigurationUpdatedReceiver extends BroadcastReceiver {
 
+    @Inject UpcomingEventsViewRefresher viewRefresher;
+    @Inject CrashAndErrorTracker tracker;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        PeopleEventsViewRefresher viewRefresher = PeopleEventsViewRefresher.get(context.getApplicationContext());
+        ((MementoApplication) context.getApplicationContext()).getApplicationModule().inject(this);
 
         String action = intent.getAction();
         if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
-            ErrorTracker.updateLocaleUsed();
-            viewRefresher.updateAllViews();
+            tracker.updateLocaleUsed();
+            viewRefresher.refreshViews();
         } else if (Intent.ACTION_DATE_CHANGED.equals(action)) {
-            viewRefresher.updateAllViews();
+            viewRefresher.refreshViews();
         }
     }
 

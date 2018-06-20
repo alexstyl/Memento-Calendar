@@ -3,27 +3,23 @@ package com.alexstyl.specialdates.date
 import com.alexstyl.specialdates.Optional
 import org.joda.time.IllegalFieldValueException
 import org.joda.time.LocalDate
-import java.util.*
+import java.util.Locale
 
-/**
- * A specific date on a specific year
- */
-data class Date private constructor(private val localDate: LocalDate, private val year: Optional<Int>) : Comparable<Date> {
+data class Date(private val localDate: LocalDate, private val yearOptional: Optional<Int>) : Comparable<Date> {
 
     fun addDay(i: Int): Date {
         val addedDate = localDate.plusDays(i)
         return Date(addedDate, Optional(addedDate.year))
     }
 
-    val dayOfMonth: Int
-        get() = localDate.dayOfMonth
+    operator fun plus(i: Int): Date = addDay(i)
 
-    // JodaTime follows the same indexing as our project
-    val month: Int
-        @MonthInt
-        get() = localDate.monthOfYear
+    val dayOfMonth: Int get() = localDate.dayOfMonth
 
-    fun getYear(): Int = year.get()
+    val month: Int @MonthInt get() = localDate.monthOfYear
+
+    val year: Int get() = yearOptional.get()
+
 
     fun toMillis(): Long = localDate.toDate().time
 
@@ -40,30 +36,33 @@ data class Date private constructor(private val localDate: LocalDate, private va
     fun daysDifferenceTo(otherEvent: Date): Int {
         val dayOfYear = localDate.dayOfYear().get()
         val otherDayOfYear = otherEvent.localDate.dayOfYear().get()
-        val daysOfYearsDifference = (getYear() - otherEvent.getYear()) * 365
+        val daysOfYearsDifference = (year - otherEvent.year) * 365
         return otherDayOfYear - dayOfYear - daysOfYearsDifference
     }
 
-    fun hasYear(): Boolean = year.isPresent
+    fun hasYear(): Boolean = yearOptional.isPresent
 
-    fun hasNoYear(): Boolean = !year.isPresent
+    fun hasNoYear(): Boolean = !yearOptional.isPresent
 
-    override fun compareTo(right: Date): Int {
-        if (this.hasYear() && right.hasYear()) {
-            val yearOne = this.getYear()
-            val yearTwo = right.getYear()
+    val daysInCurrentMonth: Int
+            get() = localDate.dayOfMonth().maximumValue
+
+    override fun compareTo(other: Date): Int {
+        if (this.hasYear() && other.hasYear()) {
+            val yearOne = this.year
+            val yearTwo = other.year
             if (yearOne > yearTwo) {
                 return 1
             } else if (yearOne < yearTwo) {
                 return -1
             }
         }
-        if (this.month < right.month) {
+        if (this.month < other.month) {
             return -1
-        } else if (this.month > right.month) {
+        } else if (this.month > other.month) {
             return 1
         }
-        return this.dayOfMonth - right.dayOfMonth
+        return this.dayOfMonth - other.dayOfMonth
     }
 
     companion object {
@@ -81,7 +80,7 @@ data class Date private constructor(private val localDate: LocalDate, private va
 
         fun on(dayOfMonth: Int, @MonthInt month: Int): Date {
             val localDate = LocalDate(Months.NO_YEAR, month, dayOfMonth)
-            return Date(localDate, Optional.absent<Int>())
+            return Date(localDate, Optional.absent())
         }
 
         fun on(dayOfMonth: Int, @MonthInt month: Int, year: Int): Date {

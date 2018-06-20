@@ -1,5 +1,5 @@
 package com.alexstyl.specialdates.person;
 
-interface EventPressedListener {
-    void onContactActionPressed(ContactActionViewModel intent);
+public interface EventPressedListener {
+    public void onContactActionPressed(ContactActionViewModel intent);
 }

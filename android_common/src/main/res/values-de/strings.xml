@@ -28,14 +28,14 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Haben Sie einen Bug gefunden? Oder Sie haben einen Vorschlag? Lassen Sie es uns wissen!</string>
     <string name="choose">Wähle</string>
     <string name="number">Nummer</string>
-    <string name="action_call">Anrufen</string>
+    <string name="Call">Anrufen</string>
     <string name="action_text">SMS schreiben</string>
     <string name="action_send_mail">Email schreiben</string>
     <string name="no_app_found">Es wurde keine Anwendung zum Durchführen dieser Aktion gefunden</string>
     <string name="send_mail_via">Email schreiben via</string>
     <string name="daily_reminder">Tägliche Erinnerung</string>
     <string name="daily_reminder_summary">"Tägliche Erinnerung für jedes Ereignis"</string>
-    <string name="ringtone">Klingelton</string>
+    <string name="Sound">Klingelton</string>
     <string name="vibrate">Vibration</string>
     <string name="daily_reminder_time_summary">Jeden Tag um %s</string>
     <string name="set_time">Zeit festlegen</string>

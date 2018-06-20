@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.contact
 
 
-data class Names private constructor(private val names: List<String>) : Iterable<String> {
+data class Names(private val names: List<String>) : Iterable<String> {
 
     val primary: String
         get() = names[0]

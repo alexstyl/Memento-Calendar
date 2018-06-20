@@ -16,6 +16,7 @@
     <item name="colorPrimaryDark">#EEEEEE</item>
     <item name="colorSecondary">#424242</item>
     <item name="colorAccent">#424242</item>
+    <item name="primaryTextColorInverse">@color/black_light</item>
   </style>
 
   <style name="Theme.Memento.Eggplant"
@@ -40,6 +41,8 @@
     <item name="colorPrimaryDark">#FF8F00</item>
     <item name="colorSecondary">#FFD54F</item>
     <item name="colorAccent">#D50000</item>
+    <item name="primaryTextColor">@color/black_light</item>
+    <item name="primaryTextColorInverse">@android:color/white</item>
   </style>
 
   <style name="Theme.Memento.GlossPink"

@@ -28,14 +28,14 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Est-ce qu\'il y a des problèmes? Est-ce que vous avez des suggestions concernant l\' application? Touchez ici</string>
     <string name="choose">Choisissez</string>
     <string name="number">un numéro de téléphone</string>
-    <string name="action_call">Appel</string>
+    <string name="Call">Appel</string>
     <string name="action_text">Envoi un message</string>
     <string name="action_send_mail">Envoi un courriel</string>
     <string name="no_app_found">Pas d\' application existante afin que cette action se termine</string>
     <string name="send_mail_via">Envoi un courriel via</string>
     <string name="daily_reminder">Rappel quotidien</string>
     <string name="daily_reminder_summary">"Rappelle-moi les fêtes et les anniversaires de chaque jour"</string>
-    <string name="ringtone">Son</string>
+    <string name="Sound">Son</string>
     <string name="vibrate">Vibrer au rappel</string>
     <string name="daily_reminder_time_summary">Chaque jour à %s</string>
     <string name="set_time">Réglage de l\'heure</string>

@@ -1,43 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-  <color name="main_grey">#eeeeee</color>
-  <color name="light_grey">#F6F6F6</color>
-  <color name="main_white">@android:color/white</color>
-  <color name="pressed_example">#CC33B5E5</color>
-  <color name="avatar_number">#414141</color>
-  <color name="card_text">#707070</color>
-  <color name="teal">#55B2A5</color>
-
-  <color name="main_red">#c61d30</color>
-  <color name="main_cream">#ffeebb</color>
-
-
-  <color name="primary_dark_red">#B71C1C</color>
-  <color name="primary_red">#c61d30</color>
-
-  <color name="main_red_semi_transparent">#99c61d30</color>
-
-  <color name="avatar_variant_1">#aeb857</color>
-  <color name="avatar_variant_2">#536173</color>
-  <color name="avatar_variant_3">#df5948</color>
-  <color name="avatar_variant_4">#547bca</color>
-  <color name="avatar_variant_5">#e5ae4f</color>
-  <color name="font_on_red">#ffffff</color>
-
-  <color name="statusbar_color">#9e1726</color>
-
-  <color name="birthday_red">#ffff4444</color>
-  <color name="anniversary_yellow">@color/avatar_variant_1</color>
-  <color name="nameday_blue">#ff33b5e5</color>
-
-  <color name="past_date_grey">#595959</color>
-  <color name="purple_custom_event">#6a1b9a</color>
-
-  <color name="white_semi_transparents">#99ffffff</color>
-  <color name="neutral_ripple">#46000000</color>
-
-  <drawable name="dark_variant">#263238</drawable>
-  <color name="bankholiday_green">#ff669900</color>
-  <color name="facebook_blue">#3b5998</color>
+    <color name="dark_text">#414141</color>
 </resources>

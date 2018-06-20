@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.addevent.ui;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.R;
+import com.alexstyl.specialdates.addevent.ContactsSearch;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.widget.ColorImageView;
@@ -29,7 +31,7 @@ class ContactsAdapter extends BaseAdapter implements Filterable {
         this.filter = new DeviceContactsFilter(contactsSearch) {
 
             @Override
-            protected void onContactsFiltered(List<Contact> contacts) {
+            public void onContactsFiltered(@NonNull List<Contact> contacts) {
                 setSuggestions(contacts);
             }
         };

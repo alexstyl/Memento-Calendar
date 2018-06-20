@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:layout_height="wrap_content"
+  tools:layout_width="match_parent"
+  tools:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout">
+
+
+  <LinearLayout
+    android:id="@+id/banner_ad_holder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.gms.ads.AdView
+      android:id="@+id/banner_ad"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      app:adSize="BANNER"
+      app:adUnitId="@string/admob_unit_id" />
+
+    <ImageButton
+      android:id="@+id/banner_close"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_marginLeft="8dp"
+      android:background="?android:selectableItemBackground"
+      android:minHeight="56dp"
+      android:src="@drawable/ic_close_black" />
+  </LinearLayout>
+
+  <android.support.v7.widget.AppCompatButton
+    android:id="@+id/banner_support_holder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="56dp"
+    android:text="@string/support_app"
+    android:textColor="?primaryTextColorInverse"
+    android:visibility="gone"
+    app:backgroundTint="?colorAccent" />
+
+</merge>

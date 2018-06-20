@@ -6,7 +6,7 @@
   android:layout_height="wrap_content"
   android:gravity="center_vertical"
   android:textAllCaps="true"
-  android:textColor="#B0B0B0"
+  tools:textColor="@color/upcoming_header_text_color"
   android:textSize="14sp"
   android:textStyle="bold"
   tools:text="February 24, Sunday" />

@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
@@ -22,6 +21,7 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_contact_permission_request);
         setResult(RESULT_CANCELED);
 
@@ -37,7 +37,11 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
     };
 
     private void requestContactPermission() {
-        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT_PERMISSION);
+        requestPermissions(
+                new String[]{Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.WRITE_CONTACTS},
+                REQUEST_CONTACT_PERMISSION
+        );
     }
 
     @Override
@@ -46,7 +50,6 @@ public class ContactPermissionActivity extends ThemedMementoActivity {
         if (requestCode == REQUEST_CONTACT_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             setResult(RESULT_OK);
             finish();
-            PeopleEventsViewRefresher.get(getApplicationContext()).updateAllViews();
         }
     }
 }

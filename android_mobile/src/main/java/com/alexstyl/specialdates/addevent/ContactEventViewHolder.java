@@ -6,8 +6,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alexstyl.android.ViewVisibility;
-
 final class ContactEventViewHolder extends RecyclerView.ViewHolder {
     private final ImageView icon;
     private final TextView datePicker;
@@ -29,8 +27,8 @@ final class ContactEventViewHolder extends RecyclerView.ViewHolder {
                 contactDetailsListener.onAddEventClicked(viewModel);
             }
         });
-        @ViewVisibility int clearVisibility = viewModel.getClearVisibility();
-        removeEvent.setVisibility(clearVisibility);
+        boolean clearVisibility = viewModel.getClearVisibility();
+        removeEvent.setVisibility(clearVisibility ? View.VISIBLE : View.GONE);
         removeEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

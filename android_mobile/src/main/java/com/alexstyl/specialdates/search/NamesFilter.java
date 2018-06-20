@@ -9,7 +9,7 @@ import java.util.List;
 
 final class NamesFilter extends Filter {
 
-    private static final Optional<String> NO_IGNORED_RESULT = Optional.absent();
+    private static final Optional<String> NO_IGNORED_RESULT = Optional.Companion.absent();
     private final NameSuggestionsAdapter adapter;
     private final NameFilter nameFilter;
     private Optional<String> ignoredResult = NO_IGNORED_RESULT;

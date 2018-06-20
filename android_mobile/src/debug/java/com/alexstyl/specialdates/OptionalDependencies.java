@@ -16,8 +16,8 @@ class OptionalDependencies {
 
     void initialise() {
         Stetho.initializeWithDefaults(context);
-//        if (!LeakCanary.isInAnalyzerProcess(context)) {
-//            LeakCanary.install((Application) context);
-//        }
+        if (!LeakCanary.isInAnalyzerProcess(context)) {
+            LeakCanary.install((Application) context);
+        }
     }
 }

@@ -4,15 +4,15 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
-import com.alexstyl.specialdates.contact.ContactsProvider;
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
-import com.alexstyl.specialdates.permissions.PermissionChecker;
-import com.alexstyl.specialdates.service.PeopleEventsProvider;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -25,7 +25,9 @@ import java.util.List;
 public class WearSyncService extends IntentService {
 
     @Inject NamedayUserSettings namedayUserSettings;
-    @Inject ContactsProvider contactsProvider;
+    @Inject PeopleEventsProvider peopleEventsProvider;
+    @Inject CrashAndErrorTracker tracker;
+    @Inject MementoPermissions permissions;
 
     public WearSyncService() {
         super(WearSyncService.class.getSimpleName());
@@ -34,14 +36,14 @@ public class WearSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
+        AppComponent applicationModule = ((MementoApplication) getApplication())
+                .getApplicationModule();
         applicationModule.inject(this);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        PermissionChecker permissionChecker = new PermissionChecker(this);
-        if (!permissionChecker.canReadAndWriteContacts()) {
+        if (!permissions.canReadAndWriteContacts()) {
             return;
         }
         Optional<ContactEventsOnADate> eventsOptional = fetchContactEvents();
@@ -59,9 +61,12 @@ public class WearSyncService extends IntentService {
     }
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
-        PeopleEventsProvider eventsProvider = PeopleEventsProvider.newInstance(this, namedayUserSettings, contactsProvider);
-        Date today = Date.Companion.today();
-        return eventsProvider.getCelebrationsClosestTo(today);
+        Date closestDate = peopleEventsProvider.findClosestEventDateOnOrAfter(Date.Companion.today());
+        if (closestDate != null) {
+            return new Optional<>(peopleEventsProvider.fetchEventsOn(closestDate));
+        } else {
+            return Optional.Companion.absent();
+        }
     }
 
     private PutDataRequest createDataRequest(ContactEventsOnADate contactEvents) {

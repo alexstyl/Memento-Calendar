@@ -1,61 +1,104 @@
 package com.alexstyl.specialdates;
 
 import android.app.AlarmManager;
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
-import com.alexstyl.android.AlarmManagerCompat;
 import com.alexstyl.resources.ResourcesModule;
-import com.alexstyl.specialdates.dailyreminder.DailyReminderPreferences;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
+import com.alexstyl.specialdates.facebook.FacebookModule;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
 import com.alexstyl.specialdates.images.AndroidContactsImageDownloader;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.images.NutraBaseImageDecoder;
+import com.alexstyl.specialdates.permissions.MementoPermissions;
+import com.alexstyl.specialdates.theming.ThemingModule;
 import com.alexstyl.specialdates.ui.widget.ViewModule;
+import com.alexstyl.specialdates.upcoming.PeopleEventsRefreshJob;
+import com.evernote.android.job.DailyJob;
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.novoda.notils.logger.simple.Log;
 
+import javax.inject.Inject;
+import java.util.concurrent.TimeUnit;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class MementoApplication extends Application {
+public class MementoApplication extends MultiDexApplication {
 
     private AppComponent appComponent;
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        appComponent =
-                DaggerAppComponent.builder()
-                        .appModule(new AppModule(this))
-                        .resourcesModule(new ResourcesModule(getResources()))
-                        .imageModule(new ImageModule(getResources()))
-                        .viewModule(new ViewModule(getResources()))
-                        .namedaysInADayModule(new NamedaysInADayModule())
-                        .build();
-    }
+    @Inject CrashAndErrorTracker tracker;
+    @Inject FacebookUserSettings facebookSettings;
+    @Inject JobsCreator jobCreator;
+    @Inject PeopleEventsUpdater peopleEventsUpdater;
+    @Inject MementoPermissions permissions;
+    @Inject UpcomingEventsSettings settings;
+    @Inject DailyReminderUserSettings dailyReminderUserSettings;
+    @Inject DailyReminderScheduler androidDailyReminderScheduler;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        appComponent =
+                DaggerAppComponent.builder()
+                        .androidApplicationModule(new AndroidApplicationModule(this))
+                        .resourcesModule(new ResourcesModule(this, getResources()))
+                        .imageModule(new ImageModule(getResources()))
+                        .peopleEventsModule(new PeopleEventsModule(this))
+                        .themingModule(new ThemingModule())
+                        .viewModule(new ViewModule(getResources()))
+                        .facebookModule(new FacebookModule(this))
+                        .namedaysInADayModule(new NamedaysInADayModule())
+                        .build();
+
+        appComponent.inject(this);
+
         initialiseDependencies();
-        ErrorTracker.startTracking(this);
+        tracker.startTracking();
 
-        DailyReminderPreferences preferences = DailyReminderPreferences.newInstance(this);
-        if (preferences.isEnabled()) {
-            AlarmManagerCompat alarmManager = AlarmManagerCompat.from(this);
-            new DailyReminderScheduler(alarmManager, this).setupReminder(preferences);
+        JobManager.create(this).addJobCreator(jobCreator);
+
+        if (dailyReminderUserSettings.isEnabled()) {
+            androidDailyReminderScheduler.scheduleReminderFor(dailyReminderUserSettings.getTimeSet());
         }
-        if (FacebookPreferences.newInstance(this).isLoggedIn()) {
+
+        if (facebookSettings.isLoggedIn()) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            new FacebookFriendsScheduler(this, alarmManager).scheduleNext();
-
+            new FacebookFriendsScheduler(this, alarmManager).scheduleNext();// TODO use job schedulerAndroid
         }
+
+        if (needsToInitialiseEvents()) {
+            peopleEventsUpdater
+                    .updateEvents()
+                    .subscribe();
+        }
+
+        schedulePeopleEventJob();
+    }
+
+    private boolean needsToInitialiseEvents() {
+        return permissions.canReadAndWriteContacts() && !settings.hasBeenInitialised();
+    }
+
+    private void schedulePeopleEventJob() {
+        DailyJob.schedule(
+                new JobRequest.Builder(PeopleEventsRefreshJob.TAG),
+                TimeUnit.HOURS.toMillis(1),
+                TimeUnit.HOURS.toMillis(3)
+        );
+
     }
 
     protected void initialiseDependencies() {
@@ -73,6 +116,7 @@ public class MementoApplication extends Application {
                 .imageDecoder(new NutraBaseImageDecoder(BuildConfig.DEBUG))
                 .imageDownloader(new AndroidContactsImageDownloader(context));
         L.writeLogs(BuildConfig.DEBUG);
+
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
     }
 

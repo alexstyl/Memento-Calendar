@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center_vertical"
+  android:minHeight="52dp"
+  android:orientation="horizontal"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  app:foreground="?android:attr/selectableItemBackground">
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_facebook_import_friends" />
+
+  <TextView
+    android:id="@+id/row_people_facebook_import"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:textColor="@color/black_light"
+    tools:text="@string/title_facebook_friends_import" />
+
+</com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>

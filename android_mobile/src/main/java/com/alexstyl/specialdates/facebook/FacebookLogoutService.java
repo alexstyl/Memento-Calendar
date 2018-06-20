@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.facebook;
 
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 
 import io.reactivex.Completable;
@@ -11,8 +11,8 @@ import io.reactivex.schedulers.Schedulers;
 
 class FacebookLogoutService {
 
-    private final PeopleEventsViewRefresher refresher;
-    private final FacebookPreferences preferences;
+    private final UpcomingEventsViewRefresher refresher;
+    private final FacebookUserSettings preferences;
     private final FacebookFriendsPersister persister;
     private final Scheduler resultScheduler;
     private final OnFacebookLogOutCallback callback;
@@ -20,9 +20,9 @@ class FacebookLogoutService {
     private CompositeDisposable disposable = new CompositeDisposable();
 
     FacebookLogoutService(Scheduler resultScheduler,
-                          FacebookPreferences preferences,
+                          FacebookUserSettings preferences,
                           FacebookFriendsPersister persister,
-                          PeopleEventsViewRefresher refresher, OnFacebookLogOutCallback callback) {
+                          UpcomingEventsViewRefresher refresher, OnFacebookLogOutCallback callback) {
         this.resultScheduler = resultScheduler;
         this.preferences = preferences;
         this.persister = persister;
@@ -45,7 +45,7 @@ class FacebookLogoutService {
         return new Action() {
             @Override
             public void run() throws Exception {
-                refresher.updateAllViews();
+                refresher.refreshViews();
             }
         };
     }

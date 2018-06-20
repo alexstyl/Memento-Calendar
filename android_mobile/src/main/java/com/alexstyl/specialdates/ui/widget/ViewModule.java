@@ -19,7 +19,7 @@ public class ViewModule {
 
     @Provides
     @Singleton
-    LetterPainter providesLetterPainter() {
-        return new LetterPainter(resources);
+    AndroidLetterPainter providesLetterPainter() {
+        return new AndroidLetterPainter(resources);
     }
 }

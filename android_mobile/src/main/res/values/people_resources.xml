@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="people_import_bottom_spacing">40dp</dimen>
+    <dimen name="people_inbetween_spacing">10dp</dimen>
+</resources>
