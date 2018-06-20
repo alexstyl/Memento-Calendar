@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity
 import com.alexstyl.specialdates.person.PersonActivity
 
@@ -20,7 +20,7 @@ internal class SearchNavigator(private val analytics: Analytics) {
 
     fun toNamedays(date: Date, activity: Activity) {
         val currentYearDate = Date.on(date.dayOfMonth, date.month, Date.CURRENT_YEAR)
-        val intent = NamedayActivity.getStartIntent(activity, currentYearDate)
+        val intent = NamedaysOnADayActivity.getStartIntent(activity, currentYearDate)
         activity.startActivity(intent)
     }
 

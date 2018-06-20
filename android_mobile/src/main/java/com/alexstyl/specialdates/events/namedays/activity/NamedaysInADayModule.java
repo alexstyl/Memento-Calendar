@@ -19,10 +19,10 @@ public class NamedaysInADayModule {
     }
 
     @Provides
-    NamedayPresenter presenter(NamedayCalendar calendar,
+    NamedaysInADayPresenter presenter(NamedayCalendar calendar,
                                NamedaysViewModelFactory namedaysViewModelFactory,
                                ContactsProvider contactsProvider,
                                NamedayUserSettings namedayUserSettings) {
-        return new NamedayPresenter(calendar, namedaysViewModelFactory, contactsProvider, namedayUserSettings, Schedulers.io(), AndroidSchedulers.mainThread());
+        return new NamedaysInADayPresenter(calendar, namedaysViewModelFactory, contactsProvider, namedayUserSettings, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

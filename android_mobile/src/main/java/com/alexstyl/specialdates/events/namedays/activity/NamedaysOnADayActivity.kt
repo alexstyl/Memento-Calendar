@@ -21,17 +21,22 @@ import com.alexstyl.specialdates.ui.widget.MementoToolbar
 import javax.inject.Inject
 
 
-class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
+class NamedaysOnADayActivity : ThemedMementoActivity() {
 
-    @Inject lateinit var imageLoader: ImageLoader
-    @Inject lateinit var presenter: NamedayPresenter
-    @Inject lateinit var dateLabelCreator: DateLabelCreator
-    @Inject lateinit var analytics: Analytics
+    @Inject
+    lateinit var imageLoader: ImageLoader
+    @Inject
+    lateinit var presenter: NamedaysInADayPresenter
+    @Inject
+    lateinit var dateLabelCreator: DateLabelCreator
+    @Inject
+    lateinit var analytics: Analytics
 
-    private var screenAdapter: NamedaysScreenAdapter? = null
     private var dateView: TextView? = null
-    private var namedayNavigator: NamedayNavigator? = null
+    private var namedaysOnADayNavigator: NamedaysOnADayNavigator? = null
 
+
+    private lateinit var view: NamedaysOnADayView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +46,7 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
         applicationModule.inject(this)
 
         analytics.trackScreen(Screen.NAMEDAYS)
-        namedayNavigator = NamedayNavigator(this, analytics)
+        namedaysOnADayNavigator = NamedaysOnADayNavigator(this, analytics)
 
         val toolbar = findViewById<MementoToolbar>(R.id.memento_toolbar)
         toolbar.displayNavigationIconAsUp()
@@ -51,26 +56,24 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
 
         val recyclerView = findViewById<RecyclerView>(R.id.namedays_list)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val namedaysAdapter = NamedaysScreenAdapter(NamedaysScreenViewHolderFactory(LayoutInflater.from(this), imageLoader),
-                { contact ->
-                    namedayNavigator?.toContactDetails(contact)
-                })
-        screenAdapter = namedaysAdapter
-        recyclerView.adapter = screenAdapter
 
 
         val date = intent.getDateExtraOrThrow()
         dateView?.text = dateLabelCreator.createWithYearPreferred(date)
+
+        val layoutInflater = LayoutInflater.from(this)
+        val adapter = NamedaysScreenAdapter(
+                NamedaysScreenViewHolderFactory(layoutInflater, imageLoader),
+                { contact -> namedaysOnADayNavigator?.toContactDetails(contact) }
+        )
+        recyclerView.adapter = adapter
+        view = AndroidNamedaysOnADayView(adapter)
     }
 
     override fun onStart() {
         super.onStart()
         val date = intent.getDateExtraOrThrow()
-        presenter.startPresenting(into = this, forDate = date)
-    }
-
-    override fun displayNamedays(viewModels: List<NamedayScreenViewModel>) {
-        screenAdapter?.display(viewModels)
+        presenter.startPresenting(view, date)
     }
 
     override fun onStop() {
@@ -79,11 +82,10 @@ class NamedayActivity : ThemedMementoActivity(), NamedaysMVPView {
     }
 
     companion object {
-        fun getStartIntent(context: Context, date: Date): Intent =
-                Intent(context, NamedayActivity::class.java)
-                        .apply {
-                            putExtraDate(date)
-                        }
+        fun getStartIntent(context: Context, date: Date): Intent {
+            return Intent(context, NamedaysOnADayActivity::class.java)
+                    .putExtraDate(date)
+        }
     }
 }
 

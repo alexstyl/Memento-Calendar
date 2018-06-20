@@ -155,7 +155,7 @@
         </activity>
 
         <activity
-            android:name=".events.namedays.activity.NamedayActivity"
+            android:name=".events.namedays.activity.NamedaysOnADayActivity"
             android:parentActivityName=".home.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

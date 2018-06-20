@@ -21,9 +21,9 @@ import org.mockito.Mockito.verify
 import org.mockito.runners.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class NamedayPresenterTest {
+class NamedaysInADayPresenterTest {
 
-    private val mockView = Mockito.mock(NamedaysMVPView::class.java)
+    private val mockView = Mockito.mock(NamedaysOnADayView::class.java)
     private val LETTER_VARIANT = 5
 
     private val ANY_DATE = Date.on(1, JANUARY, 2017)
@@ -32,14 +32,14 @@ class NamedayPresenterTest {
     private var mockLetterPainter = Mockito.mock(LetterPainter::class.java)
     private val mockUserSettings = Mockito.mock(NamedayUserSettings::class.java)
 
-    private lateinit var presenter: NamedayPresenter
+    private lateinit var presenter: NamedaysInADayPresenter
 
     @Before
     fun setUp() {
         val workScheduler = Schedulers.trampoline()
         val resultScheduler = Schedulers.trampoline()
 
-        presenter = NamedayPresenter(
+        presenter = NamedaysInADayPresenter(
                 mockNamedayCalendar,
                 NamedaysViewModelFactory(mockLetterPainter),
                 ContactsProvider(mapOf(Pair(0, mockSource))), mockUserSettings, workScheduler, resultScheduler)

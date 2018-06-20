@@ -12,16 +12,16 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 
-class NamedayPresenter(private val namedayCalendar: NamedayCalendar,
-                       private val namedaysViewModelFactory: NamedaysViewModelFactory,
-                       private val contactsProvider: ContactsProvider,
-                       private val namedayUserSettings: NamedayUserSettings,
-                       private val workScheduler: Scheduler,
-                       private val resultScheduler: Scheduler) {
+class NamedaysInADayPresenter(private val namedayCalendar: NamedayCalendar,
+                              private val namedaysViewModelFactory: NamedaysViewModelFactory,
+                              private val contactsProvider: ContactsProvider,
+                              private val namedayUserSettings: NamedayUserSettings,
+                              private val workScheduler: Scheduler,
+                              private val resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
 
-    fun startPresenting(into: NamedaysMVPView, forDate: Date) {
+    fun startPresenting(into: NamedaysOnADayView, forDate: Date) {
         disposable =
                 Observable.fromCallable { namedayCalendar.getAllNamedaysOn(forDate) }
                         .observeOn(workScheduler)

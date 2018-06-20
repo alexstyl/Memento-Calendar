@@ -1,5 +1,5 @@
 package com.alexstyl.specialdates.events.namedays.activity
 
-interface NamedaysMVPView {
+interface NamedaysOnADayView {
     fun displayNamedays(viewModels: List<NamedayScreenViewModel>)
 }
