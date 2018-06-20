@@ -31,9 +31,10 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = new File(
-                    "./../../../../../build/",
-                    output.outputFileName.replace(".apk", "-${variant.versionName}.apk"))
+            def relativeRootDir = output.packageApplication.outputDirectory.toPath()
+                    .relativize(rootDir.toPath()).toFile()
+            def newOutputName = "memento_" + output.outputFileName.replace(".apk", "-${variant.versionName}.apk")
+            output.outputFileName = new File("$relativeRootDir/android_mobile/release", newOutputName)
         }
     }
 
