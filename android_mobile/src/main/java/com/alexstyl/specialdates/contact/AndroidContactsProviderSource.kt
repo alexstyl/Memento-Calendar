@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.contact
 
 internal class AndroidContactsProviderSource(private val cache: ContactCache, private val factory: AndroidContactFactory) : ContactsProviderSource {
 
+
     @Throws(ContactNotFoundException::class)
     override fun getOrCreateContact(contactID: Long): Contact {
         var deviceContact = cache.getContact(contactID)
@@ -12,12 +13,13 @@ internal class AndroidContactsProviderSource(private val cache: ContactCache, pr
         return deviceContact
     }
 
-    override fun getAllContacts(): Contacts {
-        val allContacts = factory.getAllContacts()
-        cache.evictAll()
-        cache.addContacts(allContacts)
-        return allContacts
-    }
+    override val allContacts: Contacts
+        get() {
+            val allContacts = factory.getAllContacts()
+            cache.evictAll()
+            cache.addContacts(allContacts)
+            return allContacts
+        }
 
     override fun queryContacts(contactIds: List<Long>): Contacts {
         val contacts = factory.queryContacts(contactIds)

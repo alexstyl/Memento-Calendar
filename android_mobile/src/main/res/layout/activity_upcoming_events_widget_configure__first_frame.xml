@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/upcoming_widget_constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/scrim"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:src="@drawable/black_to_transparent_gradient_facing_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/upcoming_widget_virtual_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/toolbar_minHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_marginTop="0dp">
+
+        <ImageButton
+            android:id="@+id/upcoming_widget_close"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:src="@drawable/ic_close_white"
+            app:layout_constraintTop_toTopOf="@+id/status_bar_guideline" />
+
+        <TextView
+            android:id="@+id/upcoming_widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/toolbar_minHeight"
+            android:text="@string/Configure_widget"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/upcoming_widget_close"
+            app:layout_constraintStart_toEndOf="@+id/upcoming_widget_close"
+            app:layout_constraintTop_toTopOf="@+id/upcoming_widget_close" />
+    </LinearLayout>
+
+    <com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigurationPanel
+        android:id="@+id/upcoming_widget_configure_panel"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        android:background="@drawable/card"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetPreviewLayout
+        android:id="@+id/upcoming_widget_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+
+</android.support.constraint.ConstraintLayout>

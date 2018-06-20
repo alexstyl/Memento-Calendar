@@ -28,14 +28,14 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Atradi kļūdu? Ir ieteikumi? Padod man ziņu!</string>
     <string name="choose">Izvēlēties</string>
     <string name="number">numurs</string>
-    <string name="action_call">Zvanīt</string>
+    <string name="Call">Zvanīt</string>
     <string name="action_text">Sūtīt SMS</string>
     <string name="action_send_mail">Sūtīt e-pastu</string>
     <string name="no_app_found">Nav nevienas piemērotas lietotnes, lai paveiktu darbību</string>
     <string name="send_mail_via">Sūtīt e-pastu ar</string>
     <string name="daily_reminder">Ikdienas atgādinājums</string>
     <string name="daily_reminder_summary">"Atgādināt par katras dienas notikumiem"</string>
-    <string name="ringtone">Skaņas tonis</string>
+    <string name="Sound">Skaņas tonis</string>
     <string name="vibrate">Vibrācija</string>
     <string name="daily_reminder_time_summary">Katru dienu plkst. %s</string>
     <string name="set_time">Uzstādīt laiku</string>
@@ -77,7 +77,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <!-- The name for contacts with empty Display name-->
     <string name="no_name">(Nav vārda)</string>
     <string name="include_year">Iekļaut gadskaitli?</string>
-    <string name="save">Saglabāt</string>
+    <string name="Save">Saglabāt</string>
     <string name="add">Pievienot</string>
     <string name="contact_no_birthday">Dzimšanas diena nav norādīta</string>
     <string name="contact_no_nameday">%s vārda diena nav zināma</string>
@@ -143,7 +143,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Configure_widget">Konfigurēt logrīku</string>
     <string name="Done">Darīts</string>
     <string name="Transparency">Caurspīdīgums</string>
-    <string name="Dark_themeQ">Tumšā tēma?</string>
+    <string name="Use_dark_theme">Tumšā tēma?</string>
     <string name="Contact_names">Kontaktpersonu vārdi</string>
     <string name="Bank_holiday">Valsts svētku diena</string>
     <string name="Bank_holidays">Valsts svētku dienas</string>

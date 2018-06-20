@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.alexstyl.android.Version;
 import com.alexstyl.specialdates.AppComponent;
-import com.alexstyl.specialdates.ErrorTracker;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.Strings;
@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.TextViewLabelSetter;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.donate.util.IabHelper;
 import com.alexstyl.specialdates.images.ImageLoader;
+import com.alexstyl.specialdates.ui.LolipopHideStatusBarListener;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -45,6 +46,9 @@ public class DonateActivity extends MementoActivity {
     @Inject ImageLoader imageLoader;
     @Inject IabHelper iabHelper;
     @Inject DonationPreferences donationPreferences;
+    @Inject CrashAndErrorTracker tracker;
+    @Inject DonateMonitor monitor;
+    @Inject DonateMonitor donateMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +71,11 @@ public class DonateActivity extends MementoActivity {
         final AppBarLayout appBarLayout = Views.findById(this, R.id.app_bar_layout);
         final NestedScrollView scrollView = Views.findById(this, R.id.scroll);
 
-        if (Version.hasLollipop()) {
-            appBarLayout.addOnOffsetChangedListener(new HideStatusBarListener(getWindow()));
+        if (Version.INSTANCE.hasLollipop()) {
+            appBarLayout.addOnOffsetChangedListener(new LolipopHideStatusBarListener(getWindow()));
         }
 
-        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics);
+        DonationService donationService = new AndroidDonationService(iabHelper, this, donationPreferences, analytics, tracker, donateMonitor);
         final Button donateButton = Views.findById(this, R.id.donate_place_donation);
         donateButton.requestFocus();
 
@@ -112,6 +116,7 @@ public class DonateActivity extends MementoActivity {
             }
         });
         AndroidDonation[] values = AndroidDonation.values();
+        donateBar.setProgress(1);
         donateBar.setMax(values.length - 1);
     }
 
@@ -126,13 +131,13 @@ public class DonateActivity extends MementoActivity {
 
             @Override
             public void onDonateException(String message) {
-                ErrorTracker.track(new RuntimeException(message));
+                tracker.track(new RuntimeException(message));
                 finish();
             }
 
             @Override
             public void onDonationFinished(Donation donation) {
-                DonateMonitor.getInstance().onDonationUpdated();
+                monitor.onDonationUpdated();
 
                 Toast.makeText(DonateActivity.this, R.string.donate_thanks_for_donating, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);

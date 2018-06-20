@@ -1,17 +1,22 @@
 package com.alexstyl.specialdates;
 
-import android.content.Context;
+import com.alexstyl.resources.ResourcesModule;
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
+import com.alexstyl.specialdates.images.ImageModule;
 
 public class DebugApplication extends MementoApplication {
 
     private DebugAppComponent debugAppComponent;
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+    public void onCreate() {
+        super.onCreate();
         debugAppComponent =
                 DaggerDebugAppComponent.builder()
-                        .appModule(new AppModule(this))
+                        .androidApplicationModule(new AndroidApplicationModule(this))
+                        .peopleEventsModule(new PeopleEventsModule(this))
+                        .imageModule(new ImageModule(getResources()))
+                        .resourcesModule(new ResourcesModule(this, getResources()))
                         .build();
     }
 

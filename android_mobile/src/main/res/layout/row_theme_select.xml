@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:padding="8dp">
-
-  <com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground
-    android:id="@+id/themeSelect_primary_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/nameday_blue"
-    android:foreground="@drawable/selectable_background_dayslight"
-    android:gravity="center_vertical"
-    android:minHeight="48dp"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/card_padding_from_screen"
-    android:paddingRight="@dimen/card_padding_from_screen">
+    android:padding="8dp">
 
-    <TextView
-      android:id="@+id/themeSelect_name"
-      style="@style/TextAppearance.AppCompat.Title"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:padding="8dp"
-      tools:text="Theme Name" />
+    <com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout
+        android:id="@+id/themeSelect_primary_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nameday_blue"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/card_padding_from_screen"
+        android:paddingRight="@dimen/card_padding_from_screen"
+        app:foreground="@drawable/selectable_background_dayslight">
 
-    <View
-      android:id="@+id/themeSelect_accent_color"
-      android:layout_width="28dp"
-      android:layout_height="28dp"
-      android:clickable="false"
-      android:focusable="false"
-      android:padding="8dp"
-      tools:background="@color/primary_red" />
+        <TextView
+            android:id="@+id/themeSelect_name"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp"
+            tools:text="Theme Name" />
 
-  </com.alexstyl.specialdates.ui.widget.LinearLayoutWithForeground>
+        <View
+            android:id="@+id/themeSelect_accent_color"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:padding="8dp"
+            tools:background="@color/primary_red" />
+
+    </com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>
 </FrameLayout>

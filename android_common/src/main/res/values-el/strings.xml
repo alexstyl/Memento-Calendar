@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The original name of the app is Memento Calendar. In Greek though the name is Εορτολόγιο Memento (Nameday Almanac Memento)
-as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
+  as the name makes more sense. If there is a local specific name, make sure to write it here. If not, leave it as is-->
     <string name="localised_app_name">Γιορτές Memento</string>
     <string name="today">Σήμερα</string>
     <string name="tomorrow">Αύριο</string>
@@ -15,7 +15,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="birthday_no_birthday">Καμία επαφή δεν έχει γενέθλια αυτήν την ημέρα</string>
     <string name="action_settings">Ρυθμίσεις</string>
     <string name="disable">Απενεργοποίηση</string>
-    <string name="enable">Ενεργοποίηση</string>
+    <string name="enable">Ενεργό</string>
     <string name="today_celebrates_one">%1$s</string>
     <string name="today_celebrates_two">%1$s και %2$s</string>
     <string name="today_celebrates_many">%1$s και %2$d άλλοι</string>
@@ -28,14 +28,14 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Παρουσιάστηκε κάποιο πρόβλημα; Έχετε κάποια πρόταση για την εφαρμογή; Πατήστε εδώ</string>
     <string name="choose">Επιλογή</string>
     <string name="number">αριθμού</string>
-    <string name="action_call">Κλήση</string>
+    <string name="Call">Κλήση</string>
     <string name="action_text">Αποστολή SMS</string>
     <string name="action_send_mail">Αποστολή e-mail</string>
     <string name="no_app_found">Δεν βρέθηκε κάποια εγκατεστημένη εφαρμογή για να ολοκληρωθεί αυτή η ενέργεια</string>
     <string name="send_mail_via">Αποστολή e-mail μέσω</string>
     <string name="daily_reminder">Καθημερινή Υπενθύμιση</string>
     <string name="daily_reminder_summary">"Θύμιζέ μου τις γιορτές και τα γενέθλια της κάθε ημέρας"</string>
-    <string name="ringtone">Ήχος</string>
+    <string name="Sound">Ήχος</string>
     <string name="vibrate">Δόνηση</string>
     <string name="daily_reminder_time_summary">Κάθε μέρα στις %s</string>
     <string name="set_time">Ρύθμιση Ώρας</string>
@@ -75,7 +75,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <!-- The name for contacts with empty Display name-->
     <string name="no_name">(Ακατανόμαστος)</string>
     <string name="include_year">με έτος γέννησης;</string>
-    <string name="save">Αποθήκευση</string>
+    <string name="Save">Αποθήκευση</string>
     <string name="add">Προσθήκη</string>
     <string name="contact_no_birthday">Χωρίς γενέθλια</string>
     <string name="contact_no_nameday">Δεν υπάρχει ονομαστική εορτή για το όνομα %s</string>
@@ -141,7 +141,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="Configure_widget">Ρύθμιση Γρ. Στοιχείου</string>
     <string name="Done">Αποθήκευση</string>
     <string name="Transparency">Διαφάνεια</string>
-    <string name="Dark_themeQ">Σκοτεινό θέμα;</string>
+    <string name="Use_dark_theme">Σκοτεινό θέμα;</string>
     <string name="Contact_names">Ονόματα επαφών</string>
     <string name="Bank_holiday">Αργία</string>
     <string name="Bank_holidays">Αργίες</string>
@@ -185,4 +185,7 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="title_add_birthday">Προσθήκη γενεθλίων</string>
     <string name="Post_on_Facebook">Άνοιγμα Τοίχου</string>
     <string name="romanian">Ρωμάνικα</string>
+    <string name="Advanced_notification_settings">Περισσότερες ρυθμίσεις</string>
+    <string name="daily_reminder_advanced_settings_summary">Αλλάξτε τον ήχο, την δόνηση, το χρώμα του LED και άλλα.</string>
+    <string name="Dont_forget_to_send_your_wishes">"Μην ξεχάσετε να τους ευχηθείτε."</string>
 </resources>

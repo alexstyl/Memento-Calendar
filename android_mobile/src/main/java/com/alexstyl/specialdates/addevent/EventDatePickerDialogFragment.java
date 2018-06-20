@@ -18,9 +18,10 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateParseException;
 import com.alexstyl.specialdates.events.database.EventTypeId;
 import com.alexstyl.specialdates.events.peopleevents.EventType;
+import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
-import com.alexstyl.specialdates.util.DateParser;
+import com.alexstyl.specialdates.date.DateParser;
 import com.novoda.notils.caster.Classes;
 import com.novoda.notils.caster.Views;
 
@@ -35,15 +36,16 @@ public class EventDatePickerDialogFragment extends MementoDialog {
     private EventDatePicker datePicker;
 
     private Optional<Date> initialDate;
-    @Inject
-    Strings strings;
+    @Inject Strings strings;
+    @Inject DateParser dateParser;
 
-    public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date) {
+    public static EventDatePickerDialogFragment newInstance(EventType eventType, Optional<Date> date, ShortDateLabelCreator shortDateLabelCreator) {
         EventDatePickerDialogFragment dialogFragment = new EventDatePickerDialogFragment();
         Bundle args = new Bundle(2);
         args.putInt(ARG_EVENT_TYPE_ID, eventType.getId());
         if (date.isPresent()) {
-            args.putString(KEY_DATE, date.get().toString());
+            String label = shortDateLabelCreator.createLabelWithYearPreferredFor(date.get());
+            args.putString(KEY_DATE, label);
         }
         dialogFragment.setArguments(args);
         return dialogFragment;
@@ -70,17 +72,17 @@ public class EventDatePickerDialogFragment extends MementoDialog {
             String birthday = arguments.getString(KEY_DATE);
             return parseFrom(birthday);
         } else {
-            return Optional.absent();
+            return Optional.Companion.absent();
         }
     }
 
     private Optional<Date> parseFrom(String birthday) {
         try {
-            Date parsedDate = DateParser.INSTANCE.parse(birthday);
+            Date parsedDate = dateParser.parse(birthday);
             return new Optional<>(parsedDate);
         } catch (DateParseException e) {
             e.printStackTrace();
-            return Optional.absent();
+            return Optional.Companion.absent();
         }
     }
 

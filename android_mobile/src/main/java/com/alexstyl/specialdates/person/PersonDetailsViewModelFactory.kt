@@ -1,22 +1,27 @@
 package com.alexstyl.specialdates.person
 
+import android.view.View
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 
-internal class PersonDetailsViewModelFactory(private val strings: Strings, private val ageCalculator: AgeCalculator) {
+class PersonDetailsViewModelFactory(private val strings: Strings, private val ageCalculator: AgeCalculator) {
 
-    operator fun invoke(contact: Contact, contactEvent: ContactEvent?): PersonInfoViewModel {
+    operator fun invoke(contact: Contact, dateOfBirth: ContactEvent?, isVisible: Boolean): PersonInfoViewModel {
         val ageAndStarSignBuilder = StringBuilder()
-        if (contactEvent != null) {
-            ageAndStarSignBuilder.append(ageCalculator.ageOf(contactEvent.date!!))
+        if (dateOfBirth != null) {
+            ageAndStarSignBuilder.append(ageCalculator.ageOf(dateOfBirth.date))
             if (ageAndStarSignBuilder.isNotEmpty()) {
                 ageAndStarSignBuilder.append(", ")
             }
-            ageAndStarSignBuilder.append(starSignOf(contactEvent.date!!))
+            ageAndStarSignBuilder.append(starSignOf(dateOfBirth.date))
         }
-        return PersonInfoViewModel(contact.displayName.toString(), ageAndStarSignBuilder.toString(), contact.imagePath)
+        return PersonInfoViewModel(contact.displayName.toString(),
+                ageAndStarSignBuilder.toString(),
+                if (ageAndStarSignBuilder.isEmpty()) View.GONE else View.VISIBLE,
+                contact.imagePath,
+                isVisible)
     }
 
     private fun starSignOf(birthday: Date): String {

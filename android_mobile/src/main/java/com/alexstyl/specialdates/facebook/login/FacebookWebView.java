@@ -7,16 +7,21 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.MementoApplication;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
+
+import javax.inject.Inject;
 
 public class FacebookWebView extends WebView {
 
     private FacebookLogInCallback callback;
     private FBImportClient client;
+    @Inject FacebookUserSettings facebookUserSettings;
 
     public FacebookWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setup();
+
     }
 
     public FacebookWebView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -25,6 +30,8 @@ public class FacebookWebView extends WebView {
     }
 
     private void setup() {
+        ((MementoApplication) getContext().getApplicationContext()).getApplicationModule().inject(this);
+
         clearCache(false);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
@@ -53,7 +60,7 @@ public class FacebookWebView extends WebView {
         @SuppressWarnings("unused")
         public void processHTML(String html) {
             if (userCredentialsExtractorTask == null) {
-                userCredentialsExtractorTask = new UserCredentialsExtractorTask(html, FacebookPreferences.newInstance(getContext()), callback);
+                userCredentialsExtractorTask = new UserCredentialsExtractorTask(html, facebookUserSettings, callback);
                 userCredentialsExtractorTask.execute();
             }
         }

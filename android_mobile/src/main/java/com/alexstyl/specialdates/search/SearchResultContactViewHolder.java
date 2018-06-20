@@ -26,21 +26,22 @@ final class SearchResultContactViewHolder extends RecyclerView.ViewHolder {
     private SearchResultContactViewHolder(View convertView, ImageLoader imageLoader) {
         super(convertView);
         this.imageLoader = imageLoader;
-        this.displayName = (TextView) convertView.findViewById(R.id.search_result_contact_name);
-        this.eventLabel = (TextView) convertView.findViewById(R.id.search_result_event_label);
-        this.avatar = (ColorImageView) convertView.findViewById(R.id.search_result_avatar);
+        this.displayName = convertView.findViewById(R.id.search_result_contact_name);
+        this.eventLabel = convertView.findViewById(R.id.search_result_event_label);
+        this.avatar = convertView.findViewById(R.id.search_result_avatar);
     }
 
     void bind(final ContactEventViewModel viewModel, final SearchResultAdapter.SearchResultClickListener listener) {
         avatar.setCircleColorVariant(viewModel.getBackgroundVariant());
         avatar.setLetter(viewModel.getDisplayName(), true);
+        
         displayName.setText(viewModel.getDisplayName());
         imageLoader
                 .load(viewModel.getContactAvatarURI())
                 .asCircle()
                 .into(avatar.getImageView());
         eventLabel.setText(viewModel.getEventLabel());
-        eventLabel.setTextColor(eventLabel.getResources().getColor(viewModel.getEventColor()));
+        eventLabel.setTextColor(viewModel.getEventColor());
         itemView.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

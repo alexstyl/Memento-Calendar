@@ -19,7 +19,7 @@
     android:layout_marginLeft="@dimen/contact_permission_arrow_horizontal_margin"
     android:layout_marginRight="@dimen/contact_permission_arrow_horizontal_margin"
     android:importantForAccessibility="no"
-    android:src="@drawable/ic_action_arrow_light_back" />
+    android:src="@drawable/ic_arrow_back_white_24dp" />
 
   <ImageView
     android:id="@+id/contact_permission_icon"

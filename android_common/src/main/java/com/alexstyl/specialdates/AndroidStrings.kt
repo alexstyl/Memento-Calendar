@@ -2,11 +2,34 @@ package com.alexstyl.specialdates
 
 import android.content.res.Resources
 import com.alexstyl.specialdates.common.R
+import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.person.StarSign
 
 class AndroidStrings(private val resources: Resources) : Strings {
+    override fun contactAddedFailed(): String = resources.getString(R.string.failed_to_add_contact)
+
+    override fun contactAdded(): String = resources.getString(R.string.contact_added)
+
+    override fun contactUpdated(): String = resources.getString(R.string.contact_updated)
+
+    override fun contactUpdateFailed(): String = resources.getString(R.string.failed_to_update_contact)
+
+    override fun dontForgetToSendWishes(): String = resources.getString(R.string.Dont_forget_to_send_your_wishes)
+    override fun call(): String = resources.getString(R.string.Call)
+    override fun sendWishes(): String = resources.getString(R.string.Send_wishes)
+
+    override fun bankholidaySubtitle(): String = resources.getString(R.string.Bank_holiday_subtitle)
+
+    override fun contacts(): String = resources.getString(R.string.contacts)
+
+    override fun namedays(): String = resources.getString(R.string.namedays)
+
+    override fun bankholidays(): String = resources.getString(R.string.Bank_holidays)
+
+    override fun dailyReminder(): String = resources.getString(R.string.daily_reminder)
+
     override fun postOnFacebook(): String = resources.getString(R.string.Post_on_Facebook)
 
     override fun facebook(): String = resources.getString(R.string.Facebook)
@@ -62,4 +85,20 @@ class AndroidStrings(private val resources: Resources) : Strings {
             throw IllegalStateException("$event has no name")
         }
     }
+
+    override fun localeName(locale: NamedayLocale): String = when (locale) {
+        NamedayLocale.GREEK -> resources.getString(R.string.Greek)
+        NamedayLocale.ROMANIAN -> resources.getString(R.string.Romanian)
+        NamedayLocale.RUSSIAN -> resources.getString(R.string.Russian)
+        NamedayLocale.LATVIAN -> resources.getString(R.string.Latvian_Traditional)
+        NamedayLocale.LATVIAN_EXTENDED -> resources.getString(R.string.Latvian_Extended)
+        NamedayLocale.SLOVAK -> resources.getString(R.string.Slovak)
+        NamedayLocale.ITALIAN -> resources.getString(R.string.Italian)
+        NamedayLocale.CZECH -> resources.getString(R.string.Czech)
+        NamedayLocale.HUNGARIAN -> resources.getString(R.string.Hungarian)
+    }
+
+    override fun viewFacebookProfile(): String = resources.getString(R.string.View_Facebook_Profile)
+
+    override fun importFromFacebook(): String = resources.getString(R.string.Import_from_Facebook)
 }

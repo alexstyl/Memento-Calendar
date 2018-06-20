@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.CrashAndErrorTracker;
 import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
@@ -15,8 +16,9 @@ import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Screen;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsMarshaller;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister;
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.AndroidPeopleEventsPersister;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher;
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsPersister;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
@@ -27,7 +29,6 @@ import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK;
 import static com.novoda.notils.caster.Views.findById;
 
 public class FacebookProfileActivity extends ThemedMementoActivity implements FacebookProfileView {
@@ -40,6 +41,11 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     private TextView userName;
     @Inject Analytics analytics;
     @Inject ImageLoader imageLoader;
+    @Inject UpcomingEventsViewRefresher uiRefresher;
+    @Inject CrashAndErrorTracker tracker;
+    @Inject FacebookUserSettings facebookSettings;
+    @Inject UpcomingEventsSettings eventsSettings;
+    @Inject ContactEventsMarshaller marshaller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +66,21 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
             }
         });
 
-        ContactEventsMarshaller marshaller = new ContactEventsMarshaller();
-        FacebookFriendsPersister persister = new FacebookFriendsPersister(new PeopleEventsPersister(new EventSQLiteOpenHelper(this)), marshaller);
-        FacebookPreferences preferences = FacebookPreferences.newInstance(this);
-        navigator = new ExternalNavigator(this, analytics);
+        FacebookFriendsPersister persister = new FacebookFriendsPersister(
+                new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
+        navigator = new ExternalNavigator(this, analytics, tracker);
 
         FacebookLogoutService service = new FacebookLogoutService(
                 AndroidSchedulers.mainThread(),
-                preferences,
+                facebookSettings,
                 persister,
-                PeopleEventsViewRefresher.get(this), onLogOut()
+                uiRefresher,
+                onLogOut()
         );
         presenter = new FacebookProfilePresenter(
                 service,
                 this,
-                preferences
+                facebookSettings
         );
         presenter.startPresenting();
     }
@@ -98,7 +104,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Override
     public void display(UserCredentials userCredentials) {
         userName.setText(userCredentials.getName());
-        URI uri = FacebookImagePath.forUid(userCredentials.getUid());
+        URI uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
                 .asCircle()

@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-27-alpha
 
     environment:
       ANDROID_HOME: /opt/android/sdk
@@ -23,14 +23,11 @@ jobs:
       - run:
           name: Ensure Android SDK install is up-to-date
           command: .circleci/ci-scripts/ensure-sdkmanager.sh
-      - run:
-          name: Create mock Play Services JSON
-          command: .circleci/ci-scripts/ci-mock-google-services-setup.sh
 
       # Run the main job command, delegating to Gradle
       - run:
           name: Run Gradle :check command
-          command: ./gradlew check --continue
+          command: ./gradlew check --stacktrace --continue
 
       # Store all the downloaded dependencies in the CI cache
       - save_cache:

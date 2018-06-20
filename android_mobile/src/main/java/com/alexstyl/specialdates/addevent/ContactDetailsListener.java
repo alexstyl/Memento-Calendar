@@ -8,4 +8,5 @@ interface ContactDetailsListener {
     void onRemoveEventClicked(EventType eventType);
     void onContactSelected(Contact contact);
     void onNameModified(String newName);
+    void onContactCleared();
 }

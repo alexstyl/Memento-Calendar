@@ -18,7 +18,7 @@ public class ContactActionsAdapter extends RecyclerView.Adapter<CallViewHolder> 
     private final List<ContactActionViewModel> viewModels = new ArrayList<>();
     private final EventPressedListener listener;
 
-    ContactActionsAdapter(EventPressedListener listener) {
+    public ContactActionsAdapter(EventPressedListener listener) {
         this.listener = listener;
     }
 

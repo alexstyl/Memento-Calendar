@@ -28,14 +28,14 @@ as the name makes more sense. If there is a local specific name, make sure to wr
     <string name="contact_dev_summary">Nalezl/a jste chybu? Máte námět? Dejte mi vědět!</string>
     <string name="choose">Vybrat</string>
     <string name="number">číslo</string>
-    <string name="action_call">Zavolat</string>
+    <string name="Call">Zavolat</string>
     <string name="action_text">Poslat SMS</string>
     <string name="action_send_mail">Poslat e-mail</string>
     <string name="no_app_found">Pro provedení této akce nebyla nalezena zádná aplikace</string>
     <string name="send_mail_via">Poslat emailem</string>
     <string name="daily_reminder">Denní připomínání</string>
     <string name="daily_reminder_summary">"Připomínat každodenní události"</string>
-    <string name="ringtone">Vyzváněcí tón</string>
+    <string name="Sound">Vyzváněcí tón</string>
     <string name="vibrate">Vibrace</string>
     <string name="daily_reminder_time_summary">Každý den v %s</string>
     <string name="set_time">Čas připomínky</string>
@@ -78,7 +78,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <!-- The name for contacts with empty Display name-->
     <string name="no_name">(Beze jména)</string>
     <string name="include_year">Zahrnout rok?</string>
-    <string name="save">Uložit</string>
+    <string name="Save">Uložit</string>
     <string name="add">Přidat</string>
     <string name="contact_no_birthday">Narozeniny nenastaveny</string>
     <string name="contact_no_nameday">Žádné narozeniny pro %s</string>
@@ -141,7 +141,7 @@ Andrejs Kotovs - lotyšský překlad"</string>
     <string name="Configure_widget">Konfigurace widgetu</string>
     <string name="Done">Hotovo</string>
     <string name="Transparency">Průhlednost</string>
-    <string name="Dark_themeQ">Tmavý motiv</string>
+    <string name="Use_dark_theme">Tmavý motiv</string>
     <string name="Contact_names">Kontaktní jména</string>
     <string name="Bank_holiday">Státní svátek</string>
     <string name="Bank_holidays">Státní svátky</string>

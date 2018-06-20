@@ -13,10 +13,6 @@ import com.alexstyl.android.Version
 
 open class MementoActivity : AppCompatActivity() {
 
-    /**
-     * Override this method in order to let the activity handle the up button.
-     * When pressed it will navigate the user to the parent of the activity
-     */
     private fun shouldUseHomeAsUp(): Boolean = parentActivityIntent != null
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -39,7 +35,7 @@ open class MementoActivity : AppCompatActivity() {
     }
 
     fun navigateUpToParent() {
-        val upIntent = NavUtils.getParentActivityIntent(this)
+        val upIntent = NavUtils.getParentActivityIntent(this) ?: return
         if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot) {
             TaskStackBuilder.create(this)
                     .addNextIntentWithParentStack(upIntent)

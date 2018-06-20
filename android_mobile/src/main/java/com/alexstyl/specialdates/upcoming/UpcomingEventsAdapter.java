@@ -9,7 +9,7 @@ import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> {
+public class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> {
 
     private final UpcomingViewHolderFactory viewHolderFactory;
 
@@ -45,12 +45,15 @@ class UpcomingEventsAdapter extends RecyclerView.Adapter<UpcomingRowViewHolder> 
     }
 
     void displayUpcomingEvents(List<UpcomingRowViewModel> upcomingEventRows) {
-        final UpcomingDiffCallback diffCallback = new UpcomingDiffCallback(viewModels, upcomingEventRows);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
+        UpcomingEventsDiffCallback diffCallback = new UpcomingEventsDiffCallback(viewModels, upcomingEventRows);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
         this.viewModels.clear();
         this.viewModels.addAll(upcomingEventRows);
         diffResult.dispatchUpdatesTo(this);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return viewModels.get(position).getId();
+    }
 }

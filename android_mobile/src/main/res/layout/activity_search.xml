@@ -18,7 +18,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
-      android:id="@android:id/list"
+      android:id="@+id/search_results"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
@@ -29,7 +29,7 @@
       android:paddingTop="@dimen/search_result_card_vertical_padding" />
 
     <android.support.v7.widget.RecyclerView
-      android:id="@+id/nameday_suggestions"
+      android:id="@+id/search_nameday_suggestions"
       android:layout_width="match_parent"
       android:layout_height="38dp"
       android:layout_gravity="top"

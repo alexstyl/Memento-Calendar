@@ -4,13 +4,12 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.database.Cursor
 import android.provider.ContactsContract
-import com.alexstyl.specialdates.ErrorTracker
+import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import java.net.URI
-import java.util.Collections
 
-internal class AndroidContactFactory(private val resolver: ContentResolver) {
+class AndroidContactFactory(private val resolver: ContentResolver, private val tracker: CrashAndErrorTracker) {
 
     fun getAllContacts(): Contacts {
         val cursor: Cursor?
@@ -22,7 +21,7 @@ internal class AndroidContactFactory(private val resolver: ContentResolver) {
                     AndroidContactsQuery.SORT_ORDER
             )
         } catch (e: Exception) {
-            ErrorTracker.track(e)
+            tracker.track(e)
             return Contacts(SOURCE_DEVICE, emptyList())
         }
         return cursor.use {
@@ -63,8 +62,8 @@ internal class AndroidContactFactory(private val resolver: ContentResolver) {
         return resolver.query(
                 AndroidContactsQuery.CONTENT_URI,
                 AndroidContactsQuery.PROJECTION,
-                "${AndroidContactsQuery._ID} IN (${Collections.nCopies(ids.size, "?").joinToString(",")})",
-                ids.map { it.toString() }.toTypedArray(),
+                "${AndroidContactsQuery._ID} IN (${ids.joinToString(",")})",
+                null,
                 SORT_ORDER
         )
     }

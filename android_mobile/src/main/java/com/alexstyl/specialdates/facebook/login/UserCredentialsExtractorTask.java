@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.facebook.login;
 
 import android.os.AsyncTask;
 
-import com.alexstyl.specialdates.facebook.FacebookPreferences;
+import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.UserCredentials;
 
 import javax.security.auth.login.LoginException;
@@ -13,11 +13,11 @@ class UserCredentialsExtractorTask extends AsyncTask<Void, Void, UserCredentials
 
     private final String pageSource;
     private final FacebookLogInCallback callback;
-    private final FacebookPreferences preferences;
+    private final FacebookUserSettings facebookUserSettings;
 
-    UserCredentialsExtractorTask(String pageSource, FacebookPreferences preferences, FacebookLogInCallback callback) {
+    UserCredentialsExtractorTask(String pageSource, FacebookUserSettings facebookUserSettings, FacebookLogInCallback callback) {
         this.pageSource = pageSource;
-        this.preferences = preferences;
+        this.facebookUserSettings = facebookUserSettings;
         this.callback = callback;
     }
 
@@ -25,7 +25,7 @@ class UserCredentialsExtractorTask extends AsyncTask<Void, Void, UserCredentials
     protected UserCredentials doInBackground(Void... params) {
         UserCredentials userCredentials = extractor.extractCalendarURL(pageSource);
         if (userCredentials != UserCredentials.ANNONYMOUS) {
-            preferences.store(userCredentials);
+            facebookUserSettings.store(userCredentials);
         }
         return userCredentials;
     }

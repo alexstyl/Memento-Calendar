@@ -22,7 +22,6 @@
     android:layout_marginRight="@dimen/padding"
     android:layout_weight="1"
     android:clickable="false"
-    android:drawableRight="@drawable/spinner_ab_default_dayslight"
     android:focusable="false"
     tools:hint="@string/birthday" />
 

@@ -6,9 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alexstyl.specialdates.R;
-import com.alexstyl.specialdates.PeopleEventsView;
+import com.alexstyl.specialdates.UpcomingEventsView;
 
-public class UpcomingEventsScrollingWidgetView implements PeopleEventsView {
+public class UpcomingEventsScrollingWidgetView implements UpcomingEventsView {
 
     private final AppWidgetManager widgetManager;
     private final Context context;
@@ -19,7 +19,7 @@ public class UpcomingEventsScrollingWidgetView implements PeopleEventsView {
     }
 
     @Override
-    public void requestUpdate() {
+    public void reloadUpcomingEventsView() {
         Intent intent = new Intent(context, UpcomingEventsScrollingAppWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
