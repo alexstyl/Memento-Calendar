@@ -15,7 +15,7 @@ import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
-import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity;
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity;
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookModule;
@@ -112,7 +112,7 @@ public interface AppComponent {
 
     void inject(PersonActivity activity);
 
-    void inject(NamedayActivity activity);
+    void inject(NamedaysOnADayActivity activity);
 
     void inject(EventDatePickerDialogFragment fragment);
 

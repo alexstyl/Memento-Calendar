@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.getDateExtraOrThrow
 import com.alexstyl.specialdates.date.putExtraDate
-import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.person.PersonActivity
 import javax.inject.Inject
@@ -60,7 +60,7 @@ class WidgetRouterActivity : Activity() {
 
     fun routeIntent(intent: Intent, context: Context): Intent = when (intent.action) {
         ACTION_VIEW_CONTACT -> PersonActivity.buildIntentFor(context, intent.contact())
-        ACTION_VIEW_NAMEDAY -> NamedayActivity.getStartIntent(context, intent.getDateExtraOrThrow())
+        ACTION_VIEW_NAMEDAY -> NamedaysOnADayActivity.getStartIntent(context, intent.getDateExtraOrThrow())
         else -> {
             HomeActivity.getStartIntent(this)
         }

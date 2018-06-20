@@ -6,11 +6,12 @@ val EXTRA_DAY_OF_MONTH = "extra:day_of_month"
 val EXTRA_MONTH = "extra:month"
 val EXTRA_YEAR = "extra:year"
 
-fun Intent.putExtraDate(date: Date) {
-    putExtra(EXTRA_DAY_OF_MONTH, date.dayOfMonth)
-    putExtra(EXTRA_MONTH, date.month)
-    putExtra(EXTRA_YEAR, date.year)
+fun Intent.putExtraDate(date: Date): Intent {
+    return putExtra(EXTRA_DAY_OF_MONTH, date.dayOfMonth)
+            .putExtra(EXTRA_MONTH, date.month)
+            .putExtra(EXTRA_YEAR, date.year)
 }
+
 
 fun Intent.getDateExtraOrThrow(): Date {
     val dayOfMonth = getExtraOrThrow(this, EXTRA_DAY_OF_MONTH)

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.activity;
 
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -29,14 +30,15 @@ public class NamedaysScreenAdapter extends RecyclerView.Adapter<NamedayScreenVie
         return viewModels.get(position).getViewType();
     }
 
+    @NonNull
     @Override
-    public NamedayScreenViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NamedayScreenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return viewholderFactory.viewHolderFor(parent, viewType);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(NamedayScreenViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NamedayScreenViewHolder holder, int position) {
         holder.bind(viewModels.get(position), onContactClicked);
     }
 

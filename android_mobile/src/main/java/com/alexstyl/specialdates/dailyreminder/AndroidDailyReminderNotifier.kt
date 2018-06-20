@@ -18,7 +18,7 @@ import com.alexstyl.android.Version
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.dailyreminder.actions.PersonActionsActivity
-import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.person.PersonActivity
@@ -129,7 +129,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
     }
 
     private fun notifyNamedays(namedays: NamedaysNotificationViewModel) {
-        val startIntent = NamedayActivity.getStartIntent(context, namedays.date)
+        val startIntent = NamedaysOnADayActivity.getStartIntent(context, namedays.date)
         val requestCode = NotificationConstants.NOTIFICATION_ID_NAMEDAYS
         val pendingIntent = PendingIntent.getActivity(
                 context,

@@ -13,7 +13,7 @@ import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.donate.DonateActivity
-import com.alexstyl.specialdates.events.namedays.activity.NamedayActivity
+import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity
 import com.alexstyl.specialdates.facebook.FacebookUserSettings
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity
@@ -86,7 +86,7 @@ class HomeNavigator(private val analytics: Analytics,
     }
 
     fun toDateDetails(dateSelected: Date, activity: Activity) {
-        val intent = NamedayActivity.getStartIntent(activity, dateSelected)
+        val intent = NamedaysOnADayActivity.getStartIntent(activity, dateSelected)
         activity.startActivity(intent)
         analytics.trackScreen(Screen.DATE_DETAILS)
     }
