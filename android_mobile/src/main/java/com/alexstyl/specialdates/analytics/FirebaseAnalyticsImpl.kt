@@ -94,8 +94,8 @@ class FirebaseAnalyticsImpl(private val firebase: FirebaseAnalytics) : Analytics
 
     override fun trackDonationStarted(donation: Donation) {
         val properties = Bundle().apply {
-            putString("id", donation.identifier)
-            putString("amount", donation.amount)
+            putString(FirebaseAnalytics.Param.ITEM_ID, donation.identifier)
+            putString(FirebaseAnalytics.Param.PRICE, donation.amount)
         }
         firebase.logEvent("donation_started", properties)
     }
@@ -110,8 +110,8 @@ class FirebaseAnalyticsImpl(private val firebase: FirebaseAnalytics) : Analytics
 
     override fun trackDonationPlaced(donation: Donation) {
         val properties = Bundle().apply {
-            putString("amount", donation.amount)
-            putString("identifier", donation.identifier)
+            putString(FirebaseAnalytics.Param.ITEM_ID, donation.identifier)
+            putString(FirebaseAnalytics.Param.PRICE, donation.amount)
         }
         firebase.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, properties)
     }
