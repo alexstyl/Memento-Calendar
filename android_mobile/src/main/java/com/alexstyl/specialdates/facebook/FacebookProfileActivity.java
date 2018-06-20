@@ -104,7 +104,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     @Override
     public void display(UserCredentials userCredentials) {
         userName.setText(userCredentials.getName());
-        URI uri = FacebookImagePath.forUid(userCredentials.getUid());
+        URI uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
                 .asCircle()
