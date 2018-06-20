@@ -1,19 +1,14 @@
 package com.alexstyl.specialdates.upcoming.widget.today
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.widget.RemoteViews
 import com.alexstyl.specialdates.MementoApplication
-import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Widget
 import com.alexstyl.specialdates.date.DateLabelCreator
-import com.alexstyl.specialdates.home.HomeActivity
-import com.alexstyl.specialdates.permissions.MementoPermissions
 import javax.inject.Inject
 
 class TodayAppWidgetProvider : AppWidgetProvider() {
@@ -25,8 +20,6 @@ class TodayAppWidgetProvider : AppWidgetProvider() {
     lateinit var strings: Strings
         @Inject set
     lateinit var labelCreator: DateLabelCreator
-        @Inject set
-    lateinit var permissionChecker: MementoPermissions
         @Inject set
     lateinit var analytics: Analytics
         @Inject set
@@ -42,6 +35,7 @@ class TodayAppWidgetProvider : AppWidgetProvider() {
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
         analytics.trackWidgetAdded(Widget.UPCOMING_EVENTS_SIMPLE)
+
     }
 
     override fun onDisabled(context: Context) {
@@ -52,31 +46,16 @@ class TodayAppWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
-        if (permissionChecker.canReadAndWriteContacts()) {
-            val view = AndroidRecentPeopleEventsView(context,
-                    appWidgetManager,
-                    appWidgetIds,
-                    strings,
-                    preferences,
-                    widgetImageLoader,
-                    labelCreator
-            )
-            presenter.startPresentingInto(view)
-        } else {
-            // TODO asking for permission needs to go into the Presenter so that the WidgetProvider
-            // is responsible for triggering the updates of the events
-            promptForContactPermission(context, appWidgetManager, appWidgetIds)
-        }
+        val view = AndroidRecentPeopleEventsView(context,
+                appWidgetManager,
+                appWidgetIds,
+                strings,
+                preferences,
+                widgetImageLoader,
+                labelCreator
+        )
+        presenter.startPresentingInto(view)
+        presenter.stopPresenting()
     }
 
-    private fun promptForContactPermission(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        val remoteViews = RemoteViews(context.packageName, R.layout.widget_prompt_permissions)
-        remoteViews.setOnClickPendingIntent(R.id.widget_prompt_permission_background, pendingIntentToMain(context))
-        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews)
-    }
-
-    private fun pendingIntentToMain(context: Context): PendingIntent {
-        val clickIntent = Intent(context, HomeActivity::class.java)
-        return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
 }
