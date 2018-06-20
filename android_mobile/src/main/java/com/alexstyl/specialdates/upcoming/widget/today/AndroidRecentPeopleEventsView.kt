@@ -25,23 +25,6 @@ class AndroidRecentPeopleEventsView(private val context: Context,
                                     private val labelCreator: DateLabelCreator)
     : RecentPeopleEventsView {
 
-    override fun onNoEventsFound() {
-        appWidgetIds.forEach { appWidgetId ->
-
-            val views = RemoteViews(context.packageName, R.layout.widget_today_nocontacts)
-            val intent = Intent(context, HomeActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(
-                    context, 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-            )
-
-            views.setTextViewText(android.R.id.text1, context.getString(R.string.today_widget_empty))
-            views.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent)
-
-            appWidgetManager.updateAppWidget(appWidgetId, views)
-        }
-    }
-
     override fun onNextDateLoaded(events: ContactEventsOnADate) {
         val eventDate = events.date
         val date = Date.on(eventDate.dayOfMonth, eventDate.month, Date.today().year)
@@ -84,21 +67,45 @@ class AndroidRecentPeopleEventsView(private val context: Context,
         }
     }
 
-    private fun pendingIntentFor(context: Context, intent: Intent, contacts: List<Contact>): PendingIntent {
-        val pendingIntent: PendingIntent
-        if (contacts.size == 1) {
-            pendingIntent = PendingIntent.getActivity(context, 0, PersonActivity.buildIntentFor(context,
-                    contacts[0]), PendingIntent.FLAG_UPDATE_CURRENT)
-        } else {
-            pendingIntent = PendingIntent.getActivity(
-                    context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+    override fun onNoEventsFound() {
+        appWidgetIds.forEach { appWidgetId ->
+
+            val views = RemoteViews(context.packageName, R.layout.widget_today_nocontacts)
+            val intent = Intent(context, HomeActivity::class.java)
+            val pendingIntent = PendingIntent.getActivity(
+                    context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
             )
+
+            views.setTextViewText(android.R.id.text1, context.getString(R.string.today_widget_empty))
+            views.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent)
+
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
-        return pendingIntent
+    }
+
+    private fun pendingIntentFor(context: Context, intent: Intent, contacts: List<Contact>): PendingIntent {
+        return if (contacts.size == 1) {
+            val pendingIntent = PersonActivity.buildIntentFor(context, contacts[0])
+            PendingIntent.getActivity(context, 0, pendingIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        } else {
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
     }
 
     private fun labelOf(todayDate: Date): String {
         return labelCreator.createWithYearPreferred(todayDate)
+    }
+
+    override fun askForContactPermission() {
+        val remoteViews = RemoteViews(context.packageName, R.layout.widget_prompt_permissions)
+        remoteViews.setOnClickPendingIntent(R.id.widget_prompt_permission_background, pendingIntentToMain(context))
+        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews)
+    }
+
+    private fun pendingIntentToMain(context: Context): PendingIntent {
+        val clickIntent = Intent(context, HomeActivity::class.java)
+        return PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
 

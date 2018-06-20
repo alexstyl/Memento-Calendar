@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.images.ImageLoader
+import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.upcoming.widget.today.LuminanceAnalyzer
 import com.alexstyl.specialdates.upcoming.widget.today.RecentPeopleEventsPresenter
 import com.alexstyl.specialdates.upcoming.widget.today.TodayUpcomingEventsView
@@ -35,8 +36,8 @@ class RecentUpcomingPeopleEventsModule {
     }
 
     @Provides
-    fun presenter(eventsProvider: PeopleEventsProvider): RecentPeopleEventsPresenter {
-        return RecentPeopleEventsPresenter(eventsProvider, Schedulers.io(), AndroidSchedulers.mainThread())
+    fun presenter(eventsProvider: PeopleEventsProvider, permissions: MementoPermissions): RecentPeopleEventsPresenter {
+        return RecentPeopleEventsPresenter(eventsProvider, permissions, Schedulers.trampoline(), Schedulers.trampoline())
     }
 
     @Provides
