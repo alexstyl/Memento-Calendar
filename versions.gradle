@@ -1,7 +1,7 @@
 ext {
     // App Specifics
-    androidVersionCode = 81
-    androidVersionName = '12.1'
+    androidVersionCode = 82
+    androidVersionName = '12.2'
 
     androidCompileSdkVersion = 27
 
