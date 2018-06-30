@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.ui.base
 
+import android.content.Context
 import android.preference.Preference
 import android.preference.PreferenceCategory
 import android.support.annotation.StringRes
@@ -11,7 +12,7 @@ open class MementoPreferenceFragment : PreferenceFragment() {
 
     override fun addPreferencesFromResource(preferencesResId: Int) {
         super.addPreferencesFromResource(preferencesResId)
-        if (GreekNameUtils.isGreekLocaleSelected(activity)) {
+        if (GreekNameUtils.isGreekLocaleSelected(activity as Context)) {
             fixCategoryTitles()
         }
     }
