@@ -4,8 +4,6 @@ import org.joda.time.LocalTime
 
 data class TimeOfDay(private val dateTime: LocalTime) {
 
-    constructor(hour: Int, minute: Int) : this(LocalTime(hour, minute))
-
     val hours: Int
         get() = dateTime.hourOfDay
 
@@ -36,17 +34,16 @@ data class TimeOfDay(private val dateTime: LocalTime) {
         return dateTime.millisOfDay.toLong()
     }
 
-    fun isAfter(timeOfDay: TimeOfDay): Boolean {
-        return dateTime.isAfter(timeOfDay.dateTime)
-    }
+    fun addMinutes(minutes: Int) = TimeOfDay(dateTime.plusMinutes(minutes))
 
     companion object {
+        fun at(hour: Int, minute: Int): TimeOfDay {
+            return TimeOfDay(LocalTime(hour, minute))
+        }
 
         private const val ZERO = "0"
         private const val SEPARATOR = ":"
 
-        fun now(): TimeOfDay {
-            return TimeOfDay(LocalTime.now())
-        }
+
     }
 }

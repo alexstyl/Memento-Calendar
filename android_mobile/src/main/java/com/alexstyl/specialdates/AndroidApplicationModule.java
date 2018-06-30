@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
@@ -10,7 +9,6 @@ import android.content.res.Resources;
 
 import com.alexstyl.Logger;
 import com.alexstyl.android.AndroidLogger;
-import com.alexstyl.specialdates.dailyreminder.AlarmManagerCompat;
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper;
 import com.alexstyl.specialdates.permissions.AndroidPermissions;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
@@ -85,10 +83,5 @@ class AndroidApplicationModule {
     @Provides
     Logger logger() {
         return new AndroidLogger();
-    }
-
-    @Provides
-    AlarmManagerCompat alarmManagerCompat() {
-        return new AlarmManagerCompat((AlarmManager) context.getSystemService(Context.ALARM_SERVICE));
     }
 }

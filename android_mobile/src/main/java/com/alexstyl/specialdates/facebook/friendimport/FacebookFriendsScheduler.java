@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.date.DateAndTime;
 
 public final class FacebookFriendsScheduler {
 
-    private static final TimeOfDay EIGHT_O_CLOCK = new TimeOfDay(8, 0);
+    private static final TimeOfDay EIGHT_O_CLOCK = TimeOfDay.Companion.at(8, 0);
 
     private final AlarmManager alarmManager;
     private final Context context;
@@ -30,7 +30,7 @@ public final class FacebookFriendsScheduler {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         alarmManager.setRepeating(AlarmManager.RTC, dateAndTime.toMilis(),
-                                  AlarmManager.INTERVAL_DAY, pi
+                AlarmManager.INTERVAL_DAY, pi
         );
     }
 }

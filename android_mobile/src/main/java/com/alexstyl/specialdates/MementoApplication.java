@@ -45,7 +45,7 @@ public class MementoApplication extends MultiDexApplication {
     @Inject MementoPermissions permissions;
     @Inject UpcomingEventsSettings settings;
     @Inject DailyReminderUserSettings dailyReminderUserSettings;
-    @Inject DailyReminderScheduler androidDailyReminderScheduler;
+    @Inject DailyReminderScheduler dailyReminderScheduler;
 
     @Override
     public void onCreate() {
@@ -71,7 +71,7 @@ public class MementoApplication extends MultiDexApplication {
         JobManager.create(this).addJobCreator(jobCreator);
 
         if (dailyReminderUserSettings.isEnabled()) {
-            androidDailyReminderScheduler.scheduleReminderFor(dailyReminderUserSettings.getTimeSet());
+            dailyReminderScheduler.scheduleReminderFor(dailyReminderUserSettings.getTimeSet());
         }
 
         if (facebookSettings.isLoggedIn()) {
