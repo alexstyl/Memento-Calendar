@@ -7,7 +7,7 @@ interface CrashAndErrorTracker {
 
     fun track(e: Throwable)
 
-    fun onNamedayLocaleChanged(locale: NamedayLocale)
+    fun onNamedayLocaleChanged(locale: NamedayLocale?)
 
     fun updateLocaleUsed()
 

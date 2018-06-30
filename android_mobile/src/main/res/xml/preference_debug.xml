@@ -80,5 +80,11 @@
             android:key="@string/key_debug_trigger_bank_holiday"
             android:title="Show Bank Holiday notification" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Crashes">
+        <Preference
+            android:key="@string/key_debug_trigger_crash"
+            android:summary="Utility to crash the app in order to try out crash report frameworks"
+            android:title="Crash me" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

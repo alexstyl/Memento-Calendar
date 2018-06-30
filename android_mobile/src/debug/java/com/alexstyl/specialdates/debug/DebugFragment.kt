@@ -212,6 +212,10 @@ class DebugFragment : MementoPreferenceFragment() {
             activity!!.startActivity(intent)
             true
         }
+        findPreference<Preference>(R.string.key_debug_trigger_crash)!!
+                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            throw RuntimeException("Ka-boom!")
+        }
     }
 
     private fun notifyForContacts(contacts: ArrayList<ContactEvent>) {

@@ -22,4 +22,5 @@
   <string name="key_debug_trigger_daily_reminder_notification_many">key_debug_trigger_daily_reminder_notification_many</string>
   <string name="key_debug_trigger_namedays_notification">key_debug_trigger_namedays_notification</string>
   <string name="key_debug_trigger_bank_holiday">key_debug_trigger_bank_holiday</string>
+  <string name="key_debug_trigger_crash">key_debug_trigger_crash</string>
 </resources>
