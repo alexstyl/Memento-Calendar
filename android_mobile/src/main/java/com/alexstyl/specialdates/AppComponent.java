@@ -23,6 +23,7 @@ import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookWebView;
+import com.alexstyl.specialdates.home.DonationBannerView;
 import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.images.ImageModule;
 import com.alexstyl.specialdates.people.PeopleFragment;
@@ -145,4 +146,6 @@ public interface AppComponent {
     void inject(@NotNull ThemedMementoActivity themedMementoActivity);
 
     void inject(@NotNull PersonActionsActivity personActionsActivity);
+
+    void inject(@NotNull DonationBannerView donationBannerView);
 }
