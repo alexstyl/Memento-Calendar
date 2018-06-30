@@ -20,6 +20,7 @@ import com.alexstyl.specialdates.settings.DailyReminderNavigator;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 
 @Module
 public class DailyReminderModule {
@@ -52,7 +53,9 @@ public class DailyReminderModule {
                 namedayCalendarProvider,
                 factory,
                 errorTracker,
-                bankHolidayProvider
+                bankHolidayProvider,
+                Schedulers.trampoline(),
+                Schedulers.trampoline()
         );
     }
 

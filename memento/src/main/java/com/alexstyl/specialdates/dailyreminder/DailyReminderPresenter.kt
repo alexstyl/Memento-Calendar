@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function3
 
@@ -22,7 +23,9 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                              private var namedayCalendarProvider: NamedayCalendarProvider,
                              private var factory: DailyReminderViewModelFactory,
                              private var errorTracker: CrashAndErrorTracker,
-                             private var bankHolidayProvider: BankHolidayProvider) {
+                             private var bankHolidayProvider: BankHolidayProvider,
+                             private var workScheduler: Scheduler,
+                             private var resultScheduler: Scheduler) {
 
     private var disposable: Disposable? = null
 
@@ -44,6 +47,8 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                         .doOnError { it ->
                             errorTracker.track(it)
                         }
+                        .subscribeOn(workScheduler)
+                        .observeOn(resultScheduler)
                         .subscribe { viewModels: DailyReminderViewModel ->
                             view.show(viewModels)
                         }
