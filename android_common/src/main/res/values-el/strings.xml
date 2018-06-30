@@ -188,4 +188,45 @@
     <string name="Advanced_notification_settings">Περισσότερες ρυθμίσεις</string>
     <string name="daily_reminder_advanced_settings_summary">Αλλάξτε τον ήχο, την δόνηση, το χρώμα του LED και άλλα.</string>
     <string name="Dont_forget_to_send_your_wishes">"Μην ξεχάσετε να τους ευχηθείτε."</string>
+    <string name="Open_Source">Open Source</string>
+    <string name="Licenses">Άδεις</string>
+    <string name="Donate_Remove_ads">Δωρεά - Αφαίρεση διαφημίσεων</string>
+    <string name="Import_Birthdays">Εισαγωγή Γενεθλίων</string>
+    <string name="starsigns_aquarius">Υδροχόος</string>
+    <string name="starsigns_pisces">Ιχθύες</string>
+    <string name="starsigns_aries">Κριός</string>
+    <string name="starsigns_taurus">Ταύρος</string>
+    <string name="starsigns_gemini">Δίδυμοι</string>
+    <string name="starsigns_cancer">Καρκίνος</string>
+    <string name="starsigns_leo">Λέον</string>
+    <string name="starsigns_virgo">Παρθένος</string>
+    <string name="starsigns_libra">Ζυγός</string>
+    <string name="starsigns_scorpio">Σκορπιός</string>
+    <string name="starsigns_sagittarius">Τοξότης</string>
+    <string name="starsigns_capricorn">Αιγόκερως</string>
+    <string name="phone_type_home">Σπίτι</string>
+    <string name="phone_type_mobile">Κινητό</string>
+    <string name="phone_type_work">Δουλειά</string>
+    <string name="View_conversation">View conversation</string>
+    <string name="donation_donate_amount">Δωρεά %s</string>
+    <string name="donate_thanks_for_donating">♥</string>
+    <string name="donate_welcome">"Καλησπέρα,"</string>
+    <string name="donate_text">"Το Memento Calendar δημιουργήθηκε στην Ελλάδα για όλους όσους δεν θέλουν να ξεχνούν τα αγαπημένα τους πρόσωπα\n\n"\n\nΤο Memento είναι μια δωρεάν εφαρμογή, η οποία στηρίζεται από δωρεές και διαφημίσεις. Προσφέροντας οποιοδήποτε ποσό αφαιρούνται όλες οι διαφημίσεις και σας προσφέρει την ατελείωτή μου ευγνωμοσύνη ♥.\n\n-Αλέξανδρος Στυλιανίδης</string>
+    <string name="donate_restore_title">Επαναφορά δωρεάς</string>
+    <string name="donate_restore_summary">Προσφέρατε μια δωρεά, αλλά εξακολουθείτε να βλέπετε διαφημίσεις; Πατήστε εδώ</string>
+    <string name="donate_checking_for_donations">Checking for donations</string>
+    <string name="donate_no_donation_found">"Δεν βρέθηκε δωρέα."</string>
+    <string name="Select_date">Επιλογή ημερομηνίας</string>
+
+    <string name="person_show">Φανέρωση</string>
+    <string name="person_hide">Απόκρυψη</string>
+    <string name="Welcome">Καλοσορίσατε</string>
+    <string name="Bank_holiday_subtitle">Πατήστε για να δείτε περισσότερα.</string>
+    <string name="Send_wishes">Αποστολή ευχών</string>
+    <string name="dailyreminder_title_bankholiday">"Η αργία της ημέρας"</string>
+    <string name="Close">Κλείσιμο</string>
+    <string name="Opacity">Αδιαφάνεια</string>
+    <string name="Apply">Εφαρμογή</string>
+    <string name="Like_the_app_Consider_donating">Σας αρέσει η εφαρμογή; Κάνετε μια δωρεάν και υποστηρίξτε την εξέλιξή της</string>
+
 </resources>
