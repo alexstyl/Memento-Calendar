@@ -32,7 +32,7 @@ class DonationBannerView(context: Context, attrs: AttributeSet?) : LinearLayoutC
         val adView = findViewById<AdView>(R.id.banner_ad)
 
         adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(p0: Int) {
+            override fun onAdFailedToLoad(errorCode: Int) {
                 showAsCallToAction()
             }
         }

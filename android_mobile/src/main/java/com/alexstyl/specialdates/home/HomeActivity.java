@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.alexstyl.android.SimpleAnimatorListener;
 import com.alexstyl.specialdates.AppComponent;
+import com.alexstyl.specialdates.BuildConfig;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
@@ -66,7 +67,7 @@ public class HomeActivity extends ThemedMementoActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        MobileAds.initialize(this, getString(R.string.admob_unit_id));
+        MobileAds.initialize(this, BuildConfig.ADMOB_APP_ID);
 
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
