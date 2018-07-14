@@ -4,26 +4,21 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.database.Cursor
 import android.provider.ContactsContract
-import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import java.net.URI
 
-class AndroidContactFactory(private val resolver: ContentResolver, private val tracker: CrashAndErrorTracker) {
+class AndroidContactFactory(private val resolver: ContentResolver) {
 
     fun getAllContacts(): Contacts {
-        val cursor: Cursor?
-        try {
-            cursor = resolver.query(
-                    AndroidContactsQuery.CONTENT_URI,
-                    AndroidContactsQuery.PROJECTION,
-                    WHERE, null,
-                    AndroidContactsQuery.SORT_ORDER
-            )
-        } catch (e: Exception) {
-            tracker.track(e)
-            return Contacts(SOURCE_DEVICE, emptyList())
-        }
+        val cursor: Cursor = resolver.query(
+                AndroidContactsQuery.CONTENT_URI,
+                AndroidContactsQuery.PROJECTION,
+                WHERE,
+                null,
+                SORT_ORDER
+        ) ?: return Contacts(SOURCE_DEVICE, emptyList())
+
         return cursor.use {
             return@use Contacts(SOURCE_DEVICE, List(it.count, { index ->
                 it.moveToPosition(index)
@@ -81,7 +76,7 @@ class AndroidContactFactory(private val resolver: ContentResolver, private val t
                 AndroidContactsQuery.PROJECTION,
                 SELECTION_CONTACT_WITH_ID,
                 makeSelectionArgumentsFor(contactID),
-                SORT_ORDER + " LIMIT 1"
+                "$SORT_ORDER LIMIT 1"
         )
     }
 
@@ -89,9 +84,8 @@ class AndroidContactFactory(private val resolver: ContentResolver, private val t
             arrayOf(contactID.toString())
 
     companion object {
-
-        private val WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + "=1"
-        private val SELECTION_CONTACT_WITH_ID = AndroidContactsQuery._ID + " = ?"
+        private const val WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + "=1"
+        private const val SELECTION_CONTACT_WITH_ID = AndroidContactsQuery._ID + " = ?"
 
         private fun isInvalid(cursor: Cursor?): Boolean = cursor == null || cursor.isClosed
 
@@ -103,3 +97,4 @@ class AndroidContactFactory(private val resolver: ContentResolver, private val t
     }
 
 }
+
