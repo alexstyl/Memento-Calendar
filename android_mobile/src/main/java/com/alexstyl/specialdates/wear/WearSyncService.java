@@ -19,6 +19,7 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import javax.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,7 @@ public class WearSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppComponent applicationModule = ((MementoApplication) getApplication())
-                .getApplicationModule();
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
     }
 

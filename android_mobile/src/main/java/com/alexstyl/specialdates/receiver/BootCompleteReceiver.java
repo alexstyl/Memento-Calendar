@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 public class BootCompleteReceiver extends BroadcastReceiver {
 
-    @Inject UpcomingEventsViewRefresher refresher;
     @Inject DailyReminderUserSettings dailyReminderUserSettings;
     @Inject DailyReminderScheduler scheduler;
 
@@ -26,7 +25,6 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)) {
             rescheduleDailyReminder(dailyReminderUserSettings);
-            refresher.refreshViews();
         }
     }
 
@@ -35,5 +33,4 @@ public class BootCompleteReceiver extends BroadcastReceiver {
             scheduler.scheduleReminderFor(userSettings.getTimeSet());
         }
     }
-
 }
