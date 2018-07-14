@@ -24,7 +24,7 @@ class UserCredentialsExtractorTask extends AsyncTask<Void, Void, UserCredentials
     @Override
     protected UserCredentials doInBackground(Void... params) {
         UserCredentials userCredentials = extractor.extractCalendarURL(pageSource);
-        if (userCredentials != UserCredentials.ANNONYMOUS) {
+        if (!UserCredentials.ANONYMOUS.equals(userCredentials)) {
             facebookUserSettings.store(userCredentials);
         }
         return userCredentials;

@@ -20,7 +20,6 @@ import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
 import com.alexstyl.specialdates.facebook.FacebookModule;
 import com.alexstyl.specialdates.facebook.FacebookProfileActivity;
-import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity;
 import com.alexstyl.specialdates.facebook.login.FacebookWebView;
 import com.alexstyl.specialdates.home.DonationBannerView;
@@ -133,8 +132,6 @@ public interface AppComponent {
 
     void inject(DeviceConfigurationUpdatedReceiver receiver);
 
-    void inject(FacebookFriendsIntentService service);
-
     void inject(ContactPermissionActivity activity);
 
     void inject(BootCompleteReceiver receiver);
@@ -143,9 +140,9 @@ public interface AppComponent {
 
     void inject(FacebookWebView peopleFragment);
 
-    void inject(@NotNull ThemedMementoActivity themedMementoActivity);
+    void inject(ThemedMementoActivity themedMementoActivity);
 
-    void inject(@NotNull PersonActionsActivity personActionsActivity);
+    void inject(PersonActionsActivity personActionsActivity);
 
-    void inject(@NotNull DonationBannerView donationBannerView);
+    void inject(DonationBannerView donationBannerView);
 }

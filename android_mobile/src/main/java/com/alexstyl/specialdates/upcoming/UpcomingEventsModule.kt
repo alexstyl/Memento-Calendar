@@ -67,11 +67,6 @@ class UpcomingEventsModule {
     }
 
     @Provides
-    fun jobCreator(updater: PeopleEventsUpdater, presenter: DailyReminderPresenter, notifier: DailyReminderNotifier): JobsCreator {
-        return JobsCreator(updater, presenter, notifier)
-    }
-
-    @Provides
     fun presenter(permissionsChecker: MementoPermissions, provider: UpcomingEventsProvider): UpcomingEventsPresenter {
         val today = Date.today()
         return UpcomingEventsPresenter(

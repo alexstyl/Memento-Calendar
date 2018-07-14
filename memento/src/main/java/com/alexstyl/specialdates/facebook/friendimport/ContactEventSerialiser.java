@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ContactEventSerialiser {
+public class ContactEventSerialiser {
 
     private static final String EVENT_END = "END:VEVENT";
     private static final String EVENT_START = "BEGIN:VEVENT";
@@ -23,7 +23,7 @@ class ContactEventSerialiser {
     private final FacebookContactFactory factory;
     private final CrashAndErrorTracker tracker;
 
-    ContactEventSerialiser(FacebookContactFactory factory, CrashAndErrorTracker tracker) {
+    public ContactEventSerialiser(FacebookContactFactory factory, CrashAndErrorTracker tracker) {
         this.factory = factory;
         this.tracker = tracker;
     }

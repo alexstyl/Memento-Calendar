@@ -65,6 +65,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
 
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
+
         analytics.trackScreen(Screen.ADD_EVENT)
         val toolbar = findViewById<MementoToolbar>(R.id.memento_toolbar)
         setSupportActionBar(toolbar)

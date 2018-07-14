@@ -31,7 +31,7 @@ import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
-import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsJob
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity
 import com.alexstyl.specialdates.support.AskForSupport
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
@@ -144,8 +144,12 @@ class DebugFragment : MementoPreferenceFragment() {
             true
         }
         findPreference<Preference>(R.string.key_debug_facebook_fetch_friends)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = Intent(activity, FacebookFriendsIntentService::class.java)
-            activity!!.startService(intent)
+            JobRequest.Builder(FacebookFriendsJob.TAG)
+                    .startNow()
+                    .build()
+                    .schedule()
+
+            showToast("Facebook Friends Job Triggered")
             true
         }
 

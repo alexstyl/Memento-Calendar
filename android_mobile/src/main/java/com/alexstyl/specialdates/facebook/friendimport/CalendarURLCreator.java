@@ -6,11 +6,11 @@ import com.alexstyl.specialdates.facebook.UserCredentials;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-class CalendarURLCreator {
+public class CalendarURLCreator {
 
     private final CrashAndErrorTracker tracker;
 
-    CalendarURLCreator(CrashAndErrorTracker tracker) {
+    public CalendarURLCreator(CrashAndErrorTracker tracker) {
         this.tracker = tracker;
     }
 
