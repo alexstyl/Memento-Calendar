@@ -34,12 +34,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/localised_app_name">
 
+        <activity android:name="com.alexstyl.specialdates.ReroutingActivity" />
+
         <activity android:name="com.alexstyl.specialdates.home.HomeActivity" />
 
         <!-- Activity alias used so that we can modify the UpcomingEventsActivity file without worrying about the name -->
         <activity-alias
             android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
-            android:targetActivity=".home.HomeActivity">
+            android:targetActivity=".ReroutingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -212,10 +214,6 @@
         <service
             android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
-        <service
-            android:name=".facebook.friendimport.FacebookFriendsIntentService"
-            android:label="@string/title_facebook_friends_import" />
 
         <meta-data
             android:name="com.google.android.gms.version"
