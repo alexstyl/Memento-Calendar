@@ -1,8 +1,11 @@
 package com.alexstyl.specialdates.contact
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.database.Cursor
+import android.database.MatrixCursor
+import android.net.Uri
 import android.provider.ContactsContract
 import com.alexstyl.specialdates.contact.AndroidContactsQuery.SORT_ORDER
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
@@ -11,13 +14,13 @@ import java.net.URI
 class AndroidContactFactory(private val resolver: ContentResolver) {
 
     fun getAllContacts(): Contacts {
-        val cursor: Cursor = resolver.query(
+        val cursor: Cursor = resolver.safeQuery(
                 AndroidContactsQuery.CONTENT_URI,
                 AndroidContactsQuery.PROJECTION,
                 WHERE,
                 null,
                 SORT_ORDER
-        ) ?: return Contacts(SOURCE_DEVICE, emptyList())
+        )
 
         return cursor.use {
             return@use Contacts(SOURCE_DEVICE, List(it.count, { index ->
@@ -27,13 +30,11 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
         }
     }
 
+    private fun emptyCursor(projection: Array<String>) = MatrixCursor(AndroidContactsQuery.PROJECTION)
+
     @Throws(ContactNotFoundException::class)
     fun createContactWithId(contactID: Long): Contact {
-        val cursor = queryContactsWithContactId(contactID)
-        if (isInvalid(cursor)) {
-            throw RuntimeException("Cursor was invalid")
-        }
-        cursor.use {
+        queryContactsWithContactId(contactID).use {
             if (it.moveToFirst()) {
                 return createContactFrom(it)
             }
@@ -54,7 +55,7 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
     }
 
     private fun queryContactsWithContactId(ids: List<Long>): Cursor {
-        return resolver.query(
+        return resolver.safeQuery(
                 AndroidContactsQuery.CONTENT_URI,
                 AndroidContactsQuery.PROJECTION,
                 "${AndroidContactsQuery._ID} IN (${ids.joinToString(",")})",
@@ -71,7 +72,7 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
     }
 
     private fun queryContactsWithContactId(contactID: Long): Cursor {
-        return resolver.query(
+        return resolver.safeQuery(
                 AndroidContactsQuery.CONTENT_URI,
                 AndroidContactsQuery.PROJECTION,
                 SELECTION_CONTACT_WITH_ID,
@@ -87,8 +88,6 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
         private const val WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + "=1"
         private const val SELECTION_CONTACT_WITH_ID = AndroidContactsQuery._ID + " = ?"
 
-        private fun isInvalid(cursor: Cursor?): Boolean = cursor == null || cursor.isClosed
-
         private fun getContactIdFrom(cursor: Cursor): Long =
                 cursor.getLong(AndroidContactsQuery.CONTACT_ID)
 
@@ -97,4 +96,12 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
     }
 
 }
+
+@SuppressLint("Recycle")
+private fun ContentResolver.safeQuery(uri: Uri,
+                                      projection: Array<String>?,
+                                      selection: String?,
+                                      selectionArgs: Array<String>?,
+                                      sortOrder: String?): Cursor =
+        this.query(uri, projection, selection, selectionArgs, sortOrder) ?: MatrixCursor(projection)
 
