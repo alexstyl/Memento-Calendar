@@ -5,15 +5,18 @@ import android.widget.RemoteViews
 
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.upcoming.BankHolidayViewModel
+import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel
 
-internal class BankHolidayBinder(private val views: RemoteViews, private val context: Context) : UpcomingEventViewBinder<BankHolidayViewModel> {
-
-    override fun bind(viewModel: BankHolidayViewModel) {
+class BankHolidayBinder(private val _views: RemoteViews, private val context: Context) : UpcomingEventViewBinder {
+    override fun bind(viewModel: UpcomingRowViewModel) {
+        viewModel as BankHolidayViewModel
         views.setTextViewText(R.id.row_upcoming_bankholiday, viewModel.bankHolidayName)
 
         val fillInIntent = WidgetRouterActivity.buildIntent(context)
         views.setOnClickFillInIntent(R.id.widget_row_upcoming_bankholiday_background, fillInIntent)
     }
 
-    override fun getViews(): RemoteViews = views
+    override val views: RemoteViews
+        get() = _views
+
 }

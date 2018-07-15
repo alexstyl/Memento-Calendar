@@ -17,7 +17,7 @@ import com.alexstyl.specialdates.images.ImageLoader;
 
 import static android.graphics.Shader.TileMode.CLAMP;
 
-final class CircularAvatarFactory {
+public final class CircularAvatarFactory {
 
     private static final String SMILEY_FACE = ":)";
     private static final Typeface ROBOTO_LIGHT = Typeface.create("sans-serif-light", Typeface.NORMAL);
