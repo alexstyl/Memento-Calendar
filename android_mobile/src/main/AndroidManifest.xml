@@ -34,7 +34,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/localised_app_name">
 
-        <activity android:name="com.alexstyl.specialdates.ReroutingActivity" />
+        <activity
+            android:name="com.alexstyl.specialdates.ReroutingActivity"
+            android:theme="@style/Theme.Memento.Wallpaper" />
 
         <activity android:name="com.alexstyl.specialdates.home.HomeActivity" />
 
