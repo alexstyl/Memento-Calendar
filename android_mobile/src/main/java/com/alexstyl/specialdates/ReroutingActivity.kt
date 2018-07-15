@@ -22,11 +22,10 @@ class ReroutingActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         if (BuildConfig.DEBUG) {
-            // create debug Notification
             showDebugNotification()
         }
+
         val intent = HomeActivity.getStartIntent(this)
         startActivity(intent)
 
