@@ -16,7 +16,7 @@ class CustomEventProvider(private val resolver: ContentResolver) {
                 .use { cursor ->
                     if (cursor.moveToFirst()) {
                         val columnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Event.LABEL)
-                        val eventName = cursor.getString(columnIndex)
+                        val eventName = cursor.getString(columnIndex) ?: ""
                         return CustomEventType(eventName)
                     }
                 }
