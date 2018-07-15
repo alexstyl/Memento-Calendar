@@ -13,7 +13,7 @@ public class TimeOfDayTest {
 
     @Test
     public void toStringReturnsTheSpecifiedLabel() {
-        TimeOfDay timeOfDay = new TimeOfDay(5, 0);
+        TimeOfDay timeOfDay = TimeOfDay.Companion.at(5, 0);
         assertThat(timeOfDay.toString()).isEqualTo("05:00");
     }
 }
