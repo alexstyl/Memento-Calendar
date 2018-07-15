@@ -28,10 +28,10 @@ class PersonModule {
                      context: Context,
                      packageManager: PackageManager,
                      tracker: CrashAndErrorTracker,
-                     strings: Strings): ContactActionsProvider {
+                     strings: Strings,
+                     themePreferences: ThemingPreferences): ContactActionsProvider {
 
-        val theme = ThemingPreferences.newInstance(context).selectedTheme
-        val wrapper = ContextThemeWrapper(context, theme.androidTheme())
+        val wrapper = ContextThemeWrapper(context, themePreferences.selectedTheme.androidTheme())
 
         return CompositeContactActionsProvider(
                 mapOf(
