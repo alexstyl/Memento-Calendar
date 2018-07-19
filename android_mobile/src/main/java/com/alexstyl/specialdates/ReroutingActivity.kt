@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.app.NotificationCompat
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.home.HomeActivity
 
@@ -46,6 +47,7 @@ class ReroutingActivity : Activity() {
         val debugPendingIntent = PendingIntent.getActivity(
                 this, 0, buildDebugOptionsIntent(), 0
         )
+
 
         val debugNotification = NotificationCompat.Builder(this, DEBUG_CHANNEL)
                 .setContentTitle("Memento Debug")

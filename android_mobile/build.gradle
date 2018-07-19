@@ -99,7 +99,12 @@ dependencies {
     implementation "com.google.firebase:firebase-ads:$firebase_ads_version"
 
     implementation 'com.novoda:notils:2.2.15'
-    implementation 'com.novoda:simple-chrome-custom-tabs:0.1.6'
+    implementation('com.novoda:simple-chrome-custom-tabs:0.1.6') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'customtabs'
+    }
+    implementation "com.android.support:customtabs:$android_support_version"
+
 
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
