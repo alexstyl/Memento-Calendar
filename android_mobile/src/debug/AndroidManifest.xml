@@ -11,7 +11,11 @@
             android:name="com.alexstyl.specialdates.debug.DebugActivity"
             android:icon="@drawable/ic_heart"
             android:label="Memento Debug"
-            android:taskAffinity="com.alexstyl.debug" />
+            android:taskAffinity="com.alexstyl.debug">
+            <intent-filter>
+                <action android:name="com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS" />
+            </intent-filter>
+        </activity>
 
     </application>
 

@@ -7,14 +7,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.media.AudioAttributes
 import android.os.Bundle
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationManagerCompat
 import com.alexstyl.android.Version
-import com.alexstyl.android.toUri
-import com.alexstyl.specialdates.dailyreminder.NotificationConstants
-import com.alexstyl.specialdates.debug.DebugActivity
 import com.alexstyl.specialdates.home.HomeActivity
 
 class ReroutingActivity : Activity() {
@@ -50,7 +44,7 @@ class ReroutingActivity : Activity() {
         }
 
         val debugPendingIntent = PendingIntent.getActivity(
-                this, 0, Intent(this, DebugActivity::class.java), 0
+                this, 0, buildDebugOptionsIntent(), 0
         )
 
         val debugNotification = NotificationCompat.Builder(this, DEBUG_CHANNEL)
@@ -67,7 +61,14 @@ class ReroutingActivity : Activity() {
         notificationManager.notify(1, debugNotification)
     }
 
+    private fun buildDebugOptionsIntent(): Intent {
+        return Intent(ACTION_DEBUG_OPTIONS).apply {
+            `package` = BuildConfig.APPLICATION_ID
+        }
+    }
+
     companion object {
+        const val ACTION_DEBUG_OPTIONS = "com.alexstyl.specialdates.DEBUG_OPTIONS"
         const val DEBUG_CHANNEL = "debug_channel"
     }
 }
