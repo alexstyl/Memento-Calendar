@@ -83,6 +83,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', exclude: 'android-support-v4.jar', include: ['*.jar'])
     implementation project(':android_common')
+    implementation project(':simple-tabs')
 
     implementation "com.android.support:appcompat-v7:$android_support_version"
     implementation "com.android.support:design:$android_support_version"
@@ -99,7 +100,6 @@ dependencies {
     implementation "com.google.firebase:firebase-ads:$firebase_ads_version"
 
     implementation 'com.novoda:notils:2.2.15'
-    implementation 'com.novoda:simple-chrome-custom-tabs:0.1.6'
 
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 

@@ -175,9 +175,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
         private const val EXTERNAL_STORAGE_REQUEST_CODE = 15
 
-        // Char sequence for a 12 hour format.
         private const val DEFAULT_FORMAT_12_HOUR = "hh:mm a"
-        // Char sequence for a 24 hour format.
         private const val DEFAULT_FORMAT_24_HOUR = "kk:mm"
 
         fun getHour(context: Context?, cal: Calendar): CharSequence {

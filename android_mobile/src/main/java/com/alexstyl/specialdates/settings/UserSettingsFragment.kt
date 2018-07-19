@@ -30,10 +30,12 @@ import javax.inject.Inject
 class UserSettingsFragment : MementoPreferenceFragment() {
 
     private var namedayLanguageListPreferences: NamedayListPreference? = null
-    private var themingPreferences: ThemingPreferences? = null
+    private var restorePreference: Preference? = null
     private var appThemePreference: Preference? = null
     private var activity: ThemedMementoActivity? = null
 
+    lateinit var themingPreferences: ThemingPreferences
+        @Inject set
     lateinit var analytics: Analytics
         @Inject set
     lateinit var strings: Strings
@@ -57,7 +59,7 @@ class UserSettingsFragment : MementoPreferenceFragment() {
 
     private val themeSelectedListener = ThemeSelectDialog.OnThemeSelectedListener { theme ->
         analytics.trackThemeSelected(getString(theme.themeName))
-        themingPreferences!!.selectedTheme = theme
+        themingPreferences.selectedTheme = theme
         activity!!.applyNewTheme()
     }
 
@@ -72,58 +74,22 @@ class UserSettingsFragment : MementoPreferenceFragment() {
         applicationModule.inject(this)
 
         addPreferencesFromResource(R.xml.preference_main)
-        themingPreferences = ThemingPreferences.newInstance(getActivity()!!)
 
         dailyReminderOreoChannelCreator.createDailyReminderChannel()
 
         appThemePreference = findPreference(R.string.key_app_theme_id)
-        appThemePreference!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val dialog = ThemeSelectDialog()
-            dialog.setOnThemeSelectedListener(themeSelectedListener)
-            dialog.show(fragmentManager!!, FM_THEME_TAG)
-            true
-        }
-
-        findPreference<Preference>(R.string.key_donate)?.setOnPreferenceClickListener {
-            navigator.toDonate(activity as Activity)
-            true
-        }
-        findPreference<Preference>(R.string.key_enable_bank_holidays)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, o ->
-            eventPresenter.updateEventOptions()
-            true
-        }
-
-        val bankholidaysLanguage = findPreference<Preference>(R.string.key_bankholidays_language)
-        bankholidaysLanguage!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            OnlyGreekSupportedDialog().show(fragmentManager!!, "OnlyGreek")
-            true
-        }
-
-        findPreference<Preference>(R.string.key_enable_namedays)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            val enabled = newValue as Boolean
-            tracker.onNamedayLocaleChanged(if (enabled) locale else null)
-            eventPresenter.refreshPeopleEvents()
-            true
-        }
-
         namedayLanguageListPreferences = findPreference(R.string.key_namedays_language)
-        namedayLanguageListPreferences!!.setOnNamedayLocaleChangeListener { locale ->
-            namedaysPreferences.setSelectedLanguage(locale.countryCode)
-            namedayLanguageListPreferences!!.summary = strings.localeName(locale)
-            eventPresenter.refreshPeopleEvents()
-            true
-        }
-        findPreference<Preference>(R.string.key_namedays_contacts_only)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            namedaysPreferences.isEnabledForContactsOnly = newValue as Boolean
-            eventPresenter.updateEventOptions()
-            true
-        }
-        findPreference<Preference>(R.string.key_namedays_full_name)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-            eventPresenter.refreshPeopleEvents()
-            true
-        }
+        restorePreference = findPreference("key_donate_restore")
 
-        val restorePreference = findPreference("key_donate_restore")
+        setupAppTheme(appThemePreference!!)
+        setupDonate(findPreference<Preference>(R.string.key_donate))
+        setupBankHolidaysToggle(findPreference<Preference>(R.string.key_enable_bank_holidays)!!)
+        setupBankHolidaysLanguage(findPreference(R.string.key_bankholidays_language)!!)
+        setupNamedaysToggle(findPreference<Preference>(R.string.key_enable_namedays)!!)
+        setupNamedayLanguage(namedayLanguageListPreferences!!)
+        setupNamedaysContactsOnly(findPreference<Preference>(R.string.key_namedays_contacts_only)!!)
+        setupNamedaysFullName(findPreference<Preference>(R.string.key_namedays_full_name)!!)
+
         donationService = AndroidDonationService(
                 IabHelper(getActivity()!!, AndroidDonationConstants.PUBLIC_KEY),
                 getActivity(),
@@ -141,12 +107,79 @@ class UserSettingsFragment : MementoPreferenceFragment() {
                 // do nothing
             }
         })
-        restorePreference!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        setupRestoreDonation(restorePreference!!)
+        eventPresenter.startMonitoring()
+        reattachThemeDialogIfNeeded()
+    }
+
+    private fun setupRestoreDonation(preference: Preference) {
+        preference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             donationService!!.restoreDonations()
             true
         }
-        eventPresenter.startMonitoring()
-        reattachThemeDialogIfNeeded()
+    }
+
+    private fun setupNamedaysFullName(preference: Preference) {
+        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            eventPresenter.refreshPeopleEvents()
+            true
+        }
+    }
+
+    private fun setupNamedaysContactsOnly(preference: Preference) {
+        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            namedaysPreferences.isEnabledForContactsOnly = newValue as Boolean
+            eventPresenter.updateEventOptions()
+            true
+        }
+    }
+
+    private fun setupNamedayLanguage(namedayListPreference: NamedayListPreference) {
+        namedayListPreference.setOnNamedayLocaleChangeListener { locale ->
+            namedaysPreferences.setSelectedLanguage(locale.countryCode)
+            namedayListPreference.summary = strings.localeName(locale)
+            eventPresenter.refreshPeopleEvents()
+            true
+        }
+    }
+
+    private fun setupAppTheme(preference: Preference) {
+        preference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            val dialog = ThemeSelectDialog()
+            dialog.setOnThemeSelectedListener(themeSelectedListener)
+            dialog.show(fragmentManager!!, FM_THEME_TAG)
+            true
+        }
+    }
+
+    private fun setupBankHolidaysToggle(preference: Preference) {
+        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            eventPresenter.updateEventOptions()
+            true
+        }
+    }
+
+    private fun setupDonate(preference: Preference?) {
+        preference?.setOnPreferenceClickListener {
+            navigator.toDonate(activity as Activity)
+            true
+        }
+    }
+
+    private fun setupNamedaysToggle(preference1: Preference) {
+        preference1.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+            val enabled = newValue as Boolean
+            tracker.onNamedayLocaleChanged(if (enabled) locale else null)
+            eventPresenter.refreshPeopleEvents()
+            true
+        }
+    }
+
+    private fun setupBankHolidaysLanguage(bankholidaysLanguage: Preference) {
+        bankholidaysLanguage.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            OnlyGreekSupportedDialog().show(fragmentManager!!, "OnlyGreek")
+            true
+        }
     }
 
     private fun reattachThemeDialogIfNeeded() {

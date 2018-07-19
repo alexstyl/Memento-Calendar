@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.search
 
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.date.ContactEvent
-import java.util.*
 
 internal class ContactEventViewModelFactory(private val eventLabelCreator: ContactEventLabelCreator,
                                             private val colors: Colors) {

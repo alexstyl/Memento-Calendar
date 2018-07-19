@@ -131,7 +131,7 @@ style:
   NamingConventionViolation:
     active: true
     variablePattern: '^(_)?[a-z$][a-zA-Z$0-9]*$'
-    constantPattern: '^([A-Z_]*|serialVersionUID)$'
+    constantPattern: '^([A-Z0-9_]*|serialVersionUID)$'
     methodPattern: '^[a-z$][a-zA-Z$0-9]*$'
     classPattern: '[A-Z$][a-zA-Z$]*'
     enumEntryPattern: '^[A-Z$][a-zA-Z_$]*$'
