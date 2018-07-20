@@ -15,16 +15,14 @@ import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.person.PersonActivity
 import javax.inject.Inject
 
-private val ACTION_VIEW_NAMEDAY = "action:view_nameday"
-private val ACTION_VIEW_CONTACT = "action:view_contact"
-private val EXTRA_CNTACT_ID = "extra:contact_id"
-private val EXTRA_CONTACT_SOURCE = "extra:contact_source"
-
+/**
+ * Activity with the sole purpose to forward intent launches to other activities from clicks to widgets.
+ * This activity has no UI
+ */
 class WidgetRouterActivity : Activity() {
 
-
-    @Inject lateinit var contactsProvider: ContactsProvider
-
+    @Inject
+    lateinit var contactsProvider: ContactsProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +35,27 @@ class WidgetRouterActivity : Activity() {
         finish()
     }
 
+    fun routeIntent(intent: Intent, context: Context): Intent = when (intent.action) {
+        ACTION_VIEW_CONTACT -> PersonActivity.buildIntentFor(context, intent.contact())
+        ACTION_VIEW_NAMEDAY -> NamedaysOnADayActivity.getStartIntent(context, intent.getDateExtraOrThrow())
+        else -> {
+            HomeActivity.getStartIntent(this)
+        }
+    }
+
+    private fun Intent.contact(): Contact {
+        val contactId = getLongExtra(EXTRA_CNTACT_ID, -1)
+        val source = getIntExtra(EXTRA_CONTACT_SOURCE, -1)
+        return contactsProvider.getContact(contactId, source)
+    }
+
     companion object {
+
+        private const val ACTION_VIEW_NAMEDAY = "action:view_nameday"
+        private const val ACTION_VIEW_CONTACT = "action:view_contact"
+        private const val EXTRA_CNTACT_ID = "extra:contact_id"
+        private const val EXTRA_CONTACT_SOURCE = "extra:contact_source"
+
         fun buildIntent(context: Context): Intent = Intent(context, WidgetRouterActivity::class.java)
 
         fun buildContactIntent(context: Context, contact: Contact): Intent =
@@ -57,21 +75,6 @@ class WidgetRouterActivity : Activity() {
                             putExtraDate(date)
                         }
     }
-
-    fun routeIntent(intent: Intent, context: Context): Intent = when (intent.action) {
-        ACTION_VIEW_CONTACT -> PersonActivity.buildIntentFor(context, intent.contact())
-        ACTION_VIEW_NAMEDAY -> NamedaysOnADayActivity.getStartIntent(context, intent.getDateExtraOrThrow())
-        else -> {
-            HomeActivity.getStartIntent(this)
-        }
-    }
-
-    private fun Intent.contact(): Contact {
-        val contactId = getLongExtra(EXTRA_CNTACT_ID, -1)
-        val source = getIntExtra(EXTRA_CONTACT_SOURCE, -1)
-        return contactsProvider.getContact(contactId, source)
-    }
-
 }
 
 

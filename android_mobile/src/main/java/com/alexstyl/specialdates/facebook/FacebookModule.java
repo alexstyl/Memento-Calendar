@@ -33,7 +33,7 @@ public class FacebookModule {
 
     @Provides
     FacebookUserSettings userSettings() {
-        return new AndroidFacebookPreferences(EasyPreferences.createForPrivatePreferences(context, R.string.pref_facebook));
+        return new AndroidFacebookPreferences(EasyPreferences.Companion.createForPrivatePreferences(context, R.string.pref_facebook));
     }
 
     @Provides

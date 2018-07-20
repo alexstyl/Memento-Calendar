@@ -10,7 +10,7 @@ public final class DonationPreferences {
     private final EasyPreferences preferences;
 
     public static DonationPreferences newInstance(Context context) {
-        EasyPreferences preferences = EasyPreferences.createForDefaultPreferences(context);
+        EasyPreferences preferences = EasyPreferences.Companion.createForDefaultPreferences(context);
         return new DonationPreferences(preferences);
     }
 

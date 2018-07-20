@@ -4,29 +4,45 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@drawable/selectable_back"
-  android:orientation="vertical"
+  android:orientation="horizontal"
   android:paddingBottom="10dp"
   android:paddingLeft="16dp"
   android:paddingRight="16dp"
   android:paddingTop="10dp">
 
-  <TextView
-    android:id="@+id/row_person_event_title"
-    style="@style/Person.Text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:fontFamily="sans-serif-condensed"
-    android:textColor="?colorAccent"
-    tools:text="Birthday" />
+  <ImageView
+      android:id="@+id/row_person_event_icon"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:layout_marginEnd="22dp"
+      android:layout_marginRight="22dp"
+      tools:tint="?colorAccent"
+      tools:src="@drawable/ic_cake" />
 
-  <TextView
-    android:id="@+id/row_person_event_date"
-    style="@style/Person.Text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:fontFamily="sans-serif-condensed"
-    android:textColor="#000"
-    tools:text="29 March, 1990" />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/row_person_event_date"
+        style="@style/Person.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="?colorAccent"
+        tools:text="Birthday" />
+
+    <TextView
+        android:id="@+id/row_person_event_title"
+        style="@style/Person.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#a0000000"
+        tools:text="5 July, 1990" />
+  </LinearLayout>
 
 </LinearLayout>

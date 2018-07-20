@@ -145,4 +145,6 @@ public interface AppComponent {
     void inject(PersonActionsActivity personActionsActivity);
 
     void inject(DonationBannerView donationBannerView);
+
+    void inject(ReroutingActivity reroutingActivity);
 }

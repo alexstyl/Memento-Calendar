@@ -99,6 +99,8 @@ dependencies {
 
     implementation "com.google.android.gms:play-services-wearable:$play_services_version"
     implementation "com.google.firebase:firebase-core:$firebase_core_version"
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+
     implementation "com.google.firebase:firebase-ads:$firebase_ads_version"
 
     implementation 'com.novoda:notils:2.2.15'
