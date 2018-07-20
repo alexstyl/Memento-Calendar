@@ -25,6 +25,7 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.alexstyl.specialdates.ui.widget.MementoToolbar;
 
 import javax.inject.Inject;
+
 import java.net.URI;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,13 +40,20 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
     private FacebookProfilePresenter presenter;
     private ImageView profilePicture;
     private TextView userName;
-    @Inject Analytics analytics;
-    @Inject ImageLoader imageLoader;
-    @Inject UpcomingEventsViewRefresher uiRefresher;
-    @Inject CrashAndErrorTracker tracker;
-    @Inject FacebookUserSettings facebookSettings;
-    @Inject UpcomingEventsSettings eventsSettings;
-    @Inject ContactEventsMarshaller marshaller;
+    @Inject
+    Analytics analytics;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    UpcomingEventsViewRefresher uiRefresher;
+    @Inject
+    CrashAndErrorTracker tracker;
+    @Inject
+    FacebookUserSettings facebookSettings;
+    @Inject
+    UpcomingEventsSettings eventsSettings;
+    @Inject
+    ContactEventsMarshaller marshaller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +76,7 @@ public class FacebookProfileActivity extends ThemedMementoActivity implements Fa
 
         FacebookFriendsPersister persister = new FacebookFriendsPersister(
                 new AndroidPeopleEventsPersister(new EventSQLiteOpenHelper(this), marshaller, tracker));
-        navigator = new ExternalNavigator(this, analytics, tracker);
+        navigator = new ExternalNavigator(this, analytics, tracker, attributeExtractor);
 
         FacebookLogoutService service = new FacebookLogoutService(
                 AndroidSchedulers.mainThread(),

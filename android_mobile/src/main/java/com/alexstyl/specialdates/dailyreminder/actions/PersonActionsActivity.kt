@@ -59,7 +59,7 @@ class PersonActionsActivity : ThemedMementoActivity() {
     }
 
     private fun startPresentingInto(view: ContactActionsView) {
-        val action = AndroidContactActions(this)
+        val action = AndroidContactActions(this, attributeExtractor)
         when {
             intent.action == ACTION_CALL -> presenter?.startPresentingCallsInto(view, action)
             intent.action == ACTION_SENDTO -> presenter?.startPresentingMessagingInto(view, action)
