@@ -4,7 +4,7 @@ apply from: '../versions.gradle'
 
 android {
 
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion 27
     buildToolsVersion androidBuildToolsVersion
 
     // All these unused resources are actually used by other modules

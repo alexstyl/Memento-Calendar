@@ -26,7 +26,7 @@ project.afterEvaluate {
 
 android {
 
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
     buildToolsVersion androidBuildToolsVersion
 
     applicationVariants.all { variant ->
@@ -41,10 +41,10 @@ android {
 
     defaultConfig {
         applicationId 'com.alexstyl.specialdates'
-        minSdkVersion 16
-        targetSdkVersion 27
-        versionCode androidVersionCode
-        versionName androidVersionName
+        minSdkVersion Integer.parseInt(project.MOBILE_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+        versionCode Integer.parseInt(project.MOBILE_VERSION_CODE)
+        versionName project.MOBILE_VERSION_NAME
 
         resValue "string", "admob_unit_id", "\"$adMobUnitId\""
         buildConfigField "String", "ADMOB_APP_ID", "\"$adMobAppId\""

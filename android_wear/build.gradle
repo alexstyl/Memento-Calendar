@@ -13,15 +13,15 @@ repositories {
 
 
 android {
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
     buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         applicationId "com.alexstyl.specialdates"
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode androidVersionCode
-        versionName androidVersionName
+        minSdkVersion Integer.parseInt(project.WEAR_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+        versionCode Integer.parseInt(project.WEAR_VERSION_CODE)
+        versionName project.WEAR_VERSION_NAME
     }
     buildTypes {
         release {
