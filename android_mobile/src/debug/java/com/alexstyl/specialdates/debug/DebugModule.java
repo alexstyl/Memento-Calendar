@@ -21,6 +21,6 @@ public class DebugModule {
 
     @Provides
     DailyReminderDebugPreferences debugPreferences(Context context) {
-        return DailyReminderDebugPreferences.newInstance(context);
+        return DailyReminderDebugPreferences.Companion.newInstance(context);
     }
 }

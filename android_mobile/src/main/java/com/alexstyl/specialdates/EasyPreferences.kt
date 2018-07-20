@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.preference.PreferenceManager
 import android.support.annotation.BoolRes
 import android.support.annotation.StringRes
-import android.support.v4.util.Pair
 
 class EasyPreferences private constructor(private val prefs: SharedPreferences, private val res: Resources) {
 
@@ -67,9 +66,9 @@ class EasyPreferences private constructor(private val prefs: SharedPreferences, 
 
     fun setIntegers(firstPair: Pair<Int, Int>, vararg otherPairs: Pair<Int, Int>) {
         val edit = prefs.edit()
-        edit.putInt(key(firstPair.first!!), firstPair.second!!)
+        edit.putInt(key(firstPair.first), firstPair.second)
         for (pair in otherPairs) {
-            edit.putInt(key(pair.first!!), pair.second!!)
+            edit.putInt(key(pair.first), pair.second)
         }
         edit.apply()
     }
