@@ -11,11 +11,12 @@ ext {
     play_services_version = '15.0.1'
     firebase_core_version = '16.0.1'
     firebase_ads_version = '15.0.1'
+    lifecycle_version = '1.1.1'
 
     // Code Quality
     checkstyleVersion = '8.0'
     findbugsVersion = '3.0.1'
     pmdVersion = '5.8.1'
 
-    kotlin_version = '1.2.30'
+    kotlin_version = '1.2.41'
 }

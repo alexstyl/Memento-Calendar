@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.ExternalNavigator;
 import com.alexstyl.specialdates.MementoApplication;
 import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.analytics.Analytics;
+import com.alexstyl.specialdates.theming.AttributeExtractor;
 import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
@@ -22,10 +23,13 @@ import javax.inject.Inject;
 public class RateDialog extends MementoActivity {
 
     private final String smiley = " " + Emoticon.SMILEY.asText();
-    @Inject AskForSupport askForSupport;
+    @Inject
+    AskForSupport askForSupport;
     private ExternalNavigator externalNavigator;
-    @Inject Analytics analytics;
-    @Inject CrashAndErrorTracker tracker;
+    @Inject
+    Analytics analytics;
+    @Inject
+    CrashAndErrorTracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class RateDialog extends MementoActivity {
         AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
 
-        externalNavigator = new ExternalNavigator(this, analytics, tracker);
+        externalNavigator = new ExternalNavigator(this, analytics, tracker, new AttributeExtractor());
         Views.findById(this, R.id.support_rate_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
