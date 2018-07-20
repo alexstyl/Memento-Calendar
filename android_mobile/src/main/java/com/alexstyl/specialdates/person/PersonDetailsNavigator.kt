@@ -13,12 +13,4 @@ class PersonDetailsNavigator(private val navigator: ExternalNavigator) {
             navigator.toContactDetails(displayingContact.get())
         }
     }
-
-    fun connectTo(activity: Activity) {
-        navigator.connectTo(activity)
-    }
-
-    fun disconnectFrom(activity: Activity) {
-        navigator.disconnectFrom(activity)
-    }
 }

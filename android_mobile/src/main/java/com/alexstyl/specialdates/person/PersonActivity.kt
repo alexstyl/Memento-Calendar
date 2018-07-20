@@ -172,16 +172,6 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onStart() {
-        super.onStart()
-        navigator!!.connectTo(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        navigator!!.disconnectFrom(this)
-    }
-
     override fun onPause() {
         super.onPause()
         presenter.stopPresenting()

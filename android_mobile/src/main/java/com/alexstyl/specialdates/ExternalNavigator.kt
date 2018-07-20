@@ -26,7 +26,7 @@ class ExternalNavigator(
         private val analytics: Analytics,
         private val tracker: CrashAndErrorTracker,
         private val attributeExtractor: AttributeExtractor) {
-    
+
     init {
         activity.lifecycle.addObserver(SimpleChromeCustomTabsObserver(activity))
     }
@@ -45,15 +45,6 @@ class ExternalNavigator(
             tracker.track(e)
         }
 
-    }
-
-
-    fun connectTo(activity: Activity) {
-        SimpleChromeCustomTabs.getInstance().connectTo(activity);
-    }
-
-    fun disconnectFrom(activity: Activity) {
-        SimpleChromeCustomTabs.getInstance().disconnectFrom(activity);
     }
 
     fun toContactDetails(contact: Contact) {
