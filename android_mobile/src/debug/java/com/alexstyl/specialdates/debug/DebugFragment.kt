@@ -53,34 +53,22 @@ import javax.inject.Inject
 
 class DebugFragment : MementoPreferenceFragment() {
 
-    var dailyReminderDebugPreferences: DailyReminderDebugPreferences? = null
-        @Inject set
-    var namedayUserSettings: NamedayUserSettings? = null
-        @Inject set
-    var contactsProvider: ContactsProvider? = null
-        @Inject set
-    var refresher: UpcomingEventsViewRefresher? = null
-        @Inject set
-    var tracker: CrashAndErrorTracker? = null
-        @Inject set
-    var monitor: DonateMonitor? = null
-        @Inject set
-    var upcomingEventsSettings: UpcomingEventsSettings? = null
-        @Inject set
-    var dateParser: DateParser? = null
-        @Inject set
-    var notifier: DailyReminderNotifier? = null
-        @Inject set
-    var peopleEventsUpdater: DebugPeopleEventsUpdater? = null
-        @Inject set
-    var dailyReminderViewModelFactory: DailyReminderViewModelFactory? = null
-        @Inject set
-    var askForSupport: AskForSupport? = null
-        @Inject set
+    @Inject lateinit var dailyReminderDebugPreferences: DailyReminderDebugPreferences
+    @Inject lateinit var namedayUserSettings: NamedayUserSettings
+    @Inject lateinit var contactsProvider: ContactsProvider
+    @Inject lateinit var refresher: UpcomingEventsViewRefresher
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var monitor: DonateMonitor
+    @Inject lateinit var upcomingEventsSettings: UpcomingEventsSettings
+    @Inject lateinit var dateParser: DateParser
+    @Inject lateinit var notifier: DailyReminderNotifier
+    @Inject lateinit var peopleEventsUpdater: DebugPeopleEventsUpdater
+    @Inject lateinit var dailyReminderViewModelFactory: DailyReminderViewModelFactory
+    @Inject lateinit var askForSupport: AskForSupport
 
     private val onDailyReminderDateSelectedListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         val month1 = month + 1 // dialog picker months have 0 index
-        dailyReminderDebugPreferences!!.setSelectedDate(dayOfMonth, month1, year)
+        dailyReminderDebugPreferences.setSelectedDate(dayOfMonth, month1, year)
     }
 
     override fun onCreate(paramBundle: Bundle?) {
@@ -92,22 +80,22 @@ class DebugFragment : MementoPreferenceFragment() {
         addPreferencesFromResource(R.xml.preference_debug)
         dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(activity!!)
         findPreference<Preference>(R.string.key_debug_refresh_db)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            peopleEventsUpdater?.refresh()
+            peopleEventsUpdater.refresh()
             showToast("Refreshing Database")
             true
         }
         findPreference<Preference>(R.string.key_debug_refresh_widget)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            refresher!!.refreshViews()
+            refresher.refreshViews()
             showToast("Widget(s) refreshed")
             true
         }
 
         findPreference<Preference>(R.string.key_debug_daily_reminder_date_enable)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            dailyReminderDebugPreferences!!.setEnabled(newValue as Boolean)
+            dailyReminderDebugPreferences.setEnabled(newValue as Boolean)
             true
         }
         findPreference<Preference>(R.string.key_debug_daily_reminder_date)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val today = dailyReminderDebugPreferences!!.selectedDate
+            val today = dailyReminderDebugPreferences.selectedDate
             val datePickerDialog = DatePickerDialog(
                     activity!!, onDailyReminderDateSelectedListener,
                     today.year, today.month - 1, today.dayOfMonth
@@ -142,7 +130,7 @@ class DebugFragment : MementoPreferenceFragment() {
         }
         findPreference<Preference>(R.string.key_debug_trigger_support)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             DebugPreferences.newInstance(preference.context, R.string.pref_call_to_rate).wipe()
-            askForSupport!!.requestForRatingSooner()
+            askForSupport.requestForRatingSooner()
             val message = "Support triggered. You should now see a prompt to rate the app when you launch it"
             showToast(message)
             true
@@ -192,9 +180,9 @@ class DebugFragment : MementoPreferenceFragment() {
 
         findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            notifier!!.notifyFor(
+            notifier.notifyFor(
                     DailyReminderViewModel(
-                            dailyReminderViewModelFactory!!.summaryOf(emptyList()),
+                            dailyReminderViewModelFactory.summaryOf(emptyList()),
                             emptyList(),
                             namedaysNotifications(
                                     arrayListOf("NamedayTest", "Alex", "Bravo", "NamedaysRock"
@@ -208,9 +196,9 @@ class DebugFragment : MementoPreferenceFragment() {
         }
         findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            notifier!!.notifyFor(
+            notifier.notifyFor(
                     DailyReminderViewModel(
-                            dailyReminderViewModelFactory!!.summaryOf(emptyList()),
+                            dailyReminderViewModelFactory.summaryOf(emptyList()),
                             emptyList(),
                             Optional.absent(),
                             bankholidayNotification()
@@ -231,7 +219,7 @@ class DebugFragment : MementoPreferenceFragment() {
         }
 
 
-        val fcmToken = FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { result ->
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { result ->
             val fcmToken = result.token
             findPreference<Preference>(R.string.key_debug_firebase_messaging_token)!!
                     .apply { summary = "Token ${fcmToken}" }
@@ -251,9 +239,9 @@ class DebugFragment : MementoPreferenceFragment() {
         val viewModels = contacts
                 .toViewModels()
 
-        notifier!!.notifyFor(
+        notifier.notifyFor(
                 DailyReminderViewModel(
-                        dailyReminderViewModelFactory!!.summaryOf(viewModels),
+                        dailyReminderViewModelFactory.summaryOf(viewModels),
                         viewModels,
                         Optional.absent(),
                         Optional.absent()
@@ -261,10 +249,10 @@ class DebugFragment : MementoPreferenceFragment() {
         )
     }
 
-    private fun bankholidayNotification() = Optional(dailyReminderViewModelFactory!!.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
+    private fun bankholidayNotification() = Optional(dailyReminderViewModelFactory.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
 
     private fun namedaysNotifications(arrayList: ArrayList<String>): Optional<NamedaysNotificationViewModel> =
-            Optional(dailyReminderViewModelFactory!!.viewModelFor(NamesInADate(Date.today(),
+            Optional(dailyReminderViewModelFactory.viewModelFor(NamesInADate(Date.today(),
                     arrayList
             )))
 
@@ -306,7 +294,7 @@ class DebugFragment : MementoPreferenceFragment() {
     private fun ArrayList<ContactEvent>.toViewModels(): ArrayList<ContactEventNotificationViewModel> {
         val viewmodels = arrayListOf<ContactEventNotificationViewModel>()
         forEach {
-            viewmodels.add(dailyReminderViewModelFactory!!.viewModelFor(it.contact, listOf(it)))
+            viewmodels.add(dailyReminderViewModelFactory.viewModelFor(it.contact, listOf(it)))
         }
         return viewmodels
     }

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.alexstyl.resources.ResourcesModule
@@ -29,20 +30,15 @@ import net.danlew.android.joda.JodaTimeAndroid
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@SuppressLint("Registered")
 open class MementoApplication : MultiDexApplication() {
 
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var facebookSettings: FacebookUserSettings
-        @Inject set
-    lateinit var jobCreator: JobsCreator
-        @Inject set
-    lateinit var permissions: MementoPermissions
-        @Inject set
-    lateinit var upcomingEventsSettings: UpcomingEventsSettings
-        @Inject set
-    lateinit var dailyReminderUserSettings: DailyReminderUserSettings
-        @Inject set
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var facebookSettings: FacebookUserSettings
+    @Inject lateinit var jobCreator: JobsCreator
+    @Inject lateinit var permissions: MementoPermissions
+    @Inject lateinit var upcomingEventsSettings: UpcomingEventsSettings
+    @Inject lateinit var dailyReminderUserSettings: DailyReminderUserSettings
 
     lateinit var applicationModule: AppComponent
 

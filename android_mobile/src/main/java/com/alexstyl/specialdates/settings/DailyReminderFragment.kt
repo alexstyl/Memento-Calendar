@@ -25,7 +25,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import java.net.URI
-import java.util.Calendar
+import java.util.*
 import javax.inject.Inject
 
 class DailyReminderFragment : MementoPreferenceFragment() {
@@ -35,20 +35,13 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
     private var ringtoneLegacyPreference: ClickableRingtonePreference? = null
 
-    lateinit var permissions: MementoPermissions
-        @Inject set
-    lateinit var dailyReminderScheduler: DailyReminderScheduler
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var preferences: DailyReminderUserSettings
-        @Inject set
-    lateinit var navigator: DailyReminderNavigator
-        @Inject set
-    lateinit var channelCreator: DailyReminderOreoChannelCreator
-        @Inject set
+    @Inject lateinit var permissions: MementoPermissions
+    @Inject lateinit var dailyReminderScheduler: DailyReminderScheduler
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var preferences: DailyReminderUserSettings
+    @Inject lateinit var navigator: DailyReminderNavigator
+    @Inject lateinit var channelCreator: DailyReminderOreoChannelCreator
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

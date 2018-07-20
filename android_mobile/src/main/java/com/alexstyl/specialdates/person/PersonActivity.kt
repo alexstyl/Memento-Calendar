@@ -36,16 +36,11 @@ import javax.inject.Inject
 
 class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
 
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var imageLoader: ImageLoader
-        @Inject set
-    lateinit var contactsProvider: ContactsProvider
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var presenter: PersonPresenter
-        @Inject set
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var contactsProvider: ContactsProvider
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var presenter: PersonPresenter
 
     private var navigator: PersonDetailsNavigator? = null
     private var displayingContact = Optional.absent<Contact>()

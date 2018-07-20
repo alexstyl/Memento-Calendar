@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.contact
 import android.content.Intent
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.MementoConstants
-import com.alexstyl.specialdates.Optional
 
 
 class ContactIntentExtractor(val tracker: CrashAndErrorTracker,
@@ -14,24 +13,24 @@ class ContactIntentExtractor(val tracker: CrashAndErrorTracker,
         val EXTRA_CONTACT_ID = "${MementoConstants.PACKAGE}.extra:contactId"
     }
 
-    fun getContactExtra(intent: Intent): Optional<Contact> {
+    fun getContactExtra(intent: Intent): Contact? {
         val contactID = intent.getLongExtra(EXTRA_CONTACT_ID, -1)
         if (contactID == -1L) {
-            return Optional.absent()
+            return null
         }
         @ContactSource val contactSource = intent.getIntExtra(EXTRA_CONTACT_SOURCE, -1)
         return if (contactSource == -1) {
-            return Optional.absent()
+            return null
         } else contactFor(contactID, contactSource)
     }
 
 
-    private fun contactFor(contactID: Long, contactSource: Int): Optional<Contact> {
+    private fun contactFor(contactID: Long, contactSource: Int): Contact? {
         return try {
-            Optional(contactsProvider.getContact(contactID, contactSource))
+            contactsProvider.getContact(contactID, contactSource)
         } catch (e: ContactNotFoundException) {
             tracker.track(e)
-            Optional.absent()
+            null
         }
     }
 }

@@ -1,12 +1,12 @@
 package com.alexstyl.specialdates.ui.base
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -18,12 +18,12 @@ import com.alexstyl.specialdates.theming.MementoTheme
 import com.alexstyl.specialdates.theming.Themer
 import javax.inject.Inject
 
+@SuppressLint("Registered")
 open class ThemedMementoActivity : MementoActivity() {
 
-    lateinit var themer: Themer
-        @Inject set
-    lateinit var attributeExtractor: AttributeExtractor
-        @Inject set
+    @Inject lateinit var themer: Themer
+    @Inject lateinit var attributeExtractor: AttributeExtractor
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MementoApplication).applicationModule.inject(this)

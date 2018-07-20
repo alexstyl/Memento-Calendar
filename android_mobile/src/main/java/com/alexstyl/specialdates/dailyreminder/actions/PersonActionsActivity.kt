@@ -19,12 +19,9 @@ import javax.inject.Inject
 
 class PersonActionsActivity : ThemedMementoActivity() {
 
-    var presenter: ContactActionsPresenter? = null
-        @Inject set
-    var extractor: ContactIntentExtractor? = null
-        @Inject set
-    var errorTracker: CrashAndErrorTracker? = null
-        @Inject set
+    @Inject lateinit var presenter: ContactActionsPresenter
+    @Inject lateinit var extractor: ContactIntentExtractor
+    @Inject lateinit var errorTracker: CrashAndErrorTracker
 
     var view: ContactActionsView? = null
 
@@ -41,11 +38,11 @@ class PersonActionsActivity : ThemedMementoActivity() {
             finish()
         }
         recyclerView.adapter = adapter
-        val contact = extractor?.getContactExtra(intent)
-        if (contact != null && contact.isPresent) {
-            view = AndroidContactActionsView(contact.get(), adapter)
+        val contact = extractor.getContactExtra(intent)
+        if (contact != null) {
+            view = AndroidContactActionsView(contact, adapter)
         } else {
-            errorTracker?.track(RuntimeException("Tried to load the actions for a contact from $intent"))
+            errorTracker.track(RuntimeException("Tried to load the actions for a contact from $intent"))
             finish()
         }
 
@@ -61,16 +58,17 @@ class PersonActionsActivity : ThemedMementoActivity() {
     private fun startPresentingInto(view: ContactActionsView) {
         val action = AndroidContactActions(this, attributeExtractor)
         when {
-            intent.action == ACTION_CALL -> presenter?.startPresentingCallsInto(view, action)
-            intent.action == ACTION_SENDTO -> presenter?.startPresentingMessagingInto(view, action)
+            intent.action == ACTION_CALL -> presenter.startPresentingCallsInto(view, action)
+            intent.action == ACTION_SENDTO -> presenter.startPresentingMessagingInto(view, action)
             else -> {
+                throw IllegalArgumentException("Invalid action to show ${intent.action}")
             }
         }
     }
 
     override fun onStop() {
         super.onStop()
-        presenter?.stopPresenting()
+        presenter.stopPresenting()
     }
 
 

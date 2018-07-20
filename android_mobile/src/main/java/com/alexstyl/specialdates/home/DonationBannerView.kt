@@ -24,8 +24,7 @@ class DonationBannerView(context: Context, attrs: AttributeSet?) : LinearLayoutC
     private var closeListener: (CloseBannerListener)? = null
 
 
-    lateinit var errorTracker: CrashAndErrorTracker
-        @Inject set
+    @Inject lateinit var errorTracker: CrashAndErrorTracker
 
     private var adView: AdView? = null
 

@@ -41,20 +41,13 @@ import javax.inject.Inject
 
 class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
-    lateinit var presenter: AddEventsPresenter
-        @Inject set
-    lateinit var permissionChecker: MementoPermissions
-        @Inject set
-    lateinit var uriFilePathProvider: UriFilePathProvider
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var imageLoader: ImageLoader
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var shortDateLabelCreator: ShortDateLabelCreator
-        @Inject set
+    @Inject lateinit var presenter: AddEventsPresenter
+    @Inject lateinit var permissionChecker: MementoPermissions
+    @Inject lateinit var uriFilePathProvider: UriFilePathProvider
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var shortDateLabelCreator: ShortDateLabelCreator
 
     lateinit var view: AddEventView
 

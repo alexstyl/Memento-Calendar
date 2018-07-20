@@ -34,16 +34,11 @@ import javax.inject.Inject
 
 class UpcomingWidgetConfigureActivity : MementoActivity() {
 
-    lateinit var luminanceAnalyzer: LuminanceAnalyzer
-        @Inject set
-    lateinit var preferences: UpcomingWidgetPreferences
-        @Inject set
-    lateinit var labelCreator: DateLabelCreator
-        @Inject set
-    lateinit var todayUpcomingEventsView: TodayUpcomingEventsView
-        @Inject set
-    lateinit var permission: MementoPermissions
-        @Inject set
+    @Inject lateinit var luminanceAnalyzer: LuminanceAnalyzer
+    @Inject lateinit var preferences: UpcomingWidgetPreferences
+    @Inject lateinit var labelCreator: DateLabelCreator
+    @Inject lateinit var todayUpcomingEventsView: TodayUpcomingEventsView
+    @Inject lateinit var permission: MementoPermissions
 
     private lateinit var previewLayout: UpcomingWidgetPreviewLayout
     private lateinit var configurationPanel: UpcomingWidgetConfigurationPanel

@@ -3,17 +3,13 @@ package com.alexstyl.specialdates.home
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.alexstyl.android.isOnline
-
 import com.alexstyl.specialdates.BuildConfig
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -21,7 +17,6 @@ import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.donate.DonateActivity
 import com.alexstyl.specialdates.donate.DonateMonitor
 import com.alexstyl.specialdates.donate.DonationPreferences
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
@@ -31,29 +26,20 @@ import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.upcoming.DatePickerDialogFragment
 import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar
 import com.google.android.gms.ads.MobileAds
-import com.novoda.notils.meta.AndroidUtils
-
-import javax.inject.Inject
-
 import com.novoda.notils.caster.Views.findById
+import com.novoda.notils.meta.AndroidUtils
+import javax.inject.Inject
 
 class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSetListener {
 
 
-    lateinit var navigator: HomeNavigator
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var dailyReminderNotifier: DailyReminderNotifier
-        @Inject set
-    lateinit var donationPreferences: DonationPreferences
-        @Inject set
-    lateinit var permissions: MementoPermissions
-        @Inject set
-    lateinit var peopleEventsUpdater: PeopleEventsUpdater
-        @Inject set
-    lateinit var donateMonitor: DonateMonitor
-        @Inject set
+    @Inject lateinit var navigator: HomeNavigator
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var dailyReminderNotifier: DailyReminderNotifier
+    @Inject lateinit var donationPreferences: DonationPreferences
+    @Inject lateinit var permissions: MementoPermissions
+    @Inject lateinit var peopleEventsUpdater: PeopleEventsUpdater
+    @Inject lateinit var donateMonitor: DonateMonitor
 
     private var searchTransitioner: SearchTransitioner? = null
 

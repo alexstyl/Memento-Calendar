@@ -34,24 +34,15 @@ class UserSettingsFragment : MementoPreferenceFragment() {
     private var appThemePreference: Preference? = null
     private var activity: ThemedMementoActivity? = null
 
-    lateinit var themingPreferences: ThemingPreferences
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var strings: Strings
-        @Inject set
-    lateinit var namedaysPreferences: NamedayUserSettings
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var donateMonitor: DonateMonitor
-        @Inject set
-    lateinit var eventPresenter: SettingsPresenter
-        @Inject set
-    lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
-        @Inject set
-    lateinit var navigator: HomeNavigator
-        @Inject set
+    @Inject lateinit var themingPreferences: ThemingPreferences
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var strings: Strings
+    @Inject lateinit var namedaysPreferences: NamedayUserSettings
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var donateMonitor: DonateMonitor
+    @Inject lateinit var eventPresenter: SettingsPresenter
+    @Inject lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
+    @Inject lateinit var navigator: HomeNavigator
 
     private var donationService: DonationService? = null
     private val locale: NamedayLocale
