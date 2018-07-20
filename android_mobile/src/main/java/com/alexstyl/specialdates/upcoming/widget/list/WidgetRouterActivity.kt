@@ -44,7 +44,7 @@ class WidgetRouterActivity : Activity() {
     }
 
     private fun Intent.contact(): Contact {
-        val contactId = getLongExtra(EXTRA_CNTACT_ID, -1)
+        val contactId = getLongExtra(EXTRA_CONTACT_ID, -1)
         val source = getIntExtra(EXTRA_CONTACT_SOURCE, -1)
         return contactsProvider.getContact(contactId, source)
     }
@@ -53,7 +53,7 @@ class WidgetRouterActivity : Activity() {
 
         private const val ACTION_VIEW_NAMEDAY = "action:view_nameday"
         private const val ACTION_VIEW_CONTACT = "action:view_contact"
-        private const val EXTRA_CNTACT_ID = "extra:contact_id"
+        private const val EXTRA_CONTACT_ID = "extra:contact_id"
         private const val EXTRA_CONTACT_SOURCE = "extra:contact_source"
 
         fun buildIntent(context: Context): Intent = Intent(context, WidgetRouterActivity::class.java)
@@ -62,7 +62,7 @@ class WidgetRouterActivity : Activity() {
                 Intent(context, WidgetRouterActivity::class.java)
                         .apply {
                             action = ACTION_VIEW_CONTACT
-                            putExtra(EXTRA_CNTACT_ID, contact.contactID)
+                            putExtra(EXTRA_CONTACT_ID, contact.contactID)
                             putExtra(EXTRA_CONTACT_SOURCE, contact.source)
                         }
 
