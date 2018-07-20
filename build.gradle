@@ -7,7 +7,7 @@ buildscript {
         google()
     }
 
-    apply from: 'versions.gradle'
+    apply from: 'dependencies.gradle'
 
     dependencies {
         classpath 'com.novoda:gradle-static-analysis-plugin:0.4.1'
