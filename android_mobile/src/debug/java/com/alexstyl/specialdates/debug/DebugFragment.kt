@@ -20,7 +20,13 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.DisplayName
-import com.alexstyl.specialdates.dailyreminder.*
+import com.alexstyl.specialdates.dailyreminder.ContactEventNotificationViewModel
+import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences
+import com.alexstyl.specialdates.dailyreminder.DailyReminderJob
+import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
+import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModel
+import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModelFactory
+import com.alexstyl.specialdates.dailyreminder.NamedaysNotificationViewModel
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParser
@@ -42,7 +48,7 @@ import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView
 import com.evernote.android.job.JobRequest
 import com.google.firebase.iid.FirebaseInstanceId
 import java.net.URI
-import java.util.Calendar
+import java.util.*
 import javax.inject.Inject
 
 class DebugFragment : MementoPreferenceFragment() {
@@ -84,7 +90,7 @@ class DebugFragment : MementoPreferenceFragment() {
         debugAppComponent.inject(this)
 
         addPreferencesFromResource(R.xml.preference_debug)
-        dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(activity)
+        dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(activity!!)
         findPreference<Preference>(R.string.key_debug_refresh_db)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             peopleEventsUpdater?.refresh()
             showToast("Refreshing Database")
