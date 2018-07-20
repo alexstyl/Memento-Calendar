@@ -236,8 +236,7 @@ class DebugFragment : MementoPreferenceFragment() {
     }
 
     private fun notifyForContacts(contacts: ArrayList<ContactEvent>) {
-        val viewModels = contacts
-                .toViewModels()
+        val viewModels = contacts.toViewModels()
 
         notifier.notifyFor(
                 DailyReminderViewModel(

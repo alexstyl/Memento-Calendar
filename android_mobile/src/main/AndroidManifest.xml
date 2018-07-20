@@ -118,9 +118,15 @@
 
         <activity
             android:name=".donate.DonateActivity"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/donate_welcome"
             android:parentActivityName=".home.HomeActivity"
-            android:theme="@style/Theme.Donate" />
+            android:theme="@style/Theme.Donate">
+            <intent-filter>
+                <action android:name="com.alexstyl.specialdates.ACTION_DONATE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".facebook.login.FacebookLogInActivity"
@@ -241,7 +247,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="default_channel_id"/>
+            android:value="default_channel_id" />
 
     </application>
 </manifest>

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -37,14 +36,13 @@ class ReroutingActivity : Activity() {
 
     private fun createRedirectFor(intent: Intent): Intent {
         return if (intent.isARedirect()) {
-            val rerouteIntent = Intent(intent)
-            val targetActivity = intent.extras.getString(FCM_EXTRA__TARGET_ACTIVITY)
-            rerouteIntent.component = ComponentName(BuildConfig.APPLICATION_ID, targetActivity)
+            val targetAction = intent.extras.getString(FCM_EXTRA__TARGET_ACTION)
+            val rerouteIntent = Intent(targetAction)
 
             if (canLaunchIntent(rerouteIntent)) {
                 rerouteIntent
             } else {
-                errorTracker.track(IllegalArgumentException("Cannot reroute to $targetActivity. Cannot resolve intent"))
+                errorTracker.track(IllegalArgumentException("Cannot reroute to $targetAction. Cannot resolve intent"))
                 HomeActivity.getStartIntent(this)
             }
 
@@ -99,10 +97,10 @@ class ReroutingActivity : Activity() {
     companion object {
         const val ACTION_DEBUG_OPTIONS = "com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS"
         const val DEBUG_CHANNEL = "debug_channel"
-        const val FCM_EXTRA__TARGET_ACTIVITY = "targetActivity"
+        const val FCM_EXTRA__TARGET_ACTION = "target_action"
     }
 
     private fun Intent.isARedirect(): Boolean {
-        return this.extras?.containsKey(ReroutingActivity.FCM_EXTRA__TARGET_ACTIVITY) ?: false
+        return this.extras?.containsKey(ReroutingActivity.FCM_EXTRA__TARGET_ACTION) ?: false
     }
 }
