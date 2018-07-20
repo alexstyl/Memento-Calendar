@@ -2,7 +2,9 @@ package com.alexstyl.specialdates.debug
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.ClipboardManager
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -38,6 +40,7 @@ import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity
 import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView
 import com.evernote.android.job.JobRequest
+import com.google.firebase.iid.FirebaseInstanceId
 import java.net.URI
 import java.util.Calendar
 import javax.inject.Inject
@@ -220,6 +223,22 @@ class DebugFragment : MementoPreferenceFragment() {
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             throw RuntimeException("Ka-boom!")
         }
+
+
+        val fcmToken = FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { result ->
+            val fcmToken = result.token
+            findPreference<Preference>(R.string.key_debug_firebase_messaging_token)!!
+                    .apply { summary = "Token ${fcmToken}" }
+                    .setOnPreferenceClickListener {
+                        val clipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = android.content.ClipData.newPlainText("Firebase Token", fcmToken)
+                        clipboardManager.primaryClip = clip
+                        showToast("Token copied to clipboard")
+                        true
+                    }
+        }
+
+
     }
 
     private fun notifyForContacts(contacts: ArrayList<ContactEvent>) {

@@ -21,6 +21,7 @@ import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.donate.DonateActivity
 import com.alexstyl.specialdates.donate.DonateMonitor
 import com.alexstyl.specialdates.donate.DonationPreferences
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater

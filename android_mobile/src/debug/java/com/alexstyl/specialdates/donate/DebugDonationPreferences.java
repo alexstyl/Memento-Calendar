@@ -11,7 +11,7 @@ public final class DebugDonationPreferences {
     private final DonateMonitor donateMonitor;
 
     public static DebugDonationPreferences newInstance(Context context, DonateMonitor donateMonitor) {
-        return new DebugDonationPreferences(EasyPreferences.createForDefaultPreferences(context), donateMonitor);
+        return new DebugDonationPreferences(EasyPreferences.Companion.createForDefaultPreferences(context), donateMonitor);
     }
 
     private DebugDonationPreferences(EasyPreferences easyPreferences, DonateMonitor donateMonitor) {

@@ -13,7 +13,7 @@ public final class NamedayPreferences implements NamedayUserSettings {
     private final EasyPreferences preferences;
 
     NamedayPreferences(Context context) {
-        this.preferences = EasyPreferences.createForDefaultPreferences(context);
+        this.preferences = EasyPreferences.Companion.createForDefaultPreferences(context);
         this.enabledByDefault = shouldNamedaysBeEnabledByDefault(context);
     }
 

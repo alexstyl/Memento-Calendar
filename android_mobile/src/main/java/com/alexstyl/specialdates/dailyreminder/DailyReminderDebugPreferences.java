@@ -14,7 +14,7 @@ public final class DailyReminderDebugPreferences {
     private final EasyPreferences preferences;
 
     public static DailyReminderDebugPreferences newInstance(Context context) {
-        return new DailyReminderDebugPreferences(EasyPreferences.createForPrivatePreferences(context, R.string.pref_dailyreminder_debug));
+        return new DailyReminderDebugPreferences(EasyPreferences.Companion.createForPrivatePreferences(context, R.string.pref_dailyreminder_debug));
     }
 
     private DailyReminderDebugPreferences(EasyPreferences preferences) {

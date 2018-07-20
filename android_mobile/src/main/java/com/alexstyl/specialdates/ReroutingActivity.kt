@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -11,29 +12,55 @@ import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.home.HomeActivity
-import java.time.Clock
+import javax.inject.Inject
 
 class ReroutingActivity : Activity() {
 
+
+    lateinit var errorTracker: CrashAndErrorTracker
+        @Inject set
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as MementoApplication).applicationModule.inject(this)
 
         if (BuildConfig.DEBUG) {
             showDebugNotification()
         }
 
-        val intent = HomeActivity.getStartIntent(this)
-        startActivity(intent)
+        val targetIntent: Intent = createRedirectFor(intent)
+
+        startActivity(targetIntent)
 
         finish()
     }
 
+    private fun createRedirectFor(intent: Intent): Intent {
+        return if (intent.isARedirect()) {
+            val rerouteIntent = Intent(intent)
+            val targetActivity = intent.extras.getString(FCM_EXTRA__TARGET_ACTIVITY)
+            rerouteIntent.component = ComponentName(BuildConfig.APPLICATION_ID, targetActivity)
+
+            if (canLaunchIntent(rerouteIntent)) {
+                rerouteIntent
+            } else {
+                errorTracker.track(IllegalArgumentException("Cannot reroute to $targetActivity. Cannot resolve intent"))
+                HomeActivity.getStartIntent(this)
+            }
+
+        } else {
+            HomeActivity.getStartIntent(this)
+        }
+    }
+
+    private fun canLaunchIntent(rerouteIntent: Intent) =
+            packageManager.queryIntentActivities(rerouteIntent, 0).size > 0
+
     private fun showDebugNotification() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-
         if (Version.hasOreo()) {
-
             val contactsChannel = NotificationChannel(
                     DEBUG_CHANNEL,
                     "Debug",
@@ -73,5 +100,10 @@ class ReroutingActivity : Activity() {
     companion object {
         const val ACTION_DEBUG_OPTIONS = "com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS"
         const val DEBUG_CHANNEL = "debug_channel"
+        const val FCM_EXTRA__TARGET_ACTIVITY = "targetActivity"
+    }
+
+    private fun Intent.isARedirect(): Boolean {
+        return this.extras?.containsKey(ReroutingActivity.FCM_EXTRA__TARGET_ACTIVITY) ?: false
     }
 }

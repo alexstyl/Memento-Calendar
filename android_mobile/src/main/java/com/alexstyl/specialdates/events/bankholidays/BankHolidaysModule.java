@@ -13,7 +13,7 @@ public class BankHolidaysModule {
 
     @Provides
     BankHolidaysUserSettings userSettings(Context context) {
-        EasyPreferences preferences = EasyPreferences.createForDefaultPreferences(context);
+        EasyPreferences preferences = EasyPreferences.Companion.createForDefaultPreferences(context);
         return new BankHolidaysPreferences(preferences);
     }
 

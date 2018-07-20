@@ -27,7 +27,7 @@ public class DailyReminderModule {
 
     @Provides
     DailyReminderUserSettings settings(Context context) {
-        EasyPreferences defaultPreferences = EasyPreferences.createForDefaultPreferences(context);
+        EasyPreferences defaultPreferences = EasyPreferences.Companion.createForDefaultPreferences(context);
         return new DailyReminderPreferences(defaultPreferences);
     }
 
