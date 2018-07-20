@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import com.alexstyl.android.Version
 import com.alexstyl.specialdates.home.HomeActivity
+import java.time.Clock
 
 class ReroutingActivity : Activity() {
 
@@ -45,9 +46,8 @@ class ReroutingActivity : Activity() {
         }
 
         val debugPendingIntent = PendingIntent.getActivity(
-                this, 0, buildDebugOptionsIntent(), 0
+                this, System.currentTimeMillis().toInt(), buildDebugOptionsIntent(), PendingIntent.FLAG_ONE_SHOT
         )
-
 
         val debugNotification = NotificationCompat.Builder(this, DEBUG_CHANNEL)
                 .setContentTitle("Memento Debug")
@@ -64,13 +64,14 @@ class ReroutingActivity : Activity() {
     }
 
     private fun buildDebugOptionsIntent(): Intent {
-        return Intent(ACTION_DEBUG_OPTIONS).apply {
-            `package` = BuildConfig.APPLICATION_ID
-        }
+        return Intent(ACTION_DEBUG_OPTIONS)
+                .apply {
+                    `package` = BuildConfig.APPLICATION_ID
+                }
     }
 
     companion object {
-        const val ACTION_DEBUG_OPTIONS = "com.alexstyl.specialdates.DEBUG_OPTIONS"
+        const val ACTION_DEBUG_OPTIONS = "com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS"
         const val DEBUG_CHANNEL = "debug_channel"
     }
 }

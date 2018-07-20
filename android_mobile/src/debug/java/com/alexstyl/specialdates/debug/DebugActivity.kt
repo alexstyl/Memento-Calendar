@@ -16,9 +16,4 @@ class DebugActivity : ThemedMementoActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_debug);
     }
-
-
-    companion object {
-        const val ACTION_DEBUG_OPTIONS =  "com.alexstyl.specialdates.DEBUG_OPTIONS"
-    }
 }

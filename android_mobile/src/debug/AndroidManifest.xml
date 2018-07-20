@@ -6,14 +6,14 @@
     <application
         android:name="com.alexstyl.specialdates.DebugApplication"
         tools:replace="android:name">
-
         <activity
             android:name="com.alexstyl.specialdates.debug.DebugActivity"
-            android:icon="@drawable/ic_heart"
             android:label="Memento Debug"
+            android:noHistory="true"
             android:taskAffinity="com.alexstyl.debug">
             <intent-filter>
                 <action android:name="com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
