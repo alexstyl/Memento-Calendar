@@ -93,6 +93,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
 
     implementation "com.google.android.gms:play-services-wearable:$play_services_version"

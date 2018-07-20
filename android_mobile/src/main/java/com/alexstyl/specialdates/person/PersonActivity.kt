@@ -62,7 +62,7 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
         analytics.trackScreen(Screen.PERSON)
-        navigator = PersonDetailsNavigator(ExternalNavigator(this, analytics, tracker))
+        navigator = PersonDetailsNavigator(ExternalNavigator(this, analytics, tracker, attributeExtractor))
         val toolbar = Views.findById<MementoToolbar>(this, R.id.person_toolbar)
         if (wasCalledFromMemento()) {
             toolbar.displayNavigationIconAsUp()
@@ -109,7 +109,7 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
         super.onResume()
         displayingContact = extractContactFrom(intent)
         if (displayingContact.isPresent) {
-            presenter.startPresentingInto(personView, displayingContact.get(), AndroidContactActions(this))
+            presenter.startPresentingInto(personView, displayingContact.get(), AndroidContactActions(this, attributeExtractor))
         } else {
             tracker.track(IllegalArgumentException("No contact to display"))
             finish()
@@ -170,6 +170,16 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
 
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        navigator!!.connectTo(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        navigator!!.disconnectFrom(this)
     }
 
     override fun onPause() {
