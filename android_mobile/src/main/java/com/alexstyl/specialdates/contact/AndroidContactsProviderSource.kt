@@ -4,6 +4,7 @@ class AndroidContactsProviderSource(private val cache: ContactCache,
                                     private val factory: AndroidContactFactory
 ) : ContactsProviderSource {
 
+    // TODO evict if issue
 
     @Throws(ContactNotFoundException::class)
     override fun getOrCreateContact(contactID: Long): Contact {

@@ -35,6 +35,7 @@ class DebugOptionsFragment : MementoFragment() {
                 )
                 .addToBackStack(null)
                 .commit()
+        activity?.title = option.title
     }
 
     override fun onStart() {

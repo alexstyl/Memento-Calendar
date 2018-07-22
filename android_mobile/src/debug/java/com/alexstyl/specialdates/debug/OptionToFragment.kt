@@ -8,7 +8,7 @@ object OptionToFragment {
         when (option) {
             DebugOption.CONTACTS -> DebugContactsFragment()
             DebugOption.FIREBASE -> DebugFirebaseFragment()
-            DebugOption.WIDGETS -> DebugFirebaseFragment()
+            DebugOption.OLD_OPTIONS -> DebugFragment()
         }
     })
 }

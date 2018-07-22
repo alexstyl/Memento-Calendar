@@ -87,11 +87,5 @@
             android:summary="Utility to crash the app in order to try out crash report frameworks"
             android:title="Crash me" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="🔥 Firebase 🔥">
-        <Preference
-            android:key="@string/key_debug_firebase_messaging_token"
-            android:summary="%s"
-            android:title="Messaging Token" />
-    </PreferenceCategory>
 
 </PreferenceScreen>

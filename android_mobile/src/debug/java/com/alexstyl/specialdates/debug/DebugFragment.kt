@@ -2,9 +2,7 @@ package com.alexstyl.specialdates.debug
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.ClipboardManager
 import android.content.ContentUris
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -45,11 +43,11 @@ import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity
 import com.alexstyl.specialdates.wear.WearSyncUpcomingEventsView
 import com.evernote.android.job.JobRequest
-import com.google.firebase.iid.FirebaseInstanceId
 import java.net.URI
 import java.util.*
 import javax.inject.Inject
 
+@Deprecated("Changing to DebugOptionFragment")
 class DebugFragment : MementoPreferenceFragment() {
 
     @Inject lateinit var dailyReminderDebugPreferences: DailyReminderDebugPreferences
@@ -214,20 +212,6 @@ class DebugFragment : MementoPreferenceFragment() {
         findPreference<Preference>(R.string.key_debug_trigger_crash)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             throw RuntimeException("Ka-boom!")
-        }
-
-
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { result ->
-            val fcmToken = result.token
-            findPreference<Preference>(R.string.key_debug_firebase_messaging_token)!!
-                    .apply { summary = "Token ${fcmToken}" }
-                    .setOnPreferenceClickListener {
-                        val clipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = android.content.ClipData.newPlainText("Firebase Token", fcmToken)
-                        clipboardManager.primaryClip = clip
-                        showToast("Token copied to clipboard")
-                        true
-                    }
         }
 
 
