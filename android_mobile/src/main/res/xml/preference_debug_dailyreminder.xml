@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="@string/key_debug_daily_reminder"
+        android:title="Trigger Daily Reminder" />
+
+    <CheckBoxPreference
+        android:key="@string/key_debug_daily_reminder_date_enable"
+        android:title="Fake date" />
+
+    <Preference
+        android:dependency="@string/key_debug_daily_reminder_date_enable"
+        android:key="@string/key_debug_daily_reminder_date"
+        android:title="Daily Reminder Date" />
+
+    <PreferenceCategory android:title="Notifications">
+        <Preference
+            android:key="@string/key_debug_trigger_daily_reminder_notification_one"
+            android:title="Show Daily Reminder notification for one contact" />
+
+        <Preference
+            android:key="@string/key_debug_trigger_daily_reminder_notification_many"
+            android:title="Show Daily Reminder notification for multiple contact" />
+        <Preference
+            android:key="@string/key_debug_trigger_namedays_notification"
+            android:title="Show Namedays notification" />
+
+        <Preference
+            android:key="@string/key_debug_trigger_bank_holiday"
+            android:title="Show Bank Holiday notification" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

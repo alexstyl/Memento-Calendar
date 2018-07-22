@@ -4,8 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import java.net.URI
 
 fun Drawable.toBitmap(): Bitmap {
     if (this is BitmapDrawable) {
