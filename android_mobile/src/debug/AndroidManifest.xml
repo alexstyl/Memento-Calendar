@@ -9,7 +9,6 @@
         <activity
             android:name="com.alexstyl.specialdates.debug.DebugActivity"
             android:label="Memento Debug"
-            android:noHistory="true"
             android:taskAffinity="com.alexstyl.debug">
             <intent-filter>
                 <action android:name="com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS" />

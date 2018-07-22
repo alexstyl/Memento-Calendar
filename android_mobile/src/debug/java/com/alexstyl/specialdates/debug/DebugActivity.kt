@@ -1,19 +1,22 @@
 package com.alexstyl.specialdates.debug
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import com.alexstyl.specialdates.BuildConfig
-
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.donate.DonateActivity
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
-
-import java.sql.DriverManager.println
+import com.alexstyl.specialdates.ui.widget.MementoToolbar
 
 class DebugActivity : ThemedMementoActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_debug);
+
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.fragment_container, DebugOptionsFragment()).commit();
+        }
+
+        val toolbar = findViewById<MementoToolbar>(R.id.mementoToolbar)
+        setSupportActionBar(toolbar)
     }
 }

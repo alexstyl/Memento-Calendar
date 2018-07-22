@@ -1,6 +1,8 @@
 package com.alexstyl.specialdates.contact
 
-internal class AndroidContactsProviderSource(private val cache: ContactCache, private val factory: AndroidContactFactory) : ContactsProviderSource {
+class AndroidContactsProviderSource(private val cache: ContactCache,
+                                    private val factory: AndroidContactFactory
+) : ContactsProviderSource {
 
 
     @Throws(ContactNotFoundException::class)

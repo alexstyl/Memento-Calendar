@@ -37,7 +37,6 @@ import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
 import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsJob
 import com.alexstyl.specialdates.facebook.login.FacebookLogInActivity
@@ -59,7 +58,6 @@ class DebugFragment : MementoPreferenceFragment() {
     @Inject lateinit var refresher: UpcomingEventsViewRefresher
     @Inject lateinit var tracker: CrashAndErrorTracker
     @Inject lateinit var monitor: DonateMonitor
-    @Inject lateinit var upcomingEventsSettings: UpcomingEventsSettings
     @Inject lateinit var dateParser: DateParser
     @Inject lateinit var notifier: DailyReminderNotifier
     @Inject lateinit var peopleEventsUpdater: DebugPeopleEventsUpdater
@@ -129,7 +127,7 @@ class DebugFragment : MementoPreferenceFragment() {
             true
         }
         findPreference<Preference>(R.string.key_debug_trigger_support)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
-            DebugPreferences.newInstance(preference.context, R.string.pref_call_to_rate).wipe()
+            DebugUserOptions.newInstance(preference.context, R.string.pref_call_to_rate).wipe()
             askForSupport.requestForRatingSooner()
             val message = "Support triggered. You should now see a prompt to rate the app when you launch it"
             showToast(message)
