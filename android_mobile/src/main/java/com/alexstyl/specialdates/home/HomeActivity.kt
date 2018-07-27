@@ -136,7 +136,6 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
         donateMonitor.removeListener(donateMonitorListener)
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CODE_PERMISSION) {

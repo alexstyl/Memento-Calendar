@@ -4,12 +4,8 @@
     <string name="key_debug_configure_widgets">key_debug_configure_widgets</string>
     <string name="key_debug_refresh_db">key_debug_refresh_db</string>
     <string name="pref_dailyreminder_debug">pref_dailyreminder_debug</string>
-    <string name="key_debug_daily_reminder">key_debug_daily_reminder</string>
-    <string name="key_debug_daily_reminder_date">key_debug_daily_reminder_date</string>
-    <string name="key_debug_daily_reminder_date_enable">key_debug_daily_reminder_date_enable</string>
-    <string name="key_debug_daily_reminder_date_fake_day">key_debug_daily_reminder_date_fake_day</string>
-    <string name="key_debug_daily_reminder_date_fake_month">key_debug_daily_reminder_date_fake_month</string>
-    <string name="key_debug_daily_reminder_date_fake_year">key_debug_daily_reminder_date_fake_year</string>
+    <string name="key_debug_daily_reminder_trigger">key_debug_daily_reminder_trigger</string>
+    <string name="key_debug_daily_reminder_trigger_on_date">key_debug_daily_reminder_trigger_on_date</string>
     <string name="key_debug_start_calendar">key_debug_start_calendar</string>
     <string name="key_debug_trigger_wear_service">key_debug_trigger_wear_service</string>
     <string name="key_debug_reset_donations">key_debug_reset_donations</string>
@@ -23,4 +19,7 @@
     <string name="key_debug_trigger_bank_holiday">key_debug_trigger_bank_holiday</string>
     <string name="key_debug_trigger_crash">key_debug_trigger_crash</string>
     <string name="key_debug_firebase_messaging_token">key_debug_firebase_messaging_token</string>
+    <string name="key_debug_daily_reminder_logs">key_debug_daily_reminder_logs</string>
+    <string name="key_debug_daily_reminder_logs_clear">key_debug_daily_reminder_logs_clear</string>
+    <string name="key_debug_daily_reminder_logs_refresh">key_debug_daily_reminder_logs_refresh</string>
 </resources>

@@ -23,7 +23,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class EventLabelCreatorTest {
 
     private ContactEventLabelCreator creator;
-    private Contact mockContact = ContactFixture.aContact();
+    private Contact mockContact = ContactFixture.INSTANCE.aContact();
 
     @Before
     public void setUp() {

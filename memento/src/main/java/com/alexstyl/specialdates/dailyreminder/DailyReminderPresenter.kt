@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.dailyreminder
 
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Optional
+import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
@@ -25,25 +26,25 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                              private var errorTracker: CrashAndErrorTracker,
                              private var bankHolidayProvider: BankHolidayProvider,
                              private var workScheduler: Scheduler,
-                             private var resultScheduler: Scheduler) {
+                             private var resultScheduler: Scheduler,
+                             private var dailyReminderLogger: DailyReminderLogger) {
 
     private var disposable: Disposable? = null
 
-    fun startPresentingInto(view: DailyReminderView) {
-        val today = Date.today()
+    fun startPresentingInto(view: DailyReminderView, date: Date) {
 
         disposable =
                 Observable.zip(
-                        contactEvents(today),
-                        namedays(today),
-                        bankholidays(today),
+                        contactEvents(date),
+                        namedays(date),
+                        bankholidays(date),
                         Function3({ t1: List<ContactEventNotificationViewModel>,
                                     t2: Optional<NamedaysNotificationViewModel>,
                                     t3: Optional<BankHolidayNotificationViewModel> ->
-
-                            DailyReminderViewModel(factory.summaryOf(t1), t1, t2, t3)
+                            DailyReminderViewModel(factory.summaryOf(t1), t1, t2, t3).apply {
+                                dailyReminderLogger.appendEvents(date, this)
+                            }
                         }))
-
                         .doOnError { it ->
                             errorTracker.track(it)
                         }

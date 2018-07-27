@@ -22,7 +22,7 @@ public class ContactEventTest {
     private static final Date SOME_DATE_WITHOUT_YEAR = Date.Companion.on(1, JANUARY);
     private static final int CURRENT_YEAR = Date.Companion.getCURRENT_YEAR();
 
-    private Contact ANY_CONTACT = ContactFixture.aContact();
+    private Contact ANY_CONTACT = ContactFixture.INSTANCE.aContact();
 
     private Strings strings = new JavaStrings();
 

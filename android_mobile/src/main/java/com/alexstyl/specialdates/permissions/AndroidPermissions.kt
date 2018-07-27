@@ -8,7 +8,8 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import com.alexstyl.specialdates.CrashAndErrorTracker
 
-class AndroidPermissions(private val tracker: CrashAndErrorTracker, private val context: Context) : MementoPermissions {
+class AndroidPermissions(private val tracker: CrashAndErrorTracker,
+                         private val context: Context) : MementoPermissions {
 
     override fun canReadAndWriteContacts(): Boolean {
         return canReadContacts() && hasPermission(context, WRITE_CONTACTS, tracker)
@@ -31,4 +32,6 @@ class AndroidPermissions(private val tracker: CrashAndErrorTracker, private val 
             false
         }
     }
+
+
 }

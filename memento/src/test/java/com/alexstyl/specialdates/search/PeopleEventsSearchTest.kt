@@ -35,7 +35,7 @@ class PeopleEventsSearchTest {
     @Test
     fun searchingByFirstLetter() {
         val actual = search.searchForContacts("A", 5)
-        val expected = ContactWithEvents(ALEX, listOf(ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)))
+        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
 
         assertThat(actual).containsOnly(expected)
     }
@@ -43,7 +43,7 @@ class PeopleEventsSearchTest {
     @Test
     fun searchingByLastLetter() {
         val actual = search.searchForContacts("S", 5)
-        val expected = ContactWithEvents(ALEX, listOf(ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)))
+        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
 
         assertThat(actual).containsOnly(expected)
     }
@@ -51,7 +51,7 @@ class PeopleEventsSearchTest {
     @Test
     fun searchingByFullName() {
         val actual = search.searchForContacts("Alex Styl", 5)
-        val expected = ContactWithEvents(ALEX, listOf(ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)))
+        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
 
         assertThat(actual).containsOnly(expected)
     }
@@ -60,9 +60,10 @@ class PeopleEventsSearchTest {
     fun multipleResults() {
         val actual = search.searchForContacts("M", 5)
 
-        val expected = ArrayList<ContactWithEvents>()
-        expected.add(ContactWithEvents(MIMOZA, ContactEventTestBuilder(MIMOZA).buildNameday(JANUARY_1st)))
-        expected.add(ContactWithEvents(MARIA, ContactEventTestBuilder(MARIA).buildAnniversary(JANUARY_1st)))
+        val expected = listOf(
+                ContactWithEvents(MIMOZA, TestContactEventsBuilder().addNamedayFor(MIMOZA, JANUARY_1st).build()),
+                ContactWithEvents(MARIA, TestContactEventsBuilder().addAnniversaryFor(MARIA, JANUARY_1st).build())
+        )
 
         assertThat(actual).containsAll(expected)
     }
@@ -71,8 +72,9 @@ class PeopleEventsSearchTest {
     fun requestOneResultReturnsOnlyOneResult() {
         val actual = search.searchForContacts("M", 1)
 
-        val expected = ArrayList<ContactWithEvents>()
-        expected.add(ContactWithEvents(MARIA, ContactEventTestBuilder(MARIA).buildAnniversary(JANUARY_1st)))
+        val expected = listOf(
+                ContactWithEvents(MARIA, TestContactEventsBuilder().addAnniversaryFor(MARIA, JANUARY_1st).build())
+        )
 
         assertThat(actual).containsAll(expected)
     }

@@ -20,7 +20,7 @@ public class ContactCacheTest {
 
     @Test
     public void givenOneContactIsAdded_thenSizeIsIncreasedByOne() {
-        Contact anyContact = ContactFixture.aContact();
+        Contact anyContact = ContactFixture.INSTANCE.aContact();
 
         contactCache.addContact(anyContact);
 
@@ -29,7 +29,7 @@ public class ContactCacheTest {
 
     @Test
     public void givenOneContactIsAdded_thenSameContactIsReturned() {
-        Contact anyContact = ContactFixture.aContact();
+        Contact anyContact = ContactFixture.INSTANCE.aContact();
 
         contactCache.addContact(anyContact);
         long contactID = anyContact.getContactID();
