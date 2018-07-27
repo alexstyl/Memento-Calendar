@@ -4,7 +4,7 @@
     <string name="key_debug_configure_widgets">key_debug_configure_widgets</string>
     <string name="key_debug_refresh_db">key_debug_refresh_db</string>
     <string name="pref_dailyreminder_debug">pref_dailyreminder_debug</string>
-    <string name="key_debug_daily_reminder_trigger">key_debug_daily_reminder</string>
+    <string name="key_debug_daily_reminder_trigger">key_debug_daily_reminder_trigger</string>
     <string name="key_debug_daily_reminder_trigger_on_date">key_debug_daily_reminder_trigger_on_date</string>
     <string name="key_debug_start_calendar">key_debug_start_calendar</string>
     <string name="key_debug_trigger_wear_service">key_debug_trigger_wear_service</string>
