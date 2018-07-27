@@ -68,13 +68,10 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
             datePickerDialog.show()
         }
 
-        findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification_one)!!
-                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_one){
             notifyForContacts(arrayListOf(
                     contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Peter".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY)
             ))
-
-            true
         }
 
         onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_many) {
