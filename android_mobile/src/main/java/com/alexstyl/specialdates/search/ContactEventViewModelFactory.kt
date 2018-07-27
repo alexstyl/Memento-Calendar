@@ -12,7 +12,7 @@ internal class ContactEventViewModelFactory(private val eventLabelCreator: Conta
 
             val contact = contactEvent.contact
 
-            for (event in contactEvent.events) {
+            contactEvent.events.forEach { event ->
                 val eventLabel = eventLabelCreator.createFor(event)
                 val variant = getVariationFor(event)
                 models.add(ContactEventViewModel(
