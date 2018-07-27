@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType.ANNIVERSARY
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType.BIRTHDAY
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType.NAMEDAY
-import java.util.ArrayList
+import java.util.*
 
 class TestContactEventsBuilder {
     private val contactEvents = ArrayList<ContactEvent>()
@@ -36,7 +36,6 @@ class TestContactEventsBuilder {
     }
 
     companion object {
-
         private val NO_DEVICE_CONTACT_ID = Optional.absent<Long>()
     }
 }

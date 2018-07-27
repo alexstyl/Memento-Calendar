@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference
-        android:key="@string/key_debug_daily_reminder"
-        android:title="Trigger Daily Reminder" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <PreferenceCategory android:title="Daily Reminder">
+        <Preference
+            android:key="@string/key_debug_daily_reminder_trigger"
+            android:title="Trigger Daily Reminder" />
 
-    <CheckBoxPreference
-        android:key="@string/key_debug_daily_reminder_date_enable"
-        android:title="Fake date" />
+        <Preference
+            android:key="@string/key_debug_daily_reminder_trigger_on_date"
+            android:title="Trigger on a specific Date" />
 
-    <Preference
-        android:dependency="@string/key_debug_daily_reminder_date_enable"
-        android:key="@string/key_debug_daily_reminder_date"
-        android:title="Daily Reminder Date" />
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="Notifications">
         <Preference
@@ -28,6 +27,22 @@
         <Preference
             android:key="@string/key_debug_trigger_bank_holiday"
             android:title="Show Bank Holiday notification" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Logs">
+
+        <Preference
+            android:key="@string/key_debug_daily_reminder_logs_refresh"
+            android:title="Reload" />
+        <Preference
+            android:key="@string/key_debug_daily_reminder_logs_clear"
+            android:title="Clear Logs" />
+
+
+        <Preference
+            android:key="@string/key_debug_daily_reminder_logs"
+            android:layout="@layout/preference_text"
+            tools:summary="Here will be printed all the logs of the events" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,68 +1,73 @@
 package com.alexstyl.specialdates.debug.dailyreminder
 
 import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.preference.Preference
+import android.support.annotation.RequiresApi
+import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.dailyreminder.ContactEventNotificationViewModel
-import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences
 import com.alexstyl.specialdates.dailyreminder.DailyReminderJob
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
 import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModel
 import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModelFactory
 import com.alexstyl.specialdates.dailyreminder.NamedaysNotificationViewModel
+import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
+import com.alexstyl.specialdates.dailyreminder.putDate
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.toast
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
+import com.evernote.android.job.DailyJob
 import com.evernote.android.job.JobRequest
+import com.evernote.android.job.util.support.PersistableBundleCompat
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.net.URI
 import javax.inject.Inject
 
 class DebugDailyReminderFragment : MementoPreferenceFragment() {
 
-    @Inject lateinit var dailyReminderDebugPreferences: DailyReminderDebugPreferences
     @Inject lateinit var notifier: DailyReminderNotifier
     @Inject lateinit var dailyReminderViewModelFactory: DailyReminderViewModelFactory
+    @Inject lateinit var dateLabelCreator: DateLabelCreator
+    @Inject lateinit var dailyReminderLogger: DailyReminderLogger
 
+
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(paramBundle: Bundle?) {
         super.onCreate(paramBundle)
 
+        (activity!!.applicationContext as MementoApplication).applicationModule.inject(this)
+
         addPreferencesFromResource(R.xml.preference_debug_dailyreminder)
 
-        dailyReminderDebugPreferences = DailyReminderDebugPreferences.newInstance(activity!!)
-
-        findPreference<Preference>(R.string.key_debug_daily_reminder)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            JobRequest.Builder(DailyReminderJob.TAG)
-                    .startNow()
-                    .build()
-                    .schedule()
-
-            toast("Daily Reminder Triggered")
-            true
+        onPreferenceClick(R.string.key_debug_daily_reminder_trigger) {
+            triggerDailyReminderOn(Date.today())
         }
 
-        findPreference<Preference>(R.string.key_debug_daily_reminder_date_enable)!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            dailyReminderDebugPreferences.setEnabled(newValue as Boolean)
-            true
-        }
-
-        findPreference<Preference>(R.string.key_debug_daily_reminder_date)!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val today = dailyReminderDebugPreferences.selectedDate
+        onPreferenceClick(R.string.key_debug_daily_reminder_trigger_on_date) {
+            val today = Date.today()
             val datePickerDialog = DatePickerDialog(
-                    activity!!, onDailyReminderDateSelectedListener,
+                    activity!!, DatePickerDialog.OnDateSetListener { _, year, zeroIndexedMonth, dayOfMonth ->
+                val month = zeroIndexedMonth + 1
+                triggerDailyReminderOn(Date.on(dayOfMonth, month, year))
+            },
                     today.year, today.month - 1, today.dayOfMonth
             )
             datePickerDialog.show()
-            false
         }
+
         findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification_one)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             notifyForContacts(arrayListOf(
@@ -71,20 +76,17 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
 
             true
         }
-        findPreference<Preference>(R.string.key_debug_trigger_daily_reminder_notification_many)!!
-                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+        onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_many) {
             notifyForContacts(arrayListOf(
                     contactEventOn(Date.today().minusDay(365 * 10), Contact(336L, "Peter".toDisplayName(), URI.create("content://com.android.contacts/contacts/336"), ContactSource.SOURCE_DEVICE), StandardEventType.NAMEDAY),
                     contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Alex".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY),
                     contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), ContactSource.SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
                     contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(), URI.create("content://com.android.contacts/contacts/108"), ContactSource.SOURCE_DEVICE), StandardEventType.OTHER)
             ))
-
-            true
         }
 
-        findPreference<Preference>(R.string.key_debug_trigger_namedays_notification)!!
-                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        onPreferenceClick(R.string.key_debug_trigger_namedays_notification) {
             notifier.notifyFor(
                     DailyReminderViewModel(
                             dailyReminderViewModelFactory.summaryOf(emptyList()),
@@ -97,10 +99,9 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
                             Optional.absent()
                     )
             )
-            true
         }
-        findPreference<Preference>(R.string.key_debug_trigger_bank_holiday)!!
-                .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+        onPreferenceClick(R.string.key_debug_trigger_bank_holiday) {
             notifier.notifyFor(
                     DailyReminderViewModel(
                             dailyReminderViewModelFactory.summaryOf(emptyList()),
@@ -109,13 +110,58 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
                             bankholidayNotification()
                     )
             )
-            true
         }
+
+        onPreferenceClick(R.string.key_debug_daily_reminder_logs_clear) {
+            Observable.fromCallable {
+                dailyReminderLogger.clearAll()
+            }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        showDailyReminderLogs()
+                    }
+        }
+
+        onPreferenceClick(R.string.key_debug_daily_reminder_logs_refresh) {
+            showDailyReminderLogs()
+        }
+
+        showDailyReminderLogs()
     }
 
-    private val onDailyReminderDateSelectedListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        val month1 = month + 1 // dialog picker months have 0 index
-        dailyReminderDebugPreferences.setSelectedDate(dayOfMonth, month1, year)
+    private fun triggerDailyReminderOn(date: Date?) {
+        DailyJob.startNowOnce(
+                JobRequest.Builder(DailyReminderJob.TAG)
+                        .apply {
+                            if (date != null) {
+                                this.addExtras(PersistableBundleCompat().apply {
+                                    putDate(date)
+                                })
+                            }
+                        }
+        )
+
+        toast("Daily Reminder Triggered")
+    }
+
+
+    private fun showDailyReminderLogs() {
+        val logPreferences = findPreference<Preference>(R.string.key_debug_daily_reminder_logs)!!
+        Observable.fromCallable {
+            dailyReminderLogger.fetchAllEvents()
+        }.map {
+            if (it.isEmpty()) {
+                "Daily Reminder hasn't run yet"
+            } else {
+                it
+            }
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { lines ->
+                    logPreferences.summary = lines
+                }
     }
 
     private fun notifyForContacts(contacts: ArrayList<ContactEvent>) {
@@ -142,11 +188,11 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
             date, contact)
 
     private fun ArrayList<ContactEvent>.toViewModels(): ArrayList<ContactEventNotificationViewModel> {
-        val viewmodels = arrayListOf<ContactEventNotificationViewModel>()
+        val viewModels = arrayListOf<ContactEventNotificationViewModel>()
         forEach {
-            viewmodels.add(dailyReminderViewModelFactory.viewModelFor(it.contact, listOf(it)))
+            viewModels.add(dailyReminderViewModelFactory.viewModelFor(it.contact, listOf(it)))
         }
-        return viewmodels
+        return viewModels
     }
 
     private fun String.toDisplayName(): DisplayName = DisplayName.from(this)
