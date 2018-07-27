@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.preference.Preference
 import android.support.annotation.RequiresApi
-import com.alexstyl.specialdates.MementoApplication
+import com.alexstyl.specialdates.DebugApplication
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
@@ -48,7 +48,7 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
     override fun onCreate(paramBundle: Bundle?) {
         super.onCreate(paramBundle)
 
-        (activity!!.applicationContext as MementoApplication).applicationModule.inject(this)
+        (activity!!.applicationContext as DebugApplication).debugAppComponent.inject(this)
 
         addPreferencesFromResource(R.xml.preference_debug_dailyreminder)
 

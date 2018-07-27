@@ -146,6 +146,4 @@ public interface AppComponent {
     void inject(DonationBannerView donationBannerView);
 
     void inject(ReroutingActivity reroutingActivity);
-
-    void inject(DebugDailyReminderFragment debugDailyReminderFragment);
 }

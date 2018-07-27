@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.date.DateModule;
 import com.alexstyl.specialdates.debug.DebugFragment;
 import com.alexstyl.specialdates.debug.DebugModule;
+import com.alexstyl.specialdates.debug.dailyreminder.DebugDailyReminderFragment;
 import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.namedays.NamedayModule;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule;
@@ -33,4 +34,5 @@ import dagger.Component;
         DateModule.class})
 public interface DebugAppComponent {
     void inject(DebugFragment fragment);
+    void inject(DebugDailyReminderFragment debugDailyReminderFragment);
 }
