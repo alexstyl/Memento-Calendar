@@ -11,7 +11,6 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
 import com.alexstyl.specialdates.dailyreminder.actions.ContactActionsModule;
 import com.alexstyl.specialdates.dailyreminder.actions.PersonActionsActivity;
 import com.alexstyl.specialdates.date.DateModule;
-import com.alexstyl.specialdates.debug.dailyreminder.DebugDailyReminderFragment;
 import com.alexstyl.specialdates.donate.DonateActivity;
 import com.alexstyl.specialdates.donate.DonateModule;
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysModule;
