@@ -22,10 +22,11 @@ private fun assertValues(dayOfMonth: Int, month: Int, year: Int) {
     }
 }
 
-fun PersistableBundleCompat.putDate(date: Date) {
+fun PersistableBundleCompat.putDate(date: Date): PersistableBundleCompat {
     this.putInt(EXTRA_DAY_OF_MONTH, date.dayOfMonth)
     this.putInt(EXTRA_MONTH, date.month)
     this.putInt(EXTRA_YEAR, date.year)
+    return this
 }
 
 fun PersistableBundleCompat.containsDate(): Boolean {

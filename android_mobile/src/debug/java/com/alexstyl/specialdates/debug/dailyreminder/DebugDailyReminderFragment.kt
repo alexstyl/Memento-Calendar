@@ -131,16 +131,14 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
     }
 
     private fun triggerDailyReminderOn(date: Date?) {
-        DailyJob.startNowOnce(
-                JobRequest.Builder(DailyReminderJob.TAG)
-                        .apply {
-                            if (date != null) {
-                                this.addExtras(PersistableBundleCompat().apply {
-                                    putDate(date)
-                                })
-                            }
-                        }
-        )
+        val builder = JobRequest.Builder(DailyReminderJob.TAG)
+        if (date != null) {
+            builder.addExtras(
+                    PersistableBundleCompat()
+                            .putDate(date)
+            )
+        }
+        DailyJob.startNowOnce(builder)
 
         toast("Daily Reminder Triggered")
     }
