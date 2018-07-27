@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import com.alexstyl.android.PowerOptimisations
 import com.alexstyl.android.isOnline
 import com.alexstyl.specialdates.BuildConfig
 import com.alexstyl.specialdates.MementoApplication
@@ -108,11 +107,6 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
 
         if (ThemedMementoActivity.ACTION_UPDATE_THEME == intent.action) {
             viewPager!!.currentItem = HomeActivity.PAGE_SETTINGS
-        }
-
-        val powerOptimisations = PowerOptimisations(applicationContext)
-        if (!powerOptimisations.isIgnoringOptimisations()) {
-            powerOptimisations.requestIgnore(this)
         }
     }
 
