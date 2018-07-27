@@ -12,20 +12,20 @@ class CompositePeopleEventsProvider(private var providers: List<PeopleEventsProv
     override fun fetchEventsOn(date: Date): ContactEventsOnADate {
         val empty = ContactEventsOnADate.createFrom(date, emptyList())
 
-        return providers.fold(empty, { contactEvents, provider ->
+        return providers.fold(empty) { contactEvents, provider ->
             contactEvents + provider.fetchEventsOn(date)
-        })
+        }
     }
 
     override fun fetchEventsBetween(timePeriod: TimePeriod): List<ContactEvent> =
-            providers.fold(emptyList(), { list, provider ->
+            providers.fold(emptyList()) { list, provider ->
                 list + provider.fetchEventsBetween(timePeriod)
-            })
+            }
 
     override fun fetchEventsFor(contact: Contact): List<ContactEvent> =
-            providers.fold(emptyList(), { list, provider ->
+            providers.fold(emptyList()) { list, provider ->
                 list + provider.fetchEventsFor(contact)
-            })
+            }
 
 
     override fun findClosestEventDateOnOrAfter(date: Date): Date? {
