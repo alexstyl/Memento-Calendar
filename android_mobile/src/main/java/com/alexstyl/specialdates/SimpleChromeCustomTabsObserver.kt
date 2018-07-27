@@ -10,12 +10,12 @@ class SimpleChromeCustomTabsObserver(private val activity: MementoActivity)
     : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public fun connectListener() {
+    fun connectListener() {
         SimpleChromeCustomTabs.getInstance().connectTo(activity)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    public fun disconnectListener() {
+    fun disconnectListener() {
         SimpleChromeCustomTabs.getInstance().disconnectFrom(activity)
     }
 }
