@@ -20,10 +20,10 @@ public class ContactActionTest {
 
     private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.Companion.absent();
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
-    private final Contact CONTACT_ONE = ContactFixture.aContactCalled("Alex Styl");
+    private final Contact CONTACT_ONE = ContactFixture.INSTANCE.aContactCalled("Alex Styl");
     private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.Companion.on(1, JANUARY, 1990), CONTACT_ONE);
 
-    private final Contact CONTACT_TWO = ContactFixture.aContactCalled("George Peterson");
+    private final Contact CONTACT_TWO = ContactFixture.INSTANCE.aContactCalled("George Peterson");
     private final ContactEvent EVENT_TWO = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.Companion.on(1, JANUARY, 1970), CONTACT_TWO);
 
     @Test
