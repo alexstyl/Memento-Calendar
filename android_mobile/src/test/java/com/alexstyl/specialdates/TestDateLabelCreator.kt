@@ -3,7 +3,7 @@ package com.alexstyl.specialdates
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.upcoming.MonthLabels
-import java.util.*
+import java.util.Locale
 
 class TestDateLabelCreator private constructor(private val monthLabels: MonthLabels) : DateLabelCreator {
 
