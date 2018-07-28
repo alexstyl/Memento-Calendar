@@ -98,20 +98,6 @@ class CharacterNode(private val keySound: Char?) : Node {
 
     }
 
-//    override fun toString(): String {
-//        val str = StringBuilder()
-//        if (keySound != null) {
-//            str.append(keySound.toString()).append(" ")
-//        }
-//        if (nodes != null) {
-//            str.append(nodes.size)
-//        }
-//        if (dates != null) {
-//            str.append(" ").append(dates)
-//        }
-//        return str.toString()
-//    }
-
     private fun getDates(): NameCelebrations {
         return if (dates == null) {
             NoNameCelebrations("") // TODO this needs a name no?
