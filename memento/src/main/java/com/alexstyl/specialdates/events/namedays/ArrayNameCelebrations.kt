@@ -1,7 +1,6 @@
-package com.alexstyl.specialdates.events.namedays.calendar.resource
+package com.alexstyl.specialdates.events.namedays
 
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.events.namedays.NameCelebrations
 
 data class ArrayNameCelebrations(override val name: String) : MutableNameCelebrations {
 
