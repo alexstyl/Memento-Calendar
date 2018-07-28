@@ -8,6 +8,4 @@ public interface Node {
     void addDate(String name, Date date);
 
     NameCelebrations getDates(String name);
-
-    void clear();
 }

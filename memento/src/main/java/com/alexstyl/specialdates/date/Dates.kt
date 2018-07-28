@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.date
 
-import java.util.*
 
 data class Dates(private val dates: ArrayList<Date>) {
 

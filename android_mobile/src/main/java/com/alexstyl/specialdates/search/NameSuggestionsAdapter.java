@@ -34,7 +34,7 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameView
         }
         int year = Date.Companion.today().getYear();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, year);
-        ArrayList<String> names = namedayCalendar.getAllNames();
+        List<String> names = namedayCalendar.getAllNames();
         return new NameSuggestionsAdapter(new NameFilter(names, compatator), onNameSelectedListener);
     }
 

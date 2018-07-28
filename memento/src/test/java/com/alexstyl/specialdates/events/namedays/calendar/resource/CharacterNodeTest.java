@@ -16,7 +16,7 @@ public class CharacterNodeTest {
         node.addDate("Alex", date);
 
         NameCelebrations extracted = node.getDates("Alex");
-        assertThat(extracted.getDate(0)).isEqualTo(date);
+        assertThat(extracted.getDates().get(0)).isEqualTo(date);
     }
 
     @Test

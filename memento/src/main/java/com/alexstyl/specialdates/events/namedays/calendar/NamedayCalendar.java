@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -43,8 +42,8 @@ public class NamedayCalendar {
         return new ImmutableNamesInADate(date, arrayList);
     }
 
-    public ArrayList<String> getAllNames() {
-        ArrayList<String> names = namedayBundle.getNames();
+    public List<String> getAllNames() {
+        List<String> names = namedayBundle.getNames();
         names.addAll(strategy.getAllNames());
         return names;
     }
@@ -61,10 +60,7 @@ public class NamedayCalendar {
         NameCelebrations names = namedayBundle.getDatesFor(searchQuery);
         NameCelebrations specialNames = strategy.getNamedaysFor(searchQuery, year);
 
-        Dates dates = new Dates(names.getDates());
-        dates.addAll(specialNames.getDates());
-        String matchingName = getName(names, specialNames);
-        return new NameCelebrations(matchingName, dates);
+        return NameCelebrations.DefaultImpls.plus(names, specialNames);
     }
 
     private String getName(NameCelebrations names, NameCelebrations specialNames) {

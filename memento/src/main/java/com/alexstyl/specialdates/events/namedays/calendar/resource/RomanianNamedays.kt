@@ -35,7 +35,7 @@ data class RomanianNamedays(private val calculator: RomanianEasterSpecialCalcula
             val namesToDate = CharacterNode()
             for (name in names) {
                 dateToNames.addNameday(romanianDate!!, name)
-                namesToDate.addDate(name, romanianDate)
+                namesToDate.addDate(name, romanianDate!!)
             }
 
             namedays = NamedayBundle(namesToDate, dateToNames)

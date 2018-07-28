@@ -2,7 +2,8 @@ package com.alexstyl.specialdates.events.namedays
 
 import com.alexstyl.specialdates.date.Date
 import java.text.Collator
-import java.util.*
+import java.util.TreeSet
+import kotlin.collections.ArrayList
 
 class NamedaysList {
 
