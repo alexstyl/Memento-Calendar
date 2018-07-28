@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
-import com.alexstyl.specialdates.events.namedays.NoNamesInADate
+import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 import java.net.URI
@@ -80,10 +80,10 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
                 else -> ""
             }
 
-    override fun viewModelFor(namedays: NoNamesInADate): NamedaysNotificationViewModel {
+    override fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel {
         return NamedaysNotificationViewModel(namedays.date,
-                strings.todaysNamedays(namedays.getNames().size),
-                namedays.getNames().joinToString(", "))
+                strings.todaysNamedays(namedays.names.size),
+                namedays.names.joinToString(", "))
     }
 
     override fun viewModelFor(bankHoliday: BankHoliday): BankHolidayNotificationViewModel =
