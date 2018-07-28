@@ -1,8 +1,9 @@
 package com.alexstyl.specialdates.settings
 
-import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.preference.Preference
+import com.alexstyl.specialdates.BuildConfig
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -22,9 +23,9 @@ import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.home.HomeNavigator
 import com.alexstyl.specialdates.theming.ThemingPreferences
+import com.alexstyl.specialdates.toast
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
-import com.novoda.notils.caster.Classes
 import javax.inject.Inject
 
 class UserSettingsFragment : MementoPreferenceFragment() {
@@ -32,7 +33,7 @@ class UserSettingsFragment : MementoPreferenceFragment() {
     private var namedayLanguageListPreferences: NamedayListPreference? = null
     private var restorePreference: Preference? = null
     private var appThemePreference: Preference? = null
-    private var activity: ThemedMementoActivity? = null
+    private var themedMementoActivity: ThemedMementoActivity? = null
 
     @Inject lateinit var themingPreferences: ThemingPreferences
     @Inject lateinit var analytics: Analytics
@@ -48,20 +49,17 @@ class UserSettingsFragment : MementoPreferenceFragment() {
     private val locale: NamedayLocale
         get() = namedaysPreferences.selectedLanguage
 
-    private val themeSelectedListener = ThemeSelectDialog.OnThemeSelectedListener { theme ->
-        analytics.trackThemeSelected(getString(theme.themeName))
-        themingPreferences.selectedTheme = theme
-        activity!!.applyNewTheme()
-    }
 
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
-        this.activity = Classes.from<ThemedMementoActivity>(activity)
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is ThemedMementoActivity) {
+            this.themedMementoActivity = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val applicationModule = (getActivity()!!.application as MementoApplication).applicationModule
+        val applicationModule = (activity!!.application as MementoApplication).applicationModule
         applicationModule.inject(this)
 
         addPreferencesFromResource(R.xml.preference_main)
@@ -70,20 +68,20 @@ class UserSettingsFragment : MementoPreferenceFragment() {
 
         appThemePreference = findPreference(R.string.key_app_theme_id)
         namedayLanguageListPreferences = findPreference(R.string.key_namedays_language)
-        restorePreference = findPreference("key_donate_restore")
+        restorePreference = findPreference(R.string.key_donate_restore)
 
         setupAppTheme(appThemePreference!!)
-        setupDonate(findPreference<Preference>(R.string.key_donate))
-        setupBankHolidaysToggle(findPreference<Preference>(R.string.key_enable_bank_holidays)!!)
+        setupDonate(findPreference(R.string.key_donate))
+        setupBankHolidaysToggle(findPreference(R.string.key_enable_bank_holidays)!!)
         setupBankHolidaysLanguage(findPreference(R.string.key_bankholidays_language)!!)
-        setupNamedaysToggle(findPreference<Preference>(R.string.key_enable_namedays)!!)
+        setupNamedaysToggle(findPreference(R.string.key_enable_namedays)!!)
         setupNamedayLanguage(namedayLanguageListPreferences!!)
-        setupNamedaysContactsOnly(findPreference<Preference>(R.string.key_namedays_contacts_only)!!)
-        setupNamedaysFullName(findPreference<Preference>(R.string.key_namedays_full_name)!!)
+        setupNamedaysContactsOnly(findPreference(R.string.key_namedays_contacts_only)!!)
+        setupNamedaysFullName(findPreference(R.string.key_namedays_full_name)!!)
 
         donationService = AndroidDonationService(
-                IabHelper(getActivity()!!, AndroidDonationConstants.PUBLIC_KEY),
-                getActivity(),
+                IabHelper(activity!!, AndroidDonationConstants.PUBLIC_KEY),
+                activity,
                 DonationPreferences.newInstance(getActivity()),
                 analytics,
                 tracker,
@@ -137,7 +135,15 @@ class UserSettingsFragment : MementoPreferenceFragment() {
     private fun setupAppTheme(preference: Preference) {
         preference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val dialog = ThemeSelectDialog()
-            dialog.setOnThemeSelectedListener(themeSelectedListener)
+            dialog.setOnThemeSelectedListener { theme ->
+                analytics.trackThemeSelected(getString(theme.themeName))
+                themingPreferences.selectedTheme = theme
+                if (themedMementoActivity != null) {
+                    themedMementoActivity?.applyNewTheme()
+                } else if (BuildConfig.DEBUG) {
+                    toast("Fragment is not attached to a ThemedMementoActivity. Theme saved, but not applied")
+                }
+            }
             dialog.show(fragmentManager!!, FM_THEME_TAG)
             true
         }
@@ -152,7 +158,7 @@ class UserSettingsFragment : MementoPreferenceFragment() {
 
     private fun setupDonate(preference: Preference?) {
         preference?.setOnPreferenceClickListener {
-            navigator.toDonate(activity as Activity)
+            navigator.toDonate(getActivity()!!)
             true
         }
     }
@@ -175,13 +181,17 @@ class UserSettingsFragment : MementoPreferenceFragment() {
 
     private fun reattachThemeDialogIfNeeded() {
         val themeSelectDialog = fragmentManager!!.findFragmentByTag(FM_THEME_TAG) as ThemeSelectDialog?
-        themeSelectDialog?.setOnThemeSelectedListener(themeSelectedListener)
+        themeSelectDialog?.setOnThemeSelectedListener(ThemeSelectDialog.OnThemeSelectedListener { theme ->
+            analytics.trackThemeSelected(getString(theme.themeName))
+            themingPreferences.selectedTheme = theme
+            themedMementoActivity?.applyNewTheme()
+        })
     }
 
     override fun onResume() {
         super.onResume()
         namedayLanguageListPreferences!!.summary = strings.localeName(namedaysPreferences.selectedLanguage)
-        appThemePreference!!.setSummary(themingPreferences!!.selectedTheme.themeName)
+        appThemePreference!!.setSummary(themingPreferences.selectedTheme.themeName)
     }
 
     override fun onDestroy() {
