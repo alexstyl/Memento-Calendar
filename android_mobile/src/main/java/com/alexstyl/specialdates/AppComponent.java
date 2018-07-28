@@ -131,8 +131,6 @@ public interface AppComponent {
 
     void inject(ContactPermissionActivity activity);
 
-    void inject(BootCompleteReceiver receiver);
-
     void inject(PeopleFragment peopleFragment);
 
     void inject(FacebookWebView peopleFragment);
