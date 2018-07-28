@@ -8,8 +8,9 @@ import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
-import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.namedays.NoNamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
+import com.alexstyl.specialdates.events.namedays.calendar.ImmutableNamesInADate
 import com.alexstyl.specialdates.ui.widget.LetterPainter
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -49,7 +50,7 @@ class NamedaysInADayPresenterTest {
 
     @Test
     fun whenNoNamedaysExistOnASpecificDate_thenNoViewModelsArePassedToTheView() {
-        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf()))
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NoNamesInADate(ANY_DATE))
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
         Mockito.verify(mockView).displayNamedays(emptyList())
@@ -58,7 +59,7 @@ class NamedaysInADayPresenterTest {
     @Test
     fun aNamedayWithAContact_returnsAViewModelWithThatContact() {
         given(mockSource.allContacts).willReturnContacts("Kate Brown")
-        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(ImmutableNamesInADate(ANY_DATE, listOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
@@ -71,7 +72,7 @@ class NamedaysInADayPresenterTest {
 
     @Test
     fun aNamedayWithoutRelatedContacts_returnsOnlyTheNameday() {
-        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf("Kate")))
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(ImmutableNamesInADate(ANY_DATE, listOf("Kate")))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 
@@ -82,7 +83,7 @@ class NamedaysInADayPresenterTest {
     @Test
     fun irida() {
         given(mockSource.allContacts).willReturnContacts("Irida")
-        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(NamesInADate(ANY_DATE, arrayListOf("Ιριδα")))
+        given(mockNamedayCalendar.getAllNamedaysOn(ANY_DATE)).willReturn(ImmutableNamesInADate(ANY_DATE, listOf("Ιριδα")))
 
         presenter.startPresenting(mockView, forDate = ANY_DATE)
 

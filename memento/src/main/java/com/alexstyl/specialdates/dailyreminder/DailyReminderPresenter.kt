@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
-import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.namedays.NoNamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
@@ -38,13 +38,13 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                         contactEvents(date),
                         namedays(date),
                         bankholidays(date),
-                        Function3({ t1: List<ContactEventNotificationViewModel>,
+                        Function3 { t1: List<ContactEventNotificationViewModel>,
                                     t2: Optional<NamedaysNotificationViewModel>,
                                     t3: Optional<BankHolidayNotificationViewModel> ->
                             DailyReminderViewModel(factory.summaryOf(t1), t1, t2, t3).apply {
                                 dailyReminderLogger.appendEvents(date, this)
                             }
-                        }))
+                        })
                         .doOnError { it ->
                             errorTracker.track(it)
                         }
@@ -79,10 +79,10 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
             val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(namedayPreferences.selectedLanguage, date.year)
             namedayCalendar.getAllNamedaysOn(date)
         } else {
-            NamesInADate(date, ArrayList())
+            NoNamesInADate(date)
         }
     }.map {
-        if (it.getNames().isEmpty()) {
+        if (it.names.isEmpty()) {
             Optional.absent()
         } else {
             Optional(factory.viewModelFor(it))

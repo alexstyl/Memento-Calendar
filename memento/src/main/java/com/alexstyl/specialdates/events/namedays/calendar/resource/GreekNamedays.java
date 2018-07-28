@@ -4,14 +4,14 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
 
 public final class GreekNamedays {
 
@@ -35,10 +35,8 @@ public final class GreekNamedays {
     }
 
     NamesInADate getNamedayByDate(Date date) {
-
         int year = date.getYear();
         refreshNamedaysIfNeeded(year);
-
         return namedays.getNamedaysFor(date);
     }
 

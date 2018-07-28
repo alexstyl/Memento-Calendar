@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.alexstyl.resources.ResourcesModule
-import com.alexstyl.specialdates.dailyreminder.AndroidDailyReminderScheduler
-import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
@@ -38,7 +36,6 @@ open class MementoApplication : MultiDexApplication() {
     @Inject lateinit var jobCreator: JobsCreator
     @Inject lateinit var permissions: MementoPermissions
     @Inject lateinit var upcomingEventsSettings: UpcomingEventsSettings
-    @Inject lateinit var dailyReminderUserSettings: DailyReminderUserSettings
 
     lateinit var applicationModule: AppComponent
 
@@ -64,11 +61,6 @@ open class MementoApplication : MultiDexApplication() {
         tracker.startTracking()
 
         JobManager.create(this).addJobCreator(jobCreator)
-
-        if (dailyReminderUserSettings.isEnabled()) {
-            AndroidDailyReminderScheduler()
-                    .scheduleReminderFor(dailyReminderUserSettings.getTimeSet())
-        }
 
         if (facebookSettings.isLoggedIn) {
             FacebookFriendsUpdaterScheduler().scheduleNext()

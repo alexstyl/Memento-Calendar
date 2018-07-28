@@ -30,7 +30,6 @@ import com.alexstyl.specialdates.people.PeopleModule;
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.person.PersonModule;
-import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.search.SearchModule;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
@@ -131,8 +130,6 @@ public interface AppComponent {
     void inject(DeviceConfigurationUpdatedReceiver receiver);
 
     void inject(ContactPermissionActivity activity);
-
-    void inject(BootCompleteReceiver receiver);
 
     void inject(PeopleFragment peopleFragment);
 

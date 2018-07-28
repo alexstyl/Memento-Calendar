@@ -23,7 +23,7 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
-import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.namedays.calendar.ImmutableNamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.toast
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
@@ -68,7 +68,7 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
             datePickerDialog.show()
         }
 
-        onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_one){
+        onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_one) {
             notifyForContacts(arrayListOf(
                     contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Peter".toDisplayName(), URI.create("content://com.android.contacts/contacts/123"), ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY)
             ))
@@ -174,10 +174,8 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
 
     private fun bankholidayNotification() = Optional(dailyReminderViewModelFactory.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
 
-    private fun namedaysNotifications(arrayList: ArrayList<String>): Optional<NamedaysNotificationViewModel> =
-            Optional(dailyReminderViewModelFactory.viewModelFor(NamesInADate(Date.today(),
-                    arrayList
-            )))
+    private fun namedaysNotifications(names: ArrayList<String>): Optional<NamedaysNotificationViewModel> =
+            Optional(dailyReminderViewModelFactory.viewModelFor(ImmutableNamesInADate(Date.today(), names)))
 
     private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(Optional.absent(), standardEventType,
             date, contact)

@@ -15,7 +15,8 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 open class PeopleDynamicNamedaysProvider(
         private val settings: NamedayUserSettings,
         private val namedayCalendarProvider: NamedayCalendarProvider,
-        private val contactsProvider: ContactsProvider) : PeopleEventsProvider {
+        private val contactsProvider: ContactsProvider)
+    : PeopleEventsProvider {
 
     private val namedayCalendar: NamedayCalendar
         get() {
@@ -33,7 +34,7 @@ open class PeopleDynamicNamedaysProvider(
             return emptyList()
         }
         val namedayEvents = ArrayList<ContactEvent>()
-        for (contact in contactsProvider.allContacts) {
+        contactsProvider.allContacts.forEach { contact ->
             for (firstName in contact.displayName.firstNames) {
                 val nameDays = getSpecialNamedaysOf(firstName)
                 if (nameDays.containsNoDate()) {
@@ -117,12 +118,10 @@ open class PeopleDynamicNamedaysProvider(
     }
 
     private fun getNamedaysOf(given: String): NameCelebrations {
-        val namedayCalendar = namedayCalendar
         return namedayCalendar.getNormalNamedaysFor(given)
     }
 
     private fun getSpecialNamedaysOf(firstName: String): NameCelebrations {
-        val namedayCalendar = namedayCalendar
         return namedayCalendar.getSpecialNamedaysFor(firstName)
     }
 

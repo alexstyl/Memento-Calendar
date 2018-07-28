@@ -39,7 +39,8 @@ public class NamedayCalendar {
         List<String> arrayList = new ArrayList<>(names.size() + specialNames.size());
         arrayList.addAll(names);
         arrayList.addAll(specialNames);
-        return new NamesInADate(date, arrayList);
+
+        return new ImmutableNamesInADate(date, arrayList);
     }
 
     public ArrayList<String> getAllNames() {

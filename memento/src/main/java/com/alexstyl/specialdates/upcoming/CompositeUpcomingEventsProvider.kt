@@ -46,7 +46,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
 
         while (COMPARATOR.compare(indexDate, toDate) < 0) {
             val allNamedayOn = namedayCalendar.getAllNamedaysOn(indexDate)
-            if (allNamedayOn.nameCount() > 0) {
+            if (allNamedayOn.names.isNotEmpty()) {
                 namedays.add(allNamedayOn)
             }
             indexDate = indexDate.addDay(1)

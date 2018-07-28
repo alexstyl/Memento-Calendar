@@ -5,6 +5,7 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations
 import com.alexstyl.specialdates.events.namedays.NamedayBundle
 import com.alexstyl.specialdates.events.namedays.NamedaysList
 import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.namedays.NoNamesInADate
 
 data class RomanianNamedays(private val calculator: RomanianEasterSpecialCalculator, private val names: List<String>) {
 
@@ -18,7 +19,7 @@ data class RomanianNamedays(private val calculator: RomanianEasterSpecialCalcula
         calculateEasterIfNecessary(date.year)
         return if (romanianDate == date) {
             namedays!!.getNamedaysFor(date)
-        } else NamesInADate(date)
+        } else NoNamesInADate(date)
     }
 
     fun getNamedaysFor(name: String, year: Int): NameCelebrations {
@@ -33,7 +34,7 @@ data class RomanianNamedays(private val calculator: RomanianEasterSpecialCalcula
             val dateToNames = NamedaysList()
             val namesToDate = CharacterNode()
             for (name in names) {
-                dateToNames.addNameday(romanianDate, name)
+                dateToNames.addNameday(romanianDate!!, name)
                 namesToDate.addDate(name, romanianDate)
             }
 

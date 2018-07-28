@@ -24,9 +24,9 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
 
 
     override fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel {
-        val contacts = viewModels.fold(emptyList<Contact>(), { list, viewModel ->
+        val contacts = viewModels.fold(emptyList<Contact>()) { list, viewModel ->
             list + viewModel.contact
-        })
+        }
 
         val title = NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS)
         val label = strings.dontForgetToSendWishes()
@@ -82,8 +82,8 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
 
     override fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel {
         return NamedaysNotificationViewModel(namedays.date,
-                strings.todaysNamedays(namedays.getNames().size),
-                namedays.getNames().joinToString(", "))
+                strings.todaysNamedays(namedays.names.size),
+                namedays.names.joinToString(", "))
     }
 
     override fun viewModelFor(bankHoliday: BankHoliday): BankHolidayNotificationViewModel =
