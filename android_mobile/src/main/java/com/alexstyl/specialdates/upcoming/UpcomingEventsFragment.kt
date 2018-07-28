@@ -35,7 +35,6 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val applicationModule = (activity!!.application as MementoApplication).applicationModule
         applicationModule.inject(this)
         refresher.addEventsView(this)
@@ -71,8 +70,7 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
         )
         adapter.setHasStableIds(true)
         upcomingList.adapter = adapter
-        mvpView = AndroidUpcomingMVPView(
-                upcomingList, root, progressBar, emptyView, adapter, askForSupport, activity!!)
+        mvpView = AndroidUpcomingMVPView(upcomingList, root, progressBar, emptyView, adapter, askForSupport, activity!!)
 
         return view
     }
