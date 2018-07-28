@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 
 internal class GreekSpecialNamedays private constructor(private val greekNamedays: GreekNamedays) : SpecialNamedays {
 
-    override val allNames: ArrayList<String>
+    override val allNames: List<String>
         get() = greekNamedays.names
 
     override fun getNamedayOn(date: Date): NamesInADate {

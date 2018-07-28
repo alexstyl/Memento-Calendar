@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.Dates;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
@@ -10,7 +9,11 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.alexstyl.specialdates.date.Months.*;
+import java.util.List;
+
+import static com.alexstyl.specialdates.date.Months.AUGUST;
+import static com.alexstyl.specialdates.date.Months.JULY;
+import static com.alexstyl.specialdates.date.Months.JUNE;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.fail;
 
@@ -54,10 +57,10 @@ public class NamedayJSONParserTest {
     }
 
     private static void assertThatContainsDate(NameCelebrations celebrations, Date date) {
-        Dates dates = celebrations.getDates();
+        List<Date> dates = celebrations.getDates();
         int index = 0;
         while (index < dates.size()) {
-            if (celebrations.getDate(index).equals(date)) {
+            if (celebrations.getDates().get(index).equals(date)) {
                 return;
             }
             index++;

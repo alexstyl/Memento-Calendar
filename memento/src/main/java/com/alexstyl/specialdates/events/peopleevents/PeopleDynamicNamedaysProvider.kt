@@ -37,13 +37,13 @@ open class PeopleDynamicNamedaysProvider(
         contactsProvider.allContacts.forEach { contact ->
             for (firstName in contact.displayName.firstNames) {
                 val nameDays = getSpecialNamedaysOf(firstName)
-                if (nameDays.containsNoDate()) {
+                if (nameDays.dates.isEmpty()) {
                     continue
                 }
 
-                val namedaysCount = nameDays.size()
+                val namedaysCount = nameDays.dates.size
                 for (i in 0 until namedaysCount) {
-                    val date = nameDays.getDate(i)
+                    val date = nameDays.dates[i]
                     if (timePeriod.containsDate(date)) {
                         val nameday = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
                         namedayEvents.add(nameday)
@@ -60,9 +60,11 @@ open class PeopleDynamicNamedaysProvider(
         }
         val namedays = ArrayList<ContactEvent>()
         for (name in contact.displayName.allNames) {
-            val (_, specialDates) = getSpecialNamedaysOf(name)
-            for (i in 0 until specialDates.size()) {
-                val date = specialDates.getDate(i)
+            val specialNamedays = getSpecialNamedaysOf(name)
+            val specialDates = specialNamedays.dates
+
+            for (i in 0 until specialDates.size) {
+                val date = specialDates[i]
                 val deviceEventId = Optional(contact.contactID)
                 val contactEvent = ContactEvent(deviceEventId, StandardEventType.NAMEDAY, date, contact)
                 namedays.add(contactEvent)
@@ -98,12 +100,12 @@ open class PeopleDynamicNamedaysProvider(
             val namedays = HashSet<Date>()
             for (firstName in displayName.firstNames) {
                 val nameDays = getNamedaysOf(firstName)
-                if (nameDays.containsNoDate()) {
+                if (nameDays.dates.isEmpty()) {
                     continue
                 }
-                val namedaysCount = nameDays.size()
+                val namedaysCount = nameDays.dates.size
                 for (i in 0 until namedaysCount) {
-                    val date = nameDays.getDate(i)
+                    val date = nameDays.dates[i]
                     if (namedays.contains(date)) {
                         continue
                     }

@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.namedays.NoNameCelebrations;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.ui.loader.SimpleAsyncTaskLoader;
@@ -44,7 +45,7 @@ final class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
         if (namedayUserSettings.isEnabled()) {
             return getNamedayCalendar().getAllNamedays(searchQuery);
         }
-        return new NameCelebrations(searchQuery);
+        return new NoNameCelebrations(searchQuery);
     }
 
     private NamedayCalendar getNamedayCalendar() {

@@ -47,6 +47,6 @@ public class GreeklishParserTest {
     }
 
     private void assertThatContainsSamedate(NameCelebrations dates, NameCelebrations dates2) {
-        assertThat(dates.getDate(0)).isEqualTo(dates2.getDate(0));
+        assertThat(dates.getDates().get(0)).isEqualTo(dates2.getDates().get(0));
     }
 }

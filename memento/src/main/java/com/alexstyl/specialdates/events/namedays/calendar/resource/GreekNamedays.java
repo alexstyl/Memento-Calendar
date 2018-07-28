@@ -10,7 +10,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class GreekNamedays {
@@ -55,7 +54,7 @@ public final class GreekNamedays {
         namedays = specialGreekNamedaysCalculator.calculateForEasterDate(easter);
     }
 
-    public ArrayList<String> getNames() {
+    public List<String> getNames() {
         int year = Date.Companion.today().getYear();
         refreshNamedaysIfNeeded(year);
         return namedays.getNames();

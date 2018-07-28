@@ -32,6 +32,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.namedays.NoNameCelebrations;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -322,7 +323,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onLoaderReset(@NonNull Loader<NameCelebrations> loader) {
-            adapter.setNamedays(new NameCelebrations(""));
+            adapter.setNamedays(new NoNameCelebrations(searchQuery));
         }
     };
 

@@ -9,8 +9,8 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NoNamesInADate
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.ImmutableNamesInADate
+import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.ui.widget.LetterPainter
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
