@@ -44,11 +44,8 @@ public class NamedayModule {
 
     @Provides
     @Singleton
-    NamedayCalendarProvider provider(OrthodoxEasterCalculator easterCalculator, NamedayJSONProvider namedayJSONProvider, SpecialNamedaysHandlerFactory factory) {
-        return new NamedayCalendarProvider(
-                namedayJSONProvider,
-                factory
-        );
+    NamedayCalendarProvider provider(NamedayJSONProvider namedayJSONProvider, SpecialNamedaysHandlerFactory factory) {
+        return new NamedayCalendarProvider(namedayJSONProvider, factory);
     }
 
     @Provides
