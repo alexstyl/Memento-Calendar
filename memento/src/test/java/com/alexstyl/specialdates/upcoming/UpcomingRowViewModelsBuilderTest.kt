@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.date.Months.FEBRUARY
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
+import com.alexstyl.specialdates.events.namedays.ArrayNamesInADate
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
@@ -21,7 +22,6 @@ import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import java.util.ArrayList
 import java.util.Arrays.asList
 
 @RunWith(MockitoJUnitRunner::class)
@@ -151,9 +151,7 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
     private fun namedayOf(date: Date, maria: String): List<NamesInADate> {
-        val namedays = ArrayList<NamesInADate>()
-        namedays.add(NamesInADate(date, arrayListOf(maria)))
-        return namedays
+        return listOf(ArrayNamesInADate(date, arrayListOf(maria)))
     }
 
     private fun builderFor(timePeriod: TimePeriod): UpcomingRowViewModelsBuilder {

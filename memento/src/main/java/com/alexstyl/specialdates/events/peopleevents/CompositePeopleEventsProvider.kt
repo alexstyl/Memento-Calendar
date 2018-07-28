@@ -29,15 +29,15 @@ class CompositePeopleEventsProvider(private var providers: List<PeopleEventsProv
 
 
     override fun findClosestEventDateOnOrAfter(date: Date): Date? {
-        date.ensureHasYear()
+        ensureHasYear(date)
 
         return providers.mapNotNull {
             it.findClosestEventDateOnOrAfter(date)
         }.min()
     }
 
-    private fun Date.ensureHasYear() {
-        if (!this.hasYear()) {
+    private fun ensureHasYear(date: Date) {
+        if (!date.hasYear()) {
             throw IllegalArgumentException("Date must contain year")
         }
     }

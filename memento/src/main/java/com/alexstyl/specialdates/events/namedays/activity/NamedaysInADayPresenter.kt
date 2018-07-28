@@ -25,7 +25,7 @@ class NamedaysInADayPresenter(private val namedayCalendar: NamedayCalendar,
         disposable =
                 Observable.fromCallable { namedayCalendar.getAllNamedaysOn(forDate) }
                         .observeOn(workScheduler)
-                        .map { findAndCreateViewModelsOf(it.getNames()) }
+                        .map { findAndCreateViewModelsOf(it.names) }
                         .observeOn(resultScheduler)
                         .subscribe { namedaysViewModel ->
                             into.displayNamedays(namedaysViewModel)
@@ -37,12 +37,12 @@ class NamedaysInADayPresenter(private val namedayCalendar: NamedayCalendar,
     private fun findAndCreateViewModelsOf(celebratingNames: List<String>): List<NamedayScreenViewModel> {
         val allContacts = contactsProvider.allContacts
 
-        return celebratingNames.fold(listOf(), { list, celebratingName ->
+        return celebratingNames.fold(listOf()) { list, celebratingName ->
             val contactsCelebrating = allContacts.findContactsCalled(celebratingName)
             list + namedaysViewModelFactory.viewModelsFor(celebratingName) + contactsCelebrating.map {
                 namedaysViewModelFactory.viewModelsFor(it)
             }
-        })
+        }
 
     }
 

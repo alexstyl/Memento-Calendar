@@ -12,7 +12,7 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
-import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.namedays.NoNamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
 import java.net.URI
@@ -24,9 +24,9 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
 
 
     override fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel {
-        val contacts = viewModels.fold(emptyList<Contact>(), { list, viewModel ->
+        val contacts = viewModels.fold(emptyList<Contact>()) { list, viewModel ->
             list + viewModel.contact
-        })
+        }
 
         val title = NaturalLanguageUtils.joinContacts(strings, contacts, MAX_CONTACTS)
         val label = strings.dontForgetToSendWishes()
@@ -80,7 +80,7 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
                 else -> ""
             }
 
-    override fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel {
+    override fun viewModelFor(namedays: NoNamesInADate): NamedaysNotificationViewModel {
         return NamedaysNotificationViewModel(namedays.date,
                 strings.todaysNamedays(namedays.getNames().size),
                 namedays.getNames().joinToString(", "))

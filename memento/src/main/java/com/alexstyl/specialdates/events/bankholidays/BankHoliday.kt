@@ -9,7 +9,7 @@ data class BankHoliday(val holidayName: String, val date: Date) : Comparable<Ban
         return holidayName
     }
 
-    override fun compareTo(another: BankHoliday): Int {
-        return DateComparator.INSTANCE.compare(date, another.date)
+    override fun compareTo(other: BankHoliday): Int {
+        return DateComparator.INSTANCE.compare(date, other.date)
     }
 }

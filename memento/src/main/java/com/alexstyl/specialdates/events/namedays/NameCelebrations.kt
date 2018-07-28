@@ -21,7 +21,6 @@ data class NameCelebrations(val name: String, val dates: Dates) {
 
     fun size(): Int = dates.size()
 
-
     fun addDate(date: Date) {
         this.dates.add(date)
     }
