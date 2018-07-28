@@ -30,7 +30,6 @@ import com.alexstyl.specialdates.people.PeopleModule;
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity;
 import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.person.PersonModule;
-import com.alexstyl.specialdates.receiver.BootCompleteReceiver;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.search.SearchModule;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
