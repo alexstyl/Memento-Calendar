@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.upcoming
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,13 +82,7 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
 
     override fun onStart() {
         super.onStart()
-        startTracking()
         presenter.startPresentingInto(mvpView)
-    }
-
-    private fun startTracking() {
-        Log.d("TIME", "Start loading at " + System.currentTimeMillis())
-//        Debug.startMethodTracing()
     }
 
     override fun onPause() {

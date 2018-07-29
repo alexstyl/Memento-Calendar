@@ -1,10 +1,8 @@
 package com.alexstyl.specialdates.upcoming
 
 import android.app.Activity
-import android.os.Debug
 import android.support.transition.TransitionManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -31,7 +29,6 @@ class AndroidUpcomingMVPView(
     }
 
     override fun display(events: List<UpcomingRowViewModel>) {
-        stopTracking()
         TransitionManager.beginDelayedTransition(root)
 
         progressBar.visibility = View.GONE
@@ -49,10 +46,4 @@ class AndroidUpcomingMVPView(
             askForSupport.askForRatingFromUser(activity)
         }
     }
-
-    private fun stopTracking() {
-        Log.d("TIME", "Done loading at " + System.currentTimeMillis())
-        Debug.stopMethodTracing()
-    }
-
 }
