@@ -1,11 +1,11 @@
 package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.contact.Contact
-import java.net.URI
+import com.alexstyl.specialdates.contact.ImageURL
 
 data class ContactEventViewModel(val contact: Contact,
                                  val displayName: String,
-                                 val contactAvatarURI: URI,
+                                 val contactAvatarURI: ImageURL,
                                  val eventLabel: String,
                                  val eventColor: Int,
                                  val backgroundVariant: Int)

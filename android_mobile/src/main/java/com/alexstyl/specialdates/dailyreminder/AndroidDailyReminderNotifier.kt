@@ -17,12 +17,12 @@ import android.support.v4.app.NotificationCompat
 import com.alexstyl.android.Version
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.R
+import com.alexstyl.specialdates.contact.ImageURL
 import com.alexstyl.specialdates.dailyreminder.actions.PersonActionsActivity
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.person.PersonActivity
-import java.net.URI
 
 
 class AndroidDailyReminderNotifier(private val context: Context,
@@ -156,7 +156,7 @@ class AndroidDailyReminderNotifier(private val context: Context,
         notificationManager.cancel(NotificationConstants.NOTIFICATION_ID_NAMEDAYS)
     }
 
-    private fun NotificationCompat.Builder.loadLargeImage(imagePath: URI): NotificationCompat.Builder = apply {
+    private fun NotificationCompat.Builder.loadLargeImage(imagePath: ImageURL): NotificationCompat.Builder = apply {
         val width = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
         val height = context.resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
         val bitmap =

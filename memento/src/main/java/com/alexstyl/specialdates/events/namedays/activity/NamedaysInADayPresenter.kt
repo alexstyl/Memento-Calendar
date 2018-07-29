@@ -4,7 +4,6 @@ import com.alexstyl.gsc.SoundComparer
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.DisplayName
-import com.alexstyl.specialdates.contact.Names
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
@@ -46,10 +45,10 @@ class NamedaysInADayPresenter(private val namedayCalendar: NamedayCalendar,
 
     }
 
-    private val DisplayName.names: Names
+    private val DisplayName.names: List<String>
         get() {
             return if (namedayUserSettings.shouldLookupAllNames()) {
-                this.firstNames
+                this.allNames
             } else {
                 this.firstNames
             }

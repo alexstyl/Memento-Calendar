@@ -5,10 +5,10 @@ import android.view.View
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.addevent.ui.AvatarPickerView
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ImageURL
 import com.alexstyl.specialdates.images.ImageLoadedConsumer
 import com.alexstyl.specialdates.images.ImageLoader
 import com.novoda.notils.meta.AndroidUtils
-import java.net.URI
 
 class AndroidAddEventView(private val avatarView: AvatarPickerView,
                           private val eventsAdapter: ContactEventsAdapter,
@@ -43,7 +43,7 @@ class AndroidAddEventView(private val avatarView: AvatarPickerView,
         eventsAdapter.display(viewModels)
     }
 
-    override fun display(uri: URI) {
+    override fun display(uri: ImageURL) {
         imageLoader
                 .load(uri)
                 .withSize(avatarView.width, avatarView.height)

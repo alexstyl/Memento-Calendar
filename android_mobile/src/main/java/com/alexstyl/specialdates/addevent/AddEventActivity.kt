@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
-import com.alexstyl.android.toURI
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -197,7 +196,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 analytics.trackAvatarSelected()
-                presenter.present(result.uri.toURI())
+                presenter.present(result.uri.toString())
             } else if (resultCode == Activity.RESULT_CANCELED && result != null) {
                 tracker.track(result.error)
             }

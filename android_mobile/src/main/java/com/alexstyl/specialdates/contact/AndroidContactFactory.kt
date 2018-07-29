@@ -23,14 +23,12 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
         )
 
         return cursor.use {
-            return@use Contacts(SOURCE_DEVICE, List(it.count, { index ->
+            return@use Contacts(SOURCE_DEVICE, List(it.count) { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            }))
+            })
         }
     }
-
-    private fun emptyCursor(projection: Array<String>) = MatrixCursor(AndroidContactsQuery.PROJECTION)
 
     @Throws(ContactNotFoundException::class)
     fun createContactWithId(contactID: Long): Contact {
@@ -64,10 +62,11 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
         )
     }
 
+
     private fun createContactFrom(cursor: Cursor): Contact {
         val contactID = getContactIdFrom(cursor)
         val displayName = getDisplayNameFrom(cursor)
-        val imagePath = URI.create(ContentUris.withAppendedId(AndroidContactsQuery.CONTENT_URI, contactID).toString())
+        val imagePath = ContentUris.withAppendedId(AndroidContactsQuery.CONTENT_URI, contactID).toString()
         return Contact(contactID, displayName, imagePath, SOURCE_DEVICE)
     }
 
@@ -85,14 +84,18 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
             arrayOf(contactID.toString())
 
     companion object {
-        private const val WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + "=1"
+        private const val WHERE = ContactsContract.Data.IN_VISIBLE_GROUP + " = 1"
         private const val SELECTION_CONTACT_WITH_ID = AndroidContactsQuery._ID + " = ?"
+        private val emptyURI = URI.create("")
 
         private fun getContactIdFrom(cursor: Cursor): Long =
                 cursor.getLong(AndroidContactsQuery.CONTACT_ID)
 
-        private fun getDisplayNameFrom(cursor: Cursor): DisplayName =
-                DisplayName.from(cursor.getString(AndroidContactsQuery.DISPLAY_NAME))
+
+        private fun getDisplayNameFrom(cursor: Cursor): DisplayName {
+            val string = cursor.getString(AndroidContactsQuery.DISPLAY_NAME)
+            return DisplayName.from(string)
+        }
     }
 
 }
