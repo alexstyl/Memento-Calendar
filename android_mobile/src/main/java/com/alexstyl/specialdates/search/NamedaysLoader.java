@@ -41,11 +41,11 @@ final class NamedaysLoader extends SimpleAsyncTaskLoader<NameCelebrations> {
         return getNamedays(searchQuery);
     }
 
-    private NameCelebrations getNamedays(String searchQuery) {
+    private NameCelebrations getNamedays(String name) {
         if (namedayUserSettings.isEnabled()) {
-            return getNamedayCalendar().getAllNamedays(searchQuery);
+            return getNamedayCalendar().getAllNamedays(name);
         }
-        return new NoNameCelebrations(searchQuery);
+        return new NoNameCelebrations(name);
     }
 
     private NamedayCalendar getNamedayCalendar() {

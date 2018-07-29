@@ -20,7 +20,7 @@ public class NamedayJSONProvider {
         JSONObject json = loader.loadJSON(locale);
         JSONArray data = json.getJSONArray("data");
         JSONArray special = getSpecialOf(json);
-        return new NamedayJSON(data, special);
+        return new NamedayJSON(locale, data, special);
     }
 
     private JSONArray getSpecialOf(JSONObject json) throws JSONException {
