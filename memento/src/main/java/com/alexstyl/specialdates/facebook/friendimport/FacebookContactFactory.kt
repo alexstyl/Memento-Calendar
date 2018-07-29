@@ -2,17 +2,14 @@ package com.alexstyl.specialdates.facebook.friendimport
 
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParseException
+import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.facebook.FacebookImagePath
-import com.alexstyl.specialdates.date.DateParser
-
-import java.net.URI
-
-import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
 
 class FacebookContactFactory(private val parser: DateParser) {
 

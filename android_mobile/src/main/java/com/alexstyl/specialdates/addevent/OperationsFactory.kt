@@ -12,6 +12,7 @@ import com.alexstyl.specialdates.addevent.operations.InsertEvent
 import com.alexstyl.specialdates.addevent.operations.InsertImage
 import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ImageURL
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
@@ -21,7 +22,6 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.images.ImageDecoder
-import java.net.URI
 
 class OperationsFactory(private val rawContactID: Int,
                         private val displayStringCreator: ShortDateLabelCreator,
@@ -39,7 +39,7 @@ class OperationsFactory(private val rawContactID: Int,
         throw IllegalArgumentException("Unable to create operation for $contactOperation")
     }
 
-    private fun insertImageFor(imageUri: URI): List<ContentProviderOperation> {
+    private fun insertImageFor(imageUri: ImageURL): List<ContentProviderOperation> {
         val decodeFrom = imageDecoder.decodeFrom(imageUri)
         if (decodeFrom != null) {
             val builder = ContentProviderOperation.newInsert(Data.CONTENT_URI)

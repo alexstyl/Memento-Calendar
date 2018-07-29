@@ -9,13 +9,13 @@ import android.text.style.StyleSpan
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ImageURL
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
-import java.net.URI
 
 class AndroidDailyReminderViewModelFactory(private val strings: Strings,
                                            private val todaysDate: Date,
@@ -41,9 +41,9 @@ class AndroidDailyReminderViewModelFactory(private val strings: Strings,
             lines.add(boldedTitle)
         }
 
-        val images = viewModels.fold(emptyList<URI>(), { list, viewModel ->
+        val images = viewModels.fold(emptyList<ImageURL>()) { list, viewModel ->
             list + viewModel.contact.imagePath
-        })
+        }
 
         return SummaryNotificationViewModel(
                 NotificationConstants.NOTIFICATION_ID_CONTACTS_SUMMARY,

@@ -1,11 +1,10 @@
 package com.alexstyl.specialdates.contact
 
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
-import java.net.URI
 
 object ContactFixture {
 
-    private val SOME_IMAGE = URI.create("https://www.alexstyl.com/image.jpg")
+    private val SOME_IMAGE = "https://www.alexstyl.com/image.jpg"
 
     fun aContact(): Contact {
         return Contact(-1, DisplayName.from("Test Contact"), SOME_IMAGE, SOURCE_DEVICE)

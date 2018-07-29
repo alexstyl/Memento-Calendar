@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ImageURL
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.Event
 import com.alexstyl.specialdates.events.peopleevents.CustomEventType
@@ -15,7 +16,6 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.ReplaySubject
-import java.net.URI
 
 
 class AddEventsPresenter(private val analytics: Analytics,
@@ -34,7 +34,7 @@ class AddEventsPresenter(private val analytics: Analytics,
     private val eventsUISubject = ReplaySubject.create<List<AddEventContactEventViewModel>>()
     private var startingEvents = emptyViewModels()
 
-    private val imageSubject = ReplaySubject.create<URI>()
+    private val imageSubject = ReplaySubject.create<ImageURL>()
     private val contactSubject = ReplaySubject.create<Optional<Contact>>()
     private val contactNameSubject = ReplaySubject.create<String>()
 
@@ -90,7 +90,7 @@ class AddEventsPresenter(private val analytics: Analytics,
         contactSubject.onNext(Optional.absent())
         saveUISubject.onNext(false)
         contactNameSubject.onNext("")
-        imageSubject.onNext(URI.create(""))
+        imageSubject.onNext("")
     }
 
     fun presentName(name: String) {
@@ -293,7 +293,7 @@ class AddEventsPresenter(private val analytics: Analytics,
         eventsUISubject.onNext(emptyViewModels())
     }
 
-    fun present(uri: URI) {
+    fun present(uri: ImageURL) {
         imageSubject.onNext(uri)
     }
 }

@@ -33,8 +33,6 @@ import com.novoda.notils.meta.AndroidUtils;
 
 import javax.inject.Inject;
 
-import java.net.URI;
-
 public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
 
     private FacebookWebView webView;
@@ -162,7 +160,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        URI uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
+        String uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
                 .asCircle()

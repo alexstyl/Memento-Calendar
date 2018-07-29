@@ -28,13 +28,12 @@ import com.alexstyl.specialdates.ui.base.MementoActivity;
 import com.novoda.notils.caster.Views;
 
 import javax.inject.Inject;
-import java.net.URI;
 
 public class DonateActivity extends MementoActivity {
 
     private static final int REQUEST_CODE = 1004;
     private static final int SCROLL_DOWN_ANIMATION_DELAY = 2000;
-    private static final URI DEV_IMAGE_URI = URI.create("http://alexstyl.com/memento-calendar/dev.jpg");
+    private static final String DEV_IMAGE_URI = "http://alexstyl.com/memento-calendar/dev.jpg";
     private static final int VELOCITY_Y = 50;
 
     private DonatePresenter donatePresenter;

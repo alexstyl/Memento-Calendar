@@ -1,5 +1,5 @@
 package com.alexstyl.specialdates.addevent.operations
 
-import java.net.URI
+import com.alexstyl.specialdates.contact.ImageURL
 
-data class InsertImage(val imageUri: URI) : ContactOperation
+data class InsertImage(val imageUri: ImageURL) : ContactOperation

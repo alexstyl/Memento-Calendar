@@ -1,11 +1,11 @@
 package com.alexstyl.specialdates.addevent
 
 import com.alexstyl.specialdates.contact.Contact
-import java.net.URI
+import com.alexstyl.specialdates.contact.ImageURL
 
 interface AddEventView {
 
-    fun display(uri: URI)
+    fun display(uri: ImageURL)
     fun display(viewModels: List<AddEventContactEventViewModel>)
     fun displayContact(contact: Contact)
 
