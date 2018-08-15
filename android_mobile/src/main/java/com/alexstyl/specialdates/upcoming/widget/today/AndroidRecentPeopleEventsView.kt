@@ -27,7 +27,7 @@ class AndroidRecentPeopleEventsView(private val context: Context,
 
     override fun onNextDateLoaded(events: ContactEventsOnADate) {
         val eventDate = events.date
-        val date = Date.on(eventDate.dayOfMonth, eventDate.month, Date.today().year)
+        val date = dateOn(eventDate.dayOfMonth, eventDate.month, todaysDate().year)
         val intent = HomeActivity.getStartIntent(context)
         intent.data = Uri.parse(date.hashCode().toString())
 
@@ -43,7 +43,7 @@ class AndroidRecentPeopleEventsView(private val context: Context,
         val selectedTextColor = context.resources.getColor(selectedVariant.textColor)
 
         val calculator = WidgetColorCalculator(selectedTextColor)
-        val finalHeaderColor = calculator.getColor(Date.today(), date)
+        val finalHeaderColor = calculator.getColor(todaysDate(), date)
         val avatarSizeInPx = context.resources.getDimensionPixelSize(R.dimen.widget_avatar_size)
         for (appWidgetId in appWidgetIds) {
             // Get the layout for the App Widget and attach an on-click listener

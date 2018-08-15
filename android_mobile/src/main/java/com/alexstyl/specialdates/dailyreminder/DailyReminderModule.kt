@@ -36,7 +36,7 @@ class DailyReminderModule {
 
     @Provides
     fun factory(strings: Strings, colors: Colors): DailyReminderViewModelFactory {
-        return AndroidDailyReminderViewModelFactory(strings, Date.today(), colors)
+        return AndroidDailyReminderViewModelFactory(strings, todaysDate(), colors)
     }
 
     @Provides

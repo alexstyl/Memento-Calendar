@@ -11,7 +11,7 @@ class DailyReminderJob(private val presenter: DailyReminderPresenter,
         val date = if (extras.containsDate()) {
             extras.getDate()
         } else {
-            Date.today()
+            todaysDate()
         }
 
         val view = NotificationDailyReminderView(notifier)

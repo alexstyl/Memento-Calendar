@@ -19,7 +19,7 @@ import java.net.URI
 class PersonInfoViewModelFactoryTest {
 
     private val strings = JavaStrings()
-    private val toViewModel = PersonDetailsViewModelFactory(strings, AgeCalculator(Date.on(30, JULY, 2017)));
+    private val toViewModel = PersonDetailsViewModelFactory(strings, AgeCalculator(dateOn(30, JULY, 2017)));
 
     @Test
     fun whenPassingAContact_thenAlwaysReturnItsName() {
@@ -35,7 +35,7 @@ class PersonInfoViewModelFactoryTest {
 
     @Test
     fun whenPassingABirthdayWithoutYear_thenAgeAndStarSignContainsOnlyStarSign() {
-        val dateOfBirth = Date.on(1, JANUARY)
+        val dateOfBirth = dateOn(1, JANUARY)
         val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"))
 
         var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
@@ -44,7 +44,7 @@ class PersonInfoViewModelFactoryTest {
 
     @Test
     fun whenPassingABirthdayWithYear_thenAgeAndStarSignContainsBothAgeAndStarSign() {
-        val dateOfBirth = Date.on(1, JANUARY, 1990)
+        val dateOfBirth = dateOn(1, JANUARY, 1990)
         val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"))
 
         var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)

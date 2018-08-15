@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
+
 final class NamedayJSONParser {
 
     private NamedayJSONParser() {
@@ -60,6 +62,6 @@ final class NamedayJSONParser {
         }
         int dayOfMonth = Integer.parseInt(date.substring(0, slashIndex));
         @MonthInt int month = Integer.parseInt(date.substring(slashIndex + 1));
-        return Date.Companion.on(dayOfMonth, month);
+        return dateOn(dayOfMonth, month, null);
     }
 }

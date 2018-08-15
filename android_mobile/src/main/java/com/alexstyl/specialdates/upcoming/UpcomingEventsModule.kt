@@ -37,7 +37,7 @@ class UpcomingEventsModule {
                                eventsProvider: PeopleEventsProvider,
                                bankHolidaysUserSettings: BankHolidaysUserSettings,
                                greekBankHolidaysCalculator: GreekBankHolidaysCalculator): UpcomingEventsProvider {
-        val date = Date.today()
+        val date = todaysDate()
         return CompositeUpcomingEventsProvider(
                 eventsProvider,
                 namedayUserSettings,
@@ -64,7 +64,7 @@ class UpcomingEventsModule {
 
     @Provides
     fun presenter(permissionsChecker: MementoPermissions, provider: UpcomingEventsProvider): UpcomingEventsPresenter {
-        val today = Date.today()
+        val today = todaysDate()
         return UpcomingEventsPresenter(
                 today,
                 permissionsChecker,

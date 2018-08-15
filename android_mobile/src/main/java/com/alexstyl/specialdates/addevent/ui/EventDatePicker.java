@@ -127,9 +127,9 @@ public class EventDatePicker extends LinearLayout {
         int month = getMonth();
         if (isDisplayingYear()) {
             int year = getYear();
-            return Date.Companion.on(dayOfMonth, month, year);
+            return dateOn(dayOfMonth, month, year);
         } else {
-            return Date.Companion.on(dayOfMonth, month);
+            return dateOn(dayOfMonth, month);
         }
     }
 
@@ -163,9 +163,9 @@ public class EventDatePicker extends LinearLayout {
     private void updateMaximumDaysInCurrentMonth() {
         int maxDays;
         if (isDisplayingYear()){
-            maxDays = Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth(), getYear()).getDaysInCurrentMonth();
+            maxDays = dateOn(FIRST_DAY_OF_MONTH, getMonth(), getYear()).getDaysInCurrentMonth();
         } else {
-            maxDays = Date.Companion.on(FIRST_DAY_OF_MONTH, getMonth()).getDaysInCurrentMonth();
+            maxDays = dateOn(FIRST_DAY_OF_MONTH, getMonth()).getDaysInCurrentMonth();
         }
 
         dayPicker.setMaxValue(maxDays);

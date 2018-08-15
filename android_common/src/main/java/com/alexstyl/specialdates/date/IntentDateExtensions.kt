@@ -17,7 +17,7 @@ fun Intent.getDateExtraOrThrow(): Date {
     val dayOfMonth = getExtraOrThrow(this, EXTRA_DAY_OF_MONTH)
     @MonthInt val month = getExtraOrThrow(this, EXTRA_MONTH)
     val year = getExtraOrThrow(this, EXTRA_YEAR)
-    return Date.on(dayOfMonth, month, year)
+    return dateOn(dayOfMonth, month, year)
 }
 
 private fun getExtraOrThrow(intent: Intent, extra: String): Int {

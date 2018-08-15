@@ -76,7 +76,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
 
     private fun namedays(date: Date): Observable<Optional<NamedaysNotificationViewModel>> = Observable.fromCallable {
         if (namedayPreferences.isEnabled) {
-            val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(namedayPreferences.selectedLanguage, date.year)
+            val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(namedayPreferences.selectedLanguage, date.year!!)
             namedayCalendar.getAllNamedaysOn(date)
         } else {
             NoNamesInADate(date)

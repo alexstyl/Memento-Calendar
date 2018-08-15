@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.date
 
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import org.joda.time.format.DateTimeFormat
-import java.util.Locale
+import java.util.*
 
 class DateParser(private val errorTracker: CrashAndErrorTracker) {
 
@@ -31,9 +31,9 @@ class DateParser(private val errorTracker: CrashAndErrorTracker) {
                     val year = parsedDate.year
 
                     return if (year == Months.NO_YEAR || removeYear) {
-                        Date.on(dayOfMonth, month)
+                        dateOn(dayOfMonth, month)
                     } else {
-                        Date.on(dayOfMonth, month, year)
+                        dateOn(dayOfMonth, month, year)
                     }
 
                 } catch (e: IllegalArgumentException) {

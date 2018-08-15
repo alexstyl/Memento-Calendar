@@ -52,15 +52,15 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
         addPreferencesFromResource(R.xml.preference_debug_dailyreminder)
 
         onPreferenceClick(R.string.key_debug_daily_reminder_trigger) {
-            triggerDailyReminderOn(Date.today())
+            triggerDailyReminderOn(todaysDate())
         }
 
         onPreferenceClick(R.string.key_debug_daily_reminder_trigger_on_date) {
-            val today = Date.today()
+            val today = todaysDate()
             val datePickerDialog = DatePickerDialog(
                     activity!!, DatePickerDialog.OnDateSetListener { _, year, zeroIndexedMonth, dayOfMonth ->
                 val month = zeroIndexedMonth + 1
-                triggerDailyReminderOn(Date.on(dayOfMonth, month, year))
+                triggerDailyReminderOn(dateOn(dayOfMonth, month, year))
             },
                     today.year, today.month - 1, today.dayOfMonth
             )
@@ -69,16 +69,16 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
 
         onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_one) {
             notifyForContacts(arrayListOf(
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Peter".toDisplayName(), "content://com.android.contacts/contacts/123", ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY)
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(123L, "Peter".toDisplayName(), "content://com.android.contacts/contacts/123", ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY)
             ))
         }
 
         onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_many) {
             notifyForContacts(arrayListOf(
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(336L, "Peter".toDisplayName(), "content://com.android.contacts/contacts/336", ContactSource.SOURCE_DEVICE), StandardEventType.NAMEDAY),
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(123L, "Alex".toDisplayName(),  "content://com.android.contacts/contacts/123", ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY),
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(),  "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
-                    contactEventOn(Date.today().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(),  "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.OTHER)
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(336L, "Peter".toDisplayName(), "content://com.android.contacts/contacts/336", ContactSource.SOURCE_DEVICE), StandardEventType.NAMEDAY),
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(123L, "Alex".toDisplayName(),  "content://com.android.contacts/contacts/123", ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY),
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(),  "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(),  "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.OTHER)
             ))
         }
 
@@ -171,10 +171,10 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
         )
     }
 
-    private fun bankholidayNotification() = Optional(dailyReminderViewModelFactory.viewModelFor(BankHoliday("Test Bank Holiday", Date.today())))
+    private fun bankholidayNotification() = Optional(dailyReminderViewModelFactory.viewModelFor(BankHoliday("Test Bank Holiday", todaysDate())))
 
     private fun namedaysNotifications(names: ArrayList<String>): Optional<NamedaysNotificationViewModel> =
-            Optional(dailyReminderViewModelFactory.viewModelFor(ImmutableNamesInADate(Date.today(), names)))
+            Optional(dailyReminderViewModelFactory.viewModelFor(ImmutableNamesInADate(todaysDate(), names)))
 
     private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(Optional.absent(), standardEventType,
             date, contact)

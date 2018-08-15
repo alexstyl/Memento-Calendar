@@ -193,7 +193,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
     override fun onStart() {
         super.onStart()
 
-        val title = labelCreator.createWithYearPreferred(Date.today())
+        val title = labelCreator.createWithYearPreferred(todaysDate())
         previewLayout.setTitle(title)
         previewLayout.setSubtitle(R.string.demo_contact_name)
 

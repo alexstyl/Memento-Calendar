@@ -19,7 +19,7 @@ internal class SearchNavigator(private val analytics: Analytics) {
     }
 
     fun toNamedays(date: Date, activity: Activity) {
-        val currentYearDate = Date.on(date.dayOfMonth, date.month, Date.CURRENT_YEAR)
+        val currentYearDate = dateOn(date.dayOfMonth, date.month, Date.CURRENT_YEAR)
         val intent = NamedaysOnADayActivity.getStartIntent(activity, currentYearDate)
         activity.startActivity(intent)
     }

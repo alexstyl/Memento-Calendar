@@ -151,7 +151,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                         }
                     }
 
-    private fun Date.withYear(year: Int): Date = Date.on(this.dayOfMonth, this.month, year)
+    private fun Date.withYear(year: Int): Date = dateOn(this.dayOfMonth, this.month, year)
 
     private fun SQLiteDatabase.queryFirstEventOnOrAfter(date: Date): Cursor =
             query(
@@ -234,7 +234,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
 
         private fun secondHalfOf(timeDuration: TimePeriod): TimePeriod {
             return TimePeriod.between(
-                    Date.startOfYear(timeDuration.endingDate.year),
+                    startOfYear(timeDuration.endingDate.year),
                     timeDuration.endingDate
             )
         }

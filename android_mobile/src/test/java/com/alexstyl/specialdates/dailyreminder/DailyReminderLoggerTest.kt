@@ -27,14 +27,14 @@ class DailyReminderLoggerTest {
 
     @Test
     fun noEvents() {
-        val lineOf = logger.lineOf(Date.on(20, 2, 1990), emptyModel())
+        val lineOf = logger.lineOf(dateOn(20, 2, 1990), emptyModel())
         assertThat(lineOf).isEqualTo("February 20 1990  –  Bank Holiday: None\nNamedays: None\nContacts: None")
     }
 
     @Test
     fun justContacts() {
         val viewModel = summaryModelOf("Alex Styl".asContact())
-        val lineOf = logger.lineOf(Date.on(20, 2, 1990), viewModel)
+        val lineOf = logger.lineOf(dateOn(20, 2, 1990), viewModel)
         assertThat(lineOf).isEqualTo("February 20 1990  –  Bank Holiday: None\nNamedays: None\nContacts: Alex Styl")
     }
 

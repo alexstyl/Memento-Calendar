@@ -12,6 +12,8 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
+
 public final class GreekNamedays {
 
     private final OrthodoxEasterCalculator easterCalculator;
@@ -55,7 +57,7 @@ public final class GreekNamedays {
     }
 
     public List<String> getNames() {
-        int year = Date.Companion.today().getYear();
+        int year = todaysDate().getYear();
         refreshNamedaysIfNeeded(year);
         return namedays.getNames();
     }

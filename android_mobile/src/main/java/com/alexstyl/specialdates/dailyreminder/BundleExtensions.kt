@@ -13,7 +13,7 @@ fun PersistableBundleCompat.getDate(): Date {
     val month = this.getInt(EXTRA_MONTH, -1)
     val year = this.getInt(EXTRA_YEAR, -1)
     assertValues(dayOfMonth, month, year)
-    return Date.on(dayOfMonth, month, year)
+    return dateOn(dayOfMonth, month, year)
 }
 
 private fun assertValues(dayOfMonth: Int, month: Int, year: Int) {

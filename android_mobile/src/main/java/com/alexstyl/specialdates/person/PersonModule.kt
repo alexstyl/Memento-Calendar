@@ -42,7 +42,7 @@ class PersonModule {
 
     @Provides
     fun ageCalculator(): AgeCalculator {
-        return AgeCalculator(Date.today())
+        return AgeCalculator(todaysDate())
     }
 
     @Provides

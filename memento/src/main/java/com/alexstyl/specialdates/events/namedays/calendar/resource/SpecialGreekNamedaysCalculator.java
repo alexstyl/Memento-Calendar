@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
+
 class SpecialGreekNamedaysCalculator {
 
     private static final DateComparator COMPARATOR = DateComparator.INSTANCE;
@@ -98,12 +101,12 @@ class SpecialGreekNamedaysCalculator {
 
     @SuppressWarnings({"MagicNumber"})
     private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
-        int year = Date.Companion.today().getYear();
-        Date date = Date.Companion.on(23, Months.APRIL, year);
+        int year = todaysDate().getYear();
+        Date date = dateOn(23, Months.APRIL, year);
         if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2);
         } else {
-            date = Date.Companion.on(25, Months.APRIL, year);
+            date = dateOn(25, Months.APRIL, year);
         }
 
         for (String variation : MARKOS_ALTS) {
@@ -128,7 +131,7 @@ class SpecialGreekNamedaysCalculator {
 
     @SuppressWarnings({"MagicNumber"})
     private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
-        Date date = Date.Companion.on(23, Months.APRIL, Date.Companion.today().getYear());
+        Date date = dateOn(23, Months.APRIL, todaysDate().getYear());
 
         Date actualDate;
         if (COMPARATOR.compare(easter, date) > 0) {
@@ -161,7 +164,7 @@ class SpecialGreekNamedaysCalculator {
 
     private static Date createDayDateFrom(Calendar calendar) {
         @MonthInt int month = calendar.get(Calendar.MONTH);
-        return Date.Companion.on(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
+        return dateOn(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
     }
 
 }
