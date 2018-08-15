@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.events.peopleevents;
 import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.date.ContactEvent;
 import com.alexstyl.specialdates.date.Date;
-import com.alexstyl.specialdates.date.Months;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 
 import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
+import static com.alexstyl.specialdates.date.Months.APRIL;
 import static com.alexstyl.specialdates.date.Months.FEBRUARY;
 import static com.alexstyl.specialdates.date.Months.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -62,8 +62,8 @@ public class ClosestEventsComparatorTest {
 
     @Test
     public void sameDate_returnsZero() {
-        Optional<ContactEventsOnADate> optionalA = anOptional(dateOn(5, Months.APRIL, 2016));
-        Optional<ContactEventsOnADate> optionalB = anOptional(dateOn(5, Months.APRIL, 2016));
+        Optional<ContactEventsOnADate> optionalA = anOptional(dateOn(5, APRIL, 2016));
+        Optional<ContactEventsOnADate> optionalB = anOptional(dateOn(5, APRIL, 2016));
 
         assertThat(comparator.compare(optionalA, optionalB)).isZero();
     }

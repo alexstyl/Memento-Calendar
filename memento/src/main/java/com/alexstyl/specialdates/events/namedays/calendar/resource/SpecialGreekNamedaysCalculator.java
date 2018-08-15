@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
-import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.events.namedays.NamedayBundle;
 import com.alexstyl.specialdates.events.namedays.NamedaysList;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
 import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
+import static com.alexstyl.specialdates.date.Months.APRIL;
 
 class SpecialGreekNamedaysCalculator {
 
@@ -102,11 +102,11 @@ class SpecialGreekNamedaysCalculator {
     @SuppressWarnings({"MagicNumber"})
     private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
         int year = todaysDate().getYear();
-        Date date = dateOn(23, Months.APRIL, year);
+        Date date = dateOn(23, APRIL, year);
         if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2);
         } else {
-            date = dateOn(25, Months.APRIL, year);
+            date = dateOn(25, APRIL, year);
         }
 
         for (String variation : MARKOS_ALTS) {
@@ -131,7 +131,7 @@ class SpecialGreekNamedaysCalculator {
 
     @SuppressWarnings({"MagicNumber"})
     private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
-        Date date = dateOn(23, Months.APRIL, todaysDate().getYear());
+        Date date = dateOn(23, APRIL, todaysDate().getYear());
 
         Date actualDate;
         if (COMPARATOR.compare(easter, date) > 0) {
