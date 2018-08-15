@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
 import static com.alexstyl.specialdates.date.Months.*;
 
 public class GreekBankHolidaysCalculator {
@@ -21,16 +22,16 @@ public class GreekBankHolidaysCalculator {
         Date easter = easterCalculator.calculateEasterForYear(year);
 
         List<BankHoliday> bankHolidays = new ArrayList<>();
-        bankHolidays.add(new BankHoliday("Πρωτοχρονιά", Date.Companion.on(1, JANUARY, year)));
-        bankHolidays.add(new BankHoliday("Χριστούγεννα", Date.Companion.on(25, DECEMBER, year)));
-        bankHolidays.add(new BankHoliday("Θεοφάνεια", Date.Companion.on(6, JANUARY, year)));
+        bankHolidays.add(new BankHoliday("Πρωτοχρονιά", dateOn(1, JANUARY, year)));
+        bankHolidays.add(new BankHoliday("Χριστούγεννα", dateOn(25, DECEMBER, year)));
+        bankHolidays.add(new BankHoliday("Θεοφάνεια", dateOn(6, JANUARY, year)));
         bankHolidays.add(new BankHoliday("Μεγάλη Παρασκευή", easter.minusDay(2)));
         bankHolidays.add(new BankHoliday("Πάσχα", easter));
         bankHolidays.add(new BankHoliday("2α Διακαινησίμου ", easter.addDay(1)));
-        bankHolidays.add(new BankHoliday("25η Μαρτίου (επανάσταση του 1821)", Date.Companion.on(25, MARCH, year)));
-        bankHolidays.add(new BankHoliday("Κοίμηση της Θεοτόκου (Δεκαπενταύγουστος)", Date.Companion.on(15, AUGUST, year)));
-        bankHolidays.add(new BankHoliday("26η Οκτωβρίου (εορτή Αγ.Δημητρίου - πολιούχου Θεσσαλονίκης)", Date.Companion.on(26, OCTOBER, year)));
-        bankHolidays.add(new BankHoliday("28η Οκτωβρίου (επέτειος του ΟΧΙ)", Date.Companion.on(28, OCTOBER, year)));
+        bankHolidays.add(new BankHoliday("25η Μαρτίου (επανάσταση του 1821)", dateOn(25, MARCH, year)));
+        bankHolidays.add(new BankHoliday("Κοίμηση της Θεοτόκου (Δεκαπενταύγουστος)", dateOn(15, AUGUST, year)));
+        bankHolidays.add(new BankHoliday("26η Οκτωβρίου (εορτή Αγ.Δημητρίου - πολιούχου Θεσσαλονίκης)", dateOn(26, OCTOBER, year)));
+        bankHolidays.add(new BankHoliday("28η Οκτωβρίου (επέτειος του ΟΧΙ)", dateOn(28, OCTOBER, year)));
         bankHolidays.add(new BankHoliday("Τσικνοπέμπτη", easter.minusDay(59)));
         bankHolidays.add(new BankHoliday("Καθαρά Δευτέρα", easter.minusDay(48)));
         bankHolidays.add(new BankHoliday("Κυριακή των Βαίων", easter.minusDay(7)));

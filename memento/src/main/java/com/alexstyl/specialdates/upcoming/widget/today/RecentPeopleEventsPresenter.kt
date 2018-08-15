@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.upcoming.widget.today
 
 import com.alexstyl.specialdates.Optional
-import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Observable
@@ -19,7 +19,7 @@ class RecentPeopleEventsPresenter(private val eventsProvider: PeopleEventsProvid
         if (permissions.canReadContacts()) {
             disposable =
                     Observable.fromCallable {
-                        val today = Date.today()
+                        val today = todaysDate()
                         val date = eventsProvider.findClosestEventDateOnOrAfter(today)
                         if (date != null) {
                             val contactEventsOnADate = eventsProvider.fetchEventsOn(date)

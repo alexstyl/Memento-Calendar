@@ -9,8 +9,8 @@ import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsPersister
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.theming.ThemingPreferences
@@ -42,7 +42,7 @@ class PersonModule {
 
     @Provides
     fun ageCalculator(): AgeCalculator {
-        return AgeCalculator(Date.today())
+        return AgeCalculator(todaysDate())
     }
 
     @Provides
