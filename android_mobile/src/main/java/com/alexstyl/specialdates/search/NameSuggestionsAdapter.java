@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.search;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -7,7 +8,6 @@ import android.widget.Filterable;
 
 import com.alexstyl.specialdates.SoundWordComparator;
 import com.alexstyl.specialdates.WordComparator;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar;
@@ -15,6 +15,8 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
 
 final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameViewHolder> implements Filterable {
 
@@ -32,7 +34,7 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameView
         } else {
             compatator = new CaseInsensitiveComparator();
         }
-        int year = Date.Companion.today().getYear();
+        int year = todaysDate().getYear();
         NamedayCalendar namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, year);
         List<String> names = namedayCalendar.getAllNames();
         return new NameSuggestionsAdapter(new NameFilter(names, compatator), onNameSelectedListener);
@@ -45,7 +47,7 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameView
     }
 
     @Override
-    public SuggstedNameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SuggstedNameViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return SuggstedNameViewHolder.createFor(parent);
     }
 

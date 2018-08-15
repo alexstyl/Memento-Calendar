@@ -22,6 +22,8 @@ import com.alexstyl.specialdates.dailyreminder.putDate
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.calendar.ImmutableNamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
@@ -62,7 +64,7 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
                 val month = zeroIndexedMonth + 1
                 triggerDailyReminderOn(dateOn(dayOfMonth, month, year))
             },
-                    today.year, today.month - 1, today.dayOfMonth
+                    today.year!!, today.month - 1, today.dayOfMonth
             )
             datePickerDialog.show()
         }
@@ -76,9 +78,9 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
         onPreferenceClick(R.string.key_debug_trigger_daily_reminder_notification_many) {
             notifyForContacts(arrayListOf(
                     contactEventOn(todaysDate().minusDay(365 * 10), Contact(336L, "Peter".toDisplayName(), "content://com.android.contacts/contacts/336", ContactSource.SOURCE_DEVICE), StandardEventType.NAMEDAY),
-                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(123L, "Alex".toDisplayName(),  "content://com.android.contacts/contacts/123", ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY),
-                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(),  "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
-                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(),  "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.OTHER)
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(123L, "Alex".toDisplayName(), "content://com.android.contacts/contacts/123", ContactSource.SOURCE_DEVICE), StandardEventType.BIRTHDAY),
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(), "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.ANNIVERSARY),
+                    contactEventOn(todaysDate().minusDay(365 * 10), Contact(108L, "Anna".toDisplayName(), "content://com.android.contacts/contacts/108", ContactSource.SOURCE_DEVICE), StandardEventType.OTHER)
             ))
         }
 

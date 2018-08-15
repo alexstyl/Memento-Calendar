@@ -5,15 +5,14 @@ import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.date.ContactEvent
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.date.Months.JULY
+import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.runners.MockitoJUnitRunner
-import java.net.URI
 
 @RunWith(MockitoJUnitRunner::class)
 class PersonInfoViewModelFactoryTest {
@@ -53,7 +52,7 @@ class PersonInfoViewModelFactoryTest {
 
 
     fun aContactCalled(peter: String): Contact {
-        return Contact(-1, DisplayName.from(peter), URI.create("https://www.alexstyl.com/image.jpg"), 1)
+        return Contact(-1, DisplayName.from(peter), "https://www.alexstyl.com/image.jpg", 1)
     }
 
 }

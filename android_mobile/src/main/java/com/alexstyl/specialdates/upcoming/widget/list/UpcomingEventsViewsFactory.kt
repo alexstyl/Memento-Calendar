@@ -5,8 +5,8 @@ import android.content.res.Resources
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType

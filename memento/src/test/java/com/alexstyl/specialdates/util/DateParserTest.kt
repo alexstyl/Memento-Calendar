@@ -58,6 +58,6 @@ class DateParserTest {
 
     @Test(expected = NullPointerException::class)
     fun throwsExceptionWhenNullIsPassed() {
-        dateParser.parse(null!!)
+        dateParser.parse(null)
     }
 }

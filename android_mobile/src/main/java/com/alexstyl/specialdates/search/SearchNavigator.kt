@@ -6,6 +6,7 @@ import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity
 import com.alexstyl.specialdates.person.PersonActivity
