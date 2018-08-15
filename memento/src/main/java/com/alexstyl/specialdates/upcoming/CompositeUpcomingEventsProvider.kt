@@ -26,21 +26,22 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
             builder.withContactEvents(contactEvents)
         }
 
-//        if (shouldLoadBankHolidays()) {
-//            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
-//            builder.withBankHolidays(bankHolidays)
-//        }
+        if (shouldLoadBankHolidays()) {
+            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
+            builder.withBankHolidays(bankHolidays)
+        }
 
-//        if (shouldLoadNamedays()) {
-//            val namedays = measure("calculate namedays") { calculateNamedaysBetween(timePeriod) }
-//            builder.withNamedays(namedays)
-//        }
+        if (shouldLoadNamedays()) {
+            val namedays = calculateNamedaysBetween(timePeriod)
+            builder.withNamedays(namedays)
+        }
         return builder.build()
     }
 
     private fun calculateNamedaysBetween(timeDuration: TimePeriod): List<NamesInADate> {
+        // TODO break start to end year
         val selectedLanguage = namedayPreferences.selectedLanguage
-        val namedayCalendar = measure("namedayCalendar") { namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year) }
+        val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year)
 
         var indexDate = timeDuration.startingDate
         val toDate = timeDuration.endingDate
@@ -51,7 +52,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
             if (allNamedayOn.names.isNotEmpty()) {
                 namedays.add(allNamedayOn)
             }
-            indexDate = indexDate.addDay(1)
+            indexDate += 1
         }
         return namedays
     }

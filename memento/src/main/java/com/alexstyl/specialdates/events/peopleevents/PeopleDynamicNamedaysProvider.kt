@@ -9,7 +9,6 @@ import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import com.alexstyl.specialdates.upcoming.measure
 
 open class PeopleDynamicNamedaysProvider(
         private val settings: NamedayUserSettings,
@@ -28,21 +27,23 @@ open class PeopleDynamicNamedaysProvider(
         }
         val namedayEvents = mutableListOf<ContactEvent>()
         val calendar = namedayCalendarProvider.loadNamedayCalendarForLocale(settings.selectedLanguage, Date.CURRENT_YEAR)
-        contactsProvider.allContacts
-                .forEach { contact ->
-                    // takes 400 - 900ms
-                    for (firstName in contact.displayName.firstNames) {
-                        measure("special namedays of $firstName") {
-                            calendar.getSpecialNamedaysFor(firstName)
-                        }.dates.forEach { date ->
-                            if (timePeriod.containsDate(date)) {
-                                val nameday = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
-                                namedayEvents.add(nameday)
-                            }
-                        }
 
+        contactsProvider
+                .allContacts
+                .forEach { contact ->
+                    for (firstName in contact.displayName.firstNames) {
+                        calendar
+                                .getSpecialNamedaysFor(firstName)
+                                .dates
+                                .forEach { date ->
+                                    if (timePeriod.containsDate(date)) {
+                                        val nameday = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
+                                        namedayEvents.add(nameday)
+                                    }
+                                }
                     }
                 }
+
         return namedayEvents.toList()
     }
 

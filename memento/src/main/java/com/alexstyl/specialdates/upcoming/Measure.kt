@@ -7,8 +7,8 @@ public inline fun <T> measure(tag: String, function: () -> T): T {
     return result
 }
 
-public inline fun <T> measure(tag: String, boolean: Boolean, function: () -> T): T =
-        if (boolean) {
+public inline fun <T> measure(tag: String, print: Boolean, function: () -> T): T =
+        if (print) {
             measure(tag, function)
         } else {
             function()

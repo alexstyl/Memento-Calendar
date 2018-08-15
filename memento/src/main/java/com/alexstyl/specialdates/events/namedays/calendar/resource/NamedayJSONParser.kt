@@ -18,7 +18,6 @@ object NamedayJSONParser {
 
     private fun createNamedaysFor(json: NamedayJSON, namesToDate: Node): StaticNamedays {
         val dateToNames = MapNamedaysList()
-
         for (i in 1 until json.namedaysJSON.length()) {
             val nameday = json.namedaysJSON[i] as JSONObject
 
@@ -31,8 +30,7 @@ object NamedayJSONParser {
                 dateToNames.addNameday(date, name)
             }
         }
-
-        return StaticNamedays(namesToDate, dateToNames)
+        return StaticNamedays(namesToDate, dateToNames) // TODO make MapNamedaysList Immutable
     }
 
     private fun String.toDate(): Date {

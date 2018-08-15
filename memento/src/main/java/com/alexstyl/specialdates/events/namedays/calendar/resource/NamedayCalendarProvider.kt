@@ -4,7 +4,6 @@ import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.namedays.StaticNamedays
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator
-import com.alexstyl.specialdates.upcoming.measure
 import org.json.JSONException
 
 // TODO marked open so that we can compile older Java code.
@@ -51,12 +50,10 @@ open class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider
     }
 
     private fun createNamedaysFor(locale: NamedayLocale, namedayJSON: NamedayJSON): StaticNamedays {
-        return measure("namedays sounds", false) {
-            if (locale == NamedayLocale.GREEK) {
-                NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON)
-            } else {
-                NamedayJSONParser.getNamedaysFrom(namedayJSON)
-            }
+        return if (locale == NamedayLocale.GREEK) {
+            NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON)
+        } else {
+            NamedayJSONParser.getNamedaysFrom(namedayJSON)
         }
     }
 

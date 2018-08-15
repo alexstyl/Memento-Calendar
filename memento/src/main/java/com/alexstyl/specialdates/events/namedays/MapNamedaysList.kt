@@ -12,15 +12,14 @@ class MapNamedaysList : NamedaysList {
     private val _names_YEAR = TreeSet<String>(Collator.getInstance())
     private val namedays_YEAR = mutableMapOf<Date, MutableNamesInADate>()
 
-    override fun getNamedaysFor(key: Date): NamesInADate {
-        6 * 866
-        if (namedaysNO_YEAR[key] != null) {
-            return namedaysNO_YEAR[key]!!
+    override fun getNamedaysFor(date: Date): NamesInADate {
+        if (namedaysNO_YEAR[date] != null) {
+            return namedaysNO_YEAR[date]!!
         }
-        if (namedays_YEAR[key] != null) {
-            return namedays_YEAR[key]!!
+        if (namedays_YEAR[date] != null) {
+            return namedays_YEAR[date]!!
         }
-        return NoNamesInADate(key)
+        return NoNamesInADate(date)
     }
 
     override fun addNameday(date: Date, name: String) {
@@ -41,7 +40,6 @@ class MapNamedaysList : NamedaysList {
     }
 
     private fun addNamedayYEAR(key: Date, name: String) {
-//        val key = date.withoutYear()
         if (!namedays_YEAR.containsKey(key)) {
             namedays_YEAR[key] = ArrayNamesInADate(key, ArrayList())
         }
@@ -52,12 +50,4 @@ class MapNamedaysList : NamedaysList {
 
     override val names
         get() = (_names_NOYEAR + _names_YEAR).toMutableList()
-
-    private fun Date.withoutYear(): Date {
-        if (this.hasNoYear()) {
-            return this
-        } else {
-            return Date.on(this.dayOfMonth, this.month)
-        }
-    }
 }

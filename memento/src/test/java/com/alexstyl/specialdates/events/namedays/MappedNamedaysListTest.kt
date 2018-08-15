@@ -6,7 +6,7 @@ import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
-class BoringNamedaysListTest {
+class MappedNamedaysListTest {
 
     @Before
     fun setUp() {
@@ -54,7 +54,7 @@ class BoringNamedaysListTest {
         private const val FIXED_YEAR = 2015
         private const val FIXED_MONTH = Months.JANUARY
 
-        private val namedays = BoringNamedaysList()
+        private val namedays = MapNamedaysList()
 
         private fun populateNamedays() {
             namedays.addNameday(dateOn(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
