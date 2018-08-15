@@ -21,8 +21,8 @@ private fun assertValues(dayOfMonth: Int, month: Int, year: Int) {
     if (dayOfMonth == -1 || month == -1 || year == -1) {
         throw IllegalArgumentException(
                 "Invalid date format. " +
-                        "Use ${PersistableBundleCompat::javaClass.name}.addDate()" +
-                        " method to pass a Date into the bundle")
+                        "Use ${PersistableBundleCompat::javaClass.name}.putDate() " +
+                        "method to pass a Date into the bundle")
     }
 }
 
