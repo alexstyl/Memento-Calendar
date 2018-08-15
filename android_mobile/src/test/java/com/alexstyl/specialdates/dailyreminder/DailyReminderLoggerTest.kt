@@ -7,12 +7,11 @@ import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
 import com.alexstyl.specialdates.dailyreminder.log.LoggedEventsRepository
-import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.dateOn
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
-import java.net.URI
 
 class DailyReminderLoggerTest {
 
@@ -56,5 +55,5 @@ class DailyReminderLoggerTest {
 }
 
 private fun String.asContact(): Contact {
-    return Contact(2, DisplayName.from("Alex Styl"), URI.create(""), ContactSource.SOURCE_DEVICE)
+    return Contact(2, DisplayName.from("Alex Styl"), "", ContactSource.SOURCE_DEVICE)
 }
