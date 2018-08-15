@@ -17,28 +17,30 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
                                       private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory) : UpcomingEventsProvider {
 
     override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
-        val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
-        val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
+        val builder = UpcomingRowViewModelsBuilder(
                 timePeriod,
                 upcomingRowViewModelFactory
         )
-                .withContactEvents(contactEvents)
-
-        if (shouldLoadBankHolidays()) {
-            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
-            upcomingRowViewModelsBuilder.withBankHolidays(bankHolidays)
+        measure("contact events") {
+            val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
+            builder.withContactEvents(contactEvents)
         }
 
-        if (shouldLoadNamedays()) {
-            val namedays = calculateNamedaysBetween(timePeriod)
-            upcomingRowViewModelsBuilder.withNamedays(namedays)
-        }
-        return upcomingRowViewModelsBuilder.build()
+//        if (shouldLoadBankHolidays()) {
+//            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
+//            builder.withBankHolidays(bankHolidays)
+//        }
+
+//        if (shouldLoadNamedays()) {
+//            val namedays = measure("calculate namedays") { calculateNamedaysBetween(timePeriod) }
+//            builder.withNamedays(namedays)
+//        }
+        return builder.build()
     }
 
     private fun calculateNamedaysBetween(timeDuration: TimePeriod): List<NamesInADate> {
         val selectedLanguage = namedayPreferences.selectedLanguage
-        val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year)
+        val namedayCalendar = measure("namedayCalendar") { namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year) }
 
         var indexDate = timeDuration.startingDate
         val toDate = timeDuration.endingDate

@@ -1,26 +1,40 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource
 
-import com.alexstyl.specialdates.events.namedays.NamedayBundle
 import com.alexstyl.specialdates.events.namedays.NamedayLocale
+import com.alexstyl.specialdates.events.namedays.StaticNamedays
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
-
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator
+import com.alexstyl.specialdates.upcoming.measure
 import org.json.JSONException
 
-class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider, private val factory: SpecialNamedaysHandlerFactory) {
+// TODO marked open so that we can compile older Java code.
+open class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider,
+                                   private val orthodoxEasterCalculator: OrthodoxEasterCalculator,
+                                   private val romanianEasterCalculator: RomanianEasterSpecialCalculator) {
 
-    fun loadNamedayCalendarForLocale(locale: NamedayLocale, year: Int): NamedayCalendar {
+    open fun loadNamedayCalendarForLocale(locale: NamedayLocale, year: Int): NamedayCalendar {
         if (hasRequestedSameCalendar(locale, year)) {
             return cachedCalendar!!
         }
+
         val namedayJSON = loadNamedayJSONFor(locale)
-        val specialCaseHandler = getSpecialnamedaysHandler(namedayJSON)
-        val namedaysBundle = getNamedayBundle(locale, namedayJSON)
-        val namedayCalendar = NamedayCalendar(locale, namedaysBundle, specialCaseHandler, year)
+        val namedays = createNamedaysFor(locale, namedayJSON)
+        val specialNamedays = createStrategyForLocale(namedayJSON.locale, namedayJSON)
+
+        val namedayCalendar = NamedayCalendar(locale, namedays, specialNamedays, year)
 
         cachedCalendar = namedayCalendar
 
         return namedayCalendar
     }
+
+
+    private fun createStrategyForLocale(locale: NamedayLocale, namedayJSON: NamedayJSON) =
+            when (locale) {
+                NamedayLocale.GREEK -> GreekSpecialNamedays.from(namedayJSON, orthodoxEasterCalculator)
+                NamedayLocale.ROMANIAN -> RomanianSpecialNamedays.from(namedayJSON, romanianEasterCalculator)
+                else -> NoSpecialNamedays
+            }
 
     private fun hasRequestedSameCalendar(locale: NamedayLocale, year: Int): Boolean {
         return cachedCalendar != null
@@ -34,18 +48,15 @@ class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider, pri
         } catch (e: JSONException) {
             throw IllegalStateException("Could not load nameday JSON for $locale")
         }
-
     }
 
-    private fun getSpecialnamedaysHandler(namedayJSON: NamedayJSON): SpecialNamedays {
-        return factory.createStrategyForLocale(namedayJSON.locale, namedayJSON)
-    }
-
-    private fun getNamedayBundle(locale: NamedayLocale, namedayJSON: NamedayJSON): NamedayBundle {
-        return if (locale.isComparedBySound) {
-            NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON)
-        } else {
-            NamedayJSONParser.getNamedaysFrom(namedayJSON)
+    private fun createNamedaysFor(locale: NamedayLocale, namedayJSON: NamedayJSON): StaticNamedays {
+        return measure("namedays sounds", false) {
+            if (locale == NamedayLocale.GREEK) {
+                NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON)
+            } else {
+                NamedayJSONParser.getNamedaysFrom(namedayJSON)
+            }
         }
     }
 

@@ -27,7 +27,7 @@ final class NameSuggestionsAdapter extends RecyclerView.Adapter<SuggstedNameView
                                                      NamedayCalendarProvider namedayCalendarProvider) {
         NamedayLocale locale = namedayPreferences.getSelectedLanguage();
         WordComparator compatator;
-        if (locale.isComparedBySound()) {
+        if (locale == NamedayLocale.GREEK) {
             compatator = new SoundWordComparator();
         } else {
             compatator = new CaseInsensitiveComparator();

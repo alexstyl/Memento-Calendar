@@ -2,37 +2,32 @@ package com.alexstyl.specialdates.events.namedays.calendar
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
-import com.alexstyl.specialdates.events.namedays.NamedayBundle
 import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.namedays.NamesInADate
+import com.alexstyl.specialdates.events.namedays.StaticNamedays
 import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedays
 
-class NamedayCalendar(val locale: NamedayLocale,
-                      private val namedayBundle: NamedayBundle,
-                      private val specialNamedays: SpecialNamedays,
-                      val year: Int) {
+open class NamedayCalendar(val locale: NamedayLocale,
+                           private val staticNamedays: StaticNamedays,
+                           private val specialNamedays: SpecialNamedays,
+                           val year: Int) {
 
-    val allNames: List<String>
-        get() {
-            val names = namedayBundle.names
-            names.addAll(specialNamedays.allNames)
-            return names
-        }
+    open val allNames: List<String> = staticNamedays.names + specialNamedays.allNames
 
-    fun getNormalNamedaysFor(name: String): NameCelebrations {
-        return namedayBundle.getDatesFor(name)
+    open fun getNormalNamedaysFor(name: String): NameCelebrations {
+        return staticNamedays.getDatesFor(name)
     }
 
-    fun getSpecialNamedaysFor(name: String): NameCelebrations {
-        return specialNamedays.getNamedaysFor(name, year)
+    open fun getSpecialNamedaysFor(firstName: String): NameCelebrations {
+        return specialNamedays.getNamedaysFor(firstName, year)
     }
 
-    fun getAllNamedaysOn(date: Date): NamesInADate {
-        return namedayBundle.getNamedaysFor(date) + specialNamedays.getNamedayOn(date)
+    open fun getAllNamedaysOn(date: Date): NamesInADate {
+        return staticNamedays.getNamedaysFor(date) + specialNamedays.getNamedayOn(date)
     }
 
-    fun getAllNamedays(name: String): NameCelebrations {
-        val names = namedayBundle.getDatesFor(name)
+    open fun getAllNamedays(name: String): NameCelebrations {
+        val names = staticNamedays.getDatesFor(name)
         val specialNames = specialNamedays.getNamedaysFor(name, year)
 
         return names + specialNames

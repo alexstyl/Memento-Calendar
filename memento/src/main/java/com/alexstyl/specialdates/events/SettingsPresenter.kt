@@ -15,10 +15,10 @@ class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
 
 
     fun startMonitoring() {
-        subject
-                .observeOn(workScheduler)
-                .flatMap { peopleEventsUpdater.updateEvents() }
-                .subscribe()
+//        subject
+//                .flatMap { peopleEventsUpdater.updateEvents() }
+//                .subscribeOn(workScheduler)
+//                .subscribe()
     }
 
     fun stopMonitoring() {

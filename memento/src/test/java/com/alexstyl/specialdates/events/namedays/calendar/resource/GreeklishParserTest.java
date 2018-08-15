@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.NamedayBundle;
+import com.alexstyl.specialdates.events.namedays.StaticNamedays;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 
 import org.json.JSONException;
@@ -24,25 +24,25 @@ public class GreeklishParserTest {
 
     @Test
     public void alexandrosNamedayIsReturnedCorrectly() {
-        NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON);
-        NameCelebrations dates = namedayBundle.getDatesFor("Αλέξανδρος");
-        NameCelebrations datesGreeklish = namedayBundle.getDatesFor("Aleksandros");
+        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFromJSONasSounds(namedayJSON);
+        NameCelebrations dates = staticNamedays.getDatesFor("Αλέξανδρος");
+        NameCelebrations datesGreeklish = staticNamedays.getDatesFor("Aleksandros");
         assertThatContainsSamedate(dates, datesGreeklish);
     }
 
     @Test
     public void davidNamedayIsReturnedCorrectly() {
-        NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON);
-        NameCelebrations dates = namedayBundle.getDatesFor("Δαβίδ");
-        NameCelebrations datesGreeklish = namedayBundle.getDatesFor("David");
+        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFromJSONasSounds(namedayJSON);
+        NameCelebrations dates = staticNamedays.getDatesFor("Δαβίδ");
+        NameCelebrations datesGreeklish = staticNamedays.getDatesFor("David");
         assertThatContainsSamedate(dates, datesGreeklish);
     }
 
     @Test
     public void magdoulaNamedayIsReturnedCorrectly() {
-        NamedayBundle namedayBundle = NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON);
-        NameCelebrations dates = namedayBundle.getDatesFor("Αμαλία");
-        NameCelebrations datesGreeklish = namedayBundle.getDatesFor("Amalia");
+        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFromJSONasSounds(namedayJSON);
+        NameCelebrations dates = staticNamedays.getDatesFor("Αμαλία");
+        NameCelebrations datesGreeklish = staticNamedays.getDatesFor("Amalia");
         assertThatContainsSamedate(dates, datesGreeklish);
     }
 

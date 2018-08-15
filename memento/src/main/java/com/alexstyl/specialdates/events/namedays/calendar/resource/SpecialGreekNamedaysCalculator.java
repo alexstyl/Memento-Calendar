@@ -4,8 +4,8 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateComparator;
 import com.alexstyl.specialdates.date.Months;
 import com.alexstyl.specialdates.date.MonthInt;
-import com.alexstyl.specialdates.events.namedays.NamedayBundle;
-import com.alexstyl.specialdates.events.namedays.NamedaysList;
+import com.alexstyl.specialdates.events.namedays.StaticNamedays;
+import com.alexstyl.specialdates.events.namedays.BoringNamedaysList;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 
 import java.util.Arrays;
@@ -56,9 +56,9 @@ class SpecialGreekNamedaysCalculator {
         this.easternNamedays = easternNamedays;
     }
 
-    NamedayBundle calculateForEasterDate(Date easter) {
+    StaticNamedays calculateForEasterDate(Date easter) {
         Node node = new SoundNode();
-        NamedaysList namedaysList = new NamedaysList();
+        BoringNamedaysList namedaysList = new BoringNamedaysList();
 
         for (EasternNameday easternNameday : easternNamedays) {
             int daysUntilEaster = easternNameday.getDateToEaster();
@@ -70,10 +70,10 @@ class SpecialGreekNamedaysCalculator {
             }
         }
         appendSpecialScenarios(easter, node, namedaysList);
-        return new NamedayBundle(node, namedaysList);
+        return new StaticNamedays(node, namedaysList);
     }
 
-    private void appendSpecialScenarios(Date easter, Node node, NamedaysList namedaysList) {
+    private void appendSpecialScenarios(Date easter, Node node, BoringNamedaysList namedaysList) {
         addSpecialPropatorwn(node, namedaysList);
         addSpecialMarkos(node, namedaysList, easter);
         addSpecialGiwrgos(node, namedaysList, easter);
@@ -81,7 +81,7 @@ class SpecialGreekNamedaysCalculator {
     }
 
     @SuppressWarnings({"MagicNumber"})
-    private void addSpecialPropatorwn(Node node, NamedaysList namedaysList) {
+    private void addSpecialPropatorwn(Node node, BoringNamedaysList namedaysList) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, Calendar.DECEMBER);
         calendar.set(Calendar.DAY_OF_MONTH, 11);
@@ -97,7 +97,7 @@ class SpecialGreekNamedaysCalculator {
     }
 
     @SuppressWarnings({"MagicNumber"})
-    private void addSpecialMarkos(Node node, NamedaysList namedaysList, Date easter) {
+    private void addSpecialMarkos(Node node, BoringNamedaysList namedaysList, Date easter) {
         int year = Date.Companion.today().getYear();
         Date date = Date.Companion.on(23, Months.APRIL, year);
         if (COMPARATOR.compare(easter, date) > 0) {
@@ -127,7 +127,7 @@ class SpecialGreekNamedaysCalculator {
     );
 
     @SuppressWarnings({"MagicNumber"})
-    private void addSpecialGiwrgos(Node node, NamedaysList namedaysList, Date easter) {
+    private void addSpecialGiwrgos(Node node, BoringNamedaysList namedaysList, Date easter) {
         Date date = Date.Companion.on(23, Months.APRIL, Date.Companion.today().getYear());
 
         Date actualDate;
@@ -144,7 +144,7 @@ class SpecialGreekNamedaysCalculator {
     }
 
     @SuppressWarnings({"MagicNumber"})
-    private void addSpecialChloe(Node node, NamedaysList namedaysList) {
+    private void addSpecialChloe(Node node, BoringNamedaysList namedaysList) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.FEBRUARY);
         cal.set(Calendar.DAY_OF_MONTH, 13);

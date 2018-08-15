@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.date
 import com.alexstyl.specialdates.Optional
 import org.joda.time.IllegalFieldValueException
 import org.joda.time.LocalDate
-import java.util.Locale
+import java.util.*
 
 data class Date(private val localDate: LocalDate, private val yearOptional: Optional<Int>) : Comparable<Date> {
 
@@ -45,7 +45,7 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
     fun hasNoYear(): Boolean = !yearOptional.isPresent
 
     val daysInCurrentMonth: Int
-            get() = localDate.dayOfMonth().maximumValue
+        get() = localDate.dayOfMonth().maximumValue
 
     override fun compareTo(other: Date): Int {
         if (this.hasYear() && other.hasYear()) {
@@ -64,6 +64,7 @@ data class Date(private val localDate: LocalDate, private val yearOptional: Opti
         }
         return this.dayOfMonth - other.dayOfMonth
     }
+
 
     companion object {
 

@@ -25,7 +25,7 @@ public final class NamedayPreferences implements NamedayUserSettings {
     @Override
     public NamedayLocale getSelectedLanguage() {
         String lang = preferences.getString(R.string.key_nameday_lang, DEFAULT_LOCALE);
-        return NamedayLocale.from(lang);
+        return NamedayLocale.Companion.from(lang);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.events.peopleevents
 
+import anyObject
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.contact.Contacts
@@ -16,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
-import org.mockito.Matchers.any
+import org.mockito.Matchers.anyInt
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
 
@@ -39,14 +40,14 @@ class PeopleDynamicNamedaysProviderTest {
                 .forYear(YEAR)
                 .build()
 
-        given(namedayCalendarProvider.loadNamedayCalendarForLocale(any(NamedayLocale::class.java), any(Int::class.java))).willReturn(namedayCalendar)
+        given(namedayCalendarProvider.loadNamedayCalendarForLocale(anyObject(), anyInt())).willReturn(namedayCalendar)
         given(mockSettings.selectedLanguage).willReturn(LOCALE)
         given(mockSettings.isEnabled).willReturn(true)
         calculator = PeopleDynamicNamedaysProvider(mockSettings, namedayCalendarProvider,
                 ContactsProvider(mapOf(Pair(1, mockSource)))
         )
-
     }
+
 
     @Test
     fun gettingSpecialNamedaysOnSpecificDateOnlyReturnsTheEventsForThatDate() {

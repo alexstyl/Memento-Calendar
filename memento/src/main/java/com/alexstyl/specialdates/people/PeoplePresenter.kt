@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.people
 
 import com.alexstyl.specialdates.CrashAndErrorTracker
-import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Scheduler
@@ -31,7 +31,8 @@ class PeoplePresenter(
                         }
                         .observeOn(workScheduler)
                         .map { _ ->
-                            peopleEventsProvider.fetchEventsBetween(TimePeriod.aYearFromNow())
+//                            peopleEventsProvider.fetchEventsBetween(TimePeriod.aYearFromNow())
+                            listOf<ContactEvent>()
                         }
                         .map { contacts ->
                             val viewModels = arrayListOf<PeopleRowViewModel>()
