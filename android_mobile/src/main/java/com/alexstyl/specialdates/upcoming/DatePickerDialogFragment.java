@@ -12,6 +12,8 @@ import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.novoda.notils.caster.Classes;
 
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
+
 public final class DatePickerDialogFragment extends MementoDialog {
 
     private static final String ARG_DAY_OF_MONTH = "day_of_month";

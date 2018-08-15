@@ -11,6 +11,8 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.person.PersonActivity

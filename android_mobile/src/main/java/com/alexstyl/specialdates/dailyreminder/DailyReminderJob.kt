@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.dailyreminder
 
-import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.todaysDate
 import com.evernote.android.job.DailyJob
 
 class DailyReminderJob(private val presenter: DailyReminderPresenter,

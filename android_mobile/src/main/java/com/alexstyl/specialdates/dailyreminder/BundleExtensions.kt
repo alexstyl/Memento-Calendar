@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.dailyreminder
 
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.dateOn
 import com.evernote.android.job.util.support.PersistableBundleCompat
 
 
@@ -25,7 +26,7 @@ private fun assertValues(dayOfMonth: Int, month: Int, year: Int) {
 fun PersistableBundleCompat.putDate(date: Date): PersistableBundleCompat {
     this.putInt(EXTRA_DAY_OF_MONTH, date.dayOfMonth)
     this.putInt(EXTRA_MONTH, date.month)
-    this.putInt(EXTRA_YEAR, date.year)
+    this.putInt(EXTRA_YEAR, date.year!!)
     return this
 }
 
