@@ -14,17 +14,10 @@ class MappedNamedaysListTest {
     }
 
     @Test
-    fun whenNoYearSpecified_thenRecurringEventIsReturned() {
-        val dateWithNoYear = dateOn(4, FIXED_MONTH)
-
-        val results = namedays.getNamedaysFor(dateWithNoYear)
-
-        assertThat(results.names[0]).isEqualTo(RECURRING_NAMEDAY)
-    }
-
-    @Test
     fun whenNoYearSpecified_thenFixedYearEventIsNotReturned() {
-        val actualNamedays = namedays.getNamedaysFor(dateOn(1, FIXED_MONTH))
+        val namedays = MapNamedaysList()
+
+        val actualNamedays = namedays.getNamedaysFor(dateOn(1, FIXED_MONTH, 2018))
 
         assertThat(actualNamedays.names).isEmpty()
     }
@@ -57,12 +50,12 @@ class MappedNamedaysListTest {
         private val namedays = MapNamedaysList()
 
         private fun populateNamedays() {
-            namedays.addNameday(dateOn(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
-            namedays.addNameday(dateOn(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
-            namedays.addNameday(dateOn(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
+            namedays.addSpecificYearNameday(dateOn(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
+            namedays.addSpecificYearNameday(dateOn(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
+            namedays.addSpecificYearNameday(dateOn(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
 
-            namedays.addNameday(dateOn(4, FIXED_MONTH), RECURRING_NAMEDAY)
-            namedays.addNameday(dateOn(5, FIXED_MONTH), RECURRING_NAMEDAY)
+            namedays.addRecurringNameday(dateOn(4, FIXED_MONTH), RECURRING_NAMEDAY)
+            namedays.addRecurringNameday(dateOn(5, FIXED_MONTH), RECURRING_NAMEDAY)
         }
     }
 }

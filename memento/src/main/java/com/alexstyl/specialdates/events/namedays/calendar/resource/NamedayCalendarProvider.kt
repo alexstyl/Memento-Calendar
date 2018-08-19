@@ -1,7 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource
 
 import com.alexstyl.specialdates.events.namedays.NamedayLocale
-import com.alexstyl.specialdates.events.namedays.StaticNamedays
+import com.alexstyl.specialdates.events.namedays.Namedays
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator
 import org.json.JSONException
@@ -12,21 +12,18 @@ open class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider
                                    private val romanianEasterCalculator: RomanianEasterSpecialCalculator) {
 
     open fun loadNamedayCalendarForLocale(locale: NamedayLocale, year: Int): NamedayCalendar {
-        if (hasRequestedSameCalendar(locale, year)) {
-            return cachedCalendar!!
+        val key = Pair(year, locale)
+
+        if (!calendars.containsKey(key)) {
+            val namedayJSON = loadNamedayJSONFor(locale)
+            val namedays = createNamedaysFor(locale, namedayJSON)
+            val specialNamedays = createStrategyForLocale(namedayJSON.locale, namedayJSON)
+
+            calendars[key] = NamedayCalendar(locale, namedays, specialNamedays, year)
         }
 
-        val namedayJSON = loadNamedayJSONFor(locale)
-        val namedays = createNamedaysFor(locale, namedayJSON)
-        val specialNamedays = createStrategyForLocale(namedayJSON.locale, namedayJSON)
-
-        val namedayCalendar = NamedayCalendar(locale, namedays, specialNamedays, year)
-
-        cachedCalendar = namedayCalendar
-
-        return namedayCalendar
+        return calendars[key]!!
     }
-
 
     private fun createStrategyForLocale(locale: NamedayLocale, namedayJSON: NamedayJSON) =
             when (locale) {
@@ -34,12 +31,6 @@ open class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider
                 NamedayLocale.ROMANIAN -> RomanianSpecialNamedays.from(namedayJSON, romanianEasterCalculator)
                 else -> NoSpecialNamedays
             }
-
-    private fun hasRequestedSameCalendar(locale: NamedayLocale, year: Int): Boolean {
-        return cachedCalendar != null
-                && cachedCalendar!!.year == year
-                && cachedCalendar!!.locale == locale
-    }
 
     private fun loadNamedayJSONFor(locale: NamedayLocale): NamedayJSON {
         try {
@@ -49,7 +40,7 @@ open class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider
         }
     }
 
-    private fun createNamedaysFor(locale: NamedayLocale, namedayJSON: NamedayJSON): StaticNamedays {
+    private fun createNamedaysFor(locale: NamedayLocale, namedayJSON: NamedayJSON): Namedays {
         return if (locale == NamedayLocale.GREEK) {
             NamedayJSONParser.getNamedaysFromJSONasSounds(namedayJSON)
         } else {
@@ -58,7 +49,7 @@ open class NamedayCalendarProvider(private val jsonProvider: NamedayJSONProvider
     }
 
     companion object {
-        private var cachedCalendar: NamedayCalendar? = null
+        private val calendars = mutableMapOf<Pair<Int, NamedayLocale>, NamedayCalendar>()
     }
 
 }

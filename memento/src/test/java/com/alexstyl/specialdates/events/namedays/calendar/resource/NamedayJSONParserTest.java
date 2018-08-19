@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.StaticNamedays;
+import com.alexstyl.specialdates.events.namedays.Namedays;
 import com.alexstyl.specialdates.events.namedays.NamedayLocale;
 
 import org.json.JSONException;
@@ -31,28 +31,28 @@ public class NamedayJSONParserTest {
 
     @Test
     public void returningBundleHasNames() {
-        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
-        assertThat(staticNamedays.getNames()).isNotEmpty();
+        Namedays namedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
+        assertThat(namedays.getNames()).isNotEmpty();
     }
 
     @Test
     public void alexandrosNamedayIsReturnedCorrectly() {
-        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
-        NameCelebrations dates = staticNamedays.getDatesFor("Αλέξανδρος");
+        Namedays namedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
+        NameCelebrations dates = namedays.getDatesFor("Αλέξανδρος");
         assertThatContainsDate(dates, Date.Companion.on(30, AUGUST));
     }
 
     @Test
     public void davidNamedayIsReturnedCorrectly() {
-        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
-        NameCelebrations dates = staticNamedays.getDatesFor("Δαβίδ");
+        Namedays namedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
+        NameCelebrations dates = namedays.getDatesFor("Δαβίδ");
         assertThatContainsDate(dates, Date.Companion.on(26, JUNE));
     }
 
     @Test
     public void amaliaNamedayIsReturnedCorrectly() {
-        StaticNamedays staticNamedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
-        NameCelebrations dates = staticNamedays.getDatesFor("Αμαλία");
+        Namedays namedays = NamedayJSONParser.INSTANCE.getNamedaysFrom(namedayJSON);
+        NameCelebrations dates = namedays.getDatesFor("Αμαλία");
         assertThatContainsDate(dates, Date.Companion.on(10, JULY));
     }
 

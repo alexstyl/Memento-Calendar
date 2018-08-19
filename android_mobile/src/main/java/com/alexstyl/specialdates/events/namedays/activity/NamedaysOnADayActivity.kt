@@ -63,9 +63,9 @@ class NamedaysOnADayActivity : ThemedMementoActivity() {
 
         val layoutInflater = LayoutInflater.from(this)
         val adapter = NamedaysScreenAdapter(
-                NamedaysScreenViewHolderFactory(layoutInflater, imageLoader),
-                { contact -> namedaysOnADayNavigator?.toContactDetails(contact) }
-        )
+                NamedaysScreenViewHolderFactory(layoutInflater, imageLoader)) { contact ->
+            namedaysOnADayNavigator?.toContactDetails(contact)
+        }
         recyclerView.adapter = adapter
         view = AndroidNamedaysOnADayView(adapter)
     }

@@ -5,14 +5,14 @@ import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.MonthInt
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.events.namedays.MapNamedaysList
-import com.alexstyl.specialdates.events.namedays.NamedaysList
-import com.alexstyl.specialdates.events.namedays.StaticNamedays
+import com.alexstyl.specialdates.events.namedays.MutableNamedaysList
+import com.alexstyl.specialdates.events.namedays.Namedays
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday
-import java.util.Calendar
+import java.util.*
 
-internal class SpecialGreekNamedaysCalculator(private val easternNamedays: List<EasternNameday>) {
+class SpecialGreekNamedaysCalculator(private val easternNamedays: List<EasternNameday>) {
 
-    fun calculateForEasterDate(easter: Date): StaticNamedays {
+    fun calculateForEasterDate(easter: Date): Namedays {
         val node = SoundNode()
         val namedaysList = MapNamedaysList()
 
@@ -22,21 +22,21 @@ internal class SpecialGreekNamedaysCalculator(private val easternNamedays: List<
 
             for (name in easternNameday.namesCelebrating) {
                 node.addDate(name, date)
-                namedaysList.addNameday(date, name)
+                namedaysList.addSpecificYearNameday(date, name)
             }
         }
         appendSpecialScenarios(easter, node, namedaysList)
-        return StaticNamedays(node, namedaysList)
+        return Namedays(node, namedaysList)
     }
 
-    private fun appendSpecialScenarios(easter: Date, node: Node, namedaysList: NamedaysList) {
+    private fun appendSpecialScenarios(easter: Date, node: Node, namedaysList: MutableNamedaysList) {
         addSpecialPropatorwn(node, namedaysList)
         addSpecialMarkos(node, namedaysList, easter)
         addSpecialGiwrgos(node, namedaysList, easter)
         addSpecialChloe(node, namedaysList)
     }
 
-    private fun addSpecialPropatorwn(node: Node, namedaysList: NamedaysList) {
+    private fun addSpecialPropatorwn(node: Node, namedaysList: MutableNamedaysList) {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, Calendar.DECEMBER)
         calendar.set(Calendar.DAY_OF_MONTH, 11)
@@ -47,11 +47,12 @@ internal class SpecialGreekNamedaysCalculator(private val easternNamedays: List<
         val date = createDayDateFrom(calendar)
         for (variation in PROPATORWN) {
             node.addDate(variation, date)
-            namedaysList.addNameday(date, variation)
+            namedaysList.addSpecificYearNameday(date, variation)
+
         }
     }
 
-    private fun addSpecialMarkos(node: Node, namedaysList: NamedaysList, easter: Date) {
+    private fun addSpecialMarkos(node: Node, namedaysList: MutableNamedaysList, easter: Date) {
         val year = Date.today().year
         var date = Date.on(23, Months.APRIL, year)
         if (COMPARATOR.compare(easter, date) > 0) {
@@ -62,11 +63,11 @@ internal class SpecialGreekNamedaysCalculator(private val easternNamedays: List<
 
         for (variation in MARKOS_ALTS) {
             node.addDate(variation, date)
-            namedaysList.addNameday(date, variation)
+            namedaysList.addSpecificYearNameday(date, variation)
         }
     }
 
-    private fun addSpecialGiwrgos(node: Node, namedaysList: NamedaysList, easter: Date) {
+    private fun addSpecialGiwrgos(node: Node, namedaysList: MutableNamedaysList, easter: Date) {
         val date = Date.on(23, Months.APRIL, Date.today().year)
 
         val actualDate: Date
@@ -78,11 +79,11 @@ internal class SpecialGreekNamedaysCalculator(private val easternNamedays: List<
 
         for (variation in GEORGE_ALTS) {
             node.addDate(variation, actualDate)
-            namedaysList.addNameday(actualDate, variation)
+            namedaysList.addSpecificYearNameday(actualDate, variation)
         }
     }
 
-    private fun addSpecialChloe(node: Node, namedaysList: NamedaysList) {
+    private fun addSpecialChloe(node: Node, namedaysList: MutableNamedaysList) {
         val cal = Calendar.getInstance()
         cal.set(Calendar.MONTH, Calendar.FEBRUARY)
         cal.set(Calendar.DAY_OF_MONTH, 13)
@@ -94,7 +95,7 @@ internal class SpecialGreekNamedaysCalculator(private val easternNamedays: List<
 
         val variation = CLOE
         node.addDate(variation, date)
-        namedaysList.addNameday(date, variation)
+        namedaysList.addSpecificYearNameday(date, variation)
     }
 
     companion object {

@@ -10,7 +10,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
 class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
-                                      private val namedayPreferences: NamedayUserSettings,
+                                      private val namedayUserSettings: NamedayUserSettings,
                                       private val namedayCalendarProvider: NamedayCalendarProvider,
                                       private val bankHolidaysUserSettings: BankHolidaysUserSettings,
                                       private val bankHolidayProvider: BankHolidayProvider,
@@ -21,15 +21,11 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
                 timePeriod,
                 upcomingRowViewModelFactory
         )
-        measure("contact events") {
-            val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
-            builder.withContactEvents(contactEvents)
-        }
 
-        if (shouldLoadBankHolidays()) {
-            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
-            builder.withBankHolidays(bankHolidays)
-        }
+        val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
+        builder.withContactEvents(contactEvents)
+        val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
+        builder.withBankHolidays(bankHolidays)
 
         if (shouldLoadNamedays()) {
             val namedays = calculateNamedaysBetween(timePeriod)
@@ -40,7 +36,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
 
     private fun calculateNamedaysBetween(timeDuration: TimePeriod): List<NamesInADate> {
         // TODO break start to end year
-        val selectedLanguage = namedayPreferences.selectedLanguage
+        val selectedLanguage = namedayUserSettings.selectedLanguage
         val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year)
 
         var indexDate = timeDuration.startingDate
@@ -62,7 +58,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
     }
 
     private fun shouldLoadNamedays(): Boolean {
-        return namedayPreferences.isEnabled && !namedayPreferences.isEnabledForContactsOnly
+        return namedayUserSettings.isEnabled && !namedayUserSettings.isEnabledForContactsOnly
     }
 
     companion object {

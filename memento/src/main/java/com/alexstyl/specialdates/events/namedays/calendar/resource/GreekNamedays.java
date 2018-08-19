@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.StaticNamedays;
+import com.alexstyl.specialdates.events.namedays.Namedays;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
@@ -19,7 +19,7 @@ public final class GreekNamedays {
     private final SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator;
 
     private Date easter;
-    private StaticNamedays namedays;
+    private Namedays namedays;
 
     private GreekNamedays(OrthodoxEasterCalculator easterCalculator, SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator) {
         this.easterCalculator = easterCalculator;

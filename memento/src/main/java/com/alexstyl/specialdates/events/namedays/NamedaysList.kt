@@ -5,5 +5,9 @@ import com.alexstyl.specialdates.date.Date
 interface NamedaysList {
     val names: MutableList<String>
     fun getNamedaysFor(date: Date): NamesInADate
-    fun addNameday(date: Date, name: String)
+}
+
+interface MutableNamedaysList : NamedaysList {
+    fun addRecurringNameday(date: Date, name: String)
+    fun addSpecificYearNameday(date: Date, name: String)
 }

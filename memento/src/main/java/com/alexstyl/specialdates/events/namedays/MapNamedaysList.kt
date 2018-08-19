@@ -1,53 +1,58 @@
 package com.alexstyl.specialdates.events.namedays
 
 import com.alexstyl.specialdates.date.Date
-import java.text.Collator
-import java.util.*
+import com.alexstyl.specialdates.date.dateOn
 
-class MapNamedaysList : NamedaysList {
+class MapNamedaysList : MutableNamedaysList {
 
-    private val _names_NOYEAR = TreeSet<String>(Collator.getInstance())
-    private val namedaysNO_YEAR = mutableMapOf<Date, MutableNamesInADate>()
+    private val _names = mutableSetOf<String>()
+    private val specificYearNamedays = mutableMapOf<Date, MutableNamesInADate>()
 
-    private val _names_YEAR = TreeSet<String>(Collator.getInstance())
-    private val namedays_YEAR = mutableMapOf<Date, MutableNamesInADate>()
+    private val recurringNamedays = mutableMapOf<Date, MutableNamesInADate>()
 
     override fun getNamedaysFor(date: Date): NamesInADate {
-        if (namedaysNO_YEAR[date] != null) {
-            return namedaysNO_YEAR[date]!!
-        }
-        if (namedays_YEAR[date] != null) {
-            return namedays_YEAR[date]!!
-        }
-        return NoNamesInADate(date)
+        assertHasYear(date)
+
+        return (specificYearNamedays[date] ?: NoNamesInADate(date)) +
+                (recurringNamedays[dateOn(date.dayOfMonth, date.month)] ?: NoNamesInADate(date))
     }
 
-    override fun addNameday(date: Date, name: String) {
+    override fun addSpecificYearNameday(date: Date, name: String) {
+        assertHasYear(date)
+
+        if (!specificYearNamedays.containsKey(date)) {
+            specificYearNamedays[date] = ArrayNamesInADate(date, arrayListOf())
+        }
+
+        val specificYearNameday: MutableNamesInADate = specificYearNamedays[date]!!
+        specificYearNameday.addName(name)
+        _names.add(name)
+    }
+
+    private fun assertHasYear(date: Date) {
+        if (date.hasNoYear()) {
+            throw IllegalArgumentException("Must provide a date with a year to ask for Namedays")
+        }
+    }
+
+    override fun addRecurringNameday(date: Date, name: String) {
+        assertReccuringNamedayHasNoYear(date)
+
+        if (!recurringNamedays.containsKey(date)) {
+            recurringNamedays[date] = ArrayNamesInADate(date, arrayListOf())
+        }
+
+        val recurringNameday: MutableNamesInADate = recurringNamedays[date]!!
+        recurringNameday.addName(name)
+        _names.add(name)
+    }
+
+    private fun assertReccuringNamedayHasNoYear(date: Date) {
         if (date.hasYear()) {
-            addNamedayYEAR(date, name)
-        } else {
-            addNamedayNO_YEAR(date, name)
+            throw IllegalArgumentException("Recurring Namedays must have no year. Passed $date")
         }
-    }
-
-    private fun addNamedayNO_YEAR(key: Date, name: String) {
-        if (!namedaysNO_YEAR.containsKey(key)) {
-            namedaysNO_YEAR[key] = ArrayNamesInADate(key, ArrayList())
-        }
-        val names = namedaysNO_YEAR[key]!!
-        names.addName(name)
-        this._names_NOYEAR.add(name)
-    }
-
-    private fun addNamedayYEAR(key: Date, name: String) {
-        if (!namedays_YEAR.containsKey(key)) {
-            namedays_YEAR[key] = ArrayNamesInADate(key, ArrayList())
-        }
-        val names = namedays_YEAR[key]!!
-        names.addName(name)
-        this._names_YEAR.add(name)
     }
 
     override val names
-        get() = (_names_NOYEAR + _names_YEAR).toMutableList()
+        get() = _names.toMutableList()
 }
