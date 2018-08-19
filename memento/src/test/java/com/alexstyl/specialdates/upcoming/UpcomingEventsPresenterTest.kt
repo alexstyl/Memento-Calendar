@@ -1,8 +1,8 @@
 package com.alexstyl.specialdates.upcoming
 
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner
 class UpcomingEventsPresenterTest {
 
     companion object {
-        private val STARTING_DATE = Date.on(1, Months.APRIL, 2017)
+        private val STARTING_DATE = dateOn(1, Months.APRIL, 2017)
     }
 
     private val mockView = Mockito.mock(UpcomingListMVPView::class.java)
@@ -63,7 +63,7 @@ class UpcomingEventsPresenterTest {
 
     @Test
     fun whenStartPresentingWithPermission_showEventsAfterDoneLoading() {
-        val theDate = Date.on(1, Months.MARCH, 2017)
+        val theDate = dateOn(1, Months.MARCH, 2017)
         val expectedEvents = arrayListOf<UpcomingRowViewModel>()
         given(mockProvider.calculateEventsBetween(TimePeriod.aYearFrom(theDate))).willReturn(expectedEvents)
 

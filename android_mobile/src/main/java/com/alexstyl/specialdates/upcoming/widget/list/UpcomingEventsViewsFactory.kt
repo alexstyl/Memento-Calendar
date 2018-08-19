@@ -5,8 +5,8 @@ import android.content.res.Resources
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.upcoming.UpcomingEventsProvider
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel
 import com.alexstyl.specialdates.upcoming.UpcomingRowViewType
@@ -25,7 +25,7 @@ class UpcomingEventsViewsFactory(private val packageName: String,
     }
 
     override fun onDataSetChanged() {
-        val date = Date.today()
+        val date = todaysDate()
         rows = upcomingEventsProvider.calculateEventsBetween(
                 TimePeriod.between(date, date.addDay(DAYS_IN_A_MONTH))
         )

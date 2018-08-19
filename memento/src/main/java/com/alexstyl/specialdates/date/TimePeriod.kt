@@ -16,7 +16,7 @@ data class TimePeriod constructor(val startingDate: Date, val endingDate: Date) 
         }
 
         fun aYearFromNow(): TimePeriod {
-            val today = Date.today()
+            val today = todaysDate()
             val endDate = today.addDay(364)
             return TimePeriod.between(today, endDate)
         }

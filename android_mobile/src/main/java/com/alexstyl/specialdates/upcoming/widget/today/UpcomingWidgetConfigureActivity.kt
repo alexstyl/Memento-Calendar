@@ -28,6 +28,7 @@ import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.MementoActivity
 import javax.inject.Inject
@@ -193,7 +194,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
     override fun onStart() {
         super.onStart()
 
-        val title = labelCreator.createWithYearPreferred(Date.today())
+        val title = labelCreator.createWithYearPreferred(todaysDate())
         previewLayout.setTitle(title)
         previewLayout.setSubtitle(R.string.demo_contact_name)
 

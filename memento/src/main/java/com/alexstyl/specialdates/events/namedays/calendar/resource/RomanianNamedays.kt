@@ -17,7 +17,7 @@ data class RomanianNamedays(private val calculator: RomanianEasterSpecialCalcula
         get() = ArrayList(names)
 
     fun getNamedaysFor(date: Date): NamesInADate {
-        calculateEasterIfNecessary(date.year)
+        calculateEasterIfNecessary(date.year!!)
         return if (easterDate == date) {
             namedays!!.getNamedaysFor(date)
         } else NoNamesInADate(date)

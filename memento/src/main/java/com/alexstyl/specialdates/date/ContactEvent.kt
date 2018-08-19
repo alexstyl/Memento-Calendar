@@ -11,7 +11,8 @@ data class ContactEvent(val deviceEventId: Optional<Long>, val type: EventType, 
     fun getLabel(dateWithYear: Date, strings: Strings): String {
         if (type === StandardEventType.BIRTHDAY) {
             if (date.hasYear()) {
-                val age = dateWithYear.year - date.year
+
+                val age = dateWithYear.year!! - date.year!!
                 if (age > 0) {
                     return strings.turnsAge(age)
                 }
@@ -19,5 +20,5 @@ data class ContactEvent(val deviceEventId: Optional<Long>, val type: EventType, 
         }
         return type.getEventName(strings)
     }
-    
+
 }

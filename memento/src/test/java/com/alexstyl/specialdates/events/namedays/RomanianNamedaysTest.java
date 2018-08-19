@@ -5,13 +5,14 @@ import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculat
 import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianEasterSpecialCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianNamedays;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.Test;
-
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.fail;
 
@@ -47,12 +48,12 @@ public class RomanianNamedaysTest {
 
     private List<Date> buildExpectedDates() {
         List<Date> dates = new ArrayList<>();
-        dates.add(Date.Companion.on(9, 4, 2017));
-        dates.add(Date.Companion.on(1, 4, 2018));
-        dates.add(Date.Companion.on(21, 4, 2019));
-        dates.add(Date.Companion.on(12, 4, 2020));
-        dates.add(Date.Companion.on(25, 4, 2021));
-        dates.add(Date.Companion.on(17, 4, 2022));
+        dates.add(dateOn(9, 4, 2017));
+        dates.add(dateOn(1, 4, 2018));
+        dates.add(dateOn(21, 4, 2019));
+        dates.add(dateOn(12, 4, 2020));
+        dates.add(dateOn(25, 4, 2021));
+        dates.add(dateOn(17, 4, 2022));
         return dates;
     }
 }

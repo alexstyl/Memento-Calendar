@@ -4,6 +4,8 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.MonthInt
 import com.alexstyl.specialdates.date.Months
+import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.namedays.MapNamedaysList
 import com.alexstyl.specialdates.events.namedays.MutableNamedaysList
 import com.alexstyl.specialdates.events.namedays.Namedays
@@ -53,12 +55,12 @@ class SpecialGreekNamedaysCalculator(private val easternNamedays: List<EasternNa
     }
 
     private fun addSpecialMarkos(node: Node, namedaysList: MutableNamedaysList, easter: Date) {
-        val year = Date.today().year
-        var date = Date.on(23, Months.APRIL, year)
+        val year = todaysDate().year
+        var date = dateOn(23, Months.APRIL, year)
         if (COMPARATOR.compare(easter, date) > 0) {
             date = date.addDay(2)
         } else {
-            date = Date.on(25, Months.APRIL, year)
+            date = dateOn(25, Months.APRIL, year)
         }
 
         for (variation in MARKOS_ALTS) {
@@ -68,7 +70,7 @@ class SpecialGreekNamedaysCalculator(private val easternNamedays: List<EasternNa
     }
 
     private fun addSpecialGiwrgos(node: Node, namedaysList: MutableNamedaysList, easter: Date) {
-        val date = Date.on(23, Months.APRIL, Date.today().year)
+        val date = dateOn(23, Months.APRIL, todaysDate().year)
 
         val actualDate: Date
         if (COMPARATOR.compare(easter, date) > 0) {
@@ -152,7 +154,7 @@ class SpecialGreekNamedaysCalculator(private val easternNamedays: List<EasternNa
 
         private fun createDayDateFrom(calendar: Calendar): Date {
             @MonthInt val month = calendar.get(Calendar.MONTH)
-            return Date.on(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR))
+            return dateOn(calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR))
         }
     }
 

@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.dailyreminder
 
 import android.app.NotificationManager
 import android.content.Context
-
 import com.alexstyl.Logger
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.BuildConfig
@@ -10,8 +9,8 @@ import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.EasyPreferences
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
@@ -20,7 +19,6 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.settings.DailyReminderNavigator
-
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -36,7 +34,7 @@ class DailyReminderModule {
 
     @Provides
     fun factory(strings: Strings, colors: Colors): DailyReminderViewModelFactory {
-        return AndroidDailyReminderViewModelFactory(strings, Date.today(), colors)
+        return AndroidDailyReminderViewModelFactory(strings, todaysDate(), colors)
     }
 
     @Provides

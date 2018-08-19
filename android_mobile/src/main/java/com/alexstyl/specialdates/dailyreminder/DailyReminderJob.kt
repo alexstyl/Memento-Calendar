@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.dailyreminder
 
-import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.todaysDate
 import com.evernote.android.job.DailyJob
 
 class DailyReminderJob(private val presenter: DailyReminderPresenter,
@@ -11,7 +11,7 @@ class DailyReminderJob(private val presenter: DailyReminderPresenter,
         val date = if (extras.containsDate()) {
             extras.getDate()
         } else {
-            Date.today()
+            todaysDate()
         }
 
         val view = NotificationDailyReminderView(notifier)

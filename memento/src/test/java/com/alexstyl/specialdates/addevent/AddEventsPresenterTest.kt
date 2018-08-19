@@ -9,8 +9,9 @@ import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months
+import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
@@ -88,9 +89,9 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.today(), contact)
-        val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, Date.today() + 1, contact)
-        val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, Date.today() + 2, contact)
+        val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, todaysDate(), contact)
+        val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, todaysDate() + 1, contact)
+        val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, todaysDate() + 2, contact)
         BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
 
         presenter.presentContact(contact)
@@ -104,8 +105,8 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        val nameday = ContactEvent(Optional.absent(), StandardEventType.NAMEDAY, Date.today() + 2, contact)
-        val custom = ContactEvent(Optional.absent(), StandardEventType.CUSTOM, Date.today() + 2, contact)
+        val nameday = ContactEvent(Optional.absent(), StandardEventType.NAMEDAY, todaysDate() + 2, contact)
+        val custom = ContactEvent(Optional.absent(), StandardEventType.CUSTOM, todaysDate() + 2, contact)
 
         BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(nameday, custom))
 
@@ -120,9 +121,9 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
         Mockito.verify(mockView).display(emptyModelsFor(StandardEventType.BIRTHDAY, StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
 
-        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.today())
+        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, todaysDate())
 
-        val dateViewModel = viewModelFactory.createViewModelFor(StandardEventType.BIRTHDAY, Date.today())
+        val dateViewModel = viewModelFactory.createViewModelFor(StandardEventType.BIRTHDAY, todaysDate())
         Mockito.verify(mockView).display(listOf(dateViewModel) + emptyModelsFor(StandardEventType.ANNIVERSARY, StandardEventType.OTHER))
     }
 
@@ -131,9 +132,9 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.today(), contact)
-        val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, Date.today() + 1, contact)
-        val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, Date.today() + 2, contact)
+        val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, todaysDate(), contact)
+        val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, todaysDate() + 1, contact)
+        val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, todaysDate() + 2, contact)
         BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
 
         presenter.presentContact(contact)
@@ -182,7 +183,7 @@ class AddEventsPresenterTest {
         verify(mockView, times(2)).preventSave()
         verify(mockView, times(0)).allowSave()
 
-        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
 
         verify(mockView, times(1)).allowSave()
     }
@@ -194,7 +195,7 @@ class AddEventsPresenterTest {
         val contact = ContactFixture.aContactCalled("Chrysa")
         given(mockPeopleEventsProvider.fetchEventsFor(contact))
                 .willReturn(listOf(
-                        ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.today(), contact))
+                        ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, todaysDate(), contact))
                 )
 
         presenter.presentContact(contact)    // prevent save 2
@@ -208,13 +209,13 @@ class AddEventsPresenterTest {
     fun givenANameABirthday_thenAContactIsCreatedMessageIsShown() {
         given(mockExecutor.execute(
                 listOf(
-                        InsertContact("Alex"), InsertEvent(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+                        InsertContact("Alex"), InsertEvent(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
                 )
         )).willReturn(true)
 
         presenter.startPresentingInto(mockView)
         presenter.presentName("Alex")
-        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
         presenter.saveChanges()
 
         verify(mockMessageDisplayer).showMessage(strings.contactAdded())
@@ -224,13 +225,13 @@ class AddEventsPresenterTest {
     fun givenANameABirthday_thenANewContactIsCreated() {
         presenter.startPresentingInto(mockView)
         presenter.presentName("Alex")
-        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
         presenter.saveChanges()
 
         verify(mockExecutor).execute(
                 listOf(
                         InsertContact("Alex"),
-                        InsertEvent(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+                        InsertEvent(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
                 ))
     }
 
@@ -240,17 +241,17 @@ class AddEventsPresenterTest {
         val selectedContact = ContactFixture.aContactCalled("Joseph")
         presenter.presentContact(selectedContact)
 
-        val existingBirthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, Date.on(1, Months.JANUARY), selectedContact)
+        val existingBirthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOn(1, Months.JANUARY), selectedContact)
 
         given(mockPeopleEventsProvider.fetchEventsFor(selectedContact)).willReturn(listOf(existingBirthday))
 
-        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+        presenter.onEventDatePicked(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
         presenter.saveChanges()
 
         verify(mockExecutor).execute(
                 listOf(
                         UpdateContact(selectedContact),
-                        InsertEvent(StandardEventType.BIRTHDAY, Date.on(19, Months.DECEMBER, 1990))
+                        InsertEvent(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
                 ))
     }
 }

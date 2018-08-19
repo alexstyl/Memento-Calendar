@@ -12,6 +12,8 @@ import com.alexstyl.specialdates.date.MonthInt;
 import com.alexstyl.specialdates.ui.base.MementoDialog;
 import com.novoda.notils.caster.Classes;
 
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
+
 public final class DatePickerDialogFragment extends MementoDialog {
 
     private static final String ARG_DAY_OF_MONTH = "day_of_month";
@@ -45,7 +47,7 @@ public final class DatePickerDialogFragment extends MementoDialog {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        listener.onDateSelected(Date.Companion.on(dayOfMonth, toOneIndexedMonth(month), year));
+                        listener.onDateSelected(dateOn(dayOfMonth, toOneIndexedMonth(month), year));
                     }
                 },
                 startingDate.getYear(),
@@ -69,7 +71,7 @@ public final class DatePickerDialogFragment extends MementoDialog {
         int dayOfMonth = getArguments().getInt(ARG_DAY_OF_MONTH);
         @MonthInt int month = getArguments().getInt(ARG_MONTH);
         int year = getArguments().getInt(ARG_YEAR);
-        return Date.Companion.on(dayOfMonth, month, year);
+        return dateOn(dayOfMonth, month, year);
     }
 
     public interface OnDateSetListener {

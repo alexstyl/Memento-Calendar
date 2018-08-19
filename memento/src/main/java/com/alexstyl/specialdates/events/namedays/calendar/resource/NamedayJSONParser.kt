@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.MonthInt
+import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.namedays.MapNamedaysList
 import com.alexstyl.specialdates.events.namedays.Namedays
 import org.json.JSONObject
@@ -37,6 +38,6 @@ object NamedayJSONParser {
         val slashIndex = indexOf("/")
         val dayOfMonth = substring(0, slashIndex).toInt()
         @MonthInt val month = substring(slashIndex + 1).toInt()
-        return Date.on(dayOfMonth, month)
+        return dateOn(dayOfMonth, month)
     }
 }

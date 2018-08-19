@@ -2,8 +2,9 @@ package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.TestContactEventsBuilder
 import com.alexstyl.specialdates.contact.ContactFixture
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.beggingOfYear
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
@@ -84,10 +85,10 @@ class PeopleEventsSearchTest {
         private val ALEX = ContactFixture.aContactCalled("Alex Styl")
         private val MARIA = ContactFixture.aContactCalled("Maria Papadopoulou")
         private val MIMOZA = ContactFixture.aContactCalled("Mimoza Dereks")
-        private val JANUARY_1st = Date.startOfYear(2016)
+        private val JANUARY_1st = beggingOfYear(2016)
 
         private fun aYearFromNow(): TimePeriod {
-            val today = Date.today()
+            val today = todaysDate()
             val aYearFromNow = today.addDay(364)
             return TimePeriod.between(today, aYearFromNow)
         }

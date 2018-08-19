@@ -2,7 +2,9 @@ package com.alexstyl.specialdates.events.bankholidays
 
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
-import java.util.ArrayList
+import com.alexstyl.specialdates.date.endOfYear
+import com.alexstyl.specialdates.date.beggingOfYear
+import java.util.*
 
 class BankHolidayProvider(private val bankHolidaysCalculator: GreekBankHolidaysCalculator) {
 
@@ -27,14 +29,14 @@ class BankHolidayProvider(private val bankHolidaysCalculator: GreekBankHolidaysC
         val startingDate = timePeriod.startingDate
         return TimePeriod.between(
                 startingDate,
-                Date.endOfYear(startingDate.year)
+                endOfYear(startingDate.year!!)
         )
     }
 
     private fun getSecondHalfOf(timePeriod: TimePeriod): TimePeriod {
         val endingDate = timePeriod.endingDate
         return TimePeriod.between(
-                Date.startOfYear(endingDate.year),
+                beggingOfYear(endingDate.year!!),
                 endingDate
         )
     }
@@ -42,7 +44,7 @@ class BankHolidayProvider(private val bankHolidaysCalculator: GreekBankHolidaysC
     private fun calculateBankHolidaysFor(timePeriod: TimePeriod): List<BankHoliday> {
         val bankHolidays = ArrayList<BankHoliday>()
         val year = timePeriod.startingDate.year
-        val allBankHolidays = bankHolidaysCalculator.calculateBankholidaysForYear(year)
+        val allBankHolidays = bankHolidaysCalculator.calculateBankholidaysForYear(year!!)
         for (bankHoliday in allBankHolidays) {
             if (timePeriod.containsDate(bankHoliday.date)) {
                 bankHolidays.add(bankHoliday)
@@ -57,7 +59,7 @@ class BankHolidayProvider(private val bankHolidaysCalculator: GreekBankHolidaysC
 
     fun calculateBankHolidayOn(date: Date): BankHoliday? =
             bankHolidaysCalculator
-                    .calculateBankholidaysForYear(date.year)
+                    .calculateBankholidaysForYear(date.year!!)
                     .find { it.date == date }
 
 }

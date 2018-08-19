@@ -5,8 +5,8 @@ import com.alexstyl.specialdates.addevent.ui.willReturnNoContact
 import com.alexstyl.specialdates.contact.ContactFixture.aContactCalled
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.ContactsProviderSource
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NoNamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.ImmutableNamesInADate
@@ -27,7 +27,7 @@ class NamedaysInADayPresenterTest {
     private val mockView = Mockito.mock(NamedaysOnADayView::class.java)
     private val LETTER_VARIANT = 5
 
-    private val ANY_DATE = Date.on(1, JANUARY, 2017)
+    private val ANY_DATE = dateOn(1, JANUARY, 2017)
     private val mockNamedayCalendar = Mockito.mock(NamedayCalendar::class.java)
     private var mockSource = Mockito.mock(ContactsProviderSource::class.java)
     private var mockLetterPainter = Mockito.mock(LetterPainter::class.java)

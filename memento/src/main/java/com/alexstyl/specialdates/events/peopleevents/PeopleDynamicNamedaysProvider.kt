@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.endOfYear
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 
@@ -73,7 +74,7 @@ open class PeopleDynamicNamedaysProvider(
         if (!settings.isEnabled) {
             return null
         }
-        val timePeriod = TimePeriod.between(date, Date.endOfYear(date.year))
+        val timePeriod = TimePeriod.between(date, endOfYear(date.year!!))
         val contactEvents = ArrayList(fetchEventsBetween(timePeriod))
         contactEvents.sortWith(Comparator { (_, _, date1), (_, _, date2) -> DATE_COMPARATOR.compare(date1, date2) })
 

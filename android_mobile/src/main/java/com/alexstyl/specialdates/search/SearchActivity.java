@@ -50,6 +50,7 @@ import com.novoda.notils.text.SimpleTextWatcher;
 import javax.inject.Inject;
 
 import static android.view.View.GONE;
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
 
 public class SearchActivity extends ThemedMementoActivity {
 
@@ -96,7 +97,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         peopleEventsSearch = new PeopleEventsSearch(peopleEventsProvider, NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
-        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), strings, dateLabelCreator), colors);
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(todaysDate(), strings, dateLabelCreator), colors);
 
         analytics.trackScreen(Screen.SEARCH);
 

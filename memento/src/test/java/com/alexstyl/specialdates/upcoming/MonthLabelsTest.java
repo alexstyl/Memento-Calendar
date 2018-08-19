@@ -21,15 +21,13 @@ public class MonthLabelsTest {
 
     @Test
     public void givenTheFirstMonthOfTheYear_thenTheCorrectLabelIsReturned() {
-        int index = JANUARY;
-        String zeroIndexedLabel = monthLabels.getMonthOfYear(index);
+        String zeroIndexedLabel = monthLabels.getMonthOfYear(JANUARY);
         assertThat(zeroIndexedLabel).isEqualTo("January");
     }
 
     @Test
     public void givenTheLastMonthOfTheYear_thenTheCorrectLabelIsReturned() {
-        int index = DECEMBER;
-        String zeroIndexedLabel = monthLabels.getMonthOfYear(index);
+        String zeroIndexedLabel = monthLabels.getMonthOfYear(DECEMBER);
         assertThat(zeroIndexedLabel).isEqualTo("December");
     }
 

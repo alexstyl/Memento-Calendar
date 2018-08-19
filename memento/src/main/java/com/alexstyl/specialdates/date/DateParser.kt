@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.date
 
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import org.joda.time.format.DateTimeFormat
-import java.util.Locale
+import java.util.*
 
 class DateParser(private val errorTracker: CrashAndErrorTracker) {
 
@@ -23,17 +23,17 @@ class DateParser(private val errorTracker: CrashAndErrorTracker) {
             for (format in SUPPORTED_FORMATS) {
                 val formatter = DateTimeFormat.forPattern(format)
                         .withLocale(locale)
-                        .withDefaultYear(Months.NO_YEAR)
+                        .withDefaultYear(DEFAULT_YEAR)
                 try {
                     val parsedDate = formatter.parseLocalDate(rawDate)
                     val dayOfMonth = parsedDate.dayOfMonth
                     @MonthInt val month = parsedDate.monthOfYear
                     val year = parsedDate.year
 
-                    return if (year == Months.NO_YEAR || removeYear) {
-                        Date.on(dayOfMonth, month)
+                    return if (year == DEFAULT_YEAR || removeYear) {
+                        dateOn(dayOfMonth, month)
                     } else {
-                        Date.on(dayOfMonth, month, year)
+                        dateOn(dayOfMonth, month, year)
                     }
 
                 } catch (e: IllegalArgumentException) {
@@ -48,7 +48,8 @@ class DateParser(private val errorTracker: CrashAndErrorTracker) {
         throw DateParseException("Unable to parse $rawDate")
     }
 
-    private fun isNotAboutInvalidFormat(e: IllegalArgumentException): Boolean = e.message?.notContains("Invalid format") ?: true
+    private fun isNotAboutInvalidFormat(e: IllegalArgumentException): Boolean = e.message?.notContains("Invalid format")
+            ?: true
 
     companion object {
 

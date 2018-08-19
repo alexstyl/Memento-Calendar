@@ -7,12 +7,11 @@ import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
 import com.alexstyl.specialdates.dailyreminder.log.LoggedEventsRepository
-import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.dateOn
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
-import java.net.URI
 
 class DailyReminderLoggerTest {
 
@@ -27,14 +26,14 @@ class DailyReminderLoggerTest {
 
     @Test
     fun noEvents() {
-        val lineOf = logger.lineOf(Date.on(20, 2, 1990), emptyModel())
+        val lineOf = logger.lineOf(dateOn(20, 2, 1990), emptyModel())
         assertThat(lineOf).isEqualTo("February 20 1990  –  Bank Holiday: None\nNamedays: None\nContacts: None")
     }
 
     @Test
     fun justContacts() {
         val viewModel = summaryModelOf("Alex Styl".asContact())
-        val lineOf = logger.lineOf(Date.on(20, 2, 1990), viewModel)
+        val lineOf = logger.lineOf(dateOn(20, 2, 1990), viewModel)
         assertThat(lineOf).isEqualTo("February 20 1990  –  Bank Holiday: None\nNamedays: None\nContacts: Alex Styl")
     }
 
@@ -56,5 +55,5 @@ class DailyReminderLoggerTest {
 }
 
 private fun String.asContact(): Contact {
-    return Contact(2, DisplayName.from("Alex Styl"), URI.create(""), ContactSource.SOURCE_DEVICE)
+    return Contact(2, DisplayName.from("Alex Styl"), "", ContactSource.SOURCE_DEVICE)
 }

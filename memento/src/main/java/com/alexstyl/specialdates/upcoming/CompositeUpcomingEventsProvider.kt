@@ -37,7 +37,7 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
     private fun calculateNamedaysBetween(timeDuration: TimePeriod): List<NamesInADate> {
         // TODO break start to end year
         val selectedLanguage = namedayUserSettings.selectedLanguage
-        val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year)
+        val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year!!)
 
         var indexDate = timeDuration.startingDate
         val toDate = timeDuration.endingDate

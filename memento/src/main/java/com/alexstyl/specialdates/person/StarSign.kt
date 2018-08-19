@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.person
 
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.Date.Companion.on
 import com.alexstyl.specialdates.date.Months.APRIL
 import com.alexstyl.specialdates.date.Months.AUGUST
 import com.alexstyl.specialdates.date.Months.DECEMBER
@@ -14,20 +13,21 @@ import com.alexstyl.specialdates.date.Months.MAY
 import com.alexstyl.specialdates.date.Months.NOVEMBER
 import com.alexstyl.specialdates.date.Months.OCTOBER
 import com.alexstyl.specialdates.date.Months.SEPTEMBER
+import com.alexstyl.specialdates.date.dateOn
 
 enum class StarSign(val emoji: String, val from: Date, val to: Date) {
-    AQUARIUS("\u2652", on(20, JANUARY), on(18, FEBRUARY)),
-    PISCES("\u2653", on(19, FEBRUARY), on(20, MARCH)),
-    ARIES("\u2648", on(21, MARCH), on(19, APRIL)),
-    TAURUS("\u2649", on(20, APRIL), on(20, MAY)),
-    GEMINI("\u264a", on(21, MAY), on(20, JUNE)),
-    CANCER("\u264b", on(21, JUNE), on(22, JULY)),
-    LEO("\u264c", on(23, JULY), on(22, AUGUST)),
-    VIRGO("\u264d", on(23, AUGUST), on(22, SEPTEMBER)),
-    LIBRA("\u264e", on(23, SEPTEMBER), on(22, OCTOBER)),
-    SCORPIO("\u264f", on(23, OCTOBER), on(21, NOVEMBER)),
-    SAGITTARIUS("\u2650", on(22, NOVEMBER), on(21, DECEMBER)),
-    CAPRICORN("\u2651", on(22, DECEMBER), on(19, JANUARY));
+    AQUARIUS("\u2652", dateOn(20, JANUARY), dateOn(18, FEBRUARY)),
+    PISCES("\u2653", dateOn(19, FEBRUARY), dateOn(20, MARCH)),
+    ARIES("\u2648", dateOn(21, MARCH), dateOn(19, APRIL)),
+    TAURUS("\u2649", dateOn(20, APRIL), dateOn(20, MAY)),
+    GEMINI("\u264a", dateOn(21, MAY), dateOn(20, JUNE)),
+    CANCER("\u264b", dateOn(21, JUNE), dateOn(22, JULY)),
+    LEO("\u264c", dateOn(23, JULY), dateOn(22, AUGUST)),
+    VIRGO("\u264d", dateOn(23, AUGUST), dateOn(22, SEPTEMBER)),
+    LIBRA("\u264e", dateOn(23, SEPTEMBER), dateOn(22, OCTOBER)),
+    SCORPIO("\u264f", dateOn(23, OCTOBER), dateOn(21, NOVEMBER)),
+    SAGITTARIUS("\u2650", dateOn(22, NOVEMBER), dateOn(21, DECEMBER)),
+    CAPRICORN("\u2651", dateOn(22, DECEMBER), dateOn(19, JANUARY));
 
     companion object {
         fun forDateOfBirth(birthday: Date): StarSign {
@@ -36,7 +36,7 @@ enum class StarSign(val emoji: String, val from: Date, val to: Date) {
                     return it
                 }
             }
-            throw IllegalStateException("Couldn't find starSign for " + birthday)
+            throw IllegalStateException("Couldn't find starSign for $birthday")
         }
     }
 }
