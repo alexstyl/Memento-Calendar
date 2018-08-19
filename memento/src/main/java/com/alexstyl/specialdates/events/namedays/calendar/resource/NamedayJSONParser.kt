@@ -31,7 +31,7 @@ object NamedayJSONParser {
                 dateToNames.addRecurringNameday(date, name)
             }
         }
-        return Namedays(namesToDate, dateToNames) // TODO make MapNamedaysList Immutable
+        return Namedays(namesToDate, dateToNames.asNamedaysList())
     }
 
     private fun String.toDate(): Date {

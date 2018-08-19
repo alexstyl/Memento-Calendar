@@ -17,6 +17,12 @@ class MapNamedaysList : MutableNamedaysList {
                 (recurringNamedays[dateOn(date.dayOfMonth, date.month)] ?: NoNamesInADate(date))
     }
 
+    private fun assertHasYear(date: Date) {
+        if (date.hasNoYear()) {
+            throw IllegalArgumentException("Must provide a date with a year to ask for Namedays")
+        }
+    }
+
     override fun addSpecificYearNameday(date: Date, name: String) {
         assertHasYear(date)
 
@@ -29,14 +35,8 @@ class MapNamedaysList : MutableNamedaysList {
         _names.add(name)
     }
 
-    private fun assertHasYear(date: Date) {
-        if (date.hasNoYear()) {
-            throw IllegalArgumentException("Must provide a date with a year to ask for Namedays")
-        }
-    }
-
     override fun addRecurringNameday(date: Date, name: String) {
-        assertReccuringNamedayHasNoYear(date)
+        assertRecurringNamedayHasNoYear(date)
 
         if (!recurringNamedays.containsKey(date)) {
             recurringNamedays[date] = ArrayNamesInADate(date, arrayListOf())
@@ -47,12 +47,14 @@ class MapNamedaysList : MutableNamedaysList {
         _names.add(name)
     }
 
-    private fun assertReccuringNamedayHasNoYear(date: Date) {
+    private fun assertRecurringNamedayHasNoYear(date: Date) {
         if (date.hasYear()) {
             throw IllegalArgumentException("Recurring Namedays must have no year. Passed $date")
         }
     }
 
     override val names
-        get() = _names.toMutableList()
+        get() = _names.toList()
+
+    fun asNamedaysList() = ImmutableNamedaysList(names, specificYearNamedays.toMap(), recurringNamedays.toMap())
 }
