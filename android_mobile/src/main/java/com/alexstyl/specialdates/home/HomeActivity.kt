@@ -16,6 +16,8 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
+import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler
+import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.donate.DonateMonitor
 import com.alexstyl.specialdates.donate.DonationPreferences
@@ -39,6 +41,8 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
     @Inject lateinit var donationPreferences: DonationPreferences
     @Inject lateinit var permissions: MementoPermissions
     @Inject lateinit var peopleEventsUpdater: PeopleEventsUpdater
+    @Inject lateinit var dailyReminderScheduler: DailyReminderScheduler
+    @Inject lateinit var dailyreminderUserSettings: DailyReminderUserSettings
     @Inject lateinit var donateMonitor: DonateMonitor
 
     private var searchTransitioner: SearchTransitioner? = null
@@ -143,6 +147,8 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
                 peopleEventsUpdater
                         .updateEvents()
                         .subscribe()
+                dailyReminderScheduler
+                        .scheduleReminderFor(dailyreminderUserSettings.getTimeSet())
             } else {
                 finishAffinity()
             }
