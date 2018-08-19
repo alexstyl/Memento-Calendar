@@ -58,15 +58,16 @@ class ReroutingActivity : Activity() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Version.hasOreo()) {
-            val contactsChannel = NotificationChannel(
+            val debugChannel = NotificationChannel(
                     DEBUG_CHANNEL,
                     "Debug",
                     NotificationManager.IMPORTANCE_MIN)
 
-            contactsChannel.enableLights(false)
-            contactsChannel.enableVibration(false)
+            debugChannel.enableLights(false)
+            debugChannel.enableVibration(false)
+            debugChannel.importance = NotificationManager.IMPORTANCE_MIN
 
-            notificationManager.createNotificationChannel(contactsChannel)
+            notificationManager.createNotificationChannel(debugChannel)
         }
 
         val debugPendingIntent = PendingIntent.getActivity(
