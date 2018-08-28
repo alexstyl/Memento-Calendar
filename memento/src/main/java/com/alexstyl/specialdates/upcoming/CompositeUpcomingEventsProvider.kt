@@ -24,8 +24,11 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
 
         val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
         builder.withContactEvents(contactEvents)
-        val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
-        builder.withBankHolidays(bankHolidays)
+
+        if (bankHolidaysUserSettings.isEnabled) {
+            val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
+            builder.withBankHolidays(bankHolidays)
+        }
 
         if (shouldLoadNamedays()) {
             val namedays = calculateNamedaysBetween(timePeriod)
@@ -50,10 +53,6 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
             indexDate += 1
         }
         return namedays
-    }
-
-    private fun shouldLoadBankHolidays(): Boolean {
-        return bankHolidaysUserSettings.isEnabled
     }
 
     private fun shouldLoadNamedays(): Boolean {
