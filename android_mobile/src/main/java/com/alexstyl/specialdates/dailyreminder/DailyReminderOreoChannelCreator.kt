@@ -11,8 +11,6 @@ import com.alexstyl.Logger
 import com.alexstyl.android.Version
 import com.alexstyl.android.toUri
 import com.alexstyl.specialdates.Strings
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 
 @TargetApi(Build.VERSION_CODES.O)
 class DailyReminderOreoChannelCreator(private val notificationManager: NotificationManager,
@@ -26,20 +24,16 @@ class DailyReminderOreoChannelCreator(private val notificationManager: Notificat
             return
         }
 
-        Observable.fromCallable {
-            val group = NotificationChannelGroup(NotificationConstants.DAILY_REMINDER_GROUP_ID, strings.dailyReminder())
-            if (notificationManager.notificationChannelGroups.contains(group)) {
-                logger.warning("Already contains Group '${group.name}'. Won't create new channels [$group]")
-                return@fromCallable
-            }
-            notificationManager.createNotificationChannelGroup(group)
-
-            createContactsChannel()
-            createNamedayChannel()
-            createBankHolidayChannel()
+        val group = NotificationChannelGroup(NotificationConstants.DAILY_REMINDER_GROUP_ID, strings.dailyReminder())
+        if (notificationManager.notificationChannelGroups.contains(group)) {
+            logger.warning("Already contains Group '${group.name}'. Won't create new channels [$group]")
+            return
         }
-                .subscribeOn(Schedulers.io())
-                .subscribe()
+        notificationManager.createNotificationChannelGroup(group)
+
+        createContactsChannel()
+        createNamedayChannel()
+        createBankHolidayChannel()
     }
 
     private fun createContactsChannel() {

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.alexstyl.resources.ResourcesModule
+import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator
+import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler
+import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.events.namedays.activity.NamedaysInADayModule
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsModule
 import com.alexstyl.specialdates.facebook.FacebookModule
@@ -18,6 +21,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType
 import com.nostra13.universalimageloader.utils.L
 import com.novoda.notils.logger.simple.Log
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import net.danlew.android.joda.JodaTimeAndroid
 import javax.inject.Inject
 
@@ -27,6 +32,11 @@ open class MementoApplication : MultiDexApplication() {
     @Inject lateinit var tracker: CrashAndErrorTracker
     @Inject lateinit var jobCreator: JobsCreator
     @Inject lateinit var permissions: MementoPermissions
+
+    @Inject lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
+    @Inject lateinit var dailyReminderScheduler: DailyReminderScheduler
+    @Inject lateinit var dailyReminderUserSettings: DailyReminderUserSettings
+    @Inject lateinit var mementoUserSettings: MementoUserSettings
 
     lateinit var applicationModule: AppComponent
 
@@ -52,6 +62,23 @@ open class MementoApplication : MultiDexApplication() {
         tracker.startTracking()
 
         JobManager.create(this).addJobCreator(jobCreator)
+
+
+        if (mementoUserSettings.isFirstTimeBooting()) {
+            initialiseMementoAsync()
+        }
+    }
+
+    private fun initialiseMementoAsync() {
+        Observable.fromCallable {
+            dailyReminderOreoChannelCreator.createDailyReminderChannel()
+            val timeSet = dailyReminderUserSettings.getTimeSet()
+            dailyReminderScheduler.scheduleReminderFor(timeSet)
+            mementoUserSettings.setFirstTimeBoot(false)
+            Log.d("Memento initialised")
+        }
+                .subscribeOn(Schedulers.io())
+                .subscribe()
     }
 
     protected open fun initialiseDependencies() {

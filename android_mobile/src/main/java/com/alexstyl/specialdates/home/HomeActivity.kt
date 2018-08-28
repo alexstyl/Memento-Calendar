@@ -16,7 +16,6 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
-import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler
 import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.date.Date
@@ -52,7 +51,6 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
     private var banner: DonationBannerView? = null
     private var actionButton: FloatingActionButton? = null
 
-    @Inject lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +113,6 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
             viewPager!!.currentItem = HomeActivity.PAGE_SETTINGS
         }
 
-        dailyReminderOreoChannelCreator.createDailyReminderChannel()
     }
 
 

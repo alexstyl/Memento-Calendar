@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 class ReroutingActivity : Activity() {
 
-
     @Inject lateinit var errorTracker: CrashAndErrorTracker
 
     override fun onCreate(savedInstanceState: Bundle?) {

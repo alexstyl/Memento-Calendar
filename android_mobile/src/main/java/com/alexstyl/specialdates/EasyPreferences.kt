@@ -17,6 +17,10 @@ class EasyPreferences private constructor(private val prefs: SharedPreferences, 
         return prefs.getBoolean(key(bool), defValue)
     }
 
+    fun getBoolean(key: String, defValue: Boolean): Boolean {
+        return prefs.getBoolean(key, defValue)
+    }
+
     fun getBoolean(@StringRes bool: Int, @BoolRes fallbackDefaultValue: Int): Boolean {
         val contains = prefs.contains(key(bool))
         return if (contains) {
@@ -26,6 +30,10 @@ class EasyPreferences private constructor(private val prefs: SharedPreferences, 
 
     fun setBoolean(@StringRes key: Int, value: Boolean) {
         prefs.edit().putBoolean(key(key), value).apply()
+    }
+
+    fun setBoolean(key: String, value: Boolean) {
+        prefs.edit().putBoolean(key, value).apply()
     }
 
     fun setString(@StringRes key: Int, value: String) {
@@ -89,8 +97,12 @@ class EasyPreferences private constructor(private val prefs: SharedPreferences, 
             return EasyPreferences(preferences, resources)
         }
 
-        fun createForPrivatePreferences(context: Context, @StringRes fileName: Int): EasyPreferences {
-            val preferences = context.getSharedPreferences(context.getString(fileName), Context.MODE_PRIVATE)
+        fun createForPrivatePreferences(context: Context, @StringRes fileNameKey: Int): EasyPreferences {
+            return createForPrivatePreferences(context, context.getString(fileNameKey))
+        }
+
+        fun createForPrivatePreferences(context: Context, fileName: String): EasyPreferences {
+            val preferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
             val resources = context.resources
             return EasyPreferences(preferences, resources)
         }
