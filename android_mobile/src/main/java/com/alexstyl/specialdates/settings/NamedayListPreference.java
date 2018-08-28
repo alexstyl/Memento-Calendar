@@ -58,7 +58,7 @@ public class NamedayListPreference extends ListPreference {
         setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                NamedayLocale namedayLocale = NamedayLocale.from((String) newValue);
+                NamedayLocale namedayLocale = NamedayLocale.Companion.from((String) newValue);
                 return onNamedayLocaleChangeListener.onNamedayChanged(namedayLocale);
             }
         });

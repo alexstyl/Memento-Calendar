@@ -2,12 +2,12 @@ package com.alexstyl.specialdates.events.namedays.calendar;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EasternNamedaysExtractor {
 
@@ -33,7 +33,7 @@ public class EasternNamedaysExtractor {
                 }
 
                 int date = nameday.getInt("toEaster");
-                ArrayList<String> celebratingNames = getVariationsFrom(variations);
+                List<String> celebratingNames = getVariationsFrom(variations);
                 EasternNameday easternDate = new EasternNameday(date, celebratingNames);
                 easternNamedays.add(easternDate);
             } catch (JSONException e) {

@@ -15,7 +15,7 @@ import org.junit.Test
 
 class NamedayJSONParserTest {
 
-    private var namedayJSON: NamedayJSON? = null
+    private lateinit var namedayJSON: NamedayJSON
 
     @Before
     @Throws(JSONException::class)

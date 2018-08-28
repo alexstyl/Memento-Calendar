@@ -42,7 +42,7 @@ class UserSettingsFragment : MementoPreferenceFragment() {
     @Inject lateinit var tracker: CrashAndErrorTracker
     @Inject lateinit var donateMonitor: DonateMonitor
     @Inject lateinit var eventPresenter: SettingsPresenter
-    @Inject lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
+
     @Inject lateinit var navigator: HomeNavigator
 
     private var donationService: DonationService? = null
@@ -63,8 +63,6 @@ class UserSettingsFragment : MementoPreferenceFragment() {
         applicationModule.inject(this)
 
         addPreferencesFromResource(R.xml.preference_main)
-
-        dailyReminderOreoChannelCreator.createDailyReminderChannel()
 
         appThemePreference = findPreference(R.string.key_app_theme_id)
         namedayLanguageListPreferences = findPreference(R.string.key_namedays_language)
