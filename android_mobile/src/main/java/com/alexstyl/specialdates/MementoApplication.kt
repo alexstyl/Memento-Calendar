@@ -63,7 +63,6 @@ open class MementoApplication : MultiDexApplication() {
 
         JobManager.create(this).addJobCreator(jobCreator)
 
-
         if (mementoUserSettings.isFirstTimeBooting()) {
             initialiseMementoAsync()
         }
@@ -87,18 +86,16 @@ open class MementoApplication : MultiDexApplication() {
         initImageLoader(this)
     }
 
-    companion object {
-        fun initImageLoader(context: Context) {
-            val config = ImageLoaderConfiguration.Builder(context)
-                    .threadPriority(Thread.MIN_PRIORITY)
-                    .threadPoolSize(10)
-                    .tasksProcessingOrder(QueueProcessingType.LIFO)
-                    .imageDecoder(NutraBaseImageDecoder(BuildConfig.DEBUG))
-                    .imageDownloader(AndroidContactsImageDownloader(context))
-            L.writeLogs(BuildConfig.DEBUG)
+    private fun initImageLoader(context: Context) {
+        val config = ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.MIN_PRIORITY)
+                .threadPoolSize(10)
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .imageDecoder(NutraBaseImageDecoder(BuildConfig.DEBUG))
+                .imageDownloader(AndroidContactsImageDownloader(context))
+        L.writeLogs(BuildConfig.DEBUG)
 
-            com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build())
-        }
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build())
     }
 }
 

@@ -182,8 +182,10 @@
             android:name="com.alexstyl.specialdates.wear.WearSyncService"
             android:exported="false" />
 
+        <receiver android:name=".BootReceiver" />
+
         <receiver android:name=".dailyreminder.DailyReminderReceiver" />
-        
+
         <receiver android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.LOCALE_CHANGED" />

@@ -26,8 +26,11 @@ class DailyReminderPreferences(private val preferences: EasyPreferences)
 
     override fun getRingtone(): URI {
         val selectedRingtone = preferences.getString(R.string.key_daily_reminder_ringtone, "")
-        return selectedRingtone?.toURI()
-                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toURI()
+        if (selectedRingtone.isEmpty()) {
+            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toURI()
+        } else {
+            return selectedRingtone.toURI()
+        }
     }
 
     override fun isVibrationEnabled(): Boolean = preferences.getBoolean(R.string.key_daily_reminder_vibrate_enabled, false)
