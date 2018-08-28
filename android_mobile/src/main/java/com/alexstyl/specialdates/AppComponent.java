@@ -145,4 +145,6 @@ public interface AppComponent {
     void inject(ReroutingActivity reroutingActivity);
 
     void inject(DailyReminderReceiver dailyReminderReceiver);
+
+    void inject(BootReceiver bootReceiver);
 }
