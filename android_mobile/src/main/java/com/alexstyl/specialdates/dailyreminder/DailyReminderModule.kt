@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.dailyreminder
 
+import android.app.AlarmManager
 import android.app.NotificationManager
 import android.content.Context
 import com.alexstyl.Logger
@@ -94,7 +95,8 @@ class DailyReminderModule {
     }
 
     @Provides
-    fun scheduler(): DailyReminderScheduler {
-        return AndroidDailyReminderScheduler()
+    fun scheduler(context: Context, alarmManager:AlarmManager): DailyReminderScheduler {
+//        return AndroidDailyReminderScheduler()
+        return AlarmManagerDailyReminderScheduler(context, alarmManager)
     }
 }

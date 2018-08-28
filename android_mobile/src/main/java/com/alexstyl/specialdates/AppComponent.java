@@ -8,6 +8,7 @@ import com.alexstyl.specialdates.addevent.ui.ContactSuggestionView;
 import com.alexstyl.specialdates.analytics.AnalyticsModule;
 import com.alexstyl.specialdates.contact.ContactsModule;
 import com.alexstyl.specialdates.dailyreminder.DailyReminderModule;
+import com.alexstyl.specialdates.dailyreminder.DailyReminderReceiver;
 import com.alexstyl.specialdates.dailyreminder.actions.ContactActionsModule;
 import com.alexstyl.specialdates.dailyreminder.actions.PersonActionsActivity;
 import com.alexstyl.specialdates.date.DateModule;
@@ -49,6 +50,8 @@ import com.alexstyl.specialdates.upcoming.widget.list.WidgetRouterActivity;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity;
 import com.alexstyl.specialdates.wear.WearSyncService;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -142,4 +145,6 @@ public interface AppComponent {
     void inject(DonationBannerView donationBannerView);
 
     void inject(ReroutingActivity reroutingActivity);
+
+    void inject(@NotNull DailyReminderReceiver dailyReminderReceiver);
 }

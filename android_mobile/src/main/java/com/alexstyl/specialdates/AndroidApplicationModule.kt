@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates
 
+import android.app.AlarmManager
 import android.app.NotificationManager
 import android.appwidget.AppWidgetManager
 import android.content.ContentResolver
@@ -93,5 +94,10 @@ internal class AndroidApplicationModule(private val context: Context) {
     @Provides
     fun mementoSettings(context: Context): MementoUserSettings {
         return AndroidMementoUserSettings.create(context)
+    }
+
+    @Provides
+    fun alarmManager(context: Context): AlarmManager {
+        return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 }

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates
 
+import android.support.annotation.IntRange
 import org.joda.time.LocalTime
 
 data class TimeOfDay(private val dateTime: LocalTime) {
@@ -36,9 +37,20 @@ data class TimeOfDay(private val dateTime: LocalTime) {
 
     fun addMinutes(minutes: Int) = TimeOfDay(dateTime.plusMinutes(minutes))
 
+    operator fun compareTo(other: TimeOfDay) =
+            if (this.hours == other.hours) {
+                this.minutes - other.minutes
+            } else {
+                this.hours - other.hours
+            }
+
     companion object {
-        fun at(hour: Int, minute: Int): TimeOfDay {
+        fun at(@IntRange(from = 0, to = 23) hour: Int, @IntRange(from = 0, to = 59) minute: Int): TimeOfDay {
             return TimeOfDay(LocalTime(hour, minute))
+        }
+
+        fun now(): TimeOfDay {
+            return TimeOfDay(LocalTime.now())
         }
 
         private const val ZERO = "0"

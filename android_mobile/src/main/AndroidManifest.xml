@@ -242,5 +242,6 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="default_channel_id" />
 
+        <receiver android:name=".dailyreminder.DailyReminderReceiver" />
     </application>
 </manifest>
