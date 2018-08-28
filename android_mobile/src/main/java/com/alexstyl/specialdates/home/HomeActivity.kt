@@ -16,6 +16,7 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.analytics.Screen
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
+import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.donate.DonateMonitor
 import com.alexstyl.specialdates.donate.DonationPreferences
@@ -47,6 +48,8 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
     private var banner: DonationBannerView? = null
     private var actionButton: FloatingActionButton? = null
 
+    @Inject lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -68,7 +71,6 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
         viewPager = findViewById(R.id.home_viewpager)
         val adapter = HomeViewPagerAdapter(supportFragmentManager)
         viewPager!!.adapter = adapter
-        viewPager!!.offscreenPageLimit = adapter.count
 
         val content = findViewById<LinearLayout>(R.id.home_content)
         val toolbarHolder = findViewById<FrameLayout>(R.id.home_toolbar_holder)
@@ -108,6 +110,8 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
         if (ThemedMementoActivity.ACTION_UPDATE_THEME == intent.action) {
             viewPager!!.currentItem = HomeActivity.PAGE_SETTINGS
         }
+
+        dailyReminderOreoChannelCreator.createDailyReminderChannel()
     }
 
 

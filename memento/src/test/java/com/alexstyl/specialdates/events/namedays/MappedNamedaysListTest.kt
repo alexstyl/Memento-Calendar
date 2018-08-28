@@ -6,7 +6,7 @@ import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
-class NamedaysListTest {
+class MappedNamedaysListTest {
 
     @Before
     fun setUp() {
@@ -14,21 +14,12 @@ class NamedaysListTest {
     }
 
     @Test
-    fun whenNoYearSpecified_thenRecurringEventIsReturned() {
-        val dateWithNoYear = dateOn(4, FIXED_MONTH)
-
-        val results = namedays.getNamedaysFor(dateWithNoYear)
-
-        assertThat(results.names[0]).isEqualTo(RECURRING_NAMEDAY)
-    }
-
-    @Test
     fun whenNoYearSpecified_thenFixedYearEventIsNotReturned() {
-        val dateWithNoYear = dateOn(1, FIXED_MONTH)
+        val namedays = MapNamedaysList()
 
-        val results = namedays.getNamedaysFor(dateWithNoYear)
+        val actualNamedays = namedays.getNamedaysFor(dateOn(1, FIXED_MONTH, 2018))
 
-        assertThat(results.names).isEmpty()
+        assertThat(actualNamedays.names).isEmpty()
     }
 
     @Test
@@ -56,16 +47,15 @@ class NamedaysListTest {
         private const val FIXED_YEAR = 2015
         private const val FIXED_MONTH = Months.JANUARY
 
-        private val namedays = NamedaysList()
+        private val namedays = MapNamedaysList()
 
         private fun populateNamedays() {
-            namedays.addNameday(dateOn(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
-            namedays.addNameday(dateOn(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
-            namedays.addNameday(dateOn(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
-            namedays.addNameday(dateOn(4, FIXED_MONTH), RECURRING_NAMEDAY)
-            namedays.addNameday(dateOn(5, FIXED_MONTH), RECURRING_NAMEDAY)
+            namedays.addSpecificYearNameday(dateOn(1, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
+            namedays.addSpecificYearNameday(dateOn(2, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
+            namedays.addSpecificYearNameday(dateOn(3, FIXED_MONTH, FIXED_YEAR), FIXED_YEAR_NAMEDAY)
 
+            namedays.addRecurringNameday(dateOn(4, FIXED_MONTH), RECURRING_NAMEDAY)
+            namedays.addRecurringNameday(dateOn(5, FIXED_MONTH), RECURRING_NAMEDAY)
         }
     }
-
 }

@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.date
 
-data class TimePeriod private constructor(val startingDate: Date, val endingDate: Date) {
+data class TimePeriod constructor(val startingDate: Date, val endingDate: Date) {
 
     fun containsDate(date: Date): Boolean {
         return DateComparator.INSTANCE.compare(startingDate, date) <= 0 && DateComparator.INSTANCE.compare(date, endingDate) <= 0

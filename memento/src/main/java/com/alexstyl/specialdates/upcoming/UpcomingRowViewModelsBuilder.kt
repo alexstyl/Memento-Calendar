@@ -76,12 +76,10 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
     }
 
     private fun getPeopleEventsOn(indexDate: AnnualDate): List<ContactEvent> {
-        val contactEvent = contactEvents.get(indexDate)
+        val contactEvent = contactEvents[indexDate]
         if (contactEvent == null) {
             return NO_CONTACT_EVENTS
-        } else {
-            return contactEvent
-        }
+        } else return contactEvent
     }
 
     private fun noEventsArePresent(): Boolean = contactEvents.isEmpty && namedays.isEmpty() && bankHolidays.isEmpty()
@@ -89,8 +87,8 @@ class UpcomingRowViewModelsBuilder(private val duration: TimePeriod,
     private fun containsAnyEventsOn(date: AnnualDate): Boolean =
             getPeopleEventsOn(date).isNotEmpty() || namedays.containsKey(date) || bankHolidays.containsKey(date)
 
-    companion object {
 
+    companion object {
         private val NO_CELEBRATIONS = emptyList<UpcomingRowViewModel>()
         private val NO_CONTACT_EVENTS = emptyList<ContactEvent>()
     }

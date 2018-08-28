@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.events.namedays.calendar.resource
 
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.events.namedays.NameCelebrations
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator
 
@@ -14,9 +13,9 @@ internal class GreekSpecialNamedays private constructor(private val greekNameday
         return greekNamedays.getNamedayByDate(date)
     }
 
-    override fun getNamedaysFor(name: String, year: Int): NameCelebrations {
-        return greekNamedays.getNamedaysFor(name, year)
-    }
+    override fun getNamedaysFor(name: String, year: Int) =
+            greekNamedays.getNamedaysFor(name, year)
+
 
     companion object {
 

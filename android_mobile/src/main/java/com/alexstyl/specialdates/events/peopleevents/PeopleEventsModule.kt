@@ -27,7 +27,11 @@ class PeopleEventsModule(private val context: Context) {
     @Provides
     fun peopleEventsProvider(peopleDynamicNamedaysProvider: PeopleDynamicNamedaysProvider,
                              androidPeopleEventsProvider: AndroidPeopleEventsProvider): PeopleEventsProvider {
-        return CompositePeopleEventsProvider(listOf(peopleDynamicNamedaysProvider, androidPeopleEventsProvider))
+        return CompositePeopleEventsProvider(
+                listOf(
+                        androidPeopleEventsProvider,
+                        peopleDynamicNamedaysProvider
+                ))
     }
 
     @Provides

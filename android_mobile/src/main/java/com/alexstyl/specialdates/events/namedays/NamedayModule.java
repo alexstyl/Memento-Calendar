@@ -10,7 +10,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.AndroidJSONRe
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayJSONProvider;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.RomanianEasterSpecialCalculator;
-import com.alexstyl.specialdates.events.namedays.calendar.resource.SpecialNamedaysHandlerFactory;
 
 import javax.inject.Singleton;
 
@@ -36,16 +35,13 @@ public class NamedayModule {
         return new OrthodoxEasterCalculator();
     }
 
-    @Provides
-    SpecialNamedaysHandlerFactory handlerFactory(OrthodoxEasterCalculator easterCalculator,
-                                                 RomanianEasterSpecialCalculator romanianEasterCalculator) {
-        return new SpecialNamedaysHandlerFactory(easterCalculator, romanianEasterCalculator);
-    }
 
     @Provides
     @Singleton
-    NamedayCalendarProvider provider(NamedayJSONProvider namedayJSONProvider, SpecialNamedaysHandlerFactory factory) {
-        return new NamedayCalendarProvider(namedayJSONProvider, factory);
+    NamedayCalendarProvider provider(NamedayJSONProvider namedayJSONProvider,
+                                     OrthodoxEasterCalculator orthodoxEasterCalculator,
+                                     RomanianEasterSpecialCalculator romanianEasterSpecialCalculator) {
+        return new NamedayCalendarProvider(namedayJSONProvider, orthodoxEasterCalculator, romanianEasterSpecialCalculator);
     }
 
     @Provides
