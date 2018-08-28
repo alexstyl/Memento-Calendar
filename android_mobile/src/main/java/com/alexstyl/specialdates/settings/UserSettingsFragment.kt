@@ -9,7 +9,6 @@ import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
-import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator
 import com.alexstyl.specialdates.donate.AndroidDonationConstants
 import com.alexstyl.specialdates.donate.AndroidDonationService
 import com.alexstyl.specialdates.donate.DonateMonitor
@@ -95,7 +94,7 @@ class UserSettingsFragment : MementoPreferenceFragment() {
             }
         })
         setupRestoreDonation(restorePreference!!)
-        eventPresenter.startMonitoring()
+        eventPresenter.startPresenting()
         reattachThemeDialogIfNeeded()
     }
 
