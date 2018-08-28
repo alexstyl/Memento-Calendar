@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.alexstyl.specialdates.MementoApplication
+import com.alexstyl.specialdates.date.getDateExtra
 import com.alexstyl.specialdates.date.todaysDate
 import javax.inject.Inject
 
@@ -17,7 +18,7 @@ class DailyReminderReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as MementoApplication).applicationModule.inject(this)
-        val date = todaysDate()
+        val date = intent.getDateExtra(todaysDate())
 
         val view = NotificationDailyReminderView(notifier)
         presenter.startPresentingInto(view, date)

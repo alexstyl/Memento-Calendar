@@ -12,7 +12,6 @@ fun Intent.putExtraDate(date: Date): Intent {
             .putExtra(EXTRA_YEAR, date.year)
 }
 
-
 fun Intent.getDateExtraOrThrow(): Date {
     val dayOfMonth = getExtraOrThrow(this, EXTRA_DAY_OF_MONTH)
     @MonthInt val month = getExtraOrThrow(this, EXTRA_MONTH)
@@ -28,3 +27,14 @@ private fun getExtraOrThrow(intent: Intent, extra: String): Int {
     return intExtra
 }
 
+
+fun Intent.getDateExtra(fallback: Date): Date {
+    val extras = this.extras
+    if (extras.containsKey(EXTRA_DAY_OF_MONTH) &&
+            extras.containsKey(EXTRA_MONTH) &&
+            extras.containsKey(EXTRA_YEAR)) {
+        return getDateExtraOrThrow()
+    } else {
+        return fallback
+    }
+}

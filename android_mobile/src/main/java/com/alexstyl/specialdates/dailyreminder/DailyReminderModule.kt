@@ -95,8 +95,7 @@ class DailyReminderModule {
     }
 
     @Provides
-    fun scheduler(context: Context, alarmManager:AlarmManager): DailyReminderScheduler {
-//        return AndroidDailyReminderScheduler()
-        return AlarmManagerDailyReminderScheduler(context, alarmManager)
+    fun scheduler(context: Context, alarmManager: AlarmManager): DailyReminderScheduler {
+        return AndroidDailyReminderScheduler(context, alarmManager)
     }
 }

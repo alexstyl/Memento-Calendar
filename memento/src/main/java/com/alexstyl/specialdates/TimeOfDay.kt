@@ -35,8 +35,6 @@ data class TimeOfDay(private val dateTime: LocalTime) {
         return dateTime.millisOfDay.toLong()
     }
 
-    fun addMinutes(minutes: Int) = TimeOfDay(dateTime.plusMinutes(minutes))
-
     operator fun compareTo(other: TimeOfDay) =
             if (this.hours == other.hours) {
                 this.minutes - other.minutes

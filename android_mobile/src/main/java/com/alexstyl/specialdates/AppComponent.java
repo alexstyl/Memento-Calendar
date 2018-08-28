@@ -51,8 +51,6 @@ import com.alexstyl.specialdates.upcoming.widget.today.TodayAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity;
 import com.alexstyl.specialdates.wear.WearSyncService;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -146,5 +144,5 @@ public interface AppComponent {
 
     void inject(ReroutingActivity reroutingActivity);
 
-    void inject(@NotNull DailyReminderReceiver dailyReminderReceiver);
+    void inject(DailyReminderReceiver dailyReminderReceiver);
 }

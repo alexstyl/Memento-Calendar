@@ -11,14 +11,13 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.DisplayName
+import com.alexstyl.specialdates.dailyreminder.AndroidDailyReminderDebugLauncher
 import com.alexstyl.specialdates.dailyreminder.ContactEventNotificationViewModel
-import com.alexstyl.specialdates.dailyreminder.DailyReminderJob
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
 import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModel
 import com.alexstyl.specialdates.dailyreminder.DailyReminderViewModelFactory
 import com.alexstyl.specialdates.dailyreminder.NamedaysNotificationViewModel
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
-import com.alexstyl.specialdates.dailyreminder.putDate
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
@@ -29,9 +28,6 @@ import com.alexstyl.specialdates.events.namedays.calendar.ImmutableNamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import com.alexstyl.specialdates.toast
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
-import com.evernote.android.job.DailyJob
-import com.evernote.android.job.JobRequest
-import com.evernote.android.job.util.support.PersistableBundleCompat
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -44,6 +40,9 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
     @Inject lateinit var dateLabelCreator: DateLabelCreator
     @Inject lateinit var dailyReminderLogger: DailyReminderLogger
 
+    private val dailyReminderLauncher by lazy {
+        AndroidDailyReminderDebugLauncher(context!!)
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(paramBundle: Bundle?) {
@@ -128,16 +127,9 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
         showDailyReminderLogs()
     }
 
-    private fun triggerDailyReminderOn(date: Date?) {
-        val builder = JobRequest.Builder(DailyReminderJob.TAG)
-        if (date != null) {
-            builder.addExtras(
-                    PersistableBundleCompat()
-                            .putDate(date)
-            )
-        }
-        DailyJob.startNowOnce(builder)
 
+    private fun triggerDailyReminderOn(date: Date) {
+        dailyReminderLauncher.launchForDate(date)
         toast("Daily Reminder Triggered")
     }
 

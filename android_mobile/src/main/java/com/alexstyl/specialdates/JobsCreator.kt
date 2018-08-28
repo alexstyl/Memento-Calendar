@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates
 
-import com.alexstyl.specialdates.dailyreminder.DailyReminderJob
 import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
 import com.alexstyl.specialdates.dailyreminder.DailyReminderPresenter
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
@@ -22,7 +21,6 @@ class JobsCreator(private val peopleEventsUpdater: PeopleEventsUpdater,
     override fun create(tag: String): Job? =
             when (tag) {
                 PeopleEventsRefreshJob.TAG -> PeopleEventsRefreshJob(peopleEventsUpdater, permissions)
-                DailyReminderJob.TAG -> DailyReminderJob(presenter, notifier)
                 FacebookFriendsJob.TAG -> FacebookFriendsJob(facebookFriendsUpdater, tracker)
                 else -> {
                     null

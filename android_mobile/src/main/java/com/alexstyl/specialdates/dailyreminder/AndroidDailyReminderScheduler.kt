@@ -1,22 +1,36 @@
 package com.alexstyl.specialdates.dailyreminder
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.support.v4.app.AlarmManagerCompat
 import com.alexstyl.specialdates.TimeOfDay
-import com.evernote.android.job.DailyJob
-import com.evernote.android.job.JobManager
-import com.evernote.android.job.JobRequest
+import com.alexstyl.specialdates.TimeOfDay.Companion.now
+import com.alexstyl.specialdates.date.todaysDate
 
 
-class AndroidDailyReminderScheduler : DailyReminderScheduler {
+class AndroidDailyReminderScheduler(private val context: Context,
+                                    private val alarmManager: AlarmManager)
+    : DailyReminderScheduler {
 
     override fun scheduleReminderFor(timeOfDay: TimeOfDay) {
-        DailyJob.schedule(JobRequest.Builder(DailyReminderJob.TAG),
-                timeOfDay.toMillis(),
-                timeOfDay.addMinutes(10).toMillis()
-        )
+        val timeSet = if (timeOfDay > now()) {
+            todaysDate().toMillis() + timeOfDay.toMillis()
+        } else {
+            todaysDate().addDay(1).toMillis() + timeOfDay.toMillis()
+        }
+
+        AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, timeSet, pendingIntent())
     }
 
     override fun cancelReminder() {
-        JobManager.instance().cancelAllForTag(DailyReminderJob.TAG)
+        alarmManager.cancel(pendingIntent())
+    }
+
+    private fun pendingIntent(): PendingIntent {
+        val intent = Intent(context, DailyReminderReceiver::class.java)
+        return PendingIntent.getBroadcast(context, 0, intent, 0)
     }
 }
 
