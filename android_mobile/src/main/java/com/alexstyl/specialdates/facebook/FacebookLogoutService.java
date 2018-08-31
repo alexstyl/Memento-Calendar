@@ -44,7 +44,7 @@ class FacebookLogoutService {
     private Action refreshAllUI() {
         return new Action() {
             @Override
-            public void run() throws Exception {
+            public void run() {
                 refresher.refreshViews();
             }
         };
@@ -53,8 +53,8 @@ class FacebookLogoutService {
     private Action clearAllUserPresence() {
         return new Action() {
             @Override
-            public void run() throws Exception {
-                preferences.store(UserCredentials.ANNONYMOUS);
+            public void run() {
+                preferences.store(UserCredentials.ANONYMOUS);
                 persister.removeAllFriends();
             }
         };

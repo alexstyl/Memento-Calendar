@@ -7,8 +7,7 @@ import com.alexstyl.specialdates.events.namedays.NamesInADate
 
 interface DailyReminderViewModelFactory {
     fun viewModelFor(contact: Contact, events: List<ContactEvent>): ContactEventNotificationViewModel
-    fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel // TODO is this needed? Maybe for backcompat
-
+    fun summaryOf(viewModels: List<ContactEventNotificationViewModel>): SummaryNotificationViewModel
     fun viewModelFor(namedays: NamesInADate): NamedaysNotificationViewModel
     fun viewModelFor(bankHoliday: BankHoliday): BankHolidayNotificationViewModel
 }

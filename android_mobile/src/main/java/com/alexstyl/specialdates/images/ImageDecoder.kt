@@ -1,14 +1,14 @@
 package com.alexstyl.specialdates.images
 
 import android.graphics.Bitmap
+import com.alexstyl.specialdates.contact.ImageURL
 import com.novoda.notils.logger.simple.Log
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.net.URI
 
 class ImageDecoder(private val imageLoader: ImageLoader) {
 
-    fun decodeFrom(imageUri: URI): DecodedImage? {
+    fun decodeFrom(imageUri: ImageURL): DecodedImage? {
         val bitmapOptional = imageLoader.load(imageUri).withSize(700, 700).synchronously()
         return if (bitmapOptional.isPresent) {
             decodeFrom(bitmapOptional.get())

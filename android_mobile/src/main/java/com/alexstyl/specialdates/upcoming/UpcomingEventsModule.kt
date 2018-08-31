@@ -4,20 +4,16 @@ import android.content.Context
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.EasyPreferences
-import com.alexstyl.specialdates.JobsCreator
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
-import com.alexstyl.specialdates.dailyreminder.DailyReminderNotifier
-import com.alexstyl.specialdates.dailyreminder.DailyReminderPresenter
-import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsUpdater
 import com.alexstyl.specialdates.facebook.FacebookUserSettings
 import com.alexstyl.specialdates.home.HomeNavigator
 import com.alexstyl.specialdates.permissions.MementoPermissions
@@ -41,7 +37,7 @@ class UpcomingEventsModule {
                                eventsProvider: PeopleEventsProvider,
                                bankHolidaysUserSettings: BankHolidaysUserSettings,
                                greekBankHolidaysCalculator: GreekBankHolidaysCalculator): UpcomingEventsProvider {
-        val date = Date.today()
+        val date = todaysDate()
         return CompositeUpcomingEventsProvider(
                 eventsProvider,
                 namedayUserSettings,
@@ -67,13 +63,8 @@ class UpcomingEventsModule {
     }
 
     @Provides
-    fun jobCreator(updater: PeopleEventsUpdater, presenter: DailyReminderPresenter, notifier: DailyReminderNotifier): JobsCreator {
-        return JobsCreator(updater, presenter, notifier)
-    }
-
-    @Provides
     fun presenter(permissionsChecker: MementoPermissions, provider: UpcomingEventsProvider): UpcomingEventsPresenter {
-        val today = Date.today()
+        val today = todaysDate()
         return UpcomingEventsPresenter(
                 today,
                 permissionsChecker,

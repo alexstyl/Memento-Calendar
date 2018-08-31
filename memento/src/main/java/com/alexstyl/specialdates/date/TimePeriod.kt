@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.date
 
-data class TimePeriod private constructor(val startingDate: Date, val endingDate: Date) {
+data class TimePeriod constructor(val startingDate: Date, val endingDate: Date) {
 
     fun containsDate(date: Date): Boolean {
         return DateComparator.INSTANCE.compare(startingDate, date) <= 0 && DateComparator.INSTANCE.compare(date, endingDate) <= 0
@@ -16,7 +16,7 @@ data class TimePeriod private constructor(val startingDate: Date, val endingDate
         }
 
         fun aYearFromNow(): TimePeriod {
-            val today = Date.today()
+            val today = todaysDate()
             val endDate = today.addDay(364)
             return TimePeriod.between(today, endDate)
         }

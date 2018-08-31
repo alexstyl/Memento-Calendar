@@ -1,10 +1,9 @@
 package com.alexstyl.specialdates
 
+import android.support.annotation.IntRange
 import org.joda.time.LocalTime
 
 data class TimeOfDay(private val dateTime: LocalTime) {
-
-    constructor(hour: Int, minute: Int) : this(LocalTime(hour, minute))
 
     val hours: Int
         get() = dateTime.hourOfDay
@@ -36,17 +35,25 @@ data class TimeOfDay(private val dateTime: LocalTime) {
         return dateTime.millisOfDay.toLong()
     }
 
-    fun isAfter(timeOfDay: TimeOfDay): Boolean {
-        return dateTime.isAfter(timeOfDay.dateTime)
-    }
+    operator fun compareTo(other: TimeOfDay) =
+            if (this.hours == other.hours) {
+                this.minutes - other.minutes
+            } else {
+                this.hours - other.hours
+            }
 
     companion object {
-
-        private const val ZERO = "0"
-        private const val SEPARATOR = ":"
+        fun at(@IntRange(from = 0, to = 23) hour: Int, @IntRange(from = 0, to = 59) minute: Int): TimeOfDay {
+            return TimeOfDay(LocalTime(hour, minute))
+        }
 
         fun now(): TimeOfDay {
             return TimeOfDay(LocalTime.now())
         }
+
+        private const val ZERO = "0"
+        private const val SEPARATOR = ":"
+
+
     }
 }

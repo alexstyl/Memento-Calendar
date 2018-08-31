@@ -31,14 +31,4 @@
       android:src="@drawable/ic_close_black" />
   </LinearLayout>
 
-  <android.support.v7.widget.AppCompatButton
-    android:id="@+id/banner_support_holder"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="56dp"
-    android:text="@string/support_app"
-    android:textColor="?primaryTextColorInverse"
-    android:visibility="gone"
-    app:backgroundTint="?colorAccent" />
-
 </merge>

@@ -28,22 +28,18 @@ import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.MementoActivity
 import javax.inject.Inject
 
 class UpcomingWidgetConfigureActivity : MementoActivity() {
 
-    lateinit var luminanceAnalyzer: LuminanceAnalyzer
-        @Inject set
-    lateinit var preferences: UpcomingWidgetPreferences
-        @Inject set
-    lateinit var labelCreator: DateLabelCreator
-        @Inject set
-    lateinit var todayUpcomingEventsView: TodayUpcomingEventsView
-        @Inject set
-    lateinit var permission: MementoPermissions
-        @Inject set
+    @Inject lateinit var luminanceAnalyzer: LuminanceAnalyzer
+    @Inject lateinit var preferences: UpcomingWidgetPreferences
+    @Inject lateinit var labelCreator: DateLabelCreator
+    @Inject lateinit var todayUpcomingEventsView: TodayUpcomingEventsView
+    @Inject lateinit var permission: MementoPermissions
 
     private lateinit var previewLayout: UpcomingWidgetPreviewLayout
     private lateinit var configurationPanel: UpcomingWidgetConfigurationPanel
@@ -198,7 +194,7 @@ class UpcomingWidgetConfigureActivity : MementoActivity() {
     override fun onStart() {
         super.onStart()
 
-        val title = labelCreator.createWithYearPreferred(Date.today())
+        val title = labelCreator.createWithYearPreferred(todaysDate())
         previewLayout.setTitle(title)
         previewLayout.setSubtitle(R.string.demo_contact_name)
 

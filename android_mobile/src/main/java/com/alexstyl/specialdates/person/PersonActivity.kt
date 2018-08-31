@@ -36,16 +36,11 @@ import javax.inject.Inject
 
 class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
 
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var imageLoader: ImageLoader
-        @Inject set
-    lateinit var contactsProvider: ContactsProvider
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var presenter: PersonPresenter
-        @Inject set
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var contactsProvider: ContactsProvider
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var presenter: PersonPresenter
 
     private var navigator: PersonDetailsNavigator? = null
     private var displayingContact = Optional.absent<Contact>()
@@ -62,7 +57,7 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
         analytics.trackScreen(Screen.PERSON)
-        navigator = PersonDetailsNavigator(ExternalNavigator(this, analytics, tracker))
+        navigator = PersonDetailsNavigator(ExternalNavigator(this, analytics, tracker, attributeExtractor))
         val toolbar = Views.findById<MementoToolbar>(this, R.id.person_toolbar)
         if (wasCalledFromMemento()) {
             toolbar.displayNavigationIconAsUp()
@@ -109,7 +104,7 @@ class PersonActivity : ThemedMementoActivity(), BottomSheetIntentListener {
         super.onResume()
         displayingContact = extractContactFrom(intent)
         if (displayingContact.isPresent) {
-            presenter.startPresentingInto(personView, displayingContact.get(), AndroidContactActions(this))
+            presenter.startPresentingInto(personView, displayingContact.get(), AndroidContactActions(this, attributeExtractor))
         } else {
             tracker.track(IllegalArgumentException("No contact to display"))
             finish()

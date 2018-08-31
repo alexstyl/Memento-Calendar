@@ -4,23 +4,19 @@ import com.alexstyl.gsc.Sound
 import com.alexstyl.gsc.SoundRules
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
+import com.alexstyl.specialdates.events.namedays.NoNameCelebrations
+import com.alexstyl.specialdates.events.namedays.ArrayNameCelebrations
+import com.alexstyl.specialdates.events.namedays.MutableNameCelebrations
 
 
 class SoundNode private constructor(private val keySound: Sound?) : Node {
-    private val nodes = ArrayList<SoundNode>() // a b c d
-    private var dates: NameCelebrations? = null // Name
-
     constructor() : this(null)
 
+    private val nodes = ArrayList<SoundNode>() // a b c d
+    private var dates: MutableNameCelebrations? = null
 
-    /**
-     * Clears the current node, by removing the NamedateBundle associated to this Node
-     * and the links to all the other nodes from this one.
-     */
-    override fun clear() {
-        nodes.clear()
-        dates = null
-    }
+
+
 
     /**
      * Adds the given date for the given word
@@ -33,7 +29,7 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
     private fun addDate(word: String, date: Date, iterator: Iterator<Sound?>) {
         if (!iterator.hasNext()) {
             if (dates == null) {
-                dates = NameCelebrations(word)
+                dates = ArrayNameCelebrations(word)
             }
             dates!!.addDate(date)
         } else {
@@ -70,13 +66,13 @@ class SoundNode private constructor(private val keySound: Sound?) : Node {
                     }
                 }
             }
-            return NameCelebrations(name)
+            return NoNameCelebrations(name)
         }
     }
 
     private fun getNameCelebrations(name: String): NameCelebrations {
         return if (dates == null) {
-            NameCelebrations(name)
+            NoNameCelebrations(name)
         } else {
             dates!!
         }

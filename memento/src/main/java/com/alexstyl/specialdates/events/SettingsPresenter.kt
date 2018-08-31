@@ -14,10 +14,10 @@ class SettingsPresenter(private val peopleEventsUpdater: PeopleEventsUpdater,
     private var disposable: Disposable? = null
 
 
-    fun startMonitoring() {
+    fun startPresenting() {
         subject
-                .observeOn(workScheduler)
                 .flatMap { peopleEventsUpdater.updateEvents() }
+                .subscribeOn(workScheduler)
                 .subscribe()
     }
 

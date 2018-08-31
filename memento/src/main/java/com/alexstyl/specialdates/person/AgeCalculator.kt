@@ -21,6 +21,6 @@ class AgeCalculator(private val today: Date) {
         return age.toString()
     }
 
-    private fun yearsAfter(dateOfBirth: Date) = today.year - dateOfBirth.year
+    private fun yearsAfter(dateOfBirth: Date) = today.year!! - dateOfBirth.year!!
 
 }

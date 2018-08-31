@@ -1,8 +1,5 @@
 package com.alexstyl.specialdates.debug;
 
-import android.content.Context;
-
-import com.alexstyl.specialdates.dailyreminder.DailyReminderDebugPreferences;
 import com.alexstyl.specialdates.events.namedays.NamedayDatabaseRefresher;
 import com.alexstyl.specialdates.events.peopleevents.DebugPeopleEventsUpdater;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsStaticEventsRefresher;
@@ -19,8 +16,4 @@ public class DebugModule {
         return new DebugPeopleEventsUpdater(peopleEventsStaticEventsRefresher, namedayDatabaseRefresher);
     }
 
-    @Provides
-    DailyReminderDebugPreferences debugPreferences(Context context) {
-        return DailyReminderDebugPreferences.newInstance(context);
-    }
 }

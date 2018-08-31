@@ -21,7 +21,7 @@ import com.alexstyl.specialdates.upcoming.view.ExposedSearchToolbar;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-final class SearchTransitioner {
+public final class SearchTransitioner {
 
     private final Activity activity;
     private final HomeNavigator navigator;

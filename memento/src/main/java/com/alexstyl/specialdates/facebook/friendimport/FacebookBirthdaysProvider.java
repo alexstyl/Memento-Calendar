@@ -7,12 +7,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-class FacebookBirthdaysProvider {
+public class FacebookBirthdaysProvider {
 
     private final CalendarLoader calendarLoader;
     private final ContactEventSerialiser serialiser;
 
-    FacebookBirthdaysProvider(CalendarLoader calendarLoader, ContactEventSerialiser serialiser) {
+    public FacebookBirthdaysProvider(CalendarLoader calendarLoader, ContactEventSerialiser serialiser) {
         this.calendarLoader = calendarLoader;
         this.serialiser = serialiser;
     }

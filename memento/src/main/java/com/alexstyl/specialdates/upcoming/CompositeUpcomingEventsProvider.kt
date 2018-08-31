@@ -10,35 +10,36 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
 class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEventsProvider,
-                                      private val namedayPreferences: NamedayUserSettings,
+                                      private val namedayUserSettings: NamedayUserSettings,
                                       private val namedayCalendarProvider: NamedayCalendarProvider,
                                       private val bankHolidaysUserSettings: BankHolidaysUserSettings,
                                       private val bankHolidayProvider: BankHolidayProvider,
                                       private val upcomingRowViewModelFactory: UpcomingEventRowViewModelFactory) : UpcomingEventsProvider {
 
     override fun calculateEventsBetween(timePeriod: TimePeriod): List<UpcomingRowViewModel> {
-        val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
-        val upcomingRowViewModelsBuilder = UpcomingRowViewModelsBuilder(
+        val builder = UpcomingRowViewModelsBuilder(
                 timePeriod,
                 upcomingRowViewModelFactory
         )
-                .withContactEvents(contactEvents)
 
-        if (shouldLoadBankHolidays()) {
+        val contactEvents = peopleEventsProvider.fetchEventsBetween(timePeriod)
+        builder.withContactEvents(contactEvents)
+
+        if (bankHolidaysUserSettings.isEnabled) {
             val bankHolidays = bankHolidayProvider.calculateBankHolidaysBetween(timePeriod)
-            upcomingRowViewModelsBuilder.withBankHolidays(bankHolidays)
+            builder.withBankHolidays(bankHolidays)
         }
 
         if (shouldLoadNamedays()) {
             val namedays = calculateNamedaysBetween(timePeriod)
-            upcomingRowViewModelsBuilder.withNamedays(namedays)
+            builder.withNamedays(namedays)
         }
-        return upcomingRowViewModelsBuilder.build()
+        return builder.build()
     }
 
     private fun calculateNamedaysBetween(timeDuration: TimePeriod): List<NamesInADate> {
-        val selectedLanguage = namedayPreferences.selectedLanguage
-        val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year)
+        val selectedLanguage = namedayUserSettings.selectedLanguage
+        val namedayCalendar = namedayCalendarProvider.loadNamedayCalendarForLocale(selectedLanguage, timeDuration.startingDate.year!!)
 
         var indexDate = timeDuration.startingDate
         val toDate = timeDuration.endingDate
@@ -46,20 +47,16 @@ class CompositeUpcomingEventsProvider(private val peopleEventsProvider: PeopleEv
 
         while (COMPARATOR.compare(indexDate, toDate) < 0) {
             val allNamedayOn = namedayCalendar.getAllNamedaysOn(indexDate)
-            if (allNamedayOn.nameCount() > 0) {
+            if (allNamedayOn.names.isNotEmpty()) {
                 namedays.add(allNamedayOn)
             }
-            indexDate = indexDate.addDay(1)
+            indexDate += 1
         }
         return namedays
     }
 
-    private fun shouldLoadBankHolidays(): Boolean {
-        return bankHolidaysUserSettings.isEnabled
-    }
-
     private fun shouldLoadNamedays(): Boolean {
-        return namedayPreferences.isEnabled && !namedayPreferences.isEnabledForContactsOnly
+        return namedayUserSettings.isEnabled && !namedayUserSettings.isEnabledForContactsOnly
     }
 
     companion object {

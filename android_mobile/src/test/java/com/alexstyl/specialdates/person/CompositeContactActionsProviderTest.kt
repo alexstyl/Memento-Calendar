@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import org.mockito.runners.MockitoJUnitRunner
-import java.net.URI
 
 @RunWith(MockitoJUnitRunner::class)
 class CompositeContactActionsProviderTest {
@@ -34,7 +33,7 @@ class CompositeContactActionsProviderTest {
 
     @Test
     fun givenASpecificContact_thenReturnMessagingActionsForContactOfTheSpecificSource() {
-        val aContact = Contact(5, DisplayName.from("Alex"), URI.create(""), SOURCE_A)
+        val aContact = Contact(5, DisplayName.from("Alex"), "", SOURCE_A)
 
         val expectedValues = listOf(
                 ContactActionViewModel(
@@ -56,7 +55,7 @@ class CompositeContactActionsProviderTest {
 
     @Test
     fun givenASpecificContact_thenReturnCallingActionsForContactOfTheSpecificSource() {
-        val aContact = Contact(5, DisplayName.from("Alex"), URI.create(""), SOURCE_A)
+        val aContact = Contact(5, DisplayName.from("Alex"), "", SOURCE_A)
 
         val expectedValues = listOf(
                 ContactActionViewModel(

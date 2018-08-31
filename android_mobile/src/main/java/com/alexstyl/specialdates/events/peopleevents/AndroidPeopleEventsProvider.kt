@@ -15,6 +15,9 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateParser
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.beggingOfYear
+import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.date.endOfYear
 import com.alexstyl.specialdates.events.database.DatabaseContract.AnnualEventsContract
 import com.alexstyl.specialdates.events.database.EventSQLiteOpenHelper
 import com.alexstyl.specialdates.events.database.EventTypeId
@@ -145,13 +148,13 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                     .queryFirstEventOnOrAfter(date)
                     .use { cursor ->
                         return if (cursor.moveToFirst()) {
-                            return cursor.getDate().withYear(date.year)
+                            return cursor.getDate().withYear(date.year!!)
                         } else {
                             null
                         }
                     }
 
-    private fun Date.withYear(year: Int): Date = Date.on(this.dayOfMonth, this.month, year)
+    private fun Date.withYear(year: Int): Date = dateOn(this.dayOfMonth, this.month, year)
 
     private fun SQLiteDatabase.queryFirstEventOnOrAfter(date: Date): Cursor =
             query(
@@ -228,13 +231,13 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         private fun firstHalfOf(timeDuration: TimePeriod): TimePeriod {
             return TimePeriod.between(
                     timeDuration.startingDate,
-                    Date.endOfYear(timeDuration.startingDate.year)
+                    endOfYear(timeDuration.startingDate.year!!)
             )
         }
 
         private fun secondHalfOf(timeDuration: TimePeriod): TimePeriod {
             return TimePeriod.between(
-                    Date.startOfYear(timeDuration.endingDate.year),
+                    beggingOfYear(timeDuration.endingDate.year!!),
                     timeDuration.endingDate
             )
         }

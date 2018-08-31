@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.search
 
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.date.ContactEvent
-import java.util.*
 
 internal class ContactEventViewModelFactory(private val eventLabelCreator: ContactEventLabelCreator,
                                             private val colors: Colors) {
@@ -13,7 +12,7 @@ internal class ContactEventViewModelFactory(private val eventLabelCreator: Conta
 
             val contact = contactEvent.contact
 
-            for (event in contactEvent.events) {
+            contactEvent.events.forEach { event ->
                 val eventLabel = eventLabelCreator.createFor(event)
                 val variant = getVariationFor(event)
                 models.add(ContactEventViewModel(

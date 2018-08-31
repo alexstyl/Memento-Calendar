@@ -14,8 +14,6 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import java.net.URI;
-
 class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
     private final com.nostra13.universalimageloader.core.ImageLoader uil;
@@ -30,13 +28,13 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
 
     @NonNull
     @Override
-    public Request load(@NonNull final URI imagePath) {
+    public Request load(@NonNull final String imagePath) {
         final DisplayImageOptions.Builder builder = standardBuilder();
         return new Request() {
 
             @Override
             public void into(@NonNull ImageView imageView) {
-                uil.displayImage(imagePath.toString(), imageView, builder.build());
+                uil.displayImage(imagePath, imageView, builder.build());
             }
 
             @NonNull
@@ -54,7 +52,7 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
                     @NonNull
                     @Override
                     public Optional<Bitmap> synchronously() {
-                        Bitmap bitmap = uil.loadImageSync(imagePath.toString(), new ImageSize(width, height), builder.build());
+                        Bitmap bitmap = uil.loadImageSync(imagePath, new ImageSize(width, height), builder.build());
                         if (bitmap == null) {
                             return Optional.Companion.absent();
                         } else {
@@ -65,7 +63,7 @@ class UILImageLoader implements com.alexstyl.specialdates.images.ImageLoader {
                     @Override
                     public void into(@NonNull final ImageLoadedConsumer consumer) {
                         builder.displayer(DefaultConfigurationFactory.createBitmapDisplayer());
-                        uil.loadImage(imagePath.toString(), builder.build(), new SimpleImageLoadingListener() {
+                        uil.loadImage(imagePath, builder.build(), new SimpleImageLoadingListener() {
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                                 consumer.onImageLoaded(loadedImage);

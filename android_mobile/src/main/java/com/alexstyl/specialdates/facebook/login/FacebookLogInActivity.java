@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.facebook.login;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -26,19 +25,15 @@ import com.alexstyl.specialdates.facebook.FacebookImagePath;
 import com.alexstyl.specialdates.facebook.FacebookUserSettings;
 import com.alexstyl.specialdates.facebook.ScreenOrientationLock;
 import com.alexstyl.specialdates.facebook.UserCredentials;
-import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsIntentService;
-import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsScheduler;
+import com.alexstyl.specialdates.facebook.friendimport.FacebookFriendsUpdaterScheduler;
 import com.alexstyl.specialdates.images.ImageLoader;
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.meta.AndroidUtils;
 
 import javax.inject.Inject;
-import java.net.URI;
 
 public class FacebookLogInActivity extends ThemedMementoActivity implements FacebookImportView {
-
-    private FacebookFriendsScheduler facebookFriendsScheduler;
 
     private FacebookWebView webView;
     private ImageView avatar;
@@ -48,11 +43,18 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
     private ProgressBar progress;
     private Button shareButton;
     private Button closeButton;
-    @Inject Analytics analytics;
-    @Inject Strings stringResource;
-    @Inject CrashAndErrorTracker tracker;
-    @Inject ImageLoader imageLoader;
-    @Inject FacebookUserSettings facebookUserSettings;
+    @Inject
+    Analytics analytics;
+    @Inject
+    Strings stringResource;
+    @Inject
+    CrashAndErrorTracker tracker;
+    @Inject
+    ImageLoader imageLoader;
+    @Inject
+    FacebookUserSettings facebookUserSettings;
+    @Inject
+    FacebookFriendsUpdaterScheduler facebookFriendsScheduler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +76,11 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setOnClickListener(onCloseButtonPressed());
         webView = Views.findById(this, R.id.facebook_import_webview);
         orientationLock = new ScreenOrientationLock();
-        facebookFriendsScheduler = new FacebookFriendsScheduler(
-                thisActivity(),
-                (AlarmManager) getSystemService(ALARM_SERVICE)
-        );
 
         webView.setCallback(facebookCallback);
 
         UserCredentials userCredentials = facebookUserSettings.retrieveCredentials();
-        if (savedInstanceState == null || userCredentials.equals(UserCredentials.ANNONYMOUS)) {
+        if (savedInstanceState == null || UserCredentials.ANONYMOUS.equals(userCredentials)) {
             new CookieResetter(CookieManager.getInstance()).clearAll();
             webView.loadLogInPage();
         } else {
@@ -128,14 +126,8 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         }
 
         private void fetchFacebookFriends() {
+            facebookFriendsScheduler.startImmediate();
             facebookFriendsScheduler.scheduleNext();
-
-            startFacebookFetchService();
-        }
-
-        private void startFacebookFetchService() {
-            Intent intent = new Intent(thisActivity(), FacebookFriendsIntentService.class);
-            startService(intent);
         }
 
         @Override
@@ -168,7 +160,7 @@ public class FacebookLogInActivity extends ThemedMementoActivity implements Face
         closeButton.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        URI uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
+        String uri = FacebookImagePath.INSTANCE.forUid(userCredentials.getUid());
         imageLoader
                 .load(uri)
                 .asCircle()

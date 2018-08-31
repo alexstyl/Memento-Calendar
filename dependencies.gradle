@@ -1,0 +1,12 @@
+ext {
+
+    // Libraries
+    androidBuildToolsVersion = '27.0.3'
+    android_support_version = '27.1.1'
+    play_services_version = '15.0.1'
+    firebase_core_version = '16.0.1'
+    firebase_ads_version = '15.0.1'
+    lifecycle_version = '1.1.1'
+
+    kotlin_version = '1.2.41'
+}

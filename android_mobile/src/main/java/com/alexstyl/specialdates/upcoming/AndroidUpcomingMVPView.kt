@@ -34,7 +34,7 @@ class AndroidUpcomingMVPView(
         progressBar.visibility = View.GONE
         adapter.displayUpcomingEvents(events)
 
-        if (events.size > 0) {
+        if (events.isNotEmpty()) {
             upcomingList.visibility = View.VISIBLE
             emptyView.visibility = View.GONE
         } else {
@@ -46,5 +46,4 @@ class AndroidUpcomingMVPView(
             askForSupport.askForRatingFromUser(activity)
         }
     }
-
 }

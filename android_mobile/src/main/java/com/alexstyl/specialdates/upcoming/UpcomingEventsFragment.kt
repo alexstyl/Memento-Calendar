@@ -24,23 +24,17 @@ import javax.inject.Inject
 
 class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
 
-    lateinit var navigator: HomeNavigator
-        @Inject set
-    lateinit var imageLoader: ImageLoader
-        @Inject set
-    lateinit var refresher: UpcomingEventsViewRefresher
-        @Inject set
-    lateinit var presenter: UpcomingEventsPresenter
-        @Inject set
-    lateinit var askForSupport: AskForSupport
-        @Inject set
+    @Inject lateinit var navigator: HomeNavigator
+    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var refresher: UpcomingEventsViewRefresher
+    @Inject lateinit var presenter: UpcomingEventsPresenter
+    @Inject lateinit var askForSupport: AskForSupport
 
     lateinit var mvpView: UpcomingListMVPView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val applicationModule = (activity!!.application as MementoApplication).applicationModule
         applicationModule.inject(this)
         refresher.addEventsView(this)
@@ -76,8 +70,7 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
         )
         adapter.setHasStableIds(true)
         upcomingList.adapter = adapter
-        mvpView = AndroidUpcomingMVPView(
-                upcomingList, root, progressBar, emptyView, adapter, askForSupport, activity!!)
+        mvpView = AndroidUpcomingMVPView(upcomingList, root, progressBar, emptyView, adapter, askForSupport, activity!!)
 
         return view
     }

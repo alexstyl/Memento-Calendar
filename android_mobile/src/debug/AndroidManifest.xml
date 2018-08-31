@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  package="com.alexstyl.specialdates">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.alexstyl.specialdates">
 
-  <application
-    android:name="com.alexstyl.specialdates.DebugApplication"
-    tools:replace="android:name">
+    <application
+        android:name="com.alexstyl.specialdates.DebugApplication"
+        tools:replace="android:name">
+        <activity
+            android:name="com.alexstyl.specialdates.debug.DebugActivity"
+            android:label="Memento Debug"
+            android:taskAffinity="com.alexstyl.debug">
+            <intent-filter>
+                <action android:name="com.alexstyl.specialdates.ACTION_DEBUG_OPTIONS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-    <activity
-      android:name="com.alexstyl.specialdates.debug.DebugActivity"
-      android:icon="@drawable/ic_heart"
-      android:label="Memento Debug"
-      android:taskAffinity="com.alexstyl.debug">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-
-  </application>
+    </application>
 
 </manifest>

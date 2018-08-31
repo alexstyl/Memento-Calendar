@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.ui.widget.ColorImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_IMPORT_FACEBOOK = 1;

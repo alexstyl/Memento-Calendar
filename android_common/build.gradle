@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: '../versions.gradle'
+apply from: '../dependencies.gradle'
 
 android {
 
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion 27
     buildToolsVersion androidBuildToolsVersion
 
     // All these unused resources are actually used by other modules

@@ -20,14 +20,17 @@ class DailyReminderPreferences(private val preferences: EasyPreferences)
         val time = preferences
                 .getString(R.string.key_daily_reminder_time, DEFAULT_DAILY_REMINDER_TIME)
                 .split(":")
-        return TimeOfDay(time[0].toInt(), time[1].toInt())
+        return TimeOfDay.at(time[0].toInt(), time[1].toInt())
 
     }
 
-
     override fun getRingtone(): URI {
-        val selectedRingtone = preferences.getString(R.string.key_daily_reminder_ringtone, null)
-        return selectedRingtone?.toURI() ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toURI()
+        val selectedRingtone = preferences.getString(R.string.key_daily_reminder_ringtone, "")
+        if (selectedRingtone.isEmpty()) {
+            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toURI()
+        } else {
+            return selectedRingtone.toURI()
+        }
     }
 
     override fun isVibrationEnabled(): Boolean = preferences.getBoolean(R.string.key_daily_reminder_vibrate_enabled, false)

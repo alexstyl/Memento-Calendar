@@ -2,8 +2,9 @@ package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.TestContactEventsBuilder
 import com.alexstyl.specialdates.contact.ContactFixture
-import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.beggingOfYear
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
@@ -35,7 +36,7 @@ class PeopleEventsSearchTest {
     @Test
     fun searchingByFirstLetter() {
         val actual = search.searchForContacts("A", 5)
-        val expected = ContactWithEvents(ALEX, listOf(ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)))
+        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
 
         assertThat(actual).containsOnly(expected)
     }
@@ -43,7 +44,7 @@ class PeopleEventsSearchTest {
     @Test
     fun searchingByLastLetter() {
         val actual = search.searchForContacts("S", 5)
-        val expected = ContactWithEvents(ALEX, listOf(ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)))
+        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
 
         assertThat(actual).containsOnly(expected)
     }
@@ -51,7 +52,7 @@ class PeopleEventsSearchTest {
     @Test
     fun searchingByFullName() {
         val actual = search.searchForContacts("Alex Styl", 5)
-        val expected = ContactWithEvents(ALEX, listOf(ContactEventTestBuilder(ALEX).buildBirthday(JANUARY_1st)))
+        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
 
         assertThat(actual).containsOnly(expected)
     }
@@ -60,9 +61,10 @@ class PeopleEventsSearchTest {
     fun multipleResults() {
         val actual = search.searchForContacts("M", 5)
 
-        val expected = ArrayList<ContactWithEvents>()
-        expected.add(ContactWithEvents(MIMOZA, ContactEventTestBuilder(MIMOZA).buildNameday(JANUARY_1st)))
-        expected.add(ContactWithEvents(MARIA, ContactEventTestBuilder(MARIA).buildAnniversary(JANUARY_1st)))
+        val expected = listOf(
+                ContactWithEvents(MIMOZA, TestContactEventsBuilder().addNamedayFor(MIMOZA, JANUARY_1st).build()),
+                ContactWithEvents(MARIA, TestContactEventsBuilder().addAnniversaryFor(MARIA, JANUARY_1st).build())
+        )
 
         assertThat(actual).containsAll(expected)
     }
@@ -71,8 +73,9 @@ class PeopleEventsSearchTest {
     fun requestOneResultReturnsOnlyOneResult() {
         val actual = search.searchForContacts("M", 1)
 
-        val expected = ArrayList<ContactWithEvents>()
-        expected.add(ContactWithEvents(MARIA, ContactEventTestBuilder(MARIA).buildAnniversary(JANUARY_1st)))
+        val expected = listOf(
+                ContactWithEvents(MARIA, TestContactEventsBuilder().addAnniversaryFor(MARIA, JANUARY_1st).build())
+        )
 
         assertThat(actual).containsAll(expected)
     }
@@ -82,10 +85,10 @@ class PeopleEventsSearchTest {
         private val ALEX = ContactFixture.aContactCalled("Alex Styl")
         private val MARIA = ContactFixture.aContactCalled("Maria Papadopoulou")
         private val MIMOZA = ContactFixture.aContactCalled("Mimoza Dereks")
-        private val JANUARY_1st = Date.startOfYear(2016)
+        private val JANUARY_1st = beggingOfYear(2016)
 
         private fun aYearFromNow(): TimePeriod {
-            val today = Date.today()
+            val today = todaysDate()
             val aYearFromNow = today.addDay(364)
             return TimePeriod.between(today, aYearFromNow)
         }

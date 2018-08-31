@@ -13,18 +13,12 @@ import javax.inject.Inject
 
 class TodayAppWidgetProvider : AppWidgetProvider() {
 
-    lateinit var preferences: UpcomingWidgetPreferences
-        @Inject set
-    lateinit var widgetImageLoader: WidgetImageLoader
-        @Inject set
-    lateinit var strings: Strings
-        @Inject set
-    lateinit var labelCreator: DateLabelCreator
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var presenter: RecentPeopleEventsPresenter
-        @Inject set
+    @Inject lateinit var preferences: UpcomingWidgetPreferences
+    @Inject lateinit var widgetImageLoader: WidgetImageLoader
+    @Inject lateinit var strings: Strings
+    @Inject lateinit var labelCreator: DateLabelCreator
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var presenter: RecentPeopleEventsPresenter
 
     override fun onReceive(context: Context, intent: Intent) {
         val applicationModule = (context.applicationContext as MementoApplication).applicationModule

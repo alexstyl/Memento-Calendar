@@ -2,16 +2,17 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource;
 
 import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
-import com.alexstyl.specialdates.events.namedays.NamedayBundle;
+import com.alexstyl.specialdates.events.namedays.Namedays;
 import com.alexstyl.specialdates.events.namedays.NamesInADate;
-import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday;
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.alexstyl.specialdates.events.namedays.calendar.OrthodoxEasterCalculator;
 
 import org.json.JSONArray;
+
+import java.util.List;
+
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
 
 public final class GreekNamedays {
 
@@ -20,7 +21,7 @@ public final class GreekNamedays {
     private final SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator;
 
     private Date easter;
-    private NamedayBundle namedays;
+    private Namedays namedays;
 
     private GreekNamedays(OrthodoxEasterCalculator easterCalculator, SpecialGreekNamedaysCalculator specialGreekNamedaysCalculator) {
         this.easterCalculator = easterCalculator;
@@ -35,10 +36,8 @@ public final class GreekNamedays {
     }
 
     NamesInADate getNamedayByDate(Date date) {
-
         int year = date.getYear();
         refreshNamedaysIfNeeded(year);
-
         return namedays.getNamedaysFor(date);
     }
 
@@ -57,8 +56,8 @@ public final class GreekNamedays {
         namedays = specialGreekNamedaysCalculator.calculateForEasterDate(easter);
     }
 
-    public ArrayList<String> getNames() {
-        int year = Date.Companion.today().getYear();
+    public List<String> getNames() {
+        int year = todaysDate().getYear();
         refreshNamedaysIfNeeded(year);
         return namedays.getNames();
     }

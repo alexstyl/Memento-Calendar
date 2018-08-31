@@ -7,21 +7,15 @@ import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateComparator
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.events.namedays.NameCelebrations
+import com.alexstyl.specialdates.date.endOfYear
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 
 open class PeopleDynamicNamedaysProvider(
         private val settings: NamedayUserSettings,
         private val namedayCalendarProvider: NamedayCalendarProvider,
-        private val contactsProvider: ContactsProvider) : PeopleEventsProvider {
-
-    private val namedayCalendar: NamedayCalendar
-        get() {
-            val locale = settings.selectedLanguage
-            return namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR)
-        }
+        private val contactsProvider: ContactsProvider)
+    : PeopleEventsProvider {
 
     override fun fetchEventsOn(date: Date): ContactEventsOnADate {
         val contactEvents = fetchEventsBetween(TimePeriod.between(date, date))
@@ -32,24 +26,25 @@ open class PeopleDynamicNamedaysProvider(
         if (!settings.isEnabled) {
             return emptyList()
         }
-        val namedayEvents = ArrayList<ContactEvent>()
-        for (contact in contactsProvider.allContacts) {
-            for (firstName in contact.displayName.firstNames) {
-                val nameDays = getSpecialNamedaysOf(firstName)
-                if (nameDays.containsNoDate()) {
-                    continue
-                }
+        val namedayEvents = mutableListOf<ContactEvent>()
+        val calendar = namedayCalendarProvider.loadNamedayCalendarForLocale(settings.selectedLanguage, Date.CURRENT_YEAR)
 
-                val namedaysCount = nameDays.size()
-                for (i in 0 until namedaysCount) {
-                    val date = nameDays.getDate(i)
-                    if (timePeriod.containsDate(date)) {
-                        val nameday = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
-                        namedayEvents.add(nameday)
+        contactsProvider
+                .allContacts
+                .forEach { contact ->
+                    for (firstName in contact.displayName.firstNames) {
+                        calendar
+                                .getSpecialNamedaysFor(firstName)
+                                .dates
+                                .forEach { date ->
+                                    if (timePeriod.containsDate(date)) {
+                                        val nameday = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
+                                        namedayEvents.add(nameday)
+                                    }
+                                }
                     }
                 }
-            }
-        }
+
         return namedayEvents.toList()
     }
 
@@ -57,11 +52,16 @@ open class PeopleDynamicNamedaysProvider(
         if (!settings.isEnabled) {
             return emptyList()
         }
+        val locale = settings.selectedLanguage
+        val calendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR)
+
         val namedays = ArrayList<ContactEvent>()
         for (name in contact.displayName.allNames) {
-            val (_, specialDates) = getSpecialNamedaysOf(name)
-            for (i in 0 until specialDates.size()) {
-                val date = specialDates.getDate(i)
+            val specialNamedays = calendar.getSpecialNamedaysFor(name)
+            val specialDates = specialNamedays.dates
+
+            for (i in 0 until specialDates.size) {
+                val date = specialDates[i]
                 val deviceEventId = Optional(contact.contactID)
                 val contactEvent = ContactEvent(deviceEventId, StandardEventType.NAMEDAY, date, contact)
                 namedays.add(contactEvent)
@@ -74,7 +74,7 @@ open class PeopleDynamicNamedaysProvider(
         if (!settings.isEnabled) {
             return null
         }
-        val timePeriod = TimePeriod.between(date, Date.endOfYear(date.year))
+        val timePeriod = TimePeriod.between(date, endOfYear(date.year!!))
         val contactEvents = ArrayList(fetchEventsBetween(timePeriod))
         contactEvents.sortWith(Comparator { (_, _, date1), (_, _, date2) -> DATE_COMPARATOR.compare(date1, date2) })
 
@@ -92,17 +92,20 @@ open class PeopleDynamicNamedaysProvider(
         }
         val namedayEvents = ArrayList<ContactEvent>()
         val contacts = contactsProvider.allContacts
+        val locale = settings.selectedLanguage
+        val calendar = namedayCalendarProvider.loadNamedayCalendarForLocale(locale, Date.CURRENT_YEAR)
+
         for (contact in contacts) {
             val displayName = contact.displayName
             val namedays = HashSet<Date>()
             for (firstName in displayName.firstNames) {
-                val nameDays = getNamedaysOf(firstName)
-                if (nameDays.containsNoDate()) {
+                val nameDays = calendar.getNormalNamedaysFor(firstName)
+                if (nameDays.dates.isEmpty()) {
                     continue
                 }
-                val namedaysCount = nameDays.size()
+                val namedaysCount = nameDays.dates.size
                 for (i in 0 until namedaysCount) {
-                    val date = nameDays.getDate(i)
+                    val date = nameDays.dates[i]
                     if (namedays.contains(date)) {
                         continue
                     }
@@ -116,18 +119,8 @@ open class PeopleDynamicNamedaysProvider(
         return namedayEvents
     }
 
-    private fun getNamedaysOf(given: String): NameCelebrations {
-        val namedayCalendar = namedayCalendar
-        return namedayCalendar.getNormalNamedaysFor(given)
-    }
-
-    private fun getSpecialNamedaysOf(firstName: String): NameCelebrations {
-        val namedayCalendar = namedayCalendar
-        return namedayCalendar.getSpecialNamedaysFor(firstName)
-    }
 
     companion object {
-
         private val DATE_COMPARATOR = DateComparator.INSTANCE
     }
 

@@ -28,7 +28,7 @@ class ContactsModule {
         private const val CACHE_SIZE = 1024
 
         private fun buildAndroidSource(tracker: CrashAndErrorTracker, contentResolver: ContentResolver): ContactsProviderSource {
-            val factory = AndroidContactFactory(contentResolver, tracker)
+            val factory = AndroidContactFactory(contentResolver)
             val contactCache = ContactCache(CACHE_SIZE)
             return AndroidContactsProviderSource(contactCache, factory)
         }

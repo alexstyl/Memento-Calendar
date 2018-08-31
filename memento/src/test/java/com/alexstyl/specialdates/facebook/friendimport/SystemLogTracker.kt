@@ -17,7 +17,7 @@ class SystemLogTracker : CrashAndErrorTracker {
         // do nothing
     }
 
-    override fun onNamedayLocaleChanged(locale: NamedayLocale) {
+    override fun onNamedayLocaleChanged(locale: NamedayLocale?) {
         // do nothing
     }
 

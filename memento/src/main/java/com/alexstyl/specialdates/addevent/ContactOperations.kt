@@ -6,8 +6,8 @@ import com.alexstyl.specialdates.addevent.operations.InsertEvent
 import com.alexstyl.specialdates.addevent.operations.InsertImage
 import com.alexstyl.specialdates.addevent.operations.UpdateContact
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.contact.ImageURL
 import com.alexstyl.specialdates.events.Event
-import java.net.URI
 
 class ContactOperations {
 
@@ -21,14 +21,14 @@ class ContactOperations {
 
     class ContactOperationsBuilder(private val existingOperations: List<ContactOperation>) {
         private var events: List<Event>? = null
-        private var imageUri: URI? = null
+        private var imageUri: ImageURL? = null
 
         fun withEvents(events: List<Event>): ContactOperationsBuilder {
             this.events = events
             return this
         }
 
-        fun withImage(value: URI): ContactOperationsBuilder {
+        fun withImage(value: ImageURL): ContactOperationsBuilder {
             this.imageUri = value
             return this
         }
@@ -39,8 +39,8 @@ class ContactOperations {
                             ?: emptyList()) + operationFor(imageUri)
         }
 
-        private fun operationFor(imageUri: URI?): List<ContactOperation> {
-            return if (imageUri == null || imageUri.toString().isEmpty()) {
+        private fun operationFor(imageUri: ImageURL?): List<ContactOperation> {
+            return if (imageUri == null || imageUri.isEmpty()) {
                 emptyList()
             } else {
                 listOf(InsertImage(imageUri))

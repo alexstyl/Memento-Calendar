@@ -28,14 +28,9 @@ public final class FabricTracker implements CrashAndErrorTracker {
 
     @Override
     public void startTracking() {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Ignoring Crash Tracking in DEBUG builds");
-            return;
-        }
-
         Fabric.with(context, new Crashlytics());
 
-        Log.i(TAG, "Crashlytics tracking started ");
+        Log.d(TAG, "Crashlytics tracking started ");
         hasBeenInitialised = true;
         Crashlytics.setString(KEY_LOCALE, String.valueOf(Locale.getDefault()));
     }
@@ -63,7 +58,7 @@ public final class FabricTracker implements CrashAndErrorTracker {
     }
 
     @Override
-    public void log(String message) {
+    public void log(@NonNull String message) {
         if (hasBeenInitialised) {
             Crashlytics.log(message);
         }

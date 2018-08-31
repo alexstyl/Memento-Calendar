@@ -36,6 +36,7 @@
   <string name="key_namedays_full_name">key_namedays_full_name</string>
   <string name="key_has_donated">key_has_donated</string>
   <string name="key_donate_restore">key_donate_restore</string>
+  <string name="key_donate">key_donate</string>
   <string name="pref_facebook">pref_facebook</string>
   <string name="key_facebook_user_id">key_facebook_user_id</string>
   <string name="key_facebook_user_key">key_facebook_user_key</string>

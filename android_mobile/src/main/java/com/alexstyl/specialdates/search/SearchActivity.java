@@ -32,6 +32,7 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.events.namedays.NameCelebrations;
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings;
+import com.alexstyl.specialdates.events.namedays.NoNameCelebrations;
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider;
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider;
 import com.alexstyl.specialdates.images.ImageLoader;
@@ -49,6 +50,7 @@ import com.novoda.notils.text.SimpleTextWatcher;
 import javax.inject.Inject;
 
 import static android.view.View.GONE;
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
 
 public class SearchActivity extends ThemedMementoActivity {
 
@@ -95,7 +97,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         peopleEventsSearch = new PeopleEventsSearch(peopleEventsProvider, NameMatcher.INSTANCE);
         DateLabelCreator dateLabelCreator = new AndroidDateLabelCreator(this);
-        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(Date.Companion.today(), strings, dateLabelCreator), colors);
+        viewModelFactory = new ContactEventViewModelFactory(new ContactEventLabelCreator(todaysDate(), strings, dateLabelCreator), colors);
 
         analytics.trackScreen(Screen.SEARCH);
 
@@ -322,7 +324,7 @@ public class SearchActivity extends ThemedMementoActivity {
 
         @Override
         public void onLoaderReset(@NonNull Loader<NameCelebrations> loader) {
-            adapter.setNamedays(new NameCelebrations(""));
+            adapter.setNamedays(new NoNameCelebrations(searchQuery));
         }
     };
 

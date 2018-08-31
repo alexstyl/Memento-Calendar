@@ -8,11 +8,12 @@ import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate;
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
+import static com.alexstyl.specialdates.date.DateExtKt.dateOn;
 import static com.alexstyl.specialdates.date.Months.JANUARY;
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -20,15 +21,15 @@ public class ContactActionTest {
 
     private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.Companion.absent();
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
-    private final Contact CONTACT_ONE = ContactFixture.aContactCalled("Alex Styl");
-    private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.Companion.on(1, JANUARY, 1990), CONTACT_ONE);
+    private final Contact CONTACT_ONE = ContactFixture.INSTANCE.aContactCalled("Alex Styl");
+    private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, dateOn(1, JANUARY, 1990), CONTACT_ONE);
 
-    private final Contact CONTACT_TWO = ContactFixture.aContactCalled("George Peterson");
-    private final ContactEvent EVENT_TWO = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, Date.Companion.on(1, JANUARY, 1970), CONTACT_TWO);
+    private final Contact CONTACT_TWO = ContactFixture.INSTANCE.aContactCalled("George Peterson");
+    private final ContactEvent EVENT_TWO = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, dateOn(1, JANUARY, 1970), CONTACT_TWO);
 
     @Test
     public void testTheSameDateIsReturned() throws Exception {
-        Date expectedDate = Date.Companion.on(1, JANUARY, 1990);
+        Date expectedDate = dateOn(1, JANUARY, 1990);
         ContactEventsOnADate events = ContactEventsOnADate.Companion.createFrom(expectedDate, ANY_CONTACTS);
 
         Date actualDate = events.getDate();
@@ -37,7 +38,7 @@ public class ContactActionTest {
 
     @Test
     public void testContactCorrectContactIsReturned() {
-        Date date = Date.Companion.on(1, JANUARY, 2016);
+        Date date = dateOn(1, JANUARY, 2016);
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
 
@@ -49,7 +50,7 @@ public class ContactActionTest {
 
     @Test
     public void testContactsAreCorrectlyReturned() {
-        Date date = Date.Companion.on(1, JANUARY, 2016);
+        Date date = dateOn(1, JANUARY, 2016);
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);
@@ -62,7 +63,7 @@ public class ContactActionTest {
 
     @Test
     public void testReturnedContactsSizeIsCorrect() {
-        Date date = Date.Companion.on(1, JANUARY, 2016);
+        Date date = dateOn(1, JANUARY, 2016);
         ArrayList<ContactEvent> contactEvent = new ArrayList<>();
         contactEvent.add(EVENT_ONE);
         contactEvent.add(EVENT_TWO);

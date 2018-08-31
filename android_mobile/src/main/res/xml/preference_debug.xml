@@ -6,21 +6,6 @@
         android:key="@string/key_debug_refresh_db"
         android:title="Refresh database" />
 
-    <PreferenceScreen android:title="Daily Reminder">
-        <Preference
-            android:key="@string/key_debug_daily_reminder"
-            android:title="Trigger Daily Reminder" />
-
-        <CheckBoxPreference
-            android:key="@string/key_debug_daily_reminder_date_enable"
-            android:title="Fake date" />
-
-        <Preference
-            android:dependency="@string/key_debug_daily_reminder_date_enable"
-            android:key="@string/key_debug_daily_reminder_date"
-            android:title="Daily Reminder Date" />
-    </PreferenceScreen>
-
     <Preference
         android:key="@string/key_debug_start_calendar"
         android:title="Start Calendar Intent" />
@@ -64,21 +49,11 @@
             android:title="Trigger WearSyncService" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Notifications">
+    <PreferenceCategory android:title="Crashes">
         <Preference
-            android:key="@string/key_debug_trigger_daily_reminder_notification_one"
-            android:title="Show Daily Reminder notification for one contact" />
-
-        <Preference
-            android:key="@string/key_debug_trigger_daily_reminder_notification_many"
-            android:title="Show Daily Reminder notification for multiple contact" />
-        <Preference
-            android:key="@string/key_debug_trigger_namedays_notification"
-            android:title="Show Namedays notification" />
-
-        <Preference
-            android:key="@string/key_debug_trigger_bank_holiday"
-            android:title="Show Bank Holiday notification" />
+            android:key="@string/key_debug_trigger_crash"
+            android:summary="Utility to crash the app in order to try out crash report frameworks"
+            android:title="Crash me" />
     </PreferenceCategory>
 
 </PreferenceScreen>

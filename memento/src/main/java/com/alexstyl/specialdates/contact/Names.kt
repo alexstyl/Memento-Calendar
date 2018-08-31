@@ -17,11 +17,19 @@ data class Names(private val names: List<String>) : Iterable<String> {
 
         private val REGEX = "[@a-zA-Zά-ώΆ-Ώα-ωΑ-Ω\\d]+".toRegex()
 
-        fun parse(input: String): Names =
-                Names(REGEX.findAll(input)
+        private val cache = mutableMapOf<String, Names>()
+
+        fun parse(input: String): Names {
+            if (cache.containsKey(input)) {
+                return cache[input]!!
+            } else {
+                val newNames = Names(REGEX.findAll(input)
                         .map { it.value }
-                        .toList()
-                )
+                        .toList())
+                cache.put(input, newNames)
+                return newNames
+            }
+        }
 
     }
 }

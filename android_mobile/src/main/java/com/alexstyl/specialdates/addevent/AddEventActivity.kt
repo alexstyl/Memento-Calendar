@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
-import com.alexstyl.android.toURI
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
@@ -41,20 +40,13 @@ import javax.inject.Inject
 
 class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedListener, DiscardPromptDialog.Listener {
 
-    lateinit var presenter: AddEventsPresenter
-        @Inject set
-    lateinit var permissionChecker: MementoPermissions
-        @Inject set
-    lateinit var uriFilePathProvider: UriFilePathProvider
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var imageLoader: ImageLoader
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var shortDateLabelCreator: ShortDateLabelCreator
-        @Inject set
+    @Inject lateinit var presenter: AddEventsPresenter
+    @Inject lateinit var permissionChecker: MementoPermissions
+    @Inject lateinit var uriFilePathProvider: UriFilePathProvider
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var shortDateLabelCreator: ShortDateLabelCreator
 
     lateinit var view: AddEventView
 
@@ -65,6 +57,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
 
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
+
         analytics.trackScreen(Screen.ADD_EVENT)
         val toolbar = findViewById<MementoToolbar>(R.id.memento_toolbar)
         setSupportActionBar(toolbar)
@@ -203,7 +196,7 @@ class AddEventActivity : ThemedMementoActivity(), Listener, OnEventDatePickedLis
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 analytics.trackAvatarSelected()
-                presenter.present(result.uri.toURI())
+                presenter.present(result.uri.toString())
             } else if (resultCode == Activity.RESULT_CANCELED && result != null) {
                 tracker.track(result.error)
             }

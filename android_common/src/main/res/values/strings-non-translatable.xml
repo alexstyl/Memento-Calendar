@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-  tools:ignore="MissingTranslation">
-  <string name="app_name">@string/localised_app_name</string>
-  <string name="Memento_Calendar">Memento Calendar</string>
-  <string name="email">email</string>
-  <string name="email_start">Email</string>
-  <string name="link_translate_short">goo.gl/GxZd6M</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">@string/localised_app_name</string>
+    <string name="Memento_Calendar">Memento Calendar</string>
+    <string name="email">email</string>
+    <string name="email_start">Email</string>
+    <string name="link_translate_short">goo.gl/GxZd6M</string>
     <string name="demo_contact_name">Mathilda Dawson</string>
+    <string name="facebook_messenger" translatable="false">Messenger</string>
+    <string name="Facebook" translatable="false">Facebook</string>
 
     <plurals name="plural_birthday">
-    <item quantity="one">@string/birthday</item>
-    <item quantity="other">@string/birthdays</item>
-  </plurals>
-  <plurals name="plural_nameday">
-    <item quantity="one">@string/nameday</item>
-    <item quantity="other">@string/namedays</item>
-  </plurals>
+        <item quantity="one">@string/birthday</item>
+        <item quantity="other">@string/birthdays</item>
+    </plurals>
+    <plurals name="plural_nameday">
+        <item quantity="one">@string/nameday</item>
+        <item quantity="other">@string/namedays</item>
+    </plurals>
 
-  <plurals name="todays_nameday">
-    <item quantity="one">@string/celebrates_one_namedays</item>
-    <item quantity="other">@string/todays_namedays</item>
-  </plurals>
+    <plurals name="todays_nameday">
+        <item quantity="one">@string/celebrates_one_namedays</item>
+        <item quantity="other">@string/todays_namedays</item>
+    </plurals>
 
 </resources>

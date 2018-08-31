@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.bankholidays;
 
 //@RunWith(MockitoJUnitRunner.class)
 public class BankHolidayProviderTest {
-//    private static final Date GREEK_INDEPENDENCE_DAY = Date.on(25, MARCH, 1990);
+//    private static final Date GREEK_INDEPENDENCE_DAY = dateOn(25, MARCH, 1990);
 //
 //    private OrthodoxEasterCalculator calculator;
 //    private BankHolidayProvider repository;
@@ -10,8 +10,8 @@ public class BankHolidayProviderTest {
 //    @Before
 //    public void setUp() throws Exception {
 //        repository = new BankHolidayProvider(new GreekBankHolidaysCalculator(OrthodoxEasterCalculator.INSTANCE));
-////        when(calculator.calculateEasterForYear(1990)).thenReturn(Date.on(1, JANUARY, 1990));
-////        when(calculator.calculateEasterForYear(1991)).thenReturn(Date.on(1, JANUARY, 1991));
+////        when(calculator.calculateEasterForYear(1990)).thenReturn(dateOn(1, JANUARY, 1990));
+////        when(calculator.calculateEasterForYear(1991)).thenReturn(dateOn(1, JANUARY, 1991));
 //    }
 //
 //    @Test
@@ -33,10 +33,10 @@ public class BankHolidayProviderTest {
 //    public void testThatAGreekKnownBankholidayIsCalculatedProperly() {
 //        Date date = GREEK_INDEPENDENCE_DAY;
 //        Optional<BankHoliday> bankHoliday = repository.getBankHolidayFor(date);
-//        assertThat(bankHoliday.get().getDate()).isEqualTo(Date.on(25, MARCH, 1990));
+//        assertThat(bankHoliday.get().getDate()).isEqualTo(dateOn(25, MARCH, 1990));
 //    }
 //
 //    private Date aDateInYear(int year) {
-//        return Date.on(1, JANUARY, year);
+//        return dateOn(1, JANUARY, year);
 //    }
 }

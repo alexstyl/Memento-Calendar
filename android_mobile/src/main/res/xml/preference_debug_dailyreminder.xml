@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <PreferenceCategory android:title="Daily Reminder">
+        <Preference
+            android:key="@string/key_debug_daily_reminder_trigger"
+            android:title="Trigger Daily Reminder" />
+
+        <Preference
+            android:key="@string/key_debug_daily_reminder_trigger_on_date"
+            android:title="Trigger on a specific Date" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notifications">
+        <Preference
+            android:key="@string/key_debug_trigger_daily_reminder_notification_one"
+            android:title="Show Daily Reminder notification for one contact" />
+
+        <Preference
+            android:key="@string/key_debug_trigger_daily_reminder_notification_many"
+            android:title="Show Daily Reminder notification for multiple contact" />
+        <Preference
+            android:key="@string/key_debug_trigger_namedays_notification"
+            android:title="Show Namedays notification" />
+
+        <Preference
+            android:key="@string/key_debug_trigger_bank_holiday"
+            android:title="Show Bank Holiday notification" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Logs">
+
+        <Preference
+            android:key="@string/key_debug_daily_reminder_logs_refresh"
+            android:title="Reload" />
+        <Preference
+            android:key="@string/key_debug_daily_reminder_logs_clear"
+            android:title="Clear Logs" />
+
+        <Preference
+            android:key="@string/key_debug_daily_reminder_logs"
+            android:layout="@layout/preference_text"
+            tools:summary="Here will be printed all the logs of the events" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

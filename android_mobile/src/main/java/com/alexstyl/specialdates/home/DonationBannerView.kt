@@ -6,65 +6,109 @@ import android.support.v7.widget.LinearLayoutCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.alexstyl.specialdates.BuildConfig
+import com.alexstyl.specialdates.CrashAndErrorTracker
+import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import javax.inject.Inject
+
 
 class DonationBannerView(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(context, attrs) {
 
     private var closeView: View? = null
-    private var listener: OnCloseBannerListener? = null
+    private var closeListener: (CloseBannerListener)? = null
 
+
+    @Inject lateinit var errorTracker: CrashAndErrorTracker
+
+    private var adView: AdView? = null
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+
+        (context.applicationContext as MementoApplication).applicationModule.inject(this)
 
         LayoutInflater.from(context).inflate(R.layout.merge_donation_banner_view, this, true)
         super.setOrientation(LinearLayout.HORIZONTAL)
 
         setBackgroundColor(Color.WHITE)
 
-        val adView = findViewById<AdView>(R.id.banner_ad)
+        adView = findViewById(R.id.banner_ad)
 
-        adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(p0: Int) {
-                showAsCallToAction()
+        closeView = findViewById(R.id.banner_close)
+        closeView!!.setOnClickListener { closeListener?.invoke() }
+    }
+
+    fun loadAd() {
+        adView!!.adListener = object : AdListener() {
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                val message = "Couldn't load ad $errorCode"
+                errorTracker.track(RuntimeException(message))
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onAdLoaded() {
+                showBanner()
             }
         }
 
-        adView.loadAd(adRequest())
-
-        closeView = findViewById(R.id.banner_close)
-        closeView!!.setOnClickListener { listener?.onCloseButtonPressed() }
+        adView!!.loadAd(
+                AdRequest
+                        .Builder()
+                        .applyTestDevice()
+                        .build())
     }
 
-    private fun showAsCallToAction() {
-        val supportButton = findViewById<Button>(R.id.banner_support_holder)
-        supportButton.visibility = View.VISIBLE
-        supportButton.setOnClickListener { listener?.onCloseButtonPressed() }
-
-        findViewById<ViewGroup>(R.id.banner_ad_holder).visibility = View.GONE
-
-    }
-
-    private fun adRequest(): AdRequest {
-        val builder = AdRequest.Builder()
+    private fun AdRequest.Builder.applyTestDevice() = apply {
         if (BuildConfig.DEBUG) {
-            builder.addTestDevice("544D83E87B224A20DDBE6B1FE2710E74")
+            addTestDevice(DonationBannerView.TEST_DEVICE)
         }
-        return builder.build()
     }
 
-    fun setOnCloseBannerListener(listener: OnCloseBannerListener) {
-        this.listener = listener
+    fun setOnCloseBannerListener(onCloseBannerListener: CloseBannerListener) {
+        this.closeListener = onCloseBannerListener
     }
 
     override fun setOrientation(orientation: Int) {
         throw UnsupportedOperationException(DonationBannerView::class.java.toString() + " can only be HORIZONTAL")
     }
+
+    fun showBanner() {
+        visibility = View.VISIBLE
+//        this.animate()
+//                .yBy(height.toFloat())
+//                .setInterpolator(AnticipateOvershootInterpolator())
+//                .start()
+    }
+
+    fun hide() {
+        visibility = View.GONE
+
+//        animate()
+//                .yBy(height.toFloat())
+//                .setInterpolator(DecelerateInterpolator())
+//                .setListener(object : SimpleAnimatorListener() {
+//                    override fun onAnimationEnd(animator: Animator) {
+//                        visibility = View.GONE
+//                    }
+//                }).start()
+    }
+
+    companion object {
+
+        const val TEST_DEVICE = "544D83E87B224A20DDBE6B1FE2710E74"
+    }
+
 }
+
+private typealias CloseBannerListener = () -> Unit
+
+

@@ -1,1 +1,1 @@
-include ':android_mobile', ':android_common', ':android_wear', ':memento'
+include ':android_mobile', ':android_common', ':android_wear', ':memento', ':simple-tabs'

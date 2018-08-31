@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="🔥 Firebase 🔥">
+        <Preference
+            android:key="@string/key_debug_firebase_messaging_token"
+            android:summary="%s"
+            android:title="Messaging Token" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

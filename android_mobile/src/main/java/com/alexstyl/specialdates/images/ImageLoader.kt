@@ -3,14 +3,12 @@ package com.alexstyl.specialdates.images
 import android.graphics.Bitmap
 import android.support.annotation.Px
 import android.widget.ImageView
-
 import com.alexstyl.specialdates.Optional
-
-import java.net.URI
+import com.alexstyl.specialdates.contact.ImageURL
 
 interface ImageLoader {
 
-    fun load(imagePath: URI): Request
+    fun load(imagePath: ImageURL): Request
 
     interface Request {
 

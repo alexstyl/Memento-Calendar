@@ -7,7 +7,7 @@ import com.alexstyl.specialdates.R
 enum class MementoTheme(val id: Int, @param:StringRes @field:StringRes
 @get:StringRes
 val themeName: Int, @param:StyleRes @field:StyleRes private val styleResId: Int) {
-    CHERRY_RED(0, R.string.theme_BloodyCherry, R.style.Theme_Memento_BloodyCherry),
+    MEMENTO(0, R.string.theme_Memento, R.style.Theme_Memento_Modern),
     NAVY_BLUE(1, R.string.theme_NavyBlue, R.style.Theme_Memento_NavyBlue),
     GLOSS_PINK(2, R.string.theme_GlossPink, R.style.Theme_Memento_GlossPink),
     EGGPLANT_GREEN(3, R.string.theme_Eggplant, R.style.Theme_Memento_Eggplant),
@@ -24,7 +24,8 @@ val themeName: Int, @param:StyleRes @field:StyleRes private val styleResId: Int)
 
         fun fromId(themeId: Int): MementoTheme {
             return values()
-                    .find { it.id == themeId } ?: throw IllegalArgumentException("No theme exists with id $themeId")
+                    .find { it.id == themeId }
+                    ?: throw IllegalArgumentException("No theme exists with id $themeId")
         }
     }
 }

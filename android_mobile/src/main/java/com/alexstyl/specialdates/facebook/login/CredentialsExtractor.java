@@ -25,7 +25,7 @@ class CredentialsExtractor {
             String name = obtainName(pageSource);
             return createFrom(url, name);
         } else {
-            return UserCredentials.ANNONYMOUS;
+            return UserCredentials.ANONYMOUS;
         }
     }
 

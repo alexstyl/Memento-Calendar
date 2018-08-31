@@ -11,7 +11,12 @@ import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.Months.FEBRUARY
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.date.endOfYear
+import com.alexstyl.specialdates.date.beggingOfYear
+import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
+import com.alexstyl.specialdates.events.namedays.ArrayNamesInADate
 import com.alexstyl.specialdates.events.namedays.NamesInADate
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
@@ -21,7 +26,6 @@ import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import java.util.ArrayList
 import java.util.Arrays.asList
 
 @RunWith(MockitoJUnitRunner::class)
@@ -37,7 +41,7 @@ class UpcomingRowViewModelsBuilderTest {
     @Before
     fun setUp() {
         given(mockColors!!.getTodayHeaderTextColor()).willReturn(5)
-        val today = Date.today()
+        val today = todaysDate()
         upcomingEventRowViewModelFactory = UpcomingEventRowViewModelFactory(
                 today,
                 mockColors,
@@ -51,7 +55,7 @@ class UpcomingRowViewModelsBuilderTest {
     fun givenASingleContactEvent_thenCreatesADateHeaderPlusAContactEvent() {
 
         val viewModels = builderFor(entireYear(2016))
-                .withContactEvents(asList(aContactEventOn(Date.on(1, JANUARY, 2016))))
+                .withContactEvents(asList(aContactEventOn(dateOn(1, JANUARY, 2016))))
                 .build()
 
         assertThat(viewModels.size).isEqualTo(2)
@@ -63,8 +67,8 @@ class UpcomingRowViewModelsBuilderTest {
     fun givenTwoContactEvents_whenBothAreOnTheSameDate_thenCreatesADateHeaderPlusTwoContactEvents() {
         val viewModels = builderFor(entireYear(1990))
                 .withContactEvents(asList(
-                        aContactEventOn(Date.on(1, FEBRUARY, 1990)),
-                        aContactEventOn(Date.on(1, FEBRUARY, 1990))
+                        aContactEventOn(dateOn(1, FEBRUARY, 1990)),
+                        aContactEventOn(dateOn(1, FEBRUARY, 1990))
                 ))
                 .build()
 
@@ -78,8 +82,8 @@ class UpcomingRowViewModelsBuilderTest {
     fun givenTwoContactEvents_whenBothAreOnDifferentDate_thenCreatesADateHeaderAndAContactEventForEachOne() {
         val viewModels = builderFor(entireYear(1990))
                 .withContactEvents(asList(
-                        aContactEventOn(Date.on(1, FEBRUARY, 1990)),
-                        aContactEventOn(Date.on(3, FEBRUARY, 1990))
+                        aContactEventOn(dateOn(1, FEBRUARY, 1990)),
+                        aContactEventOn(dateOn(3, FEBRUARY, 1990))
                 ))
                 .build()
 
@@ -103,7 +107,7 @@ class UpcomingRowViewModelsBuilderTest {
 
     @Test
     fun givenANameday_thenCreatesADateHeaderPlusANamedayModel() {
-        val date = Date.on(1, Months.APRIL, 2017)
+        val date = dateOn(1, Months.APRIL, 2017)
         val namedays = namedayOf(date, "Maria")
 
         val viewModels = builderFor(TimePeriod.between(date, date))
@@ -117,7 +121,7 @@ class UpcomingRowViewModelsBuilderTest {
 
     @Test
     fun theDisplayOrderIsCorrect() {
-        val date = Date.on(1, Months.APRIL, 2017)
+        val date = dateOn(1, Months.APRIL, 2017)
 
         val bankHoliday = BankHoliday("A bank holiday", date)
         val bankHolidays = listOf(bankHoliday)
@@ -125,8 +129,8 @@ class UpcomingRowViewModelsBuilderTest {
 
         val viewModels = builderWithAds(entireYear(2017))
                 .withContactEvents(asList(
-                        aContactEventOn(Date.on(1, Months.APRIL, 2017)),
-                        aContactEventOn(Date.on(2, Months.APRIL, 2017))
+                        aContactEventOn(dateOn(1, Months.APRIL, 2017)),
+                        aContactEventOn(dateOn(2, Months.APRIL, 2017))
                 ))
                 .withNamedays(namedays)
                 .withBankHolidays(bankHolidays)
@@ -151,9 +155,7 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
     private fun namedayOf(date: Date, maria: String): List<NamesInADate> {
-        val namedays = ArrayList<NamesInADate>()
-        namedays.add(NamesInADate(date, arrayListOf(maria)))
-        return namedays
+        return listOf(ArrayNamesInADate(date, arrayListOf(maria)))
     }
 
     private fun builderFor(timePeriod: TimePeriod): UpcomingRowViewModelsBuilder {
@@ -166,7 +168,7 @@ class UpcomingRowViewModelsBuilderTest {
 
 
     private fun aBankHoliday(): BankHoliday {
-        return BankHoliday("A bank holiday", Date.on(1, JANUARY, 1990))
+        return BankHoliday("A bank holiday", dateOn(1, JANUARY, 1990))
     }
 
     private fun aContactEventOn(date: Date): ContactEvent {
@@ -174,7 +176,7 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
     private fun entireYear(year: Int): TimePeriod {
-        return TimePeriod.between(Date.startOfYear(year), Date.endOfYear(year))
+        return TimePeriod.between(beggingOfYear(year), endOfYear(year))
     }
 
     companion object {

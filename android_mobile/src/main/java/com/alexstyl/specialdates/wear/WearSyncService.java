@@ -18,9 +18,12 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
 
 public class WearSyncService extends IntentService {
 
@@ -36,8 +39,7 @@ public class WearSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppComponent applicationModule = ((MementoApplication) getApplication())
-                .getApplicationModule();
+        AppComponent applicationModule = ((MementoApplication) getApplication()).getApplicationModule();
         applicationModule.inject(this);
     }
 
@@ -61,7 +63,7 @@ public class WearSyncService extends IntentService {
     }
 
     private Optional<ContactEventsOnADate> fetchContactEvents() {
-        Date closestDate = peopleEventsProvider.findClosestEventDateOnOrAfter(Date.Companion.today());
+        Date closestDate = peopleEventsProvider.findClosestEventDateOnOrAfter(todaysDate());
         if (closestDate != null) {
             return new Optional<>(peopleEventsProvider.fetchEventsOn(closestDate));
         } else {

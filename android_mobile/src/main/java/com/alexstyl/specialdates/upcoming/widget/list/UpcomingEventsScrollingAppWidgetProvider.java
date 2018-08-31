@@ -15,12 +15,13 @@ import com.alexstyl.specialdates.R;
 import com.alexstyl.specialdates.addevent.AddEventActivity;
 import com.alexstyl.specialdates.analytics.Analytics;
 import com.alexstyl.specialdates.analytics.Widget;
-import com.alexstyl.specialdates.date.Date;
 import com.alexstyl.specialdates.date.DateLabelCreator;
 import com.alexstyl.specialdates.home.HomeActivity;
 import com.alexstyl.specialdates.permissions.MementoPermissions;
 
 import javax.inject.Inject;
+
+import static com.alexstyl.specialdates.date.DateExtKt.todaysDate;
 
 public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider {
     @Inject Analytics analytics;
@@ -59,7 +60,7 @@ public class UpcomingEventsScrollingAppWidgetProvider extends AppWidgetProvider 
     }
 
     private void showUpcomingEvents(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        String dateLabel = dateLabelCreator.createWithYearPreferred(Date.Companion.today());
+        String dateLabel = dateLabelCreator.createWithYearPreferred(todaysDate());
         for (int appWidgetId : appWidgetIds) {
             Intent intent = new Intent(context, UpcomingEventsRemoteViewService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);

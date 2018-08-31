@@ -7,7 +7,7 @@ staticAnalysis {
     }
 
     checkstyle {
-        toolVersion checkstyleVersion
+        toolVersion '8.0'
         exclude project.fileTree('src/test/java')
         exclude project.fileTree('src/testDebug/java')
         configFile rootProject.file('team-props/static-analysis/checkstyle-modules.xml')
@@ -15,7 +15,7 @@ staticAnalysis {
     }
 
     pmd {
-        toolVersion pmdVersion
+        toolVersion '5.8.1'
         exclude project.fileTree('src/test/java')
         exclude project.fileTree('src/testDebug/java')
 
@@ -25,7 +25,7 @@ staticAnalysis {
     }
 
     findbugs {
-        toolVersion findbugsVersion
+        toolVersion '3.0.1'
         excludeFilter rootProject.file('team-props/static-analysis/findbugs-excludes.xml')
         includeVariants { variant -> excludeTestAndRelease(variant) }
     }

@@ -8,15 +8,20 @@ import android.widget.RemoteViews
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.upcoming.UpcomingContactEventViewModel
+import com.alexstyl.specialdates.upcoming.UpcomingRowViewModel
 
 
-internal class ContactEventBinder(private val remoteViews: RemoteViews,
-                                  private val resources: Resources,
-                                  private val context: Context,
-                                  private val avatarFactory: CircularAvatarFactory)
-    : UpcomingEventViewBinder<UpcomingContactEventViewModel> {
+class ContactEventBinder(private val remoteViews: RemoteViews,
+                         private val resources: Resources,
+                         private val context: Context,
+                         private val avatarFactory: CircularAvatarFactory)
+    : UpcomingEventViewBinder {
 
-    override fun bind(viewModel: UpcomingContactEventViewModel) {
+    override val views: RemoteViews
+        get() = remoteViews
+
+    override fun bind(viewModel: UpcomingRowViewModel) {
+        viewModel as UpcomingContactEventViewModel
         remoteViews.setTextViewText(R.id.row_upcoming_event_contact_name, viewModel.contactName)
         remoteViews.setTextViewText(R.id.row_upcoming_event_contact_event, viewModel.eventLabel)
         remoteViews.setTextColor(R.id.row_upcoming_event_contact_event, viewModel.eventColor)
@@ -39,5 +44,4 @@ internal class ContactEventBinder(private val remoteViews: RemoteViews,
         }
     }
 
-    override fun getViews(): RemoteViews = remoteViews
 }

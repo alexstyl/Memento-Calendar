@@ -10,8 +10,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -34,12 +35,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/localised_app_name">
 
+        <activity
+            android:name="com.alexstyl.specialdates.ReroutingActivity"
+            android:theme="@style/Theme.Memento.Wallpaper" />
+
         <activity android:name="com.alexstyl.specialdates.home.HomeActivity" />
 
         <!-- Activity alias used so that we can modify the UpcomingEventsActivity file without worrying about the name -->
         <activity-alias
             android:name="com.alexstyl.specialdates.ui.activity.MainActivity"
-            android:targetActivity=".home.HomeActivity">
+            android:targetActivity=".ReroutingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -114,9 +119,15 @@
 
         <activity
             android:name=".donate.DonateActivity"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/donate_welcome"
             android:parentActivityName=".home.HomeActivity"
-            android:theme="@style/Theme.Donate" />
+            android:theme="@style/Theme.Donate">
+            <intent-filter>
+                <action android:name="com.alexstyl.specialdates.ACTION_DONATE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".facebook.login.FacebookLogInActivity"
@@ -172,16 +183,20 @@
             android:name="com.alexstyl.specialdates.wear.WearSyncService"
             android:exported="false" />
 
-        <receiver android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver">
+        <receiver
+            android:name="com.alexstyl.specialdates.BootReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.LOCALE_CHANGED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.alexstyl.specialdates.receiver.BootCompleteReceiver">
+        <receiver android:name=".dailyreminder.DailyReminderReceiver" />
+
+        <receiver android:name="com.alexstyl.specialdates.DeviceConfigurationUpdatedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -213,14 +228,6 @@
             android:name=".upcoming.widget.list.UpcomingEventsRemoteViewService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <service
-            android:name=".facebook.friendimport.FacebookFriendsIntentService"
-            android:label="@string/title_facebook_friends_import" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="${crashlyticsApiKey}" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -234,6 +241,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-    </application>
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_memento" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/main_red" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id" />
+
+    </application>
 </manifest>

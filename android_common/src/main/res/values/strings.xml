@@ -195,7 +195,6 @@
     <string name="Open_Source">Open Source</string>
     <string name="Licenses">Licences</string>
     <string name="Donate_Remove_ads">Donate - Remove ads</string>
-    <string name="Memento_on_Github">Memento on Github</string>
     <string name="Import_Birthdays">Import Birthdays</string>
     <string name="New">New</string>
     <string name="starsigns_aquarius">Aquarius</string>
@@ -210,7 +209,6 @@
     <string name="starsigns_scorpio">Scorpio</string>
     <string name="starsigns_sagittarius">Sagittarius</string>
     <string name="starsigns_capricorn">Capricorn</string>
-    <string name="facebook_messenger">Messenger</string>
     <string name="phone_type_home">Home</string>
     <string name="phone_type_mobile">Mobile</string>
     <string name="phone_type_work">Work</string>
@@ -224,7 +222,6 @@
     <string name="donate_checking_for_donations">Checking for donations</string>
     <string name="donate_no_donation_found">"No donation found. Have you donated?"</string>
     <string name="Select_date">Select date</string>
-    <string name="Facebook">Facebook</string>
     <string name="person_show">Show</string>
     <string name="person_hide">Hide</string>
     <string name="Welcome">Welcome</string>
@@ -239,4 +236,5 @@
     <string name="Close">Close</string>
     <string name="Opacity">Opacity</string>
     <string name="Apply">Apply</string>
+    <string name="Like_the_app_Consider_donating">Like the app? Consider donating to support the development</string>
 </resources>

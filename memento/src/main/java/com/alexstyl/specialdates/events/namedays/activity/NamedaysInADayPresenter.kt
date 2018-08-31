@@ -4,7 +4,6 @@ import com.alexstyl.gsc.SoundComparer
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.DisplayName
-import com.alexstyl.specialdates.contact.Names
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
@@ -25,7 +24,7 @@ class NamedaysInADayPresenter(private val namedayCalendar: NamedayCalendar,
         disposable =
                 Observable.fromCallable { namedayCalendar.getAllNamedaysOn(forDate) }
                         .observeOn(workScheduler)
-                        .map { findAndCreateViewModelsOf(it.getNames()) }
+                        .map { findAndCreateViewModelsOf(it.names) }
                         .observeOn(resultScheduler)
                         .subscribe { namedaysViewModel ->
                             into.displayNamedays(namedaysViewModel)
@@ -37,19 +36,19 @@ class NamedaysInADayPresenter(private val namedayCalendar: NamedayCalendar,
     private fun findAndCreateViewModelsOf(celebratingNames: List<String>): List<NamedayScreenViewModel> {
         val allContacts = contactsProvider.allContacts
 
-        return celebratingNames.fold(listOf(), { list, celebratingName ->
+        return celebratingNames.fold(listOf()) { list, celebratingName ->
             val contactsCelebrating = allContacts.findContactsCalled(celebratingName)
             list + namedaysViewModelFactory.viewModelsFor(celebratingName) + contactsCelebrating.map {
                 namedaysViewModelFactory.viewModelsFor(it)
             }
-        })
+        }
 
     }
 
-    private val DisplayName.names: Names
+    private val DisplayName.names: List<String>
         get() {
             return if (namedayUserSettings.shouldLookupAllNames()) {
-                this.firstNames
+                this.allNames
             } else {
                 this.firstNames
             }

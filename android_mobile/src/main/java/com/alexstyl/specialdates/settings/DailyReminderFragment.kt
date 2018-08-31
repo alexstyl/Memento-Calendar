@@ -25,7 +25,7 @@ import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import java.net.URI
-import java.util.Calendar
+import java.util.*
 import javax.inject.Inject
 
 class DailyReminderFragment : MementoPreferenceFragment() {
@@ -35,20 +35,13 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
     private var ringtoneLegacyPreference: ClickableRingtonePreference? = null
 
-    lateinit var permissions: MementoPermissions
-        @Inject set
-    lateinit var dailyReminderScheduler: DailyReminderScheduler
-        @Inject set
-    lateinit var analytics: Analytics
-        @Inject set
-    lateinit var tracker: CrashAndErrorTracker
-        @Inject set
-    lateinit var preferences: DailyReminderUserSettings
-        @Inject set
-    lateinit var navigator: DailyReminderNavigator
-        @Inject set
-    lateinit var channelCreator: DailyReminderOreoChannelCreator
-        @Inject set
+    @Inject lateinit var permissions: MementoPermissions
+    @Inject lateinit var dailyReminderScheduler: DailyReminderScheduler
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var tracker: CrashAndErrorTracker
+    @Inject lateinit var preferences: DailyReminderUserSettings
+    @Inject lateinit var navigator: DailyReminderNavigator
+    @Inject lateinit var channelCreator: DailyReminderOreoChannelCreator
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,10 +69,12 @@ class DailyReminderFragment : MementoPreferenceFragment() {
         timePreference = findPreferenceOrThrow(R.string.key_daily_reminder_time)
         timePreference.onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
             val time = newValue as IntArray
-            val timeOfDay = TimeOfDay(time[0], time[1])
+            val timeOfDay = TimeOfDay.at(time[0], time[1])
             updateTimeSet(timeOfDay)
             analytics.trackDailyReminderTimeUpdated(timeOfDay)
             preferences.setDailyReminderTime(timeOfDay)
+
+            dailyReminderScheduler.cancelReminder()
             dailyReminderScheduler.scheduleReminderFor(timeOfDay)
             true
         }
@@ -173,9 +168,7 @@ class DailyReminderFragment : MementoPreferenceFragment() {
 
         private const val EXTERNAL_STORAGE_REQUEST_CODE = 15
 
-        // Char sequence for a 12 hour format.
         private const val DEFAULT_FORMAT_12_HOUR = "hh:mm a"
-        // Char sequence for a 24 hour format.
         private const val DEFAULT_FORMAT_24_HOUR = "kk:mm"
 
         fun getHour(context: Context?, cal: Calendar): CharSequence {

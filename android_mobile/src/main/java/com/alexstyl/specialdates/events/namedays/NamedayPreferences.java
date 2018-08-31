@@ -13,7 +13,7 @@ public final class NamedayPreferences implements NamedayUserSettings {
     private final EasyPreferences preferences;
 
     NamedayPreferences(Context context) {
-        this.preferences = EasyPreferences.createForDefaultPreferences(context);
+        this.preferences = EasyPreferences.Companion.createForDefaultPreferences(context);
         this.enabledByDefault = shouldNamedaysBeEnabledByDefault(context);
     }
 
@@ -25,7 +25,7 @@ public final class NamedayPreferences implements NamedayUserSettings {
     @Override
     public NamedayLocale getSelectedLanguage() {
         String lang = preferences.getString(R.string.key_nameday_lang, DEFAULT_LOCALE);
-        return NamedayLocale.from(lang);
+        return NamedayLocale.Companion.from(lang);
     }
 
     @Override

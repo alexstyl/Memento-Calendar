@@ -3,7 +3,10 @@ package com.alexstyl.specialdates.events.peopleevents
 import com.alexstyl.specialdates.TestContactEventsBuilder
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.date.Months.*
+import com.alexstyl.specialdates.date.Months.DECEMBER
+import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.date.Months.MARCH
+import com.alexstyl.specialdates.date.dateOn
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +34,7 @@ class CompositePeopleEventsProviderTest {
 
     @Test
     fun whenOnlyDeviceEventsExist_willReturnsOnlyThoseEvents() {
-        val date = Date.on(1, JANUARY, 2017)
+        val date = dateOn(1, JANUARY, 2017)
         val expectedEvents = TestContactEventsBuilder().addAnniversaryFor(PETER, date).build()
 
         given(mockDeviceEvents.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedEvents))
@@ -43,7 +46,7 @@ class CompositePeopleEventsProviderTest {
 
     @Test
     fun whenOnlyNamedaysExist_willReturnsOnlyThoseEvents() {
-        val theDate = Date.on(1, JANUARY, 2017)
+        val theDate = dateOn(1, JANUARY, 2017)
 
         val expectedEvents = ContactEventsOnADate.createFrom(theDate, TestContactEventsBuilder().addNamedayFor(PETER, theDate).build())
         given(mockPeopleDynamicNamedaysProvider.fetchEventsOn(theDate)).willReturn(expectedEvents)
@@ -55,7 +58,7 @@ class CompositePeopleEventsProviderTest {
 
     @Test
     fun whenBothDeviceAndNamedaysEventsExist_thenAllEventsAreReturnedCorrectly() {
-        val date = Date.on(1, JANUARY, 2017)
+        val date = dateOn(1, JANUARY, 2017)
         val expectedDynamicEvents = TestContactEventsBuilder().addNamedayFor(PETER, date).build()
         val expectedStaticEvents = TestContactEventsBuilder().addAnniversaryFor(PETER, date).build()
 
@@ -70,7 +73,7 @@ class CompositePeopleEventsProviderTest {
     @Test(expected = NoEventsFoundException::class)
     @Throws(NoEventsFoundException::class)
     fun whenNoEventsExist_thenThrowsException() {
-        val aDate = Date.on(1, JANUARY, 2017)
+        val aDate = dateOn(1, JANUARY, 2017)
 
         mockDeviceEvents.willReturnNoEventsOn(aDate)
         mockPeopleDynamicNamedaysProvider.willReturnNoEventsOn(aDate)
@@ -80,7 +83,7 @@ class CompositePeopleEventsProviderTest {
 
     @Test
     fun onlyDynamicEvents_returnsTheDynamicEvents() {
-        val aDate = Date.on(2, MARCH, 2017)
+        val aDate = dateOn(2, MARCH, 2017)
 
         given(mockDeviceEvents.findClosestEventDateOnOrAfter(aDate)).willReturn(null)
         given(mockDeviceEvents.fetchEventsOn(aDate)).willReturn(ContactEventsOnADate.createFrom(aDate, emptyList()))
@@ -103,12 +106,12 @@ class CompositePeopleEventsProviderTest {
 
     @Test
     fun findClosestEventDateOnOrAfterReturnsTheClosest() {
-        val date = Date.on(5, JANUARY, 2018)
+        val date = dateOn(5, JANUARY, 2018)
 
-        given(mockDeviceEvents.findClosestEventDateOnOrAfter(date)).willReturn(Date.on(29, DECEMBER, 2018))
-        given(mockPeopleDynamicNamedaysProvider.findClosestEventDateOnOrAfter(date)).willReturn(Date.on(6, JANUARY,2018))
+        given(mockDeviceEvents.findClosestEventDateOnOrAfter(date)).willReturn(dateOn(29, DECEMBER, 2018))
+        given(mockPeopleDynamicNamedaysProvider.findClosestEventDateOnOrAfter(date)).willReturn(dateOn(6, JANUARY,2018))
 
-        assertThat(peopleEventsProvider.findClosestEventDateOnOrAfter(date)).isEqualTo(Date.on(6, JANUARY, 2018))
+        assertThat(peopleEventsProvider.findClosestEventDateOnOrAfter(date)).isEqualTo(dateOn(6, JANUARY, 2018))
     }
 }
 

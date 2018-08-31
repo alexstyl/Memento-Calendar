@@ -1,7 +1,10 @@
 package com.alexstyl.specialdates.contact
 
-internal class AndroidContactsProviderSource(private val cache: ContactCache, private val factory: AndroidContactFactory) : ContactsProviderSource {
+class AndroidContactsProviderSource(private val cache: ContactCache,
+                                    private val factory: AndroidContactFactory
+) : ContactsProviderSource {
 
+    // TODO evict if issue
 
     @Throws(ContactNotFoundException::class)
     override fun getOrCreateContact(contactID: Long): Contact {
