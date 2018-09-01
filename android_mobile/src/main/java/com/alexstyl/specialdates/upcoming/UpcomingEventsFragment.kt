@@ -14,7 +14,6 @@ import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.UpcomingEventsView
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
 import com.alexstyl.specialdates.home.HomeNavigator
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.support.AskForSupport
@@ -26,7 +25,6 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
 
     @Inject lateinit var navigator: HomeNavigator
     @Inject lateinit var imageLoader: ImageLoader
-    @Inject lateinit var refresher: UpcomingEventsViewRefresher
     @Inject lateinit var presenter: UpcomingEventsPresenter
     @Inject lateinit var askForSupport: AskForSupport
 
@@ -37,7 +35,6 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
         super.onCreate(savedInstanceState)
         val applicationModule = (activity!!.application as MementoApplication).applicationModule
         applicationModule.inject(this)
-        refresher.addEventsView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -75,29 +72,15 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
         return view
     }
 
+
     override fun onResume() {
         super.onResume()
-        refresher.addEventsView(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
         presenter.startPresentingInto(mvpView)
     }
 
     override fun onPause() {
         super.onPause()
-        refresher.removeView(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
         presenter.stopPresenting()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        refresher.removeView(this)
     }
 
     override fun reloadUpcomingEventsView() {

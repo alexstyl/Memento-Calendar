@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.events.bankholidays.GreekBankHolidaysCalculator
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
 import com.alexstyl.specialdates.facebook.FacebookUserSettings
 import com.alexstyl.specialdates.home.HomeNavigator
 import com.alexstyl.specialdates.permissions.MementoPermissions
@@ -63,12 +64,13 @@ class UpcomingEventsModule {
     }
 
     @Provides
-    fun presenter(permissionsChecker: MementoPermissions, provider: UpcomingEventsProvider): UpcomingEventsPresenter {
+    fun presenter(permissionsChecker: MementoPermissions, provider: UpcomingEventsProvider, refresher: UpcomingEventsViewRefresher): UpcomingEventsPresenter {
         val today = todaysDate()
         return UpcomingEventsPresenter(
                 today,
                 permissionsChecker,
                 provider,
+                refresher,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread()
         )
