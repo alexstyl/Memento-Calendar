@@ -44,6 +44,8 @@ data class Date(private val localDate: LocalDate, val year: Int?) : Comparable<D
         return localDate.compareTo(other.localDate)
     }
 
+    fun withoutYear() = dateOn(localDate.dayOfMonth, localDate.monthOfYear)
+
 
     companion object {
 

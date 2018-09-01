@@ -3,7 +3,9 @@ package com.alexstyl.specialdates.date
 import com.alexstyl.specialdates.JavaStrings
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture
+import com.alexstyl.specialdates.date.Months.AUGUST
 import com.alexstyl.specialdates.date.Months.JANUARY
+import com.alexstyl.specialdates.date.Months.SEPTEMBER
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Test
@@ -54,6 +56,22 @@ class ContactEventTest {
         val contactEvent = ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT)
         val label = contactEvent.getLabel(dateOn(1, JANUARY, todaysDate().year), strings)
         assertThat(label).isEqualTo("Turns 10")
+    }
+
+    @Test
+    fun labelAfterBirthdayInCurrentYear() {
+        val contactEvent = ContactEvent(
+            NO_DEVICE_ID,
+            StandardEventType.BIRTHDAY,
+            dateOn(21, AUGUST, 1988),
+            ANY_CONTACT
+        )
+
+        val today = dateOn(1, SEPTEMBER, 2018)
+
+        val label = contactEvent.getLabel(today, strings)
+
+        assertThat(label).isEqualTo("Turns 31")
     }
 
     companion object {
