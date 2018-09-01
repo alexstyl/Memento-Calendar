@@ -11,7 +11,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.UpcomingEventsView
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.home.HomeNavigator
@@ -21,7 +20,7 @@ import com.alexstyl.specialdates.ui.base.MementoFragment
 import com.alexstyl.specialdates.upcoming.view.OnUpcomingEventClickedListener
 import javax.inject.Inject
 
-class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
+class UpcomingEventsFragment : MementoFragment() {
 
     @Inject lateinit var navigator: HomeNavigator
     @Inject lateinit var imageLoader: ImageLoader
@@ -81,9 +80,5 @@ class UpcomingEventsFragment : MementoFragment(), UpcomingEventsView {
     override fun onPause() {
         super.onPause()
         presenter.stopPresenting()
-    }
-
-    override fun reloadUpcomingEventsView() {
-        presenter.refreshEvents()
     }
 }
