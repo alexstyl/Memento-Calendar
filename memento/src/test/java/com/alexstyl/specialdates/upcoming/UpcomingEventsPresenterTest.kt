@@ -3,6 +3,7 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.TimePeriod
 import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsRefresher
 import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.schedulers.Schedulers
@@ -26,6 +27,7 @@ class UpcomingEventsPresenterTest {
     private val mockPermissions = Mockito.mock(MementoPermissions::class.java)
     private val mockProvider = Mockito.mock(UpcomingEventsProvider::class.java)
     private val mockSettings = Mockito.mock(UpcomingEventsSettings::class.java)
+    private val mockRefresher = Mockito.mock(UpcomingEventsRefresher::class.java)
 
     private lateinit var upcomingEventsPresenter: UpcomingEventsPresenter
 
@@ -35,6 +37,7 @@ class UpcomingEventsPresenterTest {
                 STARTING_DATE,
                 mockPermissions,
                 mockProvider,
+                mockRefresher,
                 Schedulers.trampoline(),
                 Schedulers.trampoline()
         )
