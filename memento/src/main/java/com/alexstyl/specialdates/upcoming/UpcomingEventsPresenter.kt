@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.specialdates.UpcomingEventsView
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsViewRefresher
+import com.alexstyl.specialdates.events.peopleevents.UpcomingEventsRefresher
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -12,7 +12,7 @@ import io.reactivex.subjects.PublishSubject
 class UpcomingEventsPresenter(private val firstDay: Date,
                               private val permissions: MementoPermissions,
                               private val providerUpcoming: UpcomingEventsProvider,
-                              private val refresher: UpcomingEventsViewRefresher,
+                              private val refresher: UpcomingEventsRefresher,
                               private val workScheduler: Scheduler,
                               private val resultScheduler: Scheduler) {
 
