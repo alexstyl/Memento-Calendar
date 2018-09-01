@@ -15,13 +15,17 @@ class AndroidDailyReminderScheduler(private val context: Context,
     : DailyReminderScheduler {
 
     override fun scheduleReminderFor(timeOfDay: TimeOfDay) {
-        val timeSet = if (timeOfDay > now()) {
+        val timeSet = nextOccurrenceOf(timeOfDay)
+
+        AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, timeSet, pendingIntent())
+    }
+
+    private fun nextOccurrenceOf(timeOfDay: TimeOfDay): Long {
+        return if (timeOfDay.isAfter(now())) {
             todaysDate().toMillis() + timeOfDay.toMillis()
         } else {
             todaysDate().addDay(1).toMillis() + timeOfDay.toMillis()
         }
-
-        AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, timeSet, pendingIntent())
     }
 
     override fun cancelReminder() {

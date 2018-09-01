@@ -17,29 +17,17 @@ class TimeOfDayTest {
     }
 
     @Test
-    fun whenComparingSameTime_thenReturnsEquals() {
-        val a = TimeOfDay.at(1, 0)
-        val b = TimeOfDay.at(1, 0)
-        assertThat(a == b).isTrue
+    fun whenComparingALaterTimeToAnEarlierOne_thenReturnTrue() {
+        assertThat(
+                TimeOfDay.at(2, 0).isAfter(TimeOfDay.at(1, 0))
+        ).isTrue
     }
 
     @Test
-    fun whenComparingDifferentTime_thenReturnsCorrectResults() {
+    fun whenComparingAnEarlierTimeToALaterOne_thenReturnFalse() {
         assertThat(
-                TimeOfDay.at(2, 0) > TimeOfDay.at(1, 0)
-        ).isTrue
-
-        assertThat(
-                TimeOfDay.at(2, 5) > TimeOfDay.at(2, 0)
-        ).isTrue
-
-        assertThat(
-                TimeOfDay.at(1, 0) < TimeOfDay.at(5, 0)
-        ).isTrue
-
-        assertThat(
-                TimeOfDay.at(1, 0) < TimeOfDay.at(1, 5)
-        ).isTrue
+                TimeOfDay.at(1, 0).isAfter(TimeOfDay.at(2, 0))
+        ).isFalse
     }
 
 }

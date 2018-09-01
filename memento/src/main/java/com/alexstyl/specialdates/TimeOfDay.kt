@@ -35,12 +35,15 @@ data class TimeOfDay(private val dateTime: LocalTime) {
         return dateTime.millisOfDay.toLong()
     }
 
-    operator fun compareTo(other: TimeOfDay) =
-            if (this.hours == other.hours) {
-                this.minutes - other.minutes
-            } else {
-                this.hours - other.hours
-            }
+    fun isAfter(other: TimeOfDay) = compareTo(other) > 0
+
+    private fun compareTo(other: TimeOfDay): Int {
+        return if (hours == other.hours) {
+            minutes - other.minutes
+        } else {
+            hours - other.hours
+        }
+    }
 
     companion object {
         fun at(@IntRange(from = 0, to = 23) hour: Int, @IntRange(from = 0, to = 59) minute: Int): TimeOfDay {
