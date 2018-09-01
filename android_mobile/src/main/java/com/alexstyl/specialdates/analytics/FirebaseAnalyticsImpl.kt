@@ -155,5 +155,9 @@ class FirebaseAnalyticsImpl(private val firebase: FirebaseAnalytics) : Analytics
     private fun FirebaseAnalytics.logEvent(@NonNull @Size(min = 1L, max = 40L) eventName: String) {
         return logEvent(eventName, Bundle.EMPTY)
     }
+
+    override fun trackDailyReminderTriggered() {
+        firebase.logEvent("daily reminder triggered")
+    }
 }
 

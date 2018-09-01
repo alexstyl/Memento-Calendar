@@ -6,7 +6,6 @@ import com.alexstyl.specialdates.donate.Donation
 import com.alexstyl.specialdates.events.peopleevents.EventType
 
 interface Analytics {
-
     fun trackThemeSelected(string: String)
 
     fun trackScreen(screen: Screen)
@@ -60,4 +59,6 @@ interface Analytics {
     fun trackContactDetailsViewed(contact: Contact)
 
     fun trackNamedaysScreen()
+
+    fun trackDailyReminderTriggered()
 }

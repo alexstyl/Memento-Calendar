@@ -18,6 +18,7 @@ class DailyReminderReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as MementoApplication).applicationModule.inject(this)
+
         val date = intent.getDateExtra(todaysDate())
 
         val view = NotificationDailyReminderView(notifier)

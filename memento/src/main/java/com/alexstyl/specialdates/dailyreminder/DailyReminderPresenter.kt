@@ -2,6 +2,7 @@ package com.alexstyl.specialdates.dailyreminder
 
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Optional
+import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
@@ -25,6 +26,7 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                              private var factory: DailyReminderViewModelFactory,
                              private var errorTracker: CrashAndErrorTracker,
                              private var bankHolidayProvider: BankHolidayProvider,
+                             private var analytics: Analytics,
                              private var workScheduler: Scheduler,
                              private var resultScheduler: Scheduler,
                              private var dailyReminderLogger: DailyReminderLogger) {
@@ -32,7 +34,6 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
     private var disposable: Disposable? = null
 
     fun startPresentingInto(view: DailyReminderView, date: Date) {
-
         disposable =
                 Observable.zip(
                         contactEvents(date),
@@ -45,26 +46,19 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                                 dailyReminderLogger.appendEvents(date, this)
                             }
                         })
-                        .doOnError { it ->
-                            errorTracker.track(it)
-                        }
+                        .doOnNext { analytics.trackDailyReminderTriggered() }
+                        .doOnError { it -> errorTracker.track(it) }
                         .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)
-                        .subscribe { viewModels: DailyReminderViewModel ->
-                            view.show(viewModels)
-                        }
+                        .subscribe { viewModels -> view.show(viewModels) }
     }
 
     private fun contactEvents(date: Date) =
             Observable.fromCallable {
-                if (permissions.canReadContacts()) {
-                    peopleEventsProvider.fetchEventsOn(date)
-                } else {
-                    ContactEventsOnADate.createFrom(date, emptyList())
-                }
-            }.map {
+                contactEventsOn(date)
+            }.map { eventsOnDate ->
                 val list = arrayListOf<ContactEventNotificationViewModel>()
-                val grouped = it.events.groupBy { it.contact }
+                val grouped = eventsOnDate.events.groupBy { it.contact }
 
                 grouped.keys.forEach { contact ->
                     val events = grouped[contact]!!
@@ -72,6 +66,14 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
                 }
                 list.toList()
             }
+
+    private fun contactEventsOn(date: Date): ContactEventsOnADate {
+        return if (permissions.canReadContacts()) {
+            peopleEventsProvider.fetchEventsOn(date)
+        } else {
+            ContactEventsOnADate.createFrom(date, emptyList())
+        }
+    }
 
 
     private fun namedays(date: Date): Observable<Optional<NamedaysNotificationViewModel>> = Observable.fromCallable {

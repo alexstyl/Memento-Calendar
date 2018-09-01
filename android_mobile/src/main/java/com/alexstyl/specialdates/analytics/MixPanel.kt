@@ -151,6 +151,10 @@ class MixPanel(private val mixpanel: MixpanelAPI) : Analytics {
         mixpanel.track("namedays_screen")
     }
 
+    override fun trackDailyReminderTriggered() {
+        mixpanel.track("daily_reminder_triggered")
+    }
+
     private fun createPropertyFor(eventType: EventType): JSONObject {
         val properties = JSONObject()
         try {
