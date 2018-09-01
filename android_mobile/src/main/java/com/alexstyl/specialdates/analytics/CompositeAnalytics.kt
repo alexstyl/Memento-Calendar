@@ -6,6 +6,12 @@ import com.alexstyl.specialdates.donate.Donation
 import com.alexstyl.specialdates.events.peopleevents.EventType
 
 class CompositeAnalytics(private vararg val analytics: Analytics) : Analytics {
+    override fun trackDailyReminderTriggered() {
+        analytics.forEach {
+            it.trackDailyReminderTriggered()
+        }
+    }
+
     override fun trackThemeSelected(string: String) {
         analytics.forEach {
             it.trackThemeSelected(string)

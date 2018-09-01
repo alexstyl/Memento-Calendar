@@ -9,6 +9,7 @@ import com.alexstyl.specialdates.BuildConfig
 import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.EasyPreferences
 import com.alexstyl.specialdates.Strings
+import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.todaysDate
@@ -47,6 +48,7 @@ class DailyReminderModule {
                   factory: DailyReminderViewModelFactory,
                   errorTracker: CrashAndErrorTracker,
                   bankHolidayProvider: BankHolidayProvider,
+                  analytics: Analytics,
                   logger: DailyReminderLogger): DailyReminderPresenter {
         return DailyReminderPresenter(
                 permissions,
@@ -57,6 +59,7 @@ class DailyReminderModule {
                 factory,
                 errorTracker,
                 bankHolidayProvider,
+                analytics,
                 Schedulers.trampoline(),
                 Schedulers.trampoline(),
                 logger

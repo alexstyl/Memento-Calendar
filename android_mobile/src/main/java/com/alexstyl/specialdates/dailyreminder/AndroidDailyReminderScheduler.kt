@@ -14,10 +14,21 @@ class AndroidDailyReminderScheduler(private val context: Context,
                                     private val alarmManager: AlarmManager)
     : DailyReminderScheduler {
 
+    override fun isNextDailyReminderScheduled(): Boolean {
+        val intent = Intent(context, DailyReminderReceiver::class.java)
+        return PendingIntent.getBroadcast(context, REQUEST_CODE, intent, PendingIntent.FLAG_NO_CREATE) != null
+    }
+
     override fun scheduleReminderFor(timeOfDay: TimeOfDay) {
         val timeSet = nextOccurrenceOf(timeOfDay)
 
-        AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, timeSet, pendingIntent())
+        val pendingIntent = buildPendingIntent()
+        AlarmManagerCompat.setExactAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, timeSet, pendingIntent)
+    }
+
+    private fun buildPendingIntent(): PendingIntent {
+        val intent = Intent(context, DailyReminderReceiver::class.java)
+        return PendingIntent.getBroadcast(context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun nextOccurrenceOf(timeOfDay: TimeOfDay): Long {
@@ -29,12 +40,14 @@ class AndroidDailyReminderScheduler(private val context: Context,
     }
 
     override fun cancelReminder() {
-        alarmManager.cancel(pendingIntent())
+        val intent = Intent(context, DailyReminderReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, 0)
+        alarmManager.cancel(pendingIntent)
     }
 
-    private fun pendingIntent(): PendingIntent {
-        val intent = Intent(context, DailyReminderReceiver::class.java)
-        return PendingIntent.getBroadcast(context, 0, intent, 0)
+    companion object {
+        private const val REQUEST_CODE = 300
     }
 }
+
 

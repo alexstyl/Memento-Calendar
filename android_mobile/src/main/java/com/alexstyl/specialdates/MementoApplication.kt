@@ -36,10 +36,8 @@ open class MementoApplication : MultiDexApplication() {
     @Inject lateinit var dailyReminderOreoChannelCreator: DailyReminderOreoChannelCreator
     @Inject lateinit var dailyReminderScheduler: DailyReminderScheduler
     @Inject lateinit var dailyReminderUserSettings: DailyReminderUserSettings
-    @Inject lateinit var mementoUserSettings: MementoUserSettings
 
     lateinit var applicationModule: AppComponent
-
 
     override fun onCreate() {
         super.onCreate()
@@ -63,18 +61,20 @@ open class MementoApplication : MultiDexApplication() {
 
         JobManager.create(this).addJobCreator(jobCreator)
 
-        if (mementoUserSettings.isFirstTimeBooting()) {
-            initialiseMementoAsync()
-        }
+        initialiseDailyReminderExtras()
     }
 
-    private fun initialiseMementoAsync() {
+    private fun initialiseDailyReminderExtras() {
         Observable.fromCallable {
             dailyReminderOreoChannelCreator.createDailyReminderChannel()
-            val timeSet = dailyReminderUserSettings.getTimeSet()
-            dailyReminderScheduler.scheduleReminderFor(timeSet)
-            mementoUserSettings.setFirstTimeBoot(false)
-            Log.d("Memento initialised")
+
+            if (dailyReminderUserSettings.isEnabled() && !dailyReminderScheduler.isNextDailyReminderScheduled()) {
+                val timeSet = dailyReminderUserSettings.getTimeSet()
+                dailyReminderScheduler.scheduleReminderFor(timeSet)
+                Log.d("DailyReminder scheduled at $timeSet")
+            } else {
+                Log.d("DailyReminder was already scheduled")
+            }
         }
                 .subscribeOn(Schedulers.io())
                 .subscribe()

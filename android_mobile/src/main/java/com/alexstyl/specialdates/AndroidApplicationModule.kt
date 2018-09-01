@@ -92,11 +92,6 @@ internal class AndroidApplicationModule(private val context: Context) {
     }
 
     @Provides
-    fun mementoSettings(context: Context): MementoUserSettings {
-        return AndroidMementoUserSettings.create(context)
-    }
-
-    @Provides
     fun alarmManager(context: Context): AlarmManager {
         return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }

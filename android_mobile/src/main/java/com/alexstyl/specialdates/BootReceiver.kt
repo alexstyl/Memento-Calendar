@@ -14,13 +14,13 @@ class BootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) {
-            // bail someone tried to spoof the boot
+            // bail someone - tried to spoof the boot
             return
         }
 
         (context.applicationContext as MementoApplication).applicationModule.inject(this)
 
-        if (dailyReminderUserSettings.isEnabled()) {
+        if (dailyReminderUserSettings.isEnabled() && !scheduler.isNextDailyReminderScheduled()) {
             scheduler.scheduleReminderFor(dailyReminderUserSettings.getTimeSet())
         }
     }
