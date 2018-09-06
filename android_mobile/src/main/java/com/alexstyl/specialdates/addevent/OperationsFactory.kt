@@ -85,7 +85,7 @@ class OperationsFactory(private val rawContactID: Int,
     private fun deleteEvents(contactEvents: List<ContactEvent>): ArrayList<ContentProviderOperation> {
         val ops = ArrayList<ContentProviderOperation>()
         for (contactEvent in contactEvents) {
-            val eventId = contactEvent.deviceEventId.get()
+            val eventId = contactEvent.deviceEventId
             ops.add(
                     ContentProviderOperation
                             .newDelete(Data.CONTENT_URI)

@@ -15,7 +15,7 @@ data class ContactEventsOnADate(val date: Date, val events: List<ContactEvent>, 
 
         private fun getContactsIn(events: List<ContactEvent>): List<Contact> {
             val contacts = ArrayList<Contact>()
-            for ((_, _, _, contact) in events) {
+            for ((_, _, contact, _) in events) {
                 if (!contacts.contains(contact)) {
                     contacts.add(contact)
                 }

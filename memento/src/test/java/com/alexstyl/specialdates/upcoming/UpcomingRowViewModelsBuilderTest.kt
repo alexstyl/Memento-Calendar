@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.upcoming
 import com.alexstyl.TestColors
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.JavaStrings
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture.aContact
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
@@ -11,9 +10,9 @@ import com.alexstyl.specialdates.date.Months
 import com.alexstyl.specialdates.date.Months.FEBRUARY
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.date.TimePeriod
+import com.alexstyl.specialdates.date.beggingOfYear
 import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.date.endOfYear
-import com.alexstyl.specialdates.date.beggingOfYear
 import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.bankholidays.BankHoliday
 import com.alexstyl.specialdates.events.namedays.ArrayNamesInADate
@@ -172,7 +171,7 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
     private fun aContactEventOn(date: Date): ContactEvent {
-        return ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, date, aContact())
+        return ContactEvent(StandardEventType.BIRTHDAY, date, aContact(), NO_DEVICE_EVENT_ID)
     }
 
     private fun entireYear(year: Int): TimePeriod {
@@ -180,7 +179,7 @@ class UpcomingRowViewModelsBuilderTest {
     }
 
     companion object {
-        private val NO_DEVICE_EVENT_ID = Optional.absent<Long>()
+        private val NO_DEVICE_EVENT_ID: Long? = null
     }
 
 }

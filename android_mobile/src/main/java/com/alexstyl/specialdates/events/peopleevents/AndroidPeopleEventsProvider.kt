@@ -4,7 +4,6 @@ import android.database.Cursor
 import android.database.MergeCursor
 import android.database.sqlite.SQLiteDatabase
 import com.alexstyl.specialdates.CrashAndErrorTracker
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.SQLArgumentBuilder
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactNotFoundException
@@ -174,8 +173,8 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         @EventTypeId val rawEventType = cursor.getInt(eventTypeIndex)
         if (rawEventType == TYPE_CUSTOM) {
             val deviceEventIdFrom = getDeviceEventIdFrom(cursor)
-            return if (deviceEventIdFrom.isPresent) {
-                queryCustomEvent(deviceEventIdFrom.get())
+            return if (deviceEventIdFrom != null) {
+                queryCustomEvent(deviceEventIdFrom)
             } else StandardEventType.OTHER
         }
         return StandardEventType.fromId(rawEventType)
@@ -187,7 +186,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
         val eventType = getEventType(cursor)
 
         val eventId = getDeviceEventIdFrom(cursor)
-        return ContactEvent(eventId, eventType, date, contact)
+        return ContactEvent(eventType, date, contact, eventId)
     }
 
     @ContactSource
@@ -248,12 +247,12 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
             return cursor.getLong(contactIdIndex)
         }
 
-        private fun getDeviceEventIdFrom(cursor: Cursor): Optional<Long> {
+        private fun getDeviceEventIdFrom(cursor: Cursor): Long? {
             val eventId = cursor.getColumnIndexOrThrow(AnnualEventsContract.DEVICE_EVENT_ID)
             val deviceEventId = cursor.getLong(eventId)
             return if (isALegitEventId(deviceEventId)) {
-                Optional.absent()
-            } else Optional(deviceEventId)
+                null
+            } else deviceEventId
         }
 
         private fun isALegitEventId(deviceEventId: Long): Boolean {

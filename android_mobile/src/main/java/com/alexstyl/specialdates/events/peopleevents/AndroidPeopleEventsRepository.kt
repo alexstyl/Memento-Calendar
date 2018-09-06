@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.provider.ContactsContract
 import com.alexstyl.specialdates.CrashAndErrorTracker
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactNotFoundException
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
@@ -33,7 +32,7 @@ class AndroidPeopleEventsRepository(private val contentResolver: ContentResolver
                     val eventDate = getEventDateFrom(cursor)
                     val eventId = getEventIdFrom(cursor)
                     val contact = contactsProvider.getContact(contactId, SOURCE_DEVICE)
-                    events.add(ContactEvent(Optional(eventId), eventType, eventDate, contact))
+                    events.add(ContactEvent(eventType, eventDate, contact, eventId))
                 } catch (e: DateParseException) {
                     tracker.track(e)
                 } catch (e: ContactNotFoundException) {

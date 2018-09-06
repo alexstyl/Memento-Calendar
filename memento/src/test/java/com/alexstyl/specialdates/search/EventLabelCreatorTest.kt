@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.JavaStrings
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.TestDateLabelCreator
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.ContactEvent
@@ -89,6 +88,6 @@ class EventLabelCreatorTest {
     }
 
     private fun contactEventOn(date: Date, eventType: EventType): ContactEvent {
-        return ContactEvent(Optional.absent(), eventType, date, mockContact)
+        return ContactEvent(eventType, date, mockContact)
     }
 }

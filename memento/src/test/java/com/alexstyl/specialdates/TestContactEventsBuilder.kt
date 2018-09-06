@@ -27,7 +27,7 @@ class TestContactEventsBuilder {
     }
 
     private fun addEventFor(contact: Contact, eventType: EventType, date: Date) {
-        contactEvents.add(ContactEvent(NO_DEVICE_CONTACT_ID, eventType, date, contact))
+        contactEvents.add(ContactEvent(eventType, date, contact, NO_DEVICE_CONTACT_ID))
     }
 
     fun build(): List<ContactEvent> {
@@ -35,6 +35,6 @@ class TestContactEventsBuilder {
     }
 
     companion object {
-        private val NO_DEVICE_CONTACT_ID = Optional.absent<Long>()
+        private val NO_DEVICE_CONTACT_ID: Long? = null
     }
 }

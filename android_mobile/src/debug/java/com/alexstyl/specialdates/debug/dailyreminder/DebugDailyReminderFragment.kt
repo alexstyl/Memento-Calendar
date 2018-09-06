@@ -170,8 +170,7 @@ class DebugDailyReminderFragment : MementoPreferenceFragment() {
     private fun namedaysNotifications(names: ArrayList<String>): Optional<NamedaysNotificationViewModel> =
             Optional(dailyReminderViewModelFactory.viewModelFor(ImmutableNamesInADate(todaysDate(), names)))
 
-    private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(Optional.absent(), standardEventType,
-            date, contact)
+    private fun contactEventOn(date: Date, contact: Contact, standardEventType: StandardEventType) = ContactEvent(standardEventType, date, contact, deviceEventId = null)
 
     private fun ArrayList<ContactEvent>.toViewModels(): ArrayList<ContactEventNotificationViewModel> {
         val viewModels = arrayListOf<ContactEventNotificationViewModel>()

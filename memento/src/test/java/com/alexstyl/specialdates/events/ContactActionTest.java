@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events;
 
-import com.alexstyl.specialdates.Optional;
 import com.alexstyl.specialdates.contact.Contact;
 import com.alexstyl.specialdates.contact.ContactFixture;
 import com.alexstyl.specialdates.date.ContactEvent;
@@ -19,13 +18,13 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ContactActionTest {
 
-    private final Optional<Long> NO_DEVICE_EVENT_ID = Optional.Companion.absent();
+    private final Long NO_DEVICE_EVENT_ID = null;
     private final List<ContactEvent> ANY_CONTACTS = new ArrayList<>();
     private final Contact CONTACT_ONE = ContactFixture.INSTANCE.aContactCalled("Alex Styl");
-    private final ContactEvent EVENT_ONE = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, dateOn(1, JANUARY, 1990), CONTACT_ONE);
+    private final ContactEvent EVENT_ONE = new ContactEvent(StandardEventType.BIRTHDAY, dateOn(1, JANUARY, 1990), CONTACT_ONE, NO_DEVICE_EVENT_ID);
 
     private final Contact CONTACT_TWO = ContactFixture.INSTANCE.aContactCalled("George Peterson");
-    private final ContactEvent EVENT_TWO = new ContactEvent(NO_DEVICE_EVENT_ID, StandardEventType.BIRTHDAY, dateOn(1, JANUARY, 1970), CONTACT_TWO);
+    private final ContactEvent EVENT_TWO = new ContactEvent(StandardEventType.BIRTHDAY, dateOn(1, JANUARY, 1970), CONTACT_TWO, NO_DEVICE_EVENT_ID);
 
     @Test
     public void testTheSameDateIsReturned() throws Exception {

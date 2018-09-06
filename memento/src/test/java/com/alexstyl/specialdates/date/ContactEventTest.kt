@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.date
 
 import com.alexstyl.specialdates.JavaStrings
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.date.Months.AUGUST
 import com.alexstyl.specialdates.date.Months.JANUARY
@@ -21,14 +20,14 @@ class ContactEventTest {
 
     @Test
     fun labelForNameday() {
-        val contactEvent = ContactEvent(NO_DEVICE_ID, StandardEventType.NAMEDAY, SOME_DATE, ANY_CONTACT)
+        val contactEvent = ContactEvent(StandardEventType.NAMEDAY, SOME_DATE, ANY_CONTACT, NO_DEVICE_ID)
         val label = contactEvent.getLabel(SOME_DATE, strings)
         assertThat(label).isEqualTo("Nameday")
     }
 
     @Test
     fun labelForBirthdayWithoutYear() {
-        val contactEvent = ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, SOME_DATE_WITHOUT_YEAR, ANY_CONTACT)
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, SOME_DATE_WITHOUT_YEAR, ANY_CONTACT, NO_DEVICE_ID)
         val label = contactEvent.getLabel(SOME_DATE, strings)
         assertThat(label).isEqualTo("Birthday")
     }
@@ -36,7 +35,7 @@ class ContactEventTest {
     @Test
     fun labelForBirthdayWithYearAfterDate() {
         val eventDate = dateOn(1, JANUARY, CURRENT_YEAR + 50)
-        val contactEvent = ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT)
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT, NO_DEVICE_ID)
         val label = contactEvent.getLabel(SOME_DATE, strings)
         assertThat(label).isEqualTo("Birthday")
     }
@@ -44,7 +43,7 @@ class ContactEventTest {
     @Test
     fun labelForBirthdayWithYearOnDate() {
         val eventDate = dateOn(1, JANUARY, CURRENT_YEAR)
-        val contactEvent = ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT)
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT, NO_DEVICE_ID)
         val label = contactEvent.getLabel(SOME_DATE, strings)
         assertThat(label).isEqualTo("Birthday")
     }
@@ -53,7 +52,7 @@ class ContactEventTest {
     fun labelForBirthdayWithYearBeforeDate() {
         val eventDate = dateOn(1, JANUARY, CURRENT_YEAR - 10)
 
-        val contactEvent = ContactEvent(NO_DEVICE_ID, StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT)
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, eventDate, ANY_CONTACT, NO_DEVICE_ID)
         val label = contactEvent.getLabel(dateOn(1, JANUARY, todaysDate().year), strings)
         assertThat(label).isEqualTo("Turns 10")
     }
@@ -61,10 +60,10 @@ class ContactEventTest {
     @Test
     fun labelAfterBirthdayInCurrentYear() {
         val contactEvent = ContactEvent(
-            NO_DEVICE_ID,
-            StandardEventType.BIRTHDAY,
-            dateOn(21, AUGUST, 1988),
-            ANY_CONTACT
+                StandardEventType.BIRTHDAY,
+                dateOn(21, AUGUST, 1988),
+                ANY_CONTACT,
+                NO_DEVICE_ID
         )
 
         val today = dateOn(1, SEPTEMBER, 2018)
@@ -76,7 +75,7 @@ class ContactEventTest {
 
     companion object {
 
-        private val NO_DEVICE_ID = Optional.absent<Long>()
+        private val NO_DEVICE_ID: Long? = null
         private val SOME_DATE = dateOn(1, JANUARY, 1990)
         private val SOME_DATE_WITHOUT_YEAR = dateOn(1, JANUARY)
         private val CURRENT_YEAR = Date.CURRENT_YEAR

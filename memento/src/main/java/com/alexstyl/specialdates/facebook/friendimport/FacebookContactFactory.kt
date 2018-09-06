@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.facebook.friendimport
 
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_FACEBOOK
 import com.alexstyl.specialdates.contact.DisplayName
@@ -20,7 +19,7 @@ class FacebookContactFactory(private val parser: DateParser) {
             val name = nameFrom(map)
             val uid = idOf(map)
             val imagePath = FacebookImagePath.forUid(uid)
-            return ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, date, Contact(uid, name, imagePath, SOURCE_FACEBOOK))
+            return ContactEvent(StandardEventType.BIRTHDAY, date, Contact(uid, name, imagePath, SOURCE_FACEBOOK))
         } catch (ex: DateParseException) {
             throw InvalidFacebookContactException(ex)
         } catch (ex: IndexOutOfBoundsException) {

@@ -1,12 +1,11 @@
 package com.alexstyl.specialdates.date
 
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.events.peopleevents.EventType
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 
-data class ContactEvent(val deviceEventId: Optional<Long>, val type: EventType, val date: Date, val contact: Contact) {
+data class ContactEvent(val type: EventType, val date: Date, val contact: Contact, val deviceEventId: Long? = null) {
 
     fun getLabel(dateWithYear: Date, strings: Strings): String {
         if (type === StandardEventType.BIRTHDAY && date.hasYear()) {
@@ -26,5 +25,5 @@ data class ContactEvent(val deviceEventId: Optional<Long>, val type: EventType, 
     }
 
     private fun birthdayIsBeforeDateIgnoringYear(dateWithYear: Date) =
-        dateWithYear.withoutYear() > date.withoutYear()
+            dateWithYear.withoutYear() > date.withoutYear()
 }

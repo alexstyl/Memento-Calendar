@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.events.peopleevents
 
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.ContactEvent
@@ -38,7 +37,7 @@ open class PeopleDynamicNamedaysProvider(
                                 .dates
                                 .forEach { date ->
                                     if (timePeriod.containsDate(date)) {
-                                        val nameday = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
+                                        val nameday = ContactEvent(StandardEventType.NAMEDAY, date, contact)
                                         namedayEvents.add(nameday)
                                     }
                                 }
@@ -62,8 +61,7 @@ open class PeopleDynamicNamedaysProvider(
 
             for (i in 0 until specialDates.size) {
                 val date = specialDates[i]
-                val deviceEventId = Optional(contact.contactID)
-                val contactEvent = ContactEvent(deviceEventId, StandardEventType.NAMEDAY, date, contact)
+                val contactEvent = ContactEvent(StandardEventType.NAMEDAY, date, contact)
                 namedays.add(contactEvent)
             }
         }
@@ -76,9 +74,9 @@ open class PeopleDynamicNamedaysProvider(
         }
         val timePeriod = TimePeriod.between(date, endOfYear(date.year!!))
         val contactEvents = ArrayList(fetchEventsBetween(timePeriod))
-        contactEvents.sortWith(Comparator { (_, _, date1), (_, _, date2) -> DATE_COMPARATOR.compare(date1, date2) })
+        contactEvents.sortWith(Comparator { (_, date1, contact1, _), (_, date2, contact, _) -> DATE_COMPARATOR.compare(date1, date2) })
 
-        for ((_, _, contactEventDate) in contactEvents) {
+        for ((_, contactEventDate, contact, _) in contactEvents) {
             if (DATE_COMPARATOR.compare(contactEventDate, date) >= 0) {
                 return contactEventDate
             }
@@ -109,7 +107,7 @@ open class PeopleDynamicNamedaysProvider(
                     if (namedays.contains(date)) {
                         continue
                     }
-                    val event = ContactEvent(Optional(contact.contactID), StandardEventType.NAMEDAY, date, contact)
+                    val event = ContactEvent(StandardEventType.NAMEDAY, date, contact)
                     namedayEvents.add(event)
                     namedays.add(date)
                 }

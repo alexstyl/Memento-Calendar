@@ -1,7 +1,6 @@
 package com.alexstyl.specialdates.addevent
 
 import com.alexstyl.specialdates.JavaStrings
-import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.TestDateLabelCreator
 import com.alexstyl.specialdates.addevent.operations.InsertContact
 import com.alexstyl.specialdates.addevent.operations.InsertEvent
@@ -89,9 +88,9 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, todaysDate(), contact)
-        val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, todaysDate() + 1, contact)
-        val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, todaysDate() + 2, contact)
+        val birthday = ContactEvent(StandardEventType.BIRTHDAY, todaysDate(), contact)
+        val anniversary = ContactEvent(StandardEventType.ANNIVERSARY, todaysDate() + 1, contact)
+        val other = ContactEvent(StandardEventType.OTHER, todaysDate() + 2, contact)
         BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
 
         presenter.presentContact(contact)
@@ -105,8 +104,8 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        val nameday = ContactEvent(Optional.absent(), StandardEventType.NAMEDAY, todaysDate() + 2, contact)
-        val custom = ContactEvent(Optional.absent(), StandardEventType.CUSTOM, todaysDate() + 2, contact)
+        val nameday = ContactEvent(StandardEventType.NAMEDAY, todaysDate() + 2, contact)
+        val custom = ContactEvent(StandardEventType.CUSTOM, todaysDate() + 2, contact)
 
         BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(nameday, custom))
 
@@ -132,9 +131,9 @@ class AddEventsPresenterTest {
         presenter.startPresentingInto(mockView)
 
         val contact = ContactFixture.aContactCalled("Martha")
-        val birthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, todaysDate(), contact)
-        val anniversary = ContactEvent(Optional.absent(), StandardEventType.ANNIVERSARY, todaysDate() + 1, contact)
-        val other = ContactEvent(Optional.absent(), StandardEventType.OTHER, todaysDate() + 2, contact)
+        val birthday = ContactEvent(StandardEventType.BIRTHDAY, todaysDate(), contact)
+        val anniversary = ContactEvent(StandardEventType.ANNIVERSARY, todaysDate() + 1, contact)
+        val other = ContactEvent(StandardEventType.OTHER, todaysDate() + 2, contact)
         BDDMockito.given(mockPeopleEventsProvider.fetchEventsFor(contact)).willReturn(listOf(birthday, anniversary, other))
 
         presenter.presentContact(contact)
@@ -195,7 +194,7 @@ class AddEventsPresenterTest {
         val contact = ContactFixture.aContactCalled("Chrysa")
         given(mockPeopleEventsProvider.fetchEventsFor(contact))
                 .willReturn(listOf(
-                        ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, todaysDate(), contact))
+                        ContactEvent(StandardEventType.BIRTHDAY, todaysDate(), contact))
                 )
 
         presenter.presentContact(contact)    // prevent save 2
@@ -241,7 +240,7 @@ class AddEventsPresenterTest {
         val selectedContact = ContactFixture.aContactCalled("Joseph")
         presenter.presentContact(selectedContact)
 
-        val existingBirthday = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOn(1, Months.JANUARY), selectedContact)
+        val existingBirthday = ContactEvent(StandardEventType.BIRTHDAY, dateOn(1, Months.JANUARY), selectedContact)
 
         given(mockPeopleEventsProvider.fetchEventsFor(selectedContact)).willReturn(listOf(existingBirthday))
 

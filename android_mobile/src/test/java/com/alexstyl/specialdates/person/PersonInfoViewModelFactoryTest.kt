@@ -35,7 +35,7 @@ class PersonInfoViewModelFactoryTest {
     @Test
     fun whenPassingABirthdayWithoutYear_thenAgeAndStarSignContainsOnlyStarSign() {
         val dateOfBirth = dateOn(1, JANUARY)
-        val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"))
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"), Optional.absent())
 
         var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("Capricorn ♑")
@@ -44,7 +44,7 @@ class PersonInfoViewModelFactoryTest {
     @Test
     fun whenPassingABirthdayWithYear_thenAgeAndStarSignContainsBothAgeAndStarSign() {
         val dateOfBirth = dateOn(1, JANUARY, 1990)
-        val contactEvent = ContactEvent(Optional.absent(), StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"))
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"), Optional.absent())
 
         var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("27, Capricorn ♑")
