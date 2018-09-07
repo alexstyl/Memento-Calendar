@@ -66,7 +66,7 @@ class ContactsAdapter extends BaseAdapter implements Filterable {
         }
 
         Contact contact = getItem(position);
-        String displayName = contact.toString();
+        String displayName = contact.getDisplayName().toString();
         vh.contactName.setText(displayName);
         vh.avatar.setCircleColorVariant((int) contact.getContactID());
         vh.avatar.setLetter(displayName);
