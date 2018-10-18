@@ -18,7 +18,7 @@ class PeopleEventsSearch(private val peopleEventsProvider: PeopleEventsProvider,
         val events = HashMapList<Contact, ContactEvent>()
 
         peopleEventsProvider
-                .fetchEventsBetween(TimePeriod.aYearFromNow())
+                .fetchAllEventsInAYear()
                 .forEach { contactEvent ->
                     val contact = contactEvent.contact
                     if (nameMatcher.match(contact.displayName, normalisedQuery)) {

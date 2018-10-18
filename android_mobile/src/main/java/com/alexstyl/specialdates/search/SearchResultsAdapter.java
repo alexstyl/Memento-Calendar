@@ -14,7 +14,7 @@ import com.novoda.notils.exception.DeveloperError;
 import java.util.ArrayList;
 import java.util.List;
 
-final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public final class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<ContactEventViewModel> searchResults = new ArrayList<>();
 
@@ -23,21 +23,19 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isLoadingMore;
     private boolean canLoadMore = false;
     private final ImageLoader imageLoader;
-    private String searchQuery;
     private final DateLabelCreator labelCreator;
 
-    SearchResultAdapter(ImageLoader imageLoader, DateLabelCreator labelCreator) {
+    SearchResultsAdapter(ImageLoader imageLoader, DateLabelCreator labelCreator) {
         this.imageLoader = imageLoader;
         this.labelCreator = labelCreator;
     }
 
     void updateSearchResults(SearchResults searchResults) {
-        this.searchQuery = searchResults.getSearchQuery();
         this.searchResults.clear();
         this.searchResults.addAll(searchResults.getViewModels());
 
-        if (this.canLoadMore != searchResults.canLoadMore()) {
-            this.canLoadMore = searchResults.canLoadMore();
+        if (this.canLoadMore != searchResults.getCanLoadMore()) {
+            this.canLoadMore = searchResults.getCanLoadMore();
         }
         notifyDataSetChanged();
     }
@@ -155,6 +153,7 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
+        // TODO move all this to presenter's viewmodel logic
         return searchResults.size()
                 + (namedayCard.isAvailable() ? 1 : 0)
                 + (canLoadMore ? 1 : 0)
@@ -166,7 +165,7 @@ final class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private boolean hasSearchQuery() {
-        return !TextUtils.isEmpty(searchQuery);
+        return !TextUtils.isEmpty("");
     }
 
 }

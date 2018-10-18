@@ -4,8 +4,7 @@ import com.alexstyl.specialdates.contact.DisplayName
 import java.text.Collator
 import java.util.Locale
 
-enum class NameMatcher {
-    INSTANCE;
+object NameMatcher {
 
     private val collator: Collator = Collator.getInstance(Locale.getDefault())
 

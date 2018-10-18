@@ -11,7 +11,7 @@ import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity
 import com.alexstyl.specialdates.person.PersonActivity
 
-internal class SearchNavigator(private val analytics: Analytics) {
+class SearchNavigator(private val analytics: Analytics) {
 
     fun toContactDetails(contact: Contact, activity: Activity) {
         val intent = PersonActivity.buildIntentFor(activity, contact)

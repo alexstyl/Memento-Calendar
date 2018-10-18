@@ -32,7 +32,7 @@ final class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
         this.labelCreator = labelCreator;
     }
 
-    public void bind(NamedayCard dates, final SearchResultAdapter.SearchResultClickListener searchResultListener) {
+    public void bind(NamedayCard dates, final SearchResultsAdapter.SearchResultClickListener searchResultListener) {
         name.setText(dates.getName());
         this.datesLayout.removeAllViews();
         for (int i = 0; i < dates.size(); i++) {

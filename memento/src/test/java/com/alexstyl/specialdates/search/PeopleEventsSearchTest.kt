@@ -23,7 +23,7 @@ class PeopleEventsSearchTest {
 
     @Before
     fun setUp() {
-        search = PeopleEventsSearch(mockProvider, NameMatcher.INSTANCE)
+        search = PeopleEventsSearch(mockProvider, NameMatcher)
         val contactEvents = TestContactEventsBuilder()
                 .addBirthdayFor(ALEX, JANUARY_1st)
                 .addAnniversaryFor(MARIA, JANUARY_1st)

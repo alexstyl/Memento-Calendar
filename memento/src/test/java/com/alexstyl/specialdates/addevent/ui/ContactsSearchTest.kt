@@ -28,7 +28,7 @@ class ContactsSearchTest {
     @Test
     fun ensureThatCounterIsRespected() {
         given(mockSource.allContacts).willReturnContacts("Alex Styl", "Alex Evil Twin")
-        val search = ContactsSearch(contactsProvider, NameMatcher.INSTANCE)
+        val search = ContactsSearch(contactsProvider, NameMatcher)
         val oneContact = search.searchForContacts("Alex", 1)
         assertThat(oneContact.size).isEqualTo(1)
 
@@ -39,7 +39,7 @@ class ContactsSearchTest {
     @Test
     fun canFindFirstname() {
         given(mockSource.allContacts).willReturnContacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou")
-        val search = ContactsSearch(contactsProvider, NameMatcher.INSTANCE)
+        val search = ContactsSearch(contactsProvider, NameMatcher)
 
         val oneContact = search.searchForContacts("Anna", 1)
         assertThat(oneContact.size).isEqualTo(1)
@@ -49,7 +49,7 @@ class ContactsSearchTest {
     @Test
     fun canFindSurname() {
         given(mockSource.allContacts).willReturnContacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou")
-        val search = ContactsSearch(contactsProvider, NameMatcher.INSTANCE)
+        val search = ContactsSearch(contactsProvider, NameMatcher)
 
         val oneContact = search.searchForContacts("Papadopoulou", 1)
         assertThat(oneContact.size).isEqualTo(1)
@@ -59,7 +59,7 @@ class ContactsSearchTest {
     @Test
     fun returnEmptyForNoMatches() {
         given(mockSource.allContacts).willReturnContacts("Alex Styl", "Alex Evil Twin", "Anna Papadopoulou")
-        val search = ContactsSearch(contactsProvider, NameMatcher.INSTANCE)
+        val search = ContactsSearch(contactsProvider, NameMatcher)
         val results = search.searchForContacts("there is no contact with a name like this", 1)
         assertThat(results).isEmpty()
     }
@@ -67,7 +67,7 @@ class ContactsSearchTest {
     @Test
     fun returnEmptyForNoContacts() {
         given(mockSource.allContacts).willReturnNoContact()
-        val search = ContactsSearch(contactsProvider, NameMatcher.INSTANCE)
+        val search = ContactsSearch(contactsProvider, NameMatcher)
         val results = search.searchForContacts("there is no contact with a name like this", 1)
         assertThat(results).isEmpty()
     }
