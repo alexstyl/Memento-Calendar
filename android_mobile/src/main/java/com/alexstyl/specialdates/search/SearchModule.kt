@@ -5,6 +5,8 @@ import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.todaysDate
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
 import dagger.Module
@@ -22,9 +24,13 @@ class SearchModule {
 
     @Provides
     fun presenter(peopleEventsSearch: PeopleEventsSearch,
-                  viewModelFactory: ContactEventViewModelFactory): SearchPresenter {
+                  viewModelFactory: SearchResultsViewModelFactory,
+                  namedayUserSettings: NamedayUserSettings,
+                  calendarProvider: NamedayCalendarProvider): SearchPresenter {
         return SearchPresenter(peopleEventsSearch,
                 viewModelFactory,
+                namedayUserSettings,
+                calendarProvider,
                 Schedulers.io(),
                 AndroidSchedulers.mainThread())
     }
@@ -37,8 +43,8 @@ class SearchModule {
     @Provides
     fun contactEventsViewModelFactory(contactEventLabelCreator: ContactEventLabelCreator,
                                       colors: Colors)
-            : ContactEventViewModelFactory {
-        return ContactEventViewModelFactory(contactEventLabelCreator, colors)
+            : SearchResultsViewModelFactory {
+        return SearchResultsViewModelFactory(contactEventLabelCreator, colors)
     }
 
     @Provides

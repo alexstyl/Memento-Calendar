@@ -4,6 +4,7 @@ import org.joda.time.LocalDate
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
+// TODO break Date into 'DateWithYear' and 'DateWithoutYear'
 data class Date(private val localDate: LocalDate, val year: Int?) : Comparable<Date> {
 
     fun addDay(i: Int): Date {

@@ -10,6 +10,8 @@ import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.date.Months.DECEMBER
 import com.alexstyl.specialdates.date.Months.OCTOBER
 import com.alexstyl.specialdates.date.dateOn
+import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
+import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -29,6 +31,8 @@ class SearchPresenterTest {
     private lateinit var presenter: SearchPresenter
 
     private val mockPeopleEventsProvider = mock(PeopleEventsProvider::class.java)
+    private val mockNamedayUserSettings = mock(NamedayUserSettings::class.java)
+    private val mockNamedayCalendarProvider = mock(NamedayCalendarProvider::class.java)
     private val mockView = mock(SearchResultView::class.java)
     private val testScheduler = TestScheduler()
 
@@ -36,10 +40,12 @@ class SearchPresenterTest {
     fun setUp() {
         presenter = SearchPresenter(
                 PeopleEventsSearch(mockPeopleEventsProvider, NameMatcher),
-                ContactEventViewModelFactory(
+                SearchResultsViewModelFactory(
                         ContactEventLabelCreator(ANY_DATE, JavaStrings(), TestDateLabelCreator.forUS()),
                         TestColors()
                 ),
+                mockNamedayUserSettings,
+                mockNamedayCalendarProvider,
                 Schedulers.trampoline(),
                 testScheduler
         )
@@ -81,10 +87,10 @@ class SearchPresenterTest {
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-        verify(mockView, Times(1)).showResults(SearchResults(listOf(
+        verify(mockView, Times(1)).showContactResults(SearchResults(listOf(
                 ContactEventViewModel(
                         ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5")),
-                        "text5", ""x, "Birthday on December 1", 0, 4)), false))
+                        "text5", "", "Birthday on December 1", 0, 4)), false))
     }
 
 
@@ -104,7 +110,7 @@ class SearchPresenterTest {
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-        Mockito.verify(mockView).showResults(
+        Mockito.verify(mockView).showContactResults(
                 SearchResults(listOf(ContactEventViewModel(ANY_CONTACT.copy(displayName = DisplayName.from("Alex")), "Alex", "", "Nameday on October 18", 1, -1)), false)
         )
     }
