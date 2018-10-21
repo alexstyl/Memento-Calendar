@@ -1,7 +1,10 @@
 package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.contact.ContactFixture
+import com.alexstyl.specialdates.contact.ContactSource
+import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.ContactsProviderSource
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -15,12 +18,12 @@ class PeopleEventsSearchTest {
 
     private lateinit var search: PeopleEventsSearch
     @Mock
-    private lateinit var mockProvider: ContactsProvider
+    private lateinit var mockContactSource: ContactsProviderSource
 
     @Before
     fun setUp() {
-        search = PeopleEventsSearch(mockProvider, NameMatcher)
-        given(mockProvider.allContacts).willReturn(listOf(ALEX_STYL, MARIA_PAPADOPOULOU, MIMOZA))
+        search = PeopleEventsSearch(ContactsProvider(mapOf(Pair(SOURCE_DEVICE, mockContactSource))), NameMatcher)
+        given(mockContactSource.allContacts).willReturn(listOf(ALEX_STYL, MARIA_PAPADOPOULOU, MIMOZA))
     }
 
     @Test

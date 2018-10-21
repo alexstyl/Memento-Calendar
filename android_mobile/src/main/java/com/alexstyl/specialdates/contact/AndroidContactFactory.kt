@@ -13,7 +13,7 @@ import java.net.URI
 
 class AndroidContactFactory(private val resolver: ContentResolver) {
 
-    fun getAllContacts(): Contacts {
+    fun getAllContacts(): List<Contact> {
         val cursor: Cursor = resolver.safeQuery(
                 AndroidContactsQuery.CONTENT_URI,
                 AndroidContactsQuery.PROJECTION,
@@ -23,10 +23,10 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
         )
 
         return cursor.use {
-            return@use Contacts(SOURCE_DEVICE, List(it.count) { index ->
+            return@use List(it.count) { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            })
+            }
         }
     }
 
@@ -41,14 +41,14 @@ class AndroidContactFactory(private val resolver: ContentResolver) {
     }
 
 
-    fun queryContacts(ids: List<Long>): Contacts {
+    fun queryContacts(ids: List<Long>): List<Contact> {
         val cursor = queryContactsWithContactId(ids)
 
         return cursor.use {
-            return@use Contacts(SOURCE_DEVICE, List(it.count) { index ->
+            return@use List(it.count) { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            })
+            }
         }
     }
 

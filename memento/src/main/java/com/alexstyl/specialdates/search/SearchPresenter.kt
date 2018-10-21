@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
@@ -24,7 +25,7 @@ class SearchPresenter(
                 Observable.zip(
                         contactSearch(searchResultView),
                         namedaySearch(searchResultView),
-                        io.reactivex.functions.BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>> { contactSearch, namedaySearch ->
+                        BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>> { contactSearch: List<SearchResultViewModel>, namedaySearch: NamedaySearchResultViewModel ->
                             namedaySearch.asList() + contactSearch
                         })
                         .subscribeOn(workScheduler)
@@ -58,10 +59,10 @@ class SearchPresenter(
         return calendarProvider.loadNamedayCalendarForLocale(locale, currentYear)
     }
 
-
     fun stopPresenting() {
         composite?.dispose()
     }
+
 
     private fun NamedaySearchResultViewModel.asList() =
             if (namedays.dates.isNotEmpty()) {
@@ -72,7 +73,6 @@ class SearchPresenter(
 
 
     companion object {
-        private const val searchCounter = 20
         private const val DEBOUNCE_DURATION = 200L
     }
 }

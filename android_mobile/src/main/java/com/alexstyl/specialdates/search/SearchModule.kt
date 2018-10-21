@@ -3,11 +3,11 @@ package com.alexstyl.specialdates.search
 import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
+import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
 import dagger.Module
 import dagger.Provides
@@ -36,8 +36,8 @@ class SearchModule {
     }
 
     @Provides
-    fun peopleEventsSearch(peopleEventsProvider: PeopleEventsProvider): PeopleEventsSearch {
-        return PeopleEventsSearch(peopleEventsProvider, NameMatcher)
+    fun peopleEventsSearch(contactsProvider: ContactsProvider): PeopleEventsSearch {
+        return PeopleEventsSearch(contactsProvider, NameMatcher)
     }
 
     @Provides

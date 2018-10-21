@@ -8,7 +8,6 @@ import com.alexstyl.specialdates.SQLArgumentBuilder
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactNotFoundException
 import com.alexstyl.specialdates.contact.ContactSource
-import com.alexstyl.specialdates.contact.Contacts
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
@@ -43,7 +42,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
 
         while (cursor.moveToNext()) {
             val contactId = getContactIdFrom(cursor)
-            val source = getContactSourceFrom(cursor)
+            val source = cursor.getContactSource()
 
             when (source) {
                 ContactSource.SOURCE_DEVICE -> deviceIds.add(contactId)
@@ -54,15 +53,15 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
 
         val deviceContacts = contactsProvider.getContacts(deviceIds, ContactSource.SOURCE_DEVICE)
         val facebookContacts = contactsProvider.getContacts(facebookIds, ContactSource.SOURCE_FACEBOOK)
-        val contacts = HashMap<Int, Contacts>()
-        contacts[ContactSource.SOURCE_DEVICE] = deviceContacts
-        contacts[ContactSource.SOURCE_FACEBOOK] = facebookContacts
+        val allContacts = HashMap<Int, List<Contact>>()
+        allContacts[ContactSource.SOURCE_DEVICE] = deviceContacts
+        allContacts[ContactSource.SOURCE_FACEBOOK] = facebookContacts
 
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             try {
-                val contactsOfSource = contacts[getContactSourceFrom(cursor)]
-                val contact = contactsOfSource?.getContact(getContactIdFrom(cursor))
+                val contactsOfSource = allContacts[cursor.getContactSource()]
+                val contact = contactsOfSource?.find { it.contactID == getContactIdFrom(cursor) }
                 if (contact != null) {
                     val contactEvent = getContactEventFrom(cursor, contact)
                     contactEvents.add(contactEvent)
@@ -190,9 +189,8 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
     }
 
     @ContactSource
-    private fun getContactSourceFrom(cursor: Cursor): Int {
-        val sourceTypeIndex = cursor.getColumnIndexOrThrow(AnnualEventsContract.SOURCE)
-        return cursor.getInt(sourceTypeIndex)
+    private fun Cursor.getContactSource(): Int {
+        return getInt(getColumnIndexOrThrow(AnnualEventsContract.SOURCE))
     }
 
     private fun queryCustomEvent(deviceId: Long): EventType {

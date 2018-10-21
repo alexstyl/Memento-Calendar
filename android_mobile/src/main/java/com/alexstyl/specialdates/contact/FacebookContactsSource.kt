@@ -37,12 +37,12 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         }
     }
 
-    override fun queryContacts(contactIds: List<Long>): Contacts {
+    override fun queryContacts(contactIds: List<Long>): List<Contact> {
         val readableDatabase = eventSQLHelper.readableDatabase
         val cursor = readableDatabase.query(
                 AnnualEventsContract.TABLE_NAME,
                 null,
-                "$IS_A_FACEBOOK_CONTACT AND ${AnnualEventsContract.CONTACT_ID} IN (${List(contactIds.size, { "?" }).joinToString(",")})",
+                "$IS_A_FACEBOOK_CONTACT AND ${AnnualEventsContract.CONTACT_ID} IN (${List(contactIds.size) { "?" }.joinToString(",")})",
                 contactIds.map { it.toString() }.toTypedArray(),
                 null,
                 null,
@@ -50,16 +50,16 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         )
 
         return cursor.use {
-            val contacts = Contacts(SOURCE_FACEBOOK, List(it.count, { index ->
+            val contacts = List(it.count) { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            }))
+            }
             cache.addContacts(contacts)
             return@use contacts
         }
     }
 
-    override val allContacts: Contacts
+    override val allContacts: List<Contact>
         get() {
             return queryAllContacts().apply {
                 cache.evictAll()
@@ -68,7 +68,7 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
         }
 
 
-    private fun queryAllContacts(): Contacts {
+    private fun queryAllContacts(): List<Contact> {
         val db = eventSQLHelper.readableDatabase
         val cursor = db.rawQuery(
                 "SELECT * FROM ${AnnualEventsContract.TABLE_NAME}" +
@@ -77,10 +77,10 @@ internal class FacebookContactsSource(private val eventSQLHelper: EventSQLiteOpe
                 arrayOf(SOURCE_FACEBOOK.toString()))
 
         return cursor.use {
-            return@use Contacts(SOURCE_FACEBOOK, List(it.count, { index ->
+            return@use List(it.count) { index ->
                 it.moveToPosition(index)
                 createContactFrom(it)
-            }))
+            }
         }
     }
 
