@@ -16,7 +16,7 @@ class AndroidContactsProviderSource(private val cache: ContactCache,
         return deviceContact
     }
 
-    override val allContacts: Contacts
+    override val allContacts: List<Contact>
         get() {
             val allContacts = factory.getAllContacts()
             cache.evictAll()
@@ -24,7 +24,7 @@ class AndroidContactsProviderSource(private val cache: ContactCache,
             return allContacts
         }
 
-    override fun queryContacts(contactIds: List<Long>): Contacts {
+    override fun queryContacts(contactIds: List<Long>): List<Contact> {
         val contacts = factory.queryContacts(contactIds)
         cache.addContacts(contacts)
         return contacts

@@ -7,7 +7,7 @@ class ContactsProvider(private val sources: Map<Int, ContactsProviderSource>) {
             list + source.allContacts
         }
 
-    fun getContacts(contactIds: List<Long>, @ContactSource source: Int): Contacts {
+    fun getContacts(contactIds: List<Long>, @ContactSource source: Int): List<Contact> {
         return sources[source]!!.queryContacts(contactIds)
     }
 

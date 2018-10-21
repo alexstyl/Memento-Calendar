@@ -3,7 +3,6 @@ package com.alexstyl.specialdates.events.peopleevents
 import anyObject
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactFixture
-import com.alexstyl.specialdates.contact.Contacts
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.date.TimePeriod
@@ -53,7 +52,7 @@ class PeopleDynamicNamedaysProviderTest {
     fun gettingSpecialNamedaysOnSpecificDateOnlyReturnsTheEventsForThatDate() {
         val testContacts = createSomeContacts()
         testContacts.add(EASTER_CELEBRATING_CONTACT)
-        given(mockSource.allContacts).willReturn(Contacts(1, testContacts))
+        given(mockSource.allContacts).willReturn(testContacts)
 
         val orthodoxEasterCalculator = OrthodoxEasterCalculator()
         val easterDate = orthodoxEasterCalculator.calculateEasterForYear(YEAR)
