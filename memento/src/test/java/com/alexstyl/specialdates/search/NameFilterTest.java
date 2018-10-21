@@ -1,6 +1,6 @@
 package com.alexstyl.specialdates.search;
 
-import com.alexstyl.specialdates.SoundWordComparator;
+import com.alexstyl.specialdates.PhoneticComparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class NameFilterTest {
         List<String> allNames = new ArrayList<>();
         allNames.add("Γιώργος");
         allNames.add("Αλέξανδρος");
-        greekNameFilter = new NameFilter(allNames, new SoundWordComparator());
+        greekNameFilter = new NameFilter(allNames, new PhoneticComparator());
 
     }
 

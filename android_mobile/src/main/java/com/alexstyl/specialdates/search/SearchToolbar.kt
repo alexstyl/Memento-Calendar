@@ -33,9 +33,6 @@ class SearchToolbar(context: Context, attrs: AttributeSet?) : Toolbar(context, a
         false
     }
 
-    val text: Editable
-        get() = editText.text
-
     init {
         View.inflate(getContext(), R.layout.merge_searchbar, this)
         editText = Views.findById(this, R.id.toolbar_search_edittext)
@@ -60,16 +57,17 @@ class SearchToolbar(context: Context, attrs: AttributeSet?) : Toolbar(context, a
         })
     }
 
+    fun setText(text: String) {
+        editText.setText(text)
+        editText.setSelection(text.length)
+    }
+
     fun setInputType(typeTextFlag: Int) {
         editText.inputType = typeTextFlag
     }
 
     fun setOnBackKeyPressedListener(listener: OnBackKeyPressedListener) {
         editText.setOnBackKeyPressedListener(listener)
-    }
-
-    fun setText(text: String) {
-        editText.setText(text)
     }
 
     fun clearText() {

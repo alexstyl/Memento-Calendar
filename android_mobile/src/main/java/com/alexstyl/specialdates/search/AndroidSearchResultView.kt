@@ -3,10 +3,8 @@ package com.alexstyl.specialdates.search
 import io.reactivex.Observable
 
 class AndroidSearchResultView(private val resultsAdapter: SearchResultsAdapter,
-                              private val searchbar: SearchToolbar) : SearchResultView {
-    override fun showSearchResults(it: List<SearchResultViewModel>) {
-        resultsAdapter.displaySearchResults(it)
-    }
+                              private val searchbar: SearchToolbar,
+                              private val namesAdapter: NameSuggestionsAdapter?) : SearchResultView {
 
     override fun searchQueryObservable() = Observable.create<String> { emitter ->
         searchbar.addTextWatcher { text ->
@@ -14,4 +12,11 @@ class AndroidSearchResultView(private val resultsAdapter: SearchResultsAdapter,
         }
     }!!
 
+    override fun displaySearchResults(it: List<SearchResultViewModel>) {
+        resultsAdapter.displaySearchResults(it)
+    }
+
+    override fun displayNameSuggestions(names: List<String>) {
+        namesAdapter?.updateNames(names)
+    }
 }

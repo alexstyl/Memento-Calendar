@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.search
 
+import com.alexstyl.specialdates.PhoneticComparator
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
@@ -39,6 +40,7 @@ class SearchPresenterTest {
                 SearchResultsViewModelFactory(),
                 mockNamedayUserSettings,
                 mockNamedayCalendarProvider,
+                PhoneticComparator(),
                 Schedulers.trampoline(),
                 Schedulers.trampoline()
         )
@@ -61,10 +63,10 @@ class SearchPresenterTest {
 
         presenter.presentInto(mockView)
         searchQueryObservable.onNext("text5")
-        verify(mockView, Times(1)).showSearchResults(
+        verify(mockView, Times(1)).displaySearchResults(
                 listOf(ContactSearchResultViewModel(
                         ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5")),
-                        "text5", "", "Birthday on December 1", 0, 4)))
+                        "text5", "", 4)))
     }
 
     @Ignore // TODO
@@ -80,8 +82,8 @@ class SearchPresenterTest {
         presenter.presentInto(mockView)
         searchQueryObservable.onNext("Alex")
 
-        verify(mockView).showSearchResults(
-                listOf(ContactSearchResultViewModel(ANY_CONTACT.copy(displayName = DisplayName.from("Alex")), "Alex", "", "Nameday on October 18", 1, -1))
+        verify(mockView).displaySearchResults(
+                listOf(ContactSearchResultViewModel(ANY_CONTACT.copy(displayName = DisplayName.from("Alex")), "Alex", "", -1))
         )
     }
 

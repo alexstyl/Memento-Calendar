@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.search
 
+import com.alexstyl.specialdates.PhoneticComparator
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.ContactsProvider
@@ -25,6 +26,7 @@ class SearchModule {
                 viewModelFactory,
                 namedayUserSettings,
                 calendarProvider,
+                PhoneticComparator(),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread())
     }

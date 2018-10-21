@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical">
-
-  <com.alexstyl.specialdates.search.SearchToolbar
-    android:id="@+id/search_searchbar"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_semi_expanded_height"
-    android:elevation="@dimen/toolbar_elevation"
-    android:gravity="top" />
-
-  <LinearLayout
-    android:id="@+id/search_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/search_results"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:clipToPadding="false"
-      android:paddingBottom="@dimen/search_result_card_vertical_padding"
-      android:paddingLeft="@dimen/search_result_card_horizontal_padding"
-      android:paddingRight="@dimen/search_result_card_horizontal_padding"
-      android:paddingTop="@dimen/search_result_card_vertical_padding" />
+    <com.alexstyl.specialdates.search.SearchToolbar
+        android:id="@+id/search_searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_semi_expanded_height"
+        android:elevation="@dimen/toolbar_elevation"
+        android:gravity="top" />
 
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/search_nameday_suggestions"
-      android:layout_width="match_parent"
-      android:layout_height="38dp"
-      android:layout_gravity="top"
-      android:background="@drawable/background_suggestions"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      android:paddingBottom="4dp"
-      android:paddingLeft="@dimen/card_padding_from_screen"
-      android:paddingRight="@dimen/card_padding_from_screen"
-      android:paddingTop="4dp" />
-  </LinearLayout>
+    <LinearLayout
+        android:id="@+id/search_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_results"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            tools:listitem="@layout/row_search_result_contact_event" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_nameday_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@drawable/background_suggestions"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingLeft="@dimen/card_padding_from_screen"
+            android:paddingTop="4dp"
+            android:paddingRight="@dimen/card_padding_from_screen"
+            android:paddingBottom="4dp"
+            tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_suggested_name"
+            tools:orientation="horizontal" />
+    </LinearLayout>
 
 </LinearLayout>

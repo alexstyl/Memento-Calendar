@@ -4,5 +4,6 @@ import io.reactivex.Observable
 
 interface SearchResultView {
     fun searchQueryObservable(): Observable<String>
-    fun showSearchResults(it: List<SearchResultViewModel>)
+    fun displaySearchResults(it: List<SearchResultViewModel>)
+    fun displayNameSuggestions(names: List<String>)
 }

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.search
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,9 +19,11 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
     private val searchResults = mutableListOf<SearchResultViewModel>()
 
     internal fun displaySearchResults(searchResults: List<SearchResultViewModel>) {
+        val diffCallback = SearchResultDiffCallback(this.searchResults, searchResults)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.searchResults.clear()
         this.searchResults.addAll(searchResults)
-        notifyDataSetChanged() // TODO Diff
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemViewType(position: Int): Int {

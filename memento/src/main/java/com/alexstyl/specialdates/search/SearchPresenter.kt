@@ -1,13 +1,14 @@
 package com.alexstyl.specialdates.search
 
+import com.alexstyl.specialdates.NameComparator
 import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
-import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.plusAssign
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
@@ -15,13 +16,14 @@ class SearchPresenter(
         private val viewModelFactory: SearchResultsViewModelFactory,
         private val namedayUserSettings: NamedayUserSettings,
         private val calendarProvider: NamedayCalendarProvider,
+        private val comparator: NameComparator,
         private val workScheduler: Scheduler,
         private val resultScheduler: Scheduler) {
 
-    private var composite: Disposable? = null
+    private var composite = CompositeDisposable()
 
     fun presentInto(searchResultView: SearchResultView) {
-        composite =
+        composite +=
                 Observable.zip(
                         contactSearch(searchResultView),
                         namedaySearch(searchResultView),
@@ -31,7 +33,23 @@ class SearchPresenter(
                         })
                         .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)
-                        .subscribe { searchResultView.showSearchResults(it) }
+                        .subscribe { searchResultView.displaySearchResults(it) }
+
+        if (namedayUserSettings.isEnabled) {
+            composite +=
+                    searchResultView.searchQueryObservable()
+                            .map { query ->
+                                namedayCalendar.allNames.filter { name ->
+                                    name.asNameStartsWith(query)
+                                            && name != query
+                                }
+                            }
+                            .subscribeOn(workScheduler)
+                            .observeOn(resultScheduler)
+                            .subscribe {
+                                searchResultView.displayNameSuggestions(it)
+                            }
+        }
     }
 
     private fun contactSearch(searchResultView: SearchResultView): Observable<List<ContactSearchResultViewModel>> {
@@ -45,7 +63,7 @@ class SearchPresenter(
         return if (namedayUserSettings.isEnabled) {
             searchResultView.searchQueryObservable()
                     .map { searchQuery ->
-                        namedayCalendar().getAllNamedays(searchQuery)
+                        namedayCalendar.getAllNamedays(searchQuery)
                     }.map {
                         NamedaySearchResultViewModel(it)
                     }
@@ -54,16 +72,9 @@ class SearchPresenter(
         }
     }
 
-    private fun namedayCalendar(): NamedayCalendar {
-        val locale = namedayUserSettings.selectedLanguage
-        val currentYear = todaysDate().year!!
-        return calendarProvider.loadNamedayCalendarForLocale(locale, currentYear)
-    }
-
     fun stopPresenting() {
         composite?.dispose()
     }
-
 
     private fun NamedaySearchResultViewModel.asList() =
             if (namedays.dates.isNotEmpty()) {
@@ -73,7 +84,18 @@ class SearchPresenter(
             }
 
 
+    private val namedayCalendar by lazy {
+        val locale = namedayUserSettings.selectedLanguage
+        val currentYear = todaysDate().year!!
+        calendarProvider.loadNamedayCalendarForLocale(locale, currentYear)
+    }
+
+
     companion object {
         private const val DEBOUNCE_DURATION = 200L
     }
+
+    private fun String.asNameStartsWith(query: String) = comparator.startsWith(this, query)
+
 }
+
