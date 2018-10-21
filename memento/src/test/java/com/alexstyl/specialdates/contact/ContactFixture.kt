@@ -10,11 +10,7 @@ object ContactFixture {
         return Contact(-1, DisplayName.from("Test Contact"), SOME_IMAGE, SOURCE_DEVICE)
     }
 
-    fun aContactCalled(peter: String): Contact {
-        return Contact(-1, DisplayName.from(peter), SOME_IMAGE, 1)
-    }
-
-    fun with(id: Long, firstName: String): Contact {
-        return Contact(id, DisplayName.from(firstName), SOME_IMAGE, SOURCE_DEVICE)
+    fun aContactCalled(name: String): Contact {
+        return aContact().copy(displayName = DisplayName.from(name))
     }
 }

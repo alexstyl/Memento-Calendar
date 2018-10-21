@@ -21,7 +21,7 @@ public enum WidgetVariant {
                 return widgetVariant;
             }
         }
-        throw new DeveloperError("No Widget Variant with id [%d]", variantId);
+        throw new IllegalArgumentException(String.format("No Widget Variant with id [%d]", variantId));
     }
 
     WidgetVariant(int id, @ColorRes int textColor, @ColorRes int backgroundColorResId) {

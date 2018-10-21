@@ -4,8 +4,9 @@ import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.NamedayCalendar
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
+import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
@@ -16,51 +17,62 @@ class SearchPresenter(
         private val workScheduler: Scheduler,
         private val resultScheduler: Scheduler) {
 
-
-    private val composite = CompositeDisposable()
+    private var composite: Disposable? = null
 
     fun presentInto(searchResultView: SearchResultView) {
-        composite.add(
-                searchResultView.searchQueryObservable()
-                        .debounce(DEBOUNCE_DURATION, TimeUnit.MILLISECONDS, resultScheduler)
-                        .map { peopleEventsSearch.searchForContacts(it, searchCounter) }
-                        .map { viewModelFactory.viewModelsFor(it) }
-                        .map { SearchResults(it, it.size > searchCounter) }
+        composite =
+                Observable.zip(
+                        contactSearch(searchResultView),
+                        namedaySearch(searchResultView),
+                        io.reactivex.functions.BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>> { contactSearch, namedaySearch ->
+                            namedaySearch.asList() + contactSearch
+                        })
                         .subscribeOn(workScheduler)
                         .observeOn(resultScheduler)
-                        .subscribe { searchResultView.showContactResults(it) }
-        )
+                        .subscribe { searchResultView.showSearchResults(it) }
+    }
 
-        if (namedayUserSettings.isEnabled) {
-            composite.add(
-                    searchResultView.searchQueryObservable()
-                            .map { searchQuery ->
-                                val calendar = namedayCalendar()
-                                calendar.getAllNamedays(searchQuery)
-                            }
-                            .subscribeOn(workScheduler)
-                            .observeOn(resultScheduler)
-                            .subscribe { searchResultView.showNamedayResults(it) }
+    private fun contactSearch(searchResultView: SearchResultView): Observable<List<ContactSearchResultViewModel>> {
+        return searchResultView.searchQueryObservable()
+                .debounce(DEBOUNCE_DURATION, TimeUnit.MILLISECONDS)
+                .map { peopleEventsSearch.searchForContacts(it) }
+                .map { viewModelFactory.viewModelsFor(it) }
+    }
 
-            )
+    private fun namedaySearch(searchResultView: SearchResultView): Observable<NamedaySearchResultViewModel> {
+        return if (namedayUserSettings.isEnabled) {
+            searchResultView.searchQueryObservable()
+                    .map { searchQuery ->
+                        namedayCalendar().getAllNamedays(searchQuery)
+                    }.map {
+                        NamedaySearchResultViewModel(it)
+                    }
+        } else {
+            Observable.empty()
         }
     }
 
     private fun namedayCalendar(): NamedayCalendar {
         val locale = namedayUserSettings.selectedLanguage
         val currentYear = todaysDate().year!!
-        val calendar = calendarProvider.loadNamedayCalendarForLocale(locale, currentYear)
-        return calendar
+        return calendarProvider.loadNamedayCalendarForLocale(locale, currentYear)
     }
 
+
     fun stopPresenting() {
-        composite.dispose()
+        composite?.dispose()
     }
+
+    private fun NamedaySearchResultViewModel.asList() =
+            if (namedays.dates.isNotEmpty()) {
+                listOf(this)
+            } else {
+                emptyList()
+            }
+
 
     companion object {
         private const val searchCounter = 20
         private const val DEBOUNCE_DURATION = 200L
     }
-
-
 }

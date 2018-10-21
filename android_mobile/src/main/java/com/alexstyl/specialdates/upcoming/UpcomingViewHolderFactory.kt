@@ -6,7 +6,6 @@ import android.widget.TextView
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.widget.ColorImageView
-import com.novoda.notils.exception.DeveloperError
 
 class UpcomingViewHolderFactory(private val layoutInflater: LayoutInflater, private val imageLoader: ImageLoader) {
 
@@ -35,7 +34,7 @@ class UpcomingViewHolderFactory(private val layoutInflater: LayoutInflater, priv
                 return ContactEventViewHolder(view, avatarView, contactName, eventLabel, imageLoader)
             }
             else -> {
-                throw DeveloperError("Unhandled viewType [$viewType]")
+                throw IllegalArgumentException("Unhandled viewType [$viewType]")
             }
         }
     }

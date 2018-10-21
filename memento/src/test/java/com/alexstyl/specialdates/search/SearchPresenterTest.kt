@@ -6,6 +6,9 @@ import com.alexstyl.specialdates.TestContactEventsBuilder
 import com.alexstyl.specialdates.TestDateLabelCreator
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource
+import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
+import com.alexstyl.specialdates.contact.ContactsProvider
+import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.date.Months.DECEMBER
 import com.alexstyl.specialdates.date.Months.OCTOBER
@@ -30,16 +33,17 @@ class SearchPresenterTest {
 
     private lateinit var presenter: SearchPresenter
 
-    private val mockPeopleEventsProvider = mock(PeopleEventsProvider::class.java)
+    private val mockContactSource = mock(ContactsProviderSource::class.java)
+
+
     private val mockNamedayUserSettings = mock(NamedayUserSettings::class.java)
     private val mockNamedayCalendarProvider = mock(NamedayCalendarProvider::class.java)
     private val mockView = mock(SearchResultView::class.java)
-    private val testScheduler = TestScheduler()
 
     @Before
     fun setUp() {
         presenter = SearchPresenter(
-                PeopleEventsSearch(mockPeopleEventsProvider, NameMatcher),
+                PeopleEventsSearch(ContactsProvider(mapOf(Pair(SOURCE_DEVICE, mockContactSource))), NameMatcher),
                 SearchResultsViewModelFactory(
                         ContactEventLabelCreator(ANY_DATE, JavaStrings(), TestDateLabelCreator.forUS()),
                         TestColors()
@@ -47,50 +51,32 @@ class SearchPresenterTest {
                 mockNamedayUserSettings,
                 mockNamedayCalendarProvider,
                 Schedulers.trampoline(),
-                testScheduler
+                Schedulers.trampoline()
         )
         given(mockView.searchQueryObservable()).willReturn(Observable.empty())
     }
 
     @Test
     fun givenSubsequentTextChanges_thenOnlyTheLastOneGetsDelivered() {
-        val date = dateOn(1, DECEMBER, 2017)
+//        val date = dateOn(1, DECEMBER, 2017)
 
         val searchQueryObservable = PublishSubject.create<String>()
         given(mockView.searchQueryObservable()).willReturn(searchQueryObservable)
-        given(mockPeopleEventsProvider.fetchAllEventsInAYear()).willReturn(
-                TestContactEventsBuilder()
-                        .addBirthdayFor(ANY_CONTACT.copy(contactID = 0, displayName = DisplayName.from("text1")), date)
-                        .addBirthdayFor(ANY_CONTACT.copy(contactID = 1, displayName = DisplayName.from("text2")), date)
-                        .addBirthdayFor(ANY_CONTACT.copy(contactID = 2, displayName = DisplayName.from("text3")), date)
-                        .addBirthdayFor(ANY_CONTACT.copy(contactID = 3, displayName = DisplayName.from("text4")), date)
-                        .addBirthdayFor(ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5")), date)
-                        .build()
-        )
+        given(mockContactSource.allContacts).willReturn(
+                listOf(
+                        ANY_CONTACT.copy(contactID = 0, displayName = DisplayName.from("text1")),
+                        ANY_CONTACT.copy(contactID = 1, displayName = DisplayName.from("text2")),
+                        ANY_CONTACT.copy(contactID = 2, displayName = DisplayName.from("text3")),
+                        ANY_CONTACT.copy(contactID = 3, displayName = DisplayName.from("text4")),
+                        ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5"))
+                ))
 
         presenter.presentInto(mockView)
-
-        searchQueryObservable.onNext("text1")
-        testScheduler.advanceTimeBy(20, TimeUnit.MILLISECONDS)
-
-        searchQueryObservable.onNext("text2")
-        testScheduler.advanceTimeBy(20, TimeUnit.MILLISECONDS)
-
-        searchQueryObservable.onNext("text3")
-        testScheduler.advanceTimeBy(20, TimeUnit.MILLISECONDS)
-
-        searchQueryObservable.onNext("text4")
-        testScheduler.advanceTimeBy(20, TimeUnit.MILLISECONDS)
-
         searchQueryObservable.onNext("text5")
-        testScheduler.advanceTimeBy(20, TimeUnit.MILLISECONDS)
-
-        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
-
-        verify(mockView, Times(1)).showContactResults(SearchResults(listOf(
-                ContactEventViewModel(
+        verify(mockView, Times(1)).showSearchResults(
+                listOf(ContactSearchResultViewModel(
                         ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5")),
-                        "text5", "", "Birthday on December 1", 0, 4)), false))
+                        "text5", "", "Birthday on December 1", 0, 4)))
     }
 
 
@@ -101,17 +87,13 @@ class SearchPresenterTest {
 
         val contact = ANY_CONTACT.copy(displayName = DisplayName.from("Alex"))
 
-        given(mockPeopleEventsProvider.fetchAllEventsInAYear()).willReturn(
-                TestContactEventsBuilder().addNamedayFor(contact, dateOn(18, OCTOBER, 2017)).build()
-        )
+        given(mockPeopleEventsProvider.allContacts).willReturn(listOf(contact))
 
         presenter.presentInto(mockView)
         searchQueryObservable.onNext("Alex")
 
-        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
-
-        Mockito.verify(mockView).showContactResults(
-                SearchResults(listOf(ContactEventViewModel(ANY_CONTACT.copy(displayName = DisplayName.from("Alex")), "Alex", "", "Nameday on October 18", 1, -1)), false)
+        Mockito.verify(mockView).showSearchResults(
+                listOf(ContactSearchResultViewModel(ANY_CONTACT.copy(displayName = DisplayName.from("Alex")), "Alex", "", "Nameday on October 18", 1, -1))
         )
     }
 

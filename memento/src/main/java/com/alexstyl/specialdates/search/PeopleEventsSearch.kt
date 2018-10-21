@@ -1,39 +1,16 @@
 package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.contact.Contact
-import com.alexstyl.specialdates.date.ContactEvent
-import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
-import com.alexstyl.specialdates.util.HashMapList
+import com.alexstyl.specialdates.contact.ContactsProvider
 
-class PeopleEventsSearch(private val peopleEventsProvider: PeopleEventsProvider,
+class PeopleEventsSearch(private val peopleEventsProvider: ContactsProvider,
                          private val nameMatcher: NameMatcher) {
 
-    fun searchForContacts(searchQuery: String, counter: Int): List<ContactWithEvents> {
-        if (counter <= 0) {
-            return emptyList()
-        }
-
-        val normalisedQuery = searchQuery.trim { it <= ' ' }
-        val events = HashMapList<Contact, ContactEvent>()
-
-        peopleEventsProvider
-                .fetchAllEventsInAYear()
-                .forEach { contactEvent ->
-                    val contact = contactEvent.contact
-                    if (nameMatcher.match(contact.displayName, normalisedQuery)) {
-                        events.addValue(contact, contactEvent)
-                    }
-                    if (events.keys().size >= counter) {
-                        return@forEach
-                    }
+    fun searchForContacts(searchQuery: String): List<Contact> {
+        return peopleEventsProvider
+                .allContacts
+                .filter {
+                    nameMatcher.match(it.displayName, searchQuery)
                 }
-
-        val contactWithEvents = ArrayList<ContactWithEvents>()
-        for (contact in events.keys()) {
-            val list = events[contact]
-            contactWithEvents.add(ContactWithEvents(contact, list!!))
-        }
-        return contactWithEvents
     }
 }

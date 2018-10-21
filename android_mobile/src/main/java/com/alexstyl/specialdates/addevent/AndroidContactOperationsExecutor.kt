@@ -14,8 +14,7 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.images.ImageDecoder
-import com.novoda.notils.exception.DeveloperError
-import java.util.ArrayList
+import java.util.*
 
 class AndroidContactOperationsExecutor(
         private val contentResolver: ContentResolver,
@@ -74,7 +73,7 @@ class AndroidContactOperationsExecutor(
 
     private fun throwIfInvalid(cursor: Cursor?) {
         if (cursor == null || cursor.isClosed) {
-            throw DeveloperError("Cursor was invalid")
+            throw IllegalArgumentException("Cursor was invalid")
         }
     }
 }

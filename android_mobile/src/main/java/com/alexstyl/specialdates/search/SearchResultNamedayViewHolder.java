@@ -26,18 +26,18 @@ final class SearchResultNamedayViewHolder extends RecyclerView.ViewHolder {
 
     private SearchResultNamedayViewHolder(View convertView, LayoutInflater layoutInflater, DateLabelCreator labelCreator) {
         super(convertView);
-        this.name = (TextView) convertView.findViewById(R.id.name_celebrating);
-        this.datesLayout = (LinearLayout) convertView.findViewById(R.id.dates);
+        this.name = convertView.findViewById(R.id.name_celebrating);
+        this.datesLayout = convertView.findViewById(R.id.dates);
         this.inflater = layoutInflater;
         this.labelCreator = labelCreator;
     }
 
-    public void bind(NamedayCard dates, final SearchResultsAdapter.SearchResultClickListener searchResultListener) {
+    public void bind(NamedaySearchResultViewModel dates, final SearchResultClickListener searchResultListener) {
         name.setText(dates.getName());
         this.datesLayout.removeAllViews();
         for (int i = 0; i < dates.size(); i++) {
             View view = inflater.inflate(R.layout.nameday_date, datesLayout, false);
-            TextView dateView = (TextView) view.findViewById(android.R.id.text1);
+            TextView dateView = view.findViewById(android.R.id.text1);
 
             final Date date = dates.getDate(i);
             String prettyDate = labelCreator.createWithYearPreferred(date);

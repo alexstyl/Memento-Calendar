@@ -1,11 +1,7 @@
 package com.alexstyl.specialdates.search
 
-import com.alexstyl.specialdates.TestContactEventsBuilder
 import com.alexstyl.specialdates.contact.ContactFixture
-import com.alexstyl.specialdates.date.TimePeriod
-import com.alexstyl.specialdates.date.beggingOfYear
-import com.alexstyl.specialdates.date.todaysDate
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
+import com.alexstyl.specialdates.contact.ContactsProvider
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -19,78 +15,51 @@ class PeopleEventsSearchTest {
 
     private lateinit var search: PeopleEventsSearch
     @Mock
-    private lateinit var mockProvider: PeopleEventsProvider
+    private lateinit var mockProvider: ContactsProvider
 
     @Before
     fun setUp() {
         search = PeopleEventsSearch(mockProvider, NameMatcher)
-        val contactEvents = TestContactEventsBuilder()
-                .addBirthdayFor(ALEX, JANUARY_1st)
-                .addAnniversaryFor(MARIA, JANUARY_1st)
-                .addNamedayFor(MIMOZA, JANUARY_1st)
-                .build()
-
-        given(mockProvider.fetchEventsBetween(aYearFromNow())).willReturn(contactEvents)
+        given(mockProvider.allContacts).willReturn(listOf(ALEX_STYL, MARIA_PAPADOPOULOU, MIMOZA))
     }
 
     @Test
     fun searchingByFirstLetter() {
-        val actual = search.searchForContacts("A", 5)
-        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
+        val actual = search.searchForContacts("A")
 
-        assertThat(actual).containsOnly(expected)
+        assertThat(actual).containsOnly(ALEX_STYL)
     }
 
     @Test
     fun searchingByLastLetter() {
-        val actual = search.searchForContacts("S", 5)
-        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
+        val actual = search.searchForContacts("S")
 
-        assertThat(actual).containsOnly(expected)
+        assertThat(actual).containsOnly(ALEX_STYL)
     }
 
     @Test
     fun searchingByFullName() {
-        val actual = search.searchForContacts("Alex Styl", 5)
-        val expected = ContactWithEvents(ALEX, TestContactEventsBuilder().addBirthdayFor(ALEX, JANUARY_1st).build())
+        val actual = search.searchForContacts("Alex Styl")
 
-        assertThat(actual).containsOnly(expected)
+        assertThat(actual).containsOnly(ALEX_STYL)
     }
 
     @Test
     fun multipleResults() {
-        val actual = search.searchForContacts("M", 5)
+        val actual = search.searchForContacts("M")
 
-        val expected = listOf(
-                ContactWithEvents(MIMOZA, TestContactEventsBuilder().addNamedayFor(MIMOZA, JANUARY_1st).build()),
-                ContactWithEvents(MARIA, TestContactEventsBuilder().addAnniversaryFor(MARIA, JANUARY_1st).build())
-        )
-
-        assertThat(actual).containsAll(expected)
+        assertThat(actual).containsAll(listOf(MIMOZA, MARIA_PAPADOPOULOU))
     }
 
     @Test
     fun requestOneResultReturnsOnlyOneResult() {
-        val actual = search.searchForContacts("M", 1)
-
-        val expected = listOf(
-                ContactWithEvents(MARIA, TestContactEventsBuilder().addAnniversaryFor(MARIA, JANUARY_1st).build())
-        )
-
-        assertThat(actual).containsAll(expected)
+        val actual = search.searchForContacts("M")
+        assertThat(actual).containsOnly(MARIA_PAPADOPOULOU)
     }
 
     companion object {
-
-        private val ALEX = ContactFixture.aContactCalled("Alex Styl")
-        private val MARIA = ContactFixture.aContactCalled("Maria Papadopoulou")
+        private val ALEX_STYL = ContactFixture.aContactCalled("Alex Styl")
+        private val MARIA_PAPADOPOULOU = ContactFixture.aContactCalled("Maria Papadopoulou")
         private val MIMOZA = ContactFixture.aContactCalled("Mimoza Dereks")
-        private val JANUARY_1st = beggingOfYear(2016)
-
-        private fun aYearFromNow(): TimePeriod {
-            val today = todaysDate()
-            val aYearFromNow = today.addDay(364)
-            return TimePeriod.between(today, aYearFromNow)
-        }
     }
 }

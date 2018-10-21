@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView
 
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
+import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.images.ImageLoader
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
@@ -26,7 +28,6 @@ class SearchActivity : ThemedMementoActivity() {
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
 
-
         val searchbar = findViewById<SearchToolbar>(R.id.search_searchbar)
 
 //        val content = findViewById<ViewGroup>(R.id.search_content)
@@ -35,9 +36,16 @@ class SearchActivity : ThemedMementoActivity() {
         }
 //        val namesSuggestionsView = findViewById<RecyclerView>(R.id.search_nameday_suggestions)
 
-        val resultsAdapter = SearchResultsAdapter(imageLoader, labelCreator)
-        resultView.adapter = resultsAdapter
+        val resultsAdapter = SearchResultsAdapter(imageLoader, labelCreator, object : SearchResultClickListener {
+            override fun onContactClicked(contact: Contact) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
+            override fun onNamedayClicked(date: Date) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+        resultView.adapter = resultsAdapter
         searchResultView = AndroidSearchResultView(resultsAdapter, searchbar)
     }
 
