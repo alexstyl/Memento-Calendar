@@ -25,7 +25,8 @@ class SearchPresenter(
                 Observable.zip(
                         contactSearch(searchResultView),
                         namedaySearch(searchResultView),
-                        BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>> { contactSearch: List<SearchResultViewModel>, namedaySearch: NamedaySearchResultViewModel ->
+                        BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>>
+                        { contactSearch: List<SearchResultViewModel>, namedaySearch: NamedaySearchResultViewModel ->
                             namedaySearch.asList() + contactSearch
                         })
                         .subscribeOn(workScheduler)

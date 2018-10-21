@@ -11,21 +11,21 @@ import com.alexstyl.specialdates.events.namedays.activity.NamedaysOnADayActivity
 import com.alexstyl.specialdates.permissions.ContactPermissionActivity
 import com.alexstyl.specialdates.person.PersonActivity
 
-class SearchNavigator(private val analytics: Analytics) {
+class SearchNavigator(private val activity: Activity, private val analytics: Analytics) {
 
-    fun toContactDetails(contact: Contact, activity: Activity) {
+    fun toContactDetails(contact: Contact) {
         val intent = PersonActivity.buildIntentFor(activity, contact)
         activity.startActivity(intent)
         analytics.trackContactDetailsViewed(contact)
     }
 
-    fun toNamedays(date: Date, activity: Activity) {
+    fun toNamedays(date: Date) {
         val currentYearDate = dateOn(date.dayOfMonth, date.month, Date.CURRENT_YEAR)
         val intent = NamedaysOnADayActivity.getStartIntent(activity, currentYearDate)
         activity.startActivity(intent)
     }
 
-    fun toContactPermission(activity: Activity) {
+    fun toContactPermission() {
         val intent = Intent(activity, ContactPermissionActivity::class.java)
         analytics.trackScreen(Screen.CONTACT_PERMISSION_REQUESTED)
         activity.startActivity(intent)

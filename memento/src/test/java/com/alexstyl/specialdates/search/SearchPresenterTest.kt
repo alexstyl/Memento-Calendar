@@ -1,9 +1,5 @@
 package com.alexstyl.specialdates.search
 
-import com.alexstyl.TestColors
-import com.alexstyl.specialdates.JavaStrings
-import com.alexstyl.specialdates.TestContactEventsBuilder
-import com.alexstyl.specialdates.TestDateLabelCreator
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
@@ -11,24 +7,19 @@ import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.date.Months.DECEMBER
-import com.alexstyl.specialdates.date.Months.OCTOBER
 import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.schedulers.TestScheduler
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.internal.verification.Times
-import java.util.concurrent.TimeUnit
 
 class SearchPresenterTest {
 
@@ -45,10 +36,7 @@ class SearchPresenterTest {
     fun setUp() {
         presenter = SearchPresenter(
                 PeopleEventsSearch(ContactsProvider(mapOf(Pair(SOURCE_DEVICE, mockContactSource))), NameMatcher),
-                SearchResultsViewModelFactory(
-                        ContactEventLabelCreator(ANY_DATE, JavaStrings(), TestDateLabelCreator.forUS()),
-                        TestColors()
-                ),
+                SearchResultsViewModelFactory(),
                 mockNamedayUserSettings,
                 mockNamedayCalendarProvider,
                 Schedulers.trampoline(),

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
+import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
@@ -20,6 +21,11 @@ class SearchActivity : ThemedMementoActivity() {
 
     @Inject lateinit var imageLoader: ImageLoader
     @Inject lateinit var labelCreator: DateLabelCreator
+    @Inject lateinit var analytics: Analytics
+
+    val navigator by lazy {
+        SearchNavigator(this, analytics)
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,19 +40,20 @@ class SearchActivity : ThemedMementoActivity() {
         val resultView = findViewById<RecyclerView>(R.id.search_results).apply {
             layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
         }
-//        val namesSuggestionsView = findViewById<RecyclerView>(R.id.search_nameday_suggestions)
 
         val resultsAdapter = SearchResultsAdapter(imageLoader, labelCreator, object : SearchResultClickListener {
             override fun onContactClicked(contact: Contact) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                navigator.toContactDetails(contact)
             }
 
             override fun onNamedayClicked(date: Date) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                navigator.toNamedays(date)
             }
         })
         resultView.adapter = resultsAdapter
         searchResultView = AndroidSearchResultView(resultsAdapter, searchbar)
+
+        val namesSuggestionsView = findViewById<RecyclerView>(R.id.search_nameday_suggestions)
     }
 
     override fun onResume() {

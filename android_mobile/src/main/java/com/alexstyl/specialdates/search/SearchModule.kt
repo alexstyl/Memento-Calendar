@@ -1,6 +1,5 @@
 package com.alexstyl.specialdates.search
 
-import com.alexstyl.resources.Colors
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.ContactsProvider
@@ -16,11 +15,6 @@ import io.reactivex.schedulers.Schedulers
 
 @Module
 class SearchModule {
-
-    @Provides
-    fun navigator(analytics: Analytics): SearchNavigator {
-        return SearchNavigator(analytics)
-    }
 
     @Provides
     fun presenter(peopleEventsSearch: PeopleEventsSearch,
@@ -41,10 +35,8 @@ class SearchModule {
     }
 
     @Provides
-    fun contactEventsViewModelFactory(contactEventLabelCreator: ContactEventLabelCreator,
-                                      colors: Colors)
-            : SearchResultsViewModelFactory {
-        return SearchResultsViewModelFactory(contactEventLabelCreator, colors)
+    fun contactEventsViewModelFactory(): SearchResultsViewModelFactory {
+        return SearchResultsViewModelFactory()
     }
 
     @Provides

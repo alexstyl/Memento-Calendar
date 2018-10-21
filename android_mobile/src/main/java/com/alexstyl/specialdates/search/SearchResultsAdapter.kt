@@ -1,9 +1,14 @@
 package com.alexstyl.specialdates.search
 
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.images.ImageLoader
+import com.alexstyl.specialdates.ui.widget.ColorImageView
 
 class SearchResultsAdapter(private val imageLoader: ImageLoader,
                            private val labelCreator: DateLabelCreator,
@@ -29,10 +34,26 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             when (viewType) {
-                VIEWTYPE_CONTACT -> SearchResultContactViewHolder.createFor(parent, imageLoader)
-                VIEWTYPE_NAMEDAY -> SearchResultNamedayViewHolder.createFor(parent, labelCreator)
-                else -> throw IllegalStateException("There is no assigned view type for view type ${viewType}")
-            }!!
+                VIEWTYPE_CONTACT -> contactViewHolder(parent)
+                VIEWTYPE_NAMEDAY -> namedayViewHolder(parent)
+                else -> throw IllegalStateException("There is no assigned view type for view type $viewType")
+            }
+
+    private fun contactViewHolder(parent: ViewGroup): SearchResultContactViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.row_search_result_contact_event, parent, false)
+        val nameView = view.findViewById(R.id.search_result_contact_name) as TextView
+        val avatarView = view.findViewById(R.id.search_result_avatar) as ColorImageView
+        return SearchResultContactViewHolder(view, avatarView, nameView, imageLoader)
+    }
+
+    private fun namedayViewHolder(parent: ViewGroup): SearchResultNamedayViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.card_nameday_single, parent, false)
+        val namedayView = view.findViewById(R.id.name_celebrating) as TextView
+        val datesLayout = view.findViewById(R.id.dates) as LinearLayout
+        return SearchResultNamedayViewHolder(view, namedayView, datesLayout, labelCreator)
+    }
 
     override fun onBindViewHolder(vh: RecyclerView.ViewHolder, position: Int) {
         val type = getItemViewType(position)
