@@ -19,7 +19,7 @@ class ContactCache(maxSize: Int) {
         cache.evictAll()
     }
 
-    fun addContacts(contacts: Contacts) {
+    fun addContacts(contacts: List<Contact>) {
         contacts.forEach {
             cache.put(it.contactID, it)
         }
