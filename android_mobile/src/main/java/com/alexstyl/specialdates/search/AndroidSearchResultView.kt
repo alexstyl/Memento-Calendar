@@ -6,17 +6,19 @@ class AndroidSearchResultView(private val resultsAdapter: SearchResultsAdapter,
                               private val searchbar: SearchToolbar,
                               private val namesAdapter: NameSuggestionsAdapter?) : SearchResultView {
 
-    override fun searchQueryObservable() = Observable.create<String> { emitter ->
-        searchbar.addTextWatcher { text ->
-            emitter.onNext(text)
+    override val searchQueryObservable: Observable<String> by lazy {
+        Observable.create<String> { emitter ->
+            searchbar.addTextWatcher { text ->
+                emitter.onNext(text)
+            }
         }
-    }!!
+    }
 
     override fun displaySearchResults(it: List<SearchResultViewModel>) {
         resultsAdapter.displaySearchResults(it)
     }
 
     override fun displayNameSuggestions(names: List<String>) {
-        namesAdapter?.updateNames(names)
+        namesAdapter?.displayNames(names)
     }
 }

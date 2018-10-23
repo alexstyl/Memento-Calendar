@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
@@ -14,24 +13,24 @@ import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import com.alexstyl.specialdates.images.ImageLoader
-import com.alexstyl.specialdates.people.PeopleItemDecorator
 import com.alexstyl.specialdates.ui.base.ThemedMementoActivity
 import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration
 import javax.inject.Inject
+import com.alexstyl.specialdates.ui.ViewFader
+import com.alexstyl.specialdates.ui.widget.HorizontalSpacesItemDecoration
+
 
 class SearchActivity : ThemedMementoActivity() {
 
     @Inject lateinit var presenter: SearchPresenter
-    private lateinit var searchResultView: SearchResultView
-
     @Inject lateinit var imageLoader: ImageLoader
     @Inject lateinit var labelCreator: DateLabelCreator
     @Inject lateinit var analytics: Analytics
     @Inject lateinit var namedayUserSettings: NamedayUserSettings
     @Inject lateinit var namedayCalendarProvider: NamedayCalendarProvider
 
-
-    val navigator by lazy {
+    private lateinit var searchResultView: SearchResultView
+    private val navigator by lazy {
         SearchNavigator(this, analytics)
     }
 
@@ -43,6 +42,21 @@ class SearchActivity : ThemedMementoActivity() {
         applicationModule.inject(this)
 
         val searchbar = findViewById<SearchToolbar>(R.id.search_searchbar)
+        searchbar.onSoftBackKeyPressed = {
+            if (searchbar.text.isEmpty()) {
+                finish()
+                true
+            } else {
+                false
+            }
+        }
+
+        searchbar.setOnNavigateBackButtonPressed {
+            finish()
+        }
+        searchbar.setOnClearButtonPressed {
+            searchbar.clearText()
+        }
 
 //        val content = findViewById<ViewGroup>(R.id.search_content)
         val resultView = findViewById<RecyclerView>(R.id.search_results).apply {
@@ -68,7 +82,7 @@ class SearchActivity : ThemedMementoActivity() {
             }
             namesSuggestionsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             namesSuggestionsView.adapter = namesAdapter
-
+            namesSuggestionsView.addItemDecoration(HorizontalSpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.search_nameday_results_vertical_padding)))
             searchResultView = AndroidSearchResultView(resultsAdapter, searchbar, namesAdapter)
         } else {
             namesSuggestionsView.visibility = View.GONE

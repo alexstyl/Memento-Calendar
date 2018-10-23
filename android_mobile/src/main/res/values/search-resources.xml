@@ -6,6 +6,7 @@
     <color name="search_hint_color">#808080</color>
 
     <dimen name="search_result_vertical_padding">10dp</dimen>
+    <dimen name="search_nameday_results_vertical_padding">4dp</dimen>
 
 
     <style name="SearchResult" />

@@ -33,6 +33,7 @@ import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.person.PersonModule;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.search.SearchModule;
+import com.alexstyl.specialdates.search.SearchToolbar;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.settings.UserSettingsFragment;
@@ -50,6 +51,8 @@ import com.alexstyl.specialdates.upcoming.widget.list.WidgetRouterActivity;
 import com.alexstyl.specialdates.upcoming.widget.today.TodayAppWidgetProvider;
 import com.alexstyl.specialdates.upcoming.widget.today.UpcomingWidgetConfigureActivity;
 import com.alexstyl.specialdates.wear.WearSyncService;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -147,4 +150,6 @@ public interface AppComponent {
     void inject(DailyReminderReceiver dailyReminderReceiver);
 
     void inject(BootReceiver bootReceiver);
+
+    void inject(@NotNull SearchToolbar searchToolbar);
 }

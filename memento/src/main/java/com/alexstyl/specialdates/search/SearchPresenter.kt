@@ -23,58 +23,49 @@ class SearchPresenter(
     private var composite = CompositeDisposable()
 
     fun presentInto(searchResultView: SearchResultView) {
-        composite +=
-                Observable.zip(
-                        contactSearch(searchResultView),
-                        namedaySearch(searchResultView),
-                        BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>>
-                        { contactSearch: List<SearchResultViewModel>, namedaySearch: NamedaySearchResultViewModel ->
-                            namedaySearch.asList() + contactSearch
-                        })
-                        .subscribeOn(workScheduler)
-                        .observeOn(resultScheduler)
-                        .subscribe { searchResultView.displaySearchResults(it) }
-
+        composite += subscribeToSearchResults(searchResultView)
         if (namedayUserSettings.isEnabled) {
-            composite +=
-                    searchResultView.searchQueryObservable()
-                            .map { query ->
-                                namedayCalendar.allNames.filter { name ->
-                                    name.asNameStartsWith(query)
-                                            && name != query
-                                }
-                            }
-                            .subscribeOn(workScheduler)
-                            .observeOn(resultScheduler)
-                            .subscribe {
-                                searchResultView.displayNameSuggestions(it)
-                            }
+            composite += subscribeToNameSuggestions(searchResultView)
         }
     }
 
-    private fun contactSearch(searchResultView: SearchResultView): Observable<List<ContactSearchResultViewModel>> {
-        return searchResultView.searchQueryObservable()
-                .debounce(DEBOUNCE_DURATION, TimeUnit.MILLISECONDS)
-                .map { peopleEventsSearch.searchForContacts(it) }
-                .map { viewModelFactory.viewModelsFor(it) }
-    }
-
-    private fun namedaySearch(searchResultView: SearchResultView): Observable<NamedaySearchResultViewModel> {
-        return if (namedayUserSettings.isEnabled) {
-            searchResultView.searchQueryObservable()
-                    .map { searchQuery ->
-                        namedayCalendar.getAllNamedays(searchQuery)
-                    }.map {
-                        NamedaySearchResultViewModel(it)
+    private fun subscribeToSearchResults(searchResultView: SearchResultView) =
+            searchResultView
+                    .searchQueryObservable
+                    .debounce(DEBOUNCE_DURATION, TimeUnit.MILLISECONDS)
+                    .switchMap { query ->
+                        Observable.zip(
+                                contactSearch(query),
+                                namedaySearch(query),
+                                BiFunction<List<SearchResultViewModel>, NamedaySearchResultViewModel, List<SearchResultViewModel>>
+                                { contactSearch: List<SearchResultViewModel>, namedaySearch: NamedaySearchResultViewModel ->
+                                    namedaySearch.asList() + contactSearch
+                                })
                     }
-        } else {
-            Observable.empty()
-        }
-    }
+                    .subscribeOn(workScheduler)
+                    .observeOn(resultScheduler)
+                    .subscribe { searchResultView.displaySearchResults(it) }
 
-    fun stopPresenting() {
-        composite?.dispose()
-    }
+    private fun subscribeToNameSuggestions(searchResultView: SearchResultView) =
+            searchResultView
+                    .searchQueryObservable
+                    .debounce(200, TimeUnit.MILLISECONDS)
+                    .map { query ->
+                        if (query.isNotEmpty()) {
+                            namedayCalendar
+                                    .allNames
+                                    .filter { name ->
+                                        name.asNameStartsWith(query) && name.asNameNotEquals(query)
+                                    }
+                        } else {
+                            emptyList()
+                        }
+                    }
+                    .subscribeOn(workScheduler)
+                    .observeOn(resultScheduler)
+                    .subscribe {
+                        searchResultView.displayNameSuggestions(it)
+                    }
 
     private fun NamedaySearchResultViewModel.asList() =
             if (namedays.dates.isNotEmpty()) {
@@ -84,6 +75,28 @@ class SearchPresenter(
             }
 
 
+    private fun contactSearch(query: String) =
+            Observable.fromCallable {
+                peopleEventsSearch.searchForContacts(query)
+            }.map { viewModelFactory.viewModelsFor(it) }
+
+    private fun namedaySearch(searchResultView: String): Observable<NamedaySearchResultViewModel> {
+        return if (namedayUserSettings.isEnabled) {
+            Observable.fromCallable {
+                namedayCalendar.getAllNamedays(searchResultView)
+            }.map {
+                NamedaySearchResultViewModel(it)
+            }
+        } else {
+            Observable.empty()
+        }
+    }
+
+    fun stopPresenting() {
+        composite.clear()
+    }
+
+
     private val namedayCalendar by lazy {
         val locale = namedayUserSettings.selectedLanguage
         val currentYear = todaysDate().year!!
@@ -91,11 +104,16 @@ class SearchPresenter(
     }
 
 
-    companion object {
-        private const val DEBOUNCE_DURATION = 200L
-    }
-
     private fun String.asNameStartsWith(query: String) = comparator.startsWith(this, query)
 
+    private fun String.asNameNotEquals(query: String) = !comparator.compare(this, query)
+
+    companion object {
+        private const val DEBOUNCE_DURATION = 200L
+
+    }
+
 }
+
+
 

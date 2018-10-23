@@ -25,7 +25,7 @@ class SearchResultDiffCallback(private val oldResults: List<SearchResultViewMode
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldResults[oldItemPosition] == newResults[newItemPosition]::class
+        return oldResults[oldItemPosition] == newResults[newItemPosition]
     }
 
     override fun getOldListSize() = oldResults.size

@@ -1,5 +1,6 @@
 package com.alexstyl.specialdates.search
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,15 +24,12 @@ class NameSuggestionsAdapter(private val listener: (String) -> Unit) : RecyclerV
 
     override fun getItemCount() = suggestedNames.size
 
-    fun clearNames() {
-        suggestedNames.clear()
-        notifyDataSetChanged() // TODO
-    }
-
-    fun updateNames(names: List<String>) {
+    fun displayNames(names: List<String>) {
+        val diffCallback = NameSuggestionDiffCallback(this.suggestedNames, names)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.suggestedNames.clear()
         this.suggestedNames.addAll(names)
-        notifyDataSetChanged() // TODO
+        diffResult.dispatchUpdatesTo(this)
     }
 
 }

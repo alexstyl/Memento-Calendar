@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalend
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test

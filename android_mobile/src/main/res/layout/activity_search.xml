@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.alexstyl.specialdates.search.SearchToolbar
         android:id="@+id/search_searchbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_semi_expanded_height"
         android:elevation="@dimen/toolbar_elevation"
-        android:gravity="top" />
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/search_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_nameday_suggestions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/background_suggestions"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingLeft="16dp"
+        android:paddingTop="4dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:listitem="@layout/row_suggested_name"
+        tools:orientation="horizontal" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_results"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            tools:listitem="@layout/row_search_result_contact_event" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_results"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@id/search_nameday_suggestions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_searchbar"
+        tools:listitem="@layout/row_search_result_contact_event" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_nameday_suggestions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@drawable/background_suggestions"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:paddingLeft="@dimen/card_padding_from_screen"
-            android:paddingTop="4dp"
-            android:paddingRight="@dimen/card_padding_from_screen"
-            android:paddingBottom="4dp"
-            tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/row_suggested_name"
-            tools:orientation="horizontal" />
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

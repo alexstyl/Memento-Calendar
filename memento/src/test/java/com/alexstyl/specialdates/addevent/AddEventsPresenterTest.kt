@@ -26,6 +26,11 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
 class AddEventsPresenterTest {
+    @Test
+    fun name() {
+        (0 until 20 - 1).map { println(it) }
+    }
+
     private lateinit var presenter: AddEventsPresenter
     private val strings = JavaStrings()
     private val viewModelFactory = AddEventViewModelFactory(TestDateLabelCreator.forUS(), JavaStrings(), JavaEventIcons())
@@ -38,7 +43,6 @@ class AddEventsPresenterTest {
     @Before
     fun setUp() {
         val mockPeopleEventsUpdater = mock(PeopleEventsUpdater::class.java)
-        // don't mind for updates
         given(mockPeopleEventsUpdater.updateEvents()).willReturn(Observable.empty())
 
         presenter = AddEventsPresenter(
@@ -253,4 +257,6 @@ class AddEventsPresenterTest {
                         InsertEvent(StandardEventType.BIRTHDAY, dateOn(19, Months.DECEMBER, 1990))
                 ))
     }
+
+
 }

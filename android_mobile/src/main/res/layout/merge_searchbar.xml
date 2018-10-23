@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  tools:showIn="@layout/activity_search">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="@dimen/toolbar_elevation"
+    android:gravity="center_vertical"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:minHeight="@dimen/toolbar_minHeight"
+    tools:parentTag="android.widget.LinearLayout">
 
-  <com.alexstyl.specialdates.search.BackKeyEditText
-    android:id="@+id/toolbar_search_edittext"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@null"
-    android:imeOptions="actionSearch"
-    android:inputType="text"
-    android:maxLines="1"
-    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle" />
+
+    <ImageButton
+        android:id="@+id/searchbar_back_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_back_white_24dp"
+        android:tint="?colorAccent" />
+
+    <com.alexstyl.specialdates.search.BackKeyEditText
+        android:id="@+id/toolbar_search_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="Search for stuff"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle" />
+
+    <ImageButton
+        android:id="@+id/searchbar_clear"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_clear"
+        android:tint="?colorAccent"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </merge>
