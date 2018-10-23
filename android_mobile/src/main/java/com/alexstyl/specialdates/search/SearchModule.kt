@@ -36,8 +36,8 @@ class SearchModule {
     }
 
     @Provides
-    fun contactEventsViewModelFactory(): SearchResultsViewModelFactory {
-        return SearchResultsViewModelFactory()
+    fun contactEventsViewModelFactory(labelCreator: DateLabelCreator): SearchResultsViewModelFactory {
+        return SearchResultsViewModelFactory(labelCreator)
     }
 
     @Provides

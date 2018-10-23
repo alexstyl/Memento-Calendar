@@ -5,7 +5,6 @@ import android.support.transition.TransitionManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.ViewGroup
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
@@ -33,8 +32,6 @@ class SearchActivity : ThemedMementoActivity() {
     @Inject lateinit var namedayUserSettings: NamedayUserSettings
     @Inject lateinit var namedayCalendarProvider: NamedayCalendarProvider
 
-    private val fader = ViewFader()
-
     private lateinit var searchResultView: SearchResultView
     private val navigator by lazy {
         SearchNavigator(this, analytics)
@@ -47,7 +44,14 @@ class SearchActivity : ThemedMementoActivity() {
         val applicationModule = (application as MementoApplication).applicationModule
         applicationModule.inject(this)
 
-        val searchbar = findViewById<SearchToolbar>(R.id.search_searchbar)
+        val searchbar = findViewById<Searchbar>(R.id.search_searchbar)
+        val resultView = findViewById<RecyclerView>(R.id.search_results).apply {
+            layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.search_result_vertical_padding)))
+        }
+        val namesSuggestionsView = findViewById<RecyclerView>(R.id.search_nameday_suggestions).apply {
+            layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayoutManager.HORIZONTAL, false)
+        }
         searchbar.onSoftBackKeyPressed = {
             if (searchbar.text.isEmpty()) {
                 finish()
@@ -56,21 +60,12 @@ class SearchActivity : ThemedMementoActivity() {
                 false
             }
         }
-
         searchbar.setOnNavigateBackButtonPressed {
             finish()
         }
         searchbar.setOnClearButtonPressed {
             searchbar.clearText()
         }
-
-        val content = findViewById<ViewGroup>(R.id.search_content)
-
-
-        val resultView = findViewById<RecyclerView>(R.id.search_results).apply {
-            layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
-        }
-
         val resultsAdapter = SearchResultsAdapter(imageLoader, labelCreator, object : SearchResultClickListener {
             override fun onContactClicked(contact: Contact) {
                 navigator.toContactDetails(contact)
@@ -85,14 +80,13 @@ class SearchActivity : ThemedMementoActivity() {
             }
         })
         resultView.adapter = resultsAdapter
-        resultView.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.search_result_vertical_padding)))
-
-        val namesSuggestionsView = findViewById<RecyclerView>(R.id.search_nameday_suggestions)
+        if (savedInstanceState == null) {
+            introduceSearchbar(searchbar)
+        }
         if (namedayUserSettings.isEnabled) {
             val namesAdapter = NameSuggestionsAdapter { name ->
                 searchbar.setText(name)
             }
-            namesSuggestionsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             namesSuggestionsView.adapter = namesAdapter
             namesSuggestionsView.addItemDecoration(HorizontalSpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.search_nameday_results_vertical_padding)))
             searchResultView = AndroidSearchResultView(resultsAdapter, searchbar, namesAdapter)
@@ -101,21 +95,22 @@ class SearchActivity : ThemedMementoActivity() {
             searchResultView = AndroidSearchResultView(resultsAdapter, searchbar, null)
         }
 
-        if (savedInstanceState == null) {
-            fader.hideContentOf(searchbar)
-            val viewTreeObserver = searchbar.viewTreeObserver
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    searchbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    animateShowSearch()
-                }
+    }
 
-                private fun animateShowSearch() {
-                    TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition())
-                    fader.showContent(searchbar)
-                }
-            })
-        }
+    private fun introduceSearchbar(searchbar: Searchbar) {
+        ViewFader.hideContentOf(searchbar)
+        val viewTreeObserver = searchbar.viewTreeObserver
+        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                searchbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                animateShowSearch()
+            }
+
+            private fun animateShowSearch() {
+                TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition())
+                ViewFader.showContent(searchbar)
+            }
+        })
     }
 
     override fun onResume() {

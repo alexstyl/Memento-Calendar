@@ -3,16 +3,6 @@ package com.alexstyl.specialdates.search
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
 
-data class NamedaySearchResultViewModel(val namedays: NameCelebrations) : SearchResultViewModel {
+data class NamedaySearchResultViewModel(val nameday: String, val namedays: List<NamedayDateViewModel>) : SearchResultViewModel
 
-    val name: String
-        get() = namedays.name
-
-    fun getDate(i: Int): Date {
-        return namedays.dates[i]
-    }
-
-    fun size(): Int {
-        return namedays.dates.size
-    }
-}
+data class NamedayDateViewModel(val dateLabel: String, val date: Date)

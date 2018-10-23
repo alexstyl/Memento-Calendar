@@ -13,6 +13,5 @@ class PeopleItemDecorator(private val categoryMargin: Int,
         } else {
             outRect.bottom = itemInBetweenMargin
         }
-
     }
 }

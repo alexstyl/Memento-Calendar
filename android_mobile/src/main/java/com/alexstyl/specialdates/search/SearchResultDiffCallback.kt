@@ -19,7 +19,7 @@ class SearchResultDiffCallback(private val oldResults: List<SearchResultViewMode
 
         if (old is NamedaySearchResultViewModel) {
             val new = newResults[newItemPosition] as NamedaySearchResultViewModel
-            return old.name == new.name
+            return old.nameday == new.nameday
         }
 
         if (old is ContactReadPermissionRequestViewModel) {

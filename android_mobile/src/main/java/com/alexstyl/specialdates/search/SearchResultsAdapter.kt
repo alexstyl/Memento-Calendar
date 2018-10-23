@@ -57,7 +57,7 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
         val view = layoutInflater.inflate(R.layout.row_search_result_nameday, parent, false)
         val namedayView = view.findViewById(R.id.name_celebrating) as TextView
         val datesLayout = view.findViewById(R.id.dates) as LinearLayout
-        return SearchResultNamedayViewHolder(view, namedayView, datesLayout, labelCreator)
+        return SearchResultNamedayViewHolder(view, namedayView, datesLayout)
     }
 
     private fun permissionRequestViewHolder(parent: ViewGroup): ContactReadPermissionRequestViewHolder {

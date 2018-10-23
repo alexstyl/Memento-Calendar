@@ -33,7 +33,7 @@ import com.alexstyl.specialdates.person.PersonActivity;
 import com.alexstyl.specialdates.person.PersonModule;
 import com.alexstyl.specialdates.search.SearchActivity;
 import com.alexstyl.specialdates.search.SearchModule;
-import com.alexstyl.specialdates.search.SearchToolbar;
+import com.alexstyl.specialdates.search.Searchbar;
 import com.alexstyl.specialdates.settings.DailyReminderFragment;
 import com.alexstyl.specialdates.settings.NamedayListPreference;
 import com.alexstyl.specialdates.settings.UserSettingsFragment;
@@ -151,5 +151,5 @@ public interface AppComponent {
 
     void inject(BootReceiver bootReceiver);
 
-    void inject(@NotNull SearchToolbar searchToolbar);
+    void inject(@NotNull Searchbar searchbar);
 }

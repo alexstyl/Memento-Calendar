@@ -76,7 +76,7 @@ class HomeActivity : ThemedMementoActivity(), DatePickerDialogFragment.OnDateSet
 
         val content = findViewById<LinearLayout>(R.id.home_content)
         val toolbarHolder = findViewById<FrameLayout>(R.id.home_toolbar_holder)
-        searchTransitioner = SearchTransitioner(this, navigator, content, toolbar, toolbarHolder, ViewFader())
+        searchTransitioner = SearchTransitioner(this, navigator, content, toolbar, toolbarHolder, ViewFader)
 
         setTitle(R.string.app_name)
 

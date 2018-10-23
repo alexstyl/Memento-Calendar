@@ -19,7 +19,7 @@ import com.alexstyl.specialdates.theming.DrawableTinter
 import com.novoda.notils.text.SimpleTextWatcher
 import javax.inject.Inject
 
-class SearchToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
+class Searchbar(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
 
     private lateinit var editText: BackKeyEditText
     private lateinit var navigationIcon: ImageButton

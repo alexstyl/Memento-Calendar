@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.alexstyl.specialdates.search.SearchToolbar
+    <com.alexstyl.specialdates.search.Searchbar
         android:id="@+id/search_searchbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_semi_expanded_height"

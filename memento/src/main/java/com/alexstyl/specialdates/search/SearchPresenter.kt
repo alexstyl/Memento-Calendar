@@ -54,9 +54,15 @@ class SearchPresenter(
                         if (query.isNotEmpty()) {
                             namedayCalendar
                                     .allNames
+                                    .asSequence()
                                     .filter { name ->
-                                        name.asNameStartsWith(query) && name.asNameNotEquals(query)
+                                        name.asNameStartsWith(query)
                                     }
+                                    .filterNot {
+                                        // we filter out the typed in name as there is no point into suggesting it again
+                                        comparator.compare(it, query)
+                                    }
+                                    .toList()
                         } else {
                             emptyList()
                         }
@@ -67,12 +73,11 @@ class SearchPresenter(
                         searchResultView.displayNameSuggestions(it)
                     }
 
-    private fun NamedaySearchResultViewModel.asList() =
-            if (namedays.dates.isNotEmpty()) {
-                listOf(this)
-            } else {
-                emptyList()
-            }
+    private fun NamedaySearchResultViewModel.asList() = if (namedays.isNotEmpty()) {
+        listOf(this)
+    } else {
+        emptyList()
+    }
 
 
     private fun contactSearch(query: String) =
@@ -88,13 +93,11 @@ class SearchPresenter(
                         }
                     }
 
-    private fun namedaySearch(searchResultView: String): Observable<NamedaySearchResultViewModel> {
+    private fun namedaySearch(query: String): Observable<NamedaySearchResultViewModel> {
         return if (namedayUserSettings.isEnabled) {
             Observable.fromCallable {
-                namedayCalendar.getAllNamedays(searchResultView)
-            }.map {
-                NamedaySearchResultViewModel(it)
-            }
+                namedayCalendar.getAllNamedays(query)
+            }.map { viewModelFactory.viewModelsFor(it) }
         } else {
             Observable.empty()
         }
@@ -113,8 +116,6 @@ class SearchPresenter(
 
 
     private fun String.asNameStartsWith(query: String) = comparator.startsWith(this, query)
-
-    private fun String.asNameNotEquals(query: String) = !comparator.compare(this, query)
 
     companion object {
         private const val DEBOUNCE_DURATION = 200L

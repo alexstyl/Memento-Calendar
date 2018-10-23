@@ -14,7 +14,6 @@ import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.ShortDateLabelCreator
 import com.alexstyl.specialdates.images.ImageDecoder
-import java.util.*
 
 class AndroidContactOperationsExecutor(
         private val contentResolver: ContentResolver,
@@ -29,9 +28,9 @@ class AndroidContactOperationsExecutor(
         val operationsFactory = makeFactoryFor(operations[0])
 
         try {
-            val contentProviderOperations = ArrayList(operations.fold(emptyList<ContentProviderOperation>(), { list, contactOperation ->
+            val contentProviderOperations = ArrayList(operations.fold(emptyList<ContentProviderOperation>()) { list, contactOperation ->
                 list + operationsFactory.createOperationsFor(contactOperation)
-            }))
+            })
             contentResolver.applyBatch(ContactsContract.AUTHORITY, contentProviderOperations)
             return true
         } catch (e: RemoteException) {
