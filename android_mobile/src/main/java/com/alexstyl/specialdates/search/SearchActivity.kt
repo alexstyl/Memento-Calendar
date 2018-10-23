@@ -1,9 +1,11 @@
 package com.alexstyl.specialdates.search
 
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
 import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.analytics.Analytics
@@ -18,6 +20,8 @@ import com.alexstyl.specialdates.ui.widget.SpacesItemDecoration
 import javax.inject.Inject
 import com.alexstyl.specialdates.ui.ViewFader
 import com.alexstyl.specialdates.ui.widget.HorizontalSpacesItemDecoration
+import com.alexstyl.specialdates.transition.FadeInTransition
+import android.view.ViewTreeObserver
 
 
 class SearchActivity : ThemedMementoActivity() {
@@ -28,6 +32,8 @@ class SearchActivity : ThemedMementoActivity() {
     @Inject lateinit var analytics: Analytics
     @Inject lateinit var namedayUserSettings: NamedayUserSettings
     @Inject lateinit var namedayCalendarProvider: NamedayCalendarProvider
+
+    private val fader = ViewFader()
 
     private lateinit var searchResultView: SearchResultView
     private val navigator by lazy {
@@ -58,7 +64,9 @@ class SearchActivity : ThemedMementoActivity() {
             searchbar.clearText()
         }
 
-//        val content = findViewById<ViewGroup>(R.id.search_content)
+        val content = findViewById<ViewGroup>(R.id.search_content)
+
+
         val resultView = findViewById<RecyclerView>(R.id.search_results).apply {
             layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
         }
@@ -87,6 +95,22 @@ class SearchActivity : ThemedMementoActivity() {
         } else {
             namesSuggestionsView.visibility = View.GONE
             searchResultView = AndroidSearchResultView(resultsAdapter, searchbar, null)
+        }
+
+        if (savedInstanceState == null) {
+            fader.hideContentOf(searchbar)
+            val viewTreeObserver = searchbar.viewTreeObserver
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    searchbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    animateShowSearch()
+                }
+
+                private fun animateShowSearch() {
+                    TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition())
+                    fader.showContent(searchbar)
+                }
+            })
         }
     }
 
