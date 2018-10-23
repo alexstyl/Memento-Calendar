@@ -2,7 +2,6 @@ package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.PhoneticComparator
 import com.alexstyl.specialdates.Strings
-import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.todaysDate

@@ -31,6 +31,7 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
         return when (viewModel) {
             is NamedaySearchResultViewModel -> VIEWTYPE_NAMEDAY
             is ContactSearchResultViewModel -> VIEWTYPE_CONTACT
+            is ContactReadPermissionRequestViewModel -> VIEWTYPE_PERMISSION
             else -> throw IllegalArgumentException("There is no assigned view type for ${viewModel.javaClass.simpleName}")
         }
     }
@@ -39,6 +40,7 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
             when (viewType) {
                 VIEWTYPE_CONTACT -> contactViewHolder(parent)
                 VIEWTYPE_NAMEDAY -> namedayViewHolder(parent)
+                VIEWTYPE_PERMISSION -> permissionRequestViewHolder(parent)
                 else -> throw IllegalStateException("There is no assigned view type for view type $viewType")
             }
 
@@ -52,23 +54,30 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
 
     private fun namedayViewHolder(parent: ViewGroup): SearchResultNamedayViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.card_nameday_single, parent, false)
+        val view = layoutInflater.inflate(R.layout.row_search_result_nameday, parent, false)
         val namedayView = view.findViewById(R.id.name_celebrating) as TextView
         val datesLayout = view.findViewById(R.id.dates) as LinearLayout
         return SearchResultNamedayViewHolder(view, namedayView, datesLayout, labelCreator)
+    }
+
+    private fun permissionRequestViewHolder(parent: ViewGroup): ContactReadPermissionRequestViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.row_search_result_permission_needed, parent, false)
+        return ContactReadPermissionRequestViewHolder(view)
     }
 
     override fun onBindViewHolder(vh: RecyclerView.ViewHolder, position: Int) {
         val type = getItemViewType(position)
         val viewModel = searchResults[position]
 
-        // TODO just bind nicey
+        // TODO just bind nicely
         when (type) {
             VIEWTYPE_CONTACT -> {
                 val viewHolder = vh as SearchResultContactViewHolder
                 viewHolder.bind(viewModel as ContactSearchResultViewModel, listener)
             }
             VIEWTYPE_NAMEDAY -> (vh as SearchResultNamedayViewHolder).bind(viewModel as NamedaySearchResultViewModel, listener)
+            VIEWTYPE_PERMISSION -> (vh as ContactReadPermissionRequestViewHolder).bind(listener)
             else -> throw IllegalStateException("Unhandled type $type")
         }
 
@@ -81,6 +90,7 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
     companion object {
         private const val VIEWTYPE_CONTACT = 0
         private const val VIEWTYPE_NAMEDAY = 1
+        private const val VIEWTYPE_PERMISSION = 2
     }
 
 }

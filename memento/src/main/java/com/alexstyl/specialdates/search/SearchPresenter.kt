@@ -78,7 +78,15 @@ class SearchPresenter(
     private fun contactSearch(query: String) =
             Observable.fromCallable {
                 peopleEventsSearch.searchForContacts(query)
-            }.map { viewModelFactory.viewModelsFor(it) }
+            }
+                    .map { viewModelFactory.viewModelsFor(it) }
+                    .onErrorReturn { e ->
+                        if (e is SecurityException) {
+                            listOf(viewModelFactory.contactPermissionViewModel())
+                        } else {
+                            throw e
+                        }
+                    }
 
     private fun namedaySearch(searchResultView: String): Observable<NamedaySearchResultViewModel> {
         return if (namedayUserSettings.isEnabled) {

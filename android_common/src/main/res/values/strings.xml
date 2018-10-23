@@ -237,4 +237,6 @@
     <string name="Opacity">Opacity</string>
     <string name="Apply">Apply</string>
     <string name="Like_the_app_Consider_donating">Like the app? Consider donating to support the development</string>
+    <string name="Search_through_your_devices_contacts">"Tap to let Memento search your device's contacts."</string>
+    <string name="Allow">Allow</string>
 </resources>

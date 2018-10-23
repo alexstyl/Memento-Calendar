@@ -6,4 +6,5 @@ import com.alexstyl.specialdates.date.Date
 interface SearchResultClickListener {
     fun onContactClicked(contact: Contact)
     fun onNamedayClicked(date: Date)
+    fun onContactReadPermissionClicked()
 }

@@ -21,6 +21,10 @@ class SearchResultDiffCallback(private val oldResults: List<SearchResultViewMode
             val new = newResults[newItemPosition] as NamedaySearchResultViewModel
             return old.name == new.name
         }
+
+        if (old is ContactReadPermissionRequestViewModel) {
+            return newResults[newItemPosition] is ContactReadPermissionRequestViewModel
+        }
         throw IllegalStateException("Cannot compare types of ${old::class.java}")
     }
 

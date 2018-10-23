@@ -79,6 +79,10 @@ class SearchActivity : ThemedMementoActivity() {
             override fun onNamedayClicked(date: Date) {
                 navigator.toNamedays(date)
             }
+
+            override fun onContactReadPermissionClicked() {
+                navigator.toContactPermission()
+            }
         })
         resultView.adapter = resultsAdapter
         resultView.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.search_result_vertical_padding)))
