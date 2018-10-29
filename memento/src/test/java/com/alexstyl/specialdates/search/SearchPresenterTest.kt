@@ -1,26 +1,27 @@
 package com.alexstyl.specialdates.search
 
 import com.alexstyl.specialdates.PhoneticComparator
+import com.alexstyl.specialdates.TestDateLabelCreator
 import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactSource
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.ContactsProviderSource
 import com.alexstyl.specialdates.contact.DisplayName
-import com.alexstyl.specialdates.date.Months.DECEMBER
-import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.schedulers.TestScheduler
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
 import org.mockito.Mockito.mock
 import org.mockito.internal.verification.Times
+import java.util.concurrent.TimeUnit
 
 class SearchPresenterTest {
 
@@ -33,63 +34,70 @@ class SearchPresenterTest {
     private val mockNamedayCalendarProvider = mock(NamedayCalendarProvider::class.java)
     private val mockView = mock(SearchResultView::class.java)
 
+
+    private val testScheduler = TestScheduler()
     @Before
     fun setUp() {
         presenter = SearchPresenter(
                 PeopleEventsSearch(ContactsProvider(mapOf(Pair(SOURCE_DEVICE, mockContactSource))), NameMatcher),
-                SearchResultsViewModelFactory(),
+                SearchResultsViewModelFactory(TestDateLabelCreator.forUS()),
                 mockNamedayUserSettings,
                 mockNamedayCalendarProvider,
                 PhoneticComparator(),
-                Schedulers.trampoline(),
+                testScheduler,
                 Schedulers.trampoline()
         )
-        given(mockView.searchQueryObservable()).willReturn(Observable.empty())
+        given(mockView.searchQueryObservable).willReturn(Observable.empty())
+        given(mockNamedayUserSettings.isEnabled).willReturn(false)
     }
 
-    @Ignore  // TODO
     @Test
     fun givenSubsequentTextChanges_thenOnlyTheLastOneGetsDelivered() {
         val searchQueryObservable = PublishSubject.create<String>()
-        given(mockView.searchQueryObservable()).willReturn(searchQueryObservable)
+        given(mockView.searchQueryObservable).willReturn(searchQueryObservable)
         given(mockContactSource.allContacts).willReturn(
                 listOf(
-                        ANY_CONTACT.copy(contactID = 0, displayName = DisplayName.from("text1")),
-                        ANY_CONTACT.copy(contactID = 1, displayName = DisplayName.from("text2")),
-                        ANY_CONTACT.copy(contactID = 2, displayName = DisplayName.from("text3")),
-                        ANY_CONTACT.copy(contactID = 3, displayName = DisplayName.from("text4")),
-                        ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5"))
+                        aContact.copy(contactID = 0, displayName = DisplayName.from("text1")),
+                        aContact.copy(contactID = 1, displayName = DisplayName.from("text2")),
+                        aContact.copy(contactID = 2, displayName = DisplayName.from("text3")),
+                        aContact.copy(contactID = 3, displayName = DisplayName.from("text4")),
+                        aContact.copy(contactID = 4, displayName = DisplayName.from("text5"))
                 ))
 
         presenter.presentInto(mockView)
+        testScheduler.triggerActions()
         searchQueryObservable.onNext("text5")
+        testScheduler.advanceTimeBy(200, TimeUnit.MILLISECONDS)
+
         verify(mockView, Times(1)).displaySearchResults(
                 listOf(ContactSearchResultViewModel(
-                        ANY_CONTACT.copy(contactID = 4, displayName = DisplayName.from("text5")),
+                        aContact.copy(contactID = 4, displayName = DisplayName.from("text5")),
                         "text5", "", 4)))
     }
 
-    @Ignore // TODO
     @Test
     fun givenASearchQuery_thenTheContactWithThatNameIsReturned() {
         val searchQueryObservable = PublishSubject.create<String>()
-        given(mockView.searchQueryObservable()).willReturn(searchQueryObservable)
-
-        val contact = ANY_CONTACT.copy(displayName = DisplayName.from("Alex"))
-
-        given(mockContactSource.allContacts).willReturn(listOf(contact))
+        given(mockView.searchQueryObservable).willReturn(searchQueryObservable)
+        given(mockContactSource.allContacts).willReturn(listOf(aContact.called("Alex")))
 
         presenter.presentInto(mockView)
-        searchQueryObservable.onNext("Alex")
+        testScheduler.triggerActions()
+        searchQueryObservable.onNext("Alex") // user typed "Alex"
+        testScheduler.advanceTimeBy(200, TimeUnit.MILLISECONDS)
 
         verify(mockView).displaySearchResults(
-                listOf(ContactSearchResultViewModel(ANY_CONTACT.copy(displayName = DisplayName.from("Alex")), "Alex", "", -1))
+                listOf(ContactSearchResultViewModel(aContact.copy(displayName = DisplayName.from("Alex")), "Alex", "", -1))
         )
     }
 
 
     companion object {
-        val ANY_DATE = dateOn(1, DECEMBER, 2017)
-        val ANY_CONTACT = Contact(-1, DisplayName.from(""), "", ContactSource.SOURCE_DEVICE)
+        val aContact = Contact(-1, DisplayName.from(""), "", ContactSource.SOURCE_DEVICE)
+    }
+
+    private fun Contact.called(name: String): Contact {
+        return copy(displayName = DisplayName.from(name))
     }
 }
+
