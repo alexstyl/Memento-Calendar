@@ -6,15 +6,11 @@ import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.TimePeriod
 
 interface PeopleEventsProvider {
-    fun fetchEventsOn(date: Date): ContactEventsOnADate
-
+    fun fetchEventsOn(date: Date): List<ContactEvent>
     fun fetchEventsBetween(timePeriod: TimePeriod): List<ContactEvent>
-
     fun fetchAllEventsInAYear(): List<ContactEvent> {
         return fetchEventsBetween(TimePeriod.aYearFromNow())
     }
-
     fun fetchEventsFor(contact: Contact): List<ContactEvent>
-
     fun findClosestEventDateOnOrAfter(date: Date): Date?
 }

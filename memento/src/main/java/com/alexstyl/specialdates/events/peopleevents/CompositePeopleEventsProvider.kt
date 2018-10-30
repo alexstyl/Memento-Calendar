@@ -9,10 +9,9 @@ import com.alexstyl.specialdates.date.TimePeriod
 class CompositePeopleEventsProvider(private var providers: List<PeopleEventsProvider>)
     : PeopleEventsProvider {
 
-    override fun fetchEventsOn(date: Date): ContactEventsOnADate {
-        val empty = ContactEventsOnADate.createFrom(date, emptyList())
+    override fun fetchEventsOn(date: Date): List<ContactEvent> {
 
-        return providers.fold(empty) { contactEvents, provider ->
+        return providers.fold(emptyList()) { contactEvents, provider ->
             contactEvents + provider.fetchEventsOn(date)
         }
     }

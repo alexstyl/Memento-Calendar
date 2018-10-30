@@ -37,18 +37,18 @@ class CompositePeopleEventsProviderTest {
         val date = dateOn(1, JANUARY, 2017)
         val expectedEvents = TestContactEventsBuilder().addAnniversaryFor(PETER, date).build()
 
-        given(mockDeviceEvents.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedEvents))
+        given(mockDeviceEvents.fetchEventsOn(date)).willReturn(expectedEvents)
         mockPeopleDynamicNamedaysProvider.willReturnNoEventsOn(date)
 
         val events = peopleEventsProvider.fetchEventsOn(date)
-        assertThat(events.events).containsOnly(expectedEvents[0])
+        assertThat(events).containsOnly(expectedEvents[0])
     }
 
     @Test
     fun whenOnlyNamedaysExist_willReturnsOnlyThoseEvents() {
         val theDate = dateOn(1, JANUARY, 2017)
 
-        val expectedEvents = ContactEventsOnADate.createFrom(theDate, TestContactEventsBuilder().addNamedayFor(PETER, theDate).build())
+        val expectedEvents = TestContactEventsBuilder().addNamedayFor(PETER, theDate).build()
         given(mockPeopleDynamicNamedaysProvider.fetchEventsOn(theDate)).willReturn(expectedEvents)
         mockDeviceEvents.willReturnNoEventsOn(theDate)
 
@@ -62,12 +62,12 @@ class CompositePeopleEventsProviderTest {
         val expectedDynamicEvents = TestContactEventsBuilder().addNamedayFor(PETER, date).build()
         val expectedStaticEvents = TestContactEventsBuilder().addAnniversaryFor(PETER, date).build()
 
-        given(mockPeopleDynamicNamedaysProvider.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedDynamicEvents))
-        given(mockDeviceEvents.fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, expectedStaticEvents))
+        given(mockPeopleDynamicNamedaysProvider.fetchEventsOn(date)).willReturn(expectedDynamicEvents)
+        given(mockDeviceEvents.fetchEventsOn(date)).willReturn(expectedStaticEvents)
 
         val events = peopleEventsProvider.fetchEventsOn(date)
-        assertThat(events.events).containsAll(expectedDynamicEvents)
-        assertThat(events.events).containsAll(expectedStaticEvents)
+        assertThat(events).containsAll(expectedDynamicEvents)
+        assertThat(events).containsAll(expectedStaticEvents)
     }
 
     @Test(expected = NoEventsFoundException::class)
@@ -86,18 +86,18 @@ class CompositePeopleEventsProviderTest {
         val aDate = dateOn(2, MARCH, 2017)
 
         given(mockDeviceEvents.findClosestEventDateOnOrAfter(aDate)).willReturn(null)
-        given(mockDeviceEvents.fetchEventsOn(aDate)).willReturn(ContactEventsOnADate.createFrom(aDate, emptyList()))
+        given(mockDeviceEvents.fetchEventsOn(aDate)).willReturn(emptyList())
 
         given(mockPeopleDynamicNamedaysProvider.findClosestEventDateOnOrAfter(aDate)).willReturn(aDate)
 
         val expectedEvents = TestContactEventsBuilder()
                 .addNamedayFor(PETER, aDate)
                 .build()
-        given(mockPeopleDynamicNamedaysProvider.fetchEventsOn(aDate)).willReturn(ContactEventsOnADate.createFrom(aDate, expectedEvents))
+        given(mockPeopleDynamicNamedaysProvider.fetchEventsOn(aDate)).willReturn(expectedEvents)
 
         val actualEvents = peopleEventsProvider.findClosestEventDateOnOrAfter(aDate)
         val events = peopleEventsProvider.fetchEventsOn(actualEvents!!)
-        assertThat(events).isEqualTo(ContactEventsOnADate.createFrom(aDate, expectedEvents))
+        assertThat(events).isEqualTo(expectedEvents)
     }
 
     companion object {
@@ -117,6 +117,6 @@ class CompositePeopleEventsProviderTest {
 
 
 private fun PeopleEventsProvider.willReturnNoEventsOn(date: Date) {
-    given(fetchEventsOn(date)).willReturn(ContactEventsOnADate.createFrom(date, emptyList()))
+    given(fetchEventsOn(date)).willReturn(emptyList())
     given(findClosestEventDateOnOrAfter(date)).willThrow(NoEventsFoundException::class.java)
 }

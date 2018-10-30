@@ -4,13 +4,13 @@ import com.alexstyl.specialdates.CrashAndErrorTracker
 import com.alexstyl.specialdates.Optional
 import com.alexstyl.specialdates.analytics.Analytics
 import com.alexstyl.specialdates.dailyreminder.log.DailyReminderLogger
+import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.bankholidays.BankHolidayProvider
 import com.alexstyl.specialdates.events.bankholidays.BankHolidaysUserSettings
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.NoNamesInADate
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate
 import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import io.reactivex.Observable
@@ -56,22 +56,22 @@ class DailyReminderPresenter(private var permissions: MementoPermissions,
     private fun contactEvents(date: Date) =
             Observable.fromCallable {
                 contactEventsOn(date)
-            }.map { eventsOnDate ->
+            }.map { events ->
                 val list = arrayListOf<ContactEventNotificationViewModel>()
-                val grouped = eventsOnDate.events.groupBy { it.contact }
+                val grouped = events.groupBy { it.contact }
 
                 grouped.keys.forEach { contact ->
-                    val events = grouped[contact]!!
-                    list.add(factory.viewModelFor(contact, events))
+                    val events2 = grouped[contact]!!
+                    list.add(factory.viewModelFor(contact, events2))
                 }
                 list.toList()
             }
 
-    private fun contactEventsOn(date: Date): ContactEventsOnADate {
+    private fun contactEventsOn(date: Date): List<ContactEvent> {
         return if (permissions.canReadContacts()) {
             peopleEventsProvider.fetchEventsOn(date)
         } else {
-            ContactEventsOnADate.createFrom(date, emptyList())
+            emptyList()
         }
     }
 

@@ -16,10 +16,7 @@ open class PeopleDynamicNamedaysProvider(
         private val contactsProvider: ContactsProvider)
     : PeopleEventsProvider {
 
-    override fun fetchEventsOn(date: Date): ContactEventsOnADate {
-        val contactEvents = fetchEventsBetween(TimePeriod.between(date, date))
-        return ContactEventsOnADate.createFrom(date, contactEvents)
-    }
+    override fun fetchEventsOn(date: Date): List<ContactEvent> = fetchEventsBetween(TimePeriod.between(date, date))
 
     override fun fetchEventsBetween(timePeriod: TimePeriod): List<ContactEvent> {
         if (!settings.isEnabled) {
