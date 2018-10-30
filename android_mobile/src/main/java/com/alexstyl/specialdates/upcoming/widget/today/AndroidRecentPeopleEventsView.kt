@@ -9,11 +9,11 @@ import android.widget.RemoteViews
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.Strings
 import com.alexstyl.specialdates.contact.Contact
+import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.date.todaysDate
-import com.alexstyl.specialdates.events.peopleevents.ContactEventsOnADate
 import com.alexstyl.specialdates.home.HomeActivity
 import com.alexstyl.specialdates.person.PersonActivity
 import com.alexstyl.specialdates.util.NaturalLanguageUtils
@@ -27,17 +27,18 @@ class AndroidRecentPeopleEventsView(private val context: Context,
                                     private val labelCreator: DateLabelCreator)
     : RecentPeopleEventsView {
 
-    override fun onNextDateLoaded(events: ContactEventsOnADate) {
-        val eventDate = events.date
+    // TODO pass viewmodels directly
+    override fun onNextDateLoaded(events: List<ContactEvent>) {
+        val eventDate = events[0].date
         val date = dateOn(eventDate.dayOfMonth, eventDate.month, todaysDate().year)
         val intent = HomeActivity.getStartIntent(context)
         intent.data = Uri.parse(date.hashCode().toString())
 
-        val contacts = events.contacts
+        val contacts = events.map { it.contact }
         val pendingIntent = pendingIntentFor(context, intent, contacts)
         val title = labelOf(date)
 
-        val label = NaturalLanguageUtils.joinContacts(strings, events.contacts, 2)
+        val label = NaturalLanguageUtils.joinContacts(strings, contacts, 2)
 
         val selectedVariant = preferences.selectedVariant
         val transparencyColorCalculator = TransparencyColorCalculator()
@@ -65,7 +66,7 @@ class AndroidRecentPeopleEventsView(private val context: Context,
             remoteViews.setOnClickPendingIntent(R.id.upcoming_widget_background, pendingIntent)
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 
-            widgetImageLoader.loadPicture(events.contacts, appWidgetId, remoteViews, avatarSizeInPx)
+            widgetImageLoader.loadPicture(contacts, appWidgetId, remoteViews, avatarSizeInPx)
         }
     }
 

@@ -29,9 +29,7 @@ class AndroidPeopleEventsProvider(private val eventSQLHelper: EventSQLiteOpenHel
                                   private val tracker: CrashAndErrorTracker,
                                   private val shortDateLabelCreator: ShortDateLabelCreator) : PeopleEventsProvider {
 
-    override fun fetchEventsOn(date: Date): ContactEventsOnADate {
-        return ContactEventsOnADate.createFrom(date, fetchEventsBetween(TimePeriod.between(date, date)))
-    }
+    override fun fetchEventsOn(date: Date) = fetchEventsBetween(TimePeriod.between(date, date))
 
     override fun fetchEventsBetween(timePeriod: TimePeriod): List<ContactEvent> {
         val cursor = queryEventsFor(timePeriod)
