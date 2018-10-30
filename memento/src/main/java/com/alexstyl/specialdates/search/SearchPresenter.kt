@@ -11,13 +11,14 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.plusAssign
 import java.util.concurrent.TimeUnit
 
-class SearchPresenter(private val peopleSearch: PeopleSearch,
-                      private val viewModelFactory: SearchResultsViewModelFactory,
-                      private val namedayUserSettings: NamedayUserSettings,
-                      private val calendarProvider: NamedayCalendarProvider,
-                      private val comparator: NameComparator,
-                      private val workScheduler: Scheduler,
-                      private val resultScheduler: Scheduler) {
+class SearchPresenter(
+        private val peopleSearch: PeopleSearch,
+        private val viewModelFactory: SearchResultsViewModelFactory,
+        private val namedayUserSettings: NamedayUserSettings,
+        private val calendarProvider: NamedayCalendarProvider,
+        private val comparator: NameComparator,
+        private val workScheduler: Scheduler,
+        private val resultScheduler: Scheduler) {
 
     private var composite = CompositeDisposable()
 
@@ -32,9 +33,11 @@ class SearchPresenter(private val peopleSearch: PeopleSearch,
             searchResultView
                     .searchQueryObservable
                     .debounce(DEBOUNCE_DURATION, TimeUnit.MILLISECONDS, workScheduler)
+                    .map {
+                        InputSanitizer.removeNonAlphaNumericFrom(it)
+                    }
                     .switchMap { query ->
                         if (namedayUserSettings.isEnabled) {
-                            // TODO figure out a way to return no results
                             Observable.zip(
                                     contactSearch(query),
                                     namedaySearch(query),
@@ -46,6 +49,7 @@ class SearchPresenter(private val peopleSearch: PeopleSearch,
                             contactSearch(query)
                         }
                     }
+
                     .subscribeOn(workScheduler)
                     .observeOn(resultScheduler)
                     .subscribe {
@@ -81,18 +85,19 @@ class SearchPresenter(private val peopleSearch: PeopleSearch,
     }
 
 
-    private fun contactSearch(query: String) =
-            peopleSearch.searchForContacts(query)
-                    .map {
-                        viewModelFactory.viewModelsFor(it)
+    private fun contactSearch(query: String): Observable<List<SearchResultViewModel>> {
+        return peopleSearch.searchForContacts(query)
+                .map {
+                    viewModelFactory.viewModelsFor(it)
+                }
+                .onErrorReturn { e ->
+                    if (e is SecurityException) {
+                        listOf(viewModelFactory.contactPermissionViewModel())
+                    } else {
+                        throw e
                     }
-                    .onErrorReturn { e ->
-                        if (e is SecurityException) {
-                            listOf(viewModelFactory.contactPermissionViewModel())
-                        } else {
-                            throw e
-                        }
-                    }
+                }
+    }
 
     private fun namedaySearch(query: String): Observable<NamedaySearchResultViewModel> {
         return if (namedayUserSettings.isEnabled) {

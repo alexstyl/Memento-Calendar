@@ -1,16 +1,11 @@
 package com.alexstyl.specialdates.search
 
+import com.alexstyl.specialdates.PhoneticComparator
 import com.alexstyl.specialdates.contact.DisplayName
-import java.text.Collator
-import java.util.Locale
 
 object NameMatcher {
 
-    private val collator: Collator = Collator.getInstance(Locale.getDefault())
-
-    init {
-        collator.strength = Collator.PRIMARY
-    }
+    private val collator = PhoneticComparator()
 
     fun match(displayName: DisplayName, searchQuery: String): Boolean {
         return oneOfTheNamesMatchesQuery(displayName, searchQuery) || searchQueryIsPartOfFullName(displayName, searchQuery)
@@ -50,7 +45,7 @@ object NameMatcher {
     }
 
     private fun areEqual(displayName: String, worthCheckingPart: String): Boolean {
-        return !(displayName.isEmpty() || worthCheckingPart.isEmpty()) && collator.compare(worthCheckingPart, displayName) == 0
+        return !(displayName.isEmpty() || worthCheckingPart.isEmpty()) && collator.compare(worthCheckingPart, displayName)
     }
 
 }

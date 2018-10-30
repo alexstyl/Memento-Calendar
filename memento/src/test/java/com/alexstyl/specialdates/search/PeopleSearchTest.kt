@@ -1,9 +1,11 @@
 package com.alexstyl.specialdates.search
 
+import com.alexstyl.specialdates.contact.Contact
 import com.alexstyl.specialdates.contact.ContactFixture
 import com.alexstyl.specialdates.contact.ContactSource.SOURCE_DEVICE
 import com.alexstyl.specialdates.contact.ContactsProvider
 import com.alexstyl.specialdates.contact.ContactsProviderSource
+import com.alexstyl.specialdates.contact.DisplayName
 import com.alexstyl.specialdates.date.ContactEvent
 import com.alexstyl.specialdates.date.Months.JANUARY
 import com.alexstyl.specialdates.date.dateOn
@@ -32,8 +34,17 @@ class PeopleSearchTest {
                 listOf(
                         ContactEvent(StandardEventType.BIRTHDAY, aDate, ALEX_STYL, null),
                         ContactEvent(StandardEventType.BIRTHDAY, aDate, MARIA_PAPADOPOULOU, null),
-                        ContactEvent(StandardEventType.BIRTHDAY, aDate, MIMOZA, null)
+                        ContactEvent(StandardEventType.BIRTHDAY, aDate, MIMOZA, null),
+                        ContactEvent(StandardEventType.BIRTHDAY, aDate, Contact(5, DisplayName.from("Αλέξανδρος Χρονόπουλος"), "", 5), null)
+
                 ))
+    }
+
+    @Test
+    fun name() {
+        val actual = search.searchForContacts("A").blockingFirst()
+        assertThat(actual).contains(Contact(5, DisplayName.from("Αλέξανδρος Χρονόπουλος"), "", 5))
+
     }
 
     @Test
@@ -63,7 +74,7 @@ class PeopleSearchTest {
 
         assertThat(actual).containsAll(listOf(MIMOZA, MARIA_PAPADOPOULOU))
     }
-    
+
     companion object {
         private val ALEX_STYL = ContactFixture.aContactCalled("Alex Styl")
         private val MARIA_PAPADOPOULOU = ContactFixture.aContactCalled("Maria Papadopoulou")

@@ -15,9 +15,12 @@ data class DisplayName(private val displayName: String,
 
     companion object {
 
+        private val emptyName = DisplayName("", emptyList(), emptyList(), "")
+
         fun from(displayName: String?): DisplayName {
+            // TODO ignore everything but letters & chars and move on...
             if (displayName == null || displayName.isEmpty()) {
-                return DisplayName("", emptyList(), emptyList(), "")
+                return emptyName
             }
             val allNames = displayName.split(delimiters = *arrayOf(" ", "-"), ignoreCase = true)
             val firstNames = if (allNames.size == 1) {
@@ -25,7 +28,6 @@ data class DisplayName(private val displayName: String,
             } else {
                 allNames.subList(0, allNames.size - 1)
             }
-
 
             val lastName = if (allNames.size > 1) {
                 allNames[allNames.size - 1]
