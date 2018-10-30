@@ -11,6 +11,7 @@ interface PeopleEventsProvider {
     fun fetchAllEventsInAYear(): List<ContactEvent> {
         return fetchEventsBetween(TimePeriod.aYearFromNow())
     }
+
     fun fetchEventsFor(contact: Contact): List<ContactEvent>
     fun findClosestEventDateOnOrAfter(date: Date): Date?
 }

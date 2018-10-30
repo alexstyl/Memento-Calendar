@@ -6,7 +6,7 @@ import com.alexstyl.specialdates.events.namedays.NameCelebrations
 
 class SearchResultsViewModelFactory(private val labelCreator: DateLabelCreator) {
 
-    fun viewModelsFor(contacts: List<Contact>): List<SearchResultViewModel> = contacts.map {
+    fun viewModelsFor(contacts: Collection<Contact>): List<SearchResultViewModel> = contacts.map {
         ContactSearchResultViewModel(it, it.displayName.toString(), it.imagePath, it.backgroundVariant())
     }
 

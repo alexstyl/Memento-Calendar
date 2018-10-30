@@ -7,6 +7,7 @@ import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
+import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 
 import dagger.Module
 import dagger.Provides
@@ -17,11 +18,11 @@ import io.reactivex.schedulers.Schedulers
 class SearchModule {
 
     @Provides
-    fun presenter(peopleEventsSearch: PeopleEventsSearch,
+    fun presenter(peopleSearch: PeopleSearch,
                   viewModelFactory: SearchResultsViewModelFactory,
                   namedayUserSettings: NamedayUserSettings,
                   calendarProvider: NamedayCalendarProvider): SearchPresenter {
-        return SearchPresenter(peopleEventsSearch,
+        return SearchPresenter(peopleSearch,
                 viewModelFactory,
                 namedayUserSettings,
                 calendarProvider,
@@ -31,8 +32,8 @@ class SearchModule {
     }
 
     @Provides
-    fun peopleEventsSearch(contactsProvider: ContactsProvider): PeopleEventsSearch {
-        return PeopleEventsSearch(contactsProvider, NameMatcher)
+    fun peopleEventsSearch(contactsProvider: PeopleEventsProvider): PeopleSearch {
+        return PeopleSearch(contactsProvider, NameMatcher)
     }
 
     @Provides

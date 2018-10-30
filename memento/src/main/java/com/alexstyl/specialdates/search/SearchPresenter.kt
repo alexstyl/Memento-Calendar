@@ -11,7 +11,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.plusAssign
 import java.util.concurrent.TimeUnit
 
-class SearchPresenter(private val peopleEventsSearch: PeopleEventsSearch,
+class SearchPresenter(private val peopleSearch: PeopleSearch,
                       private val viewModelFactory: SearchResultsViewModelFactory,
                       private val namedayUserSettings: NamedayUserSettings,
                       private val calendarProvider: NamedayCalendarProvider,
@@ -23,9 +23,9 @@ class SearchPresenter(private val peopleEventsSearch: PeopleEventsSearch,
 
     fun presentInto(searchResultView: SearchResultView) {
         composite += subscribeToSearchResults(searchResultView)
-//        if (namedayUserSettings.isEnabled) {
-//            composite += subscribeToNameSuggestions(searchResultView)
-//        }
+        if (namedayUserSettings.isEnabled) {
+            composite += subscribeToNameSuggestions(searchResultView)
+        }
     }
 
     private fun subscribeToSearchResults(searchResultView: SearchResultView) =
@@ -82,10 +82,10 @@ class SearchPresenter(private val peopleEventsSearch: PeopleEventsSearch,
 
 
     private fun contactSearch(query: String) =
-            Observable.fromCallable {
-                peopleEventsSearch.searchForContacts(query)
-            }
-                    .map { viewModelFactory.viewModelsFor(it) }
+            peopleSearch.searchForContacts(query)
+                    .map {
+                        viewModelFactory.viewModelsFor(it)
+                    }
                     .onErrorReturn { e ->
                         if (e is SecurityException) {
                             listOf(viewModelFactory.contactPermissionViewModel())
