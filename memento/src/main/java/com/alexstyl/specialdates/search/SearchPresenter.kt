@@ -4,6 +4,7 @@ import com.alexstyl.specialdates.NameComparator
 import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.events.namedays.NamedayUserSettings
 import com.alexstyl.specialdates.events.namedays.calendar.resource.NamedayCalendarProvider
+import com.alexstyl.specialdates.search.SearchResultViewModel.NamedaySearchResultViewModel
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable

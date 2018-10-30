@@ -7,24 +7,21 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.alexstyl.specialdates.R
-import com.alexstyl.specialdates.date.DateLabelCreator
 import com.alexstyl.specialdates.images.ImageLoader
+import com.alexstyl.specialdates.search.SearchResultViewHolder.ContactReadPermissionRequestViewHolder
+import com.alexstyl.specialdates.search.SearchResultViewHolder.SearchResultContactViewHolder
+import com.alexstyl.specialdates.search.SearchResultViewHolder.SearchResultNamedayViewHolder
+import com.alexstyl.specialdates.search.SearchResultViewModel.ContactReadPermissionRequestViewModel
+import com.alexstyl.specialdates.search.SearchResultViewModel.ContactSearchResultViewModel
+import com.alexstyl.specialdates.search.SearchResultViewModel.NamedaySearchResultViewModel
 import com.alexstyl.specialdates.ui.widget.ColorImageView
+import java.lang.IllegalStateException
 
 class SearchResultsAdapter(private val imageLoader: ImageLoader,
-                           private val labelCreator: DateLabelCreator,
                            private val listener: SearchResultClickListener)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    : RecyclerView.Adapter<SearchResultViewHolder<SearchResultViewModel>>() {
 
     private val searchResults = mutableListOf<SearchResultViewModel>()
-
-    internal fun displaySearchResults(searchResults: List<SearchResultViewModel>) {
-        val diffCallback = SearchResultDiffCallback(this.searchResults, searchResults)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.searchResults.clear()
-        this.searchResults.addAll(searchResults)
-        diffResult.dispatchUpdatesTo(this)
-    }
 
     override fun getItemViewType(position: Int): Int {
         val viewModel = searchResults[position]
@@ -32,59 +29,54 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
             is NamedaySearchResultViewModel -> VIEWTYPE_NAMEDAY
             is ContactSearchResultViewModel -> VIEWTYPE_CONTACT
             is ContactReadPermissionRequestViewModel -> VIEWTYPE_PERMISSION
-            else -> throw IllegalArgumentException("There is no assigned view type for ${viewModel.javaClass.simpleName}")
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            when (viewType) {
-                VIEWTYPE_CONTACT -> contactViewHolder(parent)
-                VIEWTYPE_NAMEDAY -> namedayViewHolder(parent)
-                VIEWTYPE_PERMISSION -> permissionRequestViewHolder(parent)
-                else -> throw IllegalStateException("There is no assigned view type for view type $viewType")
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder<SearchResultViewModel> = when (viewType) {
+        VIEWTYPE_CONTACT -> contactViewHolder(parent)
+        VIEWTYPE_NAMEDAY -> namedayViewHolder(parent)
+        VIEWTYPE_PERMISSION -> permissionRequestViewHolder(parent)
+        else -> {
+            throw IllegalStateException("Cannot create ViewHolder for viewType [$parent]")
+        }
+    }
 
-    private fun contactViewHolder(parent: ViewGroup): SearchResultContactViewHolder {
+    private fun contactViewHolder(parent: ViewGroup): SearchResultViewHolder<SearchResultViewModel> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.row_search_result_contact_event, parent, false)
         val nameView = view.findViewById(R.id.search_result_contact_name) as TextView
         val avatarView = view.findViewById(R.id.search_result_avatar) as ColorImageView
-        return SearchResultContactViewHolder(view, avatarView, nameView, imageLoader)
+        return SearchResultContactViewHolder(view, avatarView, nameView, imageLoader) as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
     }
 
-    private fun namedayViewHolder(parent: ViewGroup): SearchResultNamedayViewHolder {
+    private fun namedayViewHolder(parent: ViewGroup): SearchResultViewHolder<SearchResultViewModel> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.row_search_result_nameday, parent, false)
         val namedayView = view.findViewById(R.id.name_celebrating) as TextView
         val datesLayout = view.findViewById(R.id.dates) as LinearLayout
-        return SearchResultNamedayViewHolder(view, namedayView, datesLayout)
+        return SearchResultNamedayViewHolder(view, namedayView, datesLayout) as SearchResultViewHolder<SearchResultViewModel>// <- TODO how to get rid of this?
     }
 
-    private fun permissionRequestViewHolder(parent: ViewGroup): ContactReadPermissionRequestViewHolder {
+    private fun permissionRequestViewHolder(parent: ViewGroup): SearchResultViewHolder<SearchResultViewModel> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.row_search_result_permission_needed, parent, false)
-        return ContactReadPermissionRequestViewHolder(view)
+        return ContactReadPermissionRequestViewHolder(view) as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
     }
 
-    override fun onBindViewHolder(vh: RecyclerView.ViewHolder, position: Int) {
-        val type = getItemViewType(position)
+
+    override fun onBindViewHolder(holder: SearchResultViewHolder<SearchResultViewModel>, position: Int) {
         val viewModel = searchResults[position]
-
-        // TODO just bind nicely
-        when (type) {
-            VIEWTYPE_CONTACT -> {
-                val viewHolder = vh as SearchResultContactViewHolder
-                viewHolder.bind(viewModel as ContactSearchResultViewModel, listener)
-            }
-            VIEWTYPE_NAMEDAY -> (vh as SearchResultNamedayViewHolder).bind(viewModel as NamedaySearchResultViewModel, listener)
-            VIEWTYPE_PERMISSION -> (vh as ContactReadPermissionRequestViewHolder).bind(listener)
-            else -> throw IllegalStateException("Unhandled type $type")
-        }
-
+        holder.bind(viewModel, listener)
     }
 
-    override fun getItemCount(): Int {
-        return searchResults.size
+    override fun getItemCount() = searchResults.size
+
+    fun displaySearchResults(searchResults: List<SearchResultViewModel>) {
+        val diffCallback = SearchResultDiffCallback(this.searchResults, searchResults)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.searchResults.clear()
+        this.searchResults.addAll(searchResults)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     companion object {

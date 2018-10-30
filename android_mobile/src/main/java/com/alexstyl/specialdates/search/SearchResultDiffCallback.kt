@@ -1,6 +1,9 @@
 package com.alexstyl.specialdates.search
 
 import android.support.v7.util.DiffUtil
+import com.alexstyl.specialdates.search.SearchResultViewModel.ContactReadPermissionRequestViewModel
+import com.alexstyl.specialdates.search.SearchResultViewModel.ContactSearchResultViewModel
+import com.alexstyl.specialdates.search.SearchResultViewModel.NamedaySearchResultViewModel
 import java.lang.IllegalStateException
 
 class SearchResultDiffCallback(private val oldResults: List<SearchResultViewModel>,

@@ -66,7 +66,7 @@ class SearchActivity : ThemedMementoActivity() {
         searchbar.setOnClearButtonPressed {
             searchbar.clearText()
         }
-        val resultsAdapter = SearchResultsAdapter(imageLoader, labelCreator, object : SearchResultClickListener {
+        val resultsAdapter = SearchResultsAdapter(imageLoader, object : SearchResultClickListener {
             override fun onContactClicked(contact: Contact) {
                 navigator.toContactDetails(contact)
             }

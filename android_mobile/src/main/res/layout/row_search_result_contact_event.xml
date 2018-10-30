@@ -24,7 +24,7 @@
         android:layout_marginLeft="30dp"
         android:textColor="@color/black_light"
         tools:ignore="RtlHardcoded"
-        tools:text="Hello FriendArin" />
+        tools:text="@tools:sample/full_names" />
 
 </com.alexstyl.specialdates.ui.widget.ForegroundLinearLayout>
 
