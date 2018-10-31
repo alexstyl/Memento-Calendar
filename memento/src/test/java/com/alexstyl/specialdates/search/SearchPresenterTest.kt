@@ -72,7 +72,7 @@ class SearchPresenterTest {
 
         verify(mockView, Times(1)).displaySearchResults(
                 listOf(
-                        ContactSearchResultViewModel(aContact.copy(contactID = 4, displayName = DisplayName.from("text5")), "text5", "", 4)))
+                        SearchResultViewModel.ContactSearchResultViewModel(aContact.copy(contactID = 4, displayName = DisplayName.from("text5")), "text5", "", 4)))
     }
 
     @Test
@@ -87,7 +87,7 @@ class SearchPresenterTest {
         testScheduler.advanceTimeBy(200, TimeUnit.MILLISECONDS)
 
         verify(mockView).displaySearchResults(
-                listOf(ContactSearchResultViewModel(aContact.copy(displayName = DisplayName.from("Alex")), "Alex", "", -1))
+                listOf(SearchResultViewModel.ContactSearchResultViewModel(aContact.copy(displayName = DisplayName.from("Alex")), "Alex", "", -1))
         )
     }
 

@@ -14,6 +14,7 @@ import com.alexstyl.specialdates.events.peopleevents.PeopleEventsProvider
 import com.alexstyl.specialdates.events.peopleevents.StandardEventType
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -32,53 +33,42 @@ class PeopleSearchTest {
         search = PeopleSearch(mockContactSource, NameMatcher)
         given(mockContactSource.fetchAllEventsInAYear()).willReturn(
                 listOf(
-                        ContactEvent(StandardEventType.BIRTHDAY, aDate, ALEX_STYL, null),
-                        ContactEvent(StandardEventType.BIRTHDAY, aDate, MARIA_PAPADOPOULOU, null),
-                        ContactEvent(StandardEventType.BIRTHDAY, aDate, MIMOZA, null),
-                        ContactEvent(StandardEventType.BIRTHDAY, aDate, Contact(5, DisplayName.from("Αλέξανδρος Χρονόπουλος"), "", 5), null)
-
+                        ContactEvent(StandardEventType.BIRTHDAY, aDate, aContact.copy(displayName = DisplayName.from("Alex Styl"))),
+                        ContactEvent(StandardEventType.BIRTHDAY, aDate, aContact.copy(displayName = DisplayName.from("Maria Papadopoulou")), null),
+                        ContactEvent(StandardEventType.BIRTHDAY, aDate, aContact.copy(displayName = DisplayName.from("Mimoza Dereks")), null)
                 ))
-    }
-
-    @Test
-    fun name() {
-        val actual = search.searchForContacts("A").blockingFirst()
-        assertThat(actual).contains(Contact(5, DisplayName.from("Αλέξανδρος Χρονόπουλος"), "", 5))
-
     }
 
     @Test
     fun searchingByFirstLetter() {
         val actual = search.searchForContacts("A").blockingFirst()
 
-        assertThat(actual).containsOnly(ALEX_STYL)
+        assertThat(actual).containsOnly(aContact.copy(displayName = DisplayName.from("Alex Styl")))
     }
 
     @Test
     fun searchingByLastLetter() {
         val actual = search.searchForContacts("S").blockingFirst()
 
-        assertThat(actual).containsOnly(ALEX_STYL)
+        assertThat(actual).containsOnly(aContact.copy(displayName = DisplayName.from("Alex Styl")))
     }
 
     @Test
     fun searchingByFullName() {
         val actual = search.searchForContacts("Alex Styl").blockingFirst()
 
-        assertThat(actual).containsOnly(ALEX_STYL)
+        assertThat(actual).containsOnly(aContact.copy(displayName = DisplayName.from("Alex Styl")))
     }
 
     @Test
     fun multipleResults() {
         val actual = search.searchForContacts("M").blockingFirst()
 
-        assertThat(actual).containsAll(listOf(MIMOZA, MARIA_PAPADOPOULOU))
+        assertThat(actual).containsAll(listOf(aContact.copy(displayName = DisplayName.from("Maria Papadopoulou")), aContact.copy(displayName = DisplayName.from("Mimoza Dereks"))))
     }
 
     companion object {
-        private val ALEX_STYL = ContactFixture.aContactCalled("Alex Styl")
-        private val MARIA_PAPADOPOULOU = ContactFixture.aContactCalled("Maria Papadopoulou")
-        private val MIMOZA = ContactFixture.aContactCalled("Mimoza Dereks")
+        private val aContact = Contact(0, DisplayName.from("A contact"), "", 0)
         private val aDate = dateOn(1, JANUARY, 2018)
     }
 }
