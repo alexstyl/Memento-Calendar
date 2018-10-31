@@ -52,7 +52,12 @@ open class PeopleFragment : MementoFragment(), UpcomingEventsView {
         val recyclerView = inflate.findViewById(R.id.people_list) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(PeopleItemDecorator(resources.getDimensionPixelSize(R.dimen.people_import_bottom_spacing), resources.getDimensionPixelSize(R.dimen.people_inbetween_spacing)))
+        recyclerView.addItemDecoration(
+                PeopleItemDecorator(
+                        resources.getDimensionPixelSize(R.dimen.people_import_bottom_spacing),
+                        resources.getDimensionPixelSize(R.dimen.people_inbetween_spacing)
+                )
+        )
 
         val loadingView = inflate.findViewById(R.id.people_loading) as ProgressBar
         mvpView = AndroidPeopleView(adapter, recyclerView, loadingView)

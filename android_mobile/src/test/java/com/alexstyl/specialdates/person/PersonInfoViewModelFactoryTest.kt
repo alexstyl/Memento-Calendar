@@ -18,40 +18,40 @@ import org.mockito.runners.MockitoJUnitRunner
 class PersonInfoViewModelFactoryTest {
 
     private val strings = JavaStrings()
-    private val toViewModel = PersonDetailsViewModelFactory(strings, AgeCalculator(dateOn(30, JULY, 2017)));
+    private val toViewModel = PersonDetailsViewModelFactory(strings, AgeCalculator(dateOn(30, JULY, 2017)))
 
     @Test
     fun whenPassingAContact_thenAlwaysReturnItsName() {
-        var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), null, true)
+        val resultViewModel = toViewModel(aContactCalled("Anna Roberts"), null, true)
         assertThat(resultViewModel.displayName).isEqualTo("Anna Roberts")
     }
 
     @Test
     fun whenPassingNoContactEvent_thenAgeAndStarSignIsEmptyString() {
-        var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), null, true)
+        val resultViewModel = toViewModel(aContactCalled("Anna Roberts"), null, true)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("")
     }
 
     @Test
     fun whenPassingABirthdayWithoutYear_thenAgeAndStarSignContainsOnlyStarSign() {
         val dateOfBirth = dateOn(1, JANUARY)
-        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"), Optional.absent())
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"))
 
-        var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
+        val resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("Capricorn ♑")
     }
 
     @Test
     fun whenPassingABirthdayWithYear_thenAgeAndStarSignContainsBothAgeAndStarSign() {
         val dateOfBirth = dateOn(1, JANUARY, 1990)
-        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"), Optional.absent())
+        val contactEvent = ContactEvent(StandardEventType.BIRTHDAY, dateOfBirth, aContactCalled("Anna Roberts"))
 
-        var resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
+        val resultViewModel = toViewModel(aContactCalled("Anna Roberts"), contactEvent, true)
         assertThat(resultViewModel.ageAndStarSignlabel).isEqualTo("27, Capricorn ♑")
     }
 
 
-    fun aContactCalled(peter: String): Contact {
+    private fun aContactCalled(peter: String): Contact {
         return Contact(-1, DisplayName.from(peter), "https://www.alexstyl.com/image.jpg", 1)
     }
 

@@ -13,9 +13,8 @@ class BackKeyEditText(context: Context, attrs: AttributeSet) : android.support.v
         this.listener = listener
     }
 
-    override fun onKeyPreIme(keyCode: Int, event: KeyEvent): Boolean {
-        return if (keyCode == KeyEvent.KEYCODE_BACK && listener?.onBackButtonPressed() == true) {
-            true
-        } else super.onKeyPreIme(keyCode, event)
-    }
+    override fun onKeyPreIme(keyCode: Int, event: KeyEvent): Boolean =
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                listener?.onBackButtonPressed() ?: false
+            } else super.onKeyPreIme(keyCode, event)
 }

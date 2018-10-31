@@ -3,7 +3,7 @@ failFast: false
 
 build:
   warningThreshold: 0
-  failThreshold: 26
+  failThreshold: 21
 
   weights:
     complexity: 2

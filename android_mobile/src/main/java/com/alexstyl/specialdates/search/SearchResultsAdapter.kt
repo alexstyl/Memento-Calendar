@@ -46,7 +46,8 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
         val view = layoutInflater.inflate(R.layout.row_search_result_contact_event, parent, false)
         val nameView = view.findViewById(R.id.search_result_contact_name) as TextView
         val avatarView = view.findViewById(R.id.search_result_avatar) as ColorImageView
-        return SearchResultContactViewHolder(view, avatarView, nameView, imageLoader) as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
+        return SearchResultContactViewHolder(view, avatarView, nameView, imageLoader)
+                as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
     }
 
     private fun namedayViewHolder(parent: ViewGroup): SearchResultViewHolder<SearchResultViewModel> {
@@ -54,13 +55,15 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
         val view = layoutInflater.inflate(R.layout.row_search_result_nameday, parent, false)
         val namedayView = view.findViewById(R.id.name_celebrating) as TextView
         val datesLayout = view.findViewById(R.id.dates) as LinearLayout
-        return SearchResultNamedayViewHolder(view, namedayView, datesLayout) as SearchResultViewHolder<SearchResultViewModel>// <- TODO how to get rid of this?
+        return SearchResultNamedayViewHolder(view, namedayView, datesLayout)
+                as SearchResultViewHolder<SearchResultViewModel>// <- TODO how to get rid of this?
     }
 
     private fun permissionRequestViewHolder(parent: ViewGroup): SearchResultViewHolder<SearchResultViewModel> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.row_search_result_permission_needed, parent, false)
-        return ContactReadPermissionRequestViewHolder(view) as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
+        return ContactReadPermissionRequestViewHolder(view)
+                as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
     }
 
     override fun onBindViewHolder(holder: SearchResultViewHolder<SearchResultViewModel>, position: Int) {

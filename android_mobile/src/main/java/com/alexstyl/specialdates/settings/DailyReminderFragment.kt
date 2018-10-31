@@ -19,13 +19,12 @@ import com.alexstyl.specialdates.MementoApplication
 import com.alexstyl.specialdates.R
 import com.alexstyl.specialdates.TimeOfDay
 import com.alexstyl.specialdates.analytics.Analytics
-import com.alexstyl.specialdates.dailyreminder.DailyReminderOreoChannelCreator
 import com.alexstyl.specialdates.dailyreminder.DailyReminderScheduler
 import com.alexstyl.specialdates.dailyreminder.DailyReminderUserSettings
 import com.alexstyl.specialdates.permissions.MementoPermissions
 import com.alexstyl.specialdates.ui.base.MementoPreferenceFragment
 import java.net.URI
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 class DailyReminderFragment : MementoPreferenceFragment() {
@@ -41,7 +40,6 @@ class DailyReminderFragment : MementoPreferenceFragment() {
     @Inject lateinit var tracker: CrashAndErrorTracker
     @Inject lateinit var preferences: DailyReminderUserSettings
     @Inject lateinit var navigator: DailyReminderNavigator
-    @Inject lateinit var channelCreator: DailyReminderOreoChannelCreator
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

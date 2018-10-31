@@ -88,7 +88,9 @@ class SearchActivity : ThemedMementoActivity() {
                 searchbar.setText(name)
             }
             namesSuggestionsView.adapter = namesAdapter
-            namesSuggestionsView.addItemDecoration(HorizontalSpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.search_nameday_results_vertical_padding)))
+            namesSuggestionsView.addItemDecoration(HorizontalSpacesItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.search_nameday_results_vertical_padding))
+            )
             searchResultView = AndroidSearchResultView(resultsAdapter, searchbar, namesAdapter)
         } else {
             namesSuggestionsView.visibility = View.GONE

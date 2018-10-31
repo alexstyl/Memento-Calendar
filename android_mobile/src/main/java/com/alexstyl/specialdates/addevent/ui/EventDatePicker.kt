@@ -14,7 +14,7 @@ import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.date.todaysDate
 import com.alexstyl.specialdates.upcoming.MonthLabels
 import com.novoda.notils.caster.Views
-import java.util.*
+import java.util.Locale
 
 class EventDatePicker(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
