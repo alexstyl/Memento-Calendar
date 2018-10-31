@@ -63,7 +63,6 @@ class SearchResultsAdapter(private val imageLoader: ImageLoader,
         return ContactReadPermissionRequestViewHolder(view) as SearchResultViewHolder<SearchResultViewModel> // <- TODO how to get rid of this?
     }
 
-
     override fun onBindViewHolder(holder: SearchResultViewHolder<SearchResultViewModel>, position: Int) {
         val viewModel = searchResults[position]
         holder.bind(viewModel, listener)

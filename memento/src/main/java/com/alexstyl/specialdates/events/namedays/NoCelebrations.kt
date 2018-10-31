@@ -2,7 +2,7 @@ package com.alexstyl.specialdates.events.namedays
 
 import com.alexstyl.specialdates.date.Date
 
-data class NoNameCelebrations(override val name: String) : NameCelebrations {
+data class NoCelebrations(override val name: String) : NameCelebrations {
     override val dates: List<Date>
         get() = emptyList()
 

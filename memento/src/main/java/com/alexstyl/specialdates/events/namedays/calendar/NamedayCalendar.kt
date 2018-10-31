@@ -1,6 +1,7 @@
 package com.alexstyl.specialdates.events.namedays.calendar
 
 import com.alexstyl.specialdates.date.Date
+import com.alexstyl.specialdates.events.namedays.ImmutableNameCelebrations
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
 import com.alexstyl.specialdates.events.namedays.NamedayLocale
 import com.alexstyl.specialdates.events.namedays.Namedays
@@ -33,3 +34,15 @@ open class NamedayCalendar(val locale: NamedayLocale,
         return names + specialNames
     }
 }
+
+private operator fun NameCelebrations.plus(other: NameCelebrations): NameCelebrations {
+    if (this.dates.isEmpty()) {
+        return other
+    }
+    if (other.dates.isEmpty()) {
+        return this
+    }
+    val actualName = if (dates.isNotEmpty()) name else other.name
+    return ImmutableNameCelebrations(actualName, this.dates + other.dates)
+}
+

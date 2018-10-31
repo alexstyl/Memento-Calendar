@@ -8,7 +8,7 @@ data class Namedays(private val namesToDate: Node, private val namedaysList: Nam
     val names = namedaysList.names
 
     fun getDatesFor(name: String): NameCelebrations {
-        return namesToDate.getDates(name) ?: NoNameCelebrations(name)
+        return namesToDate.getDates(name) ?: NoCelebrations(name)
     }
 
     fun getNamedaysFor(date: Date): NamesInADate {

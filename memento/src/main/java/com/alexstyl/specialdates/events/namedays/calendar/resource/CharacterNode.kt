@@ -3,9 +3,10 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource
 import com.alexstyl.gsc.Index
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.ArrayNameCelebrations
+import com.alexstyl.specialdates.events.namedays.ImmutableNameCelebrations
 import com.alexstyl.specialdates.events.namedays.MutableNameCelebrations
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
-import com.alexstyl.specialdates.events.namedays.NoNameCelebrations
+import com.alexstyl.specialdates.events.namedays.NoCelebrations
 import java.text.Collator
 
 class CharacterNode(private val keySound: Char?) : Node {
@@ -93,14 +94,14 @@ class CharacterNode(private val keySound: Char?) : Node {
                     index.setTo(currentIndex)
                 }
             }
-            return NoNameCelebrations(name)
+            return NoCelebrations(name)
         }
 
     }
 
     private fun getDates(): NameCelebrations {
         return if (dates == null) {
-            NoNameCelebrations("")
+            NoCelebrations("")
         } else {
             dates!!
         }

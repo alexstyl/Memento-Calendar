@@ -5,7 +5,7 @@ import com.alexstyl.specialdates.date.Months.MARCH
 import com.alexstyl.specialdates.date.Months.OCTOBER
 import com.alexstyl.specialdates.date.dateOn
 import com.alexstyl.specialdates.events.namedays.ImmutableNameCelebrations
-import com.alexstyl.specialdates.events.namedays.NoNameCelebrations
+import com.alexstyl.specialdates.events.namedays.NoCelebrations
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Test
 
@@ -53,6 +53,6 @@ class SoundNodeTest {
 
         val returningDate = node.getDates("Alexandros")
 
-        assertThat(returningDate).isEqualTo(NoNameCelebrations("Alexandros"))
+        assertThat(returningDate).isEqualTo(NoCelebrations("Alexandros"))
     }
 }

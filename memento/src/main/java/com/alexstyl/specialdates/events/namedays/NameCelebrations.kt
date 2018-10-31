@@ -9,8 +9,6 @@ interface NameCelebrations {
     val name: String
     val dates: List<Date>
 
-    operator fun plus(other: NameCelebrations): NameCelebrations {
-        return ImmutableNameCelebrations(name, this.dates + other.dates)
-    }
+
 }
 

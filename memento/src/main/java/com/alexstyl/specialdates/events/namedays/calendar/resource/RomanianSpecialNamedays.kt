@@ -3,7 +3,7 @@ package com.alexstyl.specialdates.events.namedays.calendar.resource
 import com.alexstyl.specialdates.date.Date
 import com.alexstyl.specialdates.events.namedays.NameCelebrations
 import com.alexstyl.specialdates.events.namedays.NamesInADate
-import com.alexstyl.specialdates.events.namedays.NoNameCelebrations
+import com.alexstyl.specialdates.events.namedays.NoCelebrations
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNameday
 import com.alexstyl.specialdates.events.namedays.calendar.EasternNamedaysExtractor
 
@@ -18,7 +18,7 @@ internal class RomanianSpecialNamedays private constructor(private val namedays:
     }
 
     override fun getNamedaysFor(name: String, year: Int): NameCelebrations {
-        return namedays.getNamedaysFor(name, year) ?: NoNameCelebrations(name)
+        return namedays.getNamedaysFor(name, year) ?: NoCelebrations(name)
     }
 
     companion object {
