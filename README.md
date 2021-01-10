@@ -1,3 +1,8 @@
+# Archived
+
+The repo is now archived and no new commits will take place. Thank for your support and contributions. 
+
+
 # Memento Calendar for Android  [![alt text](https://travis-ci.org/alexstyl/Memento-Calendar.svg?branch=master "Check the build status on Travis CI")](https://travis-ci.org/alexstyl/Memento-Calendar)
 
 <img src="https://github.com/alexstyl/Memento-Calendar/blob/main/android_common/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true" width="200" align="right" hspace="20">
